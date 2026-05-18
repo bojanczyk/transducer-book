@@ -1,0 +1,45 @@
+## macOS
+.DS_Store
+
+## LaTeX build artifacts
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.dvi
+*.fdb_latexmk
+*.fls
+*.lof
+*.log
+*.lot
+*.nav
+*.out
+*.run.xml
+*.snm
+*.synctex.gz
+*.toc
+*.vrb
+*.xdv
+*.kaux
+*.diagnose
+
+## Bibliography helpers
+*.acn
+*.acr
+*.alg
+*.glg
+*.glo
+*.gls
+*.ist
+
+## Minted/Pygments cache
+_minted*
+
+## Temporary/editor swap files
+*.swp
+*.swo
+*~
+
+## Conflict files (e.g., cloud sync conflicts)
+*conflicted*
+

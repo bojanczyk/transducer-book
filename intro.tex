@@ -1,0 +1,131 @@
+\section*{Introduction}
+\addcontentsline{toc}{section}{Introduction}
+
+This book is a collection of lecture notes for a course on transducers, taught at the University of Warsaw in 2024. Unlike the study of regular languages, which can be viewed as functions with Boolean outputs
+\begin{align*}
+L : A^* \to \set{\text{yes, no}},
+\end{align*}
+this course is about  string-to-string functions
+\begin{align*}
+f : A^* \to B^*,
+\end{align*}
+where $A$ and $B$ are some finite alphabets. In this course, the functions should  be computed by models that are finite-state in some way; such models will be called transducers. There will be four main transducer models treated in this book, which are ordered in a ``transducer ladder'' in  increasing order of expressive power as follows: 
+
+\begin{center}
+$\left.
+\begin{array}{c}
+    \text{Part~\ref{part:mealy}. Mealy machines} \\ 
+    \rotatebox{90}{$\supset$} \\
+    \text{Part~\ref{part:rational}. Rational functions} \\ 
+    \rotatebox{90}{$\supset$} \\
+    \text{Part~\ref{part:regular}. Regular functions} \\
+    \rotatebox{90}{$\supset$} \\
+    \text{Part~\ref{part:polyregular}. Polyregular functions}
+\end{array}
+\right\} \quad \text{the transducer ladder}$
+\end{center}
+
+Before delving into the details of these models, we begin by explaining some general properties that we would like our transducer models to have.  
+
+\paragraph*{Continuity.} The transducer  ladder does not include Turing machines, or pushdown automata, suitably generalised to compute string-to-string functions. Why? 
+
+The reason is that, in  our understanding of ``finite-state'', the  regular languages are finite-state, but pushdown automata and Turing machines are not.  This is because we want finite-state models to correspond to regular languages. While the distinction between regular languages and non-regular ones is well understood,  the same distinction for string-to-string functions is less clear.  Although one of the  transducer models in the transducer ladder is  called the ``regular'' functions, this might well be only  a historical artefact, and cogent arguments can be made to justify the name  ``regularity'' for any of  the other models in the transducer ladder, and also for other models that are not in the ladder. Summing up, we do not really know what is the right analogue for regular languages in the case of  string-to-string functions.
+
+Nevertheless, there are some models that we can reject out of hand, because they violate a criterion that we call \emph{continuity}. This criterion requires a function to be compatible with regularity in the string-to-Boolean case, as formalised in the following definition. 
+\begin{definition}[Continuous string-to-string functions]
+    \label{def:continuity}
+    A  function 
+    \begin{align*}
+    f : A^* \to B^*
+    \end{align*}
+    is called \emph{continuous} if for every regular language $L \subseteq B^*$ over the output alphabet, the inverse image $f^{-1}(L)$ is also regular.
+\end{definition}
+
+For example, if we take a string-to-string  function that is  computed by a Turing machine, or by a pushdown automaton with some kind of output mechanism, then the function  will typically not be  continuous.  One of the salient properties of continuity is that for functions with two possible outputs ``yes'' and ``no'', continuity is the same as regularity in the usual string-to-Boolean sense (this observation is valid when we see the outputs as one-letter words, and also as   multi-letter words).
+
+The name continuity is loosely inspired by the topological notion of continuity, in which the inverse image of an open set is open. This is not a perfect analogy, since open sets in topology should be closed under possibly infinite unions, while regular languages are only closed under finite unions. A more in-depth discussion of this analogy can be found in the exercises, where we show that Definition~\ref{def:continuity} is the same as uniform continuity with respect to a certain metric on strings.
+
+As we will see, all functions in the transducer ladder are  continuous. Unfortunately, continuity on its own is not enough to guarantee a reasonable transducer model. In fact, as the following example shows, there are uncountably many continuous functions.
+
+\begin{myexample}\label{ex:uncountably-many-continuous}
+    Consider an output alphabet $B$ and any sequence of words 
+    \begin{align*}
+    w_1, w_2, \ldots \in B^*
+    \end{align*}
+    which has the following \emph{Cauchy property}:   every regular language $L \subseteq B^*$ gives the same answer on all but finitely many words in the sequence. By a simple extraction process, one can show that every infinite sequence contains a subsequence with the Cauchy property. A more explicit example, whose proof is left to the reader, is the sequence of words with factorial lengths
+    \begin{align*}
+    b^{1}, b^{2!}, b^{3!},\ldots.
+    \end{align*}
+Fix a sequence with the Cauchy property, and consider any function 
+    \begin{align*}
+    f : A^* \to B^*
+    \end{align*}
+    where all outputs are in the sequence, and furthermore each output is used for finitely many inputs. This function will necessarily be continuous, because for every regular language $L \subseteq B^*$, the language will give the same result on all but finitely many words in the Cauchy sequence, and therefore the inverse image $f^{-1}(L)$ will be either finite or cofinite, and thus regular. Since a Cauchy sequence can be constructed in uncountably many ways, and the function $f$ can also be constructed in uncountably many ways, there are uncountably many continuous functions of this form.
+\end{myexample}
+
+Despite the issues raised in the above example, continuity will be a good -- if not perfect -- criterion for checking if a transducer model is reasonable.  There are, however, other criteria.
+
+\paragraph*{Composition.} Another desirable property of transducer models is closure under composition, i.e.~if we have two functions 
+\begin{align*}
+A^* 
+\xrightarrow f 
+B^* 
+\xrightarrow g 
+C^*
+\end{align*}
+that can be defined in some transducer model, then the same should be true for their composition. All transducer models in this book will have this property.   Arguably, continuity itself can be seen as a special case of composition, since taking the inverse image is the same as composing with a string-to-Boolean function: \begin{align*}
+A^* 
+\xrightarrow f 
+B^* 
+\xrightarrow L
+\set{\text{yes, no}}.
+\end{align*} 
+One of the advantages of composition is that functions can also be decomposed, i.e.~presented as compositions of simpler functions. This will be a fundamental theme in this book, starting with the Krohn-Rhodes decomposition of Mealy machines, and continuing with similar  decomposition theorems for models that are  higher up in the transducer ladder. 
+
+\paragraph*{Decidable algorithmic problems.} The above conditions are necessary, but not sufficient, for a good transducer model. For example, we could take the class of all continuous functions: this class is easily seen to be closed under composition, but it contains many pathological examples, as we have seen in Example~\ref{ex:uncountably-many-continuous}. An important further condition is that the model should be thoroughly decidable, similarly to finite automata.  There are many algorithmic problems to consider, including:
+\begin{itemize}
+    \item \textbf{evaluation:} given a transducer and an input string, compute the output string;
+    \item \textbf{computing inverse images:} given a transducer and a  regular property of output strings, compute the inverse image;
+    \item \textbf{composition:} given two transducers, compute a transducer for their composition;
+    \item \textbf{equivalence:} given two transducers, decide if they compute the same function.
+\end{itemize}
+The second and third problems can be seen as effective versions of  continuity and closure under composition. For all transducer models in this book, all the above problems will be decidable, with one exception: we do not know if equivalence is decidable for polyregular functions.
+
+\paragraph*{Is this all?} The properties that we have discussed above are not exhaustive. For all we know, there could be infinitely many transducer models that satisfy all of these properties. In this book, we try to give complete characterisations of some of the models in the transducer ladder, in a way that is machine independent. However, as we will see, this gets harder and harder as the models become more expressive.  
+\exerciseheader
+
+
+
+    \exer{ \label{exer:reverse-continuous} Show continuity for the reversal function $a_1 \cdots a_n \mapsto a_n \cdots a_1$. }
+    { Given a deterministic automaton for the output language, we can construct a nondeterministic automaton for the inverse image, by reversing the arrows in the automaton, and swapping the initial and accepting states.
+    
+    Here is an alternative solution, which uses monoids instead of automata, and which will extend more easily to the subsequent exercises. It is well known that a language $L \subseteq A^*$ is regular if and only if there is some finite monoid $M$ and a monoid homomorphism 
+    \begin{align*}
+    A^* 
+    \xrightarrow h
+    M
+    \end{align*}
+    such that the language $L$ is an inverse image $h^{-1}(F)$ for some accepting set $F \subseteq M$. Under this characterisation, reversal is straightforward: we simply consider a monoid with the reverse operation, and the corresponding homomorphism, with the same accepting set.
+    }
+    \exer{ Show continuity for  the duplication function $w \mapsto ww$.}{ We use the monoid approach that was discussed in the solution to Exercise~\ref{exer:reverse-continuous}. Consider a regular language $L \subseteq A^*$. To see that its inverse image, under duplication, is regular, we use the same monoid homomorphism as for $L$, but we change the accepting set to be the set of elements $m$ such that $mm \in F$. This way, the inverse image of the new accepting set is exactly the inverse image of $L$ under duplication. }
+    \exer{ Show continuity for the squaring function $w \mapsto w^{|w|}$.}{}
+       \exer{ Show continuity for the factorial function $w \mapsto w^{|w|!}$.}{}
+       \exer{ Show that the class of continuous functions is closed under composition.}{}
+       \exer{ Show that there are uncountably many continuous functions, and therefore some of them are not computable. Hint: use the factorials. }{}
+
+
+     
+
+
+
+       \exer{ For words over an alphabet $A$, define a metric so that the distance between two  strings $w\neq w'$ is 
+       \begin{align*}
+         \frac{1}{\text{minimal number of states in a \textsc{dfa} that accepts $w$ but not $w'$}}.
+       \end{align*}
+       Show that this is a metric, and in fact it satisfies the stronger inequality
+       \begin{align*}
+       d(w_1,w_3)  \leq \max (d(w_1,w_2), d(w_2,w_3)).
+       \end{align*}}{}
+       \exer{ Show that all string-to-string functions are continuous with respect to the above metric.}{}
+       \exer{ Show that the continuous functions, in the sense of Definition~\ref{def:continuity}, are exactly the uniformly continuous functions with respect to the above metric. }{}
+
