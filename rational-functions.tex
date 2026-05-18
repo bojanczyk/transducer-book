@@ -1,0 +1,285 @@
+\section{Rational functions}
+\label{sec:rational-functions}
+
+After the brief detour into relations and nondeterminism, we return to the main focus of this book, which is about  functions and deterministic models. As we will see, this will allow us to work around the undecidability result from Theorem~\ref{thm:undecidable-equivalence-rational-relations}. We define rational functions semantically, as the functional fragment of the rational relations. 
+
+\begin{definition}
+    [Rational function] A rational function is the special case of a rational relation, in which each input string is related to exactly one output string.
+\end{definition}
+
+An advantage of the above definition is its simplicity, but a disadvantage is that the underlying automaton model is nondeterministic, and only happens to have unique outputs (possibly arising from different runs with the same output). 
+This advantage will be overcome in Section~\ref{sec:bimachines} below, where we introduce a deterministic model, called bimachines, which defines exactly the same class of functions.
+
+Rational functions are closed under composition and are continuous, since these properties are inherited from rational relations. As we will see in the next chapter, on weighted automata, rational functions have decidable equivalence.
+
+\subsection{Bimachines}
+\label{sec:bimachines}
+
+ A bimachine is based on two automata (called the prefix and suffix automata), which are deterministic, but which will be used in opposite directions: the prefix automaton will be used in a left-to-right way, but the suffix automaton will be used in a right-to-left way. For  each gap between positions in the input string, it produces a piece of the  output according to the following picture:
+\mypic{16}
+Here is a more formal definition.
+
+
+\begin{definition}
+    [Bimachine]
+    \label{def:bimachine} A bimachine consists of the following ingredients:
+    \begin{itemize}
+        \item input and output alphabets $A$ and $B$;
+        \item two deterministic automata with input alphabet $A$, which are called the \emph{prefix} and \emph{suffix} automata (the accepting states in these automata will be irrelevant, so they can be omitted);
+        \item an output function of type 
+        \begin{align*}
+        \text{(states of prefix automaton)} 
+        \times
+        \text{(states of suffix automaton)}
+        \to B^*
+        \end{align*}
+    \end{itemize}
+\end{definition}
+
+A bimachine computes a function of type $A^* \to B^*$, which is defined as follows. Suppose that the input string is $a_1 \cdots a_n$. For each $i \in \set{0,1,\ldots,n}$, we consider the partition of the input word as
+\begin{align*}
+\myunderbrace{a_1 \cdots a_{i-1}}{prefix}
+\quad 
+\myunderbrace{a_i \cdots a_n}{suffix}.
+\end{align*}
+We run the prefix automaton on the prefix, and the suffix automaton on the reverse\footnote{
+    Using the reverse of the suffix yields a pleasing symmetry in the execution of the bimachine, since both automata run in the direction of the gap. It  will also  be useful in the proof of Theorem~\ref{thm:bimachines}. However, running the suffix automaton in the forward direction would give the same class of functions, since the only role of the suffix automaton is to partition the suffixes into finitely many regular languages, and the reverse of a regular language is regular.
+} of the  suffix, yielding a pair of states. To this pair of states, we apply the output function, yielding a piece of the output string. The $n+1$ pieces obtained this way are concatenated, in increasing order of $i$, thus  yielding  the output string.
+
+We now show that bimachines compute exactly the rational functions. Along the way, we give another characterisation of the rational functions, which uses unambiguous nondeterministic automata with output, i.e.~nondeterministic automata that have exactly one accepting run for each input string.
+
+
+\begin{theorem}\label{thm:bimachines}
+    The following are equivalent for a string-to-string function:
+    \begin{enumerate}
+        \item it is a rational relation which happens to be functional;
+        \item it is computed by an unambiguous nondeterministic automaton with output;
+        \item it is computed by a bimachine.
+    \end{enumerate}
+\end{theorem}
+\begin{proof}
+    We prove the implications in the order 3 $\Rightarrow$ 1 $\Rightarrow$ 2 $\Rightarrow$ 3.
+
+    \paragraph*{From bimachines to functional.}
+    We begin with the  easiest inclusion 
+    \begin{align*}
+    \text{bimachines} \quad \subseteq \quad \text{functional rational relations.}
+    \end{align*}
+    Consider some bimachine. The states of the corresponding nondeterministic automaton are pairs (states of prefix automaton, state of suffix automaton), plus one extra state that we will denote by $\dashv$. The essential idea is that the nondeterministic automaton guesses the runs of both the prefix and suffix automaton. More formally, we have transitions of the form 
+    \begin{align*}
+    (p,q) \xrightarrow{ a / w} (p',q'),
+    \end{align*}
+    where $a$ is an input letter,  $w$ is the output string produced by the pair $(p,q)$ and the following are transitions of the prefix and suffix automata:
+    \begin{align*}
+      \myunderbrace{p \xrightarrow a p'}{in prefix automaton} \qquad \qquad
+      \myunderbrace{q' \xleftarrow a q}{in suffix automaton}.
+    \end{align*}
+    Since we have used the output string for $(p,q)$ and $(p',q')$, the resulting automaton outputs for each input  letter the output  of the bimachine that corresponds to the gap on the left of the letter. This accounts for all gaps except the last one, which is where we use the extra state $\dashv$, for which we have transitions 
+    \begin{align*}
+    (p,q) \xrightarrow {\varepsilon/ w} \dashv,
+    \end{align*}
+    such that $w$ is the output on $(p,q)$ and $q$ is the initial state of the suffix automaton. The initial states in the automaton are pairs $(p,q)$ where $p$ is an initial state of the prefix automaton and $q$ is any state of the suffix automaton. There is only one final state, namely $\dashv$. It is easy to see that the resulting automaton computes the same function as the bimachine.
+
+    \paragraph*{From functional to unambiguous.}
+    We now prove the  inclusion
+    \begin{align*}
+    \text{functional rational relations} \quad \subseteq \quad \text{unambiguous rational relations.}
+    \end{align*}
+    
+            In the construction, and also later in this book,  it will be convenient to eliminate $\varepsilon$-transitions, i.e.~transitions with empty input. There are two caveats to eliminating $\varepsilon$-transitions, which is that they are  essential for two roles: (a) producing an output for the empty input string; and (b) producing infinitely many outputs for one input string.  To deal with issue (a), we will discuss the empty input separately. To deal with issue (b), we allow \emph{extended transitions}, where instead of an output string, a transition is labelled by a regular language of output strings. Subject to these two caveats, we can eliminate $\varepsilon$-transitions, as the following lemma shows.
+        
+        \begin{lemma}[Elimination of $\varepsilon$-transitions]\label{lemma:eliminate-epsilon-transitions}
+            Every rational relation can be computed by an \nfa with output and extended transitions, where each accepting run has the following properties:
+            \begin{enumerate}
+                \item if the input string is nonempty, then each transition inputs exactly one letter;
+                \item if the input string is empty, then the run has exactly one transition.
+            \end{enumerate}
+            Furthermore, if the rational relation is such that every input string has finitely many outputs, then extended transitions are not needed.
+        \end{lemma}
+        \begin{proof}
+        Without loss of generality, we can assume that: (a) there is no state that is both initial and final; and (b) every  transition in the automaton  consumes zero or one input letters. Both of these assumptions can be achieved by using $\varepsilon$-transitions. Furthermore, we assume that (c) every state appears in at least one accepting run. 
+            
+        Having made the above assumptions on the original automaton, we can apply the usual construction for eliminating $\varepsilon$-transitions. We remove all transitions from the automaton, and replace them as follows. For each input letter $a$ and states $p$ and $q$, we create a transition of the form   
+            \begin{align*}
+            q \xrightarrow {a / L} p,
+            \end{align*}
+            where   $L$ is the set of outputs that can be produced by a run in the original automaton which starts in $q$, consumes the letter $a$ and  uses any number of  $\varepsilon$-transitions, and ends in $p$. This set  is easily seen to be a regular language. As a result, the new automaton has the same outputs for all nonempty inputs strings. Finally, in order to take care of the empty input string, we add a fresh initial state $\vdash$ and fresh final state $\dashv$, together with a transition 
+            \begin{align*}
+            \vdash\  \xrightarrow {\varepsilon / L }\ \dashv,
+            \end{align*}
+            in which $L$ is the set of outputs that can be produced by the original automaton on an empty string. 
+
+            Finally, if the original automaton had the property that every input string has finitely many outputs, then the regular languages $L$ that label the transitions in the new automaton are finite, and therefore we can replace each transition by a finite number of transitions that produce exactly one output string. 
+        \end{proof}
+
+    Using the above lemma, we show that a functional rational relation can be computed by an unambiguous automaton with output. 
+    In fact, we will show a stronger result, which we call uniformisation: if a rational relation is total (i.e.~every input string produces at least one output string), then it contains an unambiguous rational relation. In the case of a functional rational relation, the totality assumption is satisfied, and the contained unambiguous rational relation must be the same function.
+
+    \begin{lemma}\label{lem:uniformisation}
+        [Uniformisation] If a rational relation is total, then it contains an unambiguous rational relation.
+    \end{lemma}
+    \begin{proof}
+        We begin by eliminating $\varepsilon$-transitions, using the previous lemma. As a result, the automaton might use extended transitions, but this  will not be an issue. We call this the original automaton, and our goal is to define a new unambiguous automaton. 
+        
+        Choose some arbitrary linear order on the state space of the original automaton. The new unambiguous automaton will use the run of the original automaton, which is lexicographically minimal with respect to the chosen linear order on states. This new automaton is defined as follows.  
+        \begin{itemize}
+            \item \textbf{States.} We have the two special states $\vdash$ and $\dashv$, which will be used for the empty input, similarly to the construction in Lemma~\ref{lemma:eliminate-epsilon-transitions}. Apart from these two states, the new automaton has a state  of the form    $P \ni p$ for every subset  $P$ of states in the original automaton and every chosen element $p$ of this subset.  The  idea is that $P$ is the set of states that can reach acceptance in the future, and $p$ is the chosen state used in the run with lexicographically minimal profile.
+            \item \textbf{Initial states.} The special state $\vdash$ is initial.  A state  of the form  $P \ni p$ is initial  if and only if  $p$ is initial in the original automaton, and $P$ does not contain any smaller initial states of the original automaton.
+            \item \textbf{Final states.} The special state $\dashv$ is final.  A state of the form $P \ni p$ is final  if and only if  $p$ is final in the original automaton.
+            \item \textbf{Transitions.} For the two special states $\vdash$ and $\dashv$, there is a unique transition 
+            \begin{align*}
+            \vdash \ \xrightarrow{ \varepsilon / w} \ \dashv
+            \end{align*}
+            where $w$ is some arbitrarily chosen output that can be produced by the original automaton on an empty input. Next, we create transitions of the form 
+        \begin{align*}
+        P \ni p
+        \xrightarrow {a,w}
+        P' \ni p'
+        \end{align*}
+        under the following conditions:
+        \begin{enumerate}
+            \item $P$ is the set of all states that can reach $P'$ by reading input $a$;
+            \item $p'$ is the minimal state in $P'$ that can reach $p$ by reading input $a$; and
+            \item $w$ is some chosen output on a transition from $p$ to $p'$ that inputs $a$.
+        \end{enumerate}
+        In the above, the chosen output in item 3 is unique for the automaton, which means that once the source and target states and the input letter have been fixed, it is impossible to have two different outputs.
+        \end{itemize}
+    Let us now argue that this new automaton is unambiguous. The first component of the state $P \ni p$, which is the subset $P$, is chosen deterministically from right-to-left. Therefore, all runs of the new automaton will agree on this component. Once the first component has been fixed, the second component is deterministic from left-to-right, and therefore all runs will also agree on this component. Finally, the output string is determined uniquely by the states and the input letter. It is also not hard to see that if the original automaton had an accepting run (which is guaranteed by the totality assumption), then the new automaton also has an accepting run, and that the output string is the same.
+\end{proof}
+
+\paragraph*{From unambiguous to bimachines.}
+The final step in the theorem is the inclusion
+\begin{align*}
+\text{unambiguous rational relations} \quad \subseteq \quad \text{bimachines.}
+\end{align*}
+Consider an unambiguous automaton with output $\Aa$ that computes some function. We can assume without loss of generality that this automaton has the following property: every accepting run uses exactly one $\varepsilon$-transition (i.e.~with empty input), and this is the last transition of the run. This property was ensured by the construction in the previous step, by the proof of Lemma~\ref{lem:uniformisation}.
+We now design a bimachine that computes the same output.
+
+The bimachine produces the output as follows. For each gap in the input string (i.e.~a factorisation into prefix and suffix), the following output is produced: (a) if the gap is not the last one, i.e.~the suffix begins with some input letter, then we produce the part of the output that corresponds to the transition of the original automaton which consumes this letter; and (b) if the gap is the last one, i.e.~the suffix is empty, then we produce the part of the output that corresponds to the $\varepsilon$-transition at the end of the run of the original automaton. It remains to define the prefix and suffix automata so that the above can be implemented.  The prefix automaton computes the states that can be reached from an initial state by reading the prefix. The suffix automaton computes a little more information, namely: is the suffix empty (i.e.~are we at the last gap), and if the suffix is nonempty, then: 
+    \begin{itemize}
+        \item what is the first  letter of the suffix; and
+        \item which states can reach an accepting state via the suffix minus its last letter.   
+    \end{itemize}
+
+
+\end{proof}
+
+
+\subsection{Decomposition into primes}
+\label{sec:rational-primes}
+ Using bimachines, we can prove a variant of the Krohn-Rhodes decomposition theorem for rational functions. In fact, most of the decomposition work was already done in the case of Mealy machines. In the theorem, we use right-to-left Mealy machines, which are defined the same way as Mealy machines, except that the input string is processed in a right-to-left manner, with the initial state being used after the rightmost position.
+\begin{theorem}\label{thm:rational-primes}
+    A string-to-string function is rational if and only if it can be obtained by composing the following functions (which we call the \emph{prime rational functions}): 
+    \begin{enumerate}
+        \item the prime Mealy machines, i.e.~reversible and flip-flop Mealy machines;
+        \item the right-to-left variants of the prime Mealy machines;
+        \item string homomorphisms;
+        \item the function $w \mapsto w\#$ which appends a fresh separator symbol to the input string.
+    \end{enumerate}
+\end{theorem}
+\begin{proof}
+    Clearly all prime functions are rational, and rational functions are closed under composition, which gives us the implication $\Leftarrow$. Let us now prove the implication $\Rightarrow$. 
+    
+    By Theorem~\ref{thm:bimachines}, we can assume that $f$ is computed by a bimachine.  We begin by appending the  and we decompose the past and future automata into their prime components. This gives us two sequences of prime  machines, which label each position in the input string with the states before and after reading it, for both the future and past automata. Next, we apply the last prime function, which allows us to deal with an input string that is empty. Finally, we apply a homomorphism, which produces the 
+\end{proof}
+
+
+
+
+
+
+
+
+
+
+
+\subsection{Mealy machines as a subset of the rational functions}
+\label{sec:mealy-machines-and-rational-functions}
+
+Mealy machines are a special case of rational functions. The following theorem explains exactly which special case they are. 
+\begin{theorem}
+Consider a rational function $f : A^* \to B^*$. This function is computed by a Mealy machine if and only if it satisfies the following two properties:
+\begin{itemize}
+    \item \emph{Letter-to-letter.} For every input string, the output string has the same length;
+    \item \emph{Determinism.} If two input strings agree on the first $n$ input letters, then the corresponding output strings also agree on the first $n$ output letters.
+\end{itemize}
+\end{theorem}
+% exercises about rational functions
+\exerciseheader
+
+\exer{ Show that rational relations are not closed under intersection.}{}
+
+\exer { Show that it is undecidable if two rational relations have nonempty intersection}{}
+
+
+\exer{ Show that there is a function
+\begin{align*}
+f : A^* \to B^*
+\end{align*}
+which is not rational, but has the property that for every rational function
+\begin{align*}
+g : B^* \to \myunderbrace{1^*}{words over a one-letter alphabet},
+\end{align*}
+the composition $f \cdot g$ is rational.}{ }
+
+
+\exer{ Consider two rational functions $f$ and $g$, possibly with different input and output alphabets. We say that $f$ factors through $g$ if one can decompose $f$ as 
+\begin{align*}
+f = g_1 \cdot g \cdot g_2
+\end{align*}
+for some rational functions $g_1$ and $g_2$. Show an algorithm that decides this property, given rational functions $f$ and $g$.}{ }
+
+\exer{ A set $I$ of rational functions is called an ideal if
+\begin{align*}
+I  = \text{Rational} \cdot I \cdot \text{Rational},
+\end{align*}
+i.e.~functions that factor through the ideal must stay in the ideal. Show that there are finitely many ideals.
+}
+
+\exer{Consider a rational relation $R \subseteq A^* \times B^*$, such that for every input string there is at least one output. Show that there is a rational function $f : A^* \to B^*$ such that $w R f(w)$ holds for every input string.}{}
+
+\exer{Show that if  a rational function $f : A^* \to B^*$ is surjective, then it has a one-sided inverse, i.e.~a rational function $g : B^* \to A^*$ such that $g \cdot f$ is the identity on $B^*$. }{ }
+
+\exer{Show that the following problem is undecidable: given a rational function $f$, we want to know if it is injective, i.e.~different input strings are mapped to different output strings. }{ A reduction from the Post Correspondence Problem.
+}
+
+\exer{Show that the following problem is undecidable: given a rational function $f : A^* \to A^*$, we want to know if it generates finitely many functions under composition, i.e.~if the following set is finite:
+\begin{align*}
+\setbuild{f^n}{$n \in \set{0,1,2,\ldots}$}.
+\end{align*}
+}{ The rational function can represent the next-step operation in a Turing machine. For such a function, the problem in the exercise is the same as deciding if the Turing machine makes a constant number of steps for every configuration, which is undecidable.}
+
+
+\exer{Show that the following two conditions are equivalent for a rational relation: 
+\begin{enumerate}
+    \item for every input string, all output strings have the same length as the input;
+    \item it is computed by an \nfa with output, in which for every transition, the length of the input and output strings are the same.
+\end{enumerate}
+Hint: for two states $p$ and $q$ in an \nfa with output, consider the set 
+   \begin{align*}
+   \Delta_{pq} = \setbuild{ (|w|-|v|)}{there is a run  $p \xrightarrow{v / w}  q$ }.
+   \end{align*}
+ }{
+   We only prove the non-trivial implication from 1 to 2. Consider an \nfa with output that computes the relation. Consider the set $\Delta_{pq}$ from the hint. 
+   This set cannot contain two different numbers, since otherwise we would get a violation of condition 1. Therefore, this set is just a single number (possibly undefined if there is no run from $p$ to $q$), which we denote by $\delta_{pq}$. We have the following transitivity law
+   \begin{align*}
+   \delta_{pq} = \delta_{pr} + \delta_{rq},
+   \end{align*}
+   which holds whenever the two numbers on the right-hand side are defined.  This implies that for every state $q$ we can assign a number $\delta_q$ such that 
+   \begin{align*}
+   \delta_{pq} = \delta_q - \delta_p.
+   \end{align*}
+   We would like to improve the \nfa with output so that the numbers $\delta_q$ are all zero. For this, we define a new automaton in which the states are pairs $(q, u)$, such that $q$ is a state of the original automaton and $u$ is a string of length $\delta_q$. The general idea is that $u$ is a piece of the output string that was produced before, awaiting some transition.  Transitions are defined by 
+   \begin{align*}
+    (p, u) \xrightarrow {v/w} (q, u')
+   \end{align*}
+   whenever the original automaton had a transition of the form 
+    \begin{align*}
+    p \xrightarrow {v/w'} q
+   \end{align*}
+   such that $u v = w' u'$. This implies that 
+   \begin{align*}
+   |u| - |u'| = |w'| - |v|.
+   \end{align*}
+   The left-hand side is equal to $\delta_{pq}$ because of the lengths of the strings $u$ and $u'$, and the right-hand side is equal to $|w|-|v|+ \delta_{pq}$, and thus $|w|=|v|$, as desired. Finally, one can check that the new automaton computes the same relation. 
+ }

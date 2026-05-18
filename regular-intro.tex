@@ -1,0 +1,28 @@
+In this part, we move to the third step in the transducer ladder, namely the  regular functions. Probably the quickest way to define the regular functions is in terms of prime functions, so we begin with that. 
+
+\begin{myexample}[Map reverse and map duplicate]\label{ex:map-reverse-and-map-duplicate}
+    The map reverse function is obtained by applying the map lifting operation from Definition~\ref{def:map-lifting} to string reversal. Here is an example of its application:
+    \begin{align*}
+    123 \# 45 \# 6789 \quad \mapsto 321 \# 54 \# 9876.
+    \end{align*}
+    Similarly, we define the map duplicate function, by lifting string duplication $w \mapsto ww$. Here is an example of its application:
+    \begin{align*}
+    123 \# 45 \# 6789 \quad \mapsto 123123 \# 4545 \# 67896789.
+    \end{align*}
+    Formally speaking these are not two functions, but a family of functions, one for each alphabet (the input and output alphabets are the same in this case). Using Theorem~\ref{thm:machine-independent-rational-functions}, one can show that none of these functions is rational. 
+\end{myexample}
+
+In Example~\ref{ex:string-reversal-not-rational} we have shown that string reversal is not rational. It follows that map reverse is not rational either, since it can be used to implement string reversal by choosing an input string without separators. A similar argument can be made to show that neither duplicate nor map duplicate are rational. Therefore, we get a new step in the transducer ladder by adding these two functions, as we do in the following definition.
+
+\begin{definition}[Regular functions]\label{def:regular-functions}
+    A string-to-string function is called \emph{regular} if it can be obtained as a finite composition of functions, each of which is either:
+    \begin{enumerate}
+        \item a rational function;
+        \item one of the map reverse or map duplicate functions from Example~\ref{ex:map-reverse-and-map-duplicate}.
+    \end{enumerate}
+\end{definition}
+
+One could, of course, add just one of the two functions, or maybe even just duplicate and reverse without map. As we will see in this part, there is a good reason to consider the extension from the above definition. This is because the resulting class has an  abundance of equivalent models, including two-way automata with output, streaming string transducers, a transducer variant of monadic second-order logic, and a functional programming language based on combinators. These models will be introduced in the next few chapters. 
+
+
+

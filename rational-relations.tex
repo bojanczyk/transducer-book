@@ -1,0 +1,173 @@
+\section{Rational relations}
+\label{sec:rational-relations}
+
+We  begin with a nondeterministic version of the rational functions, in which the underlying model is an \nfa equipped with an output mechanism. One of the advantages of this model is that it does not treat the input and output differently. 
+
+\begin{definition}[\nfa with output]
+    A \emph{nondeterministic automaton with output} consists of the following ingredients:
+    \begin{itemize}
+        \item input and output alphabets $A$ and $B$;
+        \item a finite set of states $Q$;
+        \item distinguished initial and final subsets $I, F \subseteq Q$;
+        \item a transition relation, which is a finite set 
+        \begin{align*}
+        \delta \subseteq Q \times A^* \times B^* \times Q. 
+        \end{align*}
+    \end{itemize}
+\end{definition}
+
+In other words, such an automaton is a directed graph, where the vertices are states, and each edge is labelled by a pair of input/output words. A run of this automaton is a path that begins in an initial state and ends in a final state. The input string of the run is obtained by concatenating the input strings on the transitions, and likewise we define the output string. The semantics of the automaton is the relation 
+\begin{align*}
+R \subseteq A^* \times B^*,
+\end{align*}
+which consists of pairs of input/output strings, ranging over accepting runs of the automaton. The relations that arise this way are called rational, as stated in the following definition. 
+\begin{definition}[Rational relation]
+    \label{def:rational-relation}
+    A \emph{rational relation} is any relation that can be defined by a nondeterministic automaton with output.
+\end{definition}
+
+Every Mealy machine is a special case of a rational relation, since it corresponds to a nondeterministic automaton with output in which: (a) every transition is labelled by a single input letter and a single output letter; (b) the automaton is deterministic; and (c) every state is accepting. Here are some other examples of rational relations, which are not Mealy machines.
+
+\begin{myexample}[Subword relation]
+    For every alphabet $A$, the subword relation 
+    \begin{align*}
+    \setbuild{ (w,v) \in A^* \times A^*}{$v$ can be obtained from $w$ by deleting some letters}
+    \end{align*}
+    is a rational relation. Here is a picture of the automaton when $A = \set{a,b}$: 
+    \mypic{17}
+    An important property of rational relations is that they are input/output symmetric. Therefore, the inverse of the subword relation, i.e.~when letters can be added, is also rational, with the corresponding automaton looking like this:
+    \mypic{18}
+    In particular, thanks to transitions that have $\varepsilon$ on the input part, a rational relation can have infinitely many outputs for a single input.
+\end{myexample}
+
+\begin{myexample}[Swap first and last]
+ Here is an example of a rational relation which is a function, i.e.~every input string has exactly one output string: the output string is obtained from the input string by swapping the first and last letters (if the input string has at most one letter, it is unchanged). To implement this function, we use a union of six nondeterministic automata. (In the pictures below, we use an alphabet with two letters.) The first two automata deal with inputs that have at most one letter:
+\mypic{20}
+The remaining four automata deal with the possible combinations of (first letter, last letter), with one of them being:
+\mypic{19}
+This function is not computed by a Mealy machine, even though it is letter-to-letter. The reason is that for a Mealy machine, the first output letter depends only on the first input letter.
+\end{myexample}
+
+
+\paragraph*{Why the name rational?} We finish this section by explaining the naming convention. The idea is that we can try to identify the ``regular'' languages in any monoid, and not just the free monoid $A^*$. To formalise regularity in an abstract monoid, two ideas come to mind, which are based on (two-sided) Myhill-Nerode equivalence and regular expressions, respectively, as explained in the following definition.
+\begin{definition}\label{def:rational-recognisable-subsets}
+    [Rational and recognisable subsets of a monoid] \ 
+    \begin{itemize}
+    \item \textbf{The recognisable subsets.} A subset $L$ of a monoid $M$  is called \emph{recognisable} if it is a union of finitely many equivalence classes for some equivalence relation $\sim$ on $M$ that has finite index and is a congruence, i.e.
+    \begin{align*}
+    m_1 \sim m'_1 \land m_2 \sim m'_2 \quad \Rightarrow \quad m_1 \cdot m_2 \sim m'_1 \cdot m'_2.
+    \end{align*}
+    \item \textbf{The rational subsets.} A subset $L$ of a monoid $M$ is called \emph{rational} if it can be obtained from finite subsets of $M$ by applying a finite number of times the following operations: union, product, and Kleene star
+    \begin{align*}
+    L^* \quad \eqdef \quad \bigcup_{n \in \set{0,1,\ldots}}L^n.
+    \end{align*}
+    \end{itemize}
+\end{definition}
+
+In the free monoid $A^*$, the two notions coincide, but in other monoids they do not coincide. In the monoid $A^* \times B^*$, the rational relations, as defined in Definition~\ref{def:rational-relation}, are exactly the rational subsets from the above definition, which can be proved by converting an \nfa with output into a regular expression. The recognisable subsets of $A^* \times B^*$ are much weaker; these are relations that can be recognised by separately testing some regular properties of the input and output strings, as explained in Exercise~\ref{ex:recognisable-relations}.
+
+We have still not explained why the name ``rational'' is used in Definition~\ref{def:rational-recognisable-subsets}. The motivation comes from power series. 
+
+\subsection{Composition and continuity} We now show that rational relations enjoy some  of the important properties that we have identified in the introduction, namely closure under composition and continuity.
+
+
+
+\begin{theorem}\label{thm:composition-rational-relations}
+    Rational relations are closed under relational composition, i.e.~if 
+    \begin{align*}
+    R \subseteq A^* \times B^* 
+    \qquad 
+    \text{and}
+    \qquad 
+    S \subseteq B^* \times C^*
+    \end{align*}
+    are rational relations, then the same is true for the composition
+    \begin{align*}
+    R \cdot S = \setbuild{ (u,v) \in A^* \times C^*}{ $u R w$ and $w S v$ for some  $w \in B^*$}
+    \end{align*}
+\end{theorem}
+\begin{proof}
+    This is essentially the same product  construction that we used for Mealy machines in Theorem~\ref{thm:composition-mealy}. By possibly splitting transitions into sequences of transitions, we can assume that in the automata for $R$ and $S$, each transition produces at most one letter of input or output. Once this has been done, we synchronise the  two automata using  a product construction, in which two transitions
+    \begin{align*}
+q \xrightarrow{u,w} q' \qquad  \qquad 
+    p \xrightarrow{w,v} p'
+    \end{align*}
+    in the automata  for $R$ and $S$ respectively
+    are combined into a new transition 
+    \begin{align*}
+    (q,p) \xrightarrow{u,v} (q',p')\end{align*} in the automaton for the composition.
+    The rest of the construction is as usual in a product construction, i.e.~initial states are pairs that are initial on both coordinates, and likewise for final states.
+\end{proof}
+
+We now show that rational relations are continuous. Since we are talking about relations and not functions, the notion of continuity from Definition~\ref{def:continuity} needs to be adapted, by taking inverse images under relations.
+
+\begin{theorem}\label{thm:continuity-rational-relations}
+    If $R \subseteq A^* \times B^*$ is a rational relation and $L \subseteq B^*$ is a regular language, then the inverse image 
+    \begin{align*}
+    \setbuild{ w \in A^*}{$w R v$ for some $v \in L$}
+    \end{align*}
+    is also a regular language. 
+\end{theorem}
+Observe that rational relations are symmetric with respect to input and output, and therefore the above theorem also shows that forward images of regular languages under rational relations are also regular.
+\begin{proof}
+    One proof is by repeating a product construction, similar to the one used for composition. However, we prefer to deduce continuity from composition directly, since this highlights how the two notions are related. Consider a rational relation
+    with an empty output alphabet. There is only one possible output string, namely the empty string, and hence the relation can be described by saying which input strings can produce the unique output. All regular languages over the input alphabet arise this way, i.e.~the map
+    \begin{align*}
+    R \quad \mapsto \quad \setbuild{ w \in A^*}{$w R \varepsilon$}
+    \end{align*}
+    is a bijective correspondence between rational relations with an empty output alphabet and regular languages over the input alphabet.
+
+    Using the above  bijective correspondence, we can prove the continuity property using closure under composition. Indeed, take some $R$ and $L$ as in the statement of the theorem. By Theorem~\ref{thm:composition-rational-relations}, the composition 
+    \begin{align*}
+    R \cdot \setbuild{(w,\varepsilon)}{$w \in L$}
+    \end{align*}
+    is a rational relation. The corresponding language is exactly the inverse image of $L$ under $R$, and hence it is regular.
+\end{proof}
+
+
+
+\subsection{Undecidable equivalence} The trouble with rational relations is that  nondeterminism makes the equivalence problem undecidable.
+
+
+\begin{theorem}\label{thm:undecidable-equivalence-rational-relations}
+    The equivalence problem $R=S$ is undecidable for rational relations.
+\end{theorem}
+\begin{proof}
+    We will show undecidability already for a special case of the equivalence problem, namely the universality problem: is a rational relation equal to the full relation $A^* \times B^*$?  We will do this via a reduction from the Post Correspondence Problem, which is known to be undecidable: given two string homomorphisms $g,h : A^* \to B^*$, decide if there is some input string where both homomorphisms produce the same output. (Recall that a string homomorphism is a function that applies some function of type $A \to B^*$ to each input letter. This is like the letter-to-letter homomorphisms, except that letters can also be erased, or replaced by longer strings.)    The main observation is that the complement of a homomorphism can be defined by a rational relation. 
+
+    \begin{claim}
+        If $h : A^* \to B^*$ is a homomorphism, then its complement defined by
+        \begin{align*}
+        R = \setbuild{ (w,v) \in A^* \times B^*}{$v \neq h(w)$}
+        \end{align*} 
+        is a rational relation.
+    \end{claim}
+    \begin{proof}
+        The automaton guesses a prefix of the input word for which the homomorphism is correctly applied. After reading this prefix and producing the correct output, it insists on making an error. This means that for the next letter $a$ after the correct input prefix, it does one of the following: (i) outputs a string that is a proper prefix of $h(a)$ and then produces no more output; or (ii) outputs a string that is  incomparable with $h(a)$ under the prefix relation and then produces any output.
+    \end{proof}
+
+    Using the complements from the above claim, we will recast the  Post Correspondence Problem as an instance of universality for rational relations. Consider an instance of the Post Correspondence Problem:
+    \begin{align*}
+    \exists w \in A^* \ h(w) = g(w).
+    \end{align*}
+    The negation of this problem is 
+    \begin{align*}
+    \forall w \in A^*\  \forall v \in B^*\ (w,v) \in \myunderbrace{\text{(complement of $g$)} \cup \text{(complement of $h$)}}{a union of two rational relations}.
+    \end{align*}
+    Since rational relations are closed under union,  we have shown that the complement of the Post Correspondence Problem is the same as an instance of the  universality problem for  rational relations, and hence the latter problem must be undecidable.
+\end{proof}
+
+The above problem is one of the reasons why we avoid relations in this book. The undecidability and related complications would get only worse for the more advanced models of transducers that we will be looking at later.
+
+
+
+
+
+\exerciseheader 
+
+\exercise{\label{ex:recognisable-relations}Show that the recognisable subsets of $A^* \times B^*$ are exactly the unions of finitely many products of regular languages, i.e.~unions of the form 
+\begin{align*}
+K_1 \times L_1 \cup \cdots \cup K_n \times L_n 
+\end{align*}
+where each $K_i$ is a regular language over the input alphabet and each $L_i$ is a regular language over the output alphabet.}
+{ }

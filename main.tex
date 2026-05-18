@@ -1,0 +1,69 @@
+\documentclass{article}
+
+\usepackage{macros}
+\newcommand{\map}{\mathsf{map}}
+
+
+\begin{document}
+
+\title{Transducers}
+\author{Miko{\l}aj Boja\'nczyk}
+
+\maketitle 
+% \begin{abstract}
+%     Lecture notes for a course on transducers
+% \end{abstract}
+
+
+\newpage 
+
+\tableofcontents
+
+\newpage 
+
+\input{intro}
+
+
+% part A Mealy machines
+\mypart{ Mealy machines}
+\label{part:mealy}
+\input{mealy-intro}
+
+
+\input{mealy}
+\input{krohn-rhodes}
+
+
+% part B Rational functions
+\mypart{Rational functions}
+\label{part:rational}
+\input{rational-intro}
+
+\input{rational-relations}
+\input{rational-functions}
+\input{weighted}
+\input{myhill-nerode}
+
+
+% part C Regular functions
+\mypart{Regular functions}
+\label{part:regular}
+\input{regular-intro}
+\input{regular-primes}
+\input{2dfa}
+\input{sst}
+% \input{list-functions}
+\input{logic}
+
+% part D Polyregular functions
+\mypart{Polyregular functions}
+\label{part:polyregular}
+
+
+
+\bibliographystyle{alpha}
+\bibliography{bib}
+
+
+
+\end{document}
