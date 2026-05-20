@@ -42,7 +42,7 @@ Using the above theorem, we show that the Mealy machines, seen as a subset of th
         \begin{align*}
         \setbuild{ (|w|,|f(w)|)}{ $w \in A^*$} \subseteq \Nat \times \Nat.
         \end{align*}
-        This set is semilinear and can be computed using the Parikh image. The function is length-preserving if and only if this set is contained in the diagonal $\setbuild{(n,n)}{$n \in \Nat$}$. Since the diagonal is semilinear and containment is decidable for semilinear sets, we get a proof of the claim. 
+        This set is semilinear and can be computed using the Parikh image. The function is length-preserving if and only if this set is contained in the diagonal $\setbuild{(n,n)}{$n \in \Nat$}$. Since the diagonal is semilinear and containment is decidable for semilinear sets, we get a proof of the lemma. This concludes the first argument. 
 
         Let us now present in more detail a second argument, which is more direct and does not use semilinear sets.
         Fix an \nfa with output that computes $f$, and which has states $Q$.  Define a \emph{typing} for this automaton to be a function 
@@ -64,16 +64,11 @@ Using the above theorem, we show that the Mealy machines, seen as a subset of th
         \begin{align*}
          |w|  =  |v| + \tau(q) - \tau(p) \quad \text{ for every transition } p \xrightarrow{ v /w} q
         \end{align*}
- and all accepting states have type zero. 
+ and all accepting states have type zero. This concludes the second argument for  proving the lemma.
         \end{proof}
 
 
-        So far, we have used only binary rational relations, but the same notion applies to ternary rational relations, with transitions in the corresponding automaton being labelled by triples of words. We claim that if the function is length-preserving, then 
-        \begin{align*}
-        \setbuild{(x,y_1,y_2) \in A^* \times B^* \times B^*}{$y_1$ is a prefix of some output in $f(xA^*)$ and \\ 
-        $y_2$ is a prefix of some output in $f(xA^*)$\\
-        $|x|=|y_1|=|y_2|$}
-        \end{align*}
+
     It remains to check the prefix-preserving property. Before doing this, we prove a characterisation of the length-preserving functions.
     \begin{lemma}\label{lem:characterisation-length-preserving}
         If a rational function is length-preserving, then it is computed by an \nfa with output where for each transition, the input and output strings have the same length.

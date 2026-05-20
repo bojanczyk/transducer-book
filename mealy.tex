@@ -1,9 +1,9 @@
 \section{Mealy machines}
 \label{sec:mealy-machines}
-A Mealy machine is a deterministic finite automaton in which transitions are labelled by output letters. Also, there is no accepting set of states, since the purpose of the machine is to produce an output string instead of accepting or rejecting. Here is a formal definition.
+A "Mealy machine" is a deterministic finite automaton in which transitions are labelled by output letters. Also, there is no accepting set of states, since the purpose of the machine is to produce an output string instead of accepting or rejecting. Here is a formal definition.
 
 \begin{definition}[Mealy machine]\label{def:mealy-machine}
-    A \emph{Mealy machine} is a tuple consisting of 
+    A ""Mealy machine"" is a tuple consisting of 
     \begin{align*}
     \myunderbrace{A}{input \\ alphabet}
     \qquad 
@@ -21,15 +21,15 @@ The semantics of the machine is a function
 \begin{align*}
 f : A^* \to B^*,
 \end{align*}
-which is defined as follows. We consider the deterministic finite automaton which is obtained from the Mealy machine by ignoring the output letters. We run this automaton on the input string, and then we label each position by the output letter of the corresponding transition. This function is a \emph{letter-to-letter} function, which means that the input and output have the same length. 
+which is defined as follows. We consider the deterministic finite automaton which is obtained from the "Mealy machine" by ignoring the output letters. We run this automaton on the input string, and then we label each position by the output letter of the corresponding transition. This function is a \emph{letter-to-letter} function, which means that the input and output have the same length. 
 
 \begin{myexample}
-    [Letter-to-letter homomorphism] We begin with the most trivial case of a Mealy machine, in which there is one state only. Here is a picture of such a machine, using the convention that transitions are labelled by pairs (input letter / output letter):
+    [Letter-to-letter homomorphism] We begin with the most trivial case of a "Mealy machine", in which there is one state only. Here is a picture of such a machine, using the convention that transitions are labelled by pairs (input letter / output letter):
     \mypic{12}
-    This particular machine swaps $a$ with $b$, and leaves $c$ unchanged. More generally, a one-state Mealy machine is the same as a \emph{letter-to-letter homomorphism}, i.e.~we apply some fixed letter-to-letter function independently to each input letter.
+    This particular machine swaps $a$ with $b$, and leaves $c$ unchanged. More generally, a one-state "Mealy machine" is the same as a \emph{letter-to-letter homomorphism}, i.e.~we apply some fixed letter-to-letter function independently to each input letter.
 \end{myexample}
 
-\begin{myexample}[Alternating $a$ and $b$]\label{ex:alternating-a-b} In this example, we have a two-state Mealy machine whose input alphabet is $\set{a}$ and whose output alphabet is $\set{a,b}$. Here is a picture of this machine:
+\begin{myexample}[Alternating $a$ and $b$]\label{ex:alternating-a-b} In this example, we have a two-state "Mealy machine" whose input alphabet is $\set{a}$ and whose output alphabet is $\set{a,b}$. Here is a picture of this machine:
     \mypic{11}
     This machine outputs letters $a$ and $b$ in alternation, as in the following picture:
 \mypic{7}
@@ -39,7 +39,7 @@ which is defined as follows. We consider the deterministic finite automaton whic
 \begin{myexample}[Delay]\label{ex:delay}
     For an input alphabet $A$, consider the \emph{delay function}, which shifts the input letters by one step to the right, as in the following picture: 
     \mypic{6}
-    The output alphabet, call it $A+1$,  is the same as the input alphabet, except that it has an extra letter for the undefined output in the first position. The Mealy machine has states $A+1$, i.e.~the same as the input alphabet. The initial state is the extra letter, which stands for the undefined output in the first position. The transition function  is 
+    The output alphabet, call it $A+1$,  is the same as the input alphabet, except that it has an extra letter for the undefined output in the first position. The "Mealy machine" has states $A+1$, i.e.~the same as the input alphabet. The initial state is the extra letter, which stands for the undefined output in the first position. The transition function  is 
     \begin{align*}
     \delta(q,a)  = (a,q),
     \end{align*}
@@ -49,31 +49,31 @@ which means that  the input letter is stored in the state, and the output is the
 
 \subsection{Equivalence, compositions and continuity}
 \label{sec:properties-mealy}
-In this section, we establish that Mealy machines satisfy the three criteria that were mentioned in the introduction: they are continuous, closed under composition, and have decidable equivalence.
+In this section, we establish that "Mealy machines" satisfy the three criteria that were mentioned in the introduction: they are continuous, closed under composition, and have decidable equivalence.
 
-\paragraph*{Decidable equivalence} We begin with the equivalence problem, where we want to know if two Mealy machines compute the same function.
+\paragraph*{Decidable equivalence} We begin with the equivalence problem, where we want to know if two "Mealy machines" compute the same function.
 
 \begin{theorem}\label{thm:equivalence-decidable-mealy}
-    The equivalence problem for Mealy machines is decidable.
+    The equivalence problem for "Mealy machines" is decidable.
 \end{theorem}
 \begin{proof}
     This is an easy reduction to the equivalence problem for regular languages, which is decidable. For a function 
     \begin{align*}
     f : A^* \to B^*
     \end{align*}
-     computed by a Mealy machine, and an output letter $b \in B$, consider the language 
+     computed by a "Mealy machine", and an output letter $b \in B$, consider the language 
     \begin{align*}
      \myunderbrace{\setbuild{ w \in A^*}{last output letter of $w$ is $b$}}{call this the ``ends with $b$'' language}
     \end{align*}
-    This is easily seen to be a regular language; the corresponding automaton is the same as the one in the Mealy machine, except that it remembers in its state whether the last output letter was $b$. (If we could use an extended variant of automata, in which the accepting set is a subset of transitions and not states, then we would not even need to modify the automaton in any way.)
-    Since the function $f$ is letter-to-letter, it is completely determined by the family of its ``ends with $b$'' languages. Therefore, two Mealy machines $f$ and $g$ are equivalent if and only if the corresponding ``ends with $b$'' languages are the same for every output letter $b$.
+    This is easily seen to be a regular language; the corresponding automaton is the same as the one in the "Mealy machine", except that it remembers in its state whether the last output letter was $b$. (If we could use an extended variant of automata, in which the accepting set is a subset of transitions and not states, then we would not even need to modify the automaton in any way.)
+    Since the function $f$ is letter-to-letter, it is completely determined by the family of its ``ends with $b$'' languages. Therefore, two "Mealy machines" $f$ and $g$ are equivalent if and only if the corresponding ``ends with $b$'' languages are the same for every output letter $b$.
 \end{proof}
 
-The above proof is trivial because there is a perfect alignment between input and output letters. For more advanced transducer models that will be studied later in the book, there will not be such an alignment, which will make the equivalence problem  more difficult. This issue would arise already in the mild extension of Mealy machines, in which transitions produce not letters, but output strings of arbitrary (and possibly empty) length. As we will see in the next chapter, the equivalence problem will remain decidable for this extension, but the proof will be more complicated. 
+The above proof is trivial because there is a perfect alignment between input and output letters. For more advanced transducer models that will be studied later in the book, there will not be such an alignment, which will make the equivalence problem  more difficult. This issue would arise already in the mild extension of "Mealy machines", in which transitions produce not letters, but output strings of arbitrary (and possibly empty) length. As we will see in the next chapter, the equivalence problem will remain decidable for this extension, but the proof will be more complicated. 
 
-\paragraph*{Compositions.} We now establish closure under composition for Mealy machines. In this book, we use a dot to represent left-to-right composition of functions, i.e.~$f \cdot g$ is the function where we first apply $f$, and then we apply $g$ to the output of $f$. To denote the opposite order of composition, we will write $f \circ g$, which is the same as $g \cdot f$. In order to avoid confusion,  we try to avoid the $\circ$ notation altogether.
+\paragraph*{Compositions.} We now establish closure under composition for "Mealy machines". In this book, we use a dot to represent left-to-right composition of functions, i.e.~$f \cdot g$ is the function where we first apply $f$, and then we apply $g$ to the output of $f$. To denote the opposite order of composition, we will write $f \circ g$, which is the same as $g \cdot f$. In order to avoid confusion,  we try to avoid the $\circ$ notation altogether.
 \begin{theorem}\label{thm:composition-mealy}
-    Mealy machines are closed under composition, i.e.~if 
+    "Mealy machines" are closed under composition, i.e.~if
     \begin{align*}
     A^* 
     \xrightarrow f 
@@ -81,7 +81,7 @@ The above proof is trivial because there is a perfect alignment between input an
     \xrightarrow g 
     C^*
     \end{align*}
-    are Mealy machines, then so is their composition $f \cdot g$. 
+    are "Mealy machines", then so is their composition $f \cdot g$. 
 \end{theorem}
 \begin{proof}
     The proof is a straightforward product construction. Consider the composition $f \cdot g$ applied to some input string, with the runs of the two transducers shown in the following picture:
@@ -95,22 +95,22 @@ The above proof is trivial because there is a perfect alignment between input an
 \end{proof}
 
 
-\paragraph*{Continuity.} We finish this section by establishing continuity for Mealy machines. 
+\paragraph*{Continuity.} We finish this section by establishing continuity for "Mealy machines".
 
 \begin{theorem} 
     \label{thm:continuity-mealy}
-    Mealy machines are continuous.
+    "Mealy machines" are continuous.
 \end{theorem}
 \begin{proof}
     This can easily be proved using a direct  product construction similar to Theorem~\ref{thm:composition-mealy}, but we prefer an indirect proof, which leverages the similarities of composition and continuity that were explained in the introduction.  For a  language $L \subseteq B^*$, define its \emph{letter-to-letter lifting} to be the function  
     \begin{align*}
 \text{lift}(L): B^* \to \set{0,1}^*,
     \end{align*}
-    where each position is labelled by 0 or 1, depending on whether the corresponding prefix  of the input string belongs to the language. It is easy to see that the letter-to-letter lifting gives a bijective correspondence between regular languages and Mealy machines with output alphabet $\set{0,1}$. In terms of this correspondence, inverse images become compositions, i.e.
+    where each position is labelled by 0 or 1, depending on whether the corresponding prefix  of the input string belongs to the language. It is easy to see that the letter-to-letter lifting gives a bijective correspondence between regular languages and "Mealy machines" with output alphabet $\set{0,1}$. In terms of this correspondence, inverse images become compositions, i.e.
     \begin{align*}
     \text{lift}(f^{-1}(L)) = f \cdot \text{lift}(L).
     \end{align*}
-    Therefore, continuity for Mealy machines becomes a corollary of closure under composition from Theorem~\ref{thm:composition-mealy}.
+    Therefore, continuity for "Mealy machines" becomes a corollary of closure under composition from Theorem~\ref{thm:composition-mealy}.
 \end{proof}
 
 
@@ -121,37 +121,37 @@ The above proof is trivial because there is a perfect alignment between input an
 
 
 
-\exer{Give an example of a function that is continuous, letter-to-letter (i.e.~input length is the same as output length), and is not computed by a Mealy machine.}{}
+\exer{Give an example of a function that is continuous, letter-to-letter (i.e.~input length is the same as output length), and is not computed by a "Mealy machine".}{}
 
-    \exer{   Show that a composition of $n$ Mealy machines might require a number of states that is exponential in $n$.}{}
+    \exer{   Show that a composition of $n$ "Mealy machines" might require a number of states that is exponential in $n$.}{}
 
 
-    \exer{\label{exer:invertible} We say that a Mealy machine
+    \exer{\label{exer:invertible} We say that a "Mealy machine"
     \begin{align*}
     f : A^* \to A^*
     \end{align*}
-    is \emph{invertible} if there is some Mealy machine
+    is \emph{invertible} if there is some "Mealy machine"
     \begin{align*}
     f^{-1} : A^* \to A^*
     \end{align*}
-    such that the composition $f \cdot f^{-1}$ is the identity function. Show that one can decide if a given Mealy machine is invertible.}{}
+    such that the composition $f \cdot f^{-1}$ is the identity function. Show that one can decide if a given "Mealy machine" is invertible.}{}
 
-    \exer{ Consider the group of invertible Mealy machines of type $A^* \to A^*$, with the group operation being composition. If we take a finite set of generators, is the generated subgroup necessarily finite?}{}
+    \exer{ Consider the group of invertible "Mealy machines" of type $A^* \to A^*$, with the group operation being composition. If we take a finite set of generators, is the generated subgroup necessarily finite?}{}
 
 
 
-    \exer{Give an algorithm which inputs a Mealy machine $f : A^* \to B^*$ and decides if the following is bounded by a polynomial in $n$:
+    \exer{Give an algorithm which inputs a "Mealy machine" $f : A^* \to B^*$ and decides if the following is bounded by a polynomial in $n$:
     \begin{align*}
     n \in \Nat \quad \mapsto \quad |\setbuild{f(w)}{$w \in A^*$ has length at most $n$}|.
      \end{align*}
 }{}
 
 
-\exer{\label{exer:regular-complete-mealy} We say that a regular language $L \subseteq A^*$ is \emph{regular-complete under Mealy reductions} if for every regular language $K \subseteq B^*$, there exists a Mealy machine $f : B^* \to A^*$ such that 
+\exer{\label{exer:regular-complete-mealy} We say that a regular language $L \subseteq A^*$ is \emph{regular-complete under Mealy reductions} if for every regular language $K \subseteq B^*$, there exists a "Mealy machine" $f : B^* \to A^*$ such that 
 \begin{align*}
 w \in K \quad \text{iff} \quad  f(w) \in L \qquad \text{for every nonempty $w \in B^*$.}
 \end{align*}
-(We use nonempty strings because a Mealy machine cannot change the empty string.) Show that there is a language $L$ with this property. }{ The language is
+(We use nonempty strings because a "Mealy machine" cannot change the empty string.) Show that there is a language $L$ with this property. }{ The language is
 \begin{align*}
 \setbuild{ w \in \set{a,b}^*}{the last letter of $w$ is $a$}.
 \end{align*}

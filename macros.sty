@@ -18,6 +18,8 @@
 
 % commuting diagrams
 \usepackage{tikz-cd}
+% allows multline
+\newcommand{\txt}[1]{\begin{tabular}{c}#1\end{tabular}}
 
 % clickable references
 \usepackage[hypertexnames=false]{hyperref}
@@ -51,11 +53,12 @@
 % Knowledge 
 
 \usepackage[composition,hyperref,xcolor]{knowledge}
-\knowledgeconfigure{notion}
+\knowledgeconfigure{notion,quotation}
 
 
 \knowledgestyle{intro notion}{emphasize}
-\knowledgestyle{notion}{}
+\definecolor{klblue}{rgb}{0.05, 0.1, 0.45}
+\knowledgestyle{notion}{color={klblue}}
 % TeX Live 2020 knowledge.sty does not support anchor point color/shape keys.
 % Default marker in this version is already a red corner anchor point.
 \knowledgestyle{intro unknown}{color={red}, emphasize}
@@ -173,7 +176,7 @@
     basicstyle=\ttfamily\footnotesize, % Code font and size
     % keywordstyle=\color{blue}\bfseries, % Keywords in bold blue
     commentstyle=\color{gray}, % Comments in gray
-    stringstyle=\color{red}, % Strings in red
+    % stringstyle=\color{red}, % Strings in red
     numbers=left, % Line numbers on the left
     numberstyle=\tiny\color{gray}, % Line number style
     stepnumber=1, % Line number step
