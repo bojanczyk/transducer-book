@@ -1,6 +1,6 @@
 \section{Logic}
 \label{sec:logic}
-In this chapter, we describe a logical perspective on regular languages and  transducers. The underlying theme is the famous automata-logic correspondence, where regular languages (and also transductions) are defined using monadic second-order logic.
+In this chapter, we describe a logical perspective on regular languages and transducers. The underlying theme is the famous automata-logic correspondence, where regular languages (and also transductions) are defined using monadic second-order logic.
 
 \subsection{Monadic second-order logic}
 \label{sec:mso-logic-languages}
@@ -582,3 +582,44 @@ We now show that the $k$-types are compatible with operations on strings, which 
 Using the above lemma, we show that if a language is first-order definable, then it is recognised by an aperiodic \dfa, thus completing the proof of the theorem. Let $k$ be the quantifier rank of a first-order formula that defines the language. Define the set of states $Q$ to be the set of possible $k$-types of strings in $A^*$. As we have remarked before, this is a finite set. By the congruence property in the above lemma, we can define an automaton structure on this set, since the $k$-type of $wa$ depends only on the $k$-type of $w$ and the letter $a$. By the aperiodicity property in the lemma, the automaton  is aperiodic. Finally, since the language is defined by a first-order formula of quantifier rank at most $k$, it follows that strings that reach the same state cannot be distinguished by the language, and hence we can meaningfully define an accepting set of states in the automaton.
 \end{proof}
 
+\paragraph*{First-order definable rational functions.}
+In the above theorem, we described the languages $L \subseteq A^*$ that can be defined in first-order logic. One can also lift this characterisation to string-to-string functions. For the rational functions, the corresponding fragment is the \emph{first-order relabellings}, which are defined in the same way as the \mso relabellings from Definition~\ref{def:mso-relabeling}, except that instead of \mso formulas, we use first-order formulas. The corresponding automaton model is bimachines, in which both the prefix and suffix automata are aperiodic (call these aperiodic bimachines). 
+
+\begin{theorem}\label{thm:fo-rational-functions}
+    A string-to-string function is a first-order relabelling if and only if it is computed by an aperiodic bimachine.
+\end{theorem}
+\begin{proof}
+    We begin with the direction from aperiodic bimachines to first-order relabellings. Consider the prefix automaton, which is aperiodic. 
+    Thanks to Theorem~\ref{thm:logic-aperiodic}, we can describe runs of this automaton in first-order logic. In particular, for each transition $t$ of the prefix automaton, we can write a first-order formula $\varphi_t(x)$ which selects input positions in which $t$ is the transition used by the  prefix automaton. Similarly, we can describe in first-order logic the transitions of the suffix automaton. By combining these formulas, we can describe in first-order logic the pairs (transition of the prefix automaton, transition of the suffix automaton) that are used on each input position, and using these pairs we can compute the corresponding parts of the output string. 
+    
+    Let us now prove the opposite direction, from first-order relabellings to aperiodic bimachines. Let $k$ be the maximal quantifier rank of the first-order formulas used in the relabelling. Consider an input string $a_1 \cdots a_n \in A^*$. The output produced by the first-order relabelling on the $i$-th position depends on which formula from $\Phi$ is true in the $i$-th position. By compositionality, this  depends only on the following three pieces of information:
+    \begin{align*}
+    \myoverbrace{a_1 \cdots a_{i-1}}{(1) \\ $k$-type of \\ this prefix}
+    \myoverbrace{a_i}{(2) \\ this \\ letter}
+    \myoverbrace{a_{i+1} \cdots a_n}{(3) \\ $k$-type of \\ this suffix}.
+    \end{align*}
+    To retrieve this information, we will use the prefix and suffix automata in the bimachine. After reading a prefix of the form $a_1 \cdots a_{i}$, the prefix automaton will keep track of information (1) and (2), i.e.~the $k$-type of $a_1 \cdots a_{i-1}$ and the letter $a_i$. This can be done by an aperiodic automaton thanks to Theorem~\ref{thm:logic-aperiodic}. Similarly, after reading the suffix $a_{i+1} \cdots a_n$, the suffix automaton will keep track of information (3), i.e.~the $k$-type of this suffix. Therefore, if we know the states of these two automata for a gap of the form 
+    \begin{align*}
+    \myoverbrace{a_1 \cdots a_i}{prefix}
+    \myoverbrace{a_{i+1} \cdots a_n}{suffix},
+    \end{align*}
+    with $i > 0$,
+    then we have suffixient information to compute the string produced by the relabelling on the $i$-th input position. 
+\end{proof}
+        
+
+\paragraph*{First-order definable regular functions.} Finally, it would be useful to give a machine characterisation of the first-order transductions, i.e.~the functions that can be defined by \mso transductions in which all formulas are first-order. We only state the appropriate result, and we leave the proof for a future edition of these notes. 
+\begin{theorem}
+     A string-to-string function is a first-order transduction if and only if it can be obtained by composing: map reverse, map duplicate and first-order rational functions (as in Theorem~\ref{thm:fo-rational-functions}).
+\end{theorem}
+% \begin{proof}
+%     To prove the inclusion
+% \begin{align*}
+%     \text{(map reverse, map duplicate, first-order rational)}^* \quad \subseteq \quad \text{first-order transductions},
+% \end{align*}
+%     the main observation is in the following claim: 
+%     \begin{claim}
+        
+%     \end{claim}
+%     first-order transductions are closed under composition, which is proved by substituting formulas. Since the three types of functions in the left-hand side are clearly first-order transductions, the inclusion follows. To more challenging inclusion is the opposite one. Here, we need first-order variants of: (1) Lemma~\ref{lemlem:compute-configuration-graph}, which says that a string representation of the configuration graph can be computed; and (2) the main result in the proof of Theorem~\ref{thm:2dfa-decomposition-into-primes}, which says that the output string in a configuration graph can be computed by a composition of primes. Both of these can be adapted to the first-order setting, with the second one being more technical. 
+% \end{proof}

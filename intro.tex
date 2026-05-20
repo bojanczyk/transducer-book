@@ -1,11 +1,11 @@
 \section*{Introduction}
 \addcontentsline{toc}{section}{Introduction}
 
-This book is a collection of lecture notes for a course on transducers, taught at the University of Warsaw in 2024. Unlike the study of regular languages, which can be viewed as functions with Boolean outputs
+This book is a collection of lecture notes for a course on transducers, taught at the University of Warsaw in 2024 and 2026. Unlike the study of regular languages, which can be viewed as functions with Boolean outputs
 \begin{align*}
 L : A^* \to \set{\text{yes, no}},
 \end{align*}
-this course is about  string-to-string functions
+this course is about string-to-string functions
 \begin{align*}
 f : A^* \to B^*,
 \end{align*}
@@ -41,7 +41,7 @@ Nevertheless, there are some models that we can reject out of hand, because they
     is called \emph{continuous} if for every regular language $L \subseteq B^*$ over the output alphabet, the inverse image $f^{-1}(L)$ is also regular.
 \end{definition}
 
-For example, if we take a string-to-string  function that is  computed by a Turing machine, or by a pushdown automaton with some kind of output mechanism, then the function  will typically not be  continuous.  One of the salient properties of continuity is that for functions with two possible outputs ``yes'' and ``no'', continuity is the same as regularity in the usual string-to-Boolean sense (this observation is valid when we see the outputs as one-letter words, and also as   multi-letter words).
+For example, if we take a string-to-string  function that is  computed by a Turing machine, or by a pushdown automaton with some kind of output mechanism, then the function  will typically not be  continuous.  One of the salient properties of continuity is that for functions with two possible outputs ``yes'' and ``no'', continuity is the same as regularity in the usual string-to-Boolean sense (this observation is valid when we see the outputs as one-letter words, and also as multi-letter words).
 
 The name continuity is loosely inspired by the topological notion of continuity, in which the inverse image of an open set is open. This is not a perfect analogy, since open sets in topology should be closed under possibly infinite unions, while regular languages are only closed under finite unions. A more in-depth discussion of this analogy can be found in the exercises, where we show that Definition~\ref{def:continuity} is the same as uniform continuity with respect to a certain metric on strings.
 
@@ -52,7 +52,7 @@ As we will see, all functions in the transducer ladder are  continuous. Unfortun
     \begin{align*}
     w_1, w_2, \ldots \in B^*
     \end{align*}
-    which has the following \emph{Cauchy property}:   every regular language $L \subseteq B^*$ gives the same answer on all but finitely many words in the sequence. By a simple extraction process, one can show that every infinite sequence contains a subsequence with the Cauchy property. A more explicit example, whose proof is left to the reader, is the sequence of words with factorial lengths
+    which has the following \emph{Cauchy property}: every regular language $L \subseteq B^*$ gives the same answer on all but finitely many words in the sequence. By a simple extraction process, one can show that every infinite sequence contains a subsequence with the Cauchy property. A more explicit example, whose proof is left to the reader, is the sequence of words with factorial lengths
     \begin{align*}
     b^{1}, b^{2!}, b^{3!},\ldots.
     \end{align*}

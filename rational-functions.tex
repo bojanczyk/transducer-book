@@ -8,7 +8,7 @@ After the brief detour into relations and nondeterminism, we return to the main 
 \end{definition}
 
 An advantage of the above definition is its simplicity, but a disadvantage is that the underlying automaton model is nondeterministic, and only happens to have unique outputs (possibly arising from different runs with the same output). 
-This advantage will be overcome in Section~\ref{sec:bimachines} below, where we introduce a deterministic model, called bimachines, which defines exactly the same class of functions.
+The disadvantage will be overcome in Section~\ref{sec:bimachines} below, where we introduce a deterministic model, called bimachines, which defines exactly the same class of functions.
 
 Rational functions are closed under composition and are continuous, since these properties are inherited from rational relations. As we will see in the next chapter, on weighted automata, rational functions have decidable equivalence.
 
@@ -160,8 +160,7 @@ The bimachine produces the output as follows. For each gap in the input string (
         \item what is the first  letter of the suffix; and
         \item which states can reach an accepting state via the suffix minus its last letter.   
     \end{itemize}
-
-
+Using this information we can determine the output that should be produced at the gap, as described above.
 \end{proof}
 
 
@@ -180,7 +179,7 @@ The bimachine produces the output as follows. For each gap in the input string (
 \begin{proof}
     Clearly all prime functions are rational, and rational functions are closed under composition, which gives us the implication $\Leftarrow$. Let us now prove the implication $\Rightarrow$. 
     
-    By Theorem~\ref{thm:bimachines}, we can assume that $f$ is computed by a bimachine.  We begin by appending the  and we decompose the past and future automata into their prime components. This gives us two sequences of prime  machines, which label each position in the input string with the states before and after reading it, for both the future and past automata. Next, we apply the last prime function, which allows us to deal with an input string that is empty. Finally, we apply a homomorphism, which produces the 
+    By Theorem~\ref{thm:bimachines}, we can assume that $f$ is computed by a bimachine.  We first apply the function $w \mapsto w\#$. Next, we run the past and future automata on the string, and label the input string with the states of these automata. The state is stored in the position to its right, which is why we use the separator symbol $\#$ to store the state at the end of the string. The past and future automata are Mealy machines, with the future one being a right-to-left Mealy machine. Finally, we apply a homomorphism, which produces the desired output string. 
 \end{proof}
 
 
