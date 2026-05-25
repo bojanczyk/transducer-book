@@ -3,7 +3,7 @@
 
 This book is a collection of lecture notes for a course on transducers, taught at the University of Warsaw in 2024 and 2026. Unlike the study of regular languages, which can be viewed as functions with Boolean outputs
 \begin{align*}
-L : A^* \to \set{\text{yes, no}},
+L : A^* \to \Bool = \set{\text{yes, no}},
 \end{align*}
 this course is about string-to-string functions
 \begin{align*}
@@ -52,15 +52,17 @@ As we will see, all functions in the transducer ladder are  continuous. Unfortun
     \begin{align*}
     w_1, w_2, \ldots \in B^*
     \end{align*}
-    which has the following \emph{Cauchy property}: every regular language $L \subseteq B^*$ gives the same answer on all but finitely many words in the sequence. By a simple extraction process, one can show that every infinite sequence contains a subsequence with the Cauchy property. A more explicit example, whose proof is left to the reader, is the sequence of words with factorial lengths
+    which has the following \emph{Cauchy property}: every regular language $L \subseteq B^*$ gives the same answer on all but finitely many words in the sequence. By a simple extraction process, one can show that every infinite sequence contains a subsequence with the Cauchy property. A more explicit example of a Cauchy sequence is the sequence of words obtained by repeating an input letter a  factorial number of times
     \begin{align*}
-    b^{1}, b^{2!}, b^{3!},\ldots.
+    b^{1}, b^{2!}, b^{3!},\ldots \qquad \text{where $b \in B$.}
     \end{align*}
+    Let us prove that this sequence has the Cauchy property. Consider some regular language, and a corresponding  deterministic finite automaton (\dfa) that recognises this language. (We assume that the reader is familiar with \dfa.)  When reading a string that uses only letter $b$, the run of the automaton looks like a lasso, with some prefix of  length $k$ followed by  some loop of length $\ell$. Therefore, if  $n > k$, the acceptance of an input string $b^n$ depends only on  the remainder $n-k \mod \ell$. If $n$ is furthermore  a sufficently large factorial -- and hence divisble by $\ell$ --  then this remainder is always the same, namely $\ell - k \mod \ell$. Hence, from some point on the automaton will give the same answer to all strings in the sequence, thus proving that the sequence is Cauchy. 
+
 Fix a sequence with the Cauchy property, and consider any function 
     \begin{align*}
     f : A^* \to B^*
     \end{align*}
-    where all outputs are in the sequence, and furthermore each output is used for finitely many inputs. This function will necessarily be continuous, because for every regular language $L \subseteq B^*$, the language will give the same result on all but finitely many words in the Cauchy sequence, and therefore the inverse image $f^{-1}(L)$ will be either finite or cofinite, and thus regular. Since a Cauchy sequence can be constructed in uncountably many ways, and the function $f$ can also be constructed in uncountably many ways, there are uncountably many continuous functions of this form.
+    where all outputs are in the sequence, and furthermore each output is used for finitely many inputs. For every regular language $L \subseteq B^*$, the language will give the same result on all but finitely many words in the Cauchy sequence, and therefore the inverse image $f^{-1}(L)$ will be either finite or cofinite. Since languages that are finite or cofinite are regular, it follows that the inverse image will necessarily be regular, thus proving that the function is continuous. Since a Cauchy sequence can be constructed in uncountably many ways, and the function $f$ can also be constructed in uncountably many ways, there are uncountably many continuous functions of this form.
 \end{myexample}
 
 Despite the issues raised in the above example, continuity will be a good -- if not perfect -- criterion for checking if a transducer model is reasonable.  There are, however, other criteria.
@@ -78,7 +80,7 @@ A^*
 \xrightarrow f 
 B^* 
 \xrightarrow L
-\set{\text{yes, no}}.
+\Bool.
 \end{align*} 
 One of the advantages of composition is that functions can also be decomposed, i.e.~presented as compositions of simpler functions. This will be a fundamental theme in this book, starting with the Krohn-Rhodes decomposition of Mealy machines, and continuing with similar  decomposition theorems for models that are  higher up in the transducer ladder. 
 
@@ -111,7 +113,6 @@ The second and third problems can be seen as effective versions of  continuity a
     \exer{ Show continuity for the squaring function $w \mapsto w^{|w|}$.}{}
        \exer{ Show continuity for the factorial function $w \mapsto w^{|w|!}$.}{}
        \exer{ Show that the class of continuous functions is closed under composition.}{}
-       \exer{ Show that there are uncountably many continuous functions, and therefore some of them are not computable. Hint: use the factorials. }{}
 
 
      

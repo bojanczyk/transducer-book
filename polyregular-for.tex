@@ -1,6 +1,6 @@
 \section{For-transducers}
 \label{sec:for-transducers}
-We begin our discussion of polyregular functions with  \emph{for-transducers}, a model that was introduced in~\cite[Section 3]{bojanczykPolyregularFunctions2018}. Roughly speaking, a for-transducer is an imperative program, which uses for loops to range over positions in the input string.  We will use python syntax for the code examples. 
+We begin our discussion of polyregular functions with  \emph{for-transducers}, a model that was introduced in~\cite[Section 3]{bojanczykPolyregularFunctions2018}. Roughly speaking, a for-transducer is an imperative program, which uses for loops to range over positions in the input string.  We will use Python syntax for the code examples.
 
 
 \begin{myexample}
@@ -56,7 +56,7 @@ Using $k$ Boolean variables, we could compute the length modulo any number $\le 
 \end{myexample}
 
 
-The above examples illustrate all features of for-transducers. Nevertheless, we give below a more formal definition of the syntax of the programming languages. In a for-transducer, there  are two kinds of variables: position variables that range over positions in the input string, and Boolean variables that range over $\set{\text{true, false}}$.   Apart from that, there is a special variable {\tt w} that represents the input string, which is an argument of the for-transducer. 
+The above examples illustrate all features of for-transducers. Nevertheless, we give below a more formal definition of the syntax of the programming language. In a for-transducer, there  are two kinds of variables: position variables that range over positions in the input string, and Boolean variables that range over $\set{\text{true, false}}$.   Apart from that, there is a special variable {\tt w} that represents the input string, which is an argument of the for-transducer.
 There are  two kinds of loops 
 \begin{eqnarray*}
     {\tt for\ x\ in\  positions(w)} \qquad {\tt for\ x\ in\ positions\_reverse(w)}
@@ -75,13 +75,13 @@ A sequential composition {\tt I;J} of two for-transducers is also a for-transduc
  \hspace{1.5cm} 
  \myunderbrace{\mathtt{w[x] == 'a'}}{label of  \\  \scriptsize position}
 \end{align*}
-We will not write variable declarations in the programs, with the types being implicit: the variables bound by the for loops are  position variables, and the remaining ones are  Booleans. The Booleans are initialized to false. 
+We will not write variable declarations in the programs, with the types being implicit: the variables bound by the for loops are  position variables, and the remaining ones are  Booleans. The Booleans are initialised to false.
 
 This completes the syntax of for-transducers. The semantics of a for-transducer is a string-to-string function which is defined in the expected way (we have presented the model as a fragment of Python, and the semantics are consistent).
 The output size of a for-transducer is polynomial -- if it has at most $k$ nested loops, then the output size will be $\Oo(n^k)$. This bound is not tight: one can show that the map reverse function -- which has linear output size -- needs two nested loops in order to be implemented by a for-transducer. 
 
 \begin{myexample}
-  The order test  $x \le y$ is in fact redundant, and it  can be implemented using equality tests only: run  a for loop of first-to-last kind, and checking which of the variables $x$ or $y$ is seen  first in the loop, with the result remembered  in a Boolean variable. Similarly, we can implement a successor test $x = y+1$. As we will see later, we can implement any test $\varphi(x_1,\ldots,x_n)$ that can be defined using a formula of monadic second-order logic.
+  The order test  $x \le y$ is in fact redundant, and it  can be implemented using equality tests only: run  a for loop of first-to-last kind, and check which of the variables $x$ or $y$ is seen  first in the loop, with the result remembered  in a Boolean variable. Similarly, we can implement a successor test $x = y+1$. As we will see later, we can implement any test $\varphi(x_1,\ldots,x_n)$ that can be defined using a formula of monadic second-order logic.
 \end{myexample}
 
 \subsection{Equivalence with polyregular functions}
@@ -97,7 +97,9 @@ We begin with the left-to-right inclusion
 \begin{align*}
 \text{polyregular} \subseteq \text{for-transducers}.
 \end{align*}
-We will use the decomposition of polyregular functions into primes. By definition and the various decomposition theorems, we know that each polyregular function can be obtained by composing: (1) marked squaring; (2) map reverse; (3) map duplicate; (4) Mealy machines in both directions; (5) homomorphisms; and (6) the end-of-input function $w \mapsto w\#$. We will show that each of these functions can be computed by a for-transducer, and that for-transducers are closed under composition. Marked squaring was treated in Example~\ref{ex:marked-squaring-for-transducer}. A for-transducer for map reverse is given in Figure~\ref{fig:map-reverse-for-transducer}, and a similar one can be written for map duplicate. Mealy machines -- in both directions -- can be implemented using the same construction as in Example~\ref{ex:parity-for-transducer}, with the Boolean variables used to hold a state. Homomorphisms and the end-of-input function are straightforward to implement. We are left with closure under composition.
+Before proving this inclusion, we would like to remark that it is non-trivial. In fact, already the fact that for-transducers can compute all regular functions is not obvious, at least if we think of regular functions as being computed by two-way transducers. Indeed, it is not immediately clear how a for-transducer can simulate the movement of the head in a two-way transducer, since the loops in a for-transducer are required to move in  a single direction. As we will see, the problem can be solved by the decomposition theorems for regular and rational functions that we have proved in the previous parts of this book.
+
+ By the definition of the polyregular functions and the decomposition theorem for rational functions in Theorem~\ref{thm:rational-primes}, we know that each polyregular function can be obtained by composing: (1) marked squaring; (2) map reverse; (3) map duplicate; (4) Mealy machines in both directions; (5) homomorphisms; and (6) the end-of-input function $w \mapsto w\#$. We will show that each of these functions can be computed by a for-transducer, and that for-transducers are closed under composition. Marked squaring was treated in Example~\ref{ex:marked-squaring-for-transducer}. A for-transducer for map reverse is given in Figure~\ref{fig:map-reverse-for-transducer}, and a similar one can be written for map duplicate. Mealy machines -- in both directions -- can be implemented using the same construction as in Example~\ref{ex:parity-for-transducer}, with the Boolean variables used to hold a state. Homomorphisms and the end-of-input function are straightforward to implement. We are left with closure under composition.
 
 
 
@@ -247,14 +249,14 @@ w \otimes {x_1} \otimes \cdots \otimes {x_k} \in (A \times 2^k)^*.
 \end{align*}
 We will simulate the for-transducer by a composition of the following functions: 
 \begin{enumerate}
-  \item In the first phase, we loop through all  valuations of the  variables $x_1,\ldots,x_k$, in the order given by the nested for loops, and for each one we output the string representation of the valuation, as described above. The output of this phase is illustrated in the following picture, assuming that there input string is $abcd$ and there are two position variables $x_1$ and $x_2$, of types left-to-right and right-to-left respectively:
+  \item In the first phase, we loop through all  valuations of the  variables $x_1,\ldots,x_k$, in the order given by the nested for loops, and for each one we output the string representation of the valuation, as described above. The output of this phase is illustrated in the following picture, assuming that the input string is $abcd$ and there are two position variables $x_1$ and $x_2$, of types left-to-right and right-to-left respectively:
   \mypic{47}
   The construction producing this output is by induction on the number of variables. If we have computed the output for $i$ variables, corresponding to the outermost $i$ loops, then the output for $i+1$ variables is obtained as follows: apply marked squaring, and then use a rational function to filter out the ill-formatted blocks. The details are left to the reader. In particular, if the loop for the variable $x_{i+1}$ is of the reverse kind, then we need a reverse version of marked squaring
   \begin{align*}
   abcd \quad \mapsto \quad abc\underline{d}\   ab\underline{cd}\   a\underline{bcd} \  \underline{abcd},
   \end{align*}
   which can be implemented using marked squaring, two instances of reverse, and a rational function.
-  \item Once we have the output of the first phase, the output of the nested loops in the for-transducer can be computed by a Mealy machine (and therefore also a regular function), which maintains the Boolean variables of the for-transducer in its state. The epilogue can then be implemented using one more pass, which only needs to scan one of the copies of the input string.
+  \item Once we have the output of the first phase, the output of the nested loops in the for-transducer can be computed by a rational function, which maintains the Boolean variables of the for-transducer in its state, scans each block (corresponding to one iteration of the body), and produces at most one output letter per block. The epilogue can then be implemented using one more pass, which only needs to scan one of the copies of the input string.
 \end{enumerate}
 This completes the translation from for-transducers to polyregular functions, and therefore also the proof of Theorem~\ref{thm:for-transducers-are-polyregular}.
 \end{proof}

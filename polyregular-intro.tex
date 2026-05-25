@@ -7,7 +7,7 @@ As was the case for the regular functions, probably the quickest way to define t
     \begin{align*}
     1234 \quad \mapsto \quad \underline 1234 \ \underline{12} 34\  \underline{123} 4\  \underline{1234}.
     \end{align*}
-    More formally, if the input  string has $n$ letters, then it is copied $n$ times, and in the $i$-th copy the  first $i$ letters are  underlined\footnote{The underlines might seem mysterious at first, but we will establish later in this book that they are necessary, and a version of the function without underlines would have smaller expresssive power.}. In our example, we have spaces in the output for readability, but the function does not produce them, i.e.~the output length is $n^2$. (Using a variant with spaces would not change the class of polyregular functions.) As was the case for map reverse and map duplicate, marked squaring is not one function, but a family of functions, with one function of type 
+    More formally, if the input  string has $n$ letters, then it is copied $n$ times, and in the $i$-th copy the  first $i$ letters are  underlined\footnote{The underlines might seem mysterious at first, but we will establish later in this book that they are necessary, and a version of the function without underlines would have smaller expressive power.}. In our example, we have spaces in the output for readability, but the function does not produce them, i.e.~the output length is $n^2$. (Using a variant with spaces would not change the class of polyregular functions.) As was the case for map reverse and map duplicate, marked squaring is not one function, but a family of functions, with one function of type 
     \begin{align*}
     A^* \to (\myunderbrace{A+A}{two copies of the \\ input alphabet, one with \\ underlines and one without})^*
     \end{align*}
@@ -23,9 +23,9 @@ As was the case for the regular functions, probably the quickest way to define t
     \end{align*}
 \end{definition}
 
-Of course, the regular functions can be further decomposed into primes, using prime decompositions of regular functions, rational functions, and Mealy machines. The above definition is pleasingly short, but it does not adequatlely convey the expressive power and algorithmic strength of polyregular functions. To do that, we will present several characterisations of the polyregular functions in this part, which models coming from different fields, such as automata or programming languages. 
+Of course, the regular functions can be further decomposed into primes, using prime decompositions of regular functions, rational functions, and Mealy machines. The above definition is pleasingly short, but it does not adequately convey the expressive power and algorithmic strength of polyregular functions. To do that, we will present several characterisations of the polyregular functions in this part, using models coming from different fields, such as automata or programming languages.
 
-Before we do that, let us discuss our favourite three properties of transducer classes: continuity, closure under composition, and decidable equivalence. For closure under composition, there is nothing to do, since the class is defined in terms of composition. Decidable equivalence, regrettably, is not known and is a major open problem in this field. We are left with the continuity. 
+Before we do that, let us discuss our favourite three properties of transducer classes: continuity, closure under composition, and decidable equivalence. For closure under composition, there is nothing to do, since the class is defined in terms of composition. Decidable equivalence, regrettably, is not known and is a major open problem in this field. We are left with continuity.
 
 \begin{theorem}\label{thm:polyregular-functions-are-continuous}
     Polyregular functions are continuous.
@@ -35,9 +35,9 @@ Before we do that, let us discuss our favourite three properties of transducer c
     \begin{align}\label{eq:marked-squaring-composition}
     A^* \xrightarrow{\text{marked squaring}} (A+A)^* \xrightarrow L \Bool
     \end{align}
-    of marked squaring with a regular language $L$. We want to show that this composition, which corresponds to the inverse image of $L$ under marked squaring, is a regular language. Suppose that the language $L$ is recognised by a \dfa  $\Aa$ with states $Q$.     For a string $w  \in A^*$ and a position $i$ in this string, let us write 
+    of marked squaring with a regular language $L$. We want to show that this composition, which corresponds to the inverse image of $L$ under marked squaring, is a regular language. Suppose that the language $L$ is recognised by a \dfa  $\Aa$ with states $Q$.     For a string $w  \in A^*$ and a position $i$ in this string, let us write
     \begin{align*}
-    \delta_w^x : Q \to Q
+    \delta_w^i : Q \to Q
     \end{align*}
     for the state transformation of the automaton $\Aa$ when reading the string that is obtained from $w$ by underlining the first $i$  input positions.  We will decompose the language in~\eqref{eq:marked-squaring-composition} into two steps, such that the first step is a rational function, and the second step is a regular language. Composing these two steps will give a regular language, by continuity of rational functions, and will hence prove that the language in~\eqref{eq:marked-squaring-composition} is regular. 
     \begin{enumerate}
@@ -56,6 +56,6 @@ To conclude the proof, we will explain why the first step is a rational function
         \begin{align*}
         \delta_2 = \delta_1 \cdot \myunderbrace{\delta_{\underline a}}{underlined state \\ transformation of $a \in A$} \qquad \text{and} \qquad  \gamma_1 = \myunderbrace{\delta_{a}}{non-underlined state \\ transformation of $a \in A$} \cdot \gamma_2.
         \end{align*}
-        The initial states are those where $\delta$ is the identity transformation, and the accepting states are those where $\gamma$ is the identity transformation. This automaton has a unique accdepting run on every input string, which satisfies the invariant (*) described above.
+        The initial states are those where $\delta$ is the identity transformation, and the accepting states are those where $\gamma$ is the identity transformation. This automaton has a unique accepting run on every input string, which satisfies the invariant (*) described above.
 \end{proof}
      
