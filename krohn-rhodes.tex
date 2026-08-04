@@ -73,16 +73,17 @@ The rest of Section~\ref{sec:krohn-rhodes} is devoted to the proof of this theor
     \end{align*}
     Therefore, it is enough to show the lemma in the case when $f$ is a prime Mealy machine. If $f$ is a flip-flop, there is nothing to do:  we reset its state to the initial state whenever the separator symbol is read. The interesting case is when $f$ is reversible. The difficulty is that resetting the state would break reversibility. 
 
-    For an input string $w \in (A+1)^*$ that may contain the separator symbol, we consider two state transformations:
+    Consider an input string $w \in (A+1)^*$ that may contain the separator symbol. We consider two state transformations:
     \begin{itemize}
         \item[$\delta_w$] this is the state transformation in the automaton which corresponds to the  map lifting, i.e.~the separator symbol resets the state to the initial one;
         \item[$\gamma_w$] this is the state transformation in a variant of the above automaton, in which the separator symbol does nothing, i.e.~it does not change the state.
     \end{itemize} 
-    The first state transformation is the one that we care about, but  the underlying automaton is not reversible, since it involves resetting the state. The second state transformation seems less useful, but it arises from a reversible automaton. This usefulness of the second state transformation is demonstrated by the following cancellation law: 
+    The first state transformation is the one that we care about, but  the underlying automaton is not reversible, since it involves resetting the state. The second state transformation seems less useful, but it arises from a reversible automaton. The two state transformations coincide for strings that do not use the separator symbol, and hence we have the following cancellation law: 
     \begin{align}\label{eq:cancellation}
-    \delta_{w} = (\myunderbrace{\gamma_u}{a permutation, and \\ hence can be inverted})^{-1}  \cdot \gamma_{w} \qquad \myunderbrace{\text{where $u$ is the prefix of $w$ that ends in the last $\#$.}}{call this the $\#$-prefix of $w$}
+    \delta_{w} = (\myunderbrace{\gamma_{v}}{a permutation, and \\ hence can be inverted})^{-1}  \cdot \gamma_{vw}, 
+    \qquad \text{where $w_2$ does not contain the separator symbol.}
     \end{align}
-(In the edge case when $w$ does not contain the separator symbol $\#$, the prefix $u$ is empty, and its state transformation $\gamma_u$ is the identity permutation.)
+    We will apply the cancellation law for strings of the form $vw$ where $v$ is the prefix of $vw$ that ends with the last occurrence of the separator symbol, and $w$ is the suffix that follows it. (In this case, we call $v$ the $\#$-prefix of $vw$.)
     Using the  cancellation law, we will  decompose the map lifting of $f$ into prime Mealy machines. The idea is that for each prefix of the input string, we  will compute the two state transformations that appear on the right-hand side of the cancellation law.  This is done in two stages.
     \begin{enumerate}
         \item  In the first stage, we label each prefix $w$ of the input string with the state transformation $\gamma_w$, i.e.~the one in which the separator symbol is ignored. This is done using a Mealy machine of type 

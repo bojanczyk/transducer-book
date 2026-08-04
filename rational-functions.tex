@@ -125,7 +125,7 @@ We now show that bimachines compute exactly the rational functions. Along the wa
         \begin{itemize}
             \item \textbf{States.} We have the two special states $\vdash$ and $\dashv$, which will be used for the empty input, similarly to the construction in Lemma~\ref{lemma:eliminate-epsilon-transitions}. Apart from these two states, the new automaton has a state  of the form    $P \ni p$ for every subset  $P$ of states in the original automaton and every chosen element $p$ of this subset.  The  idea is that $P$ is the set of states that can reach acceptance in the future, and $p$ is the chosen state used in the run with lexicographically minimal profile.
             \item \textbf{Initial states.} The special state $\vdash$ is initial.  A state  of the form  $P \ni p$ is initial  if and only if  $p$ is initial in the original automaton, and $P$ does not contain any smaller initial states of the original automaton.
-            \item \textbf{Final states.} The special state $\dashv$ is final.  A state of the form $P \ni p$ is final  if and only if  $p$ is final in the original automaton.
+            \item \textbf{Final states.} The special state $\dashv$ is final.  A state of the form $P \ni p$ is final  if and only if  $P$ is equal to the set of accepting states of the original automaton.
             \item \textbf{Transitions.} For the two special states $\vdash$ and $\dashv$, there is a unique transition 
             \begin{align*}
             \vdash \ \xrightarrow{ \varepsilon / w} \ \dashv
