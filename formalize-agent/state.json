@@ -1,0 +1,182 @@
+{
+  "version": 1,
+  "created_at": "2026-08-21 04:02:26Z",
+  "order": [
+    "B-effectivity-conditional",
+    "C2-composition",
+    "C2-regular-equivalence",
+    "C3-sst",
+    "C4-buchi",
+    "C4-relabelling",
+    "C4-transduction",
+    "C4-first-order",
+    "C4-fo-transductions",
+    "audit-C",
+    "D-pebble-and-lemmas",
+    "D-equivalences",
+    "C1-decidability",
+    "audit-final"
+  ],
+  "targets": {
+    "B-effectivity-conditional": {
+      "status": "done",
+      "attempts": 4,
+      "continues": 3,
+      "reattempts": 0,
+      "task_ids": [
+        "bd434f7d-10b8-43ea-b6cd-2ac4d213547b",
+        "46d0d173-8ad3-4258-9bcc-40b346993508",
+        "0827f1f7-10f3-4b74-be12-52b127932c85",
+        "33aa71ea-a67e-4c0a-be30-cc2bbc4a901a"
+      ],
+      "started_at": "2026-08-21 04:04:20Z",
+      "finished_at": "2026-08-21 18:08:57Z",
+      "note": null
+    },
+    "C2-composition": {
+      "status": "running",
+      "attempts": 3,
+      "continues": 1,
+      "reattempts": 1,
+      "task_ids": [
+        "e7d126c5-73be-4cfe-8123-84d426dc7176",
+        "920d28d5-71df-4100-8a3e-e68f23664962",
+        "a70904ec-32fe-4145-99e5-0af08d90b3dc"
+      ],
+      "started_at": "2026-08-21 18:08:59Z",
+      "finished_at": null,
+      "note": null
+    },
+    "C2-regular-equivalence": {
+      "status": "pending",
+      "attempts": 0,
+      "continues": 0,
+      "reattempts": 0,
+      "task_ids": [],
+      "started_at": null,
+      "finished_at": null,
+      "note": null
+    },
+    "C3-sst": {
+      "status": "pending",
+      "attempts": 0,
+      "continues": 0,
+      "reattempts": 0,
+      "task_ids": [],
+      "started_at": null,
+      "finished_at": null,
+      "note": null
+    },
+    "C4-buchi": {
+      "status": "pending",
+      "attempts": 0,
+      "continues": 0,
+      "reattempts": 0,
+      "task_ids": [],
+      "started_at": null,
+      "finished_at": null,
+      "note": null
+    },
+    "C4-relabelling": {
+      "status": "pending",
+      "attempts": 0,
+      "continues": 0,
+      "reattempts": 0,
+      "task_ids": [],
+      "started_at": null,
+      "finished_at": null,
+      "note": null
+    },
+    "C4-transduction": {
+      "status": "pending",
+      "attempts": 0,
+      "continues": 0,
+      "reattempts": 0,
+      "task_ids": [],
+      "started_at": null,
+      "finished_at": null,
+      "note": null
+    },
+    "C4-first-order": {
+      "status": "pending",
+      "attempts": 0,
+      "continues": 0,
+      "reattempts": 0,
+      "task_ids": [],
+      "started_at": null,
+      "finished_at": null,
+      "note": null
+    },
+    "C4-fo-transductions": {
+      "status": "pending",
+      "attempts": 0,
+      "continues": 0,
+      "reattempts": 0,
+      "task_ids": [],
+      "started_at": null,
+      "finished_at": null,
+      "note": null
+    },
+    "audit-C": {
+      "status": "pending",
+      "attempts": 0,
+      "continues": 0,
+      "reattempts": 0,
+      "task_ids": [],
+      "started_at": null,
+      "finished_at": null,
+      "note": null
+    },
+    "D-pebble-and-lemmas": {
+      "status": "pending",
+      "attempts": 0,
+      "continues": 0,
+      "reattempts": 0,
+      "task_ids": [],
+      "started_at": null,
+      "finished_at": null,
+      "note": null
+    },
+    "D-equivalences": {
+      "status": "pending",
+      "attempts": 0,
+      "continues": 0,
+      "reattempts": 0,
+      "task_ids": [],
+      "started_at": null,
+      "finished_at": null,
+      "note": null
+    },
+    "C1-decidability": {
+      "status": "pending",
+      "attempts": 0,
+      "continues": 0,
+      "reattempts": 0,
+      "task_ids": [],
+      "started_at": null,
+      "finished_at": null,
+      "note": null
+    },
+    "audit-final": {
+      "status": "pending",
+      "attempts": 0,
+      "continues": 0,
+      "reattempts": 0,
+      "task_ids": [],
+      "started_at": null,
+      "finished_at": null,
+      "note": null
+    }
+  },
+  "current": {
+    "target_id": "C2-composition",
+    "task_id": "a70904ec-32fe-4145-99e5-0af08d90b3dc",
+    "submitted_at": "2026-08-21 23:45:27Z",
+    "kind": "reattempt"
+  },
+  "paused": false,
+  "pause_reason": null,
+  "finished_at": null,
+  "ticks": 34,
+  "last_tick": "2026-08-21 23:50:09Z"
+}

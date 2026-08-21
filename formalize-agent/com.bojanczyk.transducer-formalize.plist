@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.bojanczyk.transducer-formalize</string>
+
+    <!-- The interpreter is invoked directly rather than through a shell, so
+         that the Full Disk Access grant macOS requires for ~/Documents can be
+         given to this one binary instead of to /bin/sh. -->
+    <key>ProgramArguments</key>
+    <array>
+        <string>/Users/bojan/Library/Application Support/pipx/venvs/aristotlelib/bin/python</string>
+        <string>/Users/bojan/Documents/ksiazki/transducer-book-lean/formalize-agent/driver.py</string>
+        <string>tick</string>
+    </array>
+
+    <key>WorkingDirectory</key>
+    <string>/Users/bojan/Documents/ksiazki/transducer-book-lean/formalize-agent</string>
+
+    <!-- Every 15 minutes while logged in. If the laptop was asleep or off,
+         launchd fires once as soon as it comes back. -->
+    <key>StartInterval</key>
+    <integer>900</integer>
+
+    <key>RunAtLoad</key>
+    <true/>
+
+    <key>StandardOutPath</key>
+    <string>/Users/bojan/Documents/ksiazki/transducer-book-lean/formalize-agent/logs/launchd.out</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/bojan/Documents/ksiazki/transducer-book-lean/formalize-agent/logs/launchd.err</string>
+
+    <key>ProcessType</key>
+    <string>Background</string>
+    <key>LowPriorityIO</key>
+    <true/>
+    <key>Nice</key>
+    <integer>5</integer>
+</dict>
+</plist>
