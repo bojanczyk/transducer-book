@@ -23,6 +23,7 @@ import RequestProject.PartB.SubseqChar
 import RequestProject.PartB.RatIndex
 import RequestProject.PartB.RatAnnot
 import RequestProject.PartB.LenDec
+import RequestProject.PartB.WeightedDec
 
 namespace Transducers
 
@@ -45,32 +46,42 @@ functions on finite descriptions (codes).  A weighted automaton over the field
 of rationals is coded by a list of transitions whose weights are given by a pair
 `(p, q) : ℤ × ℕ` representing the rational number `p / q`. -/
 
-/-- A finite description of a weighted automaton over `ℚ` with states and
-input letters coded by natural numbers. -/
-abbrev WCode := List (ℕ × List ℕ × (ℤ × ℕ) × ℕ) × List ℕ × List ℕ
+/-! The code of a weighted automaton over `ℚ` (`WCode`), the automaton that it
+describes (`wcodeAut`), the function that it computes (`wcodeEval`) and the
+promise that it is a genuine weighted automaton (`WCodeValid`) are defined in
+`RequestProject/PartB/WCodes.lean`, so that the decision procedures used below
+can be developed before the statements of the numbered results. -/
 
-/-- The weighted automaton described by a code. -/
-def wcodeAut (c : WCode) : LabAut ℕ ℚ ℕ where
-  init := {q | q ∈ c.2.1}
-  final := {q | q ∈ c.2.2}
-  δ := {t | ∃ s ∈ c.1, t = (s.1, s.2.1, (s.2.2.1.1 : ℚ) / (s.2.2.1.2 : ℚ), s.2.2.2)}
-  δ_finite := Set.Finite.ofFinset
-    (c.1.toFinset.image (fun s => (s.1, s.2.1, (s.2.2.1.1 : ℚ) / (s.2.2.1.2 : ℚ), s.2.2.2)))
-    (by intro t; simp [eq_comm])
+/-  The unconditional form of Theorem B.3.3 is
 
-/-- The function computed by the weighted automaton described by a code. -/
-noncomputable def wcodeEval (c : WCode) : List ℕ → ℚ := (wcodeAut c).wEval
-
-/-- The promise that a code describes a genuine weighted automaton, i.e. that
-every input string has finitely many accepting runs. -/
-def WCodeValid (c : WCode) : Prop := (wcodeAut c).FinitelyManyRuns
-
-/-- **Theorem B.3.3.**  Given two weighted automata over the field of rationals,
-it is decidable whether they compute the same function. -/
 theorem weighted_equivalence_decidable :
     DecidableUnderPromise (fun p : WCode × WCode => WCodeValid p.1 ∧ WCodeValid p.2)
       (fun p => wcodeEval p.1 = wcodeEval p.2) := by
   sorry
+
+Its mathematical content is proved in this project (Schützenberger's criterion,
+`weighted_eq_of_short` in `RequestProject/PartB/WeightedZero.lean`), but the
+statement asks for a `Computable` procedure manipulating rational weights, and
+Mathlib's `Primrec`/`Computable` API has no arithmetic on `ℤ` or `ℚ`.  The
+missing effectivity is isolated in `RequestProject/PartB/Effective.lean` as the
+two hypotheses `EffectiveWeightedEvalEq` (evaluation of a coded weighted
+automaton over `ℚ` can be compared effectively) and `EffectiveWeightedBound` (a
+Schützenberger bound can be computed from the codes); the version below takes
+them as explicit assumptions, exactly as Theorem B.1.6 takes the undecidability
+of the Post correspondence problem as an explicit assumption.  When Mathlib
+gains the missing arithmetic, the two hypotheses become provable and the
+unconditional statement above can be reinstated. -/
+
+/-- **Theorem B.3.3.**  Given two weighted automata over the field of rationals,
+it is decidable whether they compute the same function.
+
+Proved from the two effectivity hypotheses of
+`RequestProject/PartB/Effective.lean`; see the comment above. -/
+theorem weighted_equivalence_decidable
+    (hEval : EffectiveWeightedEvalEq) (hBound : EffectiveWeightedBound) :
+    DecidableUnderPromise (fun p : WCode × WCode => WCodeValid p.1 ∧ WCodeValid p.2)
+      (fun p => wcodeEval p.1 = wcodeEval p.2) :=
+  weighted_equivalence_decidable_aux hEval hBound
 
 /-- **Theorem B.3.4.**  The equivalence problem `f = g` is decidable for rational
 functions. -/
@@ -94,11 +105,27 @@ theorem rational_iff_weighted_precomp {A B : Type} [Finite A] [Finite B]
       ∀ (S : Type) (_ : Semiring S) (h : List B → S), IsWeighted h → IsWeighted (h ∘ f) :=
   rational_iff_weighted_precomp_aux f
 
-/-- **Theorem B.3.7.**  The zeroness problem is decidable for weighted automata
-over the field of rationals.  (The same proof works for any computable field.) -/
+/-  The unconditional form of Theorem B.3.7 is
+
 theorem weighted_zeroness_decidable :
     DecidableUnderPromise WCodeValid (fun c => wcodeEval c = 0) := by
   sorry
+
+As for Theorem B.3.3, what is missing is not mathematics but the effectivity of
+arithmetic on `ℚ` inside Mathlib's `Primrec`/`Computable` API; the version below
+takes the two hypotheses of `RequestProject/PartB/Effective.lean` as explicit
+assumptions. -/
+
+/-- **Theorem B.3.7.**  The zeroness problem is decidable for weighted automata
+over the field of rationals.  (The same proof works for any computable field.)
+
+Proved from the two effectivity hypotheses of
+`RequestProject/PartB/Effective.lean`, as the special case of Theorem B.3.3 in
+which the second automaton is the empty one. -/
+theorem weighted_zeroness_decidable
+    (hEval : EffectiveWeightedEvalEq) (hBound : EffectiveWeightedBound) :
+    DecidableUnderPromise WCodeValid (fun c => wcodeEval c = 0) :=
+  weighted_zeroness_decidable_aux hEval hBound
 
 /-! ## B.4 Machine independent characterisations -/
 
