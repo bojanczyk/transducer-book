@@ -4,7 +4,9 @@ Part B: Rational relations and rational functions (Sections B.1 and B.2)
 
 This file contains the definitions of Sections B.1-B.2 and the statements of
 their theorems, lemmas and claims.  The proofs are in the supporting files
-(`RatComp.lean`, `RatCont.lean`, `HomComplement.lean`, `EpsElim.lean`, ...);
+(`RatComp.lean`, `RatCont.lean`, `HomComplement.lean`, `EpsElim.lean`,
+`Unambig.lean`, `Uniform.lean`, `Bimachine.lean`, `RatBimach.lean`,
+`PrimeRat.lean`, `BimachPrime.lean`, ...);
 the results that are not proved yet are left as `sorry` and are listed in
 `THEOREMS.md`.
 -/
@@ -14,6 +16,11 @@ import RequestProject.PartB.RatCont
 import RequestProject.PartB.HomComplement
 import RequestProject.PartB.MealyChar
 import RequestProject.PartB.EpsElim
+import RequestProject.PartB.Uniform
+import RequestProject.PartB.Bimachine
+import RequestProject.PartB.RatBimach
+import RequestProject.PartB.BimachPrime
+import RequestProject.PartB.PCPRed
 
 namespace Transducers
 
@@ -49,35 +56,28 @@ over a finite alphabet can be presented this way) is described by a *code*: a
 finite list of transitions together with the lists of initial and final
 states. -/
 
-/-- A finite description of a nondeterministic automaton with output whose
-states are natural numbers and whose input and output alphabets are `ℕ`. -/
-abbrev RelCode := List (ℕ × List ℕ × List ℕ × ℕ) × List ℕ × List ℕ
-
-/-- The automaton described by a code. -/
-def codeAut (c : RelCode) : NFAO ℕ ℕ ℕ where
-  init := {q | q ∈ c.2.1}
-  final := {q | q ∈ c.2.2}
-  δ := {t | t ∈ c.1}
-  δ_finite := c.1.finite_toSet
-
-/-- The rational relation described by a code. -/
-def codeRel (c : RelCode) : List ℕ → List ℕ → Prop := (codeAut c).rel
-
-/-- The predicate saying that the relation described by a code is a total
-function. -/
-def CodeFunctional (c : RelCode) : Prop := ∀ w, ∃! v, codeRel c w v
-
-/-- A predicate `P` is decidable under a promise if there is a computable
-`Bool`-valued function that answers `P` correctly on all inputs satisfying the
-promise. -/
-def DecidableUnderPromise {α : Type} [Primcodable α] (promise P : α → Prop) : Prop :=
-  ∃ D : α → Bool, Computable D ∧ ∀ a, promise a → (D a = true ↔ P a)
+/-! The code of an automaton (`RelCode`), the automaton and the relation that it
+describes (`codeAut`, `codeRel`), the promise that this relation is a function
+(`CodeFunctional`, totality on the strings over the alphabet of the code: see
+`not_codeTotalFunctional` for why totality on all of `ℕ*` cannot be used) and
+the formalisation of decidability under a promise
+(`DecidableUnderPromise`) are defined in `RequestProject/PartB/Codes.lean`, so
+that the reduction from the Post correspondence problem
+(`RequestProject/PartB/PCPRed.lean`) can be developed before the statements of
+the numbered results. -/
 
 /-- **Theorem B.1.6.**  The equivalence problem `R = S` is undecidable for
-rational relations. -/
-theorem rationalRel_equivalence_undecidable :
-    ¬ ComputablePred (fun p : RelCode × RelCode => codeRel p.1 = codeRel p.2) := by
-  sorry
+rational relations.
+
+As is customary, undecidability is proved by a reduction from the Post
+correspondence problem, whose undecidability is *not* proved here but is taken
+as the explicit hypothesis `hPCP`: no algorithm decides, given a finite list of
+pairs of strings, whether some nonempty sequence of indices makes the two
+concatenations equal (`Transducers.PCP.Solvable`). -/
+theorem rationalRel_equivalence_undecidable
+    (hPCP : ¬ ComputablePred PCP.Solvable) :
+    ¬ ComputablePred (fun p : RelCode × RelCode => codeRel p.1 = codeRel p.2) :=
+  PCP.equivalence_undecidable hPCP
 
 /-- **Claim B.1.7.**  If `h : A* → B*` is a homomorphism, then its complement
 `{(w, v) | v ≠ h w}` is a rational relation. -/
@@ -89,44 +89,11 @@ theorem hom_complement_rational {A B : Type} [Finite A] [Finite B] (φ : A → L
 
 /-! ### B.2.1 Bimachines -/
 
-/-- **Definition B.2.2 (Bimachine).**  A bimachine consists of a deterministic
-prefix automaton, a deterministic suffix automaton (which is run on the reverse
-of the suffix) and an output function on pairs of states. -/
-structure Bimachine (A B P S : Type) where
-  /-- Initial state of the prefix automaton. -/
-  prefixInit : P
-  /-- Transition function of the prefix automaton. -/
-  prefixStep : P → A → P
-  /-- Initial state of the suffix automaton. -/
-  suffixInit : S
-  /-- Transition function of the suffix automaton. -/
-  suffixStep : S → A → S
-  /-- The output function. -/
-  out : P → S → List B
-
-namespace Bimachine
-
-variable {A B P S : Type}
-
-/-- The semantics of a bimachine: for every gap of the input string, the prefix
-automaton is run on the prefix, the suffix automaton on the reverse of the
-suffix, and the corresponding pieces of output are concatenated. -/
-def eval (M : Bimachine A B P S) (w : List A) : List B :=
-  ((List.range (w.length + 1)).map (fun i =>
-    M.out (strTrans M.prefixStep (w.take i) M.prefixInit)
-          (strTrans M.suffixStep (w.drop i).reverse M.suffixInit))).flatten
-
-end Bimachine
-
-/-- A string-to-string function computed by a bimachine. -/
-def IsBimachine {A B : Type} (f : List A → List B) : Prop :=
-  ∃ (P S : Type) (_ : Finite P) (_ : Finite S) (M : Bimachine A B P S), M.eval = f
-
-/-- A function computed by an *aperiodic* bimachine: both the prefix and the
-suffix automaton are aperiodic (Section C.4.4). -/
-def IsAperiodicBimachine {A B : Type} (f : List A → List B) : Prop :=
-  ∃ (P S : Type) (_ : Finite P) (_ : Finite S) (M : Bimachine A B P S),
-    M.eval = f ∧ TransAperiodic M.prefixStep ∧ TransAperiodic M.suffixStep
+/-! **Definition B.2.2 (Bimachine).**  The definition of a bimachine
+(`Bimachine`), of its semantics (`Bimachine.eval`) and of the functions that
+bimachines compute (`IsBimachine`, `IsAperiodicBimachine`) is in
+`RequestProject/PartB/Bimachine.lean`, together with the proof that these functions are
+rational. -/
 
 /-- **Theorem B.2.3.**  For a string-to-string function the following are
 equivalent: (1) it is a rational relation which happens to be functional;
@@ -137,7 +104,16 @@ theorem rational_iff_unambiguous_iff_bimachine {A B : Type} [Finite A] [Finite B
     [IsRationalFun f,
      IsUnambiguousRel (fun w v => v = f w),
      IsBimachine f].TFAE := by
-  sorry
+  tfae_have 1 → 2 := by
+    intro hf
+    obtain ⟨P, hP, N, hunamb, -, hrel⟩ := exists_unambiguous_aut_of_rationalFun hf
+    exact ⟨P, hP, N, hunamb, fun w v => (hrel w v).symm⟩
+  tfae_have 2 → 1 := by
+    rintro ⟨P, hP, N, -, hrel⟩
+    exact ⟨P, hP, N, hrel⟩
+  tfae_have 1 → 3 := isBimachine_of_rationalFun
+  tfae_have 3 → 1 := rationalFun_of_isBimachine
+  tfae_finish
 
 /-- An automaton with *extended transitions*: transitions are labelled by an
 input string and a regular language of output strings (used in Lemma B.2.4). -/
@@ -175,26 +151,26 @@ theorem epsilon_elimination {A B : Type} [Finite A] [Finite B]
 contains an unambiguous rational relation. -/
 theorem uniformisation {A B : Type} [Finite A] [Finite B]
     {R : List A → List B → Prop} (hR : IsRationalRel R) (htotal : ∀ w, ∃ v, R w v) :
-    ∃ S : List A → List B → Prop, (∀ w v, S w v → R w v) ∧ IsUnambiguousRel S := by
-  sorry
+    ∃ S : List A → List B → Prop, (∀ w v, S w v → R w v) ∧ IsUnambiguousRel S :=
+  uniformisation_aux hR htotal
 
 /-! ### B.2.2 Decomposition into primes -/
 
-/-- The family of **prime rational functions** (Theorem B.2.6): prime Mealy
-machines, their right-to-left variants, string homomorphisms, and the function
-`w ↦ w#` appending a fresh separator. -/
-def PrimeRationalFam : ∀ (A B : Type), (List A → List B) → Prop := fun A B f =>
-  PrimeMealyFam A B f ∨
-  PrimeMealyFam A B (fun w => (f w.reverse).reverse) ∨
-  (∃ φ : A → List B, f = homOf φ) ∨
-  (∃ e : Option A ≃ B, f = fun w => w.map (fun a => e (some a)) ++ [e none])
+/-! The family of **prime rational functions** `PrimeRationalFam`
+(Theorem B.2.6) — prime Mealy machines, their right-to-left variants, string
+homomorphisms, and the function `w ↦ w#` appending a fresh separator — is
+defined in `RequestProject/PartB/PrimeRat.lean`. -/
 
 /-- **Theorem B.2.6.**  A string-to-string function is rational if and only if
 it can be obtained by composing prime rational functions. -/
 theorem rational_iff_prime_composition {A B : Type} [Finite A] [Finite B]
     (f : List A → List B) :
     IsRationalFun f ↔ CompClosure PrimeRationalFam A B f := by
-  sorry
+  constructor
+  · intro hf
+    exact compClosure_of_isBimachine (isBimachine_of_rationalFun hf)
+  · intro hf
+    exact PrimeRat.rationalFun_of_compClosure hf inferInstance inferInstance
 
 /-! ### B.2.3 Mealy machines as a subset of the rational functions -/
 

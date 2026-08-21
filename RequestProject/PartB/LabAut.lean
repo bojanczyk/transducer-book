@@ -78,6 +78,47 @@ lemma Path.append {M : LabAut A L Q} {q r p : Q} {ts ts' : List (Q × List A × 
 
 end LabAut
 
+/-! ## Weighted automata
+
+The semantics of a weighted automaton (Definition B.3.2) is also given here, so
+that the constructions of Section B.3 can be developed before the statements of
+the numbered results; the statements themselves are in
+`RequestProject/PartB/WeightedStatements.lean`. -/
+
+namespace LabAut
+
+variable {A S Q : Type} [Semiring S]
+
+/-- The weight of a path: the product of the weights of its transitions, taken
+in the order in which they occur. -/
+def weightOf (ts : List (Q × List A × S × Q)) : S := (labelsOf ts).prod
+
+@[simp] lemma weightOf_nil : weightOf ([] : List (Q × List A × S × Q)) = 1 := rfl
+
+@[simp] lemma weightOf_cons (t : Q × List A × S × Q) (ts : List (Q × List A × S × Q)) :
+    weightOf (t :: ts) = t.2.2.1 * weightOf ts := rfl
+
+lemma weightOf_append (ts ts' : List (Q × List A × S × Q)) :
+    weightOf (ts ++ ts') = weightOf ts * weightOf ts' := by
+  simp [weightOf, labelsOf]
+
+/-- **Definition B.3.2 (Weighted automaton), semantics.**  The output on an
+input string `w` is the sum of the weights of the accepting runs over `w`. -/
+noncomputable def wEval (M : LabAut A S Q) (w : List A) : S :=
+  ∑ᶠ ts ∈ M.acceptingOn w, weightOf ts
+
+/-- The requirement, part of Definition B.3.2, that every input string has only
+finitely many accepting runs. -/
+def FinitelyManyRuns (M : LabAut A S Q) : Prop := ∀ w : List A, (M.acceptingOn w).Finite
+
+end LabAut
+
+/-- A function `A* → S` computed by a weighted automaton over the semiring
+`S`. -/
+def IsWeighted {A S : Type} [Semiring S] (f : List A → S) : Prop :=
+  ∃ (Q : Type) (_ : Finite Q) (M : LabAut A S Q),
+    M.FinitelyManyRuns ∧ M.wEval = f
+
 /-! ## B.1 Rational relations -/
 
 /-- **Definition B.1.1 (nfa with output).**  A nondeterministic automaton with

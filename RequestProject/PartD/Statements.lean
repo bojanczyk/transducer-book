@@ -12,17 +12,15 @@ graphs of pebble transducers, an auxiliary encoding used only inside those
 proofs.
 -/
 import RequestProject.PartC.MSO
+import RequestProject.PartD.MarkedSquare
 
 namespace Transducers
 
 /-! ## Polyregular functions (Definition D.0.18) -/
 
-/-- **Example 33 (Marked squaring).**  The input string of length `n` is copied
-`n` times, and in the `i`-th copy the first `i` letters are underlined
-(`Sum.inl` marks an underlined letter). -/
-def markedSquare (A : Type) (w : List A) : List (A ⊕ A) :=
-  ((List.range w.length).map
-    (fun i => (w.take (i + 1)).map Sum.inl ++ (w.drop (i + 1)).map Sum.inr)).flatten
+/-! **Example 33 (Marked squaring)** (`markedSquare`) is defined in
+`RequestProject/PartD/MarkedSquare.lean`, together with the proof that it is
+continuous, which is the main step in the proof of Theorem D.0.19 below. -/
 
 /-- The family of prime polyregular functions: regular functions and marked
 squaring. -/
@@ -40,7 +38,16 @@ def IsPolyregular {A B : Type} (f : List A → List B) : Prop :=
 /-- **Theorem D.0.19.**  Polyregular functions are continuous. -/
 theorem polyregular_continuous {A B : Type} [Finite A] [Finite B] {f : List A → List B}
     (hf : IsPolyregular f) : Continuous f := by
-  sorry
+  induction hf with
+  | base h =>
+      rcases h with hreg | ⟨A₀, e, e', hfe⟩
+      · exact continuous_of_isRegularFun hreg
+      · exact Continuous.congr
+          ((continuous_map (e'.symm : A₀ ⊕ A₀ → _)).comp
+            ((continuous_markedSquare A₀).comp (continuous_map (e : _ → A₀))))
+          (fun w => (hfe w).symm)
+  | id A => exact continuous_id
+  | comp _ _ ihf ihg => exact ihg.comp ihf
 
 /-! ## D.1 For-transducers -/
 

@@ -17,6 +17,12 @@ import RequestProject.PartB.RationalStatements
 import RequestProject.PartB.Typing
 import RequestProject.PartB.SeqChar
 import RequestProject.PartB.LenNormalForm
+import RequestProject.PartB.WeightedPrecomp
+import RequestProject.PartB.WeightedRegular
+import RequestProject.PartB.SubseqChar
+import RequestProject.PartB.RatIndex
+import RequestProject.PartB.RatAnnot
+import RequestProject.PartB.LenDec
 
 namespace Transducers
 
@@ -24,30 +30,13 @@ namespace Transducers
 
 **Definition B.3.1 (Semiring)** is Mathlib's `Semiring`. -/
 
-namespace LabAut
-
-variable {A S Q : Type} [Semiring S]
-
-/-- The weight of a path: the product of the weights of its transitions, taken
-in the order in which they occur. -/
-def weightOf (ts : List (Q × List A × S × Q)) : S := (labelsOf ts).prod
-
-/-- **Definition B.3.2 (Weighted automaton), semantics.**  The output on an
-input string `w` is the sum of the weights of the accepting runs over `w`. -/
-noncomputable def wEval (M : LabAut A S Q) (w : List A) : S :=
-  ∑ᶠ ts ∈ M.acceptingOn w, weightOf ts
-
-/-- The requirement, part of Definition B.3.2, that every input string has only
-finitely many accepting runs. -/
-def FinitelyManyRuns (M : LabAut A S Q) : Prop := ∀ w : List A, (M.acceptingOn w).Finite
-
-end LabAut
-
-/-- A function `A* → S` computed by a weighted automaton over the semiring
-`S`. -/
-def IsWeighted {A S : Type} [Semiring S] (f : List A → S) : Prop :=
-  ∃ (Q : Type) (_ : Finite Q) (M : LabAut A S Q),
-    M.FinitelyManyRuns ∧ M.wEval = f
+/-! **Definition B.3.2 (Weighted automaton).**  The weight of a path
+(`LabAut.weightOf`), the semantics of a weighted automaton (`LabAut.wEval`),
+the requirement that every input has finitely many accepting runs
+(`LabAut.FinitelyManyRuns`) and the functions computed by weighted automata
+(`IsWeighted`) are defined in `RequestProject/PartB/LabAut.lean`, so that the
+constructions used in the proofs below can be developed before the statements of
+the numbered results. -/
 
 /-! ### B.3.2 Decidable equivalence
 
@@ -94,16 +83,16 @@ theorem rationalFun_equivalence_decidable :
 pre-composition with rational functions. -/
 theorem weighted_precomp_rational {A B S : Type} [Finite A] [Finite B] [Semiring S]
     {f : List A → List B} {h : List B → S}
-    (hf : IsRationalFun f) (hh : IsWeighted h) : IsWeighted (h ∘ f) := by
-  sorry
+    (hf : IsRationalFun f) (hh : IsWeighted h) : IsWeighted (h ∘ f) :=
+  weighted_precomp_rational_aux hf hh
 
 /-- **Theorem B.3.6.**  A string-to-string function is rational if and only if
 weighted automata are closed under pre-composition with it. -/
 theorem rational_iff_weighted_precomp {A B : Type} [Finite A] [Finite B]
     (f : List A → List B) :
     IsRationalFun f ↔
-      ∀ (S : Type) (_ : Semiring S) (h : List B → S), IsWeighted h → IsWeighted (h ∘ f) := by
-  sorry
+      ∀ (S : Type) (_ : Semiring S) (h : List B → S), IsWeighted h → IsWeighted (h ∘ f) :=
+  rational_iff_weighted_precomp_aux f
 
 /-- **Theorem B.3.7.**  The zeroness problem is decidable for weighted automata
 over the field of rationals.  (The same proof works for any computable field.) -/
@@ -121,19 +110,46 @@ theorem isMealy_iff {A B : Type} [Finite A] [Finite B] (f : List A → List B) :
     IsMealy f ↔ (Continuous f ∧ PrefixPreserving f ∧ LengthPreserving f) :=
   isMealy_iff_aux f
 
-/-- **Theorem B.4.2.**  One can decide if a rational function is computed by a
-Mealy machine. -/
+/-  The original formalisation of Theorem B.4.2 was
+
 theorem rationalFun_isMealy_decidable :
     DecidableUnderPromise CodeFunctional
       (fun c => ∃ f : List ℕ → List ℕ, (∀ w v, codeRel c w v ↔ v = f w) ∧ IsMealy f) := by
   sorry
 
+It is *degenerate*: the ambient alphabet is `ℕ`, while a code has only finitely
+many transitions and therefore reads only finitely many letters, so no code can
+satisfy `∀ w v, codeRel c w v ↔ v = f w` for a total `f` (compare
+`Transducers.not_codeTotalFunctional`).  The property inside the promise is
+therefore false for every code, and the statement would be provable with the
+constant procedure `fun _ => false`.  The statement below relativises both the
+promise and the property to strings over the alphabet of the code. -/
+
+/-- **Theorem B.4.2.**  One can decide if a rational function is computed by a
+Mealy machine.
+
+The relation described by the code and the Mealy machine are compared on the
+strings over the alphabet of the code (`CodeWord`); see the comment above for
+why the unrelativised statement is degenerate. -/
+theorem rationalFun_isMealy_decidable :
+    DecidableUnderPromise CodeFunctional
+      (fun c => ∃ f : List ℕ → List ℕ,
+        (∀ w, CodeWord c w → ∀ v, (codeRel c w v ↔ v = f w)) ∧ IsMealy f) := by
+  sorry
+
 /-- **Lemma B.4.3.**  One can decide if a rational function is
-length-preserving. -/
+length-preserving.
+
+The decision procedure (in `RequestProject/PartB/LenDec.lean`) is correct for
+*every* code, so the promise that the coded relation is a function is not
+needed.  It enumerates all transition sequences of length at most `3n`, where
+`n` bounds the number of states of the coded automaton, and checks that the
+accepting ones read and write strings of the same length; a pumping argument
+shows that this bound is sufficient. -/
 theorem rationalFun_lengthPreserving_decidable :
     DecidableUnderPromise CodeFunctional
-      (fun c => ∀ w v, codeRel c w v → v.length = w.length) := by
-  sorry
+      (fun c => ∀ w v, codeRel c w v → v.length = w.length) :=
+  ⟨LenDec.lenDec, LenDec.computable_lenDec, fun c _ => LenDec.lenDec_iff c⟩
 
 /-! The notion of a *productive* state (a state that appears in some accepting
 run) is defined in `RequestProject/PartB/LabAut.lean`. -/
@@ -195,26 +211,12 @@ theorem isSequential_iff {A B : Type} [Finite A] [Finite B] (f : List A → List
 
 /-! ### B.4.3 Subsequential functions -/
 
-/-- A subsequential transducer: a sequential transducer with a partial
-end-of-input function, which is applied to the last state of the computation. -/
-structure Subsequential (A B Q : Type) extends Sequential A B Q where
-  /-- The partial end-of-input function. -/
-  endOfInput : Q → Option (List B)
-
-namespace Subsequential
-
-variable {A B Q : Type}
-
-/-- The semantics of a subsequential transducer: a partial function. -/
-def eval (T : Subsequential A B Q) (w : List A) : Option (List B) :=
-  (T.endOfInput (strTrans T.toSequential.transFun w T.toSequential.init)).map
-    (fun u => T.toSequential.eval w ++ u)
-
-end Subsequential
-
-/-- A partial function computed by a subsequential transducer. -/
-def IsSubsequential {A B : Type} (f : List A → Option (List B)) : Prop :=
-  ∃ (Q : Type) (_ : Finite Q) (T : Subsequential A B Q), T.eval = f
+/-! The definition of a subsequential transducer (`Subsequential`) and of the
+partial functions that they compute (`IsSubsequential`) is in
+`RequestProject/PartB/SubseqDef.lean`, together with the easy implication of
+Theorem B.4.8; the construction proving the other implication is in
+`SubseqAlpha.lean`, `SubseqState.lean`, `SubseqBound.lean` and
+`SubseqChar.lean`. -/
 
 /-- **Theorem B.4.8.**  A partial function is subsequential if and only if it is
 continuous and has bounded variation: for all `w₁, w₂` the left distances
@@ -224,23 +226,24 @@ theorem isSubsequential_iff {A B : Type} [Finite A] [Finite B] (f : List A → O
     IsSubsequential f ↔
       (PartialContinuous f ∧
         ∀ w₁ w₂ : List A, ∃ K : ℕ, ∀ (w : List A) (v₁ v₂ : List B),
-          f (w ++ w₁) = some v₁ → f (w ++ w₂) = some v₂ → leftDist v₁ v₂ ≤ K) := by
-  sorry
+          f (w ++ w₁) = some v₁ → f (w ++ w₂) = some v₂ → leftDist v₁ v₂ ≤ K) :=
+  isSubsequential_iff_aux f
 
 /-! ### B.4.4 Rational functions -/
 
-/-- The equivalence relation on input strings used in Theorem B.4.13:
-`w₁ ∼ w₂` if the left distances `‖f (w w₁), f (w w₂)‖` are bounded uniformly
-in `w`. -/
-def BoundedVarRel {A B : Type} (f : List A → List B) (w₁ w₂ : List A) : Prop :=
-  ∃ K : ℕ, ∀ w : List A, leftDist (f (w ++ w₁)) (f (w ++ w₂)) ≤ K
+/-! The equivalence relation `BoundedVarRel` on input strings used in
+Theorem B.4.13 (`w₁ ∼ w₂` if the left distances `‖f (w w₁), f (w w₂)‖` are bounded
+uniformly in `w`) is defined in `RequestProject/PartB/RatIndex.lean`, together
+with the proof that it is an equivalence relation and a left congruence and the
+easy implication of the theorem; the converse implication is proved in
+`RequestProject/PartB/RatAnnot.lean`. -/
 
 /-- **Theorem B.4.13.**  A function is rational if and only if it is continuous
 and the equivalence relation `BoundedVarRel f` has finite index. -/
 theorem isRationalFun_iff {A B : Type} [Finite A] [Finite B] (f : List A → List B) :
     IsRationalFun f ↔
       (Continuous f ∧
-        {C : Set (List A) | ∃ w₁, C = {w₂ | BoundedVarRel f w₁ w₂}}.Finite) := by
-  sorry
+        {C : Set (List A) | ∃ w₁, C = {w₂ | BoundedVarRel f w₁ w₂}}.Finite) :=
+  isRationalFun_iff_aux f
 
 end Transducers

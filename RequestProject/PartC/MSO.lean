@@ -25,6 +25,7 @@ Not formalised here: Claim C.4.5, Lemma C.4.9 and Claim C.4.14, which are
 internal steps of the proofs of Theorems C.4.4, C.4.8 and C.4.11.
 -/
 import RequestProject.PartC.Statements
+import RequestProject.PartC.KTypes
 
 namespace Transducers
 
@@ -335,19 +336,9 @@ theorem foDefinable_iff_aperiodic_dfa {A : Type} [Finite A] (L : Language A) :
       ∃ (σ : Type) (_ : Finite σ) (M : DFA A σ), TransAperiodic M.step ∧ M.accepts = L := by
   sorry
 
-/-- The type of `k`-types over the alphabet `A`. -/
-def TpType (A : Type) : ℕ → Type
-  | 0 => Unit
-  | k + 1 => Set (TpType A k × A × TpType A k)
-
-/-- **Definition C.4.12 (k-types).**  `tp k w` is the `k`-type of the string
-`w`:  `tp 0 w = ∅` and
-`tp (k+1) w = {(tp k w₁, a, tp k w₂) | w = w₁ a w₂}`. -/
-def tp {A : Type} : (k : ℕ) → List A → TpType A k
-  | 0, _ => ()
-  | k + 1, w =>
-      {t : TpType A k × A × TpType A k |
-        ∃ (w₁ : List A) (a : A) (w₂ : List A), w = w₁ ++ a :: w₂ ∧ t = (tp k w₁, a, tp k w₂)}
+/-! **Definition C.4.12 (k-types)** (`TpType` and `tp`) is in
+`RequestProject/PartC/KTypes.lean`, together with the proof of Lemma C.4.15
+below. -/
 
 /-- **Lemma C.4.13.**  Two strings have the same `k`-type if and only if they
 satisfy the same first-order sentences of quantifier rank at most `k`. -/
@@ -362,8 +353,8 @@ theorem tp_properties {A : Type} (k : ℕ) :
     (∀ w v : List A, tp (k + 1) w = tp (k + 1) v → tp k w = tp k v) ∧
     (∀ w w' v v' : List A, tp k w = tp k w' → tp k v = tp k v' →
       tp k (w ++ v) = tp k (w' ++ v')) ∧
-    (∀ w : List A, ∃ N : ℕ, ∀ n ≥ N, tp k (npow w n) = tp k (npow w N)) := by
-  sorry
+    (∀ w : List A, ∃ N : ℕ, ∀ n ≥ N, tp k (npow w n) = tp k (npow w N)) :=
+  tp_properties_aux k
 
 /-- **Theorem C.4.16.**  A string-to-string function is a first-order
 relabelling if and only if it is computed by an aperiodic bimachine. -/

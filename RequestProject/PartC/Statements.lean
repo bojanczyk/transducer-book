@@ -11,6 +11,10 @@ representation of the reachable configuration graph of a two-way transducer,
 an auxiliary encoding that is used only inside those proofs.
 -/
 import RequestProject.PartB.WeightedStatements
+import RequestProject.PartC.ContAux
+import RequestProject.PartC.TwoWayCont
+import RequestProject.PartC.TwoWayPrecomp
+import RequestProject.PartC.TwoWayRat
 
 namespace Transducers
 
@@ -40,91 +44,71 @@ def IsRegularFun {A B : Type} (f : List A → List B) : Prop := CompClosure Regu
 
 /-! ## C.1 The prime regular functions -/
 
+/-- The map reverse function is continuous. -/
+lemma continuous_mapReverse (A : Type) : Continuous (mapReverse A) :=
+  continuous_mapLift continuous_reverse
+
+/-- The map duplicate function is continuous. -/
+lemma continuous_mapDuplicate (A : Type) : Continuous (mapDuplicate A) :=
+  continuous_mapLift continuous_dup
+
+/-- Regular functions are continuous (Theorem C.1.1; no finiteness assumption on
+the alphabets is needed, since the prime regular functions are continuous over
+any alphabets). -/
+theorem continuous_of_isRegularFun {A B : Type} {f : List A → List B}
+    (hf : IsRegularFun f) : Continuous f := by
+  induction hf with
+  | base h =>
+      rcases h with hrat | ⟨A₀, e, e', hfe⟩ | ⟨A₀, e, e', hfe⟩
+      · exact continuous_of_isRationalFun hrat
+      · exact Continuous.congr
+          (((continuous_map (e'.symm : Option A₀ → _)).comp
+            ((continuous_mapReverse A₀).comp (continuous_map (e : _ → Option A₀)))))
+          (fun w => (hfe w).symm)
+      · exact Continuous.congr
+          (((continuous_map (e'.symm : Option A₀ → _)).comp
+            ((continuous_mapDuplicate A₀).comp (continuous_map (e : _ → Option A₀)))))
+          (fun w => (hfe w).symm)
+  | id A => exact continuous_id
+  | comp _ _ ihf ihg => exact ihg.comp ihf
+
 /-- **Theorem C.1.1 (continuity).**  Regular functions are continuous. -/
 theorem regular_continuous {A B : Type} [Finite A] [Finite B] {f : List A → List B}
-    (hf : IsRegularFun f) : Continuous f := by
-  sorry
+    (hf : IsRegularFun f) : Continuous f :=
+  continuous_of_isRegularFun hf
 
 /-- **Theorem C.1.1 (composition).**  Regular functions are closed under
 composition. -/
 theorem regular_comp {A B C : Type} [Finite B] {f : List A → List B} {g : List B → List C}
-    (hf : IsRegularFun f) (hg : IsRegularFun g) : IsRegularFun (g ∘ f) := by
-  sorry
+    (hf : IsRegularFun f) (hg : IsRegularFun g) : IsRegularFun (g ∘ f) :=
+  CompClosure.comp hf hg
 
 /-- **Lemma C.1.2.**  String reversal and string duplication are continuous. -/
 theorem reverse_duplicate_continuous {A : Type} [Finite A] :
     Continuous (List.reverse : List A → List A) ∧
-      Continuous (fun w : List A => w ++ w) := by
-  sorry
+      Continuous (fun w : List A => w ++ w) :=
+  ⟨continuous_reverse, continuous_dup⟩
 
 /-- **Lemma C.1.3.**  If a string-to-string function is continuous, then the
 same is true for its map lifting. -/
 theorem mapLift_continuous {A B : Type} [Finite A] [Finite B] {f : List A → List B}
-    (hf : Continuous f) : Continuous (mapLift f) := by
-  sorry
+    (hf : Continuous f) : Continuous (mapLift f) :=
+  continuous_mapLift hf
 
 /-! ## C.2 Two-way transducers -/
 
-/-- **Definition C.2.1.**  A two-way transducer: based on the letters adjacent
-to the head and the current state, it either produces an output string and
-halts (`Sum.inl`), or produces an output string, changes state, and moves the
-head left (`false`) or right (`true`). -/
-structure TwoWay (A B Q : Type) where
-  /-- The initial state. -/
-  init : Q
-  /-- The transition function. -/
-  step : Option A → Q → Option A → List B ⊕ (Q × List B × Bool)
-
-/-- A configuration of a two-way transducer: the input to the left of the head,
-the state, and the input to the right of the head; plus a halting vertex. -/
-inductive Cfg (A Q : Type) : Type
-  | conf : List A → Q → List A → Cfg A Q
-  | halt : Cfg A Q
-
-namespace TwoWay
-
-variable {A B Q : Type}
-
-/-- One step of the computation: the produced output and the next
-configuration, if any. -/
-def stepCfg (M : TwoWay A B Q) : Cfg A Q → Option (List B × Cfg A Q)
-  | Cfg.halt => none
-  | Cfg.conf u q v =>
-      match M.step u.getLast? q v.head? with
-      | Sum.inl o => some (o, Cfg.halt)
-      | Sum.inr (q', o, true) =>
-          match v with
-          | [] => none
-          | a :: v' => some (o, Cfg.conf (u ++ [a]) q' v')
-      | Sum.inr (q', o, false) =>
-          match u.getLast? with
-          | none => none
-          | some a => some (o, Cfg.conf u.dropLast q' (a :: v))
-
-/-- Reachability in the configuration graph, recording the produced output. -/
-inductive Reaches (M : TwoWay A B Q) : Cfg A Q → List B → Cfg A Q → Prop
-  | refl (c : Cfg A Q) : Reaches M c [] c
-  | step {c c' c'' : Cfg A Q} {o o' : List B} :
-      M.stepCfg c = some (o, c') → Reaches M c' o' c'' → Reaches M c (o ++ o') c''
-
-/-- The transducer produces the output `v` on the input `w`: the run started in
-the initial configuration reaches the halting vertex, producing `v`. -/
-def Computes (M : TwoWay A B Q) (w : List A) (v : List B) : Prop :=
-  M.Reaches (Cfg.conf [] M.init w) v Cfg.halt
-
-end TwoWay
-
-/-- A (total) function computed by a two-way transducer. -/
-def IsTwoWay {A B : Type} (f : List A → List B) : Prop :=
-  ∃ (Q : Type) (_ : Finite Q) (M : TwoWay A B Q), ∀ w, M.Computes w (f w)
+/-! **Definition C.2.1 (two-way transducers)** (`TwoWay`, `Cfg`,
+`TwoWay.stepCfg`, `TwoWay.Reaches`, `TwoWay.Computes` and `IsTwoWay`) is in
+`RequestProject/PartC/TwoWayCont.lean`, together with the proof of
+Theorem C.2.2 below. -/
 
 /-! ### C.2.1 Continuity -/
 
 /-- **Theorem C.2.2.**  Every function computed by a two-way transducer is
 continuous. -/
 theorem twoWay_continuous {A B : Type} [Finite A] [Finite B] {f : List A → List B}
-    (hf : IsTwoWay f) : Continuous f := by
-  sorry
+    (hf : IsTwoWay f) : Continuous f :=
+  twoWay_continuous_aux hf
 
 /-! ### C.2.2 Closure under composition -/
 
@@ -132,15 +116,15 @@ theorem twoWay_continuous {A B : Type} [Finite A] [Finite B] {f : List A → Lis
 pre-composition with Mealy machines. -/
 theorem twoWay_precomp_mealy {A B C : Type} [Finite A] [Finite B] [Finite C]
     {f : List A → List B} {g : List B → List C}
-    (hf : IsMealy f) (hg : IsTwoWay g) : IsTwoWay (g ∘ f) := by
-  sorry
+    (hf : IsMealy f) (hg : IsTwoWay g) : IsTwoWay (g ∘ f) :=
+  isTwoWay_comp_compClosure (krohn_rhodes hf) hg
 
 /-- **Corollary C.2.7.**  Functions computed by two-way transducers are closed
 under pre-composition with rational functions. -/
 theorem twoWay_precomp_rational {A B C : Type} [Finite A] [Finite B] [Finite C]
     {f : List A → List B} {g : List B → List C}
-    (hf : IsRationalFun f) (hg : IsTwoWay g) : IsTwoWay (g ∘ f) := by
-  sorry
+    (hf : IsRationalFun f) (hg : IsTwoWay g) : IsTwoWay (g ∘ f) :=
+  isTwoWay_comp_rational hf hg
 
 /-- **Theorem C.2.5.**  Functions computed by two-way transducers are closed
 under composition. -/
