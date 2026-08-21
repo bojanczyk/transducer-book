@@ -175,32 +175,32 @@ def sweepAut (o₁ o₂ o₃ : A → List C) : TwoWay (Option A) (Option C) SwSt
 variable (o₁ o₂ o₃ : A → List C) {l r : Option (Option A)} {a : A}
 
 lemma sweepStep_s1_right (hr : realLet r = some a) :
-    sweepStep o₁ o₂ o₃ l SwSt.s1 r = Sum.inr (SwSt.s1, (o₁ a).map some, true) := by
-  simp only [sweepStep, hr]
+    (sweepAut o₁ o₂ o₃).step l SwSt.s1 r = Sum.inr (SwSt.s1, (o₁ a).map some, true) := by
+  simp only [sweepAut, sweepStep, hr]
 
 lemma sweepStep_s1_left (hr : realLet r = none) (hl : realLet l = some a) :
-    sweepStep o₁ o₂ o₃ l SwSt.s1 r = Sum.inr (SwSt.s2, (o₂ a).map some, false) := by
-  simp only [sweepStep, hr, hl]
+    (sweepAut o₁ o₂ o₃).step l SwSt.s1 r = Sum.inr (SwSt.s2, (o₂ a).map some, false) := by
+  simp only [sweepAut, sweepStep, hr, hl]
 
 lemma sweepStep_s1_sep (hr : realLet r = none) (hl : realLet l = none) :
-    sweepStep o₁ o₂ o₃ l SwSt.s1 r = sepStep r := by
-  simp only [sweepStep, hr, hl]
+    (sweepAut o₁ o₂ o₃).step l SwSt.s1 r = sepStep r := by
+  simp only [sweepAut, sweepStep, hr, hl]
 
 lemma sweepStep_s2_left (hl : realLet l = some a) :
-    sweepStep o₁ o₂ o₃ l SwSt.s2 r = Sum.inr (SwSt.s2, (o₂ a).map some, false) := by
-  simp only [sweepStep, hl]
+    (sweepAut o₁ o₂ o₃).step l SwSt.s2 r = Sum.inr (SwSt.s2, (o₂ a).map some, false) := by
+  simp only [sweepAut, sweepStep, hl]
 
 lemma sweepStep_s2_right (hl : realLet l = none) (hr : realLet r = some a) :
-    sweepStep o₁ o₂ o₃ l SwSt.s2 r = Sum.inr (SwSt.s3, (o₃ a).map some, true) := by
-  simp only [sweepStep, hl, hr]
+    (sweepAut o₁ o₂ o₃).step l SwSt.s2 r = Sum.inr (SwSt.s3, (o₃ a).map some, true) := by
+  simp only [sweepAut, sweepStep, hl, hr]
 
 lemma sweepStep_s3_right (hr : realLet r = some a) :
-    sweepStep o₁ o₂ o₃ l SwSt.s3 r = Sum.inr (SwSt.s3, (o₃ a).map some, true) := by
-  simp only [sweepStep, hr]
+    (sweepAut o₁ o₂ o₃).step l SwSt.s3 r = Sum.inr (SwSt.s3, (o₃ a).map some, true) := by
+  simp only [sweepAut, sweepStep, hr]
 
 lemma sweepStep_s3_sep (hr : realLet r = none) :
-    sweepStep o₁ o₂ o₃ l SwSt.s3 r = sepStep r := by
-  simp only [sweepStep, hr]
+    (sweepAut o₁ o₂ o₃).step l SwSt.s3 r = sepStep r := by
+  simp only [sweepAut, sweepStep, hr]
 
 /-- The output produced on one block: the three sweeps, the middle one from
 right to left. -/
@@ -216,7 +216,7 @@ lemma sweep1 (x : List A) (rest : List (Option A)) (u : List (Option A)) :
   induction x generalizing u with
   | nil => simpa [homOf] using Reaches.refl (Cfg.conf u SwSt.s1 rest)
   | cons a x ih =>
-      have hstep : sweepStep o₁ o₂ o₃ u.getLast? SwSt.s1
+      have hstep : (sweepAut o₁ o₂ o₃).step u.getLast? SwSt.s1
           ((some a :: (x.map some ++ rest)).head?)
           = Sum.inr (SwSt.s1, (o₁ a).map some, true) :=
         sweepStep_s1_right o₁ o₂ o₃ rfl
@@ -232,7 +232,7 @@ lemma sweep3 (x : List A) (rest : List (Option A)) (u : List (Option A)) :
   induction x generalizing u with
   | nil => simpa [homOf] using Reaches.refl (Cfg.conf u SwSt.s3 rest)
   | cons a x ih =>
-      have hstep : sweepStep o₁ o₂ o₃ u.getLast? SwSt.s3
+      have hstep : (sweepAut o₁ o₂ o₃).step u.getLast? SwSt.s3
           ((some a :: (x.map some ++ rest)).head?)
           = Sum.inr (SwSt.s3, (o₃ a).map some, true) :=
         sweepStep_s3_right o₁ o₂ o₃ rfl
@@ -250,7 +250,7 @@ lemma sweep2 (x : List A) (u : List (Option A)) (rest : List (Option A)) :
   | append_singleton y a ih =>
       have hlast : (u ++ (y ++ [a]).map some).getLast? = some (some a) := by
         simp
-      have hstep : sweepStep o₁ o₂ o₃ ((u ++ (y ++ [a]).map some).getLast?) SwSt.s2
+      have hstep : (sweepAut o₁ o₂ o₃).step ((u ++ (y ++ [a]).map some).getLast?) SwSt.s2
           rest.head? = Sum.inr (SwSt.s2, (o₂ a).map some, false) :=
         sweepStep_s2_left o₁ o₂ o₃ (by rw [hlast]; rfl)
       have h1 := reaches_one (stepCfg_left_some (sweepAut o₁ o₂ o₃) hlast hstep)
@@ -271,7 +271,7 @@ lemma sweep12 (y : List A) (a : A) (rest : List (Option A)) (u : List (Option A)
       ((homOf o₂ (y ++ [a]).reverse).map some)
       (Cfg.conf u SwSt.s2 ((y ++ [a]).map some ++ rest)) := by
   have hlast : (u ++ (y ++ [a]).map some).getLast? = some (some a) := by simp
-  have hstep : sweepStep o₁ o₂ o₃ ((u ++ (y ++ [a]).map some).getLast?) SwSt.s1
+  have hstep : (sweepAut o₁ o₂ o₃).step ((u ++ (y ++ [a]).map some).getLast?) SwSt.s1
       rest.head? = Sum.inr (SwSt.s2, (o₂ a).map some, false) :=
     sweepStep_s1_left o₁ o₂ o₃ hrest (by rw [hlast]; rfl)
   have h1 := reaches_one (stepCfg_left_some (sweepAut o₁ o₂ o₃) hlast hstep)
@@ -289,7 +289,7 @@ lemma sweep23 (a : A) (x : List A) (rest : List (Option A)) (u : List (Option A)
     (sweepAut o₁ o₂ o₃).Reaches (Cfg.conf u SwSt.s2 ((a :: x).map some ++ rest))
       ((homOf o₃ (a :: x)).map some)
       (Cfg.conf (u ++ (a :: x).map some) SwSt.s3 rest) := by
-  have hstep : sweepStep o₁ o₂ o₃ u.getLast? SwSt.s2
+  have hstep : (sweepAut o₁ o₂ o₃).step u.getLast? SwSt.s2
       ((some a :: (x.map some ++ rest)).head?)
       = Sum.inr (SwSt.s3, (o₃ a).map some, true) :=
     sweepStep_s2_right o₁ o₂ o₃ hu rfl
@@ -325,7 +325,7 @@ lemma sweep_reaches (n : ℕ) : ∀ (v : List (Option A)), v.length ≤ n →
       have hvnil : v = [] := by
         simpa using List.length_eq_zero_iff.mp (Nat.le_zero.mp hv)
       subst hvnil
-      have hstep : sweepStep o₁ o₂ o₃ u.getLast? SwSt.s1 (([] : List (Option A)).head?)
+      have hstep : (sweepAut o₁ o₂ o₃).step u.getLast? SwSt.s1 (([] : List (Option A)).head?)
           = Sum.inl [] := sweepStep_s1_sep o₁ o₂ o₃ rfl hu
       have hout : mapLift (blockF o₁ o₂ o₃) ([] : List (Option A)) = [] := by
         have := mapLift_map_some (blockF o₁ o₂ o₃) ([] : List A)
@@ -363,12 +363,12 @@ lemma sweep_reaches (n : ℕ) : ∀ (v : List (Option A)), v.length ≤ n →
           simpa using mapLift_map_some (blockF o₁ o₂ o₃) x
         rw [hout]
         rcases hblock with h | ⟨rfl, hnil⟩
-        · have hstep : sweepStep o₁ o₂ o₃ (u ++ x.map some).getLast? SwSt.s3
+        · have hstep : (sweepAut o₁ o₂ o₃).step (u ++ x.map some).getLast? SwSt.s3
               (([] : List (Option A)).head?) = Sum.inl [] :=
             sweepStep_s3_sep o₁ o₂ o₃ rfl
           simpa using h.trans (reaches_one (stepCfg_halt_eq (sweepAut o₁ o₂ o₃) hstep))
         · rw [hnil]
-          have hstep : sweepStep o₁ o₂ o₃ u.getLast? SwSt.s1
+          have hstep : (sweepAut o₁ o₂ o₃).step u.getLast? SwSt.s1
               (([] : List (Option A)).head?) = Sum.inl [] :=
             sweepStep_s1_sep o₁ o₂ o₃ rfl hu
           simpa using reaches_one (stepCfg_halt_eq (sweepAut o₁ o₂ o₃) hstep)
@@ -391,7 +391,7 @@ lemma sweep_reaches (n : ℕ) : ∀ (v : List (Option A)), v.length ≤ n →
           have := (h.trans h1).trans h2
           simpa using this
         · rw [hnil]
-          have hstep : sweepStep o₁ o₂ o₃ u.getLast? SwSt.s1 ((none :: r').head?)
+          have hstep : (sweepAut o₁ o₂ o₃).step u.getLast? SwSt.s1 ((none :: r').head?)
               = Sum.inr (SwSt.s1, [none], true) :=
             sweepStep_s1_sep o₁ o₂ o₃ rfl hu
           have h1 := reaches_one (stepCfg_right_cons (sweepAut o₁ o₂ o₃) hstep)

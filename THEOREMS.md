@@ -65,6 +65,9 @@ RequestProject/
 | `PartC/TwoDFA.lean` | deterministic two-way automata and Shepherdson's Theorem (their languages are regular) |
 | `PartC/TwoWayCont.lean` | two-way transducers (Definition C.2.1) and their continuity (Theorem C.2.2) |
 | `PartC/TwoWayPrecomp.lean` | pre-composition of a two-way transducer with a Mealy machine (Lemma C.2.6), via the Krohn-Rhodes Theorem: the reversible case, the flip-flop case, and pre-composition with reversal |
+| `PartC/TwoWayHom.lean`, `PartC/TwoWayBlock.lean`, `PartC/TwoWayErase.lean`, `PartC/TwoWayRat.lean` | pre-composition of a two-way transducer with a homomorphism and with an arbitrary rational function (Corollary C.2.7) |
+| `PartC/TwoWayRun.lean`, `PartC/TwoWayVisit.lean`, `PartC/TwoWayAnnot.lean`, `PartC/TwoWayAnnotBim.lean`, `PartC/TwoWayCompAux.lean`, `PartC/TwoWayCompPred.lean`, `PartC/TwoWayComp.lean`, `PartC/TwoWayCompFinal.lean` | the composition of two two-way transducers (Theorem C.2.5) |
+| `PartC/TwoWaySweep.lean`, `PartC/TwoWayRegular.lean` | explicit two-way transducers for the identity, for post-composition with a letter-to-letter map, and for map reverse and map duplicate; every regular function is computed by a two-way transducer (corrected Corollary C.2.8) |
 | `PartC/KTypes.lean` | `k`-types of strings (Definition C.4.12) and their properties (Lemma C.4.15) |
 | `PartC/Statements.lean` | Sections C.1–C.3: regular functions, two-way transducers, streaming string transducers |
 | `PartC/MSO.lean` | Section C.4: monadic second-order logic, relabellings, transductions, the first-order fragment |
@@ -405,10 +408,11 @@ The proofs are organised as follows.
 | Definition C.2.1 (two-way transducer) | `Transducers.TwoWay`, `Transducers.IsTwoWay` | — |
 | Theorem C.2.2 (continuity) | `Transducers.twoWay_continuous` | proved (`TwoWayCont.lean`, from Shepherdson's Theorem in `TwoDFA.lean`) |
 | Lemmas C.2.3, C.2.4, C.2.12 | not formalised (configuration-graph encodings used inside proofs) | — |
-| Theorem C.2.5 (composition) | `Transducers.twoWay_comp` | statement only |
+| Theorem C.2.5 (composition) | `Transducers.twoWay_comp` | proved (`TwoWayRun.lean`, `TwoWayVisit.lean`, `TwoWayAnnot.lean`, `TwoWayAnnotBim.lean`, `TwoWayCompAux.lean`, `TwoWayCompPred.lean`, `TwoWayComp.lean`, `TwoWayCompFinal.lean`) |
 | Lemma C.2.6 (pre-composition with Mealy machines) | `Transducers.twoWay_precomp_mealy` | proved |
 | Corollary C.2.7 (pre-composition with rational functions) | `Transducers.twoWay_precomp_rational` | proved (`TwoWayHom.lean`, `TwoWayBlock.lean`, `TwoWayErase.lean` and `TwoWayRat.lean`, from Theorem B.2.6 and Lemma C.2.6) |
-| Corollary C.2.8 (two-way ⊆ regular) | `Transducers.twoWay_isRegular` | statement only |
+| Corollary C.2.8, as printed (two-way ⊆ regular) | `Transducers.twoWay_isRegular` | statement only — see *A discrepancy in Corollary C.2.8* below; as printed this is the hard half of Theorem C.2.9, not a corollary of Theorem C.2.5 |
+| Corollary C.2.8, corrected (regular ⊆ two-way) | `Transducers.regularFun_isTwoWay`, `Transducers.isTwoWay_of_isRegularFun` | proved (`TwoWaySweep.lean`, `TwoWayRegular.lean`, from Corollary C.2.7 and Theorem C.2.5) |
 | Theorem C.2.9 (two-way = regular) | `Transducers.twoWay_iff_regular` | statement only |
 | Lemma C.2.10 (closure properties) | `Transducers.regular_closure_properties` | statement only |
 | Claim C.2.11 (disjoint sums) | `Transducers.sum_of_regular` | statement only |
@@ -462,6 +466,71 @@ The files added for Corollary C.2.7 are:
   prime rational functions of Theorem B.2.6, and the general case follows by
   induction on the composition.
 
+The files added for Theorem C.2.5 are:
+
+* `TwoWayRun.lean` — the run of a two-way transducer indexed by time: it is
+  injective up to the halting time, so a configuration on the run has a *unique*
+  predecessor on the run (`TwoWay.pred_unique`).  This is what makes it possible
+  to walk backwards along the run.
+* `TwoWayVisit.lean` — the configurations that lie on the run form a regular
+  property of the input: mark one letter with a state and a side, and the marked
+  inputs whose run visits the marked cut in the marked state form a regular
+  language, by Shepherdson's Theorem applied to the two-way automaton that
+  accepts as soon as the run reaches the marked cut.  This replaces the analysis
+  of the reachable configuration graph of Lemma C.2.3.
+* `TwoWayAnnot.lean`, `TwoWayAnnotBim.lean` — the annotation of every position
+  of the input by a window of three letters, the state of the deterministic
+  automaton of the previous item after the prefix, and the acceptance function
+  of the suffix.  It is computed by a bimachine, hence is a rational function
+  (Theorem B.2.3), and from the annotations of the two letters adjacent to a cut
+  one can read off which configurations lie on the run there.
+* `TwoWayCompAux.lean`, `TwoWayCompPred.lean` — the bookkeeping of the output of
+  a stretch of the run, and the computation of the predecessor of a
+  configuration on the run from the annotation.
+* `TwoWayComp.lean` — the composed transducer, for a first transducer all of
+  whose transitions produce an output of the same length ending with a fixed
+  letter.  The head of the second transducer is represented by a configuration
+  of the first one on the run together with an offset inside the output of the
+  transition taken there; moving right follows the run forwards, moving left
+  follows it backwards, and a step that does not change the configuration is
+  implemented by a *bouncing* step.
+* `TwoWayCompFinal.lean` — Theorem C.2.5 in general: the outputs of the first
+  transducer are padded with a blank letter to a common length, which is
+  harmless because two-way transducers are closed under pre-composition with the
+  erasing homomorphism that deletes the blanks.
+
+#### A discrepancy in Corollary C.2.8
+
+The corollary is printed as "if a function is computed by a two-way transducer,
+then it is regular", but its proof — "two-way transducers can compute all
+rational functions by Corollary C.2.7, and they can compute map reverse and map
+duplicate by Example C.2.4; finally, they are closed under composition thanks to
+Theorem C.2.5" — establishes the *opposite* inclusion, that every regular
+function is computed by a two-way transducer.  The following sentence of the
+book confirms this reading: it announces that "the converse inclusion", namely
+that two-way transducers can be decomposed into the prime regular functions,
+will be proved later in the chapter (Theorem C.2.9).
+
+Both versions are in `PartC/Statements.lean`.  The statement as printed is kept
+unchanged as `Transducers.twoWay_isRegular`, with a docstring explaining the
+discrepancy; since it is exactly the hard half of Theorem C.2.9 it is left as a
+`sorry`, like that theorem.  The corrected statement is
+`Transducers.regularFun_isTwoWay`, and it is proved in full.  Its ingredients
+are:
+
+* `TwoWaySweep.lean` — the two-way transducer for the identity, closure under
+  post-composition with a letter-to-letter map, and the *block sweeping*
+  transducer: on each block of the input (a maximal factor without separators)
+  it sweeps left to right, right to left and left to right again, emitting a
+  string for each letter it passes.  Map reverse is the instance in which only
+  the middle sweep produces output, map duplicate the one in which only the two
+  outer sweeps do.
+* `TwoWayRegular.lean` — closure under pre-composition with a letter-to-letter
+  map (a special case of Corollary C.2.7), and the two instances of the sweeping
+  transducer.  The corollary then follows by induction on the composition tree
+  of the regular function, using Corollary C.2.7 for the rational primes and
+  Theorem C.2.5 for the composition step.
+
 ### Part D: Polyregular functions
 
 | Book | Lean | Status |
@@ -500,6 +569,18 @@ Part B contains a `sorry`, and every numbered result of Part B depends only on
 `propext`, `Classical.choice`, `Quot.sound`.
 In Part C,
 Theorem C.1.1, Lemmas C.1.2 and C.1.3,
-Theorem C.2.2, Lemma C.2.6, Corollary C.2.7 and Lemma C.4.15 are proved.  In Part D, Theorem D.0.19 is
-proved.  The remaining results are statements only (`sorry`).  Exercises and
-examples of the book are not included.
+Theorem C.2.2, **Theorem C.2.5**, Lemma C.2.6, Corollary C.2.7, the **corrected
+form of Corollary C.2.8** and Lemma C.4.15 are proved.  In Part D, Theorem
+D.0.19 is proved.  The remaining results are statements only (`sorry`).
+Exercises and examples of the book are not included.
+
+Corollary C.2.8 as printed in the book (`Transducers.twoWay_isRegular`) is the
+inclusion `two-way ⊆ regular`, which is the hard half of Theorem C.2.9 and not
+what the book's proof of the corollary establishes; it is left as a `sorry`
+together with Theorem C.2.9, and the inclusion `regular ⊆ two-way` that the
+book's proof does establish is proved as `Transducers.regularFun_isTwoWay`.  See
+*A discrepancy in Corollary C.2.8* above.
+
+`#print axioms` on `Transducers.twoWay_comp`, `Transducers.regularFun_isTwoWay`
+and `Transducers.isTwoWay_of_isRegularFun` reports only `propext`,
+`Classical.choice`, `Quot.sound`.

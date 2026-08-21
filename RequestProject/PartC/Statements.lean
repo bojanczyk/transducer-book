@@ -16,6 +16,7 @@ import RequestProject.PartC.TwoWayCont
 import RequestProject.PartC.TwoWayPrecomp
 import RequestProject.PartC.TwoWayRat
 import RequestProject.PartC.TwoWayCompFinal
+import RequestProject.PartC.TwoWayRegular
 
 namespace Transducers
 
@@ -134,11 +135,67 @@ theorem twoWay_comp {A B C : Type} [Finite A] [Finite B] [Finite C]
     (hf : IsTwoWay f) (hg : IsTwoWay g) : IsTwoWay (g ∘ f) :=
   isTwoWay_comp_twoWay hf hg
 
-/-- **Corollary C.2.8.**  If a function is computed by a two-way transducer,
-then it is regular. -/
+/-- **Corollary C.2.8**, as printed in the book: if a function is computed by a
+two-way transducer, then it is regular.
+
+*Discrepancy with the book.*  The statement of the corollary and the sentence
+announcing it state the inclusion `two-way ⊆ regular`, but the proof given for
+it -- "two-way transducers can compute all rational functions by
+Corollary C.2.7, and they can compute map reverse and map duplicate by
+Example C.2.4; finally, they are closed under composition thanks to
+Theorem C.2.5" -- establishes the opposite inclusion `regular ⊆ two-way`.  That
+this is the intended reading is confirmed by the next sentence of the book,
+which announces that "the converse inclusion" (namely that two-way transducers
+can be decomposed into the prime regular functions) will be proved later in the
+chapter, as Theorem C.2.9.
+
+The inclusion printed here is therefore *not* a corollary of Theorem C.2.5; it
+is exactly the hard half of Theorem C.2.9, and it is left open here together
+with that theorem.  The result that the book's proof does establish is
+`Transducers.regularFun_isTwoWay` just below, which is proved in full. -/
 theorem twoWay_isRegular {A B : Type} [Finite A] [Finite B] {f : List A → List B}
     (hf : IsTwoWay f) : IsRegularFun f := by
   sorry
+
+/-- **Corollary C.2.8** (corrected): every regular function is computed by a
+two-way transducer.  This is the statement that the book's proof of
+Corollary C.2.8 establishes; see the discussion in the docstring of
+`Transducers.twoWay_isRegular` above.
+
+The auxiliary form carries the finiteness of the two alphabets as explicit
+hypotheses, so that the induction on the composition tree has access to the
+finiteness of the intermediate alphabets. -/
+theorem isTwoWay_of_isRegularFun {A B : Type} {f : List A → List B}
+    (hf : IsRegularFun f) : Finite A → Finite B → IsTwoWay f := by
+  induction hf with
+  | @base A B f h =>
+      intro hA hB
+      haveI := hA; haveI := hB
+      rcases h with hrat | ⟨A₀, e, e', hfe⟩ | ⟨A₀, e, e', hfe⟩
+      · exact isTwoWay_of_rational hrat
+      · haveI : Finite (Option A₀) := Finite.of_equiv A e
+        haveI : Finite A₀ := Finite.of_injective (some : A₀ → Option A₀) (Option.some_injective _)
+        have h1 : IsTwoWay (mapReverse A₀) := isTwoWay_mapLift_reverse A₀
+        have h3 := isTwoWay_precomp_map (isTwoWay_postMap h1 (e'.symm : Option A₀ → B))
+          (e : A → Option A₀)
+        exact (funext hfe : f = _) ▸ h3
+      · haveI : Finite (Option A₀) := Finite.of_equiv A e
+        haveI : Finite A₀ := Finite.of_injective (some : A₀ → Option A₀) (Option.some_injective _)
+        have h1 : IsTwoWay (mapDuplicate A₀) := isTwoWay_mapLift_dup A₀
+        have h3 := isTwoWay_precomp_map (isTwoWay_postMap h1 (e'.symm : Option A₀ → B))
+          (e : A → Option A₀)
+        exact (funext hfe : f = _) ▸ h3
+  | id A => intro hA _; exact isTwoWay_id
+  | @comp A B C hB f g _ _ ihf ihg =>
+      intro hA hC
+      haveI := hA; haveI := hB; haveI := hC
+      exact isTwoWay_comp_twoWay (ihf hA hB) (ihg hB hC)
+
+/-- **Corollary C.2.8** (corrected): every regular function is computed by a
+two-way transducer. -/
+theorem regularFun_isTwoWay {A B : Type} [Finite A] [Finite B] {f : List A → List B}
+    (hf : IsRegularFun f) : IsTwoWay f :=
+  isTwoWay_of_isRegularFun hf ‹_› ‹_›
 
 /-! ### C.2.3 Decidability of equivalence
 
