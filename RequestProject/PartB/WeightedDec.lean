@@ -2,8 +2,11 @@
 Theorems B.3.3 and B.3.7 of *Transducers* (M. Bojańczyk): equivalence and
 zeroness are decidable for weighted automata over the field of rationals.
 
-Both are proved here from the two effectivity hypotheses of
-`RequestProject/PartB/Effective.lean`; everything else is discharged in full.
+Both are proved here from the single effectivity hypothesis
+`EffectiveWeightedEvalEq` of `RequestProject/PartB/Effective.lean`; everything
+else, including the effective Schützenberger bound
+(`effectiveWeightedBound`, proved in
+`RequestProject/PartB/WeightedBound.lean`), is discharged in full.
 The decision procedure for equivalence is the expected one: compute the
 Schützenberger bound `N` for the two codes and compare the two values on all
 strings of length at most `N`.  Two things have to be checked for this to be a
@@ -15,7 +18,7 @@ strings of length at most `N`.  Two things have to be checked for this to be a
 * Zeroness is the special case of equivalence with the code of the empty
   automaton (`zeroWCode`), which computes the constant function `0`.
 -/
-import RequestProject.PartB.Effective
+import RequestProject.PartB.WeightedBound
 
 namespace Transducers
 namespace WDec
@@ -182,22 +185,20 @@ end WDec
 /-- **Theorem B.3.3** from the effectivity hypotheses.  Given two weighted
 automata over the field of rationals, it is decidable whether they compute the
 same function. -/
-theorem weighted_equivalence_decidable_aux
-    (hEval : EffectiveWeightedEvalEq) (hBound : EffectiveWeightedBound) :
+theorem weighted_equivalence_decidable_aux (hEval : EffectiveWeightedEvalEq) :
     DecidableUnderPromise (fun p : WCode × WCode => WCodeValid p.1 ∧ WCodeValid p.2)
       (fun p => wcodeEval p.1 = wcodeEval p.2) := by
   obtain ⟨D, hDcomp, hD⟩ := hEval
-  obtain ⟨N, hNcomp, hN⟩ := hBound
+  obtain ⟨N, hNcomp, hN⟩ := effectiveWeightedBound
   exact ⟨WDec.wEqB D N, WDec.computable_wEqB hDcomp hNcomp,
     fun p hp => WDec.wEqB_iff hD hN p hp.1 hp.2⟩
 
 /-- **Theorem B.3.7** from the effectivity hypotheses.  The zeroness problem is
 decidable for weighted automata over the field of rationals; it is the special
 case of Theorem B.3.3 in which the second automaton is the empty one. -/
-theorem weighted_zeroness_decidable_aux
-    (hEval : EffectiveWeightedEvalEq) (hBound : EffectiveWeightedBound) :
+theorem weighted_zeroness_decidable_aux (hEval : EffectiveWeightedEvalEq) :
     DecidableUnderPromise WCodeValid (fun c => wcodeEval c = 0) := by
-  obtain ⟨D, hDcomp, hD⟩ := weighted_equivalence_decidable_aux hEval hBound
+  obtain ⟨D, hDcomp, hD⟩ := weighted_equivalence_decidable_aux hEval
   refine ⟨fun c => D (c, zeroWCode), hDcomp.comp (Computable.pair Computable.id
     (Computable.const zeroWCode)), fun c hc => ?_⟩
   rw [hD (c, zeroWCode) ⟨hc, wCodeValid_zeroWCode⟩]

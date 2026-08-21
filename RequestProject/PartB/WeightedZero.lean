@@ -193,16 +193,19 @@ theorem weighted_zero_of_short {B K : Type} [Field K] {h : List B → K} (hw : I
   refine ⟨Fintype.card Q, fun hshort => ?_⟩
   exact linRep_zero_of_short I m bta h hrep hshort
 
-/-- **The equivalence criterion for weighted automata over a field.**  For every
-two functions computed by weighted automata there is a bound `n` such that the
-two functions are equal as soon as they agree on all inputs of length at most
-`n`.  This is the mathematical content of Theorem B.3.3. -/
-theorem weighted_eq_of_short {B K : Type} [Field K] {h₁ h₂ : List B → K}
-    (hw₁ : IsWeighted h₁) (hw₂ : IsWeighted h₂) :
-    ∃ n : ℕ, (∀ v : List B, v.length ≤ n → h₁ v = h₂ v) → h₁ = h₂ := by
+/-- **The equivalence criterion for two linear representations.**  Two functions
+given by linear representations of dimensions `d₁` and `d₂` are equal as soon as
+they agree on all inputs of length at most `d₁ + d₂`.  This is the form of
+Schützenberger's criterion with an *explicit* bound, used to compute the bound
+from a code in `RequestProject/PartB/WeightedBound.lean`. -/
+theorem linRep_eq_of_short {B K Q₁ Q₂ : Type} [Field K] [Fintype Q₁] [DecidableEq Q₁]
+    [Fintype Q₂] [DecidableEq Q₂] {h₁ h₂ : List B → K}
+    (I₁ : Finset Q₁) (m₁ : B → Matrix Q₁ Q₁ K) (bta₁ : Q₁ → K)
+    (I₂ : Finset Q₂) (m₂ : B → Matrix Q₂ Q₂ K) (bta₂ : Q₂ → K)
+    (hrep₁ : ∀ v : List B, h₁ v = ∑ q ∈ I₁, ∑ q' : Q₁, ((v.map m₁).prod) q q' * bta₁ q')
+    (hrep₂ : ∀ v : List B, h₂ v = ∑ q ∈ I₂, ∑ q' : Q₂, ((v.map m₂).prod) q q' * bta₂ q') :
+    (∀ v : List B, v.length ≤ Fintype.card Q₁ + Fintype.card Q₂ → h₁ v = h₂ v) → h₁ = h₂ := by
   classical
-  obtain ⟨Q₁, hQ₁, hQd₁, I₁, m₁, bta₁, hrep₁⟩ := WNF.exists_linRep hw₁
-  obtain ⟨Q₂, hQ₂, hQd₂, I₂, m₂, bta₂, hrep₂⟩ := WNF.exists_linRep hw₂
   -- the direct sum of the two linear representations computes the difference
   set m : B → Matrix (Q₁ ⊕ Q₂) (Q₁ ⊕ Q₂) K :=
     fun a => Matrix.fromBlocks (m₁ a) 0 0 (m₂ a) with hm
@@ -233,10 +236,27 @@ theorem weighted_eq_of_short {B K : Type} [Field K] {h₁ h₂ : List B → K}
     rw [Finset.sum_congr rfl (fun q _ => e1 q), Finset.sum_congr rfl (fun q _ => e2 q),
       Finset.sum_neg_distrib, hrep₁ v, hrep₂ v]
     ring
-  refine ⟨Fintype.card (Q₁ ⊕ Q₂), fun hshort => ?_⟩
+  refine fun hshort => ?_
+  have hcard : Fintype.card (Q₁ ⊕ Q₂) = Fintype.card Q₁ + Fintype.card Q₂ := Fintype.card_sum
   have hzero := linRep_zero_of_short (I₁.disjSum I₂) m bta (fun v => h₁ v - h₂ v) hrep
-    (fun v hv => by show h₁ v - h₂ v = 0; rw [hshort v hv]; ring)
+    (fun v hv => by
+      show h₁ v - h₂ v = 0
+      rw [hshort v (by rw [hcard] at hv; exact hv)]
+      ring)
   funext v
   exact sub_eq_zero.mp (hzero v)
+
+/-- **The equivalence criterion for weighted automata over a field.**  For every
+two functions computed by weighted automata there is a bound `n` such that the
+two functions are equal as soon as they agree on all inputs of length at most
+`n`.  This is the mathematical content of Theorem B.3.3. -/
+theorem weighted_eq_of_short {B K : Type} [Field K] {h₁ h₂ : List B → K}
+    (hw₁ : IsWeighted h₁) (hw₂ : IsWeighted h₂) :
+    ∃ n : ℕ, (∀ v : List B, v.length ≤ n → h₁ v = h₂ v) → h₁ = h₂ := by
+  classical
+  obtain ⟨Q₁, hQ₁, hQd₁, I₁, m₁, bta₁, hrep₁⟩ := WNF.exists_linRep hw₁
+  obtain ⟨Q₂, hQ₂, hQd₂, I₂, m₂, bta₂, hrep₂⟩ := WNF.exists_linRep hw₂
+  exact ⟨Fintype.card Q₁ + Fintype.card Q₂,
+    linRep_eq_of_short I₁ m₁ bta₁ I₂ m₂ bta₂ hrep₁ hrep₂⟩
 
 end Transducers

@@ -15,6 +15,7 @@ import RequestProject.PartC.ContAux
 import RequestProject.PartC.TwoWayCont
 import RequestProject.PartC.TwoWayPrecomp
 import RequestProject.PartC.TwoWayRat
+import RequestProject.PartC.TwoWayCompFinal
 
 namespace Transducers
 
@@ -130,8 +131,8 @@ theorem twoWay_precomp_rational {A B C : Type} [Finite A] [Finite B] [Finite C]
 under composition. -/
 theorem twoWay_comp {A B C : Type} [Finite A] [Finite B] [Finite C]
     {f : List A → List B} {g : List B → List C}
-    (hf : IsTwoWay f) (hg : IsTwoWay g) : IsTwoWay (g ∘ f) := by
-  sorry
+    (hf : IsTwoWay f) (hg : IsTwoWay g) : IsTwoWay (g ∘ f) :=
+  isTwoWay_comp_twoWay hf hg
 
 /-- **Corollary C.2.8.**  If a function is computed by a two-way transducer,
 then it is regular. -/

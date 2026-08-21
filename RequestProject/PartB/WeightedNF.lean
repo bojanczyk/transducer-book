@@ -215,7 +215,7 @@ def copTr (t : Q × List B × S × Q) : ISt Q × List B × S × ISt Q :=
 
 /-- The automaton `M` with the initial states replaced by copies that are not
 final, together with a state `phi` accounting for the empty run. -/
-def initCopy [Finite Q] : LabAut B S (ISt Q) where
+def initCopy : LabAut B S (ISt Q) where
   init := cop '' M.init ∪ {x | x = phi ∧ (M.init ∩ M.final).Nonempty}
   final := Sum.inl '' M.final ∪ {x | x = phi ∧ (M.init ∩ M.final).Nonempty}
   δ := liftTr '' M.δ ∪ copTr '' {t ∈ M.δ | t.1 ∈ M.init}
@@ -259,8 +259,6 @@ lemma weightOf_liftRun (ts : List (Q × List B × S × Q)) :
       have := hmap ts
       simp only [weightOf, labelsOf, List.map_map] at this
       simp [liftRun, weightOf, labelsOf, copTr, List.map_map, this]
-
-variable [Finite Q]
 
 omit [Semiring S] in
 lemma path_liftRun {q p : Q} {ts : List (Q × List B × S × Q)} (h : M.Path q ts p) :
@@ -310,7 +308,7 @@ lemma liftRun_accepting {v : List B} {ts : List (Q × List B × S × Q)}
         ?_⟩
       exact path_liftRun M (path_tail hpath)
 
-omit [Finite Q] [Semiring S] in
+omit [Semiring S] in
 lemma liftRun_injective : Function.Injective (liftRun (Q := Q) (B := B) (S := S)) := by
   intro ts us h
   cases ts with
