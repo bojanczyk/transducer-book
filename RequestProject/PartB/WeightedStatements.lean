@@ -24,6 +24,8 @@ import RequestProject.PartB.RatIndex
 import RequestProject.PartB.RatAnnot
 import RequestProject.PartB.LenDec
 import RequestProject.PartB.WeightedDec
+import RequestProject.PartB.RatEqDec
+import RequestProject.PartB.MealyDec
 
 namespace Transducers
 
@@ -83,12 +85,34 @@ theorem weighted_equivalence_decidable
       (fun p => wcodeEval p.1 = wcodeEval p.2) :=
   weighted_equivalence_decidable_aux hEval hBound
 
-/-- **Theorem B.3.4.**  The equivalence problem `f = g` is decidable for rational
-functions. -/
+/-  The unconditional form of Theorem B.3.4 is
+
 theorem rationalFun_equivalence_decidable :
     DecidableUnderPromise (fun p : RelCode × RelCode => CodeFunctional p.1 ∧ CodeFunctional p.2)
       (fun p => codeRel p.1 = codeRel p.2) := by
   sorry
+
+As in the book, it is proved by a reduction to Theorem B.3.3 (the reduction is
+carried out in full in `RequestProject/PartB/PairWeighted.lean`,
+`RequestProject/PartB/PairWeightedEval.lean` and
+`RequestProject/PartB/RatEqDec.lean`), so it inherits the two effectivity
+hypotheses of `RequestProject/PartB/Effective.lean` and nothing else.  The
+version below takes them as explicit assumptions. -/
+
+/-- **Theorem B.3.4.**  The equivalence problem `f = g` is decidable for rational
+functions.
+
+Proved from the two effectivity hypotheses of
+`RequestProject/PartB/Effective.lean`, by the reduction of the book to
+Theorem B.3.3: the two coded functions are turned into two weighted automata
+over `ℚ` whose values are the numerical encodings of the outputs, multiplied by
+the numbers of accepting runs of the two automata, which are the same for both.
+See the comment above. -/
+theorem rationalFun_equivalence_decidable
+    (hEval : EffectiveWeightedEvalEq) (hBound : EffectiveWeightedBound) :
+    DecidableUnderPromise (fun p : RelCode × RelCode => CodeFunctional p.1 ∧ CodeFunctional p.2)
+      (fun p => codeRel p.1 = codeRel p.2) :=
+  rationalFun_equivalence_decidable_aux hEval hBound
 
 /-- **Lemma B.3.5.**  Weighted automata (over any semiring) are closed under
 pre-composition with rational functions. -/
@@ -152,17 +176,35 @@ therefore false for every code, and the statement would be provable with the
 constant procedure `fun _ => false`.  The statement below relativises both the
 promise and the property to strings over the alphabet of the code. -/
 
-/-- **Theorem B.4.2.**  One can decide if a rational function is computed by a
-Mealy machine.
+/-  The relativised statement of Theorem B.4.2 without the effectivity
+hypotheses is
 
-The relation described by the code and the Mealy machine are compared on the
-strings over the alphabet of the code (`CodeWord`); see the comment above for
-why the unrelativised statement is degenerate. -/
 theorem rationalFun_isMealy_decidable :
     DecidableUnderPromise CodeFunctional
       (fun c => ∃ f : List ℕ → List ℕ,
         (∀ w, CodeWord c w → ∀ v, (codeRel c w v ↔ v = f w)) ∧ IsMealy f) := by
   sorry
+
+Its proof reduces prefix preservation to the equality of two rational functions
+(`RequestProject/PartB/PrefixCodes.lean`), which is decided by Theorem B.3.4, so
+it inherits the two effectivity hypotheses of
+`RequestProject/PartB/Effective.lean` and nothing else; everything else -- the
+characterisation of the Mealy fragment, the decision of length preservation
+(Lemma B.4.3) and the two code constructions -- is discharged in full. -/
+
+/-- **Theorem B.4.2.**  One can decide if a rational function is computed by a
+Mealy machine.
+
+The relation described by the code and the Mealy machine are compared on the
+strings over the alphabet of the code (`CodeWord`); see the comment above the
+original statement for why the unrelativised statement is degenerate, and the
+comment just above for the two effectivity hypotheses. -/
+theorem rationalFun_isMealy_decidable
+    (hEval : EffectiveWeightedEvalEq) (hBound : EffectiveWeightedBound) :
+    DecidableUnderPromise CodeFunctional
+      (fun c => ∃ f : List ℕ → List ℕ,
+        (∀ w, CodeWord c w → ∀ v, (codeRel c w v ↔ v = f w)) ∧ IsMealy f) :=
+  rationalFun_isMealy_decidable_aux hEval hBound
 
 /-- **Lemma B.4.3.**  One can decide if a rational function is
 length-preserving.
