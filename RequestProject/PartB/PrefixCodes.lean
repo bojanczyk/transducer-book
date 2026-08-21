@@ -381,8 +381,77 @@ theorem dropCode_alphabet (c : RelCode) (x : ℕ) :
     refine ⟨_, mem_dropCode.2 ⟨t, ht, dropTrans_head t⟩, ?_⟩
     exact hx
 
+/-- `dropLast` as a composition of primitive recursive list operations. -/
+lemma dropLast_eq_reverse_tail_reverse {α : Type} (l : List α) :
+    l.dropLast = l.reverse.tail.reverse := by
+  induction l using List.reverseRecOn with
+  | nil => rfl
+  | append_singleton xs x => simp
+
+lemma primrec_dropLast {α : Type} [Primcodable α] :
+    Primrec (fun l : List α => l.dropLast) :=
+  (Primrec.list_reverse.comp (Primrec.list_tail.comp Primrec.list_reverse)).of_eq
+    (fun l => (dropLast_eq_reverse_tail_reverse l).symm)
+
+/-- A transition of a code is built primitively recursively from its four
+components. -/
+lemma primrec_mkTr {α : Type} [Primcodable α] {f₁ : α → ℕ} {f₂ f₃ : α → List ℕ} {f₄ : α → ℕ}
+    (h₁ : Primrec f₁) (h₂ : Primrec f₂) (h₃ : Primrec f₃) (h₄ : Primrec f₄) :
+    Primrec (fun a => ((f₁ a, f₂ a, f₃ a, f₄ a) : Tr)) :=
+  h₁.pair (h₂.pair (h₃.pair h₄))
+
+lemma primrec_dropTrans : Primrec dropTrans := by
+  have hsrc : Primrec (fun t : Tr => 3 * t.1) :=
+    Primrec.nat_mul.comp (Primrec.const 3) Primrec.fst
+  have htgt : Primrec (fun t : Tr => 3 * t.2.2.2) :=
+    Primrec.nat_mul.comp (Primrec.const 3) (Primrec.snd.comp (Primrec.snd.comp Primrec.snd))
+  have hin : Primrec (fun t : Tr => t.2.1) := Primrec.fst.comp Primrec.snd
+  have hout : Primrec (fun t : Tr => t.2.2.1) := Primrec.fst.comp (Primrec.snd.comp Primrec.snd)
+  have hnil : Primrec (fun _ : Tr => ([] : List ℕ)) := Primrec.const _
+  have hbranch₁ : Primrec (fun t : Tr =>
+      [(3 * t.1 + 2, t.2.1, ([] : List ℕ), 3 * t.2.2.2 + 2),
+        (3 * t.1, t.2.1, ([] : List ℕ), 3 * t.2.2.2),
+        (3 * t.1 + 1, t.2.1, ([] : List ℕ), 3 * t.2.2.2 + 1)]) := by
+    refine Primrec.list_cons.comp
+      (primrec_mkTr (Primrec.nat_add.comp hsrc (Primrec.const 2)) hin hnil
+        (Primrec.nat_add.comp htgt (Primrec.const 2))) ?_
+    refine Primrec.list_cons.comp (primrec_mkTr hsrc hin hnil htgt) ?_
+    exact Primrec.list_cons.comp
+      (primrec_mkTr (Primrec.nat_add.comp hsrc (Primrec.const 1)) hin hnil
+        (Primrec.nat_add.comp htgt (Primrec.const 1)))
+      (Primrec.const [])
+  have hbranch₂ : Primrec (fun t : Tr =>
+      [(3 * t.1 + 2, t.2.1, t.2.2.1, 3 * t.2.2.2), (3 * t.1, t.2.1, t.2.2.1, 3 * t.2.2.2),
+        (3 * t.1 + 2, t.2.1, t.2.2.1.dropLast, 3 * t.2.2.2 + 1),
+        (3 * t.1, t.2.1, t.2.2.1.dropLast, 3 * t.2.2.2 + 1)]) := by
+    have hdl : Primrec (fun t : Tr => t.2.2.1.dropLast) := primrec_dropLast.comp hout
+    refine Primrec.list_cons.comp
+      (primrec_mkTr (Primrec.nat_add.comp hsrc (Primrec.const 2)) hin hout htgt) ?_
+    refine Primrec.list_cons.comp (primrec_mkTr hsrc hin hout htgt) ?_
+    refine Primrec.list_cons.comp
+      (primrec_mkTr (Primrec.nat_add.comp hsrc (Primrec.const 2)) hin hdl
+        (Primrec.nat_add.comp htgt (Primrec.const 1))) ?_
+    exact Primrec.list_cons.comp
+      (primrec_mkTr hsrc hin hdl (Primrec.nat_add.comp htgt (Primrec.const 1)))
+      (Primrec.const [])
+  refine (Primrec.cond (LenDec.primrec_decEq hout (Primrec.const ([] : List ℕ)))
+    hbranch₁ hbranch₂).of_eq ?_
+  intro t
+  by_cases h : t.2.2.1 = [] <;> simp [dropTrans, h]
+
 lemma primrec_dropCode : Primrec dropCode := by
-  sorry
+  refine Primrec.pair (Primrec.list_flatMap Primrec.fst (primrec_dropTrans.comp Primrec.snd).to₂)
+    (Primrec.pair ?_ ?_)
+  · exact Primrec.list_map (Primrec.fst.comp Primrec.snd)
+      (Primrec.nat_add.comp (Primrec.nat_mul.comp (Primrec.const 3) Primrec.snd)
+        (Primrec.const 2)).to₂
+  · refine Primrec.list_flatMap (Primrec.snd.comp Primrec.snd) ?_
+    have h2 : Primrec (fun z : RelCode × ℕ => 3 * z.2 + 2) :=
+      Primrec.nat_add.comp (Primrec.nat_mul.comp (Primrec.const 3) Primrec.snd) (Primrec.const 2)
+    have h1 : Primrec (fun z : RelCode × ℕ => 3 * z.2 + 1) :=
+      Primrec.nat_add.comp (Primrec.nat_mul.comp (Primrec.const 3) Primrec.snd) (Primrec.const 1)
+    exact (Primrec.list_cons.comp h2
+      (Primrec.list_cons.comp h1 (Primrec.const []))).to₂
 
 /-! ## The code computing `w ↦ f (dropLast w)` -/
 
@@ -571,8 +640,27 @@ theorem shiftCode_alphabet (c : RelCode) (x : ℕ) :
   · rintro ⟨t, ht, hx⟩
     exact ⟨t, mem_shiftCode.2 (Or.inl ht), hx⟩
 
+lemma primrec_shiftTrans : Primrec shiftTrans := by
+  have hinner : Primrec (fun z : (RelCode × ℕ) × ℕ =>
+      ((z.1.2, [z.2], ([] : List ℕ), CodeMerge.freshF z.1.1) : Tr)) :=
+    primrec_mkTr (Primrec.snd.comp Primrec.fst)
+      (Primrec.list_cons.comp Primrec.snd (Primrec.const []))
+      (Primrec.const ([] : List ℕ))
+      (CodeMerge.primrec_freshF.comp (Primrec.fst.comp Primrec.fst))
+  have houter : Primrec (fun z : RelCode × ℕ =>
+      (codeAlphabet z.1).map
+        (fun a => ((z.2, [a], ([] : List ℕ), CodeMerge.freshF z.1) : Tr))) :=
+    Primrec.list_map (primrec_codeAlphabet.comp Primrec.fst) hinner.to₂
+  exact Primrec.list_append.comp Primrec.fst
+    (Primrec.list_flatMap (Primrec.snd.comp Primrec.snd) houter.to₂)
+
 lemma primrec_shiftCode : Primrec shiftCode := by
-  sorry
+  have hfresh : Primrec (fun c : RelCode => CodeMerge.freshF c) := CodeMerge.primrec_freshF
+  have hfresh1 : Primrec (fun c : RelCode => CodeMerge.freshF c + 1) :=
+    Primrec.nat_add.comp hfresh (Primrec.const 1)
+  exact Primrec.pair primrec_shiftTrans
+    (Primrec.pair (Primrec.list_cons.comp hfresh1 (Primrec.fst.comp Primrec.snd))
+      (Primrec.list_cons.comp hfresh (Primrec.list_cons.comp hfresh1 (Primrec.const []))))
 
 /-! ## The two codes describe functions -/
 
@@ -580,13 +668,35 @@ lemma primrec_shiftCode : Primrec shiftCode := by
 over its alphabet. -/
 theorem codeFunctional_dropCode {c : RelCode} (hc : CodeFunctional c) :
     CodeFunctional (dropCode c) := by
-  sorry
+  intro w hw
+  have hw' : CodeWord c w := fun x hx => (dropCode_alphabet c x).1 (hw x hx)
+  obtain ⟨u, hu, huniq⟩ := hc w hw'
+  refine ⟨u.dropLast, (dropCode_rel c w _).2 ⟨u, hu, rfl⟩, ?_⟩
+  rintro v hv
+  obtain ⟨u', hu', rfl⟩ := (dropCode_rel c w v).1 hv
+  rw [huniq u' hu']
 
 /-- Under the promise, `shiftCode c` describes a total function on the strings
 over its alphabet. -/
 theorem codeFunctional_shiftCode {c : RelCode} (hc : CodeFunctional c) :
     CodeFunctional (shiftCode c) := by
-  sorry
+  intro w hw
+  have hw' : CodeWord c w := fun x hx => (shiftCode_alphabet c x).1 (hw x hx)
+  rcases List.eq_nil_or_concat' w with rfl | ⟨u, a, rfl⟩
+  · refine ⟨[], (shiftCode_rel c [] []).2 (Or.inl ⟨rfl, rfl⟩), ?_⟩
+    rintro v hv
+    rcases (shiftCode_rel c [] v).1 hv with ⟨-, rfl⟩ | ⟨u', a', hcontra, -, -⟩
+    · rfl
+    · exact absurd hcontra.symm (by simp)
+  · have hu : CodeWord c u := fun x hx => hw' x (by simp [hx])
+    have ha : a ∈ codeAlphabet c := hw' a (by simp)
+    obtain ⟨v, hv, huniq⟩ := hc u hu
+    refine ⟨v, (shiftCode_rel c _ v).2 (Or.inr ⟨u, a, rfl, ha, hv⟩), ?_⟩
+    rintro v' hv'
+    rcases (shiftCode_rel c _ v').1 hv' with ⟨hcontra, -⟩ | ⟨u', a', heq, -, hrel⟩
+    · simp at hcontra
+    · obtain ⟨rfl, -⟩ := List.append_inj' heq rfl
+      exact huniq v' hrel
 
 /-! ## Prefix preservation as the equality of the two coded functions -/
 
@@ -595,12 +705,68 @@ def PrefixCrit (c : RelCode) : Prop :=
   ∀ (w : List ℕ) (v : List ℕ) (a : ℕ) (u : List ℕ),
     codeRel c w v → codeRel c (w ++ [a]) u → v <+: u
 
+/-- A prefix of length one less than the whole string is its `dropLast`. -/
+lemma eq_dropLast_of_prefix {v u : List ℕ} (h : v <+: u) (hl : v.length + 1 = u.length) :
+    v = u.dropLast := by
+  have h1 : v = u.take v.length := List.prefix_iff_eq_take.1 h
+  have h2 : u.dropLast = u.take (u.length - 1) := List.dropLast_eq_take
+  rw [h1, h2]
+  congr 1
+  omega
+
 /-- Under the promise and length preservation, the coded function is prefix
 preserving exactly when the two codes above describe the same relation. -/
 theorem prefixCrit_iff {c : RelCode} (hc : CodeFunctional c)
     (hlen : ∀ w v, codeRel c w v → v.length = w.length) :
     PrefixCrit c ↔ codeRel (dropCode c) = codeRel (shiftCode c) := by
-  sorry
+  constructor
+  · intro hpre
+    funext w v
+    apply propext
+    constructor
+    · intro hd
+      obtain ⟨u, hu, rfl⟩ := (dropCode_rel c w v).1 hd
+      have hw : CodeWord c w := codeRel_codeWord hu
+      rcases List.eq_nil_or_concat' w with rfl | ⟨w', a, rfl⟩
+      · have hnil : u = [] := List.eq_nil_of_length_eq_zero (by simpa using hlen _ _ hu)
+        subst hnil
+        exact (shiftCode_rel c [] []).2 (Or.inl ⟨rfl, rfl⟩)
+      · have ha : a ∈ codeAlphabet c := hw a (by simp)
+        have hw' : CodeWord c w' := fun x hx => hw x (by simp [hx])
+        obtain ⟨v', hv', -⟩ := hc w' hw'
+        have hprefix : v' <+: u := hpre w' v' a u hv' hu
+        have hlu : u.length = w'.length + 1 := by simpa using hlen _ _ hu
+        have hlv : v'.length = w'.length := hlen _ _ hv'
+        have hdl : v' = u.dropLast := eq_dropLast_of_prefix hprefix (by omega)
+        rw [← hdl]
+        exact (shiftCode_rel c _ v').2 (Or.inr ⟨w', a, rfl, ha, hv'⟩)
+    · intro hs
+      rcases (shiftCode_rel c w v).1 hs with ⟨rfl, rfl⟩ | ⟨u, a, rfl, ha, hrel⟩
+      · obtain ⟨z, hz, -⟩ := hc [] (by intro x hx; simp at hx)
+        have hnil : z = [] := List.eq_nil_of_length_eq_zero (by simpa using hlen _ _ hz)
+        exact (dropCode_rel c [] []).2 ⟨z, hz, by simp [hnil]⟩
+      · have hu : CodeWord c u := codeRel_codeWord hrel
+        have hwa : CodeWord c (u ++ [a]) := by
+          intro x hx
+          rcases List.mem_append.1 hx with hx' | hx'
+          · exact hu x hx'
+          · have hxa : x = a := by simpa using hx'
+            exact hxa ▸ ha
+        obtain ⟨z, hz, -⟩ := hc (u ++ [a]) hwa
+        have hprefix : v <+: z := hpre u v a z hrel hz
+        have hlz : z.length = u.length + 1 := by simpa using hlen _ _ hz
+        have hlv : v.length = u.length := hlen _ _ hrel
+        exact (dropCode_rel c _ v).2 ⟨z, hz, eq_dropLast_of_prefix hprefix (by omega)⟩
+  · intro heq w v a u hwv hwau
+    have hcw : CodeWord c (w ++ [a]) := codeRel_codeWord hwau
+    have ha : a ∈ codeAlphabet c := hcw a (by simp)
+    have h1 : codeRel (shiftCode c) (w ++ [a]) v :=
+      (shiftCode_rel c _ v).2 (Or.inr ⟨w, a, rfl, ha, hwv⟩)
+    rw [← heq] at h1
+    obtain ⟨u', hu', rfl⟩ := (dropCode_rel c _ v).1 h1
+    obtain ⟨z, -, huniq⟩ := hc _ hcw
+    rw [huniq u' hu', huniq u hwau]
+    exact List.dropLast_prefix z
 
 end PrefixCodes
 end Transducers

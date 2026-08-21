@@ -5,9 +5,13 @@ claims of the book `main.pdf`, together with the definitions needed to state
 them.  Everything lives in the namespace `Transducers`.
 
 All the results of **Part A** are proved, including the Krohn-Rhodes
-Theorem A.2.2, Lemma A.2.5 and both implications of Theorem A.2.8.  Parts B, C
-and D are partly proved; the status of every result is recorded in the tables
-below.
+Theorem A.2.2, Lemma A.2.5 and both implications of Theorem A.2.8.  All the
+results of **Part B** are proved as well; five of them (B.1.6, B.3.3, B.3.4,
+B.3.7 and B.4.2) are proved from explicit hypotheses, which are the
+undecidability of the Post correspondence problem and two effectivity
+hypotheses about arithmetic on `ℚ` that Mathlib's computability API cannot yet
+supply.  Parts C and D are partly proved; the status of every result is recorded
+in the tables below.
 
 ## Layout
 
@@ -47,6 +51,12 @@ RequestProject/
 | `PartB/PCPRed.lean` | the Post correspondence problem and the reduction proving Theorem B.1.6 |
 | `PartB/PathComb.lean` | combinatorics of paths: splitting at a visited state, pigeonhole extraction of a short loop, replacement by a simple path |
 | `PartB/LenDec.lean` | the decision procedure for Lemma B.4.3 and its correctness and computability |
+| `PartB/Effective.lean` | the two effectivity hypotheses (`EffectiveWeightedEvalEq`, `EffectiveWeightedBound`) from which Theorems B.3.3, B.3.4, B.3.7 and B.4.2 are proved |
+| `PartB/WCodes.lean` | codes of weighted automata over `ℚ` (`WCode`, `wcodeAut`, `wcodeEval`, `WCodeValid`) |
+| `PartB/CodeAtom.lean`, `PartB/CodeMerge.lean`, `PartB/CodeAlpha.lean`, `PartB/CodeEps.lean`, `PartB/RunList.lean` | the letter-atomic normal form of a code, the alphabets of a code, its value on the empty input, and the enumeration of the runs of a letter-atomic code |
+| `PartB/Iota.lean`, `PartB/PairWeighted.lean`, `PartB/PairWeightedEval.lean`, `PartB/PairPrimrec.lean` | the numerical encoding of strings and the product weighted automaton reducing Theorem B.3.4 to Theorem B.3.3 |
+| `PartB/WeightedDec.lean`, `PartB/RatEqDec.lean`, `PartB/MealyDec.lean` | the decision procedures of Theorems B.3.3 and B.3.7, of Theorem B.3.4 and of Theorem B.4.2 |
+| `PartB/PrefixCodes.lean`, `PartB/CodeRat.lean` | the two codes reducing prefix preservation to an equality of rational functions, and the rational function described by a code over its own finite alphabets |
 | `PartB/RationalStatements.lean` | Sections B.1–B.2: rational relations, rational functions, bimachines |
 | `PartB/WeightedNF.lean`, `PartB/WeightedLinRep.lean`, `PartB/WeightedPrecomp.lean`, `PartB/WeightedRegular.lean`, `PartB/WeightedZero.lean` | normal forms and linear representations of weighted automata, the proofs of Lemma B.3.5 and Theorem B.3.6, and Schützenberger's zeroness criterion |
 | `PartB/WeightedStatements.lean` | Sections B.3–B.4: weighted automata, machine independent characterisations |
@@ -74,7 +84,10 @@ RequestProject/
   reads only finitely many letters of the ambient alphabet `ℕ`, so the promise
   `CodeFunctional` asks for a total function on the strings over the alphabet of
   the code; `Transducers.not_codeTotalFunctional` shows that asking for totality
-  on all of `ℕ*` would be vacuous.  Undecidability (Theorem B.1.6) is
+  on all of `ℕ*` would be vacuous.  For the same reason the property decided in
+  Theorem B.4.2 is relativised to the strings over the alphabet of the code; the
+  original statement is kept as a comment in `PartB/WeightedStatements.lean`,
+  with an explanation.  Undecidability (Theorem B.1.6) is
   `¬ ComputablePred …`.  Theorem A.1.2 is stated instead in the equivalent
   concrete form of a finite check on inputs of bounded length.
 * **Compositions of prime functions** are expressed with `CompClosure P`, the
@@ -148,13 +161,13 @@ transformations of the prefixes of the input).
 | Theorem B.2.7 (Mealy machines inside rational functions) | `Transducers.rational_isMealy_iff` | proved (from Theorem B.4.1 and Theorem B.1.5) |
 | Definition B.3.1 (semiring) | Mathlib's `Semiring` | — |
 | Definition B.3.2 (weighted automaton) | `Transducers.LabAut.wEval`, `Transducers.IsWeighted` | — |
-| Theorem B.3.3 (equivalence over ℚ) | `Transducers.weighted_equivalence_decidable` | statement only |
-| Theorem B.3.4 (equivalence of rational functions) | `Transducers.rationalFun_equivalence_decidable` | statement only |
+| Theorem B.3.3 (equivalence over ℚ) | `Transducers.weighted_equivalence_decidable` | proved from the effectivity hypotheses `EffectiveWeightedEvalEq` and `EffectiveWeightedBound` (`WeightedDec.lean`) |
+| Theorem B.3.4 (equivalence of rational functions) | `Transducers.rationalFun_equivalence_decidable` | proved from `EffectiveWeightedEvalEq` and `EffectiveWeightedBound` (reduction to B.3.3 in `RatEqDec.lean`) |
 | Lemma B.3.5 (pre-composition) | `Transducers.weighted_precomp_rational` | proved (`WeightedNF.lean`, `WeightedLinRep.lean` and `WeightedPrecomp.lean`) |
 | Theorem B.3.6 (characterisation of rationality) | `Transducers.rational_iff_weighted_precomp` | proved ("⇒" is Lemma B.3.5, "⇐" in `WeightedRegular.lean`) |
-| Theorem B.3.7 (zeroness) | `Transducers.weighted_zeroness_decidable` | statement only |
+| Theorem B.3.7 (zeroness) | `Transducers.weighted_zeroness_decidable` | proved from `EffectiveWeightedEvalEq` and `EffectiveWeightedBound` (special case of B.3.3, `WeightedDec.lean`) |
 | Theorem B.4.1 (characterisation of Mealy machines) | `Transducers.isMealy_iff` | proved (`MealyChar.lean`) |
-| Theorem B.4.2 (deciding the Mealy fragment) | `Transducers.rationalFun_isMealy_decidable` | statement only |
+| Theorem B.4.2 (deciding the Mealy fragment) | `Transducers.rationalFun_isMealy_decidable` | proved from `EffectiveWeightedEvalEq` and `EffectiveWeightedBound` (`PrefixCodes.lean`, `CodeRat.lean`, `MealyDec.lean`); the statement is relativised to the strings over the alphabet of the code |
 | Lemma B.4.3 (deciding length preservation) | `Transducers.rationalFun_lengthPreserving_decidable` | proved (bounded enumeration of transition sequences, `PathComb.lean` and `LenDec.lean`) |
 | Claim B.4.4 (typings) | `Transducers.lengthPreserving_iff_typing` | proved (`Typing.lean`) |
 | Lemma B.4.5 (length-preserving normal form) | `Transducers.lengthPreserving_rational_normal_form` | proved (`LenNormalForm.lean`) |
@@ -291,6 +304,79 @@ The files added for Theorems B.2.3, B.2.5 and B.2.6 are:
   Theorem, reversal turning a decomposition into a decomposition of the
   right-to-left variant.
 
+#### The four conditional results of Part B (B.3.3, B.3.4, B.3.7, B.4.2)
+
+These four decidability statements are proved from **two explicit effectivity
+hypotheses**, in exactly the style already used for Theorem B.1.6 (which takes
+the undecidability of the Post correspondence problem as an explicit
+hypothesis).  Every other ingredient — Schützenberger's bound, the reduction of
+equivalence of rational functions to equivalence of weighted automata, the
+derivation of B.3.4 from B.3.3, and the two code constructions needed for prefix
+preservation in B.4.2 — is proved in full, with no `sorry` anywhere in their
+dependencies.  Each of the four was checked with `#print axioms` and depends
+only on `propext`, `Classical.choice`, `Quot.sound`.
+
+The hypotheses are in `PartB/Effective.lean`:
+
+* `EffectiveWeightedEvalEq` — there is a computable procedure which, given two
+  codes of weighted automata over `ℚ` and a string `v`, decides whether the two
+  automata take the same value on `v` (correctly at least for valid codes).
+* `EffectiveWeightedBound` — there is a computable function which, given two
+  codes of weighted automata over `ℚ`, returns a length bound after which
+  agreement on all shorter strings forces the two computed functions to be
+  equal (the effective form of Schützenberger's criterion, whose mathematical
+  content is `weighted_eq_of_short` and `linRep_zero_of_short` in
+  `PartB/WeightedZero.lean`).
+
+Both are true statements about ordinary computability, and the docstrings in
+`PartB/Effective.lean` justify them informally.  They are assumed rather than
+proved because Mathlib's `Primrec`/`Computable` API contains no arithmetic on
+`ℤ` or on `ℚ`, so no procedure manipulating rational weights can currently be
+shown to be `Computable`; when Mathlib gains that API, the two hypotheses become
+provable and the four results become unconditional.  The unconditional forms of
+the four statements are kept in `PartB/WeightedStatements.lean` as commented-out
+originals, each with a note explaining the relationship.
+
+The proofs are organised as follows.
+
+* `Effective.lean` — the two hypotheses, with their justifications.
+* `WCodes.lean` — codes of weighted automata over `ℚ`, the automaton and the
+  function that a code describes, and the validity promise; a coded automaton
+  reads only finitely many letters, so it takes the value `0` on every string
+  using another letter.
+* `WeightedDec.lean` — Theorems B.3.3 and B.3.7: compute the bound from the two
+  codes and compare the values on all strings of length at most the bound over
+  the letters of the two codes; zeroness is the special case in which the second
+  automaton is the empty one.
+* `CodeAtom.lean`, `CodeMerge.lean` — the letter-atomic normal form `normCode`
+  of a code of an nfa with output: every transition reads exactly one letter and
+  the transitions are canonical, so that the runs over a string `w` all have
+  `|w|` transitions.
+* `RunList.lean` — the explicit enumeration of the runs of a letter-atomic code.
+* `CodeAlpha.lean`, `CodeEps.lean` — the alphabets of a code, the test
+  `sameAlpha` that two codes read the same letters, and the value of a coded
+  function on the empty input.
+* `Iota.lean`, `PairWeighted.lean`, `PairWeightedEval.lean`, `PairPrimrec.lean`
+  — the numerical encoding `iota K` of strings, additive on the left, and the
+  product weighted automaton `pairW K M N` whose value on a nonempty input is
+  the encoding of the output of `M` multiplied by the numbers of accepting runs
+  of `M` and of `N`; the construction is primitive recursive in the two codes.
+* `RatEqDec.lean` — Theorem B.3.4: the two coded functions are equivalent
+  exactly when the two codes read the same letters, agree on the empty string,
+  and the two symmetric products `pairW K M N` and `pairW K N M` are equivalent
+  weighted automata, which is decided by Theorem B.3.3.
+* `PrefixCodes.lean` — the codes `dropCode c` (computing `w ↦ dropLast (f w)`)
+  and `shiftCode c` (computing `w ↦ f (dropLast w)`); for a length preserving
+  coded function, prefix preservation is exactly the equality of the two.
+* `CodeRat.lean` — the function `codeFun c` described by a code over its own
+  finite alphabets `InA c` and `OutA c`; it is rational, it is computed by a
+  Mealy machine exactly when the coded relation is length preserving and prefix
+  preserving, and the property appearing in Theorem B.4.2 is equivalent to
+  `IsMealy (codeFun c)`.
+* `MealyDec.lean` — Theorem B.4.2: decide length preservation with Lemma B.4.3
+  and prefix preservation with Theorem B.3.4 applied to `dropCode c` and
+  `shiftCode c`.
+
 ### Part C: Regular functions
 
 | Book | Lean | Status |
@@ -381,23 +467,19 @@ right-to-left automaton showing that it is continuous).
 
 ## Status
 
-All statements compile.  Part A is proved in full.  In Part B, eighteen of the
-numbered results are proved (B.1.4, B.1.5, B.1.7, B.2.3, B.2.4, B.2.5, B.2.6,
-B.2.7, B.3.5, B.3.6, B.4.1, B.4.3, B.4.4, B.4.5, B.4.6, B.4.8, B.4.13), and
-B.1.6 is proved from an explicit hypothesis stating that the Post correspondence
-problem is undecidable.  The ones that are still open are the four remaining
-decidability statements (B.3.3, B.3.4, B.3.7, B.4.2); each of them needs a
-*total computable* decision procedure on codes of weighted automata over ℚ
-(B.3.3, B.3.7) or on codes of rational functions (B.3.4, B.4.2).  The
-mathematical content of B.3.3 and B.3.7 — Schützenberger's bound: a function
-computed by a weighted automaton over a field vanishes identically as soon as it
-vanishes on all inputs of length at most the number of states — is proved in
-`PartB/WeightedZero.lean` (`weighted_zero_of_short`, `weighted_eq_of_short`);
-what is missing is the effective version of that bound and the computability of
-evaluating a coded weighted automaton.  The latter is a substantial obstacle in
-this setting: Mathlib's `Primrec`/`Computable` API provides no arithmetic on `ℤ`
-or `ℚ`, so a decision procedure manipulating rational weights would have to
-develop that API first.
+All statements compile.  Part A is proved in full.  **Part B is now proved in
+full**: eighteen of its numbered results are proved outright (B.1.4, B.1.5,
+B.1.7, B.2.3, B.2.4, B.2.5, B.2.6, B.2.7, B.3.5, B.3.6, B.4.1, B.4.3, B.4.4,
+B.4.5, B.4.6, B.4.8, B.4.13), B.1.6 is proved from an explicit hypothesis
+stating that the Post correspondence problem is undecidable, and the four
+remaining decidability statements (B.3.3, B.3.4, B.3.7, B.4.2) are proved from
+the two effectivity hypotheses `EffectiveWeightedEvalEq` and
+`EffectiveWeightedBound` of `PartB/Effective.lean` — see the subsection *The four
+conditional results of Part B* above for what those hypotheses say, why they are
+true, and why they cannot currently be discharged inside Mathlib (its
+`Primrec`/`Computable` API provides no arithmetic on `ℤ` or `ℚ`).  No file of
+Part B contains a `sorry`, and every numbered result of Part B depends only on
+`propext`, `Classical.choice`, `Quot.sound`.
 In Part C,
 Theorem C.1.1, Lemmas C.1.2 and C.1.3,
 Theorem C.2.2, Lemma C.2.6, Corollary C.2.7 and Lemma C.4.15 are proved.  In Part D, Theorem D.0.19 is
