@@ -19,6 +19,8 @@ import RequestProject.PartC.TwoWayCompFinal
 import RequestProject.PartC.TwoWayRegular
 import RequestProject.PartC.RegClosure
 import RequestProject.PartC.SnakeReg
+import RequestProject.PartC.SSTRegular
+import RequestProject.PartC.SSTTwoWay
 
 namespace Transducers
 
@@ -325,53 +327,26 @@ theorem sum_of_regular {A₁ A₂ B₁ B₂ : Type} [Finite A₁] [Finite A₂] 
 
 /-! ## C.3 Streaming string transducers -/
 
-/-- A register update is *copyless* if each register name occurs at most once in
-the concatenation of the strings assigned to the registers. -/
-def Copyless {X B : Type} [Fintype X] (u : X → List (X ⊕ B)) : Prop :=
-  ((Finset.univ.toList.map u).flatten.filterMap
-      (fun z => match z with | Sum.inl x => some x | Sum.inr _ => none)).Nodup
-
-/-- **Definition C.3.1 (sst).**  A streaming string transducer. -/
-structure SST (A B Q X : Type) [Fintype X] where
-  /-- The initial state. -/
-  init : Q
-  /-- The transition function: a new state and a register update. -/
-  step : Q → A → Q × (X → List (X ⊕ B))
-  /-- Register updates are copyless. -/
-  step_copyless : ∀ q a, Copyless (step q a).2
-  /-- The final output function. -/
-  final : Q → List (X ⊕ B)
-
-namespace SST
-
-variable {A B Q X : Type} [Fintype X]
-
-/-- Substituting the contents of the registers into a string over `X + B`. -/
-def subst (η : X → List B) (s : List (X ⊕ B)) : List B :=
-  (s.map (fun z => match z with | Sum.inl x => η x | Sum.inr b => [b])).flatten
-
-/-- Reading one input letter. -/
-def stepConfig (T : SST A B Q X) (c : Q × (X → List B)) (a : A) : Q × (X → List B) :=
-  ((T.step c.1 a).1, fun x => subst c.2 ((T.step c.1 a).2 x))
-
-/-- The configuration reached after reading an input string. -/
-def runConfig (T : SST A B Q X) (w : List A) : Q × (X → List B) :=
-  w.foldl T.stepConfig (T.init, fun _ => [])
-
-/-- The semantics of a streaming string transducer. -/
-def eval (T : SST A B Q X) (w : List A) : List B :=
-  subst (T.runConfig w).2 (T.final (T.runConfig w).1)
-
-end SST
-
-/-- A function computed by a streaming string transducer. -/
-def IsSST {A B : Type} (f : List A → List B) : Prop :=
-  ∃ (Q X : Type) (_ : Finite Q) (instX : Fintype X) (T : @SST A B Q X instX), T.eval = f
+/-! The definitions `Transducers.Copyless`, `Transducers.SST` (Definition C.3.1),
+its semantics `Transducers.SST.subst`, `Transducers.SST.stepConfig`,
+`Transducers.SST.runConfig`, `Transducers.SST.eval` and `Transducers.IsSST` used
+to be given here; they have been moved, unchanged, to
+`RequestProject/PartC/SSTDef.lean`, which this file imports (through
+`RequestProject/PartC/SSTRegular.lean`), so that the constructions used in the
+proof of Theorem C.3.2 could be developed before this file. -/
 
 /-- **Theorem C.3.2.**  Streaming string transducers compute exactly the regular
-functions. -/
+functions.
+
+The right-to-left implication is `isSST_of_isRegularFun`
+(`RequestProject/PartC/SSTRegular.lean`): sst's are closed under
+post-composition with the prime regular functions, so they contain every
+composition of primes.  The left-to-right implication goes through
+Theorem C.2.9: an sst is simulated by a two-way transducer
+(`isTwoWay_of_isSST`, `RequestProject/PartC/SSTTwoWay.lean`), and a two-way
+transducer computes a regular function (`twoWay_isRegular`). -/
 theorem sst_iff_regular {A B : Type} [Finite A] [Finite B] (f : List A → List B) :
-    IsSST f ↔ IsRegularFun f := by
-  sorry
+    IsSST f ↔ IsRegularFun f :=
+  ⟨fun hf => twoWay_isRegular (isTwoWay_of_isSST hf), fun hf => isSST_of_isRegularFun hf⟩
 
 end Transducers

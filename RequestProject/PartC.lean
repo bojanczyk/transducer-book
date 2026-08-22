@@ -12,5 +12,14 @@ import RequestProject.PartC.Statements
 import RequestProject.PartC.SnakeLoop
 import RequestProject.PartC.SnakeConfine
 import RequestProject.PartC.SnakeMirror
+import RequestProject.PartC.SnakeLocal
+import RequestProject.PartC.SnakePiece
+import RequestProject.PartC.SnakePieceRev
+import RequestProject.PartC.TwoWayOrder
+import RequestProject.PartC.TwoWayAnnotOrd
+import RequestProject.PartC.RatBi
+import RequestProject.PartC.RegPair
 import RequestProject.PartC.SnakeReg
 import RequestProject.PartC.MSO
+import RequestProject.PartC.SSTRegular
+import RequestProject.PartC.SSTTwoWay

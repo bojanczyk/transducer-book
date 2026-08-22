@@ -31,40 +31,61 @@ that the book's proof of the induction step rests on is available:
   two-way transducer, in `RequestProject/PartC/SnakeMirror.lean`
   (`TwoWay.mirror`, `TwoWay.reaches_mirror_iff`): swapping the two neighbouring
   letters in the transition function and swapping the two directions turns every
-  run into the mirrored run on the reversed input, with the same output.
+  run into the mirrored run on the reversed input, with the same output;
+* the gluing of the pieces, once they have been cut out: the *neighbouring-block
+  map combinator* of stages 1--3 of the book's proof,
+
+    `w₀ # w₁ # ⋯ # wₙ  ↦  f (w₀ # w₁) · f (w₁ # w₂) ⋯ f (wₙ₋₁ # wₙ)`,
+
+  is a regular operation, `Transducers.RegPair.isRegularFun_pairMap` in
+  `RequestProject/PartC/RegPair.lean`;
+* the order in time of the visits of the run to a cut -- which is what the
+  recursion defining the record-breaking columns refers to -- is available as a
+  rational annotation of the input,
+  `Transducers.TwoWay.exists_rational_visitOrder_annot` in
+  `RequestProject/PartC/TwoWayAnnotOrd.lean`.
 
 What is missing is the machine-theoretic half of the induction step: the
-presentation of each piece of the run as the value, on a factor of the input cut
-out by a rational function, of the width-`(k-1)` output function of a snake
-*with an arbitrary source and target vertex*, and the gluing of the pieces with
-the map combinator of Lemma C.2.10.  Carrying this out needs a version of
-`TwoWay.widthOut` in which the source and the target of the run are marked in
-the input, since the pieces of a run start and end in the middle of it; the
-present formulation, with the run started in the initial configuration, is only
-the case that the reduction below uses.
+rational function of stage 1 of the book's proof, which marks the
+record-breaking columns of the run, and the presentation of each piece of the
+run as the value, on the block cut out around a record-breaker, of the
+width-`(k-1)` output function of a snake *with an arbitrary source and target
+vertex*.  Carrying the latter out needs a version of `TwoWay.widthOut` in which
+the source and the target of the run are marked in the input, since the pieces
+of a run start and end in the middle of it; the present formulation, with the
+run started in the initial configuration, is only the case that the reduction
+below uses (`TwoWay.widthOut_stopRight` in
+`RequestProject/PartC/SnakePiece.lean` is the first step in that direction).
 -/
 import RequestProject.PartC.SnakeBase
 import RequestProject.PartC.SnakeLoop
+import RequestProject.PartC.RegPair
 
 namespace Transducers
+
+open TwoWay in
+/-- **The bounded-width snake functions of width at most `k`, over all finite
+alphabets and all state sets.**  This is the shape of the induction hypothesis
+of the book's snake lemma: the induction is over *all* snake graphs of a given
+width, which here means over all two-way transducers over all finite input
+alphabets and all finite state sets. -/
+def SnakeReg (k : ℕ) : Prop :=
+  ∀ (A B Q : Type), Finite A → Finite B → Finite Q →
+    ∀ M : TwoWay A B Q, IsRegularFun (widthOut M k)
 
 open TwoWay in
 /-- **The induction step of the snake lemma**, the only remaining gap in
 Theorem C.2.9: if the output of every snake of width at most `k + 1` is regular,
 then so is the output of every snake of width at most `k + 2`.
 
-It is stated here in the unconditional form "the width-`(k+2)` output function
-of a two-way transducer is regular", because the induction hypothesis is over
-*all* two-way transducers over *all* finite input alphabets, which is how the
-book quantifies over all snake graphs of a given width.
-
 The book's proof splits a run of width at most `k + 2` into the loop parts and
 the progress parts of its record-breaking columns, all of which have width at
 most `k + 1` (`TwoWay.run_splitsInto_pred`), computes the outputs of the parts
-by the induction hypothesis, and glues them with the three closure properties
-of Lemma C.2.10. -/
-theorem boundedWidth_isRegular_step {A B Q : Type} [Finite A] [Finite B] [Finite Q]
-    (M : TwoWay A B Q) (k : ℕ) : IsRegularFun (widthOut M (k + 2)) := by
+by the induction hypothesis `ih`, and glues them with the three closure
+properties of Lemma C.2.10 -- the last gluing step, the map combinator applied
+to the blocks `wᵢ₋₁ # wᵢ` cut out by the record-breakers, is available as
+`Transducers.RegPair.isRegularFun_pairMap`. -/
+theorem boundedWidth_isRegular_step (k : ℕ) (ih : SnakeReg (k + 1)) : SnakeReg (k + 2) := by
   sorry
 
 open TwoWay in
@@ -77,12 +98,19 @@ other inputs, is regular.
 The base cases `k = 0` and `k = 1` are proved in
 `RequestProject/PartC/SnakeBase.lean`; the induction step is
 `boundedWidth_isRegular_step`, which is still open. -/
+theorem snakeReg (k : ℕ) : SnakeReg k := by
+  induction k using Nat.strong_induction_on with
+  | _ k ih =>
+      match k with
+      | 0 => exact fun A B Q _ _ _ M => widthOut_zero_isRegular M
+      | 1 => exact fun A B Q _ _ _ M => widthOut_one_isRegular M
+      | (j + 2) => exact boundedWidth_isRegular_step j (ih (j + 1) (by omega))
+
+open TwoWay in
+/-- **The snake lemma**, for a single two-way transducer. -/
 theorem boundedWidth_isRegular {A B Q : Type} [Finite A] [Finite B] [Finite Q]
-    (M : TwoWay A B Q) (k : ℕ) : IsRegularFun (widthOut M k) := by
-  match k with
-  | 0 => exact widthOut_zero_isRegular M
-  | 1 => exact widthOut_one_isRegular M
-  | (k + 2) => exact boundedWidth_isRegular_step M k
+    (M : TwoWay A B Q) (k : ℕ) : IsRegularFun (widthOut M k) :=
+  snakeReg k A B Q ‹_› ‹_› ‹_› M
 
 open TwoWay in
 /-- Every function computed by a two-way transducer is regular, *provided* the
