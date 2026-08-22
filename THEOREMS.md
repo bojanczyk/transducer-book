@@ -73,6 +73,14 @@ RequestProject/
 | `PartC/MapLiftAux.lean`, `PartC/MapLiftRat.lean`, `PartC/MapLiftPrime.lean`, `PartC/RegMapLift.lean` | closure of the regular functions under map lifting (first item of Lemma C.2.10): the map lifting of a rational function is rational, the map liftings of map reverse and map duplicate are regular, and the general case follows by induction on the composition tree |
 | `PartC/SumShape.lean`, `PartC/SumPrime.lean`, `PartC/SumReg.lean`, `PartC/RegSum.lean` | Claim C.2.11: the *marked sum* of two regular functions, its compatibility with composition, its prime base cases, and the passage from the marked sum to the sum of the claim (with the counterexample `Transducers.not_sum_of_regular_nil` to the claim as printed) |
 | `PartC/RegClosure.lean` | closure of the regular functions under concatenation and under conditionals over a regular language (second and third items of Lemma C.2.10) |
+| `PartC/SnakeWidth.lean` | the *width* of the run of a two-way transducer (the maximal number of visits to a single column) and the bound `width ≤ |Q|` for a halting run |
+| `PartC/SnakeBase.lean` | the base cases `k ≤ 1` of the induction on the width in the snake lemma: a halting run of width one never moves left, so it is a left-to-right pass, its output is computed by a bimachine, and the inputs on which it is such a pass form a regular language (`TwoWay.widthOut_zero_isRegular`, `TwoWay.widthOut_one_isRegular`) |
+| `PartC/SnakeReg.lean` | the book's snake lemma `Transducers.boundedWidth_isRegular` — proved for `k ≤ 1` from `SnakeBase.lean` and reduced, for `k ≥ 2`, to the induction step `Transducers.boundedWidth_isRegular_step` (the only remaining `sorry` of Section C.2) — and the reduction of the hard half of Theorem C.2.9 to it (`Transducers.isRegularFun_of_isTwoWay`) |
+| `PartC/SnakeWalk.lean` | combinatorics of the trajectory of a run, seen as a walk: intermediate values, first and last visit to a column, visit counts, record-breaking columns, and the width bounds for the progress parts and for the two halves of a one-sided loop |
+| `PartC/SnakeRec.lean` | the sequence of record-breaking columns of a walk, its stabilisation, the increasing chain of times it defines, and the resulting decomposition of the output of a run into the outputs of the loop parts and of the progress parts |
+| `PartC/SnakeConfine.lean` | the confinement of the pieces of the record-breaker decomposition: after the last visit to a record-breaking column the walk stays strictly to its right (`Walk.recSeq_lt_of_recLast_lt`), up to the first visit to one it stays weakly to its left (`Walk.le_recSeq_of_le_recFirst`), so the loop and the progress parts of the `i`-th record-breaker are contained in the columns `x (i-1) < · ≤ x (i+1)` (`Walk.loop_confined`, `Walk.progress_confined`), i.e. in the book's block `wᵢ₋₁ # wᵢ` |
+| `PartC/SnakeMirror.lean` | mirroring a two-way transducer (`TwoWay.mirror`: swap the two letters adjacent to the head and the two directions), an involution that turns every run into the mirrored run on the reversed input, with the same output (`TwoWay.stepCfg_mirror`, `TwoWay.reaches_mirror_iff`); this is the book's "reverse the snake" |
+| `PartC/SnakeLoop.lean` | splitting a looping part of a walk into pieces of smaller width (intermediate visits to the base column, then the furthest column of each one-sided loop, the left-hand case being reduced to the right-hand one by reflecting the walk), and the induction step of the snake lemma at the level of runs: `Transducers.TwoWay.runOutput_splits` |
 | `PartC/KTypes.lean` | `k`-types of strings (Definition C.4.12) and their properties (Lemma C.4.15) |
 | `PartC/Statements.lean` | Sections C.1–C.3: regular functions, two-way transducers, streaming string transducers |
 | `PartC/MSO.lean` | Section C.4: monadic second-order logic, relabellings, transductions, the first-order fragment |
@@ -417,7 +425,7 @@ The proofs are organised as follows.
 | Lemma C.2.6 (pre-composition with Mealy machines) | `Transducers.twoWay_precomp_mealy` | proved |
 | Corollary C.2.7 (pre-composition with rational functions) | `Transducers.twoWay_precomp_rational` | proved (`TwoWayHom.lean`, `TwoWayBlock.lean`, `TwoWayErase.lean` and `TwoWayRat.lean`, from Theorem B.2.6 and Lemma C.2.6) |
 | Corollary C.2.8 (regular ⊆ two-way) | `Transducers.regularFun_isTwoWay`, `Transducers.isTwoWay_of_isRegularFun` | proved (`TwoWaySweep.lean`, `TwoWayRegular.lean`, from Corollary C.2.7 and Theorem C.2.5); the direction printed in the book is a typo — see *A typo in Corollary C.2.8* below |
-| Theorem C.2.9 (two-way = regular) | `Transducers.twoWay_iff_regular`, `Transducers.twoWay_isRegular` | the right-to-left implication is proved (it is Corollary C.2.8 above); the left-to-right one, `Transducers.twoWay_isRegular` (two-way ⊆ regular, the inclusion printed in Corollary C.2.8), is **open** — see *What is missing in Theorem C.2.9* below |
+| Theorem C.2.9 (two-way = regular) | `Transducers.twoWay_iff_regular`, `Transducers.twoWay_isRegular` | the right-to-left implication is proved (it is Corollary C.2.8 above); the left-to-right one, `Transducers.twoWay_isRegular` (two-way ⊆ regular, the inclusion printed in Corollary C.2.8), is **open**: it is reduced, sorry-free, to the snake lemma `Transducers.boundedWidth_isRegular` of `SnakeReg.lean`, whose base cases `k ≤ 1` are proved in `SnakeBase.lean` and whose combinatorial content is proved in `SnakeWalk.lean`, `SnakeRec.lean` and `SnakeLoop.lean`; what is left is the induction step `Transducers.boundedWidth_isRegular_step` — see *What is missing in Theorem C.2.9* below |
 | Lemma C.2.10 (closure properties) | `Transducers.regular_closure_properties` | **proved** (`MapLiftAux.lean`, `MapLiftRat.lean`, `MapLiftPrime.lean`, `RegMapLift.lean`, `RatSeq.lean`, `RegClosure.lean`) |
 | Claim C.2.11 (disjoint sums) | `Transducers.sum_of_regular` | **proved** (`SumShape.lean`, `SumPrime.lean`, `SumReg.lean`, `RegSum.lean`), in the corrected form — the claim as printed is false on the empty input, see *An error in Claim C.2.11* below |
 | Definition C.3.1 (sst) | `Transducers.SST`, `Transducers.IsSST` | — |
@@ -574,9 +582,8 @@ afterwards), `SumReg.lean` the induction on the composition tree, and
 #### What is missing in Theorem C.2.9
 
 The right-to-left implication of Theorem C.2.9 is Corollary C.2.8, so it is
-proved.  The left-to-right implication, `Transducers.twoWay_isRegular`, is the
-only `sorry` of `PartC/Statements.lean` that concerns Section C.2.  The book
-proves it by decomposing a two-way transducer as
+proved.  The left-to-right implication, `Transducers.twoWay_isRegular`, is still
+open.  The book proves it by decomposing a two-way transducer as
 
 ```
 A*  --compute snake graph-->  C*  --output of snake graph-->  B*
@@ -591,12 +598,117 @@ already available in this project through `TwoWayVisit.lean` and
 `TwoWayAnnot.lean`.  What is missing is the second stage: the book's lemma that
 the output of a snake graph is a regular function of its string encoding, proved
 by induction on the *width* of the snake graph (the maximal number of visits to
-a single column, which is bounded by `|Q|`).  The induction step splits a snake
-into its *looping* parts and its *progressing* parts along the *record-breaking*
-columns, and recombines them with map lifting, concatenation and conditionals.
-Those three closure properties are exactly Lemma C.2.10, which is proved here,
-as is Claim C.2.11 on which it rests; the remaining gap is the combinatorics of
-the width induction itself.
+a single column, which is bounded by `|Q|`).
+
+The reduction to that lemma is formalised and contains no `sorry`.  Rather than
+introducing an alphabet of snake letters, a snake graph is presented as the run
+of a two-way transducer, which is the same thing up to the choice of the input
+alphabet: `SnakeWidth.lean` defines the width of a run (`TwoWay.WidthLe`) and
+proves that a halting run has width at most the number of states
+(`TwoWay.widthLe_card`, by the pigeonhole principle on configurations), and
+`SnakeReg.lean` deduces `Transducers.isRegularFun_of_isTwoWay` from the *snake
+lemma*
+
+```lean
+theorem boundedWidth_isRegular {A B Q : Type} [Finite A] [Finite B] [Finite Q]
+    (M : TwoWay A B Q) (k : ℕ) : IsRegularFun (TwoWay.widthOut M k)
+```
+
+(the function that outputs the run of `M` on the inputs whose run has width at
+most `k`, and the empty string on all other inputs, is regular).
+
+The snake lemma is proved by induction on `k`.  Its **base cases are proved**, in
+`SnakeBase.lean`:
+
+* `TwoWay.widthOut_zero_isRegular`: the width of a run is never `0`, since the
+  initial configuration already visits the leftmost column
+  (`TwoWay.not_widthLe_zero`), so the width-`0` output function is constantly
+  empty;
+* `TwoWay.widthOut_one_isRegular`: a halting run of width `1` never moves left,
+  because a leftward step would revisit the column the run has just come from;
+  such a run is a left-to-right pass, simulated by the deterministic automaton
+  `TwoWay.passDFA` whose language `TwoWay.PassLang` is exactly the set of inputs
+  on which the run is such a pass, and on that language the output of the run is
+  produced by the bimachine `TwoWay.passBim` (`TwoWay.runOut_eq_passBim`), while
+  off it the width-`1` output is empty (`TwoWay.widthOut_one_of_not_pass`); the
+  case distinction is a rational function by `isRationalFun_ite_lang`.
+
+The single remaining open statement is therefore the **induction step**, in
+`SnakeReg.lean`:
+
+```lean
+theorem boundedWidth_isRegular_step {A B Q : Type} [Finite A] [Finite B] [Finite Q]
+    (M : TwoWay A B Q) (k : ℕ) : IsRegularFun (TwoWay.widthOut M (k + 2))
+```
+
+This is the only `sorry` of the project that concerns Section C.2.
+
+What *is* proved, sorry-free, is the whole combinatorial content of the book's
+induction step, in `SnakeWalk.lean`, `SnakeRec.lean` and `SnakeLoop.lean`:
+
+* the trajectory of a halting run is a walk on the columns
+  (`TwoWay.isWalk_traj`) of width at most `k` (`TwoWay.visitsLe_of_widthLe`);
+* the record-breaking columns `x₀ < x₁ < ⋯ < x_N` of a walk are defined
+  greedily (`Walk.recSeq`), the sequence stabilises (`Walk.recStable_recN`), and
+  the first and last visits to them form an increasing chain of times covering
+  the whole run, so that the output of the run is the concatenation of the
+  outputs of the *loop parts* and of the *progress parts*
+  (`TwoWay.outRange_eq_loopProgOut`, `TwoWay.runOutput_eq_loopProgOut`);
+* each progress part visits every column at most `k - 1` times
+  (`Walk.recProgress_visitsLe` and, for the part after the last record-breaker,
+  `Walk.final_progress_visitsLe`);
+* each loop part is cut into finitely many pieces of width at most `k - 1`
+  (`Walk.loop_splitsInto`): first at the intermediate visits to its base column,
+  which leaves one-sided loops, then at the first visit to the furthest column
+  of each one-sided loop; the loops lying to the left of their base column are
+  reduced to those lying to the right by reflecting the walk (`Walk.mir`);
+* altogether, a halting run of width at most `k` (with `k ≥ 2`) splits into
+  finitely many consecutive pieces of width at most `k - 1`, and its output is
+  the concatenation of their outputs: `TwoWay.run_splitsInto_pred` and
+  `TwoWay.runOutput_splits`;
+* the pieces are moreover *confined* to two consecutive blocks of the input
+  (`SnakeConfine.lean`), which is the book's step 4: after the last visit to a
+  record-breaking column the walk stays strictly to its right
+  (`Walk.recSeq_lt_of_recLast_lt`, the book's "after visiting this
+  record-breaker, the previous one is never visited"), and up to the first
+  visit to a record-breaking column it stays weakly to its left
+  (`Walk.le_recSeq_of_le_recFirst`); hence the loop part and the progress part
+  of the `i`-th record-breaker are contained in the columns
+  `x (i-1) < · ≤ x (i+1)` (`Walk.loop_confined`, `Walk.progress_confined`,
+  `TwoWay.run_loop_confined`, `TwoWay.run_progress_confined`).  This is what
+  makes the rational function that produces one copy of the relevant factor of
+  the input for each piece have linear growth, as a regular function must;
+* the book's "without loss of generality the source column is before the target
+  column; otherwise reverse the snake" is available as `TwoWay.mirror`
+  (`SnakeMirror.lean`): swapping the two letters adjacent to the head in the
+  transition function and swapping the two directions gives an involution on
+  two-way transducers that turns every run into the mirrored run on the
+  reversed input, with the same output (`TwoWay.stepCfg_mirror`,
+  `TwoWay.reaches_mirror_iff`, `TwoWay.reaches_mirror_reverse`).  No alphabet of
+  snake letters has to be introduced for this.
+
+The remaining gap in `boundedWidth_isRegular_step` is therefore no longer
+combinatorial but machine-theoretic: one has to see that the output of each of
+these pieces is the value of a *width-`(k-1)` snake function* on a factor of the
+input that a rational function cuts out (which requires snakes with an arbitrary
+source and target, not only runs starting at the left end of the input), and
+that the pieces can be glued back together with map lifting, concatenation and
+conditionals.  Those three closure properties are exactly Lemma C.2.10, which is
+proved here, as is Claim C.2.11 on which it rests.
+
+Concretely, closing the gap in the present formulation asks for a version of
+`TwoWay.widthOut` in which the source and the target vertex of the run are
+marked in the input by extra letters (the pieces of a run start and end in the
+middle of it, and the run of a deterministic transducer from a marked source
+stops at the first — hence the only — visit to the marked target, because a
+halting run does not repeat a configuration), together with the rational
+functions of the book's four stages: marking the record-breakers, forming the
+blocks `wᵢ₋₁ # wᵢ`, duplicating them, and gluing the results with the map
+combinator.  The book's "without loss of generality the source is to the left of
+the target, otherwise reverse the snake" is available in this formulation as
+well: mirroring a two-way transducer (swapping the two neighbouring letters in
+its transition function and swapping the two directions) turns the run on `w`
+into the run on `w.reverse`, with the same output.
 
 ### Part D: Polyregular functions
 
@@ -645,10 +757,23 @@ Of Theorem C.2.9 (two-way transducers compute exactly the regular functions),
 the right-to-left implication is proved — it is Corollary C.2.8 — and the
 left-to-right implication, isolated as `Transducers.twoWay_isRegular`, is still
 open; `Transducers.twoWay_iff_regular` is proved from it and from
-Corollary C.2.8.  See *What is missing in Theorem C.2.9* above for what remains,
-namely the book's width induction on snake graphs.  Claim C.2.11 is proved in a
-corrected form: the statement as printed is false on the empty input, see
-*An error in Claim C.2.11* above.
+Corollary C.2.8.  That implication is reduced, sorry-free, to the book's snake
+lemma `Transducers.boundedWidth_isRegular` (`SnakeReg.lean`).  The snake lemma
+is proved by induction on the width `k`; its two base cases `k = 0` and `k = 1`
+(`Transducers.TwoWay.widthOut_zero_isRegular` and
+`Transducers.TwoWay.widthOut_one_isRegular`) are proved in full in
+`SnakeBase.lean`, and the only remaining `sorry` of Section C.2 is the induction
+step `Transducers.boundedWidth_isRegular_step` (`SnakeReg.lean`).  The
+combinatorics of the width induction that the book proves the step by —
+record-breaking columns, loop and progress parts, and the splitting of a run of
+width `k` into pieces of width `k - 1` together with the corresponding
+factorisation of its output — is proved in full in `SnakeWalk.lean`,
+`SnakeRec.lean` and `SnakeLoop.lean`, and the confinement of those pieces to
+two consecutive blocks of the input in `SnakeConfine.lean`; the book's
+"reverse the snake" is `SnakeMirror.lean`.  See *What is missing in
+Theorem C.2.9* above.  Claim C.2.11 is proved in a corrected form:
+the statement as printed is false on the empty input, see *An error in
+Claim C.2.11* above.
 
 Corollary C.2.8 is printed in the book as the inclusion `two-way ⊆ regular`,
 which is a typo: its proof establishes `regular ⊆ two-way`, and the printed
@@ -660,5 +785,18 @@ in full, while the printed inclusion is the still open
 
 `#print axioms` on `Transducers.twoWay_comp`, `Transducers.regularFun_isTwoWay`,
 `Transducers.isTwoWay_of_isRegularFun`,
-`Transducers.regular_closure_properties` and `Transducers.sum_of_regular`
+`Transducers.regular_closure_properties`, `Transducers.sum_of_regular`,
+`Transducers.TwoWay.runOutput_eq_loopProgOut`,
+`Transducers.Walk.walk_splitsInto_pred`,
+`Transducers.TwoWay.run_splitsInto_pred`,
+`Transducers.TwoWay.runOutput_splits`,
+`Transducers.TwoWay.widthOut_one_eq`,
+`Transducers.TwoWay.widthOut_zero_isRegular`,
+`Transducers.TwoWay.widthOut_one_isRegular`,
+`Transducers.Walk.loop_confined`,
+`Transducers.Walk.progress_confined`,
+`Transducers.TwoWay.stepCfg_mirror` and
+`Transducers.TwoWay.reaches_mirror_iff`
 reports only `propext`, `Classical.choice`, `Quot.sound`.
+(`Transducers.twoWay_iff_regular` and `Transducers.twoWay_isRegular` still
+depend on `sorryAx`, through `Transducers.boundedWidth_isRegular_step`.)

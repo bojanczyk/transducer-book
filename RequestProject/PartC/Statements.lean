@@ -18,6 +18,7 @@ import RequestProject.PartC.TwoWayRat
 import RequestProject.PartC.TwoWayCompFinal
 import RequestProject.PartC.TwoWayRegular
 import RequestProject.PartC.RegClosure
+import RequestProject.PartC.SnakeReg
 
 namespace Transducers
 
@@ -225,29 +226,36 @@ theorem regular_equivalence_decidable :
 it is *printed* in Corollary C.2.8): every function computed by a two-way
 transducer is regular, i.e. it can be decomposed into prime functions.
 
-This is the hard half of Theorem C.2.9 and it is **still open** in this
-formalisation.  The book proves it by decomposing a two-way transducer into
-`A* --compute snake graph--> C* --output of snake graph--> B*`, where a *snake
-graph* with states `Q`, length `n` and output alphabet `B` is a directed graph
-whose vertices are pairs (row in `Q`, column in `{0,…,n}`), whose edges are
-labelled by `B + 1` and join adjacent columns, and all of whose edges lie on a
-single directed path; the output of a snake graph is the concatenation of its
-edge labels.  The first stage is rational, by the same construction as the one
-used for Theorems C.2.2 and C.2.5 (available here through `TwoWayAnnot.lean`
-and `TwoWayVisit.lean`).  What is missing is the second stage, the book's lemma
-that the output of a snake graph is regular, proved by induction on the *width*
-of the snake graph -- the maximal number of times a single column is visited,
-which is bounded by `|Q|`.  The induction step splits a snake into its *looping*
-parts and its *progressing* parts along the *record-breaking* columns and glues
-the results back together with the three closure properties of
-`regular_closure_properties` (Lemma C.2.10) below.
+This is the hard half of Theorem C.2.9.  It is reduced, in
+`RequestProject/PartC/SnakeReg.lean`, to the book's snake lemma
+`Transducers.boundedWidth_isRegular`, whose base cases `k = 0` and `k = 1` are
+proved in `RequestProject/PartC/SnakeBase.lean` and whose induction step
+`Transducers.boundedWidth_isRegular_step` is **still open** in this
+formalisation: a run that halts visits every column at most `|Q|` times
+(`TwoWay.widthLe_card`), so the function computed by a two-way transducer with
+state set `Q` is its own width-`|Q|` output function `TwoWay.widthOut M |Q|`,
+and it remains to see that the width-`k` output function of a two-way transducer
+is regular for every `k`.
 
-So the two closure ingredients that the book's argument rests on
-(Lemma C.2.10 and Claim C.2.11) are available and fully proved; the remaining
-gap is exactly the combinatorial width induction on snake graphs. -/
+The book proves the snake lemma by induction on the width, decomposing a run of
+width `k` into *looping* parts and *progressing* parts along the
+*record-breaking* columns; the parts have width at most `k - 1`, they are cut
+out of the input by rational functions, and they are glued back together with
+the three closure properties of `regular_closure_properties` (Lemma C.2.10)
+below.  The two closure ingredients that the book's argument rests on
+(Lemma C.2.10 and Claim C.2.11) are available and fully proved, as is the
+reduction to snakes, and so is the combinatorics of the width induction:
+`RequestProject/PartC/SnakeWalk.lean`, `RequestProject/PartC/SnakeRec.lean` and
+`RequestProject/PartC/SnakeLoop.lean` prove that a halting run of width at most
+`k ≥ 2` splits into finitely many consecutive pieces of width at most `k - 1`
+whose outputs concatenate to the output of the run
+(`TwoWay.runOutput_splits`).  What is still missing is the machine-theoretic
+half of the induction step: that the output of such a piece is the value of a
+width-`(k-1)` snake function on a factor of the input cut out by a rational
+function. -/
 theorem twoWay_isRegular {A B : Type} [Finite A] [Finite B] {f : List A → List B}
-    (hf : IsTwoWay f) : IsRegularFun f := by
-  sorry
+    (hf : IsTwoWay f) : IsRegularFun f :=
+  isRegularFun_of_isTwoWay hf
 
 /-- **Theorem C.2.9.**  Two-way transducers compute exactly the regular
 functions.
