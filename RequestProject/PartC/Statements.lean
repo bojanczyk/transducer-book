@@ -17,32 +17,18 @@ import RequestProject.PartC.TwoWayPrecomp
 import RequestProject.PartC.TwoWayRat
 import RequestProject.PartC.TwoWayCompFinal
 import RequestProject.PartC.TwoWayRegular
+import RequestProject.PartC.RegClosure
 
 namespace Transducers
 
-/-! ## The prime regular functions (Definition C.0.14) -/
+/-! ## The prime regular functions (Definition C.0.14)
 
-/-- The map reverse function `w₁ # ⋯ # wₙ ↦ reverse w₁ # ⋯ # reverse wₙ`. -/
-def mapReverse (A : Type) : List (Option A) → List (Option A) := mapLift List.reverse
-
-/-- The map duplicate function `w₁ # ⋯ # wₙ ↦ w₁w₁ # ⋯ # wₙwₙ`. -/
-def mapDuplicate (A : Type) : List (Option A) → List (Option A) :=
-  mapLift (fun w => w ++ w)
-
-/-- The family of prime regular functions: rational functions, map reverse and
-map duplicate.  The last two have type `(A + 1)* → (A + 1)*`, which is expressed
-by the bijections `e` and `e'` with `Option A₀`. -/
-def RegularFam : ∀ (A B : Type), (List A → List B) → Prop := fun A B f =>
-  IsRationalFun f ∨
-  (∃ (A₀ : Type) (e : A ≃ Option A₀) (e' : B ≃ Option A₀),
-      ∀ w, f w = (mapReverse A₀ (w.map e)).map e'.symm) ∨
-  (∃ (A₀ : Type) (e : A ≃ Option A₀) (e' : B ≃ Option A₀),
-      ∀ w, f w = (mapDuplicate A₀ (w.map e)).map e'.symm)
-
-/-- **Definition C.0.14 (Regular functions).**  A string-to-string function is
-regular if it is a finite composition of rational functions, map reverse and map
-duplicate. -/
-def IsRegularFun {A B : Type} (f : List A → List B) : Prop := CompClosure RegularFam A B f
+The definitions `Transducers.mapReverse`, `Transducers.mapDuplicate`,
+`Transducers.RegularFam` and `Transducers.IsRegularFun` (Definition C.0.14) used
+to be given here; they have been moved, unchanged, to
+`RequestProject/PartC/RegularDef.lean`, which this file imports, so that the
+constructions used in the proofs of Lemma C.2.10 and Claim C.2.11 could be
+developed before this file. -/
 
 /-! ## C.1 The prime regular functions -/
 
@@ -156,9 +142,9 @@ corollary is a typo: what is a corollary of Theorem C.2.5 is the inclusion
 as `Transducers.isTwoWay_of_isRegularFun` and `Transducers.regularFun_isTwoWay`.
 
 The inclusion `two-way ⊆ regular` as printed is exactly the hard half of
-Theorem C.2.9; it is stated (and still open) below as the left-to-right
-implication of `Transducers.twoWay_iff_regular`, and is therefore not duplicated
-here. -/
+Theorem C.2.9; it is stated (and still open) below as
+`Transducers.twoWay_isRegular`, the left-to-right implication of
+`Transducers.twoWay_iff_regular`, and is therefore not duplicated here. -/
 
 /-- **Corollary C.2.8** (corrected): every regular function is computed by a
 two-way transducer.  This is the statement that the book's proof of
@@ -235,15 +221,43 @@ theorem regular_equivalence_decidable :
 
 /-! ### C.2.4 Decomposition into prime functions -/
 
+/-- **Theorem C.2.9, left-to-right implication** (equivalently, the inclusion as
+it is *printed* in Corollary C.2.8): every function computed by a two-way
+transducer is regular, i.e. it can be decomposed into prime functions.
+
+This is the hard half of Theorem C.2.9 and it is **still open** in this
+formalisation.  The book proves it by decomposing a two-way transducer into
+`A* --compute snake graph--> C* --output of snake graph--> B*`, where a *snake
+graph* with states `Q`, length `n` and output alphabet `B` is a directed graph
+whose vertices are pairs (row in `Q`, column in `{0,…,n}`), whose edges are
+labelled by `B + 1` and join adjacent columns, and all of whose edges lie on a
+single directed path; the output of a snake graph is the concatenation of its
+edge labels.  The first stage is rational, by the same construction as the one
+used for Theorems C.2.2 and C.2.5 (available here through `TwoWayAnnot.lean`
+and `TwoWayVisit.lean`).  What is missing is the second stage, the book's lemma
+that the output of a snake graph is regular, proved by induction on the *width*
+of the snake graph -- the maximal number of times a single column is visited,
+which is bounded by `|Q|`.  The induction step splits a snake into its *looping*
+parts and its *progressing* parts along the *record-breaking* columns and glues
+the results back together with the three closure properties of
+`regular_closure_properties` (Lemma C.2.10) below.
+
+So the two closure ingredients that the book's argument rests on
+(Lemma C.2.10 and Claim C.2.11) are available and fully proved; the remaining
+gap is exactly the combinatorial width induction on snake graphs. -/
+theorem twoWay_isRegular {A B : Type} [Finite A] [Finite B] {f : List A → List B}
+    (hf : IsTwoWay f) : IsRegularFun f := by
+  sorry
+
 /-- **Theorem C.2.9.**  Two-way transducers compute exactly the regular
 functions.
 
 The right-to-left implication is Corollary C.2.8 (`regularFun_isTwoWay`, proved
-above).  The left-to-right implication, which is the inclusion printed in the
-statement of Corollary C.2.8 in the book, is the hard half and is still open. -/
+above).  The left-to-right implication is `twoWay_isRegular` above, the hard
+half, which is still open; see the discussion in its docstring. -/
 theorem twoWay_iff_regular {A B : Type} [Finite A] [Finite B] (f : List A → List B) :
-    IsTwoWay f ↔ IsRegularFun f := by
-  sorry
+    IsTwoWay f ↔ IsRegularFun f :=
+  ⟨fun hf => twoWay_isRegular hf, fun hf => regularFun_isTwoWay hf⟩
 
 open scoped Classical in
 /-- **Lemma C.2.10.**  Regular functions are closed under map lifting,
@@ -253,14 +267,21 @@ theorem regular_closure_properties {A B : Type} [Finite A] [Finite B]
     IsRegularFun (mapLift f) ∧
       IsRegularFun (fun w => f w ++ g w) ∧
       ∀ L : Language A, L.IsRegular →
-        IsRegularFun (fun w => if w ∈ L then f w else g w) := by
-  sorry
+        IsRegularFun (fun w => if w ∈ L then f w else g w) :=
+  ⟨isRegularFun_mapLift hf, isRegularFun_concat hf hg,
+    fun _ hL => isRegularFun_cond hf hg hL⟩
 
-/-- **Claim C.2.11.**  For regular functions `f₁ : A₁* → B₁*` and
-`f₂ : A₂* → B₂*` with disjoint input and output alphabets, the function
-`f₁ + f₂` is regular: it applies `f₁` to inputs using only letters of `A₁`,
-`f₂` to inputs using only letters of `A₂`, and returns a fixed string `⊥` using
-both output alphabets otherwise. -/
+/-  **Claim C.2.11** as printed in the book is *false* on the empty input: the
+empty string uses only letters of `A₁` and, at the same time, only letters of
+`A₂`, so the first two requirements below conflict on it unless `f₁ ε` and
+`f₂ ε` are both empty (see `Transducers.not_sum_of_regular_nil`, a
+counterexample with `f₁` constant and `f₂` the identity).  The original
+statement is kept here, commented out, and the corrected statement -- which
+asks for the two requirements on *nonempty* inputs only, and leaves the value
+on the empty input unspecified -- follows it.  The correction is harmless for
+the use made of the claim in the book: in the proof of Lemma C.2.10 the blocks
+that the sum is applied to are always nonempty.
+
 theorem sum_of_regular {A₁ A₂ B₁ B₂ : Type} [Finite A₁] [Finite A₂] [Finite B₁] [Finite B₂]
     {f₁ : List A₁ → List B₁} {f₂ : List A₂ → List B₂}
     (hf₁ : IsRegularFun f₁) (hf₂ : IsRegularFun f₂) :
@@ -272,6 +293,27 @@ theorem sum_of_regular {A₁ A₂ B₁ B₂ : Type} [Finite A₁] [Finite A₂] 
       (∀ w, (¬ ∃ u : List A₁, w = u.map Sum.inl) → (¬ ∃ u : List A₂, w = u.map Sum.inr) →
         F w = bot) := by
   sorry
+-/
+
+/-- **Claim C.2.11** (corrected on the empty input; see the note above).  For
+regular functions `f₁ : A₁* → B₁*` and `f₂ : A₂* → B₂*` with disjoint input and
+output alphabets, the function `f₁ + f₂` is regular: it applies `f₁` to the
+nonempty inputs using only letters of `A₁`, `f₂` to the nonempty inputs using
+only letters of `A₂`, and returns a fixed string `⊥` using both output alphabets
+otherwise.  The output alphabets are assumed to be nonempty, as they must be for
+`⊥` to exist. -/
+theorem sum_of_regular {A₁ A₂ B₁ B₂ : Type} [Finite A₁] [Finite A₂] [Finite B₁] [Finite B₂]
+    [Nonempty B₁] [Nonempty B₂]
+    {f₁ : List A₁ → List B₁} {f₂ : List A₂ → List B₂}
+    (hf₁ : IsRegularFun f₁) (hf₂ : IsRegularFun f₂) :
+    ∃ (bot : List (B₁ ⊕ B₂)) (F : List (A₁ ⊕ A₂) → List (B₁ ⊕ B₂)),
+      (∃ b₁, Sum.inl b₁ ∈ bot) ∧ (∃ b₂, Sum.inr b₂ ∈ bot) ∧
+      IsRegularFun F ∧
+      (∀ u : List A₁, u ≠ [] → F (u.map Sum.inl) = (f₁ u).map Sum.inl) ∧
+      (∀ u : List A₂, u ≠ [] → F (u.map Sum.inr) = (f₂ u).map Sum.inr) ∧
+      (∀ w, (¬ ∃ u : List A₁, w = u.map Sum.inl) → (¬ ∃ u : List A₂, w = u.map Sum.inr) →
+        F w = bot) :=
+  sum_of_regular_aux hf₁ hf₂
 
 /-! ## C.3 Streaming string transducers -/
 

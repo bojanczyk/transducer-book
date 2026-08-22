@@ -68,6 +68,11 @@ RequestProject/
 | `PartC/TwoWayHom.lean`, `PartC/TwoWayBlock.lean`, `PartC/TwoWayErase.lean`, `PartC/TwoWayRat.lean` | pre-composition of a two-way transducer with a homomorphism and with an arbitrary rational function (Corollary C.2.7) |
 | `PartC/TwoWayRun.lean`, `PartC/TwoWayVisit.lean`, `PartC/TwoWayAnnot.lean`, `PartC/TwoWayAnnotBim.lean`, `PartC/TwoWayCompAux.lean`, `PartC/TwoWayCompPred.lean`, `PartC/TwoWayComp.lean`, `PartC/TwoWayCompFinal.lean` | the composition of two two-way transducers (Theorem C.2.5) |
 | `PartC/TwoWaySweep.lean`, `PartC/TwoWayRegular.lean` | explicit two-way transducers for the identity, for post-composition with a letter-to-letter map, and for map reverse and map duplicate; every regular function is computed by a two-way transducer (corrected Corollary C.2.8) |
+| `PartC/RegularDef.lean` | the prime regular functions and the regular functions (Definition C.0.14), moved here unchanged from `PartC/Statements.lean`, together with their elementary closure properties |
+| `PartC/RatBuild.lean`, `PartC/RatTools.lean`, `PartC/RatSeq.lean` | a bimachine-based builder for rational functions, and the rational functions used by Lemma C.2.10 and Claim C.2.11 (constants, `cons`, letter-to-letter maps, homomorphisms, conditionals on a regular language, and sequential letter-by-letter transducers) |
+| `PartC/MapLiftAux.lean`, `PartC/MapLiftRat.lean`, `PartC/MapLiftPrime.lean`, `PartC/RegMapLift.lean` | closure of the regular functions under map lifting (first item of Lemma C.2.10): the map lifting of a rational function is rational, the map liftings of map reverse and map duplicate are regular, and the general case follows by induction on the composition tree |
+| `PartC/SumShape.lean`, `PartC/SumPrime.lean`, `PartC/SumReg.lean`, `PartC/RegSum.lean` | Claim C.2.11: the *marked sum* of two regular functions, its compatibility with composition, its prime base cases, and the passage from the marked sum to the sum of the claim (with the counterexample `Transducers.not_sum_of_regular_nil` to the claim as printed) |
+| `PartC/RegClosure.lean` | closure of the regular functions under concatenation and under conditionals over a regular language (second and third items of Lemma C.2.10) |
 | `PartC/KTypes.lean` | `k`-types of strings (Definition C.4.12) and their properties (Lemma C.4.15) |
 | `PartC/Statements.lean` | Sections C.1–C.3: regular functions, two-way transducers, streaming string transducers |
 | `PartC/MSO.lean` | Section C.4: monadic second-order logic, relabellings, transductions, the first-order fragment |
@@ -412,9 +417,9 @@ The proofs are organised as follows.
 | Lemma C.2.6 (pre-composition with Mealy machines) | `Transducers.twoWay_precomp_mealy` | proved |
 | Corollary C.2.7 (pre-composition with rational functions) | `Transducers.twoWay_precomp_rational` | proved (`TwoWayHom.lean`, `TwoWayBlock.lean`, `TwoWayErase.lean` and `TwoWayRat.lean`, from Theorem B.2.6 and Lemma C.2.6) |
 | Corollary C.2.8 (regular ⊆ two-way) | `Transducers.regularFun_isTwoWay`, `Transducers.isTwoWay_of_isRegularFun` | proved (`TwoWaySweep.lean`, `TwoWayRegular.lean`, from Corollary C.2.7 and Theorem C.2.5); the direction printed in the book is a typo — see *A typo in Corollary C.2.8* below |
-| Theorem C.2.9 (two-way = regular) | `Transducers.twoWay_iff_regular` | statement only; the easy implication is Corollary C.2.8 above, the hard one (two-way ⊆ regular, the inclusion printed in Corollary C.2.8) is open |
-| Lemma C.2.10 (closure properties) | `Transducers.regular_closure_properties` | statement only |
-| Claim C.2.11 (disjoint sums) | `Transducers.sum_of_regular` | statement only |
+| Theorem C.2.9 (two-way = regular) | `Transducers.twoWay_iff_regular`, `Transducers.twoWay_isRegular` | the right-to-left implication is proved (it is Corollary C.2.8 above); the left-to-right one, `Transducers.twoWay_isRegular` (two-way ⊆ regular, the inclusion printed in Corollary C.2.8), is **open** — see *What is missing in Theorem C.2.9* below |
+| Lemma C.2.10 (closure properties) | `Transducers.regular_closure_properties` | **proved** (`MapLiftAux.lean`, `MapLiftRat.lean`, `MapLiftPrime.lean`, `RegMapLift.lean`, `RatSeq.lean`, `RegClosure.lean`) |
+| Claim C.2.11 (disjoint sums) | `Transducers.sum_of_regular` | **proved** (`SumShape.lean`, `SumPrime.lean`, `SumReg.lean`, `RegSum.lean`), in the corrected form — the claim as printed is false on the empty input, see *An error in Claim C.2.11* below |
 | Definition C.3.1 (sst) | `Transducers.SST`, `Transducers.IsSST` | — |
 | Theorem C.3.2 (sst = regular) | `Transducers.sst_iff_regular` | statement only |
 | Theorem C.4.1 (mso = regular languages) | `Transducers.regular_iff_msoDefinable` | statement only |
@@ -513,8 +518,8 @@ will be proved later in the chapter (Theorem C.2.9).
 The printed direction is therefore a typo.  `PartC/Statements.lean` records the
 statement as printed in a comment at that place in the file, explaining the typo
 and pointing out that this inclusion is exactly the left-to-right implication of
-Theorem C.2.9 (`Transducers.twoWay_iff_regular`), where it is stated and where
-it is still open; it is not duplicated as a separate `sorry`.  Corollary C.2.8
+Theorem C.2.9, where it is stated as `Transducers.twoWay_isRegular` and where it
+is still open; it is not duplicated as a separate `sorry`.  Corollary C.2.8
 itself is formalised in the direction that its proof establishes, as
 `Transducers.regularFun_isTwoWay`, and it is proved in full.  Its ingredients
 are:
@@ -531,6 +536,67 @@ are:
   transducer.  The corollary then follows by induction on the composition tree
   of the regular function, using Corollary C.2.7 for the rational primes and
   Theorem C.2.5 for the composition step.
+
+#### An error in Claim C.2.11
+
+The claim, as printed, says that for regular functions `f₁ : A₁* → B₁*` and
+`f₂ : A₂* → B₂*` the function on `(A₁ + A₂)*` that applies `f₁` to the words
+using only letters of `A₁`, applies `f₂` to the words using only letters of
+`A₂`, and returns a fixed string `⊥` (using both output alphabets) on all other
+words, is regular.  This is false for the empty word: `ε` uses only letters of
+`A₁` *and* only letters of `A₂`, so the first two clauses force
+`(f₁ ε).map inl = (f₂ ε).map inr`, which is impossible unless `f₁ ε` and `f₂ ε`
+are both empty.  `Transducers.not_sum_of_regular_nil` in `PartC/RegSum.lean` is
+an explicit counterexample (take `f₁` constant with a nonempty value and `f₂`
+the identity).  The statement is also silently using that `B₁` and `B₂` are
+nonempty, which is what makes `⊥` exist.
+
+`PartC/Statements.lean` keeps the statement as printed, commented out, next to
+the corrected statement `Transducers.sum_of_regular`, which restricts the first
+two clauses to *nonempty* inputs, assumes `[Nonempty B₁] [Nonempty B₂]`, and
+leaves the value on the empty input unspecified.  The correction is harmless for
+the use the book makes of the claim: in the proof of Lemma C.2.10 the blocks the
+sum is applied to always carry a marker and are therefore nonempty.
+
+The proof follows the book: the construction is compatible with composition, so
+it suffices to treat the case where one of the two functions is the identity and
+the other is a prime.  This is carried out here for the *marked sum*, a variant
+in which the two copies of the input are prefixed by a marker
+(`mkL u = inl false :: u.map (inr ∘ inl)` and `mkR u = inl true :: u.map (inr ∘ inr)`
+over `Bool + A₁ + A₂`); the marker is what makes the two clauses consistent, and
+it is removed at the very end by a rational function.  `SumShape.lean` contains
+the definition and the composition step, `SumPrime.lean` the base cases for map
+reverse and map duplicate (a rational function inserts a separator before every
+letter of the part that must stay unchanged, so that it can be recovered
+afterwards), `SumReg.lean` the induction on the composition tree, and
+`RegSum.lean` the passage to the statement of the claim.
+
+#### What is missing in Theorem C.2.9
+
+The right-to-left implication of Theorem C.2.9 is Corollary C.2.8, so it is
+proved.  The left-to-right implication, `Transducers.twoWay_isRegular`, is the
+only `sorry` of `PartC/Statements.lean` that concerns Section C.2.  The book
+proves it by decomposing a two-way transducer as
+
+```
+A*  --compute snake graph-->  C*  --output of snake graph-->  B*
+```
+
+where a *snake graph* with states `Q`, length `n` and output alphabet `B` is a
+directed graph whose vertices are pairs (row in `Q`, column in `{0,…,n}`), whose
+edges are labelled by `B + 1` and join adjacent columns, and all of whose edges
+lie on a single directed path; its output is the concatenation of the edge
+labels along that path.  The first stage is rational, by the construction
+already available in this project through `TwoWayVisit.lean` and
+`TwoWayAnnot.lean`.  What is missing is the second stage: the book's lemma that
+the output of a snake graph is a regular function of its string encoding, proved
+by induction on the *width* of the snake graph (the maximal number of visits to
+a single column, which is bounded by `|Q|`).  The induction step splits a snake
+into its *looping* parts and its *progressing* parts along the *record-breaking*
+columns, and recombines them with map lifting, concatenation and conditionals.
+Those three closure properties are exactly Lemma C.2.10, which is proved here,
+as is Claim C.2.11 on which it rests; the remaining gap is the combinatorics of
+the width induction itself.
 
 ### Part D: Polyregular functions
 
@@ -571,17 +637,28 @@ Part B contains a `sorry`, and every numbered result of Part B depends only on
 In Part C,
 Theorem C.1.1, Lemmas C.1.2 and C.1.3,
 Theorem C.2.2, **Theorem C.2.5**, Lemma C.2.6, **Corollary C.2.7**,
-**Corollary C.2.8** and Lemma C.4.15 are proved.  In Part D, Theorem
-D.0.19 is proved.  The remaining results are statements only (`sorry`).
-Exercises and examples of the book are not included.
+**Corollary C.2.8**, **Lemma C.2.10**, **Claim C.2.11** and Lemma C.4.15 are
+proved.  In Part D, Theorem D.0.19 is proved.  The remaining results are
+statements only (`sorry`).  Exercises and examples of the book are not included.
+
+Of Theorem C.2.9 (two-way transducers compute exactly the regular functions),
+the right-to-left implication is proved — it is Corollary C.2.8 — and the
+left-to-right implication, isolated as `Transducers.twoWay_isRegular`, is still
+open; `Transducers.twoWay_iff_regular` is proved from it and from
+Corollary C.2.8.  See *What is missing in Theorem C.2.9* above for what remains,
+namely the book's width induction on snake graphs.  Claim C.2.11 is proved in a
+corrected form: the statement as printed is false on the empty input, see
+*An error in Claim C.2.11* above.
 
 Corollary C.2.8 is printed in the book as the inclusion `two-way ⊆ regular`,
 which is a typo: its proof establishes `regular ⊆ two-way`, and the printed
 inclusion is the hard half of Theorem C.2.9.  The corollary is therefore
 formalised as `Transducers.regularFun_isTwoWay` (`regular ⊆ two-way`) and proved
-in full, while the printed inclusion is the still open left-to-right implication
-of `Transducers.twoWay_iff_regular`.  See *A typo in Corollary C.2.8* above.
+in full, while the printed inclusion is the still open
+`Transducers.twoWay_isRegular`, the left-to-right implication of
+`Transducers.twoWay_iff_regular`.  See *A typo in Corollary C.2.8* above.
 
-`#print axioms` on `Transducers.twoWay_comp`, `Transducers.regularFun_isTwoWay`
-and `Transducers.isTwoWay_of_isRegularFun` reports only `propext`,
-`Classical.choice`, `Quot.sound`.
+`#print axioms` on `Transducers.twoWay_comp`, `Transducers.regularFun_isTwoWay`,
+`Transducers.isTwoWay_of_isRegularFun`,
+`Transducers.regular_closure_properties` and `Transducers.sum_of_regular`
+reports only `propext`, `Classical.choice`, `Quot.sound`.
