@@ -334,6 +334,22 @@ $\Box$ \smallskip
 \newcommand\rs[1]{\todo[inline,size=\scriptsize,backgroundcolor=blue]{#1 - \textbf{Rafal}}}
 
 
+% Divergences between this text and the Lean formalisation in transducer-lean/.
+% \flag{...} puts a margin comment; set \showflagsfalse to hide them all.
+% \lean{...} typesets a Lean identifier or file name in typewriter font,
+% allowing line breaks after the underscores (the margin is narrow).
+\let\leanorigus\_
+\newcommand{\lean}[1]{{\def\_{\leanorigus\allowbreak}\texttt{#1}}}
+
+\newif\ifshowflags
+\showflagstrue
+\newcommand{\flag}[1]{%
+  \ifshowflags
+    \todo[size=\tiny,color=orange!30,bordercolor=orange!80!black,linecolor=orange!80!black]%
+      {\normalfont\raggedright\textbf{Lean:} #1}%
+  \fi}
+
+
 % various kinds of numbers
 \newcommand{\Nat}{{\mathbb N}}
 \newcommand{\Rat}{{\mathbb Q}}

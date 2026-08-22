@@ -62,6 +62,7 @@ This function is not computed by a Mealy machine, even though it is letter-to-le
     L^* \quad \eqdef \quad \bigcup_{n \in \set{0,1,\ldots}}L^n.
     \end{align*}
     \end{itemize}
+\flag{Not formalised. The development has no notion of rational or recognisable subset of an abstract monoid, and the identification of the rational subsets of $A^*\times B^*$ with the rational relations of Definition~\ref{def:rational-relation} is not proved.}
 \end{definition}
 
 In the free monoid $A^*$, the two notions coincide, but in other monoids they do not coincide. In the monoid $A^* \times B^*$, the rational relations, as defined in Definition~\ref{def:rational-relation}, are exactly the rational subsets from the above definition, which can be proved by converting an \nfa with output into a regular expression. The recognisable subsets of $A^* \times B^*$ are much weaker; these are relations that can be recognised by separately testing some regular properties of the input and output strings, as explained in Exercise~\ref{ex:recognisable-relations}.
@@ -131,6 +132,7 @@ Observe that rational relations are symmetric with respect to input and output, 
 
 \begin{theorem}\label{thm:undecidable-equivalence-rational-relations}
     The equivalence problem $R=S$ is undecidable for rational relations.
+\flag{\lean{rationalRel\_equivalence\_undecidable} takes the undecidability of the Post correspondence problem as an \emph{explicit hypothesis} (\lean{PCP.Solvable}, \lean{PartB/\allowbreak PCPRed.lean}); only the reduction below is formalised, and it is equivalence, not universality, that it shows undecidable. \lean{PCP.Solvable} also asks for a \emph{nonempty} $w$, as it must: the way the problem is stated in the proof below, $w=\varepsilon$ solves every instance.}
 \end{theorem}
 \begin{proof}
     We will show undecidability already for a special case of the equivalence problem, namely the universality problem: is a rational relation equal to the full relation $A^* \times B^*$?  We will do this via a reduction from the Post Correspondence Problem, which is known to be undecidable: given two string homomorphisms $g,h : A^* \to B^*$, decide if there is some input string where both homomorphisms produce the same output. (Recall that a string homomorphism is a function that applies some function of type $A \to B^*$ to each input letter. This is like the letter-to-letter homomorphisms, except that letters can also be erased, or replaced by longer strings.)    The main observation is that the complement of a homomorphism can be defined by a rational relation. 

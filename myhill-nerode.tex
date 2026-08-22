@@ -31,12 +31,14 @@ Similarly, a length preserving function is one in which the length of the input 
 Using the above theorem, we show that the Mealy machines, seen as a subset of the rational functions, are decidable. 
 \begin{theorem}\label{thm:decide-if-mealy}
     One can decide if a rational function is computed by a Mealy machine.
+\flag{\lean{rationalFun\_isMealy\_decidable} assumes the effectivity hypothesis \lean{EffectiveWeightedEvalEq} (through Theorem~\ref{thm:equivalence-rational-functions}), and relativises both the promise and the property to the strings over the alphabet of the code. Unrelativised the statement is vacuous: a code reads finitely many letters, so it never describes a total function on $\Nat^*$ (\lean{not\_codeTotalFunctional}).}
 \end{theorem}
 \begin{proof}
     It is enough to show that we can check if a rational function satisfies the three conditions in Theorem~\ref{thm:mealy-machine-independent}. Continuity is for free, since rational functions are necessarily continuous. Let us discuss the other two conditions.
 
     \begin{lemma}\label{lem:decide-if-length-preserving}
         One can decide if a rational function is length-preserving.
+\flag{\lean{rationalFun\_lengthPreserving\_decidable} is proved outright, by neither of the two arguments given here: it enumerates the transition sequences of length at most $3n$, with a pumping argument for the bound (\lean{LenDec.lean}). It is correct for every code, so the promise that the coded relation is a function is unused.}
     \end{lemma}
     \begin{proof} We give two arguments. The first argument is based on semilinear sets. Since we only sketch this argument, we do not recall the definition of semilinear sets. Consider the set of input/output length pairs
         \begin{align*}
@@ -56,6 +58,7 @@ Using the above theorem, we show that the Mealy machines, seen as a subset of th
         The typing, if it exists, is clearly unique.
         \begin{claim}\label{claim:typing-length-preserving}
             The function $f$ is length-preserving if and only if the typing exists, and all accepting states are mapped to zero. 
+\flag{\lean{lengthPreserving\_iff\_typing} carries an extra hypothesis that is left implicit here: \emph{every state is productive}. Without it the left-to-right direction fails -- a state lying on no accepting run can be reached by runs with different differences of length, so no typing exists although $f$ is length-preserving.}
         \end{claim}
         \begin{proof}
             The right-to-left direction is immediate. For the opposite direction, we observe that: (1) if the typing does not exist, then one can find two runs that reach the same state $q$ and have different differences between the output and input lengths, which means that the function cannot be length-preserving; and (2) if the typing exists, but some accepting state has nonzero type, then also the function cannot be length-preserving, since we can find a run that reaches this accepting state and has a difference between output and input lengths equal to this nonzero type.
@@ -72,6 +75,7 @@ Using the above theorem, we show that the Mealy machines, seen as a subset of th
     It remains to check the prefix-preserving property. Before doing this, we prove a characterisation of the length-preserving functions.
     \begin{lemma}\label{lem:characterisation-length-preserving}
         If a rational function is length-preserving, then it is computed by an \nfa with output where for each transition, the input and output strings have the same length.
+\flag{\lean{lengthPreserving\_rational\_normal\_form} is proved without the free group (\lean{PartB/\allowbreak LenNormalForm.lean}): the second component of a state $(q,x)$ is a plain string of length $|\tau(q)|$, read as output produced but not yet emitted when $\tau(q)\ge 0$, and as output emitted but not yet produced (a guess, verified later) when $\tau(q)\le 0$.}
     \end{lemma}
     \begin{proof}
         In this proof, it will be convenient to use possibly negative strings, which can be seen as living in the free group. Formally speaking, the free group over generators $B$, which is denoted by $B^{(*)}$, consists of strings over the alphabet \begin{align*}\setbuild{ b, b^{-1}}{$b \in B$}\end{align*} which are reduced, i.e.~they do not contain two consecutive letters that cancel each other out. The multiplication operation in the free group is defined by concatenation followed by reduction. The free group will also be used later in this chapter, in the proof of Theorem~\ref{thm:subsequential-functions}.
@@ -114,6 +118,7 @@ which means that a transition can produce an output string of variable length, i
         \begin{align*}
         \myoverbrace{\sup_{\substack{w \in A^* \\ a \in A}} |f(wa)| - |f(w)|}{maximal increase in output length due \\ to extending input with  one letter} \quad < \quad \infty.
         \end{align*}
+\flag{False as stated. A sequential transducer produces no output before reading any input, so a sequential function satisfies $f(\varepsilon)=\varepsilon$, while (a)--(c) hold for instance for $a^n \mapsto a^{n+1}$. \lean{isSequential\_iff} adds the missing condition $f(\varepsilon)=\varepsilon$; the statement as printed here is kept, commented out, in \lean{PartB/\allowbreak WeightedStatements.lean}.}
 \end{theorem}
 \begin{proof}
     Again, it is clear that sequential functions have the properties in the theorem. Let us prove the converse. Consider a function $f$ that satisfies the three properties. Define the \emph{derivative} of this function to be 
@@ -199,6 +204,7 @@ The characterisation of subsequential functions will say that they are exactly t
     We begin with a simple pumping argument which shows that if a string can be extended to a string in the domain of $f$, then a short extension can be used.
    \begin{claim}\label{claim:bounded-extensions}
     There is some $k \in \Nat$ such that for every $w \in A^*$, if there is some $v \in A^*$ such that $wv$ is in the domain of $f$, then one can choose $v$ so that it has length at most $k$.
+\flag{Claims B.4.9--B.4.12 are not formalised as numbered results; the Lean proof of Theorem~\ref{thm:subsequential-functions} reorganises them into \lean{Subseq.exists\_short\_extension} (this claim), \lean{Subseq.key\_drop} and \lean{Subseq.incr\_congr} (Claims~\ref{claim:computing-branching-part} and~\ref{claim:offsets-are-regular}, phrased through Myhill--Nerode states rather than through regular languages) and \lean{Subseq.exists\_deletion\_bound} (Claim~\ref{claim:eliminating-negative-letters}). The free group is not used: the transducer emits $\alpha(w)$ with a delay of $M$ letters kept in a buffer, flushed when it exceeds $2M$.}
    \end{claim}
    \begin{proof}
     The domain is a regular language by continuity, and hence a pumping argument can be applied to make $v$ short.

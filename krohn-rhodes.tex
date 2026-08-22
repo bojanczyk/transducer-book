@@ -181,7 +181,7 @@ For the first class, there is not much to say, since reversible Mealy machines a
 A much more interesting class is the second one, namely compositions of flip-flop machines. To capture this class, we will use the following notion of aperiodicity, which says that the machine cannot have periodic behaviour. 
 
 \begin{definition}[Aperiodic]\label{def:aperiodic-mealy}
-    A string-to-string function is called \emph{aperiodic} if for all input strings $u,v,w$, there is some output letter $b$ such that \begin{align*}
+    A length preserving string-to-string function is called \emph{aperiodic} if for all input strings $u,v,w$, there is some output letter $b$ such that \begin{align*}
     b = \text{last letter of $f(uv^nw)$}  \qquad \text{for all sufficiently large $n$}.
     \end{align*}
 \end{definition}
@@ -243,9 +243,9 @@ The condition in the above claim is easily seen to be compatible with compositio
 
     \paragraph*{Decidability.} As announced at the beginning of the proof of the theorem, before proving the converse implication, we  prove the decidability part. To check if function $f$ is aperiodic, we will check if the corresponding Mealy machine satisfies a certain aperiodicity condition on the state transformations. However, in order for the latter check to be meaningful, we will need to use a machine that avoids unnecessary states.  
     Since Mealy machines are very close to regular languages, we can use a minimisation procedure that is similar to the classical Myhill-Nerode minimisation theorem. 
-    Define a \emph{derivative} of a string-to-string function $f$ to be  any function of the form 
+    Define a \emph{derivative} of  a length preserving string-to-string function $f$ to be  any function of the form 
     \begin{align*}
-    f(w\_)  \quad \eqdef \quad  v \mapsto f(wv),
+    f(w\_)  \quad \eqdef \quad  v \mapsto f(wv) \text{ with the first $|w|$ letters of the output removed.}
     \end{align*}
     where $w$ is some input string. 
     
@@ -267,6 +267,7 @@ The condition in the above claim is easily seen to be compatible with compositio
         \begin{align*}
             \delta^1, \delta^2, \ldots.
         \end{align*}
+\flag{\lean{aperiodic\_iff\_transStabilises} never constructs the minimal machine: it states that $f$ is aperiodic iff \emph{some} Mealy machine computing $f$ satisfies (*). This is equivalent, by the argument of the proof below, but the formal statement is an existential over machines rather than a property of a canonical one -- which is also why the decidability claim of Theorem~\ref{thm:aperiodic-mealy} does not follow from it formally.}
     \end{lemma}
     \begin{proof}
         In the minimisation process, we merge states. Therefore, if two strings give the same state transformation in the original machine, then they will also give the same state transformation in the minimised machine. In particular, condition (*) is preserved under minimisation. Finally, if a Mealy machine satisfies (*), then the function it computes will be aperiodic in the sense of Definition~\ref{def:aperiodic-mealy}, since the state after reading $uv^n$ will eventually stabilise. 

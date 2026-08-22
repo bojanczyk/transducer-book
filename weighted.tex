@@ -33,6 +33,7 @@ In this section, we describe the connections of rational relations (including th
 
 \begin{definition}
     [Semiring] A semiring is a set $\semiring$ equipped with two binary operations $+$ and $\times$, and two distinguished elements $0$ and $1$, subject to  the axioms in Figure~\ref{fig:semiring-axioms}.
+\flag{Formalised as Mathlib's \lean{Semiring}. The axiom table of Figure~\ref{fig:semiring-axioms} is incomplete: it lists $1 \times x = x$ but not $x \times 1 = x$, and the line $0 \times x = 0 = 0 \times x$ repeats one axiom where the first equation should be $x \times 0 = 0$.}
 \end{definition}
 Instead of carefully reading the semiring axioms, for our applications it will be more useful  to see the examples. 
 
@@ -56,6 +57,7 @@ Instead of carefully reading the semiring axioms, for our applications it will b
         \item instead of output strings, transitions use elements of the output semiring; and 
         \item we require that for every input string, there are finitely many accepting runs.
     \end{enumerate}
+\flag{\lean{LabAut.wEval} (\lean{PartB/\allowbreak LabAut.lean}) sums over the \emph{lists of transitions} of the accepting runs. A nonempty run is determined by its transition list, but the empty run is not: if $k>1$ states are both initial and final, the reading here gives $k$ accepting runs over $\varepsilon$, whereas the formalisation counts one. The normalisation \lean{initCopy} (\lean{PartB/\allowbreak WeightedNF.lean}) removes the discrepancy.}
 \end{definition}
 
 The semantics of a weighted automaton is the function which maps an input string $w$ to the sum 
@@ -110,10 +112,12 @@ Finally, consider the following weighted automaton with input alphabet $\set{0,1
 In this section, we leverage the connection with weighted automata to decide equivalence of rational functions. To do this, we will use decidability of equivalence for weighted automata over the  field of rationals.
 \begin{theorem}\label{thm:equivalence-weighted-automata}
     Given two weighted automata over the field of rationals, it is decidable whether they compute the same function.    
+\flag{\lean{weighted\_equivalence\_decidable} is proved \emph{from an explicit effectivity hypothesis} \lean{EffectiveWeightedEvalEq} (\lean{PartB/\allowbreak Effective.lean}): that the values of two coded weighted automata over $\Rat$ on a given string can be compared by a computable procedure. Everything else, including the effective form of the Sch\"utzenberger bound, is proved. The hypothesis is needed only because Mathlib's \lean{Computable} API has no arithmetic on $\Int$ or $\Rat$; the unconditional statement is kept, commented out, in \lean{PartB/\allowbreak WeightedStatements.lean}.}
 \end{theorem}
 The above result is well-known, but in the interest of completeness, we give a proof of it in the next section.  We have stated it for the field of rationals, which is the field that we will use in our applications to string-to-string transducers. Nevertheless, the same proof will work  for any other field, as long as field elements can be represented in a finite way and field operations can be computed. Let us now show how to use the above result to decide equivalence of rational functions.
 \begin{theorem}\label{thm:equivalence-rational-functions}
     The equivalence problem $f=g$ is decidable for rational functions.
+\flag{\lean{rationalFun\_equivalence\_decidable} inherits the effectivity hypothesis of Theorem~\ref{thm:equivalence-weighted-automata} and nothing else; the reduction below, including the encoding $\iota$, is formalised in full (\lean{PartB/\allowbreak RatEqDec.lean}). Decidability is stated for codes, under the promise that the coded relation is a total function \emph{on the strings over the alphabet of the code}.}
 \end{theorem}
 \begin{proof}
     We reduce the problem to equivalence for weighted automata over the field of rationals. For this reduction, we need three observations: (a) output strings can be injectively represented using rational numbers; (b) weighted automata are closed under pre-composition with rational functions; and (c) equivalence is decidable for weighted automata over the field of rationals. Here is a picture of the reduction: 
@@ -194,6 +198,7 @@ f = g \qquad \text{iff} \qquad f-g = 0,
 and weighted automata can be subtracted from each other. It remains to show decidability of the zeroness problem.
 \begin{theorem}\label{thm:zeroness-weighted-automata}
     The zeroness problem is decidable for weighted automata over the field of rationals\footnote{The proof works for any computable field, where field elements can be represented in a finite way and field operations can be computed.}.
+\flag{\lean{weighted\_zeroness\_decidable} is obtained as the special case of Theorem~\ref{thm:equivalence-weighted-automata} in which the second automaton is empty, so it carries the same hypothesis \lean{EffectiveWeightedEvalEq}. Only $\Rat$ is formalised; the footnote's ``any computable field'' is not. The saturation proof below is formalised in \lean{PartB/\allowbreak WeightedZero.lean} as Sch\"utzenberger's criterion with the explicit length bound $d_1+d_2$.}
 \end{theorem}
 \begin{proof} Assume that $Q$ is the set of states in the weighted automaton, and $A$ is the input alphabet. We begin by recasting the semantics of the weighted automaton in terms of vectors in $\field^Q$ and linear maps that act on them.  Define the \emph{initial vector}
     \begin{align*}
