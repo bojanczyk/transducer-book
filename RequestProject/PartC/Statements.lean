@@ -135,32 +135,34 @@ theorem twoWay_comp {A B C : Type} [Finite A] [Finite B] [Finite C]
     (hf : IsTwoWay f) (hg : IsTwoWay g) : IsTwoWay (g ∘ f) :=
   isTwoWay_comp_twoWay hf hg
 
-/-- **Corollary C.2.8**, as printed in the book: if a function is computed by a
-two-way transducer, then it is regular.
+/-! **Corollary C.2.8.**  The corollary is *printed* in the book as the inclusion
+`two-way ⊆ regular`:
 
-*Discrepancy with the book.*  The statement of the corollary and the sentence
-announcing it state the inclusion `two-way ⊆ regular`, but the proof given for
-it -- "two-way transducers can compute all rational functions by
+```
+theorem twoWay_isRegular {A B : Type} [Finite A] [Finite B] {f : List A → List B}
+    (hf : IsTwoWay f) : IsRegularFun f
+```
+
+*Discrepancy with the book (a typo in the printed statement).*  The proof given
+for the corollary -- "two-way transducers can compute all rational functions by
 Corollary C.2.7, and they can compute map reverse and map duplicate by
 Example C.2.4; finally, they are closed under composition thanks to
-Theorem C.2.5" -- establishes the opposite inclusion `regular ⊆ two-way`.  That
-this is the intended reading is confirmed by the next sentence of the book,
-which announces that "the converse inclusion" (namely that two-way transducers
-can be decomposed into the prime regular functions) will be proved later in the
-chapter, as Theorem C.2.9.
+Theorem C.2.5" -- establishes the opposite inclusion `regular ⊆ two-way`, and
+the sentence that follows the corollary in the book announces "the converse
+inclusion" (that two-way transducers can be decomposed into the prime regular
+functions) as Theorem C.2.9.  So the direction printed in the statement of the
+corollary is a typo: what is a corollary of Theorem C.2.5 is the inclusion
+`regular ⊆ two-way`, which is formalised and proved in full immediately below,
+as `Transducers.isTwoWay_of_isRegularFun` and `Transducers.regularFun_isTwoWay`.
 
-The inclusion printed here is therefore *not* a corollary of Theorem C.2.5; it
-is exactly the hard half of Theorem C.2.9, and it is left open here together
-with that theorem.  The result that the book's proof does establish is
-`Transducers.regularFun_isTwoWay` just below, which is proved in full. -/
-theorem twoWay_isRegular {A B : Type} [Finite A] [Finite B] {f : List A → List B}
-    (hf : IsTwoWay f) : IsRegularFun f := by
-  sorry
+The inclusion `two-way ⊆ regular` as printed is exactly the hard half of
+Theorem C.2.9; it is stated (and still open) below as the left-to-right
+implication of `Transducers.twoWay_iff_regular`, and is therefore not duplicated
+here. -/
 
 /-- **Corollary C.2.8** (corrected): every regular function is computed by a
 two-way transducer.  This is the statement that the book's proof of
-Corollary C.2.8 establishes; see the discussion in the docstring of
-`Transducers.twoWay_isRegular` above.
+Corollary C.2.8 establishes; see the discussion in the note above.
 
 The auxiliary form carries the finiteness of the two alphabets as explicit
 hypotheses, so that the induction on the composition tree has access to the
@@ -234,7 +236,11 @@ theorem regular_equivalence_decidable :
 /-! ### C.2.4 Decomposition into prime functions -/
 
 /-- **Theorem C.2.9.**  Two-way transducers compute exactly the regular
-functions. -/
+functions.
+
+The right-to-left implication is Corollary C.2.8 (`regularFun_isTwoWay`, proved
+above).  The left-to-right implication, which is the inclusion printed in the
+statement of Corollary C.2.8 in the book, is the hard half and is still open. -/
 theorem twoWay_iff_regular {A B : Type} [Finite A] [Finite B] (f : List A → List B) :
     IsTwoWay f ↔ IsRegularFun f := by
   sorry

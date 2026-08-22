@@ -411,9 +411,8 @@ The proofs are organised as follows.
 | Theorem C.2.5 (composition) | `Transducers.twoWay_comp` | proved (`TwoWayRun.lean`, `TwoWayVisit.lean`, `TwoWayAnnot.lean`, `TwoWayAnnotBim.lean`, `TwoWayCompAux.lean`, `TwoWayCompPred.lean`, `TwoWayComp.lean`, `TwoWayCompFinal.lean`) |
 | Lemma C.2.6 (pre-composition with Mealy machines) | `Transducers.twoWay_precomp_mealy` | proved |
 | Corollary C.2.7 (pre-composition with rational functions) | `Transducers.twoWay_precomp_rational` | proved (`TwoWayHom.lean`, `TwoWayBlock.lean`, `TwoWayErase.lean` and `TwoWayRat.lean`, from Theorem B.2.6 and Lemma C.2.6) |
-| Corollary C.2.8, as printed (two-way ⊆ regular) | `Transducers.twoWay_isRegular` | statement only — see *A discrepancy in Corollary C.2.8* below; as printed this is the hard half of Theorem C.2.9, not a corollary of Theorem C.2.5 |
-| Corollary C.2.8, corrected (regular ⊆ two-way) | `Transducers.regularFun_isTwoWay`, `Transducers.isTwoWay_of_isRegularFun` | proved (`TwoWaySweep.lean`, `TwoWayRegular.lean`, from Corollary C.2.7 and Theorem C.2.5) |
-| Theorem C.2.9 (two-way = regular) | `Transducers.twoWay_iff_regular` | statement only |
+| Corollary C.2.8 (regular ⊆ two-way) | `Transducers.regularFun_isTwoWay`, `Transducers.isTwoWay_of_isRegularFun` | proved (`TwoWaySweep.lean`, `TwoWayRegular.lean`, from Corollary C.2.7 and Theorem C.2.5); the direction printed in the book is a typo — see *A typo in Corollary C.2.8* below |
+| Theorem C.2.9 (two-way = regular) | `Transducers.twoWay_iff_regular` | statement only; the easy implication is Corollary C.2.8 above, the hard one (two-way ⊆ regular, the inclusion printed in Corollary C.2.8) is open |
 | Lemma C.2.10 (closure properties) | `Transducers.regular_closure_properties` | statement only |
 | Claim C.2.11 (disjoint sums) | `Transducers.sum_of_regular` | statement only |
 | Definition C.3.1 (sst) | `Transducers.SST`, `Transducers.IsSST` | — |
@@ -499,7 +498,7 @@ The files added for Theorem C.2.5 are:
   harmless because two-way transducers are closed under pre-composition with the
   erasing homomorphism that deletes the blanks.
 
-#### A discrepancy in Corollary C.2.8
+#### A typo in Corollary C.2.8
 
 The corollary is printed as "if a function is computed by a two-way transducer,
 then it is regular", but its proof — "two-way transducers can compute all
@@ -511,10 +510,12 @@ book confirms this reading: it announces that "the converse inclusion", namely
 that two-way transducers can be decomposed into the prime regular functions,
 will be proved later in the chapter (Theorem C.2.9).
 
-Both versions are in `PartC/Statements.lean`.  The statement as printed is kept
-unchanged as `Transducers.twoWay_isRegular`, with a docstring explaining the
-discrepancy; since it is exactly the hard half of Theorem C.2.9 it is left as a
-`sorry`, like that theorem.  The corrected statement is
+The printed direction is therefore a typo.  `PartC/Statements.lean` records the
+statement as printed in a comment at that place in the file, explaining the typo
+and pointing out that this inclusion is exactly the left-to-right implication of
+Theorem C.2.9 (`Transducers.twoWay_iff_regular`), where it is stated and where
+it is still open; it is not duplicated as a separate `sorry`.  Corollary C.2.8
+itself is formalised in the direction that its proof establishes, as
 `Transducers.regularFun_isTwoWay`, and it is proved in full.  Its ingredients
 are:
 
@@ -569,17 +570,17 @@ Part B contains a `sorry`, and every numbered result of Part B depends only on
 `propext`, `Classical.choice`, `Quot.sound`.
 In Part C,
 Theorem C.1.1, Lemmas C.1.2 and C.1.3,
-Theorem C.2.2, **Theorem C.2.5**, Lemma C.2.6, Corollary C.2.7, the **corrected
-form of Corollary C.2.8** and Lemma C.4.15 are proved.  In Part D, Theorem
+Theorem C.2.2, **Theorem C.2.5**, Lemma C.2.6, **Corollary C.2.7**,
+**Corollary C.2.8** and Lemma C.4.15 are proved.  In Part D, Theorem
 D.0.19 is proved.  The remaining results are statements only (`sorry`).
 Exercises and examples of the book are not included.
 
-Corollary C.2.8 as printed in the book (`Transducers.twoWay_isRegular`) is the
-inclusion `two-way ⊆ regular`, which is the hard half of Theorem C.2.9 and not
-what the book's proof of the corollary establishes; it is left as a `sorry`
-together with Theorem C.2.9, and the inclusion `regular ⊆ two-way` that the
-book's proof does establish is proved as `Transducers.regularFun_isTwoWay`.  See
-*A discrepancy in Corollary C.2.8* above.
+Corollary C.2.8 is printed in the book as the inclusion `two-way ⊆ regular`,
+which is a typo: its proof establishes `regular ⊆ two-way`, and the printed
+inclusion is the hard half of Theorem C.2.9.  The corollary is therefore
+formalised as `Transducers.regularFun_isTwoWay` (`regular ⊆ two-way`) and proved
+in full, while the printed inclusion is the still open left-to-right implication
+of `Transducers.twoWay_iff_regular`.  See *A typo in Corollary C.2.8* above.
 
 `#print axioms` on `Transducers.twoWay_comp`, `Transducers.regularFun_isTwoWay`
 and `Transducers.isTwoWay_of_isRegularFun` reports only `propext`,
