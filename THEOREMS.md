@@ -97,7 +97,14 @@ RequestProject/
 | `PartC/SSTTwoWay.lean` | the "sst to regular" half of Theorem C.3.2, through Theorem C.2.9 (`Transducers.isTwoWay_of_isSST`): the annotation of `SSTNorm.lean` is rational and two-way transducers are closed under pre-composition with rational functions (Corollary C.2.7) |
 | `PartC/KTypes.lean` | `k`-types of strings (Definition C.4.12) and their properties (Lemma C.4.15) |
 | `PartC/Statements.lean` | Sections C.1–C.3: regular functions, two-way transducers, streaming string transducers |
-| `PartC/MSO.lean` | Section C.4: monadic second-order logic, relabellings, transductions, the first-order fragment |
+| `PartC/MSODef.lean` | the definitions of Section C.4: monadic second-order logic over strings, mso relabellings, mso transductions and the first-order fragment (moved unchanged out of `MSO.lean`, which imports this file) |
+| `PartC/MSOSyntax.lean` | elementary syntax and semantics of mso formulas: satisfaction depends only on the free variables (`MSO.sat_congr`), bounds on the variables of a formula, finite conjunctions and disjunctions, universal quantification and implication as abbreviations, and the existential closure of a list of variables |
+| `PartC/RegAut.lean` | a toolkit of regular languages used by the translation of formulas into automata: languages defined by a `foldl` and by an nfa, Boolean operations, finite intersections, images and inverse images of letter-to-letter maps, the scanning languages, and the language of strings with exactly one marked position |
+| `PartC/MSOAnnot.lean` | Lemma C.4.2: the language `AnnLang` of valid annotated strings satisfying a formula, its regularity by induction on the syntax of the formula, and its identification with the language in the statement of the lemma |
+| `PartC/MSOBuchi.lean` | Theorem C.4.1: the language of a sentence is regular (from Lemma C.4.2), and the formula that guesses the run of a dfa as one second-order variable per state |
+| `PartC/MSORelab.lean` | Claim C.4.6: the strings over `Γ × 2` with one marked position at which a formula holds form a regular language, and the language of the claim is the intersection, over the finitely many indices, of the complements of the projections of those languages |
+| `PartC/MSO.lean` | Section C.4: the numbered results that are **proved** — Theorem C.4.1, Lemma C.4.2, Claim C.4.6 and Lemma C.4.15 (this file contains no `sorry`) |
+| `PartC/MSOOpen.lean` | Section C.4: the numbered results that are **still open** — Theorems C.4.4, C.4.8, C.4.11, C.4.16, C.4.17 and Lemmas C.4.10, C.4.13, stated faithfully with `sorry` proofs (moved unchanged out of `MSO.lean`, which imports this file, so all names remain available through `RequestProject.PartC.MSO`) |
 | `PartD/MarkedSquare.lean` | marked squaring and its continuity |
 | `PartD/Statements.lean` | Part D: polyregular functions, for-transducers, pebble transducers |
 
@@ -444,23 +451,23 @@ The proofs are organised as follows.
 | Claim C.2.11 (disjoint sums) | `Transducers.sum_of_regular` | **proved** (`SumShape.lean`, `SumPrime.lean`, `SumReg.lean`, `RegSum.lean`), in the corrected form — the claim as printed is false on the empty input, see *An error in Claim C.2.11* below |
 | Definition C.3.1 (sst) | `Transducers.SST`, `Transducers.IsSST` | — |
 | Theorem C.3.2 (sst = regular) | `Transducers.sst_iff_regular` | both implications are **proved** (`SSTComp.lean`, `SSTMealyRev.lean`, `SSTMealyFF.lean`, `SSTMealy.lean`, `SSTMapRev.lean`, `SSTMapDup.lean`, `SSTRegular.lean` for `regular ⊆ sst`; `SSTNorm.lean`, `SSTWalk.lean`, `SSTTwoWay.lean` for `sst ⊆ two-way`), but the statement still depends on `sorryAx`: the direction `sst ⊆ regular` goes through Theorem C.2.9, which is open — see *The proof of Theorem C.3.2* below |
-| Theorem C.4.1 (mso = regular languages) | `Transducers.regular_iff_msoDefinable` | statement only |
-| Lemma C.4.2 (formulas with free variables) | `Transducers.mso_annotated_regular` | statement only |
+| Theorem C.4.1 (mso = regular languages) | `Transducers.regular_iff_msoDefinable` | **proved** (`MSO.lean`, from `MSOSyntax.lean`, `RegAut.lean`, `MSOAnnot.lean`, `MSOBuchi.lean`) |
+| Lemma C.4.2 (formulas with free variables) | `Transducers.mso_annotated_regular` | **proved** (`RegAut.lean`, `MSOSyntax.lean`, `MSOAnnot.lean`) |
 | Definition C.4.3 (mso relabelling) | `Transducers.MSORelabelling`, `Transducers.IsMSORelabelling` | — |
-| Theorem C.4.4 (rational = mso relabelling) | `Transducers.rational_iff_msoRelabelling` | statement only |
+| Theorem C.4.4 (rational = mso relabelling) | `Transducers.rational_iff_msoRelabelling` | statement only (`MSOOpen.lean`) |
 | Claim C.4.5 | not formalised (internal step of the proof of Theorem C.4.4) | — |
-| Claim C.4.6 (annotated relabellings) | `Transducers.msoRelabelling_annotation_regular` | statement only |
+| Claim C.4.6 (annotated relabellings) | `Transducers.msoRelabelling_annotation_regular` | **proved** (`MSORelab.lean`, from Lemma C.4.2) |
 | Definition C.4.7 (mso transduction) | `Transducers.MSOTransduction`, `Transducers.IsMSOTransduction` | — |
-| Theorem C.4.8 (mso transductions = regular) | `Transducers.msoTransduction_iff_regular` | statement only |
+| Theorem C.4.8 (mso transductions = regular) | `Transducers.msoTransduction_iff_regular` | statement only (`MSOOpen.lean`) |
 | Lemma C.4.9 | not formalised (normalisation of the type τ inside the proof of Theorem C.4.8) | — |
-| Lemma C.4.10 (formulas via rational functions) | `Transducers.mso_formulas_via_rational` | statement only |
-| Theorem C.4.11 (first-order = aperiodic) | `Transducers.foDefinable_iff_aperiodic_dfa` | statement only |
+| Lemma C.4.10 (formulas via rational functions) | `Transducers.mso_formulas_via_rational` | statement only (`MSOOpen.lean`) |
+| Theorem C.4.11 (first-order = aperiodic) | `Transducers.foDefinable_iff_aperiodic_dfa` | statement only (`MSOOpen.lean`) |
 | Definition C.4.12 (k-types) | `Transducers.tp` | — |
-| Lemma C.4.13 (types and formulas) | `Transducers.tp_eq_iff_fo_equiv` | statement only |
+| Lemma C.4.13 (types and formulas) | `Transducers.tp_eq_iff_fo_equiv` | statement only (`MSOOpen.lean`) |
 | Claim C.4.14 | not formalised (internal step of the proof of Lemma C.4.13) | — |
 | Lemma C.4.15 (properties of types) | `Transducers.tp_properties` | proved (`KTypes.lean`) |
-| Theorem C.4.16 (first-order relabellings) | `Transducers.foRelabelling_iff_aperiodicBimachine` | statement only |
-| Theorem C.4.17 (first-order transductions) | `Transducers.foTransduction_iff_prime_composition` | statement only |
+| Theorem C.4.16 (first-order relabellings) | `Transducers.foRelabelling_iff_aperiodicBimachine` | statement only (`MSOOpen.lean`) |
+| Theorem C.4.17 (first-order transductions) | `Transducers.foTransduction_iff_prime_composition` | statement only (`MSOOpen.lean`) |
 
 Supporting files for Part C: `ContAux.lean` (continuity is closed under
 composition; letter-to-letter maps, reversal, duplication and the map lifting of
@@ -864,8 +871,18 @@ Part B contains a `sorry`, and every numbered result of Part B depends only on
 In Part C,
 Theorem C.1.1, Lemmas C.1.2 and C.1.3,
 Theorem C.2.2, **Theorem C.2.5**, Lemma C.2.6, **Corollary C.2.7**,
-**Corollary C.2.8**, **Lemma C.2.10**, **Claim C.2.11** and Lemma C.4.15 are
-proved.  Of **Theorem C.3.2** (sst = regular) both implications are now
+**Corollary C.2.8**, **Lemma C.2.10**, **Claim C.2.11**, **Theorem C.4.1**,
+**Lemma C.4.2**, **Claim C.4.6** and Lemma C.4.15 are
+proved.  Theorem C.4.1 (Büchi-Elgot-Trakhtenbrot), Lemma C.4.2 and Claim C.4.6
+are proved outright: no file they use contains a `sorry`, and each of them
+depends only on `propext`, `Classical.choice`, `Quot.sound` (re-verified with
+`#print axioms`; Lemma C.4.15 needs only `propext` and `Quot.sound`).  So that
+this is visible file by file, the numbered results of Section C.4 that are
+still open have been moved, unchanged, from `PartC/MSO.lean` to the new
+`PartC/MSOOpen.lean`, which `PartC/MSO.lean` imports: `PartC/MSO.lean` now
+contains exactly the four proved results of Section C.4 (C.4.1, C.4.2, C.4.6,
+C.4.15) and no `sorry`, while every name of Section C.4 is still available
+from `RequestProject.PartC.MSO` as before.  Of **Theorem C.3.2** (sst = regular) both implications are now
 formalised and every file they use is sorry-free: `regular ⊆ sst` is
 `Transducers.isSST_of_isRegularFun`, which is proved outright, and `sst ⊆
 regular` is proved from Theorem C.2.9, the simulation of an sst by a two-way
