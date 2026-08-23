@@ -3,19 +3,22 @@ Part C, Section C.4: Logic
   from *Transducers* (M. Bojańczyk, June 25, 2026).
 
 The numbered results of Section C.4 that are proved: Theorem C.4.1,
-Lemma C.4.2, Claim C.4.6 and Lemma C.4.15.  Every proof in this file is
-complete.
+Lemma C.4.2, Theorem C.4.4, Claim C.4.6, Lemma C.4.10 and Lemma C.4.15.  Every
+proof in this file is complete.
 
 The definitions they speak about (monadic second-order logic, mso relabellings,
 mso transductions and the first-order fragment) are in
 `RequestProject/PartC/MSODef.lean`, the constructions used in their proofs in
 `RequestProject/PartC/MSOSyntax.lean`, `RequestProject/PartC/RegAut.lean`,
 `RequestProject/PartC/MSOAnnot.lean`, `RequestProject/PartC/MSOBuchi.lean`,
-`RequestProject/PartC/MSORelab.lean` and `RequestProject/PartC/KTypes.lean`.
+`RequestProject/PartC/MSORelab.lean`, `RequestProject/PartC/KTypes.lean`,
+`RequestProject/PartC/MarkStr.lean`, `RequestProject/PartC/MarkLogic.lean`,
+`RequestProject/PartC/MarkBimach.lean`, `RequestProject/PartC/MarkDelay.lean`,
+`RequestProject/PartC/MSORatRelab.lean` and
+`RequestProject/PartC/MSOPrecomp.lean`.
 
-The numbered results of Section C.4 that are still open (Theorem C.4.4,
-Lemma C.4.10, Theorem C.4.8, Theorem C.4.11, Lemma C.4.13, Theorem C.4.16 and
-Theorem C.4.17) are stated in `RequestProject/PartC/MSOOpen.lean`, which this
+The numbered results of Section C.4 that are still open (Theorem C.4.8,
+Theorem C.4.11, Lemma C.4.13, Theorem C.4.16 and Theorem C.4.17) are stated in `RequestProject/PartC/MSOOpen.lean`, which this
 file imports; so importing `RequestProject.PartC.MSO` gives, as before, all the
 statements of Section C.4.
 
@@ -25,6 +28,8 @@ steps of the proofs of Theorems C.4.4, C.4.8 and C.4.11.
 import RequestProject.PartC.MSOBuchi
 import RequestProject.PartC.MSORelab
 import RequestProject.PartC.MSOOpen
+import RequestProject.PartC.MSORatRelab
+import RequestProject.PartC.MSOPrecomp
 
 namespace Transducers
 
@@ -48,11 +53,30 @@ theorem mso_annotated_regular {A : Type} [Finite A] (φ : MSO A) (k l : ℕ)
           u = annotate k l w fo so ∧ MSO.Sat w (extFO k fo) (extSO l so) φ} :=
   mso_annotated_regular_aux φ k l hfo hso
 
-/-! ## C.4.2 Rational functions in terms of logic
+/-! ## C.4.2 Rational functions in terms of logic -/
 
-Theorem C.4.4 (`rational_iff_msoRelabelling`) and Lemma C.4.10
-(`mso_formulas_via_rational`) are still open; they are stated in
-`RequestProject/PartC/MSOOpen.lean`. -/
+/-- **Theorem C.4.4.**  A string-to-string function is rational if and only if
+it is definable by an mso relabelling. -/
+theorem rational_iff_msoRelabelling {A B : Type} [Finite A] [Finite B]
+    (f : List A → List B) : IsRationalFun f ↔ IsMSORelabelling f :=
+  rational_iff_msoRelabelling_aux f
+
+/-- **Lemma C.4.10.**  For a finite set of mso formulas with one or two free
+first-order variables there is a letter-to-letter rational function `f : A* → C*`
+such that the formulas with one free variable correspond to sets of letters of
+the output, and the formulas with two free variables correspond to regular
+languages of infixes of the output. -/
+theorem mso_formulas_via_rational {A : Type} [Finite A]
+    (Φ₁ Φ₂ : Set (MSO A)) (hΦ₁ : Φ₁.Finite) (hΦ₂ : Φ₂.Finite) :
+    ∃ (C : Type) (_ : Finite C) (f : List A → List C),
+      IsRationalFun f ∧ LengthPreserving f ∧
+      (∀ φ ∈ Φ₁, ∃ F : Set C, ∀ (w : List A) (x : ℕ), x < w.length →
+        (MSO.Sat w (fun _ => x) (fun _ => ∅) φ ↔ ∃ c ∈ F, (f w)[x]? = some c)) ∧
+      (∀ φ ∈ Φ₂, ∃ L : Language C, L.IsRegular ∧ ∀ (w : List A) (x y : ℕ),
+        x ≤ y → y < w.length →
+        (MSO.Sat w (fun i => if i = 0 then x else y) (fun _ => ∅) φ ↔
+          ((f w).drop x).take (y - x + 1) ∈ L)) :=
+  mso_formulas_via_rational_aux Φ₁ Φ₂ hΦ₁ hΦ₂
 
 /-- **Claim C.4.6.**  For an mso relabelling, the language of strings over the
 alphabet `A × Φ` in which every position is labelled by a formula that holds in

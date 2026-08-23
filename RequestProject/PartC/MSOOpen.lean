@@ -10,6 +10,9 @@ results of Section C.4 that *are* proved, contains no `sorry`.
 `RequestProject/PartC/MSO.lean` imports this file, so all names are unchanged
 and are still available to anything importing `RequestProject.PartC.MSO`.
 
+Theorem C.4.4 and Lemma C.4.10 used to be stated here as well; they are now
+proved, and their statements have moved back to `RequestProject/PartC/MSO.lean`.
+
 Not formalised at all: Claim C.4.5, Lemma C.4.9 and Claim C.4.14, which are
 internal steps of the proofs of Theorems C.4.4, C.4.8 and C.4.11.
 -/
@@ -19,28 +22,13 @@ namespace Transducers
 
 /-! ## C.4.2 Rational functions in terms of logic -/
 
-/-- **Theorem C.4.4.**  A string-to-string function is rational if and only if
-it is definable by an mso relabelling. -/
-theorem rational_iff_msoRelabelling {A B : Type} [Finite A] [Finite B]
-    (f : List A → List B) : IsRationalFun f ↔ IsMSORelabelling f := by
-  sorry
+/-! Theorem C.4.4 (`rational_iff_msoRelabelling`) is now proved; it lives in
+`RequestProject/PartC/MSO.lean`, with its proof in
+`RequestProject/PartC/MSORatRelab.lean`. -/
 
-/-- **Lemma C.4.10.**  For a finite set of mso formulas with one or two free
-first-order variables there is a letter-to-letter rational function `f : A* → C*`
-such that the formulas with one free variable correspond to sets of letters of
-the output, and the formulas with two free variables correspond to regular
-languages of infixes of the output. -/
-theorem mso_formulas_via_rational {A : Type} [Finite A]
-    (Φ₁ Φ₂ : Set (MSO A)) (hΦ₁ : Φ₁.Finite) (hΦ₂ : Φ₂.Finite) :
-    ∃ (C : Type) (_ : Finite C) (f : List A → List C),
-      IsRationalFun f ∧ LengthPreserving f ∧
-      (∀ φ ∈ Φ₁, ∃ F : Set C, ∀ (w : List A) (x : ℕ), x < w.length →
-        (MSO.Sat w (fun _ => x) (fun _ => ∅) φ ↔ ∃ c ∈ F, (f w)[x]? = some c)) ∧
-      (∀ φ ∈ Φ₂, ∃ L : Language C, L.IsRegular ∧ ∀ (w : List A) (x y : ℕ),
-        x ≤ y → y < w.length →
-        (MSO.Sat w (fun i => if i = 0 then x else y) (fun _ => ∅) φ ↔
-          ((f w).drop x).take (y - x + 1) ∈ L)) := by
-  sorry
+/-! Lemma C.4.10 (`mso_formulas_via_rational`) is now proved; it lives in
+`RequestProject/PartC/MSO.lean`, with its proof in
+`RequestProject/PartC/MSOPrecomp.lean`. -/
 
 /-! ## C.4.3 Regular functions in terms of logic -/
 
