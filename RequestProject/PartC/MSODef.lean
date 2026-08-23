@@ -254,6 +254,26 @@ def Outputs (T : MSOTransduction A B) (w : List A) (v : List B) : Prop :=
     ∀ (i : ℕ) (hi : i < es.length) (hi' : i < v.length),
       T.labRel w (es.get ⟨i, hi⟩) (v.get ⟨i, hi'⟩)
 
+/-- The two requirements that Definition C.4.7 imposes on the formulas of an
+mso transduction: for every input string, every element selected by the
+universe formula satisfies *exactly one* letter formula, and the order formula
+defines a *linear order* on the selected elements (reflexive, antisymmetric,
+transitive and total on them).
+
+These requirements are part of Definition C.4.7 in the book; they were missing
+from the first formalisation of this file, and without them Theorem C.4.8 is
+false -- see `Transducers.exists_weakMSOTransduction_not_regular` in
+`RequestProject/PartC/MSOWeak.lean`. -/
+def Proper (T : MSOTransduction A B) : Prop :=
+  ∀ w : List A,
+    (∀ x, T.selected w x → ∃! b, T.labRel w x b) ∧
+    (∀ x, T.selected w x → T.ordRel w x x) ∧
+    (∀ x y, T.selected w x → T.selected w y →
+      T.ordRel w x y → T.ordRel w y x → x = y) ∧
+    (∀ x y z, T.selected w x → T.selected w y → T.selected w z →
+      T.ordRel w x y → T.ordRel w y z → T.ordRel w x z) ∧
+    (∀ x y, T.selected w x → T.selected w y → T.ordRel w x y ∨ T.ordRel w y x)
+
 /-- All formulas of the transduction are first-order. -/
 def AllFO (T : MSOTransduction A B) : Prop :=
   (∀ i, (T.univP i).IsFO) ∧ (∀ j, (T.univC j).IsFO) ∧
@@ -263,12 +283,22 @@ def AllFO (T : MSOTransduction A B) : Prop :=
 
 end MSOTransduction
 
-/-- A function defined by a string-to-string mso transduction. -/
+/-- A function defined by a string-to-string mso transduction, in the sense of
+Definition C.4.7: the transduction has to satisfy the requirements
+`MSOTransduction.Proper` of that definition (exactly one letter formula per
+selected element, and a linear order on the selected elements). -/
 def IsMSOTransduction {A B : Type} (f : List A → List B) : Prop :=
-  ∃ T : MSOTransduction A B, ∀ w, T.Outputs w (f w)
+  ∃ T : MSOTransduction A B, T.Proper ∧ ∀ w, T.Outputs w (f w)
 
 /-- A function defined by a first-order transduction. -/
 def IsFOTransduction {A B : Type} (f : List A → List B) : Prop :=
-  ∃ T : MSOTransduction A B, T.AllFO ∧ ∀ w, T.Outputs w (f w)
+  ∃ T : MSOTransduction A B, T.Proper ∧ T.AllFO ∧ ∀ w, T.Outputs w (f w)
+
+/-- The variant of `IsMSOTransduction` in which the requirements of
+Definition C.4.7 collected in `MSOTransduction.Proper` are dropped.  It is
+*strictly* weaker: `Transducers.exists_weakMSOTransduction_not_regular` exhibits
+a function that is a weak mso transduction and is not regular. -/
+def IsWeakMSOTransduction {A B : Type} (f : List A → List B) : Prop :=
+  ∃ T : MSOTransduction A B, ∀ w, T.Outputs w (f w)
 
 end Transducers
