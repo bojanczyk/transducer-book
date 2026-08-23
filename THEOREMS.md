@@ -109,8 +109,20 @@ RequestProject/
 | `PartC/MarkDelay.lean` | the delayed automaton reading letters that carry states and state transformations: it keeps the last letter read pending, since whether a position is the last one is known only when the string ends |
 | `PartC/MSORatRelab.lean` | Theorem C.4.4: from a bimachine to an mso relabelling (this is Claim C.4.5 of the book, formalised for the index of a bimachine rather than for an unambiguous transducer), and from an mso relabelling back to a bimachine |
 | `PartC/MSOPrecomp.lean` | Lemma C.4.10: the letter-to-letter rational function that decorates every position by the states of the automata of the family, the set of letters for a formula with one free variable, and the delayed language for a formula with two free variables |
-| `PartC/MSO.lean` | Section C.4: the numbered results that are **proved** — Theorem C.4.1, Lemma C.4.2, Theorem C.4.4, Claim C.4.6, Lemma C.4.10 and Lemma C.4.15 (this file contains no `sorry`) |
-| `PartC/MSOOpen.lean` | Section C.4: the numbered results that are **still open** — Theorems C.4.8, C.4.11, C.4.16, C.4.17 and Lemma C.4.13, stated faithfully with `sorry` proofs (moved unchanged out of `MSO.lean`, which imports this file, so all names remain available through `RequestProject.PartC.MSO`) |
+| `PartC/MSOSubst.lean` | renaming of all the variables of a formula and the two combinators `MSO.atv`, `MSO.atv2` that plug a formula with one or two free variables under a quantifier |
+| `PartC/MSONorm.lean` | Lemma C.4.9: the normalisation of the type `τ` of an mso transduction — a single set of tags, one universe and letter formula with one free variable per tag and one order formula with two free variables per pair of tags (`Transducers.NormT`), with the extra elements of `τ` attached to the first position of the input |
+| `PartC/SortedEnum.lean` | the order-theoretic dictionary between a linear order on a finite set and its increasing enumeration (minimum, maximum, successor) |
+| `PartC/MSOWalkForms.lean` | the mso formulas that the walking transducer of Theorem C.4.8 asks about — "is this element the first / the last one", "is its successor at the same position, or to the right", "is this element the successor of that one" — and their meaning in terms of the sorted enumeration of the selected elements |
+| `PartC/WalkAut.lean` | the walking two-way transducer of Theorem C.4.8, in abstract form (letter-indexed answers to the unary questions and one deterministic automaton with a family of acceptance conditions for the binary ones), and its correctness `Transducers.WalkAut.computes_of_spec` |
+| `PartC/MSOWalkData.lean` | the walking transducer of an mso transduction: the product of the family of automata (with the last letter read), the `WalkAut.Data` built from the precomputation of Lemma C.4.10, and the verification of the nine hypotheses of `WalkAut.computes_of_spec` |
+| `PartC/MSOReg.lean` | Theorem C.4.8, from mso transductions to regular functions: normalise (Lemma C.4.9), precompute the questions (Lemma C.4.10), walk (`MSOWalkData.lean`), and compose the rational precomputation with the width-bounded output of the walking transducer, which is regular by Theorem C.2.9 |
+| `PartC/RunProbe.lean` | probing the run of a two-way transducer by a deterministic two-way automaton that simulates it and stops at the first configuration satisfying a trigger condition (used for the converse half of Theorem C.4.8) |
+| `PartC/RunMark.lean` | the regular languages of doubly marked strings describing the run of a two-way transducer: which targets it reaches, which letter it produces there, and which of two targets it reaches first |
+| `PartC/MarkLogic2.lean` | the converse translation from an automaton over `Mark2 A` back to an mso formula with **two** free variables |
+| `PartC/FlatIndex.lean`, `PartC/RunElts.lean` | the combinatorics of the output positions of a two-way transducer as pairs (step of the run, position inside the string produced at that step), and the list of elements required by `MSOTransduction.Outputs` |
+| `PartC/TwoWayMSO.lean` | Theorem C.4.8, from two-way transducers to mso transductions: the mso transduction whose elements are the pairs (configuration, index of a produced letter), with all its formulas obtained from `RunMark.lean` through Theorem C.4.1 |
+| `PartC/MSO.lean` | Section C.4: the numbered results that are **proved** — Theorem C.4.1, Lemma C.4.2, Theorem C.4.4, Claim C.4.6, Theorem C.4.8, Lemma C.4.10 and Lemma C.4.15 (this file contains no `sorry`) |
+| `PartC/MSOOpen.lean` | Section C.4: the numbered results that are **still open** — Theorems C.4.11, C.4.16, C.4.17 and Lemma C.4.13, stated faithfully with `sorry` proofs (moved unchanged out of `MSO.lean`, which imports this file, so all names remain available through `RequestProject.PartC.MSO`) |
 | `PartD/MarkedSquare.lean` | marked squaring and its continuity |
 | `PartD/Statements.lean` | Part D: polyregular functions, for-transducers, pebble transducers |
 
@@ -464,8 +476,8 @@ The proofs are organised as follows.
 | Claim C.4.5 | not formalised as a numbered result; it is the internal step of Theorem C.4.4 and appears as `Transducers.RatRelab.exists_form` in `MSORatRelab.lean`, stated for the index of a bimachine | — |
 | Claim C.4.6 (annotated relabellings) | `Transducers.msoRelabelling_annotation_regular` | **proved** (`MSORelab.lean`, from Lemma C.4.2) |
 | Definition C.4.7 (mso transduction) | `Transducers.MSOTransduction`, `Transducers.IsMSOTransduction` | — |
-| Theorem C.4.8 (mso transductions = regular) | `Transducers.msoTransduction_iff_regular` | statement only (`MSOOpen.lean`) |
-| Lemma C.4.9 | not formalised (normalisation of the type τ inside the proof of Theorem C.4.8) | — |
+| Theorem C.4.8 (mso transductions = regular) | `Transducers.msoTransduction_iff_regular` | both implications are **proved** (`MSO.lean`, from `MSOReg.lean`, `MSOWalkData.lean`, `WalkAut.lean`, `MSOWalkForms.lean`, `MSONorm.lean`, `SortedEnum.lean` for `mso ⊆ regular`; `TwoWayMSO.lean`, `RunProbe.lean`, `RunMark.lean`, `RunElts.lean`, `MarkLogic2.lean` for `regular ⊆ mso`), but the statement still depends on `sorryAx`: the direction `mso ⊆ regular` goes through Theorem C.2.9, which is open — see *The proof of Theorem C.4.8* below |
+| Lemma C.4.9 | not formalised as a numbered result; it is the normalisation of the type τ inside the proof of Theorem C.4.8 and appears as `Transducers.MSOTransduction.exists_norm` in `MSONorm.lean` | — |
 | Lemma C.4.10 (formulas via rational functions) | `Transducers.mso_formulas_via_rational` | **proved** (`MSO.lean`, from `MSOPrecomp.lean`, `MarkStr.lean`, `MarkBimach.lean`, `MarkDelay.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`) |
 | Theorem C.4.11 (first-order = aperiodic) | `Transducers.foDefinable_iff_aperiodic_dfa` | statement only (`MSOOpen.lean`) |
 | Definition C.4.12 (k-types) | `Transducers.tp` | — |
@@ -838,6 +850,59 @@ gap of Theorem C.2.9 (see *What is missing in Theorem C.2.9* above).  Once
 `Transducers.boundedWidth_isRegular_step` is closed, Theorem C.3.2 is closed
 with it, with no further work.
 
+#### The proof of Theorem C.4.8
+
+Both implications of Theorem C.4.8 (`Transducers.msoTransduction_iff_regular`)
+are formalised, and no file used by either of them contains a `sorry`.
+
+*From two-way transducers to mso transductions* (`TwoWayMSO.lean`).  As in the
+book, the mso transduction simply writes down the semantics of the two-way
+transducer: the elements of the output universe are the pairs (configuration of
+the run, index of a letter in the string produced by that step), that is
+`|Q| · (K+1)` copies of the input positions plus as many extra elements for the
+configurations at the right end, where `K` bounds the length of the string
+produced by one transition.  All the properties involved -- "the run visits the
+state `q` at the marked position", "it produces the letter `b` there", "it
+visits one marked target before the other" -- are checked by a deterministic
+two-way automaton that simulates the run and stops at the first configuration
+satisfying a trigger condition (`RunProbe.lean`), so the corresponding languages
+of doubly marked strings are regular (Shepherdson, `TwoDFA.accepts_isRegular`,
+and `RunMark.lean`), and Theorem C.4.1 turns them into formulas with one or two
+free variables (`MarkLogic.lean`, `MarkLogic2.lean`).  The combinatorics of the
+output list is in `FlatIndex.lean` and `RunElts.lean`.
+
+*From mso transductions to regular functions* (`MSOReg.lean`).  The output
+universe is first normalised (Lemma C.4.9, `MSONorm.lean`): the extra elements of
+the linear type `τ = k · n + c` are attached to the first position of the input,
+which leaves a single finite set of tags, a universe formula and letter formulas
+with one free variable, and an order formula with two free variables.  A
+two-way transducer then *walks* the output order (`WalkAut.lean`): it scans for
+the first element, outputs its letter, and asks whether it is the last element,
+whether its successor sits in the same position, or to the right, or to the
+left; in the last two cases it walks in that direction and stops at the first
+position where the automaton for "is the successor of" accepts.  The questions
+are the mso formulas of `MSOWalkForms.lean`, whose meaning is expressed through
+the increasing enumeration of the selected elements (`SortedEnum.lean`).  By
+Lemma C.4.10 the unary questions are precomputed into the letters of a rational
+letter-to-letter function `pre`, and the binary ones become regular languages of
+infixes of `pre w`, read by a finite family of deterministic automata whose
+product -- together with the last letter read, which is what answers the unary
+question at the end of a rightward scan -- is the automaton of the walk
+(`MSOWalkData.lean`).  Finally `f` is the composition of `pre` with the function
+computed by the walking transducer; since that transducer need not halt on the
+strings that are not of the form `pre w`, what is composed with `pre` is its
+width-bounded output `TwoWay.widthOut`, a total function that agrees with the run
+wherever the run halts and is regular by Theorem C.2.9.
+
+This last step is the only reason why `Transducers.msoTransduction_iff_regular`
+still depends on `sorryAx`: exactly as for Theorem C.3.2, the inclusion
+`mso ⊆ regular` uses the hard half of Theorem C.2.9, whose single remaining gap
+is the induction step `Transducers.boundedWidth_isRegular_step` of the snake
+lemma (see *What is missing in Theorem C.2.9* above).  Once that step is closed,
+Theorem C.4.8 is closed with it, with no further work.  The converse inclusion
+`regular ⊆ mso`, `Transducers.isMSOTransduction_of_isTwoWay`, is proved outright
+and depends only on `propext`, `Classical.choice`, `Quot.sound`.
+
 ### Part D: Polyregular functions
 
 | Book | Lean | Status |
@@ -898,9 +963,20 @@ transducer.  So that the state of the section is visible file by file, the
 numbered results of Section C.4 that are
 still open have been moved, unchanged, from `PartC/MSO.lean` to
 `PartC/MSOOpen.lean`, which `PartC/MSO.lean` imports: `PartC/MSO.lean` now
-contains exactly the six proved results of Section C.4 (C.4.1, C.4.2, C.4.4,
-C.4.6, C.4.10, C.4.15) and no `sorry`, while every name of Section C.4 is still
-available from `RequestProject.PartC.MSO` as before.  Of **Theorem C.3.2** (sst = regular) both implications are now
+contains exactly the seven proved results of Section C.4 (C.4.1, C.4.2, C.4.4,
+C.4.6, C.4.8, C.4.10, C.4.15) and no `sorry`, while every name of Section C.4 is
+still available from `RequestProject.PartC.MSO` as before.
+Of **Theorem C.4.8** (mso transductions compute exactly the regular functions)
+both implications are now formalised, and no file they use contains a `sorry`:
+`regular ⊆ mso` is `Transducers.isMSOTransduction_of_isTwoWay`, which is proved
+outright (axioms `propext`, `Classical.choice`, `Quot.sound`), and `mso ⊆
+regular` is `Transducers.MSOReg.isRegularFun_of_isMSOTransduction`, which
+normalises the type τ (Lemma C.4.9, `MSONorm.lean`), precomputes the questions of
+the walk by Lemma C.4.10 and composes the resulting rational function with the
+walking two-way transducer, appealing to Theorem C.2.9 for the regularity of the
+latter; `Transducers.msoTransduction_iff_regular` therefore still depends on
+`sorryAx`, through the single open statement of Section C.2 — see *The proof of
+Theorem C.4.8* above.  Of **Theorem C.3.2** (sst = regular) both implications are now
 formalised and every file they use is sorry-free: `regular ⊆ sst` is
 `Transducers.isSST_of_isRegularFun`, which is proved outright, and `sst ⊆
 regular` is proved from Theorem C.2.9, the simulation of an sst by a two-way

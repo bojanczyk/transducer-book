@@ -23,15 +23,15 @@ variable {A : Type} {w : List A} {fo : ℕ → ℕ} {so : ℕ → Set ℕ}
 /-! ## Elementary connectives -/
 
 /-- The always true formula. -/
-def tt (A : Type) : MSO A := le 0 0
+def ttF (A : Type) : MSO A := le 0 0
 
 /-- The always false formula. -/
-def ff (A : Type) : MSO A := not (le 0 0)
+def ffF (A : Type) : MSO A := not (le 0 0)
 
-@[simp] lemma sat_tt : Sat w fo so (tt A) := le_refl _
+@[simp] lemma sat_ttF : Sat w fo so (ttF A) := le_refl _
 
-@[simp] lemma sat_ff : ¬ Sat w fo so (ff A) := by
-  simp only [ff, Sat, not_not]
+@[simp] lemma sat_ffF : ¬ Sat w fo so (ffF A) := by
+  simp only [ffF, Sat, not_not]
   exact le_refl _
 
 /-- Implication. -/
@@ -50,28 +50,28 @@ lemma sat_exAll (v : ℕ) (φ : MSO A) :
   simp only [exAll, Sat, not_exists, not_and, not_not]
 
 /-- A finite conjunction. -/
-def bigAnd {ι : Type} (L : List ι) (g : ι → MSO A) : MSO A :=
-  L.foldr (fun t φ => and (g t) φ) (tt A)
+def bigAndF {ι : Type} (L : List ι) (g : ι → MSO A) : MSO A :=
+  L.foldr (fun t φ => and (g t) φ) (ttF A)
 
-lemma sat_bigAnd {ι : Type} (L : List ι) (g : ι → MSO A) :
-    Sat w fo so (bigAnd L g) ↔ ∀ t ∈ L, Sat w fo so (g t) := by
+lemma sat_bigAndF {ι : Type} (L : List ι) (g : ι → MSO A) :
+    Sat w fo so (bigAndF L g) ↔ ∀ t ∈ L, Sat w fo so (g t) := by
   induction L with
-  | nil => simp [bigAnd]
+  | nil => simp [bigAndF]
   | cons a L ih =>
-      simp only [bigAnd, List.foldr_cons, Sat, List.mem_cons, forall_eq_or_imp]
-      rw [show L.foldr (fun t φ => and (g t) φ) (tt A) = bigAnd L g from rfl, ih]
+      simp only [bigAndF, List.foldr_cons, Sat, List.mem_cons, forall_eq_or_imp]
+      rw [show L.foldr (fun t φ => and (g t) φ) (ttF A) = bigAndF L g from rfl, ih]
 
 /-- A finite disjunction. -/
-def bigOr {ι : Type} (L : List ι) (g : ι → MSO A) : MSO A :=
-  L.foldr (fun t φ => or (g t) φ) (ff A)
+def bigOrF {ι : Type} (L : List ι) (g : ι → MSO A) : MSO A :=
+  L.foldr (fun t φ => or (g t) φ) (ffF A)
 
-lemma sat_bigOr {ι : Type} (L : List ι) (g : ι → MSO A) :
-    Sat w fo so (bigOr L g) ↔ ∃ t ∈ L, Sat w fo so (g t) := by
+lemma sat_bigOrF {ι : Type} (L : List ι) (g : ι → MSO A) :
+    Sat w fo so (bigOrF L g) ↔ ∃ t ∈ L, Sat w fo so (g t) := by
   induction L with
-  | nil => simp [bigOr]
+  | nil => simp [bigOrF]
   | cons a L ih =>
-      simp only [bigOr, List.foldr_cons, Sat, List.mem_cons, exists_eq_or_imp]
-      rw [show L.foldr (fun t φ => or (g t) φ) (ff A) = bigOr L g from rfl, ih]
+      simp only [bigOrF, List.foldr_cons, Sat, List.mem_cons, exists_eq_or_imp]
+      rw [show L.foldr (fun t φ => or (g t) φ) (ffF A) = bigOrF L g from rfl, ih]
 
 end MSO
 
@@ -109,13 +109,13 @@ variable (N)
 output order." -/
 def isMinF (L : List N.Tag) (t : N.Tag) : MSO A :=
   MSO.and (N.selAt 0 t)
-    (exAll 1 (bigAnd L (fun t' => imp (N.selAt 1 t') (N.ordAt 0 1 t t'))))
+    (exAll 1 (bigAndF L (fun t' => imp (N.selAt 1 t') (N.ordAt 0 1 t t'))))
 
 /-- "The element with tag `t` in the position `x₀` is the last element of the
 output order." -/
 def isMaxF (L : List N.Tag) (t : N.Tag) : MSO A :=
   MSO.and (N.selAt 0 t)
-    (exAll 1 (bigAnd L (fun t' => imp (N.selAt 1 t') (N.ordAt 1 0 t' t))))
+    (exAll 1 (bigAndF L (fun t' => imp (N.selAt 1 t') (N.ordAt 1 0 t' t))))
 
 /-- "The element with tag `t'` in the position `x₁` is the successor, in the
 output order, of the element with tag `t` in the position `x₀`." -/
@@ -123,7 +123,7 @@ def isSuccF (L : List N.Tag) (t t' : N.Tag) : MSO A :=
   MSO.and (N.selAt 0 t)
     (MSO.and (N.selAt 1 t')
       (MSO.and (MSO.not (N.ordAt 1 0 t' t))
-        (exAll 2 (bigAnd L (fun t'' =>
+        (exAll 2 (bigAndF L (fun t'' =>
           MSO.not (MSO.and (N.selAt 2 t'')
             (MSO.and (MSO.not (N.ordAt 2 0 t'' t)) (MSO.not (N.ordAt 1 2 t' t'')))))))))
 
@@ -140,7 +140,7 @@ def succHF (L : List N.Tag) (t t' : N.Tag) : MSO A := MSO.atv 0 (N.isSuccF L t t
 /-- "The successor of the element with tag `t` in the position `x₀` sits in a
 position further to the right." -/
 def succRF (L : List N.Tag) (t : N.Tag) : MSO A :=
-  MSO.exFO 1 (MSO.and (bigOr L (fun t' => N.isSuccF L t t')) (MSO.not (MSO.le 1 0)))
+  MSO.exFO 1 (MSO.and (bigOrF L (fun t' => N.isSuccF L t t')) (MSO.not (MSO.le 1 0)))
 
 /-! ## The meaning of the questions -/
 
@@ -178,7 +178,7 @@ lemma sat_isSuccF (t t' : N.Tag) (h0 : fo 0 < w.length) (h1 : fo 1 < w.length) :
   have key : MSO.Sat w fo so (N.isSuccF L t t') ↔
       ((t, fo 0) ∈ es ∧ (t', fo 1) ∈ es ∧ ¬ N.ord w (t', fo 1) (t, fo 0) ∧
         ∀ z ∈ es, ¬ (¬ N.ord w z (t, fo 0) ∧ ¬ N.ord w (t', fo 1) z)) := by
-    simp only [isSuccF, MSO.Sat, sat_exAll, sat_bigAnd, sat_selAt _ h0, sat_selAt _ h1,
+    simp only [isSuccF, MSO.Sat, sat_exAll, sat_bigAndF, sat_selAt _ h0, sat_selAt _ h1,
       sat_ordAt _ _ h1 h0]
     rw [mem_es_iff hPres, mem_es_iff hPres]
     refine and_congr_right (fun _ => and_congr_right (fun _ => and_congr_right (fun _ => ?_)))
@@ -236,7 +236,7 @@ lemma sat_isMinF (t : N.Tag) (h0 : fo 0 < w.length) :
   have hspec := spec_es hProp hPres
   have key : MSO.Sat w fo so (N.isMinF L t) ↔
       ((t, fo 0) ∈ es ∧ ∀ z ∈ es, N.ord w (t, fo 0) z) := by
-    simp only [isMinF, MSO.Sat, sat_exAll, sat_bigAnd, sat_imp, sat_selAt _ h0]
+    simp only [isMinF, MSO.Sat, sat_exAll, sat_bigAndF, sat_imp, sat_selAt _ h0]
     rw [mem_es_iff hPres]
     refine and_congr_right (fun _ => ?_)
     constructor
@@ -283,7 +283,7 @@ lemma sat_isMaxF (t : N.Tag) (h0 : fo 0 < w.length) :
   have hspec := spec_es hProp hPres
   have key : MSO.Sat w fo so (N.isMaxF L t) ↔
       ((t, fo 0) ∈ es ∧ ∀ z ∈ es, N.ord w z (t, fo 0)) := by
-    simp only [isMaxF, MSO.Sat, sat_exAll, sat_bigAnd, sat_imp, sat_selAt _ h0]
+    simp only [isMaxF, MSO.Sat, sat_exAll, sat_bigAndF, sat_imp, sat_selAt _ h0]
     rw [mem_es_iff hPres]
     refine and_congr_right (fun _ => ?_)
     constructor
@@ -340,7 +340,7 @@ lemma sat_succRF (t : N.Tag) (h0 : fo 0 < w.length) :
     MSO.Sat w fo so (N.succRF L t) ↔
       ∃ (r q : ℕ) (t' : N.Tag), es[r]? = some (t, fo 0) ∧ es[r + 1]? = some (t', q) ∧
         fo 0 < q := by
-  simp only [succRF, MSO.Sat, sat_bigOr]
+  simp only [succRF, MSO.Sat, sat_bigOrF]
   constructor
   · rintro ⟨q, hq, ⟨t', -, hsat⟩, hlt⟩
     rw [sat_isSuccF hL hProp hPres t t'

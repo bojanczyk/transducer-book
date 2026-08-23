@@ -3,7 +3,8 @@ Part C, Section C.4: Logic
   from *Transducers* (M. Bojańczyk, June 25, 2026).
 
 The numbered results of Section C.4 that are proved: Theorem C.4.1,
-Lemma C.4.2, Theorem C.4.4, Claim C.4.6, Lemma C.4.10 and Lemma C.4.15.  Every
+Lemma C.4.2, Theorem C.4.4, Claim C.4.6, Theorem C.4.8, Lemma C.4.10 and
+Lemma C.4.15.  Every
 proof in this file is complete.
 
 The definitions they speak about (monadic second-order logic, mso relabellings,
@@ -17,8 +18,8 @@ mso transductions and the first-order fragment) are in
 `RequestProject/PartC/MSORatRelab.lean` and
 `RequestProject/PartC/MSOPrecomp.lean`.
 
-The numbered results of Section C.4 that are still open (Theorem C.4.8,
-Theorem C.4.11, Lemma C.4.13, Theorem C.4.16 and Theorem C.4.17) are stated in `RequestProject/PartC/MSOOpen.lean`, which this
+The numbered results of Section C.4 that are still open (Theorem C.4.11,
+Lemma C.4.13, Theorem C.4.16 and Theorem C.4.17) are stated in `RequestProject/PartC/MSOOpen.lean`, which this
 file imports; so importing `RequestProject.PartC.MSO` gives, as before, all the
 statements of Section C.4.
 
@@ -30,6 +31,7 @@ import RequestProject.PartC.MSORelab
 import RequestProject.PartC.MSOOpen
 import RequestProject.PartC.MSORatRelab
 import RequestProject.PartC.MSOPrecomp
+import RequestProject.PartC.MSOReg
 
 namespace Transducers
 
@@ -77,6 +79,15 @@ theorem mso_formulas_via_rational {A : Type} [Finite A]
         (MSO.Sat w (fun i => if i = 0 then x else y) (fun _ => ∅) φ ↔
           ((f w).drop x).take (y - x + 1) ∈ L)) :=
   mso_formulas_via_rational_aux Φ₁ Φ₂ hΦ₁ hΦ₂
+
+/-! ## C.4.3 Regular functions in terms of logic -/
+
+/-- **Theorem C.4.8.**  String-to-string mso transductions define exactly the
+regular functions. -/
+theorem msoTransduction_iff_regular {A B : Type} [Finite A] [Finite B]
+    (f : List A → List B) : IsMSOTransduction f ↔ IsRegularFun f :=
+  ⟨fun h => isRegularFun_of_isMSOTransduction h,
+    fun h => isMSOTransduction_of_isTwoWay (regularFun_isTwoWay h)⟩
 
 /-- **Claim C.4.6.**  For an mso relabelling, the language of strings over the
 alphabet `A × Φ` in which every position is labelled by a formula that holds in

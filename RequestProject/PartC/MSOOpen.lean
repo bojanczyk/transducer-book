@@ -10,8 +10,9 @@ results of Section C.4 that *are* proved, contains no `sorry`.
 `RequestProject/PartC/MSO.lean` imports this file, so all names are unchanged
 and are still available to anything importing `RequestProject.PartC.MSO`.
 
-Theorem C.4.4 and Lemma C.4.10 used to be stated here as well; they are now
-proved, and their statements have moved back to `RequestProject/PartC/MSO.lean`.
+Theorem C.4.4, Lemma C.4.10 and Theorem C.4.8 used to be stated here as well;
+they are now proved, and their statements have moved back to
+`RequestProject/PartC/MSO.lean`.
 
 Not formalised at all: Claim C.4.5, Lemma C.4.9 and Claim C.4.14, which are
 internal steps of the proofs of Theorems C.4.4, C.4.8 and C.4.11.
@@ -32,11 +33,10 @@ namespace Transducers
 
 /-! ## C.4.3 Regular functions in terms of logic -/
 
-/-- **Theorem C.4.8.**  String-to-string mso transductions define exactly the
-regular functions. -/
-theorem msoTransduction_iff_regular {A B : Type} [Finite A] [Finite B]
-    (f : List A → List B) : IsMSOTransduction f ↔ IsRegularFun f := by
-  sorry
+/-! Theorem C.4.8 (`msoTransduction_iff_regular`) is now proved; it lives in
+`RequestProject/PartC/MSO.lean`, with its proof in
+`RequestProject/PartC/MSOReg.lean` (from mso transductions to regular functions)
+and `RequestProject/PartC/TwoWayMSO.lean` (the converse). -/
 
 /-! ## C.4.4 The first-order fragment -/
 
