@@ -121,8 +121,17 @@ RequestProject/
 | `PartC/MarkLogic2.lean` | the converse translation from an automaton over `Mark2 A` back to an mso formula with **two** free variables |
 | `PartC/FlatIndex.lean`, `PartC/RunElts.lean` | the combinatorics of the output positions of a two-way transducer as pairs (step of the run, position inside the string produced at that step), and the list of elements required by `MSOTransduction.Outputs` |
 | `PartC/TwoWayMSO.lean` | Theorem C.4.8, from two-way transducers to mso transductions: the mso transduction whose elements are the pairs (configuration, index of a produced letter), with all its formulas obtained from `RunMark.lean` through Theorem C.4.1 |
-| `PartC/MSO.lean` | Section C.4: the numbered results that are **proved** — Theorem C.4.1, Lemma C.4.2, Theorem C.4.4, Claim C.4.6, Theorem C.4.8, Lemma C.4.10 and Lemma C.4.15 (this file contains no `sorry`) |
-| `PartC/MSOOpen.lean` | Section C.4: the numbered results that are **still open** — Theorems C.4.11, C.4.16, C.4.17 and Lemma C.4.13, stated faithfully with `sorry` proofs (moved unchanged out of `MSO.lean`, which imports this file, so all names remain available through `RequestProject.PartC.MSO`) |
+| `PartC/FORel.lean` | relativisation of a first-order formula to the positions strictly below, at most, or strictly above a variable (`MSO.relLt`, `relLe`, `relGt`), the strict order `MSO.ltVar` and the fact that a first-order sentence does not see its valuations (`MSO.sat_sentence_congr`) |
+| `PartC/FOSeg.lean` | factors of a string between two bounds (`MSO.segP`), their splitting, and the transfer of a splitting along an equality of `(k+1)`-types (`Transducers.exists_split_of_tp_succ_eq`) |
+| `PartC/FOComp.lean` | Claim C.4.14 (an internal step, not a numbered result): the compositionality of first-order logic — if two strings have the same `k`-type then a marked position on one side can be matched on the other so that all formulas of quantifier rank `k` are preserved (`Transducers.KEquiv`, `sat_iff_of_kEquiv`, `sat_iff_of_tp_eq`) |
+| `PartC/FORename.lean` | the effect of renaming and of shifting the variables of a formula on being first-order, on the quantifier rank and on the free variables, and finite conjunctions and disjunctions of first-order formulas |
+| `PartC/FOHintikka.lean` | the second half of Lemma C.4.13: a first-order sentence of quantifier rank at most `k` separating two strings of different `k`-type (`Transducers.exists_fo_sentence_of_tp_ne`, `tp_eq_of_fo_equiv`) |
+| `PartC/FOTypeDFA.lean` | the easy direction of Theorem C.4.11: the (aperiodic, finite) automaton of `k`-types and the aperiodic dfa recognising a first-order definable language (`Transducers.tpDFA`, `aperiodic_dfa_of_foDefinable`) |
+| `PartC/FOSubstRel.lean` | substitution of a sentence for a label test in a first-order formula, relativised to the positions at most a variable (`MSO.substRel`), used for the composition of first-order definable Mealy machines |
+| `PartC/FOFlipFlop.lean` | flip-flop machines: the letter-indexed reset target (`Mealy.resetTo`) and the description of the state reached after a prefix as the target of the last resetting letter (`Mealy.trans_take_eq_iff`) |
+| `PartC/FOMealy.lean` | the hard direction of Theorem C.4.11: first-order definable Mealy machines (`Transducers.FODefMealy`), their closure under composition, the first-order definability of flip-flops and hence of every composition of flip-flops (through the aperiodic Krohn-Rhodes Theorem A.2.8), and the Mealy machine of a dfa (`Transducers.foDefinable_of_aperiodic_dfa`) |
+| `PartC/MSO.lean` | Section C.4: the numbered results that are **proved** — Theorem C.4.1, Lemma C.4.2, Theorem C.4.4, Claim C.4.6, Theorem C.4.8, Lemma C.4.10, Theorem C.4.11, Lemma C.4.13 and Lemma C.4.15 (this file contains no `sorry`) |
+| `PartC/MSOOpen.lean` | Section C.4: the numbered results that are **still open** — Theorems C.4.16 and C.4.17, stated faithfully with `sorry` proofs (moved unchanged out of `MSO.lean`, which imports this file, so all names remain available through `RequestProject.PartC.MSO`) |
 | `PartD/MarkedSquare.lean` | marked squaring and its continuity |
 | `PartD/Statements.lean` | Part D: polyregular functions, for-transducers, pebble transducers |
 
@@ -479,10 +488,10 @@ The proofs are organised as follows.
 | Theorem C.4.8 (mso transductions = regular) | `Transducers.msoTransduction_iff_regular` | both implications are **proved** (`MSO.lean`, from `MSOReg.lean`, `MSOWalkData.lean`, `WalkAut.lean`, `MSOWalkForms.lean`, `MSONorm.lean`, `SortedEnum.lean` for `mso ⊆ regular`; `TwoWayMSO.lean`, `RunProbe.lean`, `RunMark.lean`, `RunElts.lean`, `MarkLogic2.lean` for `regular ⊆ mso`), but the statement still depends on `sorryAx`: the direction `mso ⊆ regular` goes through Theorem C.2.9, which is open — see *The proof of Theorem C.4.8* below |
 | Lemma C.4.9 | not formalised as a numbered result; it is the normalisation of the type τ inside the proof of Theorem C.4.8 and appears as `Transducers.MSOTransduction.exists_norm` in `MSONorm.lean` | — |
 | Lemma C.4.10 (formulas via rational functions) | `Transducers.mso_formulas_via_rational` | **proved** (`MSO.lean`, from `MSOPrecomp.lean`, `MarkStr.lean`, `MarkBimach.lean`, `MarkDelay.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`) |
-| Theorem C.4.11 (first-order = aperiodic) | `Transducers.foDefinable_iff_aperiodic_dfa` | statement only (`MSOOpen.lean`) |
+| Theorem C.4.11 (first-order = aperiodic) | `Transducers.foDefinable_iff_aperiodic_dfa` | **proved** (`MSO.lean`, from `FOTypeDFA.lean` and `FOMealy.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`) |
 | Definition C.4.12 (k-types) | `Transducers.tp` | — |
-| Lemma C.4.13 (types and formulas) | `Transducers.tp_eq_iff_fo_equiv` | statement only (`MSOOpen.lean`) |
-| Claim C.4.14 | not formalised (internal step of the proof of Lemma C.4.13) | — |
+| Lemma C.4.13 (types and formulas) | `Transducers.tp_eq_iff_fo_equiv` | **proved** (`MSO.lean`, from `FOComp.lean` and `FOHintikka.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`) |
+| Claim C.4.14 | internal step of the proof of Lemma C.4.13; not a numbered result, but formalised as `Transducers.sat_iff_of_kEquiv` (`FOComp.lean`) | — |
 | Lemma C.4.15 (properties of types) | `Transducers.tp_properties` | proved (`KTypes.lean`) |
 | Theorem C.4.16 (first-order relabellings) | `Transducers.foRelabelling_iff_aperiodicBimachine` | statement only (`MSOOpen.lean`) |
 | Theorem C.4.17 (first-order transductions) | `Transducers.foTransduction_iff_prime_composition` | statement only (`MSOOpen.lean`) |
@@ -943,12 +952,16 @@ In Part C,
 Theorem C.1.1, Lemmas C.1.2 and C.1.3,
 Theorem C.2.2, **Theorem C.2.5**, Lemma C.2.6, **Corollary C.2.7**,
 **Corollary C.2.8**, **Lemma C.2.10**, **Claim C.2.11**, **Theorem C.4.1**,
-**Lemma C.4.2**, **Theorem C.4.4**, **Claim C.4.6**, **Lemma C.4.10** and
+**Lemma C.4.2**, **Theorem C.4.4**, **Claim C.4.6**, **Lemma C.4.10**,
+**Theorem C.4.11**, **Lemma C.4.13** and
 Lemma C.4.15 are
 proved.  Theorem C.4.1 (Büchi-Elgot-Trakhtenbrot), Lemma C.4.2, Theorem C.4.4
-(rational functions are exactly the mso relabellings), Claim C.4.6 and
+(rational functions are exactly the mso relabellings), Claim C.4.6,
 Lemma C.4.10 (the precomputation of a finite family of formulas by a
-letter-to-letter rational function)
+letter-to-letter rational function), Theorem C.4.11 (a language is first-order
+definable if and only if it is recognised by an aperiodic dfa) and Lemma C.4.13
+(two strings have the same `k`-type if and only if they satisfy the same
+first-order sentences of quantifier rank at most `k`)
 are proved outright: no file they use contains a `sorry`, and each of them
 depends only on `propext`, `Classical.choice`, `Quot.sound` (checked again on a
 clean build of the whole project, `lake build` with no errors, and with
@@ -963,9 +976,22 @@ transducer.  So that the state of the section is visible file by file, the
 numbered results of Section C.4 that are
 still open have been moved, unchanged, from `PartC/MSO.lean` to
 `PartC/MSOOpen.lean`, which `PartC/MSO.lean` imports: `PartC/MSO.lean` now
-contains exactly the seven proved results of Section C.4 (C.4.1, C.4.2, C.4.4,
-C.4.6, C.4.8, C.4.10, C.4.15) and no `sorry`, while every name of Section C.4 is
-still available from `RequestProject.PartC.MSO` as before.
+contains exactly the nine proved results of Section C.4 (C.4.1, C.4.2, C.4.4,
+C.4.6, C.4.8, C.4.10, C.4.11, C.4.13, C.4.15) and no `sorry`, while every name
+of Section C.4 is still available from `RequestProject.PartC.MSO` as before;
+only Theorems C.4.16 and C.4.17 are left in `PartC/MSOOpen.lean`.
+Lemma C.4.13 is proved by the Ehrenfeucht-Fraïssé argument of the book: the
+compositionality of first-order logic (Claim C.4.14, `FOComp.lean`) gives one
+direction, and Hintikka sentences of quantifier rank `k`, built by induction
+from the finitely many `k`-types (`FOHintikka.lean`, using Lemma C.4.15), give
+the other.  For Theorem C.4.11, the easy direction runs the finite aperiodic
+automaton of `k`-types (`FOTypeDFA.lean`), and the hard one follows the book
+through the aperiodic Krohn-Rhodes Theorem A.2.8: the Mealy machine of the dfa
+has the transition function of the dfa, so aperiodicity is literally the
+hypothesis of `Transducers.krohn_rhodes_flipFlop`, and the resulting composition
+of flip-flops is first-order definable because flip-flops are
+(`FOFlipFlop.lean`, `FOMealy.lean`) and first-order definable Mealy machines are
+closed under composition, by substitution of formulas (`FOSubstRel.lean`).
 Of **Theorem C.4.8** (mso transductions compute exactly the regular functions)
 both implications are now formalised, and no file they use contains a `sorry`:
 `regular ⊆ mso` is `Transducers.isMSOTransduction_of_isTwoWay`, which is proved

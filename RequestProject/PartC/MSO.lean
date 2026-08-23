@@ -3,8 +3,8 @@ Part C, Section C.4: Logic
   from *Transducers* (M. Bojańczyk, June 25, 2026).
 
 The numbered results of Section C.4 that are proved: Theorem C.4.1,
-Lemma C.4.2, Theorem C.4.4, Claim C.4.6, Theorem C.4.8, Lemma C.4.10 and
-Lemma C.4.15.  Every
+Lemma C.4.2, Theorem C.4.4, Claim C.4.6, Theorem C.4.8, Lemma C.4.10,
+Theorem C.4.11, Lemma C.4.13 and Lemma C.4.15.  Every
 proof in this file is complete.
 
 The definitions they speak about (monadic second-order logic, mso relabellings,
@@ -18,8 +18,15 @@ mso transductions and the first-order fragment) are in
 `RequestProject/PartC/MSORatRelab.lean` and
 `RequestProject/PartC/MSOPrecomp.lean`.
 
-The numbered results of Section C.4 that are still open (Theorem C.4.11,
-Lemma C.4.13, Theorem C.4.16 and Theorem C.4.17) are stated in `RequestProject/PartC/MSOOpen.lean`, which this
+Theorem C.4.11 and Lemma C.4.13 are proved below, out of
+`RequestProject/PartC/FORel.lean`, `RequestProject/PartC/FOSeg.lean`,
+`RequestProject/PartC/FOComp.lean`, `RequestProject/PartC/FORename.lean`,
+`RequestProject/PartC/FOHintikka.lean`, `RequestProject/PartC/FOTypeDFA.lean`,
+`RequestProject/PartC/FOSubstRel.lean`, `RequestProject/PartC/FOFlipFlop.lean`
+and `RequestProject/PartC/FOMealy.lean`.
+
+The numbered results of Section C.4 that are still open (Theorem C.4.16 and
+Theorem C.4.17) are stated in `RequestProject/PartC/MSOOpen.lean`, which this
 file imports; so importing `RequestProject.PartC.MSO` gives, as before, all the
 statements of Section C.4.
 
@@ -32,6 +39,9 @@ import RequestProject.PartC.MSOOpen
 import RequestProject.PartC.MSORatRelab
 import RequestProject.PartC.MSOPrecomp
 import RequestProject.PartC.MSOReg
+import RequestProject.PartC.FOHintikka
+import RequestProject.PartC.FOTypeDFA
+import RequestProject.PartC.FOMealy
 
 namespace Transducers
 
@@ -103,6 +113,39 @@ theorem msoRelabelling_annotation_regular {A B : Type} [Finite A] (R : MSORelabe
 **Definition C.4.12 (k-types)** (`TpType` and `tp`) is in
 `RequestProject/PartC/KTypes.lean`, together with the proof of Lemma C.4.15
 below. -/
+
+/-- **Theorem C.4.11.**  A language is definable in first-order logic if and
+only if it is recognised by an aperiodic dfa. -/
+theorem foDefinable_iff_aperiodic_dfa {A : Type} [Finite A] (L : Language A) :
+    FODefinable L ↔
+      ∃ (σ : Type) (_ : Finite σ) (M : DFA A σ), TransAperiodic M.step ∧ M.accepts = L := by
+  refine ⟨aperiodic_dfa_of_foDefinable L, ?_⟩
+  rintro ⟨σ, hσ, M, hap, rfl⟩
+  haveI := hσ
+  exact foDefinable_of_aperiodic_dfa M hap
+
+/-- **Lemma C.4.13.**  Two strings have the same `k`-type if and only if they
+satisfy the same first-order sentences of quantifier rank at most `k`. -/
+theorem tp_eq_iff_fo_equiv {A : Type} [Finite A] (k : ℕ) (w v : List A) :
+    tp k w = tp k v ↔
+      ∀ φ : MSO A, φ.IsFO → φ.freeFO = ∅ → φ.qrank ≤ k →
+        ((∀ fo so, MSO.Sat w fo so φ) ↔ (∀ fo so, MSO.Sat v fo so φ)) := by
+  constructor
+  · intro h φ hfo hfree hq
+    constructor
+    · intro hw fo so
+      exact (sat_iff_of_tp_eq h φ hfo hq hfree (fun _ => 0) fo (fun _ => ∅) so).mp
+        (hw (fun _ => 0) (fun _ => ∅))
+    · intro hv fo so
+      exact (sat_iff_of_tp_eq h.symm φ hfo hq hfree (fun _ => 0) fo (fun _ => ∅) so).mp
+        (hv (fun _ => 0) (fun _ => ∅))
+  · intro h
+    refine tp_eq_of_fo_equiv k w v (fun φ hfo hfree hq => ?_)
+    have hw : (∀ fo so, MSO.Sat w fo so φ) ↔ MSO.Sat w (fun _ => 0) (fun _ => ∅) φ :=
+      ⟨fun hs => hs _ _, fun hs fo so => (MSO.sat_sentence_congr hfo hfree w _ _ _ _).mp hs⟩
+    have hv : (∀ fo so, MSO.Sat v fo so φ) ↔ MSO.Sat v (fun _ => 0) (fun _ => ∅) φ :=
+      ⟨fun hs => hs _ _, fun hs fo so => (MSO.sat_sentence_congr hfo hfree v _ _ _ _).mp hs⟩
+    exact hw.symm.trans ((h φ hfo hfree hq).trans hv)
 
 /-- **Lemma C.4.15.**  Refinement, congruence and aperiodicity of `k`-types. -/
 theorem tp_properties {A : Type} (k : ℕ) :

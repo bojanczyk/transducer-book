@@ -10,12 +10,13 @@ results of Section C.4 that *are* proved, contains no `sorry`.
 `RequestProject/PartC/MSO.lean` imports this file, so all names are unchanged
 and are still available to anything importing `RequestProject.PartC.MSO`.
 
-Theorem C.4.4, Lemma C.4.10 and Theorem C.4.8 used to be stated here as well;
-they are now proved, and their statements have moved back to
-`RequestProject/PartC/MSO.lean`.
+Theorem C.4.4, Lemma C.4.10, Theorem C.4.8, Theorem C.4.11 and Lemma C.4.13
+used to be stated here as well; they are now proved, and their statements have
+moved back to `RequestProject/PartC/MSO.lean`.
 
-Not formalised at all: Claim C.4.5, Lemma C.4.9 and Claim C.4.14, which are
-internal steps of the proofs of Theorems C.4.4, C.4.8 and C.4.11.
+Not formalised as numbered results: Claim C.4.5, Lemma C.4.9 and Claim C.4.14,
+which are internal steps of the proofs of Theorems C.4.4, C.4.8 and
+Lemma C.4.13.
 -/
 import RequestProject.PartC.MSODef
 
@@ -40,20 +41,12 @@ and `RequestProject/PartC/TwoWayMSO.lean` (the converse). -/
 
 /-! ## C.4.4 The first-order fragment -/
 
-/-- **Theorem C.4.11.**  A language is definable in first-order logic if and
-only if it is recognised by an aperiodic dfa. -/
-theorem foDefinable_iff_aperiodic_dfa {A : Type} [Finite A] (L : Language A) :
-    FODefinable L ↔
-      ∃ (σ : Type) (_ : Finite σ) (M : DFA A σ), TransAperiodic M.step ∧ M.accepts = L := by
-  sorry
-
-/-- **Lemma C.4.13.**  Two strings have the same `k`-type if and only if they
-satisfy the same first-order sentences of quantifier rank at most `k`. -/
-theorem tp_eq_iff_fo_equiv {A : Type} [Finite A] (k : ℕ) (w v : List A) :
-    tp k w = tp k v ↔
-      ∀ φ : MSO A, φ.IsFO → φ.freeFO = ∅ → φ.qrank ≤ k →
-        ((∀ fo so, MSO.Sat w fo so φ) ↔ (∀ fo so, MSO.Sat v fo so φ)) := by
-  sorry
+/-! Theorem C.4.11 (`foDefinable_iff_aperiodic_dfa`) and Lemma C.4.13
+(`tp_eq_iff_fo_equiv`) are now proved; they live in
+`RequestProject/PartC/MSO.lean`, with their proofs in
+`RequestProject/PartC/FOComp.lean` and `RequestProject/PartC/FOHintikka.lean`
+(Lemma C.4.13) and in `RequestProject/PartC/FOTypeDFA.lean` and
+`RequestProject/PartC/FOMealy.lean` (Theorem C.4.11). -/
 
 /-- **Theorem C.4.16.**  A string-to-string function is a first-order
 relabelling if and only if it is computed by an aperiodic bimachine. -/
