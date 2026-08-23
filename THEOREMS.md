@@ -875,7 +875,8 @@ Theorem C.2.2, **Theorem C.2.5**, Lemma C.2.6, **Corollary C.2.7**,
 **Lemma C.4.2**, **Claim C.4.6** and Lemma C.4.15 are
 proved.  Theorem C.4.1 (Büchi-Elgot-Trakhtenbrot), Lemma C.4.2 and Claim C.4.6
 are proved outright: no file they use contains a `sorry`, and each of them
-depends only on `propext`, `Classical.choice`, `Quot.sound` (re-verified with
+depends only on `propext`, `Classical.choice`, `Quot.sound` (checked again on a
+clean build of the whole project, `lake build` with no errors, and with
 `#print axioms`; Lemma C.4.15 needs only `propext` and `Quot.sound`).  So that
 this is visible file by file, the numbered results of Section C.4 that are
 still open have been moved, unchanged, from `PartC/MSO.lean` to the new
