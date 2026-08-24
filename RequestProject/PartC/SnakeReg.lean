@@ -60,6 +60,7 @@ below uses (`TwoWay.widthOut_stopRight` in
 import RequestProject.PartC.SnakeBase
 import RequestProject.PartC.SnakeLoop
 import RequestProject.PartC.RegPair
+import RequestProject.PartC.SnakeStage1
 
 namespace Transducers
 
@@ -86,7 +87,16 @@ properties of Lemma C.2.10 -- the last gluing step, the map combinator applied
 to the blocks `wᵢ₋₁ # wᵢ` cut out by the record-breakers, is available as
 `Transducers.RegPair.isRegularFun_pairMap`. -/
 theorem boundedWidth_isRegular_step (k : ℕ) (ih : SnakeReg (k + 1)) : SnakeReg (k + 2) := by
-  sorry
+  intro A B Q hA hB hQ M
+  haveI := hA; haveI := hB; haveI := hQ
+  obtain ⟨ann, hrat, hann⟩ := exists_snakeMarking M (k + 2)
+  have hblock : IsRegularFun (blockFun M (k + 1) (2 * (k + 2) + 1)) :=
+    isRegularFun_blockFun M (k + 1) (fun M' => ih A B Q hA hB hQ M') _
+  have hpair : IsRegularFun (RegPair.pairMap (blockFun M (k + 1) (2 * (k + 2) + 1))) :=
+    RegPair.isRegularFun_pairMap hblock
+  refine (IsRegularFun.of_rational hrat).comp' hpair ?_
+  intro w
+  exact widthOut_eq_pairMap M (k + 2) hann w
 
 open TwoWay in
 /-- **The snake lemma** (the book's Lemma "the output of a snake graph is
