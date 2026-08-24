@@ -11,6 +11,7 @@
     "C4-transduction",
     "C4-first-order",
     "C4-fo-transductions",
+    "C2-snake-step",
     "audit-C",
     "D-pebble-and-lemmas",
     "D-equivalences",
@@ -34,7 +35,7 @@
       "note": null
     },
     "C2-composition": {
-      "status": "running",
+      "status": "done",
       "attempts": 3,
       "continues": 1,
       "reattempts": 1,
@@ -44,78 +45,109 @@
         "a70904ec-32fe-4145-99e5-0af08d90b3dc"
       ],
       "started_at": "2026-08-21 18:08:59Z",
-      "finished_at": null,
+      "finished_at": "2026-08-22 01:31:41Z",
       "note": null
     },
     "C2-regular-equivalence": {
-      "status": "pending",
-      "attempts": 0,
-      "continues": 0,
+      "status": "partial",
+      "attempts": 4,
+      "continues": 3,
       "reattempts": 0,
-      "task_ids": [],
-      "started_at": null,
-      "finished_at": null,
-      "note": null
+      "task_ids": [
+        "9d137945-d4cf-41d8-8871-9d3a9373cd01",
+        "03a3b34b-c4f2-4d92-950d-e24cc792eba7",
+        "6818947a-3c36-4a48-8fe7-8841c4550aac",
+        "04728d6d-0d8e-49d9-a595-f4417e8135b3"
+      ],
+      "started_at": "2026-08-22 01:31:44Z",
+      "finished_at": "2026-08-22 18:52:49Z",
+      "note": "budget exhausted after 3 continuations; C.2.10 and C.2.11 proved, C.2.9 left resting on boundedWidth_isRegular_step -> handed to target C2-snake-step",
+      "sorries_at_start": 20
     },
     "C3-sst": {
-      "status": "pending",
-      "attempts": 0,
+      "status": "done",
+      "attempts": 1,
       "continues": 0,
       "reattempts": 0,
-      "task_ids": [],
-      "started_at": null,
-      "finished_at": null,
-      "note": null
+      "task_ids": [
+        "ad29a00d-dbc6-4ff3-af09-5eca74209884"
+      ],
+      "started_at": "2026-08-22 18:52:52Z",
+      "finished_at": "2026-08-22 23:14:23Z",
+      "note": "C.3.2 formalised in both directions, but rests on boundedWidth_isRegular_step -> target C2-snake-step",
+      "sorries_at_start": 18
     },
     "C4-buchi": {
-      "status": "pending",
-      "attempts": 0,
-      "continues": 0,
-      "reattempts": 0,
-      "task_ids": [],
-      "started_at": null,
-      "finished_at": null,
-      "note": null
+      "status": "done",
+      "attempts": 5,
+      "continues": 3,
+      "reattempts": 1,
+      "task_ids": [
+        "86f31353-c7cd-4628-ba0f-79fee4267ca0",
+        "d27f8813-5e4f-473d-8a06-5516daba23d6",
+        "575f3b58-e1d1-4531-80d9-5fd69c6c052b",
+        "0d705cf6-5a38-4135-bc42-75ac36a4c777",
+        "f95b456f-9e04-48e0-b460-9e66b53dfc4b"
+      ],
+      "started_at": "2026-08-22 23:14:27Z",
+      "finished_at": "2026-08-23 11:13:02Z",
+      "note": "budget spent on re-verification, not on unfinished mathematics: C.4.1, C.4.2 and C.4.6 are proved outright (checked 2026-08-24)",
+      "sorries_at_start": 17
     },
     "C4-relabelling": {
-      "status": "pending",
-      "attempts": 0,
+      "status": "done",
+      "attempts": 1,
       "continues": 0,
       "reattempts": 0,
-      "task_ids": [],
-      "started_at": null,
-      "finished_at": null,
-      "note": null
+      "task_ids": [
+        "415129dd-23b2-49e0-89e4-fd8e834a3812"
+      ],
+      "started_at": "2026-08-23 11:13:06Z",
+      "finished_at": "2026-08-23 12:28:31Z",
+      "note": null,
+      "sorries_at_start": 14
     },
     "C4-transduction": {
-      "status": "pending",
-      "attempts": 0,
-      "continues": 0,
+      "status": "done",
+      "attempts": 2,
+      "continues": 1,
       "reattempts": 0,
-      "task_ids": [],
-      "started_at": null,
-      "finished_at": null,
-      "note": null
+      "task_ids": [
+        "e6c4230a-837b-49bb-84fd-86e918627dac",
+        "fa8e8e6d-8fa7-40bf-b832-ecc5414ddd8e"
+      ],
+      "started_at": "2026-08-23 12:28:34Z",
+      "finished_at": "2026-08-23 19:30:05Z",
+      "note": "C.4.8 formalised in both directions, but rests on boundedWidth_isRegular_step -> target C2-snake-step",
+      "sorries_at_start": 12
     },
     "C4-first-order": {
-      "status": "pending",
-      "attempts": 0,
+      "status": "done",
+      "attempts": 1,
       "continues": 0,
       "reattempts": 0,
-      "task_ids": [],
-      "started_at": null,
-      "finished_at": null,
-      "note": null
+      "task_ids": [
+        "0da14218-27b4-4adc-85b1-14bb3980862a"
+      ],
+      "started_at": "2026-08-23 19:30:07Z",
+      "finished_at": "2026-08-23 22:54:58Z",
+      "note": null,
+      "sorries_at_start": 11
     },
     "C4-fo-transductions": {
-      "status": "pending",
-      "attempts": 0,
-      "continues": 0,
-      "reattempts": 0,
-      "task_ids": [],
-      "started_at": null,
-      "finished_at": null,
-      "note": null
+      "status": "done",
+      "attempts": 3,
+      "continues": 1,
+      "reattempts": 1,
+      "task_ids": [
+        "a77f2289-745d-4f8e-9be2-659ad6a0e6a8",
+        "b4ebd3b0-70d6-43f3-a511-bd7ab76d91f3",
+        "743b0852-3c5a-418e-b8d3-40da75a917b2"
+      ],
+      "started_at": "2026-08-23 22:55:00Z",
+      "finished_at": "2026-08-24 06:36:24Z",
+      "note": "C.4.16 proved outright; C.4.17 withdrawn by the author (the book does not prove it) -- its removal from the sources is folded into C2-snake-step",
+      "sorries_at_start": 9
     },
     "audit-C": {
       "status": "pending",
@@ -166,17 +198,28 @@
       "started_at": null,
       "finished_at": null,
       "note": null
+    },
+    "C2-snake-step": {
+      "status": "pending",
+      "attempts": 0,
+      "continues": 0,
+      "reattempts": 0,
+      "task_ids": [],
+      "started_at": null,
+      "finished_at": null,
+      "note": null
     }
   },
   "current": {
-    "target_id": "C2-composition",
-    "task_id": "a70904ec-32fe-4145-99e5-0af08d90b3dc",
-    "submitted_at": "2026-08-21 23:45:27Z",
-    "kind": "reattempt"
+    "target_id": "external",
+    "task_id": "7099d7f0-ebf7-4d53-8998-00337a5e34a5",
+    "submitted_at": "2026-08-24 07:10:32Z",
+    "kind": "adopted"
   },
   "paused": false,
   "pause_reason": null,
   "finished_at": null,
-  "ticks": 40,
-  "last_tick": "2026-08-22 01:16:29Z"
+  "ticks": 144,
+  "last_tick": "2026-08-24 07:36:27Z",
+  "review_pending": 0
 }

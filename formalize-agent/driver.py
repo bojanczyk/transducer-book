@@ -289,39 +289,103 @@ def collect_bodies(ld: Path) -> dict[str, str]:
     return bodies
 
 
-def classify(ld: Path, pairs: list[tuple[str, str]]) -> list[tuple[str, str, str]]:
-    """Classify (book number, lean name) pairs as clean / open / missing."""
-    bodies = collect_bodies(ld)
+def dependency_graph(ld: Path) -> tuple[dict[str, str], dict[str, set[str]]]:
+    """Comment-free declaration bodies, plus the declarations each one mentions."""
+    bodies = {k: strip_comments(v) for k, v in collect_bodies(ld).items()}
+    index: dict[str, str] = {}
+    for name in bodies:
+        index.setdefault(name, name)
+        index.setdefault(name.split(".")[-1], name)
+    edges: dict[str, set[str]] = {}
+    for name, body in bodies.items():
+        deps: set[str] = set()
+        for tok in re.findall(r"[A-Za-z_][A-Za-z0-9_'.]*", body):
+            hit = index.get(tok) or index.get(tok.split(".")[-1])
+            if hit is not None and hit != name:
+                deps.add(hit)
+        edges[name] = deps
+    return bodies, edges
+
+
+def sorry_witnesses(ld: Path) -> tuple[dict[str, str], dict[str, str]]:
+    """Bodies, and a map: declaration -> the `sorry` declaration it rests on.
+
+    A declaration is tainted if its own body has a `sorry`, or if it mentions a
+    tainted one.  This is an approximation of `#print axioms` from the sources
+    alone, and it errs towards over-reporting, since it counts every mention of
+    a name.  That is the safe direction: the failure it exists to prevent is a
+    result being recorded as done while it still rests on an unproved lemma.
+    """
+    bodies, edges = dependency_graph(ld)
+    rev: dict[str, set[str]] = {}
+    for name, deps in edges.items():
+        for d in deps:
+            rev.setdefault(d, set()).add(name)
+    witness: dict[str, str] = {}
+    pending: list[str] = []
+    for name, body in bodies.items():
+        if re.search(r"\bsorry\b", body):
+            witness[name] = name
+            pending.append(name)
+    while pending:
+        cur = pending.pop()
+        for up in rev.get(cur, ()):
+            if up not in witness:
+                witness[up] = witness[cur]
+                pending.append(up)
+    return bodies, witness
+
+
+def classify(ld: Path, pairs: list[tuple[str, str]]) -> list[tuple[str, str, str, str | None]]:
+    """Classify (book number, lean name) pairs as clean / open / blocked / missing.
+
+    The fourth component names the `sorry` a blocked result rests on.
+    """
+    bodies, witness = sorry_witnesses(ld)
     out = []
     for num, name in pairs:
         short = name.split(".")[-1]
-        body = bodies.get(short)
-        if body is None:
-            state = "missing"
-        elif re.search(r"\bsorry\b", strip_comments(body)):
-            state = "open"
+        key = short if short in bodies else next(
+            (k for k in bodies if k.split(".")[-1] == short), None)
+        if key is None:
+            out.append((num, short, "missing", None))
+            continue
+        w = witness.get(key)
+        if w is None:
+            out.append((num, short, "clean", None))
+        elif w == key:
+            out.append((num, short, "open", None))
         else:
-            state = "clean"
-        out.append((num, short, state))
+            out.append((num, short, "blocked", w))
     return out
 
 
 def open_results(ld: Path, names: list[str]) -> list[str]:
-    """Which of these declarations still contain a `sorry` in their own body."""
+    """Which of these declarations are not yet fully proved.
+
+    A declaration whose own body is clean can still be unproved, because what it
+    calls may not be: that is how C.2.9, C.3.2 and C.4.8 came to be recorded as
+    done while they all rested on `boundedWidth_isRegular_step`.  `#print axioms`,
+    which the standing instructions require, remains the authority; this is the
+    cheap check the driver can run for itself.
+    """
     if not names:
         return []
     still: list[str] = []
-    for _, short, state in classify(ld, [("", n) for n in names]):
+    for _, short, state, w in classify(ld, [("", n) for n in names]):
         if state == "missing":
             still.append(f"{short} (not found)")
         elif state == "open":
             still.append(short)
+        elif state == "blocked":
+            still.append(f"{short} (rests on {w})")
     return still
 
 
 STATE_DESC = {
-    "clean": "no `sorry` of its own",
+    "clean": "no `sorry` of its own and none in what it rests on",
     "open": "STILL CONTAINS `sorry`",
+    "blocked": "its own proof is finished, but it RESTS ON an unproved result",
     "missing": "NOT FOUND in the sources",
 }
 
@@ -343,15 +407,17 @@ def build_preamble(target: dict, ld: Path) -> str:
 
     if own:
         lines.append("The results this task is meant to close:")
-        for num, short, state in classify(ld, own):
-            lines.append(f"  * {num} ({short}) — {STATE_DESC[state]}")
+        for num, short, state, w in classify(ld, own):
+            rests = f" ({w})" if w else ""
+            lines.append(f"  * {num} ({short}) — {STATE_DESC[state]}{rests}")
         lines.append("")
 
     stale = []
     if deps:
         lines.append("Results that the instructions below assume are already available:")
-        for num, short, state in classify(ld, deps):
-            lines.append(f"  * {num} ({short}) — {STATE_DESC[state]}")
+        for num, short, state, w in classify(ld, deps):
+            rests = f" ({w})" if w else ""
+            lines.append(f"  * {num} ({short}) — {STATE_DESC[state]}{rests}")
             if state != "clean":
                 stale.append(num)
         lines.append("")
@@ -367,9 +433,10 @@ def build_preamble(target: dict, ld: Path) -> str:
 
     lines += [
         f"`sorry` occurrences in the project right now: {sorry_count(ld)}.",
-        "(This check greps each declaration's own body and does not follow its "
-        "dependencies, so read \"no `sorry` of its own\" as a hint, not as a proof "
-        "that the result is fully established.)",
+        "(This check reads the sources and follows each declaration through the "
+        "results it mentions, so it sees a finished proof that rests on an unproved "
+        "lemma. It is still only a source-level approximation: `#print axioms` is "
+        "the authority, and you are asked to run it.)",
         "--- end of generated state ---", "", ""]
     return "\n".join(lines)
 
@@ -633,7 +700,9 @@ def tick(cfg: dict, q: list, st: dict) -> None:
 
         if state in TERMINAL_OK and target:
             still = open_results(lean_dir(cfg), target.get("lean_names", []))
-            if still and rec["reattempts"] < cfg.get("max_reattempts_per_target", 2):
+            max_reattempts = target.get("max_reattempts",
+                                       cfg.get("max_reattempts_per_target", 2))
+            if still and rec["reattempts"] < max_reattempts:
                 rec["reattempts"] += 1
                 left = ", ".join(still)
                 extra = (f"You reported this task as complete, but these declarations still "
@@ -659,7 +728,7 @@ def tick(cfg: dict, q: list, st: dict) -> None:
                           f"still open: {', '.join(still)}" if still else None)
 
         elif state in TERMINAL_PARTIAL and target:
-            if rec["continues"] < cfg.get("max_continues", 3):
+            if rec["continues"] < target.get("max_continues", cfg.get("max_continues", 3)):
                 rec["continues"] += 1
                 extra = (f"Please continue exactly where you left off on the following task, "
                          f"picking up from the state of the repository and your own last "

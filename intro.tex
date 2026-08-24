@@ -45,7 +45,7 @@ For example, if we take a string-to-string  function that is  computed by a Turi
 
 The name continuity is loosely inspired by the topological notion of continuity, in which the inverse image of an open set is open. This is not a perfect analogy, since open sets in topology should be closed under possibly infinite unions, while regular languages are only closed under finite unions. A more in-depth discussion of this analogy can be found in the exercises, where we show that Definition~\ref{def:continuity} is the same as uniform continuity with respect to a certain metric on strings.
 
-As we will see, all functions in the transducer ladder are  continuous. Unfortunately, continuity on its own is not enough to guarantee a reasonable transducer model. In fact, as the following example shows, there are uncountably many continuous functions.
+As we will see, all functions in the transducer ladder are  continuous. Unfortunately, continuity on its own is not enough to guarantee a reasonable transducer model, and it should be treated as a necessary but not sufficient condition for having a good transducer model. In fact, as the following example shows, there are uncountably many continuous functions.
 
 \begin{myexample}\label{ex:uncountably-many-continuous}
     Consider an output alphabet $B$ and any sequence of words 
@@ -54,9 +54,9 @@ As we will see, all functions in the transducer ladder are  continuous. Unfortun
     \end{align*}
     which has the following \emph{Cauchy property}: every regular language $L \subseteq B^*$ gives the same answer on all but finitely many words in the sequence. By a simple extraction process, one can show that every infinite sequence contains a subsequence with the Cauchy property. A more explicit example of a Cauchy sequence is the sequence of words obtained by repeating an input letter a  factorial number of times
     \begin{align*}
-    b^{1}, b^{2!}, b^{3!},\ldots \qquad \text{where $b \in B$.}
+    b^{1!}, b^{2!}, b^{3!},\ldots \qquad \text{where $b \in B$.}
     \end{align*}
-    Let us prove that this sequence has the Cauchy property. Consider some regular language, and a corresponding  deterministic finite automaton (\dfa) that recognises this language. (We assume that the reader is familiar with \dfa.)  When reading a string that uses only letter $b$, the run of the automaton looks like a lasso, with some prefix of  length $k$ followed by  some loop of length $\ell$. Therefore, if  $n > k$, the acceptance of an input string $b^n$ depends only on  the remainder $n-k \mod \ell$. If $n$ is furthermore  a sufficently large factorial -- and hence divisble by $\ell$ --  then this remainder is always the same, namely $\ell - k \mod \ell$. Hence, from some point on the automaton will give the same answer to all strings in the sequence, thus proving that the sequence is Cauchy. 
+    Let us prove that this sequence has the Cauchy property. Consider some regular language, and a corresponding  deterministic finite automaton (\dfa) that recognises this language. (We assume that the reader is familiar with \dfa.)  When reading a string that uses only letter $b$, the run of the automaton looks like a lasso, with some prefix of  length $k$ followed by  some loop of length $\ell$. Therefore, if  $n > k$, the acceptance of an input string $b^n$ depends only on  the remainder $n-k \mod \ell$. If $n$ is furthermore  a sufficiently large factorial -- and hence divisible by $\ell$ --  then this remainder is always the same, namely $\ell - k \mod \ell$. Hence, from some point on the automaton will give the same answer to all strings in the sequence, thus proving that the sequence is Cauchy. 
 
 Fix a sequence with the Cauchy property, and consider any function 
     \begin{align*}

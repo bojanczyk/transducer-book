@@ -1,0 +1,5 @@
+{{ define "main" }}
+{{ partial "latex-file-block.html" (dict "file" "book-title.tex" "class" "page-title" "color_map" "transducer-book-color-map") }}
+{{ .Content }}
+<ol>{{ range .RegularPages.ByWeight }}<li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>{{ end }}</ol>
+{{ end }}

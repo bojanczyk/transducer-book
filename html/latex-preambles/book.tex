@@ -1,0 +1,23 @@
+% Each extraction job runs in html/.reflowtex-build/HASH, i.e. always exactly
+% three directories below the book repository root, so ../../../ reaches the
+% book's own LaTeX sources (macros.sty, knowledges.tex, main.aux) wherever the
+% repository happens to be checked out. There is no second copy of the sources
+% for the web edition: this is the same macros.sty the PDF build uses. Never
+% write an absolute, machine-specific path here.
+\usepackage{../../../macros}
+\input{../../../knowledges}
+\newcommand{\map}{\mathsf{map}}
+\usepackage{xr-hyper}
+\externaldocument{../../../main}
+
+% Keep Inconsolata for \ttfamily. libertine loads fontspec (so the document is
+% TU-encoded), but the inconsolata package only ever defines the 8-bit family
+% zi4, which has no TU shape — NFSS then silently substitutes the roman face and
+% every listing comes out in a proportional serif. Selecting the same typeface
+% through fontspec, from the OTFs TeX Live ships alongside the Type1 ones, keeps
+% the author's choice and gives \ttfamily somewhere to land.
+\setmonofont{Inconsolatazi4}[
+  Extension = .otf,
+  UprightFont = *-Regular,
+  BoldFont = *-Bold,
+  Scale = MatchLowercase]

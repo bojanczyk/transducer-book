@@ -76,11 +76,11 @@ So far we have proved that the regular functions are exactly those which can be 
      }
      {upon reading input $\#$, \\ register $X$ is cleared \\ and its content is appended to $Y$}.
     \end{align*}
-    After reading the whole input, the output is obtained as the concatenation $XY$.  
+    After reading the whole input, the output is obtained as the concatenation $YX$.  
 \end{myexample}
 
 \begin{myexample}[Iterated duplication]
-    Using a register update of the form $X \mapsto XX$, we could implement a function with exponential output size. This will be forbidden in our model, by requiring that the register updates are nonduplicating, which means intuitively that each register from the old valuation can be used at most once in the new valuation. 
+    Using a register update of the form $X \mapsto XX$, we could implement a function with exponential output size. This will be forbidden in our model, by requiring that the register updates are copyless, which means intuitively that each register from the old valuation can be used at most once in the new valuation. 
 \end{myexample}
 
 \begin{myexample}
@@ -94,7 +94,7 @@ So far we have proved that the regular functions are exactly those which can be 
     \end{smallmatrix}        \mapsto 
     \begin{smallmatrix}        \varepsilon \\ 
         \varepsilon \\
-        {Y\#X_1X_2}.
+        {YX_1X_2\#}.
     \end{smallmatrix}
 \end{align*}
 \end{myexample}
@@ -128,6 +128,8 @@ which are \emph{copyless} in the following sense: each register name from $\Xx$ 
     \end{itemize}
 \end{definition}
 
+
+
 In the final function, there is no copyless restriction. Nevertheless, we could impose such a restriction without changing the expressive power of the model, since the final function is applied once, and therefore any duplication could be treated by computing the appropriate registers in several independent copies.
 An \sst as in the above definition computes a function of type $A^* \to B^*$ which is defined as follows. After reading an input string $w \in A^*$, the transducer is in a configuration, which consists of a state $q \in Q$ and a register valuation $\eta : \Xx \to B^*$. In the initial configuration, the initial state is used, and all registers are empty. Upon reading an input letter, the transition function is applied to determine a new state and a register update which is applied to the current register valuation. After reading the whole input string, the output is obtained by applying the final output function to the  state at the end of the computation, and then substituting each register name for its contents in the final configuration.
 
@@ -146,7 +148,7 @@ In this section we show that  the \sst model is equivalent to the ones previousl
 The fact that the picture above is a forest, i.e.~that the registers in the left column of the above picture have outdegree at most one, is a consequence of the copyless restriction on the register updates.
 If we compose all the register updates that are applied when reading an input string of length $n$, and then we add the final output update, then we get a tree of depth $n+1$, as explained in the following picture (the unreachable parts are erased from the tree):
 \mypic{46}
-We use the name \emph{register flow tree} for this tree. This tree can be computed by a rational function, under a suitable string representation, similar to the one for the configuration graph in Section~\ref{sec:2dfa-continuity}. Since two-way transducers are closed under pre-composition with rational functions by Theorem~\ref{thm:composition-of-two-way-transducers}, it remains to show that there is a two-way transducer which inputs a (string representation of) a  register flow tree, and outputs the corresponding output string. This is easy to see, since the output string is produced by traversing the register flow tree in a depth-first search, which can easily be implemented by a two-way transducer. 
+We use the name \emph{register flow tree} for this tree. This tree can be computed by a rational function, under a suitable string representation, similar to the one for the configuration graph in Section~\ref{sec:2dfa-continuity}. Since two-way transducers are closed under pre-composition with rational functions by Corollary~\ref{cor:2dfa-closure-under-composition}, it remains to show that there is a two-way transducer which inputs a (string representation of) a  register flow tree, and outputs the corresponding output string. This is easy to see, since the output string is produced by traversing the register flow tree in a depth-first search, which can easily be implemented by a two-way transducer. 
 
 \paragraph*{Regular to \sst.} In this part of the proof, we leverage the decomposition results on the various transducer classes that we have proved before. By definition,  a regular function is a composition of prime functions, namely rational functions, map reverse, and map duplicate. We will show  that \sst's are closed under post-composition with these prime functions, i.e.
 \begin{align*}
@@ -186,7 +188,7 @@ There is an edge case where the middle part is empty, i.e.~there is no separator
 
 In the new \sst computing the composition of $f$ with map reverse, each register $X$ of $f$ is replaced by three registers $X_1,X_2,X_3$ that correspond to these three parts. The invariant, which compares the values of registers $X_1,X_2,X_3$ in the new \sst with the value of register $X$ in the original \sst, is the following:
 \begin{align*}
-\myoverbrace{cdba 
+\myoverbrace{dcba 
 }{
     $X_1$ stores first\\ part reversed
 }
@@ -250,12 +252,12 @@ where $q'$ denotes the state of the Mealy machine after starting in $q$ and read
 \myoverbrace{abbbababaaa\red c}{up to first reset \\ letter (in red)}
 \myoverbrace{abababba\red d abababaaaab \red c bbaabaaa \red c babbb}{remaining part}.
 \end{align*}
-In the edge case, where there is no reset letter in $X$, the first part is the whole string. For each register $X$ in the original \sst, the  new \sst will   have $|Q|+1$ registers: one register $X_{\text{right}}$ for the right part, and for each state $q$ of the Mealy machine, one register $X_q$  which stores the left part of $X$ transformed along $f_q$. It will also remember in its state: (a) the first constant letter in $X$; and (b) the last constant letter in $X$. A concatenation operation $X\mapsto  YZ$ in the original \sst is simulated by the following updates (with $q$ ranging over states of the Mealy machine) in the new \sst:
+In the edge case, where there is no reset letter in $X$, the first part is the whole string. For each register $X$ in the original \sst, the  new \sst will   have $|Q|+1$ registers: one register $X_{\text{right}}$ for the right part, and for each state $q$ of the Mealy machine, one register $X_q$  which stores the left part of $X$ transformed along $g_q$. It will also remember in its state: (a) the first constant letter in $X$; and (b) the last constant letter in $X$. A concatenation operation $X\mapsto  YZ$ in the original \sst is simulated by the following updates (with $q$ ranging over states of the Mealy machine) in the new \sst:
 \begin{align*}
 X_q & \mapsto  Y_q  \\
 X_{\text{right}} & \mapsto  Y_{\text{right}} Z_p Z_{\text{right}},
 \end{align*}
-where $p$ is the state of the Mealy machine after reading $Y$ concatenated with the left part of $Z$; the relevant state $p$ can be inferred from the information stored in the state of the new \sst. This is a copyless update, as required. The updates for prepending/appending letters are similar, and are left to the reader.
+where $p$ is the state of the Mealy machine after reading $Y$; the relevant state $p$ can be inferred from the information stored in the state of the new \sst. This is a copyless update, as required. The updates for prepending/appending letters are similar, and are left to the reader.
 \end{itemize}
 This completes the proof that \sst's are closed under post-composition with the Mealy machines, and more generally, all prime functions used in the regular functions. 
 \end{itemize}

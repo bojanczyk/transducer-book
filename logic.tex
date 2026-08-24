@@ -13,7 +13,7 @@ The general idea behind the logical perspective is to describe a property of a w
 \myunderbrace{a(y)}{such that \\ $y$  has \\ label $a$} \quad \land \quad 
 \myunderbrace{y \le x}{and is before $x$}
 \end{align*}
-describes the language $A^*a$ of strings that end with the letter $a$. The first logic that comes to mind is first-order logic, where formulas are constructed using 
+describes the language $aA^*$ of strings that begin with the letter $a$. The first logic that comes to mind is first-order logic, where formulas are constructed using 
 \begin{align*}
 \myunderbrace{\exists x \quad \forall x}{quantification \\ over positions}
 \qquad 
@@ -76,10 +76,10 @@ As it turns out, first-order logic is not strong enough to define all regular la
     The corresponding \mso formula (which is a variant of the parity formula from Example~\ref{ex:logic-parity}) says that the input string can be labelled by transitions in a way that represents an accepting run (for readability, we use finite disjunctions $\bigvee_i$, whose ranges are described below the formula): 
     \begin{align*}
         \exists X_1 \ldots \exists X_k 
-        \quad \land
+        \quad \bigwedge
         \begin{cases}
-            \text{(1) every position is labelled by at least one transition:}\\
-            \forall x \ \bigvee_i x \in X_i \\
+            \text{(1) every position is labelled by exactly one transition:}\\
+            \forall x \ \bigvee_i x \in X_i  \land (\bigwedge_{j \neq i} x \not \in X_j)\\
             \text{(2) consecutive transitions agree on the intermediate state:}\\
             \forall x \ \forall y\  x+1 = y \Rightarrow \bigvee_{(i,j) } x \in X_i \land y \in X_j \\ 
             \text{(3) the first transition has a source state that is initial:}\\
@@ -88,18 +88,16 @@ As it turns out, first-order logic is not strong enough to define all regular la
             \forall x \ \exists y \ y \geq x \land \bigvee_{i} y \in X_i.
         \end{cases}
     \end{align*}
-The disjunctions in the four items range as follows: (1) $i$ ranges over all transitions; (2) $(i,j)$ ranges over all pairs of transitions   such that the target state of $i$ is the source state of $j$; (3) $i$ ranges over all transitions that have an initial source state; and (4) $i$ ranges over all transitions that have an accepting target state. These are finite disjunctions, and hence they correspond to repeated use of $\lor$, and not some kind of quantification.  The formula also uses the successor relation $x+1 =y $, which can easily be defined in terms of the order. The formula allows a position to be labelled by several transitions, but if the formula is true, then it can also be made true by a choice where each position is labelled by exactly one transition. It should be easy to see that the formula is true exactly in the words that admit at least one accepting run.
+The disjunctions in the four items range as follows: (1) $i$ ranges over all transitions; (2) $(i,j)$ ranges over all pairs of transitions   such that the target state of $i$ is equal to the source state of $j$; (3) $i$ ranges over all transitions that have an initial source state; and (4) $i$ ranges over all transitions that have an accepting target state. These are finite disjunctions, and hence they correspond to repeated use of $\lor$, and not some kind of quantification.  The formula also uses the successor relation $x+1 =y $, which can easily be defined in terms of the order. It should be easy to see that the formula is true exactly in the words that admit at least one accepting run.
 
-    Let us now prove the other inclusion 
-    \begin{align*}
-    \text{regular} \quad \supseteq \quad \text{\mso.}
+Let us now prove the other inclusion     \begin{align*}    \text{regular} \quad \supseteq \quad \text{\mso.}
     \end{align*}
     By induction on the size of a formula of \mso, we will show that the corresponding language is regular. Although the outermost formula does not have free variables, its subformulas will have free variables, and therefore we need to formally associate a language also to formulas that  have free variables. This is done by encoding the values of the variables as bits that are stored in the labels of positions. For a string $w \in A^*$ and subsets $X_1,\ldots,X_k$ of its positions, let us define 
     \begin{align*}
     w \otimes X_1 \otimes \cdots \otimes X_k 
     \end{align*}
     to be the string over alphabet $A \times 2^k$ in which every position carries its original label from $w$, and also $k$ bits of information which indicate the sets from $X_1,\ldots,X_k$ that it belongs to.  Using this notation, we can use languages to describe formulas with free variables. The following lemma, in the case of formulas that have no free variables, establishes the desired inclusion in the theorem. 
-    \begin{lemma} Let $\varphi$ be an \mso formula over alphabet $A$, with
+    \begin{lemma}\label{lem:mso-free-variables} Let $\varphi$ be an \mso formula over alphabet $A$, with
         \begin{align*}
             \text{free variables of $\varphi$} \quad \subseteq \quad 
         \set{\myunderbrace{x_1,\ldots,x_k}{first-order\\ variables}, 
@@ -133,7 +131,7 @@ In the previous section, we showed how monadic second-order logic can be used to
     We require that for  every input string  and every position  in it, there is a unique formula from $\Phi$ which is true in that position.
 \end{definition}
 
-An \mso relabelling defines a function of type $A^* \to B^*$ as follows. If the input string is empty, then we use the string from the last item. Otherwise, if the input string is nonempty, then to each input position we associate the unique formula from $\Phi$ that is true in that position, and we label the output position corresponding to it by the same letter as the formula. The resulting string -- with the outputs concatenated from left to right -- is the output of the function. 
+An \mso relabelling defines a function of type $A^* \to B^*$ as follows. If the input string is empty, then we use the string from the last item. Otherwise, if the input string is nonempty, then to each input position we associate the unique formula from $\Phi$ that is true in that position, and we output the string that the output map assigns to this formula. The resulting string -- with the outputs concatenated from left to right -- is the output of the function. 
 
 \begin{theorem}
     \label{thm:logic-rational-functions}
@@ -144,7 +142,7 @@ An \mso relabelling defines a function of type $A^* \to B^*$ as follows. If the 
     \begin{align*}
     \text{rational} \quad \subseteq \quad \text{\mso relabellings.}
     \end{align*}
-    Consider a rational function $f : A^* \to B^*$. By Lemma~\ref{lemma:eliminate-epsilon-transitions}, we  know that $f$  is computed by a nondeterministic one-way transducer, which has the following properties: (1) for every input string there is exactly one accepting run; and (2) if the input string is nonempty, then every transition used in the accepting run consumes exactly one input letter.  Let 
+    Consider a rational function $f : A^* \to B^*$. By Theorem~\ref{thm:bimachines} and Lemma~\ref{lemma:eliminate-epsilon-transitions}, we  know that $f$  is computed by a nondeterministic one-way transducer, which has the following properties: (1) for every input string there is exactly one accepting run; and (2) if the input string is nonempty, then every transition used in the accepting run consumes exactly one input letter.  Let 
     \begin{align*}
     \Delta \subseteq Q \times A \times B^* \times Q
     \end{align*}
@@ -171,7 +169,7 @@ Let us now prove the other inclusion
     \end{align*}
     Consider an \mso relabelling defined by a set $\Phi$ of formulas. 
     
-\begin{claim}
+\begin{claim}\label{claim:mso-annotation-regular}
     The following language over alphabet $A \times \Phi$ is regular:
 \begin{align*}
     \setbuild{ (a_1,\varphi_1) \cdots (a_n,\varphi_n)}{for every $i \in \set{1,\ldots,n}$,  formula $\varphi_i \in \Phi$ \\  is true in position $i$ of $a_1 \cdots a_n \in A^*$.}.
@@ -205,7 +203,7 @@ which for input $a_1 \cdots a_n$ outputs all possible choices of $\phi_1 \cdots 
 \label{sec:mso-transductions}
 In this section, we define the logical model for the regular functions. This model is called \emph{\mso transductions}. The idea is that we use formulas of \mso logic to define a new order on the input positions, and to change the labels. For example, the reverse function is defined by saying that the labels are the same as in the input string, but the order is reversed. A more sophisticated formula is needed to define the order after applying map reverse, but this can still be done. For functions that create new positions (such as map duplicate), we will need an extra duplication feature in the model. To make this feature easier to use, as well as to prepare the ground for more advanced models  of logical transduction in the next part, we begin by introducing an extended syntax for \mso logic. 
 
-\paragraph*{Extended syntax for \mso logic.} We will want to quantify over objects such as gaps in strings,  configurations,  or sets of configurations.  For example, the set of gaps in a string of length $n$ is $n+1$, and therefore quantifying over a gap corresponds to either quantifying over a position, or otherwise considering the special case of the extra gap that is not associated with any position. Such quantification can be handled directly in \mso, by considering different cases inside formulas. Nevertheless, in order to handle such constructions  in a succinct and yet precise way, we consider an extended notation for \mso logic, in which first-order  variables can have types such as:
+\paragraph*{Extended syntax for \mso logic.} We will want to quantify over objects such as gaps in strings,  configurations,  or sets of configurations.  For example, the set of gaps in a string of length $n$ has $n+1$ elements, and therefore quantifying over a gap corresponds to either quantifying over a position, or otherwise considering the special case of the extra gap that is not associated with any position. Such quantification can be handled directly in \mso, by considering different cases inside formulas. Nevertheless, in order to handle such constructions  in a succinct and yet precise way, we consider an extended notation for \mso logic, in which first-order  variables can have types such as:
 \begin{align}\label{eq:examples-of-type-variables}
 \myunderbrace{ x : n+1}{a variable \\ that ranges \\ over gaps}
 \qquad 
@@ -315,7 +313,7 @@ The semantics of an \mso transduction is a function of type $A^* \to B^*$, which
     \begin{align*}
     f : A^* \to B^*
     \end{align*} 
-    in which all outputs have at most one letter. In this case, we can use the type  $\tau = 1$. For each output letter $b \in B^*$, the label formula 
+    in which all outputs have at most one letter. In this case, we can use the type  $\tau = 1$. For each output letter $b \in B$, the label formula 
     \begin{align*}
     \varphi_b(x : 1)
     \end{align*}
@@ -331,7 +329,7 @@ The semantics of an \mso transduction is a function of type $A^* \to B^*$, which
 \begin{align*}
 \varphi_\leq ( x : \tau, y : \tau) 
 \quad \eqdef \quad  
-\lor
+\bigvee
 \begin{cases}
     \text{both from first copy:} \\
     \exists x' : n \ \exists y' : n \quad x = 1(x') \land y = 1(y') \land x' \leq y' \\
@@ -373,7 +371,7 @@ One approach would be to show that \mso transductions are closed under compositi
         \end{itemize}
         Once we have proved (*), the lemma will follow, since two-way transducers are closed under precomposition with rational functions. It remains to prove (*). Consider an \mso transduction that has  type $\tau = \alpha n + \beta$. The rational function copies each input letter $\alpha$ times, and then appends $\beta$ extra letters, as in the following example:
 \begin{align*}
-123 \quad \mapsto \quad 0^\alpha 1^\alpha 2^\alpha \#^\beta.
+123 \quad \mapsto \quad 1^\alpha 2^\alpha 3^\alpha \#^\beta.
 \end{align*}
 If $f$ is this rational function, then there is a one-to-one correspondence between $\tau(w)$ and positions in $f(w)$. This correspondence and the structure of order and labels can be defined in \mso, and thus the output of the original \mso transduction can be obtained by a new \mso transduction that uses type $n$.
     \end{proof}
@@ -399,7 +397,7 @@ If $f$ is this rational function, then there is a one-to-one correspondence betw
     \begin{proof} For the formulas that have one free variable, there is no difficulty: the label in the output of $f$ can simply store which positions are selected by which formulas, which can be done thanks to the results in the previous section. The more interesting case is that of a formula $\varphi(x:n, y:n)$ with two free variables.
         As we have shown in the proof of the previous section, the language
         \begin{align*}
-        \setbuild{w  \otimes \set{x} \otimes \set{y}}{$w \in C^+$ and $x \leq y$ are distinguished positions}
+        \setbuild{w  \otimes \set{x} \otimes \set{y}}{$w \in A^+$ and $x \leq y$ are distinguished positions with $\varphi(x,y)$}
         \end{align*}
         is recognised by some deterministic automaton, call it $\Aa$. In the proof, we will be discussing state transformations of this automaton.  Consider some input string $w \in C^+$ with two distinguished positions $ x \leq y$. In order to check whether
         \begin{align*}
@@ -451,6 +449,7 @@ If $f$ is this rational function, then there is a one-to-one correspondence betw
         \item Let $x$ be the current position. Ask which of the label formulas is true in it, and produce this letter on the output. Ask if the position $x$ is the last in the output order, and if so terminate the computation. Otherwise, go to step 4.
         \item We know that $x$ is not the last position in the output order. Ask if the successor of $x$, call it $y$, is to the left or right in the input order. If $y$ is to the right, then start moving to the right, while running the automaton for the language $L_{\le} \subseteq C^*$ that is associated to the order formula. The position $y$ is the first one such that the infix $[x..y]$ belongs to $L_{\leq}$. If $y$ is to the left, do the same, but using the language $L_{\geq}$ for the converse of the order formula. Go to step 3. 
     \end{enumerate}
+\issue{Scanning for the first $y$ with $[x..y] \in L_\leq$ does not find the successor: every later output position also satisfies $\varphi_\leq(x,y)$. The set $\Phi$ should contain the (\mso-definable) successor formula of the output order, and step 4 should use its language.}
     
 \end{proof}
 
@@ -477,7 +476,7 @@ Recall the notion of an aperiodic string-to-string function from Definition~\ref
     \begin{align*}
     f : A^* \to \set{\text{yes, no}}^*
     \end{align*}
-    be the corresponding Mealy machine, in which the $n$-th letter of the output string says if the first $n$ letters of the input string belong to $L$. We prove the difficult implication in three following steps: 
+    be the corresponding Mealy machine, in which the $n$-th letter of the output string says if the first $n$ letters of the input string belong to $L$. We prove the difficult implication in the following three steps: 
     \[
     \begin{tikzcd}
     \text{$L$ is computed by an aperiodic \dfa}
@@ -507,7 +506,7 @@ Recall the notion of an aperiodic string-to-string function from Definition~\ref
     To prove this implication, we will associate to each first-order formula a corresponding aperiodic \dfa. This will be based on a technique that is called \emph{compositionality of logic}. 
     To explain this technique, it will be easier to work with a more combinatorial representation of first-order formulas, which uses nested sets.
     
-    \begin{definition}[$k$-types]
+    \begin{definition}[$k$-types]\label{def:k-types}
         For $k \in \set{0,1,\ldots}$, the $k$-type of a string $w \in A^*$, denoted by $\fotype_k(w)$, is defined inductively as follows:
     \begin{align*}
         \fotype_0(w) & = \emptyset \\
@@ -517,7 +516,7 @@ Recall the notion of an aperiodic string-to-string function from Definition~\ref
 By definition, once the alphabet $A$ is fixed there are finitely many $k$-types for each $k$, although the number grows very rapidly, with an exponential increase for each step $k \mapsto k+1$. We now establish that $k$-types are closely related to first-order formulas. The number $k$ will correspond to the  \emph{quantifier-rank} of a first-order formula, which is the  maximal number of quantifiers that can be found along a branch in its syntax tree. Equivalently, the quantifier-rank of atomic formulas is 0, Boolean combinations do not increase the quantifier rank (i.e.~one uses the maximal quantifier rank of the formulas in the Boolean combination), and quantifiers increment it by one. The following lemma establishes the connection between $k$-types and first-order formulas of quantifier rank at most $k$.
 
 
-\begin{lemma}
+\begin{lemma}\label{lem:k-types-fo-equivalence}
     Two strings in $A^*$ have the same $k$-type if and only if they satisfy the same first-order formulas of quantifier rank at most $k$.
 \end{lemma}
 \begin{proof}
@@ -525,7 +524,7 @@ By definition, once the alphabet $A$ is fixed there are finitely many $k$-types 
     For the right-to-left implication, we observe that for each possible $k$-type, the corresponding set of strings can be defined in first-order logic with quantifier rank $k$. The formula quantifies over a position $x$ that  corresponds to the letter $a$ in a split $ w = w_1 a w_2$, and  then uses formulas from the induction assumption to describe the types for the parts $w_1$ and $w_2$. The formulas from the induction assumption need to have their quantification restricted to positions that are $<x$ for $w_1$ and $>x$ for $w_2$, but this does not affect the quantifier rank. 
 
     Let us now prove the left-to-right implication. To prove this implication, we need a more refined statement that deals with free variables.
-    \begin{claim}
+    \begin{claim}\label{claim:fo-composition-quantifier-rank}
         Let $\varphi(x_1,\ldots,x_n)$ be a first-order formula of quantifier rank  $k$. Then 
         \begin{align*}
         w \models \varphi(x_1,\ldots,x_n) \quad \text{with }x_1 < \cdots < x_n
@@ -545,7 +544,7 @@ By definition, once the alphabet $A$ is fixed there are finitely many $k$-types 
 
 We now show that the $k$-types are compatible with operations on strings, which will allow us to define an automaton structure on them, and that the resulting automaton is aperiodic. (In the lemma below, a sequence is called aperiodic if it eventually reaches a stable value, i.e.~from some point on all elements in the sequence are the same.)
 
-    \begin{lemma}
+    \begin{lemma}\label{lem:k-types-properties}
         For every $k \in \set{0,1,\ldots}$ and $w, v \in A^*$, we have:
             \begin{enumerate}
         \item \label{item:fo-types-more-information} \textbf{Refinement:} if $k > 0$ then $\fotype_k(w)$ uniquely determines  $\fotype_{k-1}(w)$;
@@ -557,7 +556,8 @@ We now show that the $k$-types are compatible with operations on strings, which 
         For the induction basis of $k=0$ there is nothing to do, since there is only one possible type. Let us now prove the induction step. 
         Suppose that we have proved all three properties for $k$ and we want to prove them for $k+1$.
         \begin{itemize}
-            \item \textbf{Refinement.} Choose a  triple  $ \fotype_{k+1}(w)$ and use the congruence property for $k$ to obtain  $\fotype_{k}(w)$.  The answer does not depend on the choice of triple.
+            \item \textbf{Refinement.} Choose a  triple  in $ \fotype_{k+1}(w)$ and use the congruence property for $k$ to obtain  $\fotype_{k}(w)$.  The answer does not depend on the choice of triple.
+\issue{The case $w = \varepsilon$, where $\fotype_{k+1}(w)$ is empty and there is no triple to choose, needs a word.}
             \item \textbf{Congruence.} By definition of types, 
         \begin{align*}
 \fotype_{k+1}(wv) = &      \setbuild{ (\fotype_{k}(w_1), a, \fotype_{k}(w_2v))}{$a \in A$ and $w = w_1 a w_2$}   \cup \\ 
@@ -604,14 +604,14 @@ In the above theorem, we described the languages $L \subseteq A^*$ that can be d
     \myoverbrace{a_{i+1} \cdots a_n}{suffix},
     \end{align*}
     with $i > 0$,
-    then we have suffixient information to compute the string produced by the relabelling on the $i$-th input position. 
+    then we have sufficient information to compute the string produced by the relabelling on the $i$-th input position. 
+\issue{The gap $i=0$, and the empty input, are not covered by the construction.}
 \end{proof}
         
 
-\paragraph*{First-order definable regular functions.} Finally, it would be useful to give a machine characterisation of the first-order transductions, i.e.~the functions that can be defined by \mso transductions in which all formulas are first-order. We only state the appropriate result, and we leave the proof for a future edition of these notes. 
-\begin{theorem}
-     A string-to-string function is a first-order transduction if and only if it can be obtained by composing: map reverse, map duplicate and first-order rational functions (as in Theorem~\ref{thm:fo-rational-functions}).
-\end{theorem}
+\paragraph*{First-order definable regular functions.} Finally, it would be useful to give a machine characterisation of the first-order transductions, i.e.~the functions that can be defined by \mso transductions in which all formulas are first-order. We only state the appropriate result, and we leave the proof for a future edition of these notes: 
+     a string-to-string function is a first-order transduction if and only if it can be obtained by composing: map reverse, map duplicate and first-order rational functions (as in Theorem~\ref{thm:fo-rational-functions}).
+
 % \begin{proof}
 %     To prove the inclusion
 % \begin{align*}

@@ -1,19 +1,26 @@
-
-@inproceedings{hopcroftUllman1967,
-  author    = {J. E. {Hopcroft} and J. D. {Ullman}},
-  booktitle = {8th Annual Symposium on Switching and Automata Theory (SWAT 1967)},
-  month     = {Oct},
-  pages     = {140-147},
-  title     = {An approach to a unified theory of automata},
-  year      = {1967}
-}
+% Bibliography for the transducer book.
+%
+% This file is the single source of BibTeX entries; the folder literature/
+% documents the sources and stores the PDFs that are freely available.
+% Grouped by part, chronologically inside each group.
 
 
-@misc{bojanczyk_automata_2025,
-  author       = {Boja{\'n}czyk, Miko{\l}aj},
-  howpublished = {Lecture notes available at \url{mimuw.edu.pl/~bojan/paper/automata-toolbox-book}},
-  title        = {An Automata Toolbox},
-  year         = {2025}
+% ---------------------------------------------------------------------------
+% General references
+% ---------------------------------------------------------------------------
+
+@techreport{kleene1951,
+  author      = {Kleene, S. C.},
+  title       = {Representation of Events in Nerve Nets and Finite Automata},
+  type        = {Research Memorandum},
+  number      = {RM-704},
+  institution = {The RAND Corporation},
+  address     = {Santa Monica, CA},
+  year        = {1951},
+  url         = {https://www.rand.org/pubs/research_memoranda/RM704.html},
+  note        = {Published in revised form in \emph{Automata Studies}, edited by
+                 C. E. Shannon and J. McCarthy, Annals of Mathematics Studies 34,
+                 Princeton University Press, 1956, pp. 3--41}
 }
 
 @book{200problems,
@@ -23,88 +30,394 @@
   publisher = {Cambridge University Press}
 }
 
+@misc{bojanczyk_automata_2025,
+  author       = {Boja{\'n}czyk, Miko{\l}aj},
+  title        = {An Automata Toolbox},
+  year         = {2025},
+  howpublished = {Lecture notes},
+  url          = {https://www.mimuw.edu.pl/~bojan/paper/automata-toolbox-book}
+}
+
+
+% ---------------------------------------------------------------------------
+% Part A -- Mealy machines
+% ---------------------------------------------------------------------------
+
+@article{mealy1955,
+  author  = {Mealy, George H.},
+  title   = {A method for synthesizing sequential circuits},
+  journal = {The Bell System Technical Journal},
+  volume  = {34},
+  number  = {5},
+  pages   = {1045--1079},
+  year    = {1955},
+  month   = sep,
+  doi     = {10.1002/j.1538-7305.1955.tb03788.x},
+  url     = {https://doi.org/10.1002/j.1538-7305.1955.tb03788.x}
+}
+
+@article{krohnRhodes1965,
+  author  = {Krohn, Kenneth and Rhodes, John},
+  title   = {Algebraic theory of machines. I. Prime decomposition theorem for finite semigroups and machines},
+  journal = {Transactions of the American Mathematical Society},
+  volume  = {116},
+  pages   = {450--464},
+  year    = {1965},
+  doi     = {10.1090/S0002-9947-1965-0188316-1},
+  url     = {https://doi.org/10.1090/S0002-9947-1965-0188316-1}
+}
+
+@book{eilenberg1976,
+  author    = {Eilenberg, Samuel},
+  title     = {Automata, Languages, and Machines. Volume B},
+  series    = {Pure and Applied Mathematics},
+  volume    = {59-B},
+  publisher = {Academic Press},
+  address   = {New York},
+  year      = {1976},
+  isbn      = {978-0-12-234002-4},
+  note      = {With two chapters by Bret Tilson}
+}
+
+
+% ---------------------------------------------------------------------------
+% Part B -- Rational relations and functions
+% ---------------------------------------------------------------------------
+
+@article{dubreil1941,
+  author  = {Dubreil, Paul},
+  title   = {Contribution {\`a} la th{\'e}orie des demi-groupes. I},
+  journal = {M{\'e}moires de l'Acad{\'e}mie des Sciences de l'Institut de France},
+  volume  = {63},
+  number  = {3},
+  pages   = {1--52},
+  year    = {1941},
+  note    = {Tome 63 covers 1936--39; the memoir is no.~3 of the volume, with its own pagination},
+  url     = {https://gallica.bnf.fr/ark:/12148/bpt6k3278g/f355}
+}
+
+@article{schutzenberger1956,
+  author    = {Sch{\"u}tzenberger, M. P.},
+  title     = {Une th{\'e}orie alg{\'e}brique du codage},
+  journal   = {S{\'e}minaire Dubreil. Alg{\`e}bre et th{\'e}orie des nombres},
+  volume    = {9},
+  pages     = {1--24},
+  year      = {1956},
+  publisher = {Secr{\'e}tariat math{\'e}matique},
+  note      = {S{\'e}minaire 1955--1956, expos{\'e} no.~15},
+  url       = {https://www.numdam.org/item/SD_1955-1956__9__A10_0/}
+}
+
+@article{schutzenberger1961,
+  author  = {Sch{\"u}tzenberger, M. P.},
+  title   = {A remark on finite transducers},
+  journal = {Information and Control},
+  volume  = {4},
+  number  = {2-3},
+  pages   = {185--196},
+  year    = {1961},
+  doi     = {10.1016/S0019-9958(61)80006-5},
+  url     = {https://doi.org/10.1016/S0019-9958(61)80006-5}
+}
+
+@article{elgotMezei1965,
+  author  = {Elgot, C. C. and Mezei, J. E.},
+  title   = {On relations defined by generalized finite automata},
+  journal = {IBM Journal of Research and Development},
+  volume  = {9},
+  number  = {1},
+  pages   = {47--68},
+  year    = {1965},
+  month   = jan,
+  doi     = {10.1147/rd.91.0047},
+  url     = {https://doi.org/10.1147/rd.91.0047}
+}
+
+@article{ginsburgRose1966,
+  author  = {Ginsburg, Seymour and Rose, Gene F.},
+  title   = {A characterization of machine mappings},
+  journal = {Canadian Journal of Mathematics},
+  volume  = {18},
+  pages   = {381--388},
+  year    = {1966},
+  doi     = {10.4153/CJM-1966-040-3},
+  url     = {https://doi.org/10.4153/CJM-1966-040-3}
+}
+
+@article{nivat1968,
+  author  = {Nivat, Maurice},
+  title   = {Transductions des langages de Chomsky},
+  journal = {Annales de l'Institut Fourier},
+  volume  = {18},
+  number  = {1},
+  pages   = {339--455},
+  year    = {1968},
+  doi     = {10.5802/aif.287},
+  url     = {https://doi.org/10.5802/aif.287}
+}
+
+@book{eilenberg1974,
+  author    = {Eilenberg, Samuel},
+  title     = {Automata, Languages, and Machines. Volume A},
+  series    = {Pure and Applied Mathematics},
+  volume    = {59-A},
+  publisher = {Academic Press},
+  address   = {New York},
+  year      = {1974},
+  isbn      = {978-0-12-234001-7}
+}
+
+@article{schutzenberger1976,
+  author  = {Sch{\"u}tzenberger, M. P.},
+  title   = {Sur les relations rationnelles entre monoides libres},
+  journal = {Theoretical Computer Science},
+  volume  = {3},
+  number  = {2},
+  pages   = {243--259},
+  year    = {1976},
+  month   = nov,
+  doi     = {10.1016/0304-3975(76)90026-8},
+  url     = {https://doi.org/10.1016/0304-3975(76)90026-8}
+}
+
+@article{choffrut1977,
+  author  = {Choffrut, Christian},
+  title   = {Une caracterisation des fonctions sequentielles et des fonctions sous-sequentielles en tant que relations rationnelles},
+  journal = {Theoretical Computer Science},
+  volume  = {5},
+  number  = {3},
+  pages   = {325--337},
+  year    = {1977},
+  month   = dec,
+  doi     = {10.1016/0304-3975(77)90049-4},
+  url     = {https://doi.org/10.1016/0304-3975(77)90049-4}
+}
+
+@book{berstel1979,
+  author    = {Berstel, Jean},
+  title     = {Transductions and Context-Free Languages},
+  publisher = {Teubner},
+  address   = {Stuttgart},
+  year      = {1979},
+  note      = {Cited according to the electronic edition of 14 December 2009, which
+               contains the first four chapters and is available at
+               \url{https://www-igm.univ-mlv.fr/~berstel/LivreTransductions/LivreTransductions14dec2009.pdf}}
+}
+
+@inbook{bealLombardySakarovitch2006,
+  author    = {B{\'e}al, Marie-Pierre and Lombardy, Sylvain and Sakarovitch, Jacques},
+  title     = {Conjugacy and equivalence of weighted automata and functional transducers},
+  booktitle = {Computer Science -- Theory and Applications},
+  pages     = {58--69},
+  year      = {2006},
+  publisher = {Springer Berlin Heidelberg},
+  doi       = {10.1007/11753728_9},
+  url       = {https://doi.org/10.1007/11753728_9}
+}
+
+
+% ---------------------------------------------------------------------------
+% Part C -- Regular functions
+% ---------------------------------------------------------------------------
 
 @article{RabinScott59,
   author  = {Rabin, Michael O. and Scott, Dana},
-  journal = {IBM J. Res. Develop.},
-  pages   = {114--125},
   title   = {Finite automata and their decision problems},
-  volume  = 3,
-  year    = 1959
+  journal = {IBM Journal of Research and Development},
+  volume  = {3},
+  number  = {2},
+  pages   = {114--125},
+  year    = {1959},
+  doi     = {10.1147/rd.32.0114},
+  url     = {https://doi.org/10.1147/rd.32.0114}
 }
 
 @article{shepherdson1959reduction,
-  author  = {J. C. {Shepherdson}},
-  journal = {IBM Journal of Research and Development},
-  month   = {April},
-  number  = {2},
-  pages   = {198-200},
+  author  = {Shepherdson, J. C.},
   title   = {The Reduction of Two-Way Automata to One-Way Automata},
+  journal = {IBM Journal of Research and Development},
   volume  = {3},
-  year    = {1959}
+  number  = {2},
+  pages   = {198--200},
+  year    = {1959},
+  month   = apr,
+  doi     = {10.1147/rd.32.0198},
+  url     = {https://doi.org/10.1147/rd.32.0198}
 }
 
+@inproceedings{hopcroftUllman1967,
+  author    = {Hopcroft, J. E. and Ullman, J. D.},
+  title     = {An approach to a unified theory of automata},
+  booktitle = {8th Annual Symposium on Switching and Automata Theory (SWAT 1967)},
+  pages     = {140--147},
+  year      = {1967},
+  url       = {https://dblp.org/rec/conf/swat/HopcroftU67}
+}
 
-@article{bojanczykPolyregularFunctions2018,
-  author  = {Boja\'nczyk, Miko{\l}aj},
+@article{engelfrietHoogeboom2001,
+  author  = {Engelfriet, Joost and Hoogeboom, Hendrik Jan},
+  title   = {MSO Definable String Transductions and Two-Way Finite-State Transducers},
+  journal = {ACM Transactions on Computational Logic},
+  year    = {2001},
+  doi     = {10.1145/371316.371512},
+  url     = {https://doi.org/10.1145/371316.371512}
+}
+
+@article{alurCerny2010,
+  author  = {Alur, Rajeev and {\v{C}}ern{\'y}, Pavol},
+  title   = {Expressiveness of Streaming String Transducers},
   journal = {CoRR},
-  title   = {Polyregular {{Functions}}},
-  volume  = {abs/1810.08760},
-  year    = {2018}
-}
-@article{bojańczyk2022,
-  author   = {Mikołaj Bojańczyk},
-  title    = {On the growth rate of polyregular functions},
-  journal  = {arXiv (Cornell University)},
-  year     = {2022},
-  abstract = {We consider polyregular functions, which are certain string-to-string functions that have polynomial output size. We prove that a polyregular function has output size \$\textbackslash\{\}mathcal O(n\^{}k)\$ if and only if it can be defined by an MSO interpretation of dimension \$k\$, i.e. a string-to-string transformation where every output position is interpreted, using monadic second-order logic MSO, in some \$k\$-tuple of input positions. We also show that this characterization does not extend to pebble transducers, another model for describing polyregular functions: we show that for every \$k \textbackslash\{\}in \textbackslash\{\}\{1,2,\textbackslash\{\}ldots\textbackslash\{\}\}\$ there is a polyregular function of quadratic output size which needs at least \$k\$ pebbles to be computed.}
+  volume  = {abs/1002.4700},
+  year    = {2010},
+  url     = {https://arxiv.org/abs/1002.4700}
 }
 
-
-@article{lewenstein1996,
-  author   = {Noa Lewenstein and D. Harel},
-  title    = {Complexity Results for Two-Way and Multi-Pebble Automata and their Logics},
-  journal  = {Theoretical Computer Science},
-  year     = {1996},
-  abstract = {}
+@inproceedings{alurCerny2011,
+  author    = {Alur, Rajeev and {\v{C}}ern{\'y}, Pavol},
+  title     = {Streaming Transducers for Algorithmic Verification of Single-Pass List-Processing Programs},
+  booktitle = {POPL 2011},
+  year      = {2011},
+  doi       = {10.1145/1926385.1926454},
+  url       = {https://doi.org/10.1145/1926385.1926454}
 }
 
-@article{ibarra1971,
-  author   = {O. Ibarra},
-  title    = {Characterizations of Some Tape and Time Complexity Classes of Turing Machines in Terms of Multihead and Auxiliary Stack Automata},
-  journal  = {Journal of computer and system sciences (Print)},
-  year     = {1971},
-  abstract = {Several classes of multihead and auxiliary stack automata are introduced and are used to characterize some tape and time complexity classes of Turing machines.}
+@book{courcelleEngelfriet2012,
+  author    = {Courcelle, Bruno and Engelfriet, Joost},
+  title     = {Graph Structure and Monadic Second-Order Logic: A Language-Theoretic Approach},
+  publisher = {Cambridge University Press},
+  year      = {2012},
+  doi       = {10.1017/CBO9780511977619},
+  url       = {https://doi.org/10.1017/CBO9780511977619}
 }
 
-@article{engelfriet2007,
-  author   = {J. Engelfriet and H. Hoogeboom and Bart Samwel},
-  title    = {XML transformation by tree-walking transducers with invisible pebbles},
-  journal  = {ACM SIGACT-SIGMOD-SIGART Symposium on Principles of Database Systems},
-  year     = {2007},
-  abstract = {}
+@inproceedings{filiotReynierServais2013,
+  author    = {Filiot, Emmanuel and Reynier, Pierre-Alain and Servais, Arnaud},
+  title     = {From Two-Way to One-Way Finite State Transducers},
+  booktitle = {LICS 2013},
+  year      = {2013},
+  doi       = {10.1109/LICS.2013.45},
+  url       = {https://doi.org/10.1109/LICS.2013.45}
 }
 
-@article{milo2003,
-  author   = {Tova Milo and Dan Suciu and V. Vianu},
-  title    = {Typechecking for XML transformers},
-  journal  = {Journal of computer and system sciences (Print)},
-  year     = {2003},
-  abstract = {}
-}
-
-@article{engelfriet2002,
-  author   = {J. Engelfriet and S. Maneth},
-  title    = {Two-Way Finite State Transducers with Nested Pebbles},
-  journal  = {International Symposium on Mathematical Foundations of Computer Science},
-  year     = {2002},
-  abstract = {}
+@inproceedings{bojanczyk2014origin,
+  author    = {Boja{\'n}czyk, Miko{\l}aj},
+  title     = {Transducers with Origin Information},
+  booktitle = {ICALP 2014},
+  year      = {2014},
+  doi       = {10.1007/978-3-662-43951-7_10},
+  url       = {https://doi.org/10.1007/978-3-662-43951-7_10}
 }
 
 @article{baschenis2017,
-  author   = {Félix Baschenis and Olivier Gauwin and A. Muscholl and G. Puppis},
+  author   = {Baschenis, F{\'e}lix and Gauwin, Olivier and Muscholl, Anca and Puppis, Gabriele},
   title    = {Untwisting two-way transducers in elementary time},
   journal  = {Logic in Computer Science},
   year     = {2017},
   abstract = {Functional transductions realized by two-way transducers (equivalently, by streaming transducers and by MSO transductions) are the natural and standard notion of “regular” mappings from words to words. It was shown recently (LICS'13) that it is decidable if such a transduction can be implemented by some one-way transducer, but the given algorithm has non-elementary complexity. We provide an algorithm of different flavor solving the above question, that has double exponential space complexity. We further apply our technique to decide whether the transduction realized by a two-way transducer can be implemented by a sweeping transducer, with either known or unknown number of passes.}
+}
+
+@inproceedings{muschollPuppis2019,
+  author    = {Muscholl, Anca and Puppis, Gabriele},
+  title     = {The Many Facets of String Transducers (Invited Talk)},
+  booktitle = {STACS 2019},
+  year      = {2019},
+  doi       = {10.4230/LIPIcs.STACS.2019.2},
+  url       = {https://doi.org/10.4230/LIPIcs.STACS.2019.2}
+}
+
+
+% ---------------------------------------------------------------------------
+% Part D -- Polyregular functions
+% ---------------------------------------------------------------------------
+
+@article{ibarra1971,
+  author  = {Ibarra, Oscar H.},
+  title   = {Characterizations of Some Tape and Time Complexity Classes of Turing Machines in Terms of Multihead and Auxiliary Stack Automata},
+  journal = {Journal of Computer and System Sciences},
+  year    = {1971}
+}
+
+@article{lewenstein1996,
+  author  = {Lewenstein, Noa and Harel, David},
+  title   = {Complexity Results for Two-Way and Multi-Pebble Automata and their Logics},
+  journal = {Theoretical Computer Science},
+  year    = {1996},
+  url     = {https://dblp.org/rec/journals/tcs/LewensteinH96}
+}
+
+@inproceedings{engelfriet2002,
+  author    = {Engelfriet, Joost and Maneth, Sebastian},
+  title     = {Two-Way Finite State Transducers with Nested Pebbles},
+  booktitle = {Mathematical Foundations of Computer Science 2002},
+  year      = {2002},
+  url       = {https://dblp.org/rec/conf/mfcs/EngelfrietM02}
+}
+
+@article{milo2003,
+  author  = {Milo, Tova and Suciu, Dan and Vianu, Victor},
+  title   = {Typechecking for XML transformers},
+  journal = {Journal of Computer and System Sciences},
+  year    = {2003},
+  url     = {https://dblp.org/rec/journals/jcss/MiloSV03}
+}
+
+@inproceedings{engelfriet2007,
+  author    = {Engelfriet, Joost and Hoogeboom, Hendrik Jan and Samwel, Bart},
+  title     = {XML transformation by tree-walking transducers with invisible pebbles},
+  booktitle = {PODS 2007},
+  year      = {2007}
+}
+
+@article{engelfriet2015,
+  author  = {Engelfriet, Joost},
+  title   = {Two-way pebble transducers for partial functions and their composition},
+  journal = {Acta Informatica},
+  year    = {2015},
+  doi     = {10.1007/s00236-015-0224-3},
+  url     = {https://doi.org/10.1007/s00236-015-0224-3}
+}
+
+@article{bojanczykPolyregularFunctions2018,
+  author  = {Boja{\'n}czyk, Miko{\l}aj},
+  title   = {Polyregular Functions},
+  journal = {CoRR},
+  volume  = {abs/1810.08760},
+  year    = {2018},
+  url     = {https://arxiv.org/abs/1810.08760}
+}
+
+@inproceedings{bojanczykKieferLhote2019,
+  author    = {Boja{\'n}czyk, Miko{\l}aj and Kiefer, Sandra and Lhote, Nathan},
+  title     = {String-to-String Interpretations With Polynomial-Size Output},
+  booktitle = {ICALP 2019},
+  year      = {2019},
+  doi       = {10.4230/LIPIcs.ICALP.2019.106},
+  url       = {https://doi.org/10.4230/LIPIcs.ICALP.2019.106}
+}
+
+@inproceedings{lhote2020,
+  author    = {Lhote, Nathan},
+  title     = {Pebble Minimization of Polyregular Functions},
+  booktitle = {LICS 2020},
+  year      = {2020},
+  doi       = {10.1145/3373718.3394804},
+  url       = {https://doi.org/10.1145/3373718.3394804}
+}
+
+@inproceedings{DBLP:conf/lics/Bojanczyk22,
+  author    = {Boja{\'n}czyk, Miko{\l}aj},
+  title     = {Transducers of polynomial growth},
+  booktitle = {LICS 2022},
+  pages     = {1:1--1:27},
+  publisher = {ACM},
+  year      = {2022},
+  doi       = {10.1145/3531130.3533326},
+  url       = {https://doi.org/10.1145/3531130.3533326}
+}
+
+@article{bojańczyk2022,
+  author  = {Boja{\'n}czyk, Miko{\l}aj},
+  title   = {On the growth rate of polyregular functions},
+  journal = {CoRR},
+  year    = {2022}
 }

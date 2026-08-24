@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22><circle cx=%2232%22 cy=%2232%22 r=%2230%22 fill=%22%23eb5757%22/><text x=%2232%22 y=%2242%22 text-anchor=%22middle%22 font-size=%2232%22 fill=%22white%22>T</text></svg>">
+  <title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }} · {{ site.Title }}{{ end }}</title>
+  <script>
+    // Opened over file://, every chapter page is (at least in Firefox, by
+    // default) its own storage origin — each is a separate file, and
+    // file:// gets no shared origin the way one http(s) origin would cover
+    // the whole site. localStorage set on one chapter is invisible on the
+    // next, so a reader setting alone can't survive following a link to
+    // another chapter; it only looks page-local under file://, not under a
+    // real server. ?theme=/?width=/?zoom= query params carry the three
+    // reader settings across that boundary explicitly: read on load (before
+    // falling back to localStorage, which still covers a same-page reload /
+    // the http(s) case), and stamped onto same-document links as they're
+    // clicked so they keep propagating from page to page. One shared
+    // registry + click listener below, rather than one of each per setting:
+    // the three IIFEs just register a getter for their own current value.
+    var __readerParams = {};
+    function __regReaderParam(name, get) { __readerParams[name] = get; }
+    function __fromQuery(name) {
+      var m = new RegExp('[?&]' + name + '=([^&]+)').exec(location.search);
+      return m && decodeURIComponent(m[1]);
+    }
+    function __syncReaderURL() {
+      var url = new URL(location.href);
+      for (var name in __readerParams) url.searchParams.set(name, __readerParams[name]());
+      try { history.replaceState(null, '', url.href); } catch (e) {}
+    }
+    // Click-time (not a proactive rewrite of every href up front) so it still
+    // works for links added later, and never fights with Hugo's own
+    // relativeURLs rewriting of the *static* href.
+    document.addEventListener('click', function (e) {
+      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      var a = e.target.closest && e.target.closest('a[href]');
+      if (!a) return;
+      var href = a.getAttribute('href');
+      if (!href || href.charAt(0) === '#') return;
+      var url;
+      try { url = new URL(href, location.href); } catch (err) { return; }
+      if (url.protocol !== location.protocol || url.host !== location.host) return;
+      for (var name in __readerParams) url.searchParams.set(name, __readerParams[name]());
+      a.href = url.href;
+    }, true);
+
+    (function () {
+      var THEMES = ['light', 'dark', 'sepia', 'contrast'];
+      var KEY = 'reflowtex-theme';
+      function set(t) {
+        var root = document.documentElement;
+        root.classList.remove('dark', 'sepia', 'contrast');
+        if (t !== 'light') root.classList.add(t);
+        root.setAttribute('data-theme', t);
+        try { localStorage.setItem(KEY, t); } catch (e) {}
+        __syncReaderURL();
+      }
+      __regReaderParam('theme', function () { return document.documentElement.getAttribute('data-theme'); });
+      var fromURL = __fromQuery('theme');
+      if (THEMES.indexOf(fromURL) === -1) fromURL = null;
+      var saved; try { saved = localStorage.getItem(KEY); } catch (e) {}
+      set(fromURL || saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+      window.__setTheme = set;
+    })();
+    (function () {
+      var WIDTHS = ['auto', 'narrow', 'normal', 'wide'];
+      var KEY = 'reflowtex-width';
+      function set(w) {
+        document.documentElement.setAttribute('data-width', w);
+        try { localStorage.setItem(KEY, w); } catch (e) {}
+        window.dispatchEvent(new Event('resize'));
+        __syncReaderURL();
+      }
+      __regReaderParam('width', function () { return document.documentElement.getAttribute('data-width'); });
+      var fromURL = __fromQuery('width');
+      if (WIDTHS.indexOf(fromURL) === -1) fromURL = null;
+      var saved; try { saved = localStorage.getItem(KEY); } catch (e) {}
+      set(fromURL || saved || 'auto');
+      window.__setWidth = set;
+    })();
+    (function () {
+      var KEY = 'reflowtex-zoom', MIN = 0.5, MAX = 3, STEP = 1.1, z = 1;
+      function clamp(v) { return Math.min(MAX, Math.max(MIN, v)); }
+      function apply() {
+        document.documentElement.style.setProperty('--lt-zoom', z);
+        var el = document.getElementById('zoom-level');
+        if (el) el.textContent = Math.round(z * 100) + '%';
+        try { localStorage.setItem(KEY, String(z)); } catch (e) {}
+        window.dispatchEvent(new Event('resize'));
+        __syncReaderURL();
+      }
+      __regReaderParam('zoom', function () { return Math.round(z * 100); });
+      // The URL stores zoom as a whole percentage (matching the visible label)
+      // rather than the raw multiplier, so it stays short and round-trips
+      // sensibly if ever shared or typed by hand.
+      var fromURLPct = parseFloat(__fromQuery('zoom'));
+      var saved; try { saved = parseFloat(localStorage.getItem(KEY)); } catch (e) {}
+      if (fromURLPct > 0) z = clamp(fromURLPct / 100);
+      else if (saved > 0) z = clamp(saved);
+      document.documentElement.style.setProperty('--lt-zoom', z);
+      window.__zoom = function (dir) { z = dir === 0 ? 1 : clamp(z * (dir > 0 ? STEP : 1 / STEP)); apply(); };
+      document.addEventListener('DOMContentLoaded', apply);
+    })();
+    // zoom's own apply() (and hence its URL sync) is deferred to
+    // DOMContentLoaded (see above — #zoom-level doesn't exist yet at this
+    // point in <head>), so without this, a link clicked in that window would
+    // carry theme+width but not yet zoom. z itself is already resolved
+    // synchronously above; only the DOM/localStorage side effects wait.
+    __syncReaderURL();
+  </script>
+  <style>
+    {{- /* --latex-page-bg: not itself LaTeX-specific data, just the page's own
+           background exposed under the name latex-viewer.js's colour-mix
+           "tints" formula reads (see src/viewer/README.md's Theming section
+           and latex-color-maps/transducer-book-color-map.json's "tints"). Kept
+           as a plain alias of --page-bg rather than a second source of truth. */ -}}
+    :root { color-scheme: light dark; --reading-width: 52rem; --accent: #eb5757; --page-bg: #fafaf9; --latex-page-bg: var(--page-bg); }
+    * { box-sizing: border-box; }
+    html { background: var(--page-bg); color: #333; transition: background .15s ease, color .15s ease; }
+    html.dark { --page-bg: #0c0a09; --accent: #ff8585; color: #e7e5e4; }
+    html.sepia { --page-bg: #f4ecd8; --accent: #9f493f; color: #453a26; }
+    html.contrast { --page-bg: #fff; --accent: #a61b1b; color: #000; }
+    body { margin: 0; min-height: 100vh; line-height: 1.6; padding-bottom: 8rem; font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; -webkit-font-smoothing: antialiased; }
+    a { color: inherit; }
+    html[data-width="narrow"] { --reading-width: 34rem; }
+    html[data-width="normal"] { --reading-width: 46rem; }
+    html[data-width="wide"] { --reading-width: 64rem; }
+    .shell { display: grid; grid-template-columns: 17rem minmax(0, 1fr); gap: 3rem; width: min(100%, calc(24rem + var(--reading-width))); margin: 0 auto; padding: 2rem; }
+    .shell-home { display: block; width: min(100%, 38rem); }
+    .shell-home .book-toc { position: static; width: 34rem; max-width: calc(100vw - 4rem); max-height: none; }
+    .book-toc { position: sticky; top: 1.5rem; align-self: start; max-height: calc(100vh - 3rem); overflow-y: auto; }
+    .book-toc h1 { margin: 0 0 1rem; font-size: 1.15rem; line-height: 1.2; }
+    .book-toc ol { margin: 0; padding-left: 1rem; list-style: none; }
+    .book-toc > ol { padding-left: 0; }
+    .book-toc li { margin: .3rem 0; }
+    .book-toc li ol { margin-top: .25rem; }
+    .book-toc li ol > li { margin-bottom: .5rem; }
+    .book-toc > ol > li.part-item { margin-top: 1.25rem; }
+    .part-sections { position: static; width: min(34rem, 100%); max-height: none; margin-top: 2rem; overflow: visible; }
+    .part-sections > ol { padding-left: 0; }
+    .book-toc a { opacity: .76; text-decoration: none; }
+    .book-toc a:hover { color: var(--accent); opacity: 1; text-decoration: underline; }
+    .book-toc a[aria-current="page"] { color: var(--accent); opacity: 1; text-decoration: underline; }
+    .latex-block.menu-latex { display: inline-block; margin: 0; overflow: visible; vertical-align: top; max-width: 100%; color: inherit; }
+    .latex-block.menu-latex svg { max-width: 100%; height: auto; }
+    .latex-block.menu-latex svg text, .latex-block.menu-latex svg tspan { fill: currentColor; }
+    .menu-latex-missing { color: #a00; font: .75rem monospace; }
+    .latex-block.book-title { margin: 0 0 1rem; }
+    .latex-block.page-title { margin: 0 0 1.75rem; }
+    {{- /* zoom scales this box's own width along with its content — like the
+           browser's native page zoom, not a text-only zoom — so no separate
+           "auto" rule or inverse-zoom compensation is needed here; matches
+           integrations/vanilla/page.template.html's #lt-content exactly. */ -}}
+    #lt-content { min-width: 0; width: min(100%, var(--reading-width)); max-width: 100%; padding: 0; zoom: var(--lt-zoom, 1); }
+    #lt-content > .latex-block:first-child { margin-top: 0; }
+    #lt-content h1 { font-weight: 700; line-height: 1.2; margin-top: 0; }
+    {{- /* One floating control cluster, bottom-right: a pill holding the
+           hamburger (mobile only) and the "Tt" text-options toggle, both
+           styled like the .lt-switch groups they open — a settings popover,
+           not a persistent bar, so it stays out of the way until wanted. */ -}}
+    #lt-controls { position: fixed; right: 1rem; bottom: 1rem; z-index: 1300; display: flex; flex-direction: column; align-items: flex-end; gap: .5rem; }
+    #lt-panel { display: flex; flex-direction: column; align-items: flex-end; gap: .4rem; }
+    #lt-panel[hidden] { display: none; }
+    .lt-switch { display: flex; gap: 2px; padding: 3px; border-radius: 999px; font-size: .72rem; background: color-mix(in srgb, currentColor 12%, transparent); border: 1px solid color-mix(in srgb, currentColor 30%, transparent); box-shadow: 0 1px 8px color-mix(in srgb, currentColor 14%, transparent); backdrop-filter: blur(6px); }
+    .lt-switch button { border: 0; background: none; color: inherit; cursor: pointer; font: inherit; padding: .3rem .6rem; border-radius: 999px; opacity: .7; letter-spacing: .02em; white-space: nowrap; }
+    .lt-switch button:hover { opacity: 1; }
+    #zoom-switch button[data-z="reset"] { min-width: 3.2em; text-align: center; font-variant-numeric: tabular-nums; }
+    html[data-width="auto"] #width-switch button[data-w="auto"], html[data-width="narrow"] #width-switch button[data-w="narrow"], html[data-width="normal"] #width-switch button[data-w="normal"], html[data-width="wide"] #width-switch button[data-w="wide"], html[data-theme="light"] #theme-switch button[data-t="light"], html[data-theme="dark"] #theme-switch button[data-t="dark"], html[data-theme="sepia"] #theme-switch button[data-t="sepia"], html[data-theme="contrast"] #theme-switch button[data-t="contrast"] { opacity: 1; background: color-mix(in srgb, currentColor 18%, transparent); }
+    {{- /* Icon buttons in the pill (hamburger, Tt) are square, not the
+           text-padded pill buttons above — override just the box shape and
+           keep everything else (colour, hover, opacity) from .lt-switch
+           button. #text-toggle's [aria-expanded="true"] gets the same
+           "active" treatment the width/zoom/theme buttons get above. */ -}}
+    #lt-pill button { padding: 0; width: 2.3rem; height: 2.3rem; display: grid; place-content: center; }
+    #text-toggle[aria-expanded="true"] { opacity: 1; background: color-mix(in srgb, currentColor 18%, transparent); }
+    .lt-tt { font-weight: 700; font-size: .95rem; }
+    .lt-tt span { font-size: .68em; margin-inline-start: 1px; }
+    {{- /* #lt-pill button above (1 ID + 1 type) outranks a bare #toc-toggle
+           (1 ID) despite coming first, so hiding it needs the extra ID here
+           to actually win. */ -}}
+    #lt-pill #toc-toggle { display: none; gap: .28rem; }
+    #toc-toggle span { display: block; width: 1.1rem; height: 2px; border-radius: 2px; background: currentColor; transition: transform .2s ease, opacity .2s ease; }
+    body.toc-open #toc-toggle span:nth-child(1) { transform: translateY(.38rem) rotate(45deg); }
+    body.toc-open #toc-toggle span:nth-child(2) { opacity: 0; }
+    body.toc-open #toc-toggle span:nth-child(3) { transform: translateY(-.38rem) rotate(-45deg); }
+    #toc-scrim { display: none; }
+    @media (max-width: 900px) {
+      .shell { display: block; width: 100%; padding: 1.25rem; }
+      #lt-content { width: 100%; max-width: none; }
+      body:not(.home) .shell > .book-toc {
+        position: fixed; z-index: 1200; inset: 0 auto 0 0; width: min(22rem, 86vw);
+        max-height: none; padding: 4.75rem 1.4rem 2rem; overflow-y: auto;
+        background: var(--page-bg); box-shadow: .5rem 0 2rem rgb(0 0 0 / .24);
+        transform: translateX(-105%); transition: transform .22s ease;
+      }
+      body.toc-open:not(.home) .shell > .book-toc { transform: translateX(0); }
+      body.toc-open { overflow: hidden; }
+      #lt-pill #toc-toggle { display: grid; }
+      #toc-scrim { position: fixed; z-index: 1100; inset: 0; border: 0; background: rgb(0 0 0 / .38); }
+      body.toc-open #toc-scrim { display: block; }
+      .home .shell { padding: 1.25rem; }
+      .home .shell > .book-toc { position: static; width: min(34rem, 100%); max-width: 100%; max-height: none; }
+    }
+  </style>
+</head>
+<body{{ if .IsHome }} class="home"{{ end }}>
+{{ if not .IsHome }}
+<button id="toc-scrim" type="button" aria-label="Close table of contents"></button>
+{{ end }}
+<div class="shell{{ if .IsHome }} shell-home{{ end }}">
+  {{- $current := "/" -}}
+  {{- with .File }}{{ $current = printf "/%s/" .ContentBaseName }}{{ end -}}
+  <nav class="book-toc" id="book-toc" aria-label="Contents">
+    <a class="book-title-link" href="{{ "index.html" | relURL }}">{{ partial "latex-file-block.html" (dict "file" "book-title.tex" "class" "book-title" "color_map" "transducer-book-color-map") }}</a>
+    <ol>{{ range hugo.Data.book_toc }}{{ partial "book-toc-node.html" (dict "node" . "current" $current) }}{{ end }}</ol>
+  </nav>
+  {{ if not .IsHome }}<main id="lt-content">{{ block "main" . }}{{ end }}</main>{{ end }}
+</div>
+{{ if not .IsHome }}{{ partial "reader-switches.html" . }}{{ end }}
+{{ partial "reflowtex-viewer.html" . }}
+{{ if not .IsHome }}
+<script>
+  (function () {
+    var body = document.body, toggle = document.getElementById('toc-toggle');
+    function set(open) {
+      body.classList.toggle('toc-open', open);
+      toggle.setAttribute('aria-expanded', String(open));
+      toggle.setAttribute('aria-label', open ? 'Close table of contents' : 'Open table of contents');
+    }
+    toggle.addEventListener('click', function () { set(!body.classList.contains('toc-open')); });
+    document.getElementById('toc-scrim').addEventListener('click', function () { set(false); });
+    document.getElementById('book-toc').addEventListener('click', function (event) {
+      if (event.target.closest('a')) set(false);
+    });
+    matchMedia('(min-width: 901px)').addEventListener('change', function (event) { if (event.matches) set(false); });
+
+    // The "Tt" text-options popover: same idea as the TOC drawer above, but
+    // a plain click-outside/Escape close rather than a full-screen scrim —
+    // it's a small settings panel, not a navigational drawer.
+    var textToggle = document.getElementById('text-toggle'), panel = document.getElementById('lt-panel');
+    function setPanel(open) {
+      panel.hidden = !open;
+      textToggle.setAttribute('aria-expanded', String(open));
+    }
+    textToggle.addEventListener('click', function (event) {
+      event.stopPropagation();
+      setPanel(panel.hidden);
+    });
+    document.addEventListener('click', function (event) {
+      if (!panel.hidden && !event.target.closest('#lt-controls')) setPanel(false);
+    });
+    document.addEventListener('keydown', function (event) {
+      if (event.key !== 'Escape') return;
+      set(false);
+      setPanel(false);
+    });
+  })();
+</script>
+{{ end }}
+</body>
+</html>

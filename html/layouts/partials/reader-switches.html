@@ -1,0 +1,29 @@
+<div id="lt-controls">
+  <div id="lt-panel" hidden>
+    <nav id="width-switch" class="lt-switch" aria-label="Content width">
+      <button type="button" data-w="auto" onclick="window.__setWidth('auto')">Auto</button>
+      <button type="button" data-w="narrow" onclick="window.__setWidth('narrow')">Narrow</button>
+      <button type="button" data-w="normal" onclick="window.__setWidth('normal')">Normal</button>
+      <button type="button" data-w="wide" onclick="window.__setWidth('wide')">Wide</button>
+    </nav>
+    <nav id="zoom-switch" class="lt-switch" aria-label="Text size">
+      <button type="button" data-z="out" onclick="window.__zoom(-1)" title="Smaller">&minus;</button>
+      <button type="button" data-z="reset" onclick="window.__zoom(0)" title="Reset text size" id="zoom-level">100%</button>
+      <button type="button" data-z="in" onclick="window.__zoom(1)" title="Bigger">+</button>
+    </nav>
+    <nav id="theme-switch" class="lt-switch" aria-label="Colour theme">
+      <button type="button" data-t="light" onclick="window.__setTheme('light')">Light</button>
+      <button type="button" data-t="dark" onclick="window.__setTheme('dark')">Dark</button>
+      <button type="button" data-t="sepia" onclick="window.__setTheme('sepia')">Sepia</button>
+      <button type="button" data-t="contrast" onclick="window.__setTheme('contrast')">Contrast</button>
+    </nav>
+  </div>
+  <div id="lt-pill" class="lt-switch">
+    <button id="toc-toggle" type="button" aria-label="Open table of contents" aria-controls="book-toc" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <button id="text-toggle" type="button" aria-label="Text options" aria-haspopup="true" aria-controls="lt-panel" aria-expanded="false">
+      <span class="lt-tt">T<span>t</span></span>
+    </button>
+  </div>
+</div>

@@ -3,7 +3,7 @@
 
 We  begin with a nondeterministic version of the rational functions, in which the underlying model is an \nfa equipped with an output mechanism. One of the advantages of this model is that it does not treat the input and output differently. 
 
-\begin{definition}[\nfa with output]
+\begin{definition}[\nfa with output]\label{def:nfa-with-output}
     A \emph{nondeterministic automaton with output} consists of the following ingredients:
     \begin{itemize}
         \item input and output alphabets $A$ and $B$;
@@ -62,12 +62,18 @@ This function is not computed by a Mealy machine, even though it is letter-to-le
     L^* \quad \eqdef \quad \bigcup_{n \in \set{0,1,\ldots}}L^n.
     \end{align*}
     \end{itemize}
-\flag{Not formalised. The development has no notion of rational or recognisable subset of an abstract monoid, and the identification of the rational subsets of $A^*\times B^*$ with the rational relations of Definition~\ref{def:rational-relation} is not proved.}
 \end{definition}
+Often the second class is called the \emph{regular expressions}, but the French algebraic tradition uses the name rational, which is inspired by similar terminology for power series\footnote{
+        This name is inspired by the monoid  $\field(x)$ of rational functions (this is the standard name in algebra, which clashes with our name for a transducer class) over a field $\field$, which consists of fractions of polynomials with one variable $x$, modulo common factors. This monoid is the least supset which contains all polynomials, is closed under addition and multiplication, and the following version of Kleene star:
+        \begin{align*}
+        1 + x + x^2 + \cdots + x^n + \cdots = \frac{1}{1-x}.
+        \end{align*}
+        The use of the name rational for regular expressions dates back to Schützenberger \cite{schutzenberger1961}, who was inspired by the analogy with rational functions.
+}.
+In the free monoid $A^*$, the two notions coincide\footnote{
+This is sometimes called the Kleene Theorem, see \cite[Chapter III, Theorem 2.1]{berstel1979}. However, there could be some confusion, since there are three classes of languages involved: (a) defined by regular expressions; (b) recognised by finite automata; and (c) recognised by finite monoids. The two classes in \cref{def:rational-recognisable-subsets} are (a) and (c).    
+ As originally proved, Kleene's theorem is about the equality of (a) and (b), i.e.~regular expressions and automata, see~\cite[Theorems 4 and 6]{kleene1951}. The equivalence of (b) and (c), i.e.~finite automata and monoids is harder to trace to a single paper, especially since it is a simple observation. The syntactic monoid of a language is first defined in~\cite[p.~10]{schutzenberger1956}. An even older reference is \cite[Theorem 3]{dubreil1941}, which introduces the syntactic congruence of a subset of a monoid (not necessarily a free monoid, and the congruence is a right congruence, as in a \dfa).}, are exactly the rational subsets from the above definition, which can be proved by converting an \nfa with output into a regular expression. The recognisable subsets of $A^* \times B^*$ are much weaker; these are relations that can be recognised by separately testing some regular properties of the input and output strings, as explained in Exercise~\ref{ex:recognisable-relations}.
 
-In the free monoid $A^*$, the two notions coincide, but in other monoids they do not coincide. In the monoid $A^* \times B^*$, the rational relations, as defined in Definition~\ref{def:rational-relation}, are exactly the rational subsets from the above definition, which can be proved by converting an \nfa with output into a regular expression. The recognisable subsets of $A^* \times B^*$ are much weaker; these are relations that can be recognised by separately testing some regular properties of the input and output strings, as explained in Exercise~\ref{ex:recognisable-relations}.
-
-We have still not explained why the name ``rational'' is used in Definition~\ref{def:rational-recognisable-subsets}. The motivation comes from power series. 
 
 \subsection{Composition and continuity} We now show that rational relations enjoy some  of the important properties that we have identified in the introduction, namely closure under composition and continuity.
 
@@ -96,7 +102,7 @@ q \xrightarrow{u,w} q' \qquad  \qquad
     in the automata  for $R$ and $S$ respectively
     are combined into a new transition 
     \begin{align*}
-    (q,p) \xrightarrow{u,v} (q',p')\end{align*} in the automaton for the composition.
+    (q,p) \xrightarrow{u,v} (q',p')\end{align*} in the automaton for the composition. (To properly synchronise the two automata, we also assume that each one has an transition with empty input and output around each state.)
     The rest of the construction is as usual in a product construction, i.e.~initial states are pairs that are initial on both coordinates, and likewise for final states.
 \end{proof}
 
@@ -132,12 +138,11 @@ Observe that rational relations are symmetric with respect to input and output, 
 
 \begin{theorem}\label{thm:undecidable-equivalence-rational-relations}
     The equivalence problem $R=S$ is undecidable for rational relations.
-\flag{\lean{rationalRel\_equivalence\_undecidable} takes the undecidability of the Post correspondence problem as an \emph{explicit hypothesis} (\lean{PCP.Solvable}, \lean{PartB/\allowbreak PCPRed.lean}); only the reduction below is formalised, and it is equivalence, not universality, that it shows undecidable. \lean{PCP.Solvable} also asks for a \emph{nonempty} $w$, as it must: the way the problem is stated in the proof below, $w=\varepsilon$ solves every instance.}
 \end{theorem}
 \begin{proof}
-    We will show undecidability already for a special case of the equivalence problem, namely the universality problem: is a rational relation equal to the full relation $A^* \times B^*$?  We will do this via a reduction from the Post Correspondence Problem, which is known to be undecidable: given two string homomorphisms $g,h : A^* \to B^*$, decide if there is some input string where both homomorphisms produce the same output. (Recall that a string homomorphism is a function that applies some function of type $A \to B^*$ to each input letter. This is like the letter-to-letter homomorphisms, except that letters can also be erased, or replaced by longer strings.)    The main observation is that the complement of a homomorphism can be defined by a rational relation. 
+    We will show undecidability already for a special case of the equivalence problem, namely the universality problem: is a rational relation equal to the full relation $A^* \times B^*$?  We will do this via a reduction from the Post Correspondence Problem, which is known to be undecidable: given two string homomorphisms $g,h : A^* \to B^*$, decide if there is some nonempty input string where both homomorphisms produce the same output. (Recall that a string homomorphism is a function that applies some function of type $A \to B^*$ to each input letter. This is like the letter-to-letter homomorphisms, except that letters can also be erased, or replaced by longer strings.)    The main observation is that the complement of a homomorphism can be defined by a rational relation. 
 
-    \begin{claim}
+    \begin{claim}\label{claim:homomorphism-complement-rational}
         If $h : A^* \to B^*$ is a homomorphism, then its complement defined by
         \begin{align*}
         R = \setbuild{ (w,v) \in A^* \times B^*}{$v \neq h(w)$}
@@ -145,8 +150,10 @@ Observe that rational relations are symmetric with respect to input and output, 
         is a rational relation.
     \end{claim}
     \begin{proof}
-        The automaton guesses a prefix of the input word for which the homomorphism is correctly applied. After reading this prefix and producing the correct output, it insists on making an error. This means that for the next letter $a$ after the correct input prefix, it does one of the following: (i) outputs a string that is a proper prefix of $h(a)$ and then produces no more output; or (ii) outputs a string that is  incomparable with $h(a)$ under the prefix relation and then produces any output.
+        The automaton guesses a prefix of the input word for which the homomorphism is correctly applied. After reading this prefix and producing the correct output, it insists on making an error. This means that for the next input letter $a$ after the correct input prefix, it does one of the following: (i) outputs a string that is a proper prefix of $h(a)$ and then produces no more output; or (ii) outputs a string that is  incomparable with $h(a)$ under the prefix relation and then produces any output.
     \end{proof}
+% This issue was flagged, but is not an issue, it follows under (i)
+% \issue{The case analysis misses the possibility that $h(w)$ is a \emph{proper prefix} of $v$: then the correctly applied prefix is all of $w$ and there is no ``next letter $a$''. A third option is needed --- read the whole input correctly and then produce at least one extra output letter.}
 
     Using the complements from the above claim, we will recast the  Post Correspondence Problem as an instance of universality for rational relations. Consider an instance of the Post Correspondence Problem:
     \begin{align*}
@@ -167,7 +174,7 @@ The above problem is one of the reasons why we avoid relations in this book. The
 
 \exerciseheader 
 
-\exercise{\label{ex:recognisable-relations}Show that the recognisable subsets of $A^* \times B^*$ are exactly the unions of finitely many products of regular languages, i.e.~unions of the form 
+\exer{\label{ex:recognisable-relations}Show that the recognisable subsets of $A^* \times B^*$ are exactly the unions of finitely many products of regular languages, i.e.~unions of the form 
 \begin{align*}
 K_1 \times L_1 \cup \cdots \cup K_n \times L_n 
 \end{align*}

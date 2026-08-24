@@ -1,0 +1,79 @@
+[
+  {
+    "href": "/01-introduction/",
+    "tex": "menu-01-introduction.tex",
+    "children": []
+  },
+  {
+    "href": "/02-mealy-machines-introduction/",
+    "tex": "menu-02-mealy-machines-introduction.tex",
+    "children": [
+      {
+        "href": "/03-mealy-machines/",
+        "tex": "menu-03-mealy-machines.tex"
+      },
+      {
+        "href": "/04-krohn-rhodes/",
+        "tex": "menu-04-krohn-rhodes.tex"
+      }
+    ]
+  },
+  {
+    "href": "/05-rational-functions-introduction/",
+    "tex": "menu-05-rational-functions-introduction.tex",
+    "children": [
+      {
+        "href": "/06-rational-relations/",
+        "tex": "menu-06-rational-relations.tex"
+      },
+      {
+        "href": "/07-rational-functions/",
+        "tex": "menu-07-rational-functions.tex"
+      },
+      {
+        "href": "/08-weighted-automata/",
+        "tex": "menu-08-weighted-automata.tex"
+      },
+      {
+        "href": "/09-machine-independent/",
+        "tex": "menu-09-machine-independent.tex"
+      }
+    ]
+  },
+  {
+    "href": "/10-regular-functions-introduction/",
+    "tex": "menu-10-regular-functions-introduction.tex",
+    "children": [
+      {
+        "href": "/11-prime-regular-functions/",
+        "tex": "menu-11-prime-regular-functions.tex"
+      },
+      {
+        "href": "/12-two-way-transducers/",
+        "tex": "menu-12-two-way-transducers.tex"
+      },
+      {
+        "href": "/13-streaming-string-transducers/",
+        "tex": "menu-13-streaming-string-transducers.tex"
+      },
+      {
+        "href": "/14-logic/",
+        "tex": "menu-14-logic.tex"
+      }
+    ]
+  },
+  {
+    "href": "/15-polyregular-functions-introduction/",
+    "tex": "menu-15-polyregular-functions-introduction.tex",
+    "children": [
+      {
+        "href": "/16-for-transducers/",
+        "tex": "menu-16-for-transducers.tex"
+      },
+      {
+        "href": "/17-pebble-transducers/",
+        "tex": "menu-17-pebble-transducers.tex"
+      }
+    ]
+  }
+]

@@ -1,0 +1,12 @@
+baseURL = "/"
+relativeURLs = true
+publishDir = "dist"
+locale = "en-US"
+title = "Transducers"
+disableKinds = ["taxonomy", "term", "RSS", "sitemap"]
+
+[params]
+  reflowtexSource = "https://github.com/radek-p/reflowtex"
+
+[markup.goldmark.renderer]
+  unsafe = true

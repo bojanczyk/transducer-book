@@ -139,22 +139,42 @@
   },
   {
     "id": "C4-fo-transductions",
-    "title": "Part C: first-order relabellings (C.4.16) and first-order transductions (C.4.17)",
+    "title": "Part C: first-order relabellings (C.4.16); C.4.17 withdrawn by the author",
     "results": [
-      "C.4.16",
-      "C.4.17"
+      "C.4.16"
     ],
     "lean_names": [
-      "foRelabelling_iff_aperiodicBimachine",
-      "foTransduction_iff_prime_composition"
+      "foRelabelling_iff_aperiodicBimachine"
     ],
-    "prompt": "Prove Theorem C.4.16 (`Transducers.foRelabelling_iff_aperiodicBimachine`: the first-order relabellings are exactly the functions computed by aperiodic bimachines) and Theorem C.4.17 (`Transducers.foTransduction_iff_prime_composition`: the first-order transductions are exactly the compositions of the relevant primes).\n\nThese are the aperiodic counterparts of C.4.4 and C.4.8, and the book's proofs follow those two with aperiodicity added throughout, using C.4.11 and C.4.13 as the first-order analogue of C.4.1; all of those should already be available, as should the bimachine theory in `PartB/Bimachine.lean` and `PartB/BimachPrime.lean`. This closes Section C.4. Section C.4 of the book is in `../logic.tex`.",
+    "prompt": "NOTE: Theorem C.4.17 has been withdrawn from this formalisation by the author -- the book does not prove it. Ignore every mention of it below and do not reinstate it.\n\nProve Theorem C.4.16 (`Transducers.foRelabelling_iff_aperiodicBimachine`: the first-order relabellings are exactly the functions computed by aperiodic bimachines) and Theorem C.4.17 (`Transducers.foTransduction_iff_prime_composition`: the first-order transductions are exactly the compositions of the relevant primes).\n\nThese are the aperiodic counterparts of C.4.4 and C.4.8, and the book's proofs follow those two with aperiodicity added throughout, using C.4.11 and C.4.13 as the first-order analogue of C.4.1; all of those should already be available, as should the bimachine theory in `PartB/Bimachine.lean` and `PartB/BimachPrime.lean`. This closes Section C.4. Section C.4 of the book is in `../logic.tex`.",
     "depends_on": {
       "C.4.11": "foDefinable_iff_aperiodic_dfa",
       "C.4.13": "tp_eq_iff_fo_equiv",
       "C.4.4": "rational_iff_msoRelabelling",
       "C.4.8": "msoTransduction_iff_regular"
     }
+  },
+  {
+    "id": "C2-snake-step",
+    "title": "Part C: the snake lemma induction step, the last gap in Theorem C.2.9",
+    "results": [
+      "C.2.9",
+      "C.3.2",
+      "C.4.8",
+      "snake lemma step"
+    ],
+    "lean_names": [
+      "twoWay_iff_regular",
+      "sst_iff_regular",
+      "msoTransduction_iff_regular",
+      "boundedWidth_isRegular_step"
+    ],
+    "prompt": "Prove `Transducers.boundedWidth_isRegular_step`, the induction step of the book's snake lemma, in `RequestProject/PartC/SnakeReg.lean`:\n\n    def SnakeReg (k : Nat) : Prop :=\n      forall (A B Q : Type), Finite A -> Finite B -> Finite Q ->\n        forall M : TwoWay A B Q, IsRegularFun (TwoWay.widthOut M k)\n\n    theorem boundedWidth_isRegular_step (k : Nat) (ih : SnakeReg (k + 1)) : SnakeReg (k + 2)\n\nThis is the single remaining `sorry` of Section C.2 and it is the last gap in Theorem C.2.9 (two-way transducers compute exactly the regular functions). It is the highest-value statement left in the project: `Transducers.twoWay_iff_regular`, `Transducers.sst_iff_regular` (Theorem C.3.2) and `Transducers.msoTransduction_iff_regular` (Theorem C.4.8) are all formalised in both directions already and all three currently depend on `sorryAx` through this one step, and nothing else. Closing it turns all three into results proved outright, so it is the only thing this task is for: do not open any other numbered result.\n\nAlmost all of the surrounding development is finished and sorry-free, so reuse it rather than rebuilding it. The section *What is missing in Theorem C.2.9* in `THEOREMS.md` describes the state in detail; in outline:\n\n* The reduction of `Transducers.isRegularFun_of_isTwoWay` to the snake lemma is done (`SnakeReg.lean`), as is the bound on the width of a halting run (`SnakeWidth.lean`, `TwoWay.widthLe_card`, by pigeonhole).\n* Both base cases are proved in full in `SnakeBase.lean` (`TwoWay.widthOut_zero_isRegular`, `TwoWay.widthOut_one_isRegular`, the latter through `TwoWay.passDFA`, `TwoWay.PassLang` and the bimachine `TwoWay.passBim`).\n* The combinatorics of the width induction that the book's proof rests on -- record-breaking columns, the loop and progress parts, and the splitting of a run of width k into pieces of width k-1 with the matching factorisation of the output -- is proved in full in `SnakeWalk.lean`, `SnakeRec.lean` and `SnakeLoop.lean`, and the confinement of those pieces to two consecutive blocks in `SnakeConfine.lean`.\n* \"Reversing the snake\" is `SnakeMirror.lean`. Identifying a piece with the whole run of a window transducer, which is what lets the induction hypothesis apply to it, is in `SnakeLocal.lean`, `SnakePiece.lean` and `SnakePieceRev.lean`.\n* The gluing of the pieces (stages 1-3 of the book's proof) is the neighbouring-block map combinator `Transducers.RegPair.isRegularFun_pairMap` in `RegPair.lean`, on top of the bilateral rewritings of `RatBi.lean`.\n* The order in time of the visits of a run to a cut is available as a rational annotation (`TwoWayOrder.lean`, `TwoWayAnnotOrd.lean`).\n\nWhat `THEOREMS.md` records as still missing is the book's stage 1 -- the rational function that marks the record-breaking columns -- together with the identification of the individual pieces inside a block. Start by checking that assessment against the sources yourself, since it was written before the most recent work on the section, and say in your summary whether you found it accurate.\n\nNote that the induction hypothesis is quantified over all two-way transducers over all finite input alphabets and state sets, which is how the book quantifies over all snake graphs of a given width; use that generality when you apply it to the pieces.\n\nA previous task in this run attempted C.2.9 together with Lemma C.2.10 and Claim C.2.11 and ran out of budget with this step unproved, so treat it as hard and give it the whole task. If, after a serious attempt, some genuinely separate sub-lemma is all that is left, isolate it as a named statement with a clear docstring rather than leaving an unexplained `sorry`, and say exactly what it is in your summary. Section C.2 of the book is in `../2dfa.tex`.",
+    "depends_on": {
+      "C.2.8": "regularFun_isTwoWay"
+    },
+    "max_continues": 6,
+    "max_reattempts": 2
   },
   {
     "id": "audit-C",

@@ -23,6 +23,9 @@
 *.kaux
 *.diagnose
 
+# Radek example
+html-radek
+
 ## Bibliography helpers
 *.acn
 *.acr

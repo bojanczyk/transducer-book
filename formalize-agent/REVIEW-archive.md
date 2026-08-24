@@ -1,0 +1,42 @@
+
+## 2026-08-22 18:52:49Z — C2-regular-equivalence ran out of budget
+
+Budget exhausted after 3 continuation(s). Still containing `sorry`: none detected.
+
+The run has moved on. To give this another go:
+    formalize requeue C2-regular-equivalence
+
+Its last summary:
+
+## 2026-08-23 11:13:02Z — C4-buchi ran out of budget
+
+Budget exhausted after 3 continuation(s). Still containing `sorry`: none detected.
+
+The run has moved on. To give this another go:
+    formalize requeue C4-buchi
+
+Its last summary:
+
+I picked up the Section C.4 task and independently re-established, from a clean checkout with a full rebuild, that the three assigned results are finished and genuine.
+
+**Verification performed this session**
+
+* Dependencies fetched and the whole project rebuilt from scratch: `lake build` **completed with no errors** (8167 jobs). The only warnings are the expected `declaration uses 'sorry'` notices for results that remain open elsewhere (`PartC/MSOOpen.lean`, `PartC/SnakeReg.lean`, `PartC/Statements.lean`, `PartD/Statements.lean`) — 14 in total, none of them in the dependency chain of the three targets.
+* A `sorry` search confirms that no file the three results are built from contains one: `PartC/MSO.lean`, `MSODef.lean`, `MSOSyntax.lean`, `RegAut.lean`, `MSOAnnot.lean`, `MSOBuchi.lean`, `MSORelab.lean`, `KTypes.lean`.
+* `#print axioms`:
+  * `Transducers.regular_iff_msoDefinable` (Theorem C.4.1) — `propext, Classical.choice, Quot.sound`
+  * `Transducers.mso_annotated_regular` (Lemma C.4.2) — `propext, Classical.choice, Quot.sound`
+  * `Transducers.msoRelabelling_annotation_regular` (Claim C.4.6) — `propext, Classical.choice, Quot.sound`
+  * `Transducers.tp_properties` (Lemma C.4.15, background) — `propext, Quot.sound`
+* I re-read the statements against the definitions in `PartC/MSODef.lean` (`MSO`, `MSO.Sat`, `MSODefinable`, `annotate`, `extFO`/`extSO`, `MSORelabelling`) and confirmed they are the ordinary, faithful ones, with `Language.IsRegular` being Mathlib's DFA notion. As an extra non-vacuity check I elaborated (in a scratch file, not committed) small examples showing the semantics is non-degenerate and that C.4.1 really yields regularity of a concretely mso-defined language; these compiled.
+
+**Status of the numbered results of this task**
+
+* **Theorem C.4.1** (`Transducers.regular_iff_msoDefinable`, Büchi–Elgot–Trakhtenbrot) — proved outright, no extra hypothesis: formula-to-automaton by induction on the syntax over annotated alphabets, plus the converse formula guessing the run of a dfa with one set variable per state.
+* **Lemma C.4.2** (`Transducers.mso_annotated_regular`) — proved outright, no extra hypothesis; it is the induction-friendly version over annotated alphabets used for C.4.1.
+* **Claim C.4.6** (`Transducers.msoRelabelling_annotation_regular`) — proved outright from C.4.2, no extra hypothesis.
+* **Lemma C.4.15** (`Transducers.tp_properties`) — proved outright (background result already in `PartC/KTypes.lean`).
+
+Still open in Section C.4, stated faithfully with `sorry` proofs in `RequestProject/PartC/MSOOpen.lean`: Theorem C.4.4, Lemma C.4.10, Theorem C.4.8, Theorem C.4.11, Lemma C.4.13, Theorem C.4.16, Theorem C.4.17. Each needs its own development (rational functions versus mso relabellings, mso transductions versus regular functions, and an Ehrenfeucht–Fraïssé/Hintikka argument for the first-order fragment).
+
+No statement was weakened or deleted, and no `axiom`, `sorry` or `native_decide` was added. `THEOREMS.md` already records the correct status, file list and axiom check for all four results, so it needed no change; the working tree is clean and everything is committed and pushed, with `lake build` succeeding with no errors.

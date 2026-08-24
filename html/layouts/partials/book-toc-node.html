@@ -1,0 +1,22 @@
+{{- $node := .node -}}
+{{- $current := .current -}}
+{{- $href := relURL (printf "%sindex.html" (strings.TrimPrefix "/" $node.href)) -}}
+{{- $key := index hugo.Data.latex_files $node.tex -}}
+{{- $block := and $key (index hugo.Data.latex_blocks $key) -}}
+<li{{ with $node.children }} class="part-item"{{ end }}>
+  <a href="{{ $href }}"{{ if eq $current $node.href }} aria-current="page"{{ end }}>
+    {{- with $block -}}
+      <span class="latex-block menu-latex" data-nodelist-b64="{{ .nodelist_b64 }}" data-align="left"
+            data-color-map="transducer-book-color-map"></span>
+    {{- else -}}
+      <span class="menu-latex-missing">{{ $node.tex }}</span>
+    {{- end -}}
+  </a>
+  {{- with $node.children }}
+  <ol>
+    {{- range . }}
+      {{ partial "book-toc-node.html" (dict "node" . "current" $current) }}
+    {{- end }}
+  </ol>
+  {{- end }}
+</li>

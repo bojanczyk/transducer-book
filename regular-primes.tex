@@ -10,7 +10,7 @@ So far, we have defined the regular functions in terms of compositions of certai
 \end{theorem}
 \begin{proof}
     Composition is built into the definition, so we only argue about continuity. Since continuous functions are closed under composition, and rational functions are continuous by Theorem~\ref{thm:continuity-rational-relations}, it remains to show that map reverse and map duplicate are continuous. We first show that reverse and duplicate (without map) are continuous, and then we extend this with the map combinator. 
-\begin{lemma}
+\begin{lemma}\label{lem:reversal-duplication-continuous}
     String reversal and string duplication are continuous.
 \end{lemma}
 \begin{proof} This lemma is a classical exercise in automata theory
@@ -24,8 +24,8 @@ So far, we have defined the regular functions in terms of compositions of certai
     are regular. We assume that $L$ is given by a nondeterministic automaton. For string reversal, we modify the original automaton  by reversing all transitions and swapping initial and accepting states. For string duplication, the inverse image is 
     \begin{align*}
     \bigcup_{q} \setbuild{ w \in A^*}{
-        there is a run from an initial state to $q$ and \\
-        there is a run from $q$ to an accepting state
+        there is a run over $w$ from an initial state to $q$ and \\
+        there is a run over $w$ from $q$ to an accepting state
     },
     \end{align*}
     which is easily seen to be a regular language.
@@ -80,7 +80,7 @@ The second condition can also  be checked by an automaton thanks to continuity o
         Assuming that the original weighted automaton $g$ had states $Q$, the new weighted automaton (for the post-composition $f \cdot g$) has states $Q^3$. We assume that the original automaton consumes at most one input letter in each transition, but $\varepsilon$-transitions are still allowed.  The transitions are defined by   
         \begin{align*}
             \myunderbrace
-            {      (x,q,y) \xrightarrow{a / x } (x,p,y) }{in the new automaton}
+            {      (r,q,s) \xrightarrow{a / x } (r,p,s) }{in the new automaton}
             \qquad \iff \qquad 
             \myunderbrace
             {      p \xrightarrow{a / x } q }{in the original automaton}.
@@ -88,10 +88,10 @@ The second condition can also  be checked by an automaton thanks to continuity o
         for $a$ which is not the separator symbol $\#$, and by
                \begin{align*}
             \myunderbrace
-            {      (p,y,y) \xrightarrow{\# / x } (x,x,q) }{in the new automaton}
+            {      (r,q,q) \xrightarrow{\# / x } (p,p,s) }{in the new automaton}
             \qquad \iff \qquad 
             \myunderbrace
-            {      p \xrightarrow{a / x } q }{in the original automaton}.
+            {      r \xrightarrow{\# / x } s }{in the original automaton}.
         \end{align*}
         The initial states are those which have an initial state on the first coordinate, and the accepting states are those which have an accepting state on the third coordinate. Note that this weighted automaton will multiply the weights of the original run in a different order, but this is not an issue since multiplication in a field is commutative. More generally, this construction would work for any commutative semiring. For non-commutative semirings, the construction cannot work, since we have established in Theorem~\ref{thm:characterisation-rational-functions-weighted-automata} that only rational functions can be closed under post-composition with  weighted automata over arbitrary semirings, and map reverse is not rational.
 

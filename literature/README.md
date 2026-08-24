@@ -2,7 +2,14 @@
 
 This folder collects the main sources to cite for the first four parts of the book.
 
-BibTeX entries are in [references.bib](references.bib).
+BibTeX entries for everything listed here live in the book's bibliography, [../bib.bib](../bib.bib).
+
+## Background
+
+- **S. C. Kleene (1951), _Representation of Events in Nerve Nets and Finite Automata_.**  
+  The origin of regular expressions and of the Kleene Theorem, which underlies the rational/recognisable material in Part B and the regular languages used throughout. Written as a RAND research memorandum, and freely available in that form; the revised version appeared in _Automata Studies_ (Shannon and McCarthy, eds.), Annals of Mathematics Studies 34, Princeton University Press, 1956, pp. 3-41.  
+  RAND: https://www.rand.org/pubs/research_memoranda/RM704.html (report RM-704)  
+  PDF: [Kleene1951_Representation_of_Events_in_Nerve_Nets_and_Finite_Automata.pdf](pdfs/Kleene1951_Representation_of_Events_in_Nerve_Nets_and_Finite_Automata.pdf) (RAND memorandum)
 
 ## Part A — Mealy machines
 
@@ -15,6 +22,12 @@ BibTeX entries are in [references.bib](references.bib).
   The classical decomposition theorem behind the book’s Krohn-Rhodes chapter.  
   DOI: https://doi.org/10.1090/S0002-9947-1965-0188316-1  
   PDF: [KrohnRhodes1965_Algebraic_Theory_of_Machines_I.pdf](pdfs/KrohnRhodes1965_Algebraic_Theory_of_Machines_I.pdf)
+
+- **Samuel Eilenberg (1976), _Automata, Languages, and Machines. Volume B_.**  
+  The standard algebraic treatment of machines: wreath products, the Krohn-Rhodes decomposition, and the variety theory relating pseudovarieties of finite monoids to classes of languages. Includes two chapters by Bret Tilson on the depth decomposition theorem and on complexity. Companion to Volume A, listed under Part B below.  
+  Publisher: https://shop.elsevier.com/books/automata-languages-and-machines/eilenberg/978-0-12-234002-4  
+  Borrowable scan: https://archive.org/details/automatalanguage0000eile  
+  No PDF stored locally (in copyright, no free electronic edition).
 
 ## Part B — Rational relations and functions
 
@@ -33,6 +46,18 @@ BibTeX entries are in [references.bib](references.bib).
   DOI: https://doi.org/10.5802/aif.287  
   PDF: [Nivat1968_Transductions_des_langages_de_Chomsky.pdf](pdfs/Nivat1968_Transductions_des_langages_de_Chomsky.pdf)
 
+- **Paul Dubreil (1941), _Contribution à la théorie des demi-groupes. I_.**  
+  Origin of right congruences in semigroup theory, the algebraic background to the Myhill-Nerode chapter. Page 8 has the definition of a right congruence, and Theorem 3 says that the relation defined there is one. Mémoires de l'Académie des Sciences de l'Institut de France, tome 63, pp. 1-52.  
+  Gallica (BnF) has tome 63 digitised as ark `bpt6k3278g`; the memoir is no. 3 of the volume and occupies views 355-406, which are its pages 1-52.  
+  Gallica: https://gallica.bnf.fr/ark:/12148/bpt6k3278g/f355  
+  PDF: [Dubreil1941_Contribution_a_la_theorie_des_demi-groupes.pdf](pdfs/Dubreil1941_Contribution_a_la_theorie_des_demi-groupes.pdf) (assembled from the Gallica page scans; the volume has no OCR layer)  
+  Note: likely still in copyright (Dubreil died 1994), and Gallica marks the volume as `sous droits`.
+
+- **M.-P. Schützenberger (1955-1956), _Une théorie algébrique du codage_.**  
+  The talk in which Schützenberger set out his algebraic approach to codes, the starting point for the line of work continued in his later papers on transducers and rational relations. Séminaire Dubreil, tome 9, exposé no. 15, 24 pages.  
+  Numdam: https://www.numdam.org/item/SD_1955-1956__9__A10_0/  
+  PDF: [Schutzenberger1956_Une_theorie_algebrique_du_codage.pdf](pdfs/Schutzenberger1956_Une_theorie_algebrique_du_codage.pdf)
+
 - **M. P. Schützenberger (1961), _A Remark on Finite Transducers_.**  
   Classic finite-transducer reference, especially relevant to the deterministic/function side.  
   DOI: https://doi.org/10.1016/S0019-9958(61)80006-5  
@@ -42,6 +67,23 @@ BibTeX entries are in [references.bib](references.bib).
   Directly on rational relations over free monoids.  
   DOI: https://doi.org/10.1016/0304-3975(76)90026-8  
   PDF: [Schutzenberger1976_Sur_les_relations_rationnelles_entre_monoides_libres.pdf](pdfs/Schutzenberger1976_Sur_les_relations_rationnelles_entre_monoides_libres.pdf)
+
+- **Samuel Eilenberg (1974), _Automata, Languages, and Machines. Volume A_.**  
+  The classical reference for rational and recognisable sets, rational relations, and sequential machines. Also background for Part A; see Volume B under Part A above. Chapter pointers, from the table of contents:
+  - Chapter VII, _Rational Sets_ (p. 159)
+  - Chapter IX, _Rational Relations_ — includes the composition and factorization theorems, and rational partial functions (p. 258)
+  - Chapter X, _Machines_ — §3 transducers and rational relations (p. 272), §6 two-way automata (p. 282)
+  - Chapter XI, _Sequential Machines_ — §7 sequential bimachines (p. 320), §8 examples of bimachines (p. 322)
+  - Chapter XII, _Operations on Sequential Machines_ — minimization (p. 338) and composition (p. 349)
+  
+  Publisher: https://shop.elsevier.com/books/automata-languages-and-machines/eilenberg/978-0-12-234001-7  
+  PDF: [Eilenberg1974_Automata_Languages_and_Machines_Volume_A.pdf](pdfs/Eilenberg1974_Automata_Languages_and_Machines_Volume_A.pdf) (469 pp., converted from a djvu scan; the OCR text layer was carried over, so it is searchable)  
+  Note: in copyright, no free electronic edition.
+
+- **Jean Berstel (1979), _Transductions and Context-Free Languages_.**  
+  The standard monograph on rational transductions; the free 2009 electronic edition covers the first four chapters, including the general theory of rational transductions.  
+  Link: https://www-igm.univ-mlv.fr/~berstel/LivreTransductions/LivreTransductions14dec2009.pdf  
+  PDF: [Berstel1979_Transductions_and_Context-Free_Languages.pdf](pdfs/Berstel1979_Transductions_and_Context-Free_Languages.pdf) (electronic edition, 14 Dec 2009)
 
 - **Christian Choffrut (1977), _Une caractérisation des fonctions séquentielles et des fonctions sous-séquentielles en tant que relations rationnelles_.**  
   Key paper on sequential/subsequential functions as rational relations.  
@@ -152,6 +194,10 @@ BibTeX entries are in [references.bib](references.bib).
 
 The PDFs currently stored here are:
 
+- [pdfs/Eilenberg1974_Automata_Languages_and_Machines_Volume_A.pdf](pdfs/Eilenberg1974_Automata_Languages_and_Machines_Volume_A.pdf)
+- [pdfs/Dubreil1941_Contribution_a_la_theorie_des_demi-groupes.pdf](pdfs/Dubreil1941_Contribution_a_la_theorie_des_demi-groupes.pdf)
+- [pdfs/Schutzenberger1956_Une_theorie_algebrique_du_codage.pdf](pdfs/Schutzenberger1956_Une_theorie_algebrique_du_codage.pdf)
+- [pdfs/Kleene1951_Representation_of_Events_in_Nerve_Nets_and_Finite_Automata.pdf](pdfs/Kleene1951_Representation_of_Events_in_Nerve_Nets_and_Finite_Automata.pdf)
 - [pdfs/Mealy1955_Method_for_Synthesizing_Sequential_Circuits.pdf](pdfs/Mealy1955_Method_for_Synthesizing_Sequential_Circuits.pdf)
 - [pdfs/KrohnRhodes1965_Algebraic_Theory_of_Machines_I.pdf](pdfs/KrohnRhodes1965_Algebraic_Theory_of_Machines_I.pdf)
 - [pdfs/ElgotMezei1965_On_Relations_Defined_by_Generalized_Finite_Automata.pdf](pdfs/ElgotMezei1965_On_Relations_Defined_by_Generalized_Finite_Automata.pdf)
@@ -160,6 +206,7 @@ The PDFs currently stored here are:
 - [pdfs/Schutzenberger1961_A_Remark_on_Finite_Transducers.pdf](pdfs/Schutzenberger1961_A_Remark_on_Finite_Transducers.pdf)
 - [pdfs/Schutzenberger1976_Sur_les_relations_rationnelles_entre_monoides_libres.pdf](pdfs/Schutzenberger1976_Sur_les_relations_rationnelles_entre_monoides_libres.pdf)
 - [pdfs/Choffrut1977_Une_caracterisation_des_fonctions_sequentielles.pdf](pdfs/Choffrut1977_Une_caracterisation_des_fonctions_sequentielles.pdf)
+- [pdfs/Berstel1979_Transductions_and_Context-Free_Languages.pdf](pdfs/Berstel1979_Transductions_and_Context-Free_Languages.pdf)
 - [pdfs/RabinScott1959_Finite_automata_and_their_decision_problems.pdf](pdfs/RabinScott1959_Finite_automata_and_their_decision_problems.pdf)
 - [pdfs/Shepherdson1959_The_reduction_of_two-way_automata_to_one-way_automata.pdf](pdfs/Shepherdson1959_The_reduction_of_two-way_automata_to_one-way_automata.pdf)
 - [pdfs/AlurCerny2011_Streaming_Transducers_for_Algorithmic_Verification_of_Single-Pass_List-Processing_Programs.pdf](pdfs/AlurCerny2011_Streaming_Transducers_for_Algorithmic_Verification_of_Single-Pass_List-Processing_Programs.pdf)

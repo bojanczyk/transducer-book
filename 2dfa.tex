@@ -11,7 +11,7 @@ Note that the head points to a gap between positions, instead of a position. Usu
 \times 
 \myunderbrace{A^*}{input \\ after \\ the head}.\end{align*}
 The transducer starts in an initial configuration, where the state is the chosen initial state, and the head is to the left of the entire input string. Next, in each step, the transducer looks at: (a) the letter to the left of the head, (b) the current state, and (c) the letter to the right of the head. Based on this information, it can either produce an output string and halt, or it can produce an output string, change its state, and move the head left or right. Note that the letters in (a) and (c) might be undefined, since the head can be at the leftmost or rightmost position, and hence they can be seen as elements of $A+1$, where $1$ is a special symbol that stands for the undefined letter. The formal definition is given below.
-\begin{definition}
+\begin{definition}\label{def:two-way-transducer}
     A two-way  transducer consists of 
     the following data:
     \begin{itemize}
@@ -62,7 +62,7 @@ This section shows that two-way transducers are continuous, i.e.~inverse images 
         \label{eq:composition-of-two-way-with-regular}
         A^* \xrightarrow f B^* \xrightarrow L \set{\text{yes, no}}
     \end{align}
-    is a regular language. If we take a \dfa that recognises the language $L$, then we can apply a straightforward product construction, yielding a two-way automaton (not transducer) which recognises the inverse image. Therefore, this theorem boils down to showing that two-way automata can only recognise regular languages\footnote{Turning a two-way automaton into a one-way automaton was one of the original motivations for introducing nondeterministic automata by Rabin and Scott in \cite{RabinScott59}. The same problem was solved independently by Shepherdson in~\cite{shepherdson1959reduction}, who used a direct construction without nondeterminism. In Note 4 of Shepherdson's paper one can also see a mention of the transducer variant, and thus this is probably the first appearance of two-way transducers in the literature. }.
+    is a regular language. If we take a \dfa that recognises the language $L$, then we can apply a straightforward product construction, yielding a two-way automaton (not transducer) which recognises the inverse image. Therefore, this theorem boils down to showing that two-way automata can only recognise regular languages\footnote{Turning a two-way automaton into a one-way automaton was one of the original motivations for introducing nondeterministic automata in \cite{RabinScott59}. The same problem was solved independently in~\cite{shepherdson1959reduction}, which applied a direct construction without nondeterminism. In Note 4 of Shepherdson's paper one can also see a mention of the transducer variant, and thus this is probably the first appearance of two-way transducers in the literature. }.
     
     Later on in this section, we will want to prove that two-way transducers are closed under composition, which is the extension of~\eqref{eq:composition-of-two-way-with-regular} in which the language $L$ is replaced by another two-way transducer. We try to phrase the present proof in a way which is amenable to that extension. The proof has two steps: (a) we first use a rational function to compute the configuration graph of $f$ on the input string $w \in A^*$; and then (b) we use the configuration graph to check membership of $f(w) \in L$.
 
@@ -170,10 +170,11 @@ For the reversible Mealy machines, we can simply use the product construction, s
     can also be computed by a two-way transducer. By Lemma~\ref{lem:compute-configuration-graph}, we can compute the configuration graph of $f$ using a rational function. Since two-way transducers are closed under pre-composition with rational functions by Corollary~\ref{cor:2dfa-closure-under-composition}, we can compute the configuration graph of $f$ using a two-way transducer. Finally, by Lemma~\ref{lem:check-if-output-string-of-configuration-graph-belongs-to-L}, it is enough to show that the output $g(f(w))$ can be computed by a two-way transducer which looks at the configuration graph of $f$ on $w$. Once the configuration graph is present, we can do this easily using a product construction, which is explained in the following picture:
     \mypic{35}
 \end{proof}
+ 
+ 
 
-A corollary of the above theorem is that two-way transducers are contained in the regular functions from Definition~\ref{def:regular-functions}. 
-\begin{corollary}
-    If a function is computed by a two-way transducer, then it is regular.
+\begin{corollary}\label{cor:2dfa-computes-all-regular-functions}
+    Every regular function  is computed by a two-way transducer
 \end{corollary}
 \begin{proof}
     Two-way transducers can compute all rational functions by Corollary~\ref{cor:2dfa-closure-under-composition}, and they can compute  map reverse and map duplicate by Example~\ref{ex:map-duplicate-reverse-two-way}. Finally, they are closed under composition thanks to Theorem~\ref{thm:composition-of-two-way-transducers}.
@@ -275,7 +276,7 @@ A consequence of the closure under composition for two-way transducers was that 
     \end{tikzcd}
     \]
 Since the first function is rational (and therefore also regular) by the same argument as in Lemma~\ref{lem:compute-configuration-graph}, it remains to prove that the second function is regular. 
-    The second  function  is partial, since the input might not represent a snake graph. To make it total, we assume that if a string in $C^*$ does not represent a snake graph, then its output is empty. To prove that the output of snake graph can be computed by a regular functions, we use induction on  a parameter of snake graphs that we call the width: this is the maximal number of times that the snake graph visits a single column. Here is a picture:
+    The second  function  is partial, since the input might not represent a snake graph. To make it total, we assume that if a string in $C^*$ does not represent a snake graph, then its output is empty. To prove that the output of snake graph can be computed by a regular function, we use induction on  a parameter of snake graphs that we call the width: this is the maximal number of times that the snake graph visits a single column. Here is a picture:
     \mypic{40}
 
 The maximal width of a snake graph is $|Q|$, and hence the following lemma will be sufficient to prove the theorem. 
@@ -290,27 +291,10 @@ The maximal width of a snake graph is $|Q|$, and hence the following lemma will 
     \end{align*}
 \end{lemma}
 \begin{proof}
-    The function in the lemma is partial, since the input might not represent a snake graph. Therefore, we assume that if the input is not a snake graph, then the output is the empty string. The lemma will be proved by induction on a parameter of snake graphs that we call the width: this is the maximal number of times that the snake graph visits a single column, as explained in the following picture:
-    \mypic{40}
-
-
-    % There are three possiblities to consider for a snake, depending on how the columns of the source and target vertices are ordered: the source is to the left of the target, the source and target are in the same column, or the source is to the right of the target. We will consider these three cases separately. In order to be able to implement a case disjunction, we use the following claim. 
-    % \begin{claim}[Cases]\label{claim:case-disjunction-regular}
-    %     If $f_1,f_2 :A^* \to B^*$ are regular functions and  $L \subseteq A^*$ is a regular language, then  the following function is regular:
-    %     \begin{align*}
-    %     w \in A^* 
-    %     \quad \mapsto \quad 
-    %     \begin{cases}
-    %         f_1(w) & \text{if $w \in L$}\\
-    %         f_2(w) & \text{otherwise.}
-    %     \end{cases} 
-    %     \end{align*}
-    % \end{claim}
-
-    \paragraph*{Looping snake.} We begin by proving the induction step for a special case of a snake, in which the source and target are in the same column, as in the following picture:
+We begin by proving the induction step for a special case of a snake, in which the source and target are in the same column, as in the following picture:
     \mypic{42}
     A snake with this property is called a \emph{looping snake}. 
-    If the column with the source and target is visited at least three times then we can decompose the snake into a concatenation of a constant number of snakes in which the source and target are the only vertices in their column. Each of the factors in this concatenation can be computed by a rational function, and the concatenation itself  can be implemented by a regular function thanks to Lemma~\ref{lem:regular-closure-properties}.
+    If the column with the source and target is visited at least three times then we can decompose the snake into a concatenation of a constant number of snakes in which the source and target are the only vertices in their column. This is because, as we will see in a moment, each of the factors in this concatenation can be computed by a rational function, and the concatenation itself  can be implemented by a regular function thanks to Lemma~\ref{lem:regular-closure-properties}.
     We are left with the case where the source and target vertices of the looping snake are the only vertices in their column. Among the columns visited by the snake, consider the one that is the furthest away from the source, as in this picture:
     \mypic{43}
     In order to reach this furthest column for the first time, the snake cannot use its full width, since it needs to return. Therefore, if we partition the snake into two parts: before and after the first visit to the furthest column, then both parts have smaller width than the original snake. This partition can be computed by a rational function, the outputs for the parts can be computed by induction assumption, and the results can be combined using the concatenation construction in Lemma~\ref{lem:regular-closure-properties}. This completes the proof of the induction step in the case of a looping snake. 
@@ -331,7 +315,7 @@ The maximal width of a snake graph is $|Q|$, and hence the following lemma will 
         \begin{align*}
         w_0 \# w_1 \# \cdots \# w_n,
         \end{align*}
-        where $w_i$ is the part of the input string between the record-breakers $x_{i-1}$ and $x_i$. This stage can be implemented by a rational function, since a nondeterministic automaton with output can guess the record-breakers, and then check that they satisfy the conditions in the definition.
+        where $w_i$ is the part of the input string between the record-breakers $x_i$ and $x_{i+1}$. This stage can be implemented by a rational function, since a nondeterministic automaton with output can guess the record-breakers, and then check that they satisfy the conditions in the definition.
         \item         In the output of the first stage, each separator $\#$ represents a record-breaker. In the second stage, we compute for each separator the part of the input string that is around it, up to the nearest separator. This is represented by  the following string
         \begin{align*}
         (w_0 \# w_1)  (w_1 \# w_2) \cdots (w_{n-1} \# w_n).

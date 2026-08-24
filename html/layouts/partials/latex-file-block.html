@@ -1,0 +1,11 @@
+{{- $file := .file -}}
+{{- $class := .class -}}
+{{- $colorMap := .color_map -}}
+{{- $key := index hugo.Data.latex_files $file -}}
+{{- $block := and $key (index hugo.Data.latex_blocks $key) -}}
+{{- with $block -}}
+<div class="latex-block {{ $class }}" data-nodelist-b64="{{ .nodelist_b64 }}" data-align="left"
+     {{- with $colorMap }} data-color-map="{{ . }}"{{ end }}></div>
+{{- else -}}
+<div class="latex-block latex-block--missing">LaTeX title <code>{{ $file }}</code> not compiled.</div>
+{{- end -}}

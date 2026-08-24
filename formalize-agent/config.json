@@ -2,19 +2,16 @@
   "project_id": "c2acc8e2-e053-4dec-b612-4521641bf107",
   "lean_dir": "../transducer-lean",
   "archive_subdir": "transducer-lean",
-
   "max_continues": 3,
   "max_retries_on_failure": 2,
   "max_reattempts_per_target": 2,
   "stall_warning_hours": 30,
-
   "notify": true,
   "commit": true,
   "auto_start_next": true,
-
   "//pause_on": "Conditions that halt the queue outright rather than just filing a review item. Options: failed, partial. Audits and still-open results always file an item and never halt, so a week away does not stall on the first surprise.",
-  "pause_on": ["failed"],
-
-
-  "standing_instructions": "\n\n---\nStanding rules for this run (they apply to every task in this series; do not treat them as part of the mathematical goal):\n\n* Work only inside `transducer-lean/`. Do not modify the LaTeX sources of the book.\n* Never weaken, generalise away or delete the statement of a numbered result in order to make it provable, and never close a goal with `sorry`, with a new `axiom`, or with `native_decide`. If a statement of the book is false as literally written, or needs an extra hypothesis, then keep a faithful rendering, add the corrected version next to it, and document the discrepancy both in the docstring and in `THEOREMS.md` -- exactly as was already done for Definition A.2.7, for the derivative used in Lemma A.2.10, and for Theorem B.4.6.\n* Prefer reusing the machinery that is already in the project over rebuilding it; the existing files are listed in `THEOREMS.md`.\n* `lake build` must succeed with no errors at the end of the task. Leave the repository building even if you are interrupted.\n* For every numbered result you finish, run `#print axioms` on it and confirm it depends only on `propext`, `Classical.choice`, `Quot.sound`. Record that in `THEOREMS.md`.\n* Before finishing, update `THEOREMS.md`: the status column of every result you touched, the list of files, and the `## Status` section. Then commit.\n* In your closing summary, state plainly which numbered results are now proved outright, which are proved from an explicit hypothesis (and which hypothesis), and which are still open with what remains to be done. Do not describe a result as proved if any of its dependencies still contains `sorry`.\n* Questions are disabled in this run: if something is ambiguous, make a reasonable choice, document it in the docstring, and continue.\n"
+  "pause_on": [
+    "failed"
+  ],
+  "standing_instructions": "\n\n---\nStanding rules for this run (they apply to every task in this series; do not treat them as part of the mathematical goal):\n\n* Work only inside `transducer-lean/`. Do not modify the LaTeX sources of the book.\n* Never weaken, generalise away or delete the statement of a numbered result in order to make it provable, and never close a goal with `sorry`, with a new `axiom`, or with `native_decide`. If a statement of the book is false as literally written, or needs an extra hypothesis, then keep a faithful rendering, add the corrected version next to it, and document the discrepancy both in the docstring and in `THEOREMS.md` -- exactly as was already done for Definition A.2.7, for the derivative used in Lemma A.2.10, and for Theorem B.4.6.\n* Prefer reusing the machinery that is already in the project over rebuilding it; the existing files are listed in `THEOREMS.md`.\n* `lake build` must succeed with no errors at the end of the task. Leave the repository building even if you are interrupted.\n* For every numbered result you finish, run `#print axioms` on it and confirm it depends only on `propext`, `Classical.choice`, `Quot.sound`. Record that in `THEOREMS.md`.\n* Before finishing, update `THEOREMS.md`: the status column of every result you touched, the list of files, and the `## Status` section. Then commit.\n* In your closing summary, state plainly which numbered results are now proved outright, which are proved from an explicit hypothesis (and which hypothesis), and which are still open with what remains to be done. Do not describe a result as proved if any of its dependencies still contains `sorry`.\n* Theorem C.4.17 has been withdrawn from this formalisation by the author of the book: the book does not prove it. It is not an open result, it must not be reinstated or counted as missing, and if you still find its statement in the sources then removing it is the right thing to do.\n* Questions are disabled in this run: if something is ambiguous, make a reasonable choice, document it in the docstring, and continue.\n"
 }

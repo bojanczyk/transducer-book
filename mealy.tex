@@ -71,6 +71,7 @@ In this section, we establish that "Mealy machines" satisfy the three criteria t
 
 The above proof is trivial because there is a perfect alignment between input and output letters. For more advanced transducer models that will be studied later in the book, there will not be such an alignment, which will make the equivalence problem  more difficult. This issue would arise already in the mild extension of "Mealy machines", in which transitions produce not letters, but output strings of arbitrary (and possibly empty) length. As we will see in the next chapter, the equivalence problem will remain decidable for this extension, but the proof will be more complicated. 
 
+
 \paragraph*{Compositions.} We now establish closure under composition for "Mealy machines". In this book, we use a dot to represent left-to-right composition of functions, i.e.~$f \cdot g$ is the function where we first apply $f$, and then we apply $g$ to the output of $f$. To denote the opposite order of composition, we will write $f \circ g$, which is the same as $g \cdot f$. In order to avoid confusion,  we try to avoid the $\circ$ notation altogether.
 \begin{theorem}\label{thm:composition-mealy}
     "Mealy machines" are closed under composition, i.e.~if
@@ -158,10 +159,10 @@ w \in K \quad \text{iff} \quad  f(w) \in L \qquad \text{for every nonempty $w \i
 The reduction outputs $a$ as the last letter if the input string belongs to $K$, and $b$ otherwise.
 }
 
-\exer{\label{exer:regular-complete-mealy-2} Give an algorithm, which checks if a given regular language is regular-complete under Mealy reductions. The algorithm can even be made polynomial, assuming that the input regular language is given by a deterministic automaton. }{ Consider the regular language $L$ from the solution to Exercise~\ref{exer:regular-complete-mealy}. A language $K$ is regular-complete under Mealy reductions if and only if there is a reduction, as in the definition of completeness, from $L$ to $K$.  This in turn is easily seen to be equivalent to the following criterion: in the minimal automaton for $K$ (in fact, in any deterministic automaton for $K$), there is a subset of states $P$ with the following property: 
+\exer{\label{exer:regular-complete-mealy-2} Give an algorithm, which checks if a given regular language is regular-complete under Mealy reductions. The algorithm can even be made polynomial, assuming that the input regular language is given by a deterministic automaton.}{ Consider the regular language $L$ from the solution to Exercise~\ref{exer:regular-complete-mealy}. A language $K$ is regular-complete under Mealy reductions if and only if there is a reduction, as in the definition of completeness, from $L$ to $K$.  This in turn is easily seen to be equivalent to the following criterion: in the minimal automaton for $K$ (in fact, in any deterministic automaton for $K$), there is a subset of states $P$ with the following property: 
     \begin{itemize}
         \item[(*)]  $P$ contains the initial state and  for every state $q \in P$, there are input letters $a$ and $b$ such that $qa, qb \in P$ but only one of them is accepting.
     \end{itemize}
 
-It remains to show that the above criterion can be decided in polynomial time. To do this, we use a game, played between two players, who are called Prover and Refuter. 
+It remains to show that the above criterion can be decided in polynomial time. To do this, we use a game, played between two players, who are called Prover and Refuter.  
 }
