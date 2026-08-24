@@ -38,6 +38,7 @@ of Section C.4 is left unproved.
 Not formalised: Claim C.4.5, Lemma C.4.9 and Claim C.4.14, which are internal
 steps of the proofs of Theorems C.4.4, C.4.8 and C.4.11.
 -/
+import RequestProject.PartC.Statements
 import RequestProject.PartC.MSOBuchi
 import RequestProject.PartC.MSORelab
 import RequestProject.PartC.MSOOpen

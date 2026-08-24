@@ -47,7 +47,7 @@ variable (M : TwoWay A B Q) (k : ℕ) (l rr : Option A) (q f : Q) (v : List A)
 
 @[simp] lemma pieceOut_kind_three :
     pieceOut M k ((3 : Fin 5), l, rr, some (q, f)) v
-      = widthOut (M.withContext l none q) k v := by
+      = widthOut (M.withContext l rr q) k v := by
   simp [pieceOut]
 
 @[simp] lemma pieceOut_kind_four :
@@ -302,7 +302,7 @@ theorem exists_isSnakeMarking (hw : w ≠ []) (hK : 2 ≤ K)
       IsSnakeMarking M K w (snakeAnn w K (rbN M w) (snakeY M w) a b p) := by
   classical
   choose a b p hdata using fun i r => exists_pieceData hT hwidth hK i r
-  exact ⟨a, b, p, isSnakeMarking_snakeAnn M K w rfl (snakeY M w) a b p snakeY_zero
+  exact ⟨a, b, p, isSnakeMarking_snakeAnn M K w rfl (snakeY M w) a b p
     (snakeY_mono_step hT) snakeY_last (fun i hiN => snakeY_lt_two hT hw hiN)
     (fun i hiN r _ => ⟨(hdata i r hiN).1, (hdata i r hiN).2.1, (hdata i r hiN).2.2.1⟩)
     (fun i hiN r _ => (hdata i r hiN).2.2.2)⟩

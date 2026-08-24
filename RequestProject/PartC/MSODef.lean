@@ -24,7 +24,16 @@ Two conventions are used.
   of ordinary mso formulas indexed by the variants, which is equivalent to the
   presentation in Definition C.4.7.
 -/
-import RequestProject.PartC.Statements
+import RequestProject.PartB.WeightedStatements
+import RequestProject.PartC.ContAux
+import RequestProject.PartC.TwoWayCont
+import RequestProject.PartC.TwoWayPrecomp
+import RequestProject.PartC.TwoWayRat
+import RequestProject.PartC.TwoWayCompFinal
+import RequestProject.PartC.TwoWayRegular
+import RequestProject.PartC.RegClosure
+import RequestProject.PartC.SSTRegular
+import RequestProject.PartC.SSTTwoWay
 import RequestProject.PartC.KTypes
 
 namespace Transducers

@@ -487,24 +487,24 @@ theorem exists_outRange_kind_two {x y a k : ℕ} (hxy : x ≤ y) (hyw : y ≤ w.
   · rw [pieceOut_kind_two, widthOut, if_pos hwidth, runOut_pieceRev hp, hw]
 
 /-- **A piece of kind `3`**: the last piece of the run, entered at the left end
-of a suffix of the input. -/
-theorem exists_outRange_kind_three {x a k : ℕ} (hxw : x ≤ w.length) {q : Q} (rr : Option A)
+of the window, out of which the run does not leave. -/
+theorem exists_outRange_kind_three {x y a k : ℕ} (hxy : x ≤ y) (hyw : y ≤ w.length) {q : Q}
     (hstart : cfgAt M w a = some (Cfg.conf (w.take x) q (w.drop x)))
-    (hend : ∃ n, cfgAt (M.withContext (w.take x).getLast? none q) (w.drop x) n
+    (hend : ∃ n, cfgAt (M.withContext (w.take x).getLast? (w.drop y).head? q) (seg w x y) n
       = some Cfg.halt)
-    (hwidth : WidthLe (M.withContext (w.take x).getLast? none q) (w.drop x) k) :
+    (hwidth : WidthLe (M.withContext (w.take x).getLast? (w.drop y).head? q) (seg w x y) k) :
     ∃ n, cfgAt M w (a + n) = some Cfg.halt ∧
       outRange M w a (a + n)
-        = pieceOut M k ((3 : Fin 5), (w.take x).getLast?, rr, some (q, q)) (w.drop x) := by
+        = pieceOut M k ((3 : Fin 5), (w.take x).getLast?, (w.drop y).head?, some (q, q))
+            (seg w x y) := by
   obtain ⟨N, hN⟩ := hend
-  have hw : w.take x ++ w.drop x ++ ([] : List A) = w := by simp
-  have hz : (([] : List A)).head? = (none : Option A) := rfl
+  have hw : w.take x ++ seg w x y ++ w.drop y = w := take_seg_drop w hxy
   rcases N with _ | n
   · exact absurd hN (by simp [cfgAt])
-  · have hstart' : cfgAt M (w.take x ++ w.drop x ++ ([] : List A)) a
-        = some (Cfg.conf (w.take x) q (w.drop x ++ ([] : List A))) := by
-      rw [hw]; simpa using hstart
-    have hp := isLastPiece_of_halt M (w.take x) (w.drop x) [] q hstart' (by simpa using hN)
+  · have hstart' : cfgAt M (w.take x ++ seg w x y ++ w.drop y) a
+        = some (Cfg.conf (w.take x) q (seg w x y ++ w.drop y)) := by
+      rw [hw, ← drop_eq_seg_append w hxy]; exact hstart
+    have hp := isLastPiece_of_halt M (w.take x) (seg w x y) (w.drop y) q hstart' hN
     refine ⟨n + 1, ?_, ?_⟩
     · have h := hp.halts
       rw [hw] at h

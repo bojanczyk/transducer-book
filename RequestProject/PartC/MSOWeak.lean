@@ -20,6 +20,7 @@ of length `|w|` saying whether `w` belongs to the (non-regular) language
 -/
 import RequestProject.PartC.MSODef
 import RequestProject.PartC.RegAut
+import RequestProject.PartC.Statements
 
 namespace Transducers
 namespace MSOWeak

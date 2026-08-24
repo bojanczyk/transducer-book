@@ -75,9 +75,9 @@ The two context letters are always the ones adjacent to the window, in the
 orientation of the input: `p.2.1` on the left and `p.2.2.1` on the right.  For
 the mirrored kinds `2` and `4` the window transducer reads the window reversed,
 so the two are exchanged when they are handed to `TwoWay.withContext` and to
-`TwoWay.stopRight`.  For the kind `3` -- the last piece of the run, read from
-left to right -- the window is a suffix of the input, so its right context is
-always absent. -/
+`TwoWay.stopRight`.  The kinds `3` and `4` are the *last* piece of the
+run: it is read from left to right for the kind `3` and from right to left for
+the kind `4`, and it halts inside its window. -/
 noncomputable def pieceOut (M : TwoWay A B Q) (k : ℕ) (p : PieceParam A Q) (v : List A) :
     List B :=
   match p.2.2.2 with
@@ -85,7 +85,7 @@ noncomputable def pieceOut (M : TwoWay A B Q) (k : ℕ) (p : PieceParam A Q) (v 
   | some (q, f) =>
       if p.1 = 1 then widthOut (stopRight M p.2.1 p.2.2.1 q f) k v
       else if p.1 = 2 then widthOut (stopRight (mirror M) p.2.2.1 p.2.1 q f) k v.reverse
-      else if p.1 = 3 then widthOut (M.withContext p.2.1 none q) k v
+      else if p.1 = 3 then widthOut (M.withContext p.2.1 p.2.2.1 q) k v
       else if p.1 = 4 then widthOut ((mirror M).withContext p.2.2.1 p.2.1 q) k v.reverse
       else []
 
@@ -261,7 +261,7 @@ lemma isRegularFun_pieceOut (M : TwoWay A B Q) (k : ℕ)
     · by_cases h2 : p.1 = 2
       · simpa [pieceOut, hp, h1, h2] using hrev (stopRight (mirror M) p.2.2.1 p.2.1 q f)
       · by_cases h3 : p.1 = 3
-        · simpa [pieceOut, hp, h1, h2, h3] using ih (M.withContext p.2.1 none q)
+        · simpa [pieceOut, hp, h1, h2, h3] using ih (M.withContext p.2.1 p.2.2.1 q)
         · by_cases h4 : p.1 = 4
           · simpa [pieceOut, hp, h1, h2, h3, h4] using
               hrev ((mirror M).withContext p.2.2.1 p.2.1 q)

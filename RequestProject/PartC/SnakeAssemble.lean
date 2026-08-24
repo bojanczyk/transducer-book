@@ -198,26 +198,26 @@ section Marking
 variable (M : TwoWay A B Q) (K : ℕ) (w : List A)
 
 /-- The blocks of the annotation. -/
-private lemma splitSep_snakeAnn (N : ℕ) (Y : ℕ → ℕ) (a b : ℕ → ℕ → ℕ)
+lemma splitSep_snakeAnn (N : ℕ) (Y : ℕ → ℕ) (a b : ℕ → ℕ → ℕ)
     (p : ℕ → ℕ → PieceParam A Q) :
     splitSep (snakeAnn w K N Y a b p) = (List.range (N + 2)).map (snakeBlock w K Y a b p) := by
   refine splitSep_blockStr _ ?_
   simp
 
-private lemma pairBlocks_snakeAnn (N : ℕ) (Y : ℕ → ℕ) (a b : ℕ → ℕ → ℕ)
+lemma pairBlocks_snakeAnn (N : ℕ) (Y : ℕ → ℕ) (a b : ℕ → ℕ → ℕ)
     (p : ℕ → ℕ → PieceParam A Q) :
     pairBlocks (snakeAnn w K N Y a b p)
       = List.zipWith encPair ((List.range (N + 2)).map (snakeBlock w K Y a b p))
           (((List.range (N + 2)).map (snakeBlock w K Y a b p)).tail) := by
   rw [pairBlocks, splitSep_snakeAnn, pairsList]
 
-private lemma length_pairBlocks_snakeAnn (N : ℕ) (Y : ℕ → ℕ) (a b : ℕ → ℕ → ℕ)
+lemma length_pairBlocks_snakeAnn (N : ℕ) (Y : ℕ → ℕ) (a b : ℕ → ℕ → ℕ)
     (p : ℕ → ℕ → PieceParam A Q) :
     (pairBlocks (snakeAnn w K N Y a b p)).length = N + 1 := by
   rw [pairBlocks_snakeAnn]
   simp
 
-private lemma getElem?_pairBlocks_snakeAnn (N : ℕ) (Y : ℕ → ℕ) (a b : ℕ → ℕ → ℕ)
+lemma getElem?_pairBlocks_snakeAnn (N : ℕ) (Y : ℕ → ℕ) (a b : ℕ → ℕ → ℕ)
     (p : ℕ → ℕ → PieceParam A Q) {i : ℕ} (hi : i < N + 1) :
     (pairBlocks (snakeAnn w K N Y a b p))[i]?
       = some (encPair (snakeBlock w K Y a b p i) (snakeBlock w K Y a b p (i + 1))) := by
@@ -233,7 +233,7 @@ private lemma getElem?_pairBlocks_snakeAnn (N : ℕ) (Y : ℕ → ℕ) (a b : �
   simp [List.getElem?_zipWith, h1, h2]
 
 /-- The window that a slot cuts out of a block. -/
-private lemma extract_snakeBlock (Y : ℕ → ℕ) (a b : ℕ → ℕ → ℕ)
+lemma extract_snakeBlock (Y : ℕ → ℕ) (a b : ℕ → ℕ → ℕ)
     (p : ℕ → ℕ → PieceParam A Q) (m : ℕ) (side : Bool) (r : ℕ) (hr : r < 2 * K + 1)
     (hY : Y m ≤ Y (m + 1)) :
     ((snakeBlock w K Y a b p m).filter (fun g => inWin (slot side r) g)).map Prod.fst
@@ -255,7 +255,7 @@ private lemma extract_snakeBlock (Y : ℕ → ℕ) (a b : ℕ → ℕ → ℕ)
     seg_seg w hY]
 
 /-- The parameters that a slot reads off a block. -/
-private lemma param_snakeBlock (Y : ℕ → ℕ) (a b : ℕ → ℕ → ℕ)
+lemma param_snakeBlock (Y : ℕ → ℕ) (a b : ℕ → ℕ → ℕ)
     (p : ℕ → ℕ → PieceParam A Q) (m : ℕ) (side : Bool) (r : ℕ) (hr : r < 2 * K + 1)
     {g : SnakeLet A Q (2 * (2 * K + 1))} (hg : (snakeBlock w K Y a b p m).head? = some g) :
     parAt (slot side r) g = p (if side then m - 1 else m) r := by
@@ -271,43 +271,35 @@ private lemma param_snakeBlock (Y : ℕ → ℕ) (a b : ℕ → ℕ → ℕ)
     rw [slotData]
     cases side <;> simp [slot, Nat.mul_add_div]
 
-/-- **The annotation built from the data of the pieces is a correct marking.**
-The hypotheses are that the blocks tile the input (`hY0`, `hYmono`, `hYlast`),
-that no pair of neighbouring blocks is empty (`hYne`), that the window of every
-piece lies inside the corresponding pair of blocks (`hwin`), and that the piece
-outputs are correct (`hpiece`). -/
-theorem isSnakeMarking_snakeAnn {N : ℕ} (hN : N = rbN M w) (Y : ℕ → ℕ) (a b : ℕ → ℕ → ℕ)
+/-- The cutting points are monotone. -/
+lemma snakeY_chain {Y : ℕ → ℕ} (hYmono : ∀ m, Y m ≤ Y (m + 1)) :
+    ∀ m n : ℕ, m ≤ n → Y m ≤ Y n := by
+  intro m n hmn
+  induction n with
+  | zero => simp_all
+  | succ n ih =>
+      rcases Nat.lt_or_ge m (n + 1) with h | h
+      · exact le_trans (ih (by omega)) (hYmono n)
+      · have : m = n + 1 := by omega
+        rw [this]
+
+/-- **The window and the parameters that the `r`-th slot of the `i`-th pair of
+neighbouring blocks reads off the annotation** are the ones prescribed by the
+data. -/
+lemma extractWin_paramOf_snakeAnn {N : ℕ} (Y : ℕ → ℕ) (a b : ℕ → ℕ → ℕ)
     (p : ℕ → ℕ → PieceParam A Q)
-    (hY0 : Y 0 = 0) (hYmono : ∀ m, Y m ≤ Y (m + 1)) (hYlast : Y (N + 2) = w.length)
+    (hYmono : ∀ m, Y m ≤ Y (m + 1)) (hYlast : Y (N + 2) = w.length)
     (hYne : ∀ i ≤ N, Y i < Y (i + 2))
-    (hwin : ∀ i ≤ N, ∀ r < 2 * K + 1,
-      Y i ≤ a i r ∧ a i r ≤ b i r ∧ b i r ≤ Y (i + 2))
-    (hpiece : ∀ i ≤ N, ∀ r < 2 * K + 1,
-      pieceOut M (K - 1) (p i r) (seg w (a i r) (b i r)) = pieceOutput M w K i r) :
-    IsSnakeMarking M K w (snakeAnn w K N Y a b p) := by
+    {i r : ℕ} (hiN : i ≤ N) (hr : r < 2 * K + 1)
+    (hwa : Y i ≤ a i r) (hab : a i r ≤ b i r) (hbY : b i r ≤ Y (i + 2)) :
+    extractWin r (encPair (snakeBlock w K Y a b p i) (snakeBlock w K Y a b p (i + 1)))
+        = seg w (a i r) (b i r) ∧
+      paramOf r (encPair (snakeBlock w K Y a b p i) (snakeBlock w K Y a b p (i + 1)))
+        = p i r := by
   classical
-  refine ⟨by rw [length_pairBlocks_snakeAnn, hN], ?_⟩
-  intro i z hz r hr
-  -- the `i`-th pair of blocks
-  have hilen : i < N + 1 := by
-    by_contra hcon
-    have : (pairBlocks (snakeAnn w K N Y a b p))[i]? = none := by
-      apply List.getElem?_eq_none
-      rw [length_pairBlocks_snakeAnn]
-      omega
-    rw [this] at hz
-    simp at hz
-  have hiN : i ≤ N := by omega
-  have hzeq : z = encPair (snakeBlock w K Y a b p i) (snakeBlock w K Y a b p (i + 1)) := by
-    rw [getElem?_pairBlocks_snakeAnn K w N Y a b p hilen] at hz
-    exact (Option.some_injective _ hz).symm
-  subst hzeq
-  obtain ⟨hwa, hab, hbY⟩ := hwin i hiN r hr
-  -- the window
-  have hwindow : extractWin r
-      (encPair (snakeBlock w K Y a b p i) (snakeBlock w K Y a b p (i + 1)))
-      = seg w (a i r) (b i r) := by
-    rw [extractWin_encPair,
+  have hchain : ∀ m n : ℕ, m ≤ n → Y m ≤ Y n := snakeY_chain hYmono
+  refine ⟨?_, ?_⟩
+  · rw [extractWin_encPair,
       extract_snakeBlock K w Y a b p i false r hr (hYmono i),
       extract_snakeBlock K w Y a b p (i + 1) true r hr (hYmono (i + 1))]
     rw [show (if (false : Bool) = true then i - 1 else i) = i from by simp,
@@ -332,10 +324,7 @@ theorem isSnakeMarking_snakeAnn {N : ℕ} (hN : N = rbN M w) (Y : ℕ → ℕ) (
       · rw [show max (a i r) (Y (i + 1)) = a i r from by omega,
           seg_eq_nil (by omega : Y (i + 1) ≤ a i r)]
         simp
-  -- the parameters
-  have hparam : paramOf r
-      (encPair (snakeBlock w K Y a b p i) (snakeBlock w K Y a b p (i + 1))) = p i r := by
-    rw [paramOf_encPair]
+  · rw [paramOf_encPair]
     rcases hC : (snakeBlock w K Y a b p i).head? with _ | g
     · -- the left block is empty, so the right one is not
       have hCnil : snakeBlock w K Y a b p i = [] := by
@@ -351,16 +340,6 @@ theorem isSnakeMarking_snakeAnn {N : ℕ} (hN : N = rbN M w) (Y : ℕ → ℕ) (
         obtain ⟨h1, h2⟩ := hcon
         have hlen : (seg w (Y i) (Y (i + 1))).length = 0 := by rw [hseg]; rfl
         rw [seg_length w (by
-          have := hYmono (i + 1)
-          have hchain : ∀ m n : ℕ, m ≤ n → Y m ≤ Y n := by
-            intro m n hmn
-            induction n with
-            | zero => simp_all
-            | succ n ih =>
-                rcases Nat.lt_or_ge m (n + 1) with h | h
-                · exact le_trans (ih (by omega)) (hYmono n)
-                · have : m = n + 1 := by omega
-                  rw [this]
           calc Y (i + 1) ≤ Y (N + 2) := hchain (i + 1) (N + 2) (by omega)
             _ = w.length := hYlast)] at hlen
         omega
@@ -368,15 +347,6 @@ theorem isSnakeMarking_snakeAnn {N : ℕ} (hN : N = rbN M w) (Y : ℕ → ℕ) (
         rw [Ne, snakeBlock, annFrom_eq_nil_iff]
         intro hcon
         have hlen : (seg w (Y (i + 1)) (Y (i + 1 + 1))).length = 0 := by rw [hcon]; rfl
-        have hchain : ∀ m n : ℕ, m ≤ n → Y m ≤ Y n := by
-          intro m n hmn
-          induction n with
-          | zero => simp_all
-          | succ n ih =>
-              rcases Nat.lt_or_ge m (n + 1) with h | h
-              · exact le_trans (ih (by omega)) (hYmono n)
-              · have : m = n + 1 := by omega
-                rw [this]
         have h2 : Y (i + 1 + 1) ≤ w.length := by
           calc Y (i + 1 + 1) ≤ Y (N + 2) := hchain _ _ (by omega)
             _ = w.length := hYlast
@@ -386,16 +356,88 @@ theorem isSnakeMarking_snakeAnn {N : ℕ} (hN : N = rbN M w) (Y : ℕ → ℕ) (
         rw [he] at hlen h2
         omega
       rcases hD : (snakeBlock w K Y a b p (i + 1)).head? with _ | g
-      · exfalso
-        exact hDne (List.head?_eq_none_iff.1 hD)
+      · exact absurd (List.head?_eq_none_iff.1 hD) hDne
       · simp only []
         rw [param_snakeBlock K w Y a b p (i + 1) true r hr hD]
         simp
     · simp only []
       rw [param_snakeBlock K w Y a b p i false r hr hC]
       simp
+
+/-- **The annotation built from the data of the pieces is a correct marking.**
+The hypotheses are that the blocks tile the input (`hYmono`, `hYlast`),
+that no pair of neighbouring blocks is empty (`hYne`), that the window of every
+piece lies inside the corresponding pair of blocks (`hwin`), and that the piece
+outputs are correct (`hpiece`). -/
+theorem isSnakeMarking_snakeAnn {N : ℕ} (hN : N = rbN M w) (Y : ℕ → ℕ) (a b : ℕ → ℕ → ℕ)
+    (p : ℕ → ℕ → PieceParam A Q)
+    (hYmono : ∀ m, Y m ≤ Y (m + 1)) (hYlast : Y (N + 2) = w.length)
+    (hYne : ∀ i ≤ N, Y i < Y (i + 2))
+    (hwin : ∀ i ≤ N, ∀ r < 2 * K + 1,
+      Y i ≤ a i r ∧ a i r ≤ b i r ∧ b i r ≤ Y (i + 2))
+    (hpiece : ∀ i ≤ N, ∀ r < 2 * K + 1,
+      pieceOut M (K - 1) (p i r) (seg w (a i r) (b i r)) = pieceOutput M w K i r) :
+    IsSnakeMarking M K w (snakeAnn w K N Y a b p) := by
+  classical
+  refine ⟨by rw [length_pairBlocks_snakeAnn, hN], ?_⟩
+  intro i z hz r hr
+  have hilen : i < N + 1 := by
+    by_contra hcon
+    have : (pairBlocks (snakeAnn w K N Y a b p))[i]? = none := by
+      apply List.getElem?_eq_none
+      rw [length_pairBlocks_snakeAnn]
+      omega
+    rw [this] at hz
+    simp at hz
+  have hiN : i ≤ N := by omega
+  have hzeq : z = encPair (snakeBlock w K Y a b p i) (snakeBlock w K Y a b p (i + 1)) := by
+    rw [getElem?_pairBlocks_snakeAnn K w N Y a b p hilen] at hz
+    exact (Option.some_injective _ hz).symm
+  subst hzeq
+  obtain ⟨hwa, hab, hbY⟩ := hwin i hiN r hr
+  obtain ⟨hwindow, hparam⟩ :=
+    extractWin_paramOf_snakeAnn K w Y a b p hYmono hYlast hYne hiN hr hwa hab hbY
   rw [hwindow, hparam]
   exact hpiece i hiN r hr
+
+/-- **The neighbouring-block map combinator applied to the block function, on an
+annotation built from the data of the pieces, is the concatenation of the
+outputs of the pieces.**  Unlike `TwoWay.isSnakeMarking_snakeAnn` this says
+nothing about the record-breaker decomposition: it only reads the annotation
+back. -/
+theorem pairMap_snakeAnn {k N : ℕ} (Y : ℕ → ℕ) (a b : ℕ → ℕ → ℕ)
+    (p : ℕ → ℕ → PieceParam A Q)
+    (hYmono : ∀ m, Y m ≤ Y (m + 1)) (hYlast : Y (N + 2) = w.length)
+    (hYne : ∀ i ≤ N, Y i < Y (i + 2))
+    (hwin : ∀ i ≤ N, ∀ r < 2 * K + 1,
+      Y i ≤ a i r ∧ a i r ≤ b i r ∧ b i r ≤ Y (i + 2)) :
+    pairMap (blockFun M k (2 * K + 1)) (snakeAnn w K N Y a b p)
+      = (List.range (N + 1)).flatMap (fun i => (List.range (2 * K + 1)).flatMap
+          (fun r => pieceOut M k (p i r) (seg w (a i r) (b i r)))) := by
+  classical
+  have hmap : (pairBlocks (snakeAnn w K N Y a b p)).map (blockFun M k (2 * K + 1))
+      = (List.range (N + 1)).map (fun i => (List.range (2 * K + 1)).flatMap
+          (fun r => pieceOut M k (p i r) (seg w (a i r) (b i r)))) := by
+    refine List.ext_getElem (by simp [length_pairBlocks_snakeAnn]) ?_
+    intro i h1 h2
+    have h1' : i < (pairBlocks (snakeAnn w K N Y a b p)).length := by simpa using h1
+    have hilen : i < N + 1 := by
+      rw [length_pairBlocks_snakeAnn] at h1'; exact h1'
+    have hiN : i ≤ N := by omega
+    have hz : (pairBlocks (snakeAnn w K N Y a b p))[i]'h1'
+        = encPair (snakeBlock w K Y a b p i) (snakeBlock w K Y a b p (i + 1)) := by
+      have := getElem?_pairBlocks_snakeAnn K w N Y a b p hilen
+      rw [List.getElem?_eq_getElem h1'] at this
+      exact Option.some_injective _ this
+    rw [List.getElem_map, List.getElem_map, List.getElem_range, hz, blockFun]
+    refine List.flatMap_congr ?_
+    intro r hr
+    have hr' : r < 2 * K + 1 := List.mem_range.1 hr
+    obtain ⟨hwa, hab, hbY⟩ := hwin i hiN r hr'
+    obtain ⟨hwindow, hparam⟩ :=
+      extractWin_paramOf_snakeAnn K w Y a b p hYmono hYlast hYne hiN hr' hwa hab hbY
+    rw [hwindow, hparam]
+  rw [pairMap, hmap, ← List.flatMap_def]
 
 end Marking
 
