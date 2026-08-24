@@ -19,7 +19,7 @@ Not formalised as numbered results: Claim C.4.5, Lemma C.4.9 and Claim C.4.14,
 which are internal steps of the proofs of Theorems C.4.4, C.4.8 and
 Lemma C.4.13.
 -/
-import RequestProject.PartC.MSODef
+import RequestProject.PartC.FOTransPrimeComp
 
 namespace Transducers
 
@@ -55,15 +55,27 @@ lives in `RequestProject/PartC/MSO.lean`, with its proof in
 aperiodic bimachines) and `RequestProject/PartC/FOBimachRelab.lean` (the
 converse). -/
 
-/-- The family of prime first-order regular functions: first-order rational
-functions (equivalently, first-order relabellings), map reverse and map
-duplicate. -/
-def FORegularFam : ∀ (A B : Type), (List A → List B) → Prop := fun A B f =>
-  IsFORelabelling f ∨
-  (∃ (A₀ : Type) (e : A ≃ Option A₀) (e' : B ≃ Option A₀),
-      ∀ w, f w = (mapReverse A₀ (w.map e)).map e'.symm) ∨
-  (∃ (A₀ : Type) (e : A ≃ Option A₀) (e' : B ≃ Option A₀),
-      ∀ w, f w = (mapDuplicate A₀ (w.map e)).map e'.symm)
+/-! The family `Transducers.FORegularFam` of prime first-order regular
+functions used to be defined here; it has moved to
+`RequestProject/PartC/FOPrimeFam.lean`, which this file imports, so that the
+easy inclusion of Theorem C.4.17 can be proved before the statement below. -/
+
+/-- **The open half of Theorem C.4.17.**  Every first-order transduction is a
+composition of first-order relabellings, map reverse and map duplicate.
+
+**Still open in this formalisation**, and the only part of Theorem C.4.17 that
+is.  The book states Theorem C.4.17 without a proof (it leaves the proof for a
+future edition of the notes), and sketches what this direction would need:
+first-order variants of (1) the lemma saying that a string representation of the
+configuration graph of a two-way transducer can be computed, and (2) the main
+step in the decomposition of two-way transducers into primes, saying that the
+output string can be read off the configuration graph by a composition of
+primes -- the second one being, in the words of the book, more technical.  In
+this project those two ingredients are the contents of the many files behind
+Theorem C.4.8, and their aperiodic counterparts are not available. -/
+theorem compClosure_of_isFOTransduction {A B : Type} [Finite A] [Finite B]
+    {f : List A → List B} (hf : IsFOTransduction f) : CompClosure FORegularFam A B f := by
+  sorry
 
 /-- **Theorem C.4.17.**  A string-to-string function is a first-order
 transduction if and only if it can be obtained by composing map reverse, map
@@ -80,11 +92,17 @@ technical.  In this project those two ingredients are the contents of the many
 files behind Theorem C.4.8, and their aperiodic counterparts are not available.
 The easy inclusion (from compositions of primes to first-order transductions)
 additionally needs closure of first-order transductions under composition, which
-in the mso case is obtained here *through* Theorem C.4.8 and so does not
-transfer directly either; it would have to be proved by substituting formulas.
-The statement is therefore recorded faithfully and left as `sorry`. -/
+in the mso case is obtained *through* Theorem C.4.8 and so does not transfer
+directly either; it is proved here by substituting formulas, in
+`RequestProject/PartC/FOTransTr.lean` and
+`RequestProject/PartC/FOTransComp.lean`.
+
+**Status.**  The inclusion from right to left (compositions of primes are
+first-order transductions) is proved, in
+`RequestProject/PartC/FOTransPrimeComp.lean`.  The inclusion from left to right
+is the still open `Transducers.compClosure_of_isFOTransduction` above. -/
 theorem foTransduction_iff_prime_composition {A B : Type} [Finite A] [Finite B]
-    (f : List A → List B) : IsFOTransduction f ↔ CompClosure FORegularFam A B f := by
-  sorry
+    (f : List A → List B) : IsFOTransduction f ↔ CompClosure FORegularFam A B f :=
+  ⟨compClosure_of_isFOTransduction, isFOTransduction_of_compClosure⟩
 
 end Transducers
