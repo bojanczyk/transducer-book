@@ -30,10 +30,10 @@ Theorem C.4.16 is proved below, out of `RequestProject/PartC/FORev.lean`,
 (first-order relabellings are computed by aperiodic bimachines) and
 `RequestProject/PartC/FOBimachRelab.lean` (the converse).
 
-The only numbered result of Section C.4 that is still open (Theorem C.4.17) is
-stated in `RequestProject/PartC/MSOOpen.lean`, which this file imports; so
-importing `RequestProject.PartC.MSO` gives, as before, all the statements of
-Section C.4.
+Theorem C.4.17 has been removed from the formalised theorems at the user's
+request; its statement is kept only as a comment in
+`RequestProject/PartC/MSOOpen.lean`, which this file still imports.  No result
+of Section C.4 is left unproved.
 
 Not formalised: Claim C.4.5, Lemma C.4.9 and Claim C.4.14, which are internal
 steps of the proofs of Theorems C.4.4, C.4.8 and C.4.11.

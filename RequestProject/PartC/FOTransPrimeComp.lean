@@ -1,6 +1,6 @@
 /-
-The easy inclusion of Theorem C.4.17: every composition of prime first-order
-regular functions is a first-order transduction.
+Every composition of prime first-order regular functions is a first-order
+transduction.
 
 The proof is an induction on the composition, using that first-order
 transductions are closed under composition
@@ -44,8 +44,9 @@ theorem isFOTransduction_of_foRegularFam {A B : Type} {f : List A → List B}
       isFOTransduction_map_equiv e'.symm
     exact isFOTransduction_comp (isFOTransduction_comp h₁ h₂) h₃
 
-/-- **The easy inclusion of Theorem C.4.17.**  Every composition of first-order
-relabellings, map reverse and map duplicate is a first-order transduction. -/
+/-- Every composition of first-order relabellings, map reverse and map duplicate
+is a first-order transduction.  (This was the easy inclusion of Theorem C.4.17,
+which has been removed from the formalised theorems at the user's request.) -/
 theorem isFOTransduction_of_compClosure {A B : Type} {f : List A → List B}
     (hf : CompClosure FORegularFam A B f) : IsFOTransduction f := by
   induction hf with

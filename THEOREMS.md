@@ -141,10 +141,10 @@ RequestProject/
 | `PartC/FOTransRev.lean` | map reverse is a first-order transduction (`Transducers.isFOTransduction_mapReverse`): the elements are the positions, ordered by `Transducers.revOrd`, which keeps the order of the blocks and reverses the order inside a block |
 | `PartC/FOTransTr.lean`, `PartC/FOTransComp.lean` | first-order transductions are closed under composition (`Transducers.isFOTransduction_comp`), by translating the formulas of the second transduction backwards along the first one; this is the first-order substitute for the route through Theorem C.4.8 used in the mso case |
 | `PartC/FOTransDup.lean` | map duplicate is a first-order transduction (`Transducers.isFOTransduction_mapDuplicate`): the elements are pairs `(copy, position)` ordered by `Transducers.dupOrd`, which puts the first copy of a block before its second copy |
-| `PartC/FOPrimeFam.lean` | the family `Transducers.FORegularFam` of primes of Theorem C.4.17 (first-order rational functions, map reverse, map duplicate), moved out of `MSOOpen.lean` so that the easy inclusion can be proved before the statement |
-| `PartC/FOTransPrimeComp.lean` | the easy inclusion of Theorem C.4.17: every composition of the primes of `FORegularFam` is a first-order transduction (`Transducers.isFOTransduction_of_compClosure`), by induction on `CompClosure` from the four files above |
+| `PartC/FOPrimeFam.lean` | the family `Transducers.FORegularFam` of prime first-order regular functions (first-order rational functions, map reverse, map duplicate) |
+| `PartC/FOTransPrimeComp.lean` | every composition of the primes of `FORegularFam` is a first-order transduction (`Transducers.isFOTransduction_of_compClosure`), by induction on `CompClosure` from the four files above |
 | `PartC/MSO.lean` | Section C.4: the numbered results that are **proved** — Theorem C.4.1, Lemma C.4.2, Theorem C.4.4, Claim C.4.6, Theorem C.4.8, Lemma C.4.10, Theorem C.4.11, Lemma C.4.13, Lemma C.4.15 and Theorem C.4.16 (this file contains no `sorry`) |
-| `PartC/MSOOpen.lean` | Section C.4: the numbered result that is **not yet fully proved** — Theorem C.4.17, stated faithfully; its easy inclusion is proved from `FOTransPrimeComp.lean` and its hard inclusion is isolated as `Transducers.compClosure_of_isFOTransduction`, the only `sorry` of the file (moved unchanged out of `MSO.lean`, which imports this file, so all names remain available through `RequestProject.PartC.MSO`) |
+| `PartC/MSOOpen.lean` | Section C.4: pointer comments only. It used to hold the results of Section C.4 that were not yet proved; the last one, Theorem C.4.17, has been **removed from the formalised theorems at the user's request** and is kept there only as a comment, so the file now declares nothing and Section C.4 has no `sorry` left |
 | `PartD/MarkedSquare.lean` | marked squaring and its continuity |
 | `PartD/Statements.lean` | Part D: polyregular functions, for-transducers, pebble transducers |
 
@@ -507,7 +507,7 @@ The proofs are organised as follows.
 | Claim C.4.14 | internal step of the proof of Lemma C.4.13; not a numbered result, but formalised as `Transducers.sat_iff_of_kEquiv` (`FOComp.lean`) | — |
 | Lemma C.4.15 (properties of types) | `Transducers.tp_properties` | proved (`KTypes.lean`) |
 | Theorem C.4.16 (first-order relabellings) | `Transducers.foRelabelling_iff_aperiodicBimachine` | **proved** (`MSO.lean`, from `FORelabBimach.lean` for `first-order relabelling ⊆ aperiodic bimachine` and `FOBimachRelab.lean` for the converse, on top of `FORev.lean` and `FOPos.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`) |
-| Theorem C.4.17 (first-order transductions) | `Transducers.foTransduction_iff_prime_composition` | the inclusion `compositions of primes ⊆ first-order transductions` is **proved** (`FOTransPrimeComp.lean`, `Transducers.isFOTransduction_of_compClosure`, on top of the closure under composition of `FOTransComp.lean` and the three primes of `FORelabTrans.lean`, `FOTransRev.lean` and `FOTransDup.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`); the converse inclusion is still **open**, isolated as `Transducers.compClosure_of_isFOTransduction` in `MSOOpen.lean`, and the book gives no proof of it either — see *Theorem C.4.17: what is proved and what is still open* below |
+| Theorem C.4.17 (first-order transductions) | **removed from the formalised theorems at the user's request** (its statement is kept, commented out, in `MSOOpen.lean`) | not formalised as a theorem any more. What remains is the inclusion `compositions of primes ⊆ first-order transductions`, **proved** as `Transducers.isFOTransduction_of_compClosure` (`FOTransPrimeComp.lean`, on top of the closure under composition of `FOTransComp.lean` and the three primes of `FORelabTrans.lean`, `FOTransRev.lean` and `FOTransDup.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`) — see *Theorem C.4.17: what was removed and what remains* below |
 
 Supporting files for Part C: `ContAux.lean` (continuity is closed under
 composition; letter-to-letter maps, reversal, duplication and the map lifting of
@@ -972,13 +972,15 @@ the block of the last gap again appended at the last position.
 `Transducers.isAperiodicBimachine_of_isFORelabelling` and
 `Transducers.isFORelabelling_of_isAperiodicBimachine`.
 
-#### Theorem C.4.17: what is proved and what is still open
+#### Theorem C.4.17: what was removed and what remains
 
 Theorem C.4.17 (the first-order transductions are exactly the compositions of
-map reverse, map duplicate and first-order rational functions) is stated
-faithfully in `PartC/MSOOpen.lean`, as
-`Transducers.foTransduction_iff_prime_composition`, over the family of primes
-`Transducers.FORegularFam` (`PartC/FOPrimeFam.lean`).
+map reverse, map duplicate and first-order rational functions) has been
+**removed from the formalised theorems at the user's request**.  Its statement,
+and the statement of its open half, are kept only as comments in
+`PartC/MSOOpen.lean`; neither is a Lean declaration any more.  The family of
+primes `Transducers.FORegularFam` (`PartC/FOPrimeFam.lean`) and everything
+proved about it are unaffected.
 
 The inclusion from right to left -- every composition of primes is a first-order
 transduction -- is **proved**, as
@@ -1014,10 +1016,9 @@ machinery for producing `ITrans.Outputs` witnesses is in
 `PartC/ITransBuild.lean`.
 
 The inclusion from left to right -- every first-order transduction is a
-composition of primes -- is **still open**.  It is isolated as the named result
-`Transducers.compClosure_of_isFOTransduction` in `PartC/MSOOpen.lean`, whose
-proof is the only `sorry` of Section C.4, and Theorem C.4.17 is deduced from it
-and from the easy inclusion.  The book does not prove it either: it only states
+composition of primes -- is no longer part of the formalisation; it was the only
+`sorry` of Section C.4, and it has been removed together with Theorem C.4.17
+itself.  The book does not prove it either: it only states
 the result and leaves the proof "for a future edition of these notes", with a
 sketch of what would be needed, namely first-order variants of (1) the lemma
 saying that a string representation of the configuration graph of a two-way
@@ -1036,9 +1037,7 @@ rational functions appearing among the primes.
 `Transducers.isFOTransduction_of_isFORelabelling`,
 `Transducers.isFOTransduction_mapReverse` and
 `Transducers.isFOTransduction_mapDuplicate` reports only `propext`,
-`Classical.choice`, `Quot.sound`; on
-`Transducers.foTransduction_iff_prime_composition` it reports `sorryAx` as well,
-through `Transducers.compClosure_of_isFOTransduction`.
+`Classical.choice`, `Quot.sound`.
 
 ### Part D: Polyregular functions
 
@@ -1109,20 +1108,20 @@ still open have been moved, unchanged, from `PartC/MSO.lean` to
 contains exactly the ten proved results of Section C.4 (C.4.1, C.4.2, C.4.4,
 C.4.6, C.4.8, C.4.10, C.4.11, C.4.13, C.4.15, C.4.16) and no `sorry`, while
 every name of Section C.4 is still available from `RequestProject.PartC.MSO` as
-before; only Theorem C.4.17 is left in `PartC/MSOOpen.lean`.  Of
+before; `PartC/MSOOpen.lean` now declares nothing at all.  Of
 **Theorem C.4.17** (the first-order transductions are exactly the compositions
-of map reverse, map duplicate and first-order rational functions) the inclusion
-from compositions of primes to first-order transductions is now proved
+of map reverse, map duplicate and first-order rational functions), which has
+been removed from the formalised theorems at the user's request, the inclusion
+from compositions of primes to first-order transductions is proved
 (`Transducers.isFOTransduction_of_compClosure`, `FOTransPrimeComp.lean`,
 depending only on `propext`, `Classical.choice`, `Quot.sound`), on top of the
 closure of first-order transductions under composition
 (`FOTransTr.lean`, `FOTransComp.lean`) and of the three primes
 (`FORelabTrans.lean`, `FOTransRev.lean`, `FOTransDup.lean`, with the block
 combinatorics of `BlockPos.lean`, `BlockForm.lean` and the tools of
-`ITransBuild.lean`).  The converse inclusion is still open, isolated as
-`Transducers.compClosure_of_isFOTransduction`, the only `sorry` of Section C.4;
-the book gives no proof of it either -- see *Theorem C.4.17: what is proved and
-what is still open* above.
+`ITransBuild.lean`).  The converse inclusion, which was the only `sorry` of
+Section C.4, has been removed along with the theorem; the book gives no proof of
+it either -- see *Theorem C.4.17: what was removed and what remains* above.
 Lemma C.4.13 is proved by the Ehrenfeucht-Fraïssé argument of the book: the
 compositionality of first-order logic (Claim C.4.14, `FOComp.lean`) gives one
 direction, and Hintikka sentences of quantifier rank `k`, built by induction
@@ -1232,6 +1231,4 @@ reports only `propext`, `Classical.choice`, `Quot.sound`.
 (`Transducers.twoWay_iff_regular`, `Transducers.twoWay_isRegular`,
 `Transducers.sst_iff_regular` and `Transducers.msoTransduction_iff_regular`
 still depend on `sorryAx`, through
-`Transducers.boundedWidth_isRegular_step`;
-`Transducers.foTransduction_iff_prime_composition` still depends on `sorryAx`,
-through its open half `Transducers.compClosure_of_isFOTransduction`.)
+`Transducers.boundedWidth_isRegular_step`.)

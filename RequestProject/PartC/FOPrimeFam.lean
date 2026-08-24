@@ -1,12 +1,12 @@
 /-
-The family of prime first-order regular functions (Theorem C.4.17).
+The family of prime first-order regular functions.
 
 The definition `Transducers.FORegularFam` was originally stated in
-`RequestProject/PartC/MSOOpen.lean`, next to Theorem C.4.17; it has been moved
-here, unchanged, so that the proof of the easy inclusion of Theorem C.4.17
-(compositions of primes are first-order transductions) can be developed before
-the statement of the theorem.  `RequestProject/PartC/MSOOpen.lean` imports this
-file, so the name `Transducers.FORegularFam` is unchanged.
+`RequestProject/PartC/MSOOpen.lean`, next to Theorem C.4.17 (which has since
+been removed from the formalised theorems at the user's request); it has been
+moved here, unchanged, so that the proof that compositions of primes are
+first-order transductions can be developed on its own
+(`RequestProject/PartC/FOTransPrimeComp.lean`).
 -/
 import RequestProject.PartC.MSODef
 
