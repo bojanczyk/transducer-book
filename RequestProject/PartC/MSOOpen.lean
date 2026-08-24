@@ -2,14 +2,18 @@
 Part C, Section C.4: Logic
   from *Transducers* (M. Bojańczyk, June 25, 2026).
 
-The numbered results of Section C.4 that are **not proved yet** -- by now only
-Theorem C.4.17: their statements are given faithfully and their proofs are left
-as `sorry`.  They were originally stated in `RequestProject/PartC/MSO.lean`;
-they have been moved here, unchanged, so that
-`RequestProject/PartC/MSO.lean`, which collects the results of Section C.4 that
-*are* proved, contains no `sorry`.
-`RequestProject/PartC/MSO.lean` imports this file, so all names are unchanged
-and are still available to anything importing `RequestProject.PartC.MSO`.
+This file used to hold the numbered results of Section C.4 whose proofs were
+still left as `sorry`, so that `RequestProject/PartC/MSO.lean`, which collects
+the results of Section C.4 that *are* proved, contains no `sorry`.
+
+The last such result was Theorem C.4.17, which **has been removed from the
+formalised theorems at the user's request**; its statement is kept below, only
+as a comment, and no longer exists as a Lean declaration.  Nothing in Section
+C.4 is left unproved: the file now contains no declaration at all, and is kept
+only for the pointers below.
+`RequestProject/PartC/MSO.lean` imports this file, so all remaining names are
+unchanged and are still available to anything importing
+`RequestProject.PartC.MSO`.
 
 Theorem C.4.4, Lemma C.4.10, Theorem C.4.8, Theorem C.4.11 and Lemma C.4.13
 used to be stated here as well; they are now proved, and their statements have
@@ -57,9 +61,25 @@ converse). -/
 
 /-! The family `Transducers.FORegularFam` of prime first-order regular
 functions used to be defined here; it has moved to
-`RequestProject/PartC/FOPrimeFam.lean`, which this file imports, so that the
-easy inclusion of Theorem C.4.17 can be proved before the statement below. -/
+`RequestProject/PartC/FOPrimeFam.lean`, which this file imports.  Its easy
+inclusion into the first-order transductions is proved, independently of
+anything below, in `RequestProject/PartC/FOTransPrimeComp.lean`
+(`Transducers.isFOTransduction_of_compClosure`). -/
 
+/-!
+### Theorem C.4.17 has been removed from the formalised theorems
+
+At the user's request, Theorem C.4.17 and its open half are no longer part of
+this formalisation.  They are kept here, commented out, for the record only.
+The book itself states Theorem C.4.17 without a proof (it leaves the proof for
+a future edition of the notes), and the direction from first-order transductions
+to compositions of primes was the only `sorry` of Section C.4.  The inclusion
+that *is* proved survives untouched as
+`Transducers.isFOTransduction_of_compClosure` in
+`RequestProject/PartC/FOTransPrimeComp.lean`.
+-/
+
+/-
 /-- **The open half of Theorem C.4.17.**  Every first-order transduction is a
 composition of first-order relabellings, map reverse and map duplicate.
 
@@ -76,7 +96,9 @@ Theorem C.4.8, and their aperiodic counterparts are not available. -/
 theorem compClosure_of_isFOTransduction {A B : Type} [Finite A] [Finite B]
     {f : List A → List B} (hf : IsFOTransduction f) : CompClosure FORegularFam A B f := by
   sorry
+-/
 
+/-
 /-- **Theorem C.4.17.**  A string-to-string function is a first-order
 transduction if and only if it can be obtained by composing map reverse, map
 duplicate and first-order rational functions.
@@ -104,5 +126,6 @@ is the still open `Transducers.compClosure_of_isFOTransduction` above. -/
 theorem foTransduction_iff_prime_composition {A B : Type} [Finite A] [Finite B]
     (f : List A → List B) : IsFOTransduction f ↔ CompClosure FORegularFam A B f :=
   ⟨compClosure_of_isFOTransduction, isFOTransduction_of_compClosure⟩
+-/
 
 end Transducers
