@@ -1,0 +1,396 @@
+{{/* The third column: the Lean formalisation of whatever the reader clicks.
+
+     build-lean-map.py joins every numbered result the book \labels to the Lean
+     declaration that formalises it — see its docstring for how, and for why the
+     join key is the book's own number rather than a Lean name (the names move
+     under us; the numbers do not). Here that map is narrowed to the results on
+     *this* page, and inlined together with the full text of the Lean files they
+     live in.
+
+     Inlined rather than fetched because the built site has to work opened
+     straight off disk, and over file:// fetching a sibling file is a
+     cross-origin request that the browser refuses. Whole files rather than
+     snippets because the numbered statements are mostly one-liners that
+     delegate to the real proof further down: the file is the interesting
+     object, and per page it is only a few tens of KB. */}}
+
+{{ $map := hugo.Data.lean_map }}
+{{ $sources := hugo.Data.lean_sources }}
+{{ $link := hugo.Data.latex_link_map }}
+{{ if and $map $sources $link }}
+  {{ $here := .RelPermalink }}
+  {{ $labels := dict }}
+  {{ $files := dict }}
+  {{ range $label, $entry := $map.entries }}
+    {{ with index $link $label }}
+      {{ with site.GetPage . }}
+        {{ if eq .RelPermalink $here }}
+          {{/* Every declaration, including one with no file of its own: a result
+               discharged by Mathlib (Definition B.3.1 is Mathlib's Semiring) is
+               still formalised, and saying so is better than saying nothing. */}}
+          {{ with $entry.lean }}
+            {{ $keep := . }}
+            {{ $labels = merge $labels (dict $label (dict
+                 "kind" $entry.kind "number" $entry.number "lean" $keep)) }}
+            {{ range $keep }}
+              {{ $f := .file }}
+              {{ with $f }}
+                {{ with index $sources $f }}
+                  {{ $files = merge $files (dict $f .) }}
+                {{ end }}
+              {{ end }}
+            {{ end }}
+          {{ end }}
+        {{ end }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+
+  {{ if $labels }}
+<script id="lean-data" type="application/json">{{ (dict "labels" $labels "files" $files) | jsonify | safeJS }}</script>
+
+<aside id="lean-pane" aria-label="Lean formalisation" hidden>
+  <header id="lean-pane-head">
+    <div id="lean-pane-title">Lean formalisation</div>
+    <button id="lean-pane-close" type="button" aria-label="Close the Lean column">&times;</button>
+  </header>
+  <div id="lean-pane-sub"></div>
+  <div id="lean-pane-body"><div id="lean-index"></div></div>
+</aside>
+
+<script>
+(function () {
+  var el = document.getElementById('lean-data');
+  if (!el) return;
+  var DATA = JSON.parse(el.textContent);
+  var pane  = document.getElementById('lean-pane');
+  var body  = document.getElementById('lean-pane-body');
+  var title = document.getElementById('lean-pane-title');
+  var sub   = document.getElementById('lean-pane-sub');
+  var KEY = 'reflowtex-lean';
+
+  // ---- open / closed, remembered like the other reader settings -----------
+  function setOpen(open) {
+    document.body.classList.toggle('lean-open', open);
+    pane.hidden = !open;
+    var t = document.getElementById('lean-toggle');
+    if (t) t.setAttribute('aria-expanded', String(open));
+    try { localStorage.setItem(KEY, open ? '1' : '0'); } catch (e) {}
+    // the viewer lays out against the width it is given, which just changed
+    window.dispatchEvent(new Event('resize'));
+    if (window.__syncReaderURL) window.__syncReaderURL();
+  }
+  window.__setLean = setOpen;
+  window.__leanOpen = function () { return document.body.classList.contains('lean-open') ? '1' : '0'; };
+
+  // ---- syntax highlighting ------------------------------------------------
+  // Small on purpose: Lean is not in Chroma's lexer set, and the pane needs
+  // keywords, comments, strings and `sorry` told apart — not a parser. Done a
+  // line at a time, carrying block-comment depth across lines, so that every
+  // span closes inside the line it opened in and each line stays its own
+  // element for numbering and for highlighting a declaration's extent.
+  var KEYWORDS = new Set((
+    'theorem lemma def abbrev instance structure inductive class where by fun ' +
+    'let have show from match with do if then else open namespace end section ' +
+    'variable universe import example noncomputable private protected partial ' +
+    'mutual deriving attribute macro notation infixl infixr prefix postfix ' +
+    'obtain refine use constructor intro intros exact apply rfl calc cases ' +
+    'rcases rintro induction simp simpa rw rwa omega decide trivial linarith ' +
+    'ext conv at this fun forall exists Type Prop Sort True False').split(' '));
+
+  function esc(s) {
+    return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+  function span(cls, text) { return '<span class="' + cls + '">' + esc(text) + '</span>'; }
+
+  function hlLine(line, state) {
+    var out = '', i = 0;
+    while (i < line.length) {
+      if (state.depth > 0) {                       // continuing a /- … -/
+        var s = i;
+        while (i < line.length && state.depth > 0) {
+          if (line.substr(i, 2) === '/-') { state.depth++; i += 2; }
+          else if (line.substr(i, 2) === '-/') { state.depth--; i += 2; }
+          else i++;
+        }
+        out += span('lc', line.slice(s, i));
+        continue;
+      }
+      if (line.substr(i, 2) === '/-') {            // opening one
+        var st = i; state.depth = 1; i += 2;
+        while (i < line.length && state.depth > 0) {
+          if (line.substr(i, 2) === '/-') { state.depth++; i += 2; }
+          else if (line.substr(i, 2) === '-/') { state.depth--; i += 2; }
+          else i++;
+        }
+        out += span('lc', line.slice(st, i));
+        continue;
+      }
+      if (line.substr(i, 2) === '--') { out += span('lc', line.slice(i)); break; }
+      if (line[i] === '"') {
+        var j = i + 1;
+        while (j < line.length && line[j] !== '"') { if (line[j] === '\\') j++; j++; }
+        out += span('ls', line.slice(i, Math.min(j + 1, line.length)));
+        i = j + 1; continue;
+      }
+      var m = /^[A-Za-z_α-ω][A-Za-z0-9_'!?₀-₉α-ω]*/.exec(line.slice(i));
+      if (m) {
+        var w = m[0];
+        out += w === 'sorry' ? span('lx', w) : (KEYWORDS.has(w) ? span('lk', w) : esc(w));
+        i += w.length; continue;
+      }
+      out += esc(line[i]); i++;
+    }
+    return out || '&nbsp;';
+  }
+
+  var rendered = {};
+  function fileHTML(path) {
+    if (rendered[path]) return rendered[path];
+    var state = { depth: 0 };
+    var html = DATA.files[path].split('\n').map(function (line, i) {
+      return '<div class="lnl" id="L' + (i + 1) + '">' + hlLine(line, state) + '</div>';
+    }).join('');
+    rendered[path] = html;
+    return html;
+  }
+
+  // ---- showing one result -------------------------------------------------
+  function pick(e) {
+    // A result can name several declarations; show one with a file if there is
+    // one, since that is the one we can actually open.
+    for (var i = 0; i < e.lean.length; i++) if (e.lean[i].file) return e.lean[i];
+    return e.lean[0];
+  }
+
+  function stateLabel(d) {
+    if (d.state === 'blocked') return 'rests on ' + (d.rests_on || 'an open result');
+    if (d.state === 'external') return 'provided by Mathlib';
+    return d.state;
+  }
+
+  var shownFile = null;
+  function show(label) {
+    var e = DATA.labels[label];
+    if (!e || !e.lean.length) return;
+    var d = pick(e);
+    setOpen(true);
+    title.textContent = e.kind.charAt(0).toUpperCase() + e.kind.slice(1) + ' ' + e.number;
+    sub.innerHTML = '<code>' + esc(d.name) + '</code>' +
+      '<span class="lean-state lean-st-' + d.state + '">' + esc(stateLabel(d)) + '</span>' +
+      (d.internal ? '<span class="lean-state lean-st-internal">internal step</span>' : '') +
+      (d.file ? '<span class="lean-file">' + esc(d.file.replace(/^RequestProject\//, '')) +
+                '</span>' : '');
+
+    if (!d.file) {
+      // Formalised, but not by anything in this project — Definition B.3.1 is
+      // Mathlib's `Semiring`. There is no source of ours to show, so say so
+      // rather than opening an empty pane.
+      body.innerHTML = '<p class="lean-hint">This result is formalised as <code>' +
+        esc(d.name) + '</code>, which comes from Mathlib rather than from this ' +
+        'project, so there is no source here to show.</p>';
+      shownFile = null;
+      return;
+    }
+    if (shownFile !== d.file) {
+      body.innerHTML = '<pre class="lean-code">' + fileHTML(d.file) + '</pre>';
+      shownFile = d.file;
+    }
+    body.querySelectorAll('.lnl.sel').forEach(function (n) { n.classList.remove('sel'); });
+    for (var i = d.line; i <= d.end; i++) {
+      var n = document.getElementById('L' + i);
+      if (n) n.classList.add('sel');
+    }
+    var first = document.getElementById('L' + d.line);
+    if (first) body.scrollTop = first.offsetTop - body.offsetTop - 8;
+  }
+
+  // ---- the index, shown before anything has been clicked ------------------
+  function buildIndex() {
+    var keys = Object.keys(DATA.labels).sort(function (a, b) {
+      return DATA.labels[a].number.localeCompare(DATA.labels[b].number, undefined,
+                                                 { numeric: true });
+    });
+    var html = '<p class="lean-hint">' + keys.length + ' result' +
+      (keys.length === 1 ? '' : 's') + ' on this page ' +
+      (keys.length === 1 ? 'is' : 'are') + ' formalised. Click one below, or ' +
+      'click the result itself in the text \u2014 it is marked ' +
+      '<span class="lean-badge lean-badge-demo">Lean</span>.</p><ol class="lean-list">';
+    keys.forEach(function (k) {
+      var e = DATA.labels[k], d = pick(e);
+      html += '<li><button type="button" data-label="' + k + '">' +
+              '<span class="lean-num">' + esc(e.kind) + ' ' + esc(e.number) + '</span>' +
+              '<code>' + esc(d.name) + '</code>' +
+              '<span class="lean-state lean-st-' + d.state + '">' + esc(d.state) + '</span>' +
+              (d.internal ? '<span class="lean-state lean-st-internal">internal</span>' : '') +
+              '</button></li>';
+    });
+    document.getElementById('lean-index').innerHTML = html + '</ol>';
+  }
+  buildIndex();
+
+  body.addEventListener('click', function (ev) {
+    var b = ev.target.closest('button[data-label]');
+    if (!b) return;
+    var label = b.getAttribute('data-label');
+    show(label);
+    var a = document.getElementById(label);          // and take the book there too
+    if (a) a.scrollIntoView({ block: 'start', behavior: 'smooth' });
+  });
+
+  document.getElementById('lean-pane-close').addEventListener('click', function () {
+    setOpen(false);
+  });
+
+  // ---- the result in the text, as the click target ------------------------
+  // The reader should be able to click the theorem itself, so we have to find
+  // the line it starts on. The viewer gives every \label a zero-height
+  // <div class="latex-anchor" id="<label>"> to scroll to, but that sits where
+  // the label token falls in the node stream, which can be a line or three
+  // above the result's own first line — good enough to scroll to, not good
+  // enough to click.
+  //
+  // So the heading is found by reading it. Each laid-out line is an <svg>, and
+  // once painted its glyphs are real <tspan>s, so "Theorem C.4.1." is there to
+  // be matched. Matching the number with its trailing full stop is what keeps
+  // C.4.1 from also matching C.4.10 — or the section heading C.4.1, which is
+  // printed without one.
+  //
+  // Searched by position rather than by walking the anchor's siblings: the
+  // viewer re-appends segments as it relays out, so document order drifts away
+  // from reading order and a heading may not be among its own anchor's
+  // siblings at all. The heading wanted is the nearest match at or below the
+  // anchor, which is also what keeps a cross-reference to the same number
+  // somewhere else on the page from being picked up instead.
+  var content = document.getElementById('lt-content');
+  var LOOK_UP = 80, LOOK_DOWN = 1400;     // px, either side of the anchor
+
+  function needles(label) {
+    var num = DATA.labels[label].number;
+    // ".0.1" is how the aux file writes a number with no part; the page prints 0.1
+    var alts = [num, num.replace(/^\./, '')];
+    // The number must be followed by a full stop ("Theorem C.4.1.") or by an
+    // open bracket ("Definition C.4.3 (mso relabelling)"). Requiring one of the
+    // two is what tells a result from the *section* of the same number, printed
+    // with neither ("C.4.1 Monadic second-order logic"), and what stops C.4.1
+    // from matching inside C.4.10.
+    return alts.map(function (n) {
+      return new RegExp(n.replace(/\./g, '\\.') + '\\s*[.(]');
+    });
+  }
+
+  function findHeading(painted, aTop, label) {
+    var pats = needles(label), best = null, bestD = Infinity;
+    for (var i = 0; i < painted.length; i++) {
+      var hit = false;
+      for (var p = 0; p < pats.length; p++) {
+        if (pats[p].test(painted[i].text)) { hit = true; break; }
+      }
+      if (!hit) continue;
+      var d = painted[i].top - aTop;
+      if (d < -LOOK_UP || d > LOOK_DOWN) continue;
+      if (d < bestD) { bestD = d; best = painted[i]; }
+    }
+    return best;                       // null if not painted yet, or too far
+  }
+
+  function addBadge(a, label) {
+    var e = DATA.labels[label];
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'lean-badge';
+    b.textContent = 'Lean';
+    b.title = 'Show the Lean formalisation of ' + e.kind + ' ' + e.number;
+    b.addEventListener('click', function (ev) {
+      ev.preventDefault(); ev.stopPropagation(); show(label);
+    });
+    a.appendChild(b);
+    return b;
+  }
+
+  // Re-run rather than done-once: painting is lazy, and a resize or a change of
+  // reading width re-breaks the lines, which can move a heading onto a
+  // different <svg> entirely.
+  var hooked = [];
+  function hookAll() {
+    for (var i = 0; i < hooked.length; i++) hooked[i].removeAttribute('data-lean-for');
+    hooked = [];
+
+    // Every measurement first, every mutation after: interleaving them would
+    // make the browser re-lay-out the page on each label in turn.
+    var painted = [], all = content.getElementsByTagName('svg');
+    for (var i = 0; i < all.length; i++) {
+      var text = all[i].textContent;
+      if (text) painted.push({ el: all[i], text: text, top: all[i].getBoundingClientRect().top });
+    }
+    var plan = [];
+    Object.keys(DATA.labels).forEach(function (label) {
+      var a = document.getElementById(label);
+      if (!a) return;
+      var aTop = a.getBoundingClientRect().top;
+      var seg = findHeading(painted, aTop, label);
+      plan.push({ a: a, label: label, seg: seg, delta: seg ? seg.top - aTop : null });
+    });
+
+    plan.forEach(function (p) {
+      var badge = p.a.querySelector('.lean-badge') || addBadge(p.a, p.label);
+      if (!p.seg) { badge.style.top = ''; return; }   // fall back to the anchor
+      p.seg.el.setAttribute('data-lean-for', p.label);
+      hooked.push(p.seg.el);
+      // the badge belongs beside the heading, not beside the anchor
+      badge.style.top = p.delta + 'px';
+    });
+  }
+
+  if (content) {
+    content.addEventListener('click', function (ev) {
+      // a click that ends a text selection is not a click on the theorem
+      if (window.getSelection && String(window.getSelection()).length) return;
+      var seg = ev.target.closest && ev.target.closest('[data-lean-for]');
+      if (seg) show(seg.getAttribute('data-lean-for'));
+    });
+    // Debounced, not per-frame: the observer fires for every line the viewer
+    // paints while scrolling, and hookAll reads layout. But a pure debounce
+    // would never fire at all while scrolling continuously, so it also runs on
+    // its own if it has been starved for half a second.
+    var timer = null, last = 0;
+    function schedule() {
+      if (Date.now() - last > 500) { last = Date.now(); hookAll(); return; }
+      clearTimeout(timer);
+      timer = setTimeout(function () { last = Date.now(); hookAll(); }, 120);
+    }
+    if (window.MutationObserver) {
+      new MutationObserver(schedule).observe(content, { childList: true, subtree: true });
+    }
+    window.addEventListener('resize', schedule);
+    schedule();
+  }
+
+  // ---- initial state ------------------------------------------------------
+  var fromURL = null;
+  if (window.__fromQuery) fromURL = window.__fromQuery('lean');
+  var saved; try { saved = localStorage.getItem(KEY); } catch (e) {}
+  // Open by default only where the layout can actually afford a third column;
+  // narrower than that it is a drawer over the text, which should be asked for.
+  var wide = window.matchMedia('(min-width: 1500px)').matches;
+  setOpen(fromURL !== null && fromURL !== undefined ? fromURL === '1'
+          : saved !== null && saved !== undefined ? saved === '1'
+          : wide);
+  if (window.__regReaderParam) window.__regReaderParam('lean', window.__leanOpen);
+
+  // The control pill is rendered after this partial — it is outside .shell —
+  // so its button does not exist yet at this point in the document.
+  function whenReady(fn) {
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fn);
+    else fn();
+  }
+  whenReady(function () {
+    var toggle = document.getElementById('lean-toggle');
+    if (!toggle) return;
+    toggle.hidden = false;
+    toggle.setAttribute('aria-expanded', window.__leanOpen() === '1' ? 'true' : 'false');
+  });
+})();
+</script>
+  {{ end }}
+{{ end }}

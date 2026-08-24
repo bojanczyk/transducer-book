@@ -200,26 +200,29 @@
       "note": null
     },
     "C2-snake-step": {
-      "status": "pending",
-      "attempts": 0,
+      "status": "running",
+      "attempts": 1,
       "continues": 0,
       "reattempts": 0,
-      "task_ids": [],
-      "started_at": null,
+      "task_ids": [
+        "bf8f63c2-810c-4492-9aeb-01d06ed91049"
+      ],
+      "started_at": "2026-08-24 08:06:46Z",
       "finished_at": null,
-      "note": null
+      "note": null,
+      "sorries_at_start": 8
     }
   },
   "current": {
-    "target_id": "external",
-    "task_id": "7099d7f0-ebf7-4d53-8998-00337a5e34a5",
-    "submitted_at": "2026-08-24 07:10:32Z",
-    "kind": "adopted"
+    "target_id": "C2-snake-step",
+    "task_id": "bf8f63c2-810c-4492-9aeb-01d06ed91049",
+    "submitted_at": "2026-08-24 08:06:46Z",
+    "kind": "initial"
   },
   "paused": false,
   "pause_reason": null,
   "finished_at": null,
-  "ticks": 144,
-  "last_tick": "2026-08-24 07:36:27Z",
+  "ticks": 151,
+  "last_tick": "2026-08-24 09:21:59Z",
   "review_pending": 0
 }

@@ -186,6 +186,79 @@
     body.toc-open #toc-toggle span:nth-child(2) { opacity: 0; }
     body.toc-open #toc-toggle span:nth-child(3) { transform: translateY(-.38rem) rotate(-45deg); }
     #toc-scrim { display: none; }
+    {{- /* ── the Lean column ────────────────────────────────────────────────
+           A third column beside the contents and the book, holding the Lean
+           file that formalises whatever result the reader clicks. It is a
+           column only when there is room for one: below 1200px it becomes a
+           drawer over the text, the same trade the table of contents makes at
+           900px. */ -}}
+    :root { --lean-width: 30rem; }
+    body.lean-open .shell { grid-template-columns: 17rem minmax(0, 1fr) var(--lean-width); width: min(100%, calc(24rem + var(--reading-width) + var(--lean-width))); }
+    #lean-pane { position: sticky; top: 1.5rem; align-self: start; display: flex; flex-direction: column; height: calc(100vh - 3rem); border: 1px solid color-mix(in srgb, currentColor 18%, transparent); border-radius: .5rem; background: color-mix(in srgb, currentColor 4%, var(--page-bg)); overflow: hidden; }
+    #lean-pane[hidden] { display: none; }
+    #lean-pane-head { display: flex; align-items: center; justify-content: space-between; gap: .5rem; padding: .55rem .75rem; border-bottom: 1px solid color-mix(in srgb, currentColor 15%, transparent); }
+    #lean-pane-title { font-size: .82rem; font-weight: 600; }
+    #lean-pane-close { border: 0; background: none; color: inherit; cursor: pointer; font-size: 1.15rem; line-height: 1; padding: 0 .2rem; opacity: .55; }
+    #lean-pane-close:hover { opacity: 1; }
+    #lean-pane-sub { display: flex; flex-wrap: wrap; align-items: center; gap: .45rem; padding: .4rem .75rem; font-size: .7rem; }
+    #lean-pane-sub:empty { display: none; }
+    #lean-pane-sub code { font-size: .72rem; }
+    .lean-file { opacity: .5; margin-left: auto; }
+    .lean-state { border-radius: .25rem; padding: .05rem .3rem; font-size: .64rem; letter-spacing: .02em; background: color-mix(in srgb, currentColor 12%, transparent); }
+    .lean-st-proved { color: #197a3d; background: color-mix(in srgb, #197a3d 14%, transparent); }
+    {{- /* A claim the book proves inside a larger proof: formalised, but as a
+           named step rather than as a numbered result of its own. */ -}}
+    .lean-st-internal { opacity: .75; font-style: italic; }
+    .lean-st-external { opacity: .8; }
+    .lean-st-blocked, .lean-st-open { color: #b26a00; background: color-mix(in srgb, #b26a00 16%, transparent); }
+    html.dark .lean-st-proved { color: #6ee7a0; }
+    html.dark .lean-st-blocked, html.dark .lean-st-open { color: #fbbf6b; }
+    {{- /* min-height:0 because a flex item's default min-height:auto is its
+           content height, which would make this grow past the pane instead of
+           scrolling inside it. */ -}}
+    #lean-pane-body { flex: 1 1 auto; min-height: 0; overflow: auto; }
+    .lean-hint { margin: 0; padding: .8rem .9rem; font-size: .75rem; opacity: .75; line-height: 1.5; }
+    .lean-list { margin: 0; padding: 0 .5rem .8rem; list-style: none; }
+    .lean-list button { display: flex; flex-wrap: wrap; align-items: baseline; gap: .4rem; width: 100%; padding: .35rem .4rem; border: 0; border-radius: .3rem; background: none; color: inherit; font: inherit; font-size: .74rem; text-align: left; cursor: pointer; }
+    .lean-list button:hover { background: color-mix(in srgb, currentColor 9%, transparent); }
+    .lean-num { font-weight: 600; }
+    .lean-list code { opacity: .7; font-size: .7rem; }
+    {{- /* Wrapped rather than scrolled sideways: the column is narrow and Lean
+           lines are long, and a reader comparing a statement with the book
+           should not have to scroll to see the end of it. */ -}}
+    .lean-code { margin: 0; padding: .5rem 0 1.5rem; font-family: ui-monospace, "Inconsolata", "SFMono-Regular", monospace; font-size: .7rem; line-height: 1.55; counter-reset: leanln; }
+    .lnl { counter-increment: leanln; position: relative; padding: 0 .6rem 0 3.1rem; white-space: pre-wrap; overflow-wrap: break-word; }
+    .lnl::before { content: counter(leanln); position: absolute; left: 0; width: 2.5rem; text-align: right; opacity: .3; }
+    .lnl.sel { background: color-mix(in srgb, var(--accent) 13%, transparent); }
+    .lnl.sel:first-of-type { border-top-left-radius: .2rem; }
+    .lk { color: color-mix(in srgb, var(--accent) 70%, currentColor); font-weight: 600; }
+    .lc { opacity: .55; font-style: italic; }
+    .ls { color: #197a3d; }
+    html.dark .ls { color: #6ee7a0; }
+    .lx { color: #c0392b; font-weight: 700; }
+    html.dark .lx { color: #ff8585; }
+    {{- /* The mark beside a formalised result. It hangs in the gutter between
+           the contents and the text, where it is visible without displacing a
+           single glyph of the book; the anchor it is placed in is the viewer's
+           own zero-height scroll target for that \label. */ -}}
+    .latex-anchor { position: relative; }
+    .lean-badge { position: absolute; top: .05rem; left: -3.3rem; padding: .18rem .32rem; border: 1px solid color-mix(in srgb, currentColor 25%, transparent); border-radius: .28rem; background: var(--page-bg); color: var(--accent); font: 600 .6rem/1 ui-sans-serif, system-ui, sans-serif; letter-spacing: .03em; cursor: pointer; opacity: .5; transition: opacity .15s ease; }
+    .lean-badge:hover { opacity: 1; }
+    {{- /* The result's own first line, made clickable. Backgrounds do paint on
+           the viewer's per-line <svg> segments, so the hover cue can sit on the
+           line itself rather than on a wrapper we would have to keep in step
+           with the viewer's relayout. */ -}}
+    #lt-content [data-lean-for] { cursor: pointer; border-radius: .25rem; transition: background .12s ease; }
+    #lt-content [data-lean-for]:hover { background: color-mix(in srgb, var(--accent) 12%, transparent); }
+    .lean-badge-demo { position: static; cursor: default; opacity: .8; }
+    #lean-toggle[hidden] { display: none; }
+    #lt-pill #lean-toggle[aria-expanded="true"] { opacity: 1; background: color-mix(in srgb, currentColor 18%, transparent); }
+    .lt-lean { font-weight: 700; font-size: 1rem; }
+    @media (max-width: 1499px) {
+      body.lean-open .shell { grid-template-columns: 17rem minmax(0, 1fr); width: min(100%, calc(24rem + var(--reading-width))); }
+      #lean-pane { position: fixed; inset: 0 0 0 auto; z-index: 1250; width: min(30rem, 94vw); height: 100dvh; max-height: none; border-radius: 0; border-width: 0 0 0 1px; box-shadow: -.5rem 0 2rem rgb(0 0 0 / .24); }
+      .lean-badge { left: auto; right: 0; top: -1.35rem; }
+    }
     @media (max-width: 900px) {
       .shell { display: block; width: 100%; padding: 1.25rem; }
       #lt-content { width: 100%; max-width: none; }
@@ -217,6 +290,7 @@
     <ol>{{ range hugo.Data.book_toc }}{{ partial "book-toc-node.html" (dict "node" . "current" $current) }}{{ end }}</ol>
   </nav>
   {{ if not .IsHome }}<main id="lt-content">{{ block "main" . }}{{ end }}</main>{{ end }}
+  {{ if not .IsHome }}{{ partial "lean-pane.html" . }}{{ end }}
 </div>
 {{ if not .IsHome }}{{ partial "reader-switches.html" . }}{{ end }}
 {{ partial "reflowtex-viewer.html" . }}

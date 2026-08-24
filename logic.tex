@@ -423,7 +423,7 @@ If $f$ is this rational function, then there is a one-to-one correspondence betw
         \item the letter formulas from the transduction;
          \item unary formulas that select the first and last positions of the output order;
         \item a formula which selects positions that  belong to the output string, have a defined successor in the output order, and this  successor is to the left in the input order;
-          \item the order formula $\varphi_{\leq}$  and its converse $\varphi_{\geq}$.
+          \item a formula that represents the successor relation in the output order, and also one for the predecessor relation.
     \end{enumerate}
     The formulas in the first three items have one argument, while the two formulas in the last item have two arguments. Apply Lemma~\ref{lem:logic-precomputation} to this set of formulas, yielding a letter-to-letter rational transduction  
     \begin{align*}
@@ -447,9 +447,9 @@ If $f$ is this rational function, then there is a one-to-one correspondence betw
         \item If the input string is empty, output $f(\varepsilon)$. Otherwise, go to step 2.
         \item Scan the input string from left to right, and in each position ask if it is the first position. The answer to this question can be determined by looking at the label in $g(w)$, thanks to Lemma~\ref{lem:logic-precomputation}. Find the position $x$ that is the first in the output order, and go to step 3.
         \item Let $x$ be the current position. Ask which of the label formulas is true in it, and produce this letter on the output. Ask if the position $x$ is the last in the output order, and if so terminate the computation. Otherwise, go to step 4.
-        \item We know that $x$ is not the last position in the output order. Ask if the successor of $x$, call it $y$, is to the left or right in the input order. If $y$ is to the right, then start moving to the right, while running the automaton for the language $L_{\le} \subseteq C^*$ that is associated to the order formula. The position $y$ is the first one such that the infix $[x..y]$ belongs to $L_{\leq}$. If $y$ is to the left, do the same, but using the language $L_{\geq}$ for the converse of the order formula. Go to step 3. 
+        \item We know that $x$ is not the last position in the output order. Ask if the successor of $x$, call it $y$, is to the left or right in the input order. If $y$ is to the right, then start moving to the right, while running the automaton for the language $L \subseteq C^*$ that is associated  by \cref{lem:logic-precomputation} to the formula with two arguments that represents the successor relation on output positions. The position $y$ is the first one such that the infix $[x..y]$ belongs to $L$. If $y$ is to the left, do the same, but using the language  for the predecessor relation. Go to step 3. 
     \end{enumerate}
-\issue{Scanning for the first $y$ with $[x..y] \in L_\leq$ does not find the successor: every later output position also satisfies $\varphi_\leq(x,y)$. The set $\Phi$ should contain the (\mso-definable) successor formula of the output order, and step 4 should use its language.}
+
     
 \end{proof}
 
@@ -556,8 +556,7 @@ We now show that the $k$-types are compatible with operations on strings, which 
         For the induction basis of $k=0$ there is nothing to do, since there is only one possible type. Let us now prove the induction step. 
         Suppose that we have proved all three properties for $k$ and we want to prove them for $k+1$.
         \begin{itemize}
-            \item \textbf{Refinement.} Choose a  triple  in $ \fotype_{k+1}(w)$ and use the congruence property for $k$ to obtain  $\fotype_{k}(w)$.  The answer does not depend on the choice of triple.
-\issue{The case $w = \varepsilon$, where $\fotype_{k+1}(w)$ is empty and there is no triple to choose, needs a word.}
+            \item \textbf{Refinement.} Choose a  triple  in $ \fotype_{k+1}(w)$ and use the congruence property for $k$ to obtain  $\fotype_{k}(w)$.  The answer does not depend on the choice of triple. If there is no triple, then $w$ is the empty string, and the type $\fotype_{k}(w)$ is also empty.
             \item \textbf{Congruence.} By definition of types, 
         \begin{align*}
 \fotype_{k+1}(wv) = &      \setbuild{ (\fotype_{k}(w_1), a, \fotype_{k}(w_2v))}{$a \in A$ and $w = w_1 a w_2$}   \cup \\ 
@@ -604,8 +603,7 @@ In the above theorem, we described the languages $L \subseteq A^*$ that can be d
     \myoverbrace{a_{i+1} \cdots a_n}{suffix},
     \end{align*}
     with $i > 0$,
-    then we have sufficient information to compute the string produced by the relabelling on the $i$-th input position. 
-\issue{The gap $i=0$, and the empty input, are not covered by the construction.}
+    then we have sufficient information to compute the string produced by the relabelling on the $i$-th input position.  If the input string is empty, then the output can be computed by a separate transition. This shows that the first-order relabelling can be computed by an aperiodic bimachine.
 \end{proof}
         
 

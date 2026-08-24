@@ -67,7 +67,7 @@ Such a loop creates a position variable {\tt x}, which ranges over positions of 
    \myunderbrace{{\tt X = true} \qquad {\tt X = false}}{assign a value to a Boolean variable}.
 \end{eqnarray*}
 It is important that there are no assignments to position variables, i.e.~the position variables are read-only.
-A sequential composition {\tt I;J} of two for-transducers is also a for-transducer, and there is a conditional {\tt if}, where  the condition is a Boolean combination of tests of the following kinds:
+A sequential composition {\tt I;J} of two for-transducers is also a for-transducer, and there is a conditional {\tt if ... else}, where  the condition is a Boolean combination of tests of the following kinds:
 \begin{align*}
 \myunderbrace{{\tt X}}{value of a\\ \scriptsize
  Boolean variable} \hspace{1.5cm} 
@@ -76,9 +76,11 @@ A sequential composition {\tt I;J} of two for-transducers is also a for-transduc
  \myunderbrace{\mathtt{w[x] == 'a'}}{label of  \\  \scriptsize position}
 \end{align*}
 We will not write variable declarations in the programs, with the types being implicit: the variables bound by the for loops are  position variables, and the remaining ones are  Booleans. The Booleans are initialised to false.
-\issue{The examples use more than this syntax: \texttt{q = not q} in Example~\ref{ex:parity-for-transducer}, and finitely-valued variables together with \texttt{output(w[y])} in Figure~\ref{fig:map-reverse-for-transducer}. All three are syntactic sugar, but the text should say so.}
 
-This completes the syntax of for-transducers. The semantics of a for-transducer is a string-to-string function which is defined in the expected way (we have presented the model as a fragment of Python, and the semantics are consistent).
+
+This completes the syntax of for-transducers\footnote{
+  In the examples, we use some syntactic sugar, such as \texttt{q = not q} for negation of a Boolean variable, and \texttt{output(w[y])} for outputting the label of a position variable. Both of these can be implemented using conditionals from the basic syntax.
+}.  The semantics of a for-transducer is a string-to-string function which is defined in the expected way (we have presented the model as a fragment of Python, and the semantics are consistent).
 The output size of a for-transducer is polynomial -- if it has at most $k$ nested loops, then the output size will be $\Oo(n^k)$. This bound is not tight: one can show that the map reverse function -- which has linear output size -- needs two nested loops in order to be implemented by a for-transducer. 
 
 \begin{myexample}
@@ -168,10 +170,10 @@ The subprogram {\tt body} is allowed to refer to the position variables $x_1,\ld
 def isEmpty(w):
   for x in positions(w):
     q = True
-  if not q:
+  if q:
     output('not empty')
 \end{lstlisting}
-\issue{The test is inverted: Boolean variables start false, so \texttt{q} is false exactly when the input is empty, and this program prints ``not empty'' only on the empty input.}
+
         \begin{lemma}\label{lemma:prenex-normal-form}
             Every for-transducer is equivalent to one in prenex  form.
         \end{lemma}

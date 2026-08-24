@@ -49,6 +49,7 @@ LEAN = BODY / "transducer-lean"
 LEAN_SRC = LEAN / "RequestProject"
 THEOREMS = LEAN / "THEOREMS.md"
 OUT = ROOT / "data" / "lean_map.json"
+SOURCES = ROOT / "data" / "lean_sources.json"
 
 # hyperref names an anchor after the counter that produced it, and macros.sty's
 # \newaliascnt keeps those names distinct even though the counters are shared,
@@ -57,18 +58,8 @@ KINDS = ["theorem", "lemma", "claim", "corollary", "definition",
          "fact", "proposition", "example", "exercise"]
 NUMBER = re.compile(r"[A-D]?\.\d+\.\d+")
 
-# Results the book states but deliberately does not formalise as numbered
-# statements: internal steps of a larger proof, which the formalisation is free
-# to organise its own way. Recorded here so the report can tell "not formalised
-# on purpose" apart from "we lost track of it". Exercises are excluded wholesale
-# by the same policy, so they are handled by kind rather than listed.
-NOT_FORMALISED = {
-    ("lemma", "C.2.3"), ("lemma", "C.2.4"), ("lemma", "C.2.12"),
-    ("claim", "B.4.9"), ("claim", "B.4.10"), ("claim", "B.4.11"),
-    ("claim", "B.4.12"),
-    ("lemma", "D.2.2"), ("lemma", "D.2.5"),
-    ("claim", "D.2.3"), ("claim", "D.2.6"), ("claim", "D.2.7"),
-}
+# Which results are deliberately not formalised is read from THEOREMS.md's own
+# index (see read_theorems_md), not kept in a list here that would go stale.
 
 
 # --------------------------------------------------------------------------
@@ -135,40 +126,145 @@ def strip_comments(text):
     return re.sub(r"--[^\n]*", " ", text)
 
 
+def blank_comments(text):
+    """Comments replaced by spaces, character for character.
+
+    Length and line breaks are preserved, so positions still line up with the
+    original, and nesting is respected. Stripping per declaration instead would
+    let a `/- … -/` block that spans a declaration boundary leak its contents
+    into the next one — which is how the superseded statements kept beside
+    Theorem B.4.2, `sorry` and all, made a finished proof look unproved.
+    """
+    out, i, n = list(text), 0, len(text)
+    while i < n:
+        if text.startswith("/-", i):
+            depth, j = 1, i + 2
+            while j < n and depth:
+                if text.startswith("/-", j):
+                    depth += 1; j += 2
+                elif text.startswith("-/", j):
+                    depth -= 1; j += 2
+                else:
+                    j += 1
+        elif text.startswith("--", i):
+            j = text.find("\n", i)
+            if j == -1:
+                j = n
+        else:
+            i += 1
+            continue
+        for k in range(i, j):
+            if out[k] != "\n":
+                out[k] = " "
+        i = j
+    return "".join(out)
+
+
+def doc_comments(text):
+    """Every `/-- … -/` that is live code, as (start, end, body).
+
+    Lean's block comments nest, and a result that has been withdrawn is left in
+    the sources commented out — `/- … /-- **Theorem C.4.17.** … -/ … -/`. A
+    non-nesting regex reads that as a docstring and reports a statement that is
+    no longer there, so ordinary comments are skipped whole instead.
+    """
+    out, i, n = [], 0, len(text)
+    while i < n:
+        if text.startswith("/--", i) or text.startswith("/-", i):
+            doc = text.startswith("/--", i)
+            depth, j = 1, i + (3 if doc else 2)
+            while j < n and depth:
+                if text.startswith("/-", j):
+                    depth += 1; j += 2
+                elif text.startswith("-/", j):
+                    depth -= 1; j += 2
+                else:
+                    j += 1
+            if doc:
+                out.append((i, j, text[i + 3:max(i + 3, j - 2)]))
+            i = j
+        else:
+            i += 1
+    return out
+
+
+def span_of(name, decl_line, starts, lines, rel, doc_before):
+    """Where a declaration begins and ends, comment included."""
+    after = [x for x in starts if x > decl_line]
+    end = (after[0] - 1) if after else len(lines)
+    while end > decl_line and not lines[end - 1].strip():
+        end -= 1
+    return {"file": rel, "line": doc_before.get(decl_line, decl_line),
+            "decl_line": decl_line, "end": end}
+
+
 def read_lean():
-    """(kind, number) -> [{name, file, line}], from docstrings, and all bodies."""
-    hits, bodies = {}, {}
+    """(kind, number) -> [{name, file, line, end}], from docstrings, and all bodies.
+
+    `line` is the first line of the docstring and `end` the last line before the
+    next top-level declaration, so the pair delimits the whole result — comment
+    and proof together — for the web edition to highlight.
+    """
+    hits, bodies, sources, locations = {}, {}, {}, {}
     for f in sorted(LEAN_SRC.rglob("*.lean")):
         if ".lake" in f.parts:
             continue
         txt = f.read_text(errors="ignore")
         rel = str(f.relative_to(LEAN))
-        # declaration bodies, for the sorry check below
-        name, buf = None, []
-        for line in txt.splitlines():
+        sources[rel] = txt
+        lines = txt.splitlines()
+        code = blank_comments(txt).splitlines()   # same lines, comments blanked
+        # Where one result ends and the next begins, by 1-based line. A
+        # declaration is not the boundary: the next result's docstring comes
+        # first, and belongs to it, not to the one before.
+        starts = [i + 1 for i, line in enumerate(lines)
+                  if (DECL.match(code[i]) and not code[i].startswith(" "))
+                  or line.startswith("/--") or line.startswith("/-!")]
+        # where each declaration's own docstring begins, so a result shown in the
+        # web edition starts at its comment rather than at its first token
+        doc_before = {}
+        for dstart, dend, _ in doc_comments(txt):
+            d = DECL.search(txt[dend:dend + 400])
+            if d:
+                doc_before[txt[:dend + d.start(1)].count("\n") + 1] = \
+                    txt[:dstart].count("\n") + 1
+        # declaration bodies, for the sorry check below, and where each one is
+        name, buf, at = None, [], 0
+        for no, line in enumerate(code, 1):
             m = DECL.match(line)
             if m and not line.startswith(" "):
                 if name:
                     bodies.setdefault(name, "\n".join(buf))
-                name, buf = m.group(1), [line]
+                    locations.setdefault(name, span_of(name, at, starts, lines, rel, doc_before))
+                name, buf, at = m.group(1), [line], no
             elif name:
                 buf.append(line)
         if name:
             bodies.setdefault(name, "\n".join(buf))
+            locations.setdefault(name, span_of(name, at, starts, lines, rel, doc_before))
         # docstrings carrying a book number, and the declaration they precede
-        for m in re.finditer(r"/--(.*?)-/", txt, re.S):
-            hit = re.search(rf"\*\*({DOC_KIND})\s+({NUMBER.pattern})", m.group(1))
+        for start, end, doc in doc_comments(txt):
+            hit = re.search(rf"\*\*({DOC_KIND})\s+({NUMBER.pattern})", doc)
             if not hit:
                 continue
-            d = DECL.search(txt[m.end():m.end() + 400])
+            d = DECL.search(txt[end:end + 400])
             if not d:
                 continue
+            doc_line = txt[:start].count("\n") + 1
+            # from the name, not from the match: DECL opens with `^\s*`, which
+            # happily matches the newline after `-/` and would put the
+            # declaration a line early — and so end the result before it began
+            decl_line = txt[:end + d.start(1)].count("\n") + 1
+            after = [s for s in starts if s > decl_line]
+            end = (after[0] - 1) if after else len(lines)
+            while end > decl_line and not lines[end - 1].strip():
+                end -= 1                      # don't trail off into blank lines
             key = (hit.group(1).lower(), hit.group(2))
-            entry = {"name": d.group(1), "file": rel,
-                     "line": txt[:m.start()].count("\n") + 1}
+            entry = {"name": d.group(1), "file": rel, "line": doc_line,
+                     "decl_line": decl_line, "end": end}
             if entry not in hits.setdefault(key, []):
                 hits[key].append(entry)
-    return hits, {k: strip_comments(v) for k, v in bodies.items()}
+    return hits, bodies, sources, locations
 
 
 def sorry_witnesses(bodies):
@@ -221,8 +317,56 @@ def state_of(name, bodies, witness):
 # the formalisation's own summary: THEOREMS.md
 # --------------------------------------------------------------------------
 
-def read_theorems_md():
-    """(kind, number) -> {names, status}, from the index tables."""
+def lean_names_in(cell):
+    """Backticked declaration names in a cell — file paths are not names."""
+    return [n for n in re.findall(r"`([^`]+)`", cell)
+            if not n.endswith(".lean") and "/" not in n]
+
+
+def number_key(num):
+    """Sortable form of a book number, so a range can be expanded."""
+    part = num[0] if num[:1].isalpha() else ""
+    return (part, [int(x) for x in num.lstrip("ABCD").split(".") if x])
+
+
+KIND_WORD = "|".join(k.capitalize() for k in KINDS) + "|Corollaries"
+CELL_TOKEN = re.compile(
+    rf"\**({KIND_WORD})s?\**"                                   # a kind, perhaps plural
+    rf"|({NUMBER.pattern})\s*[–—-]\s*({NUMBER.pattern})"         # or a range
+    rf"|({NUMBER.pattern})")                                     # or one number
+
+
+def parse_results_cell(cell, book):
+    """The results a row is about: 'Claims B.4.9–B.4.12', 'Lemma D.2.2, Claim D.2.3'…
+
+    A kind carries forward to the numbers that follow it, which is how the file
+    writes a list; a range is expanded against the numbers the book actually
+    has, so nothing is invented.
+    """
+    out, kind = [], None
+    for m in CELL_TOKEN.finditer(cell):
+        if m.group(1):
+            word = m.group(1).lower()
+            kind = "corollary" if word == "corollaries" else word
+        elif m.group(2) and kind:
+            lo, hi = number_key(m.group(2)), number_key(m.group(3))
+            out += sorted((k for k in book
+                           if k[0] == kind and lo <= number_key(k[1]) <= hi),
+                          key=lambda k: number_key(k[1]))
+        elif m.group(4) and kind:
+            out.append((kind, m.group(4)))
+    return out
+
+
+def read_theorems_md(book):
+    """(kind, number) -> {names, status, internal, not_formalised}.
+
+    Most rows are about a single result, but some cover several at once, and
+    those are the ones that say what happened to the book's internal steps —
+    Claims B.4.9–B.4.12, for instance, are not numbered results in Lean but do
+    have proofs there, as named steps inside the proof of Theorem B.4.8. Read
+    literally, such a row links four claims to four declarations, in order.
+    """
     if not THEOREMS.exists():
         return {}
     out = {}
@@ -232,15 +376,29 @@ def read_theorems_md():
         cells = [c.strip() for c in line.strip("|").split("|")]
         if len(cells) < 2:
             continue
+        results = parse_results_cell(cells[0], book)
+        if len(results) > 1:
+            names = lean_names_in(cells[1])
+            absent = "not formalised" in cells[1].lower()
+            # Only pair them up when the row names exactly one declaration per
+            # result; anything else is prose we should not read as a mapping.
+            paired = len(names) == len(results)
+            for i, key in enumerate(results):
+                out[key] = {"names": [names[i]] if paired else [],
+                            "status": re.sub(r"\s+", " ", cells[1])[:160],
+                            "internal": paired and absent,
+                            "not_formalised": absent and not paired}
+            continue
         hit = re.match(rf"\**({DOC_KIND})\**\s+({NUMBER.pattern})", cells[0])
         if not hit:
             continue
-        names = re.findall(r"`([^`]+)`", cells[1])
+        names = lean_names_in(cells[1])
         if not names:
             continue
         status = cells[2] if len(cells) > 2 else ""
         out[(hit.group(1).lower(), hit.group(2))] = {
-            "names": names, "status": re.sub(r"\s+", " ", status).strip(" —-")}
+            "names": names, "status": re.sub(r"\s+", " ", status).strip(" —-"),
+            "internal": False, "not_formalised": False}
     return out
 
 
@@ -248,9 +406,9 @@ def read_theorems_md():
 
 def build():
     book = read_book()
-    lean, bodies = read_lean()
+    lean, bodies, sources, locations = read_lean()
     witness = sorry_witnesses(bodies)
-    md = read_theorems_md()
+    md = read_theorems_md(book)
 
     entries, by_decl = {}, {}
     for key, b in sorted(book.items()):
@@ -268,8 +426,13 @@ def build():
             if st == "missing":
                 # not in this project: THEOREMS.md is pointing at Mathlib
                 st, w = "external", None
-            decls.append({"name": n, "file": None, "line": None, "state": st,
-                          **({"rests_on": w} if w else {}), "from": "THEOREMS.md"})
+            loc = locations.get(n) or locations.get(n.split(".")[-1]) or \
+                  next((v for k2, v in locations.items()
+                        if k2.split(".")[-1] == n.split(".")[-1]), None)
+            decls.append({"name": n, "state": st,
+                          **(loc or {"file": None, "line": None}),
+                          **({"rests_on": w} if w else {}), "from": "THEOREMS.md",
+                          **({"internal": True} if md[key].get("internal") else {})})
         # A result often has several declarations carrying its number: the
         # statement itself plus the two directions of an iff, say. THEOREMS.md
         # names the one it considers canonical, so prefer that; failing that,
@@ -284,14 +447,18 @@ def build():
              "page": b["page"], "anchor": b["anchor"], "lean": decls}
         if key in md:
             e["theorems_md_status"] = md[key]["status"]
-        if key in NOT_FORMALISED or kind == "exercise":
+        if md.get(key, {}).get("not_formalised") or kind == "exercise":
             e["not_formalised"] = True
         entries[b["label"]] = e
         for d in decls:
             by_decl.setdefault(d["name"], {"label": b["label"], "kind": kind,
                                            "number": number})
 
-    return book, lean, md, entries, by_decl
+    # Only the files some result actually points into: the web edition inlines
+    # them per page (it must work opened over file://, where fetching a sibling
+    # file is blocked), so shipping the whole 2 MB corpus would be waste.
+    used = {d["file"] for e in entries.values() for d in e["lean"] if d.get("file")}
+    return book, lean, md, entries, by_decl, {f: sources[f] for f in sorted(used)}
 
 
 def report(book, lean, md, entries):
@@ -357,7 +524,7 @@ def main():
                     help="write data/lean_map.json as well as reporting")
     args = ap.parse_args()
 
-    book, lean, md, entries, by_decl = build()
+    book, lean, md, entries, by_decl, sources = build()
     problems = report(book, lean, md, entries)
 
     if args.write:
@@ -367,6 +534,11 @@ def main():
             ensure_ascii=False, sort_keys=True) + "\n")
         print(f"\nwrote {OUT.relative_to(BODY)} "
               f"({len(entries)} labels, {len(by_decl)} declarations)")
+        SOURCES.write_text(json.dumps(sources, ensure_ascii=False,
+                                      sort_keys=True) + "\n")
+        kb = sum(len(v) for v in sources.values()) / 1024
+        print(f"wrote {SOURCES.relative_to(BODY)} "
+              f"({len(sources)} Lean files, {kb:.0f} KB)")
 
     if problems:
         print(f"\n{problems} thing(s) to look at — see above.")

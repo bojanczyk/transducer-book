@@ -25,5 +25,10 @@
     <button id="text-toggle" type="button" aria-label="Text options" aria-haspopup="true" aria-controls="lt-panel" aria-expanded="false">
       <span class="lt-tt">T<span>t</span></span>
     </button>
+    {{/* Revealed by lean-pane.html, which is only emitted on pages that have
+         something formalised to show. */}}
+    <button id="lean-toggle" type="button" hidden aria-label="Lean formalisation" aria-controls="lean-pane" aria-expanded="false" onclick="window.__setLean(!document.body.classList.contains('lean-open'))">
+      <span class="lt-lean">&lambda;</span>
+    </button>
   </div>
 </div>
