@@ -515,10 +515,18 @@ lemma posAt_traj (hT : cfgAt M w T = some Cfg.halt) {t : ℕ} (ht : t ≤ endT M
 of window transducers on one and the same factor of the input.**  The excursion
 is one-sided, so the two halves cross the same window in opposite directions:
 the first alternative below is the case of an excursion to the right of the
-record-breaking column, the second one that of an excursion to its left. -/
+record-breaking column, the second one that of an excursion to its left.
+
+The window is delimited by the record-breaking column and by the column
+furthest away from it that the excursion reaches; which of the two is the left
+end depends on the side of the excursion, so the two ends are recorded as the
+minimum and the maximum of the two columns.  That identification of the window
+is what makes it possible to confine the piece to the two blocks around the
+record-breaking column (`Walk.loop_confined`). -/
 theorem exists_widthOut_excHalves (hT : cfgAt M w T = some Cfg.halt)
     (hwidth : WidthLe M w k) (hk : 2 ≤ k) (i j : ℕ) :
-    ∃ x y : ℕ, x ≤ y ∧ y ≤ w.length ∧ ∃ q₁ f₁ q₂ f₂ : Q,
+    ∃ x y : ℕ, x = min (rbCol M w i) (excC M w i j) ∧ y = max (rbCol M w i) (excC M w i j) ∧
+      x ≤ y ∧ y ≤ w.length ∧ ∃ q₁ f₁ q₂ f₂ : Q,
       (outRange M w (excT M w i j) (excS M w i j)
           = widthOut (stopRight M (w.take x).getLast? (w.drop y).head? q₁ f₁) (k - 1)
               (seg w x y)
@@ -543,8 +551,14 @@ theorem exists_widthOut_excHalves (hT : cfgAt M w T = some Cfg.halt)
   · -- the excursion is empty: both halves produce no output
     have hs1 : excS M w i j = excT M w i j := by omega
     have hs2 : excT M w i (j + 1) = excT M w i j := heq.symm
-    have hseg : seg w 0 0 = ([] : List A) := by simp [seg]
-    refine ⟨0, 0, le_refl _, Nat.zero_le _, M.init, M.init, M.init, M.init, Or.inl ⟨?_, ?_⟩⟩
+    have hps : traj M w (excS M w i j) = excC M w i j := Walk.pos_excSplit hab
+    have hcol : excC M w i j = rbCol M w i := by rw [← hps, hs1, hpa]
+    have hposA : posAt M w (excT M w i j) = some (rbCol M w i) := by
+      rw [posAt_traj hT (le_trans hab hbE), hpa]
+    have hcw : rbCol M w i ≤ w.length := posAt_le_length M w hposA
+    have hseg : seg w (rbCol M w i) (rbCol M w i) = ([] : List A) := by simp [seg]
+    refine ⟨rbCol M w i, rbCol M w i, by omega, by omega, le_refl _, hcw,
+      M.init, M.init, M.init, M.init, Or.inl ⟨?_, ?_⟩⟩
     · rw [hs1, hseg, widthOut_stopRight_nil]
       simp [outRange]
     · rw [hs1, hs2, hseg, List.reverse_nil, widthOut_stopRight_nil]
@@ -594,7 +608,8 @@ theorem exists_widthOut_excHalves (hT : cfgAt M w T = some Cfg.halt)
             · omega
           exact hmid t hne ht2 (by simpa using hcon))
         hhalves.2
-      exact ⟨rbCol M w i, excC M w i j, le_of_lt hltc, hyw, q₁, f₁, q₂, f₂, Or.inl ⟨h1, h2⟩⟩
+      exact ⟨rbCol M w i, excC M w i j, by omega, by omega, le_of_lt hltc, hyw,
+        q₁, f₁, q₂, f₂, Or.inl ⟨h1, h2⟩⟩
     · -- the excursion goes to the left of the record-breaking column
       have hcol : excC M w i j = Walk.excMin (traj M w) (excT M w i j) (excT M w i (j + 1)) :=
         Walk.excCol_left hwalk hbE hlt hpa hpb hside
@@ -624,7 +639,8 @@ theorem exists_widthOut_excHalves (hT : cfgAt M w T = some Cfg.halt)
             · omega
           exact hmid t hne ht2 (by simpa using hcon))
         hhalves.2
-      exact ⟨excC M w i j, rbCol M w i, le_of_lt hltc, hyw, q₁, f₁, q₂, f₂, Or.inr ⟨h1, h2⟩⟩
+      exact ⟨excC M w i j, rbCol M w i, by omega, by omega, le_of_lt hltc, hyw,
+        q₁, f₁, q₂, f₂, Or.inr ⟨h1, h2⟩⟩
 
 lemma rbFirst_le_endT (i : ℕ) : rbFirst M w i ≤ endT M w :=
   (Walk.le_firstV_bounds (Walk.visited_recSeq (Nat.zero_le _) i)).2

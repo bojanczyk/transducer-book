@@ -188,7 +188,7 @@ lemma passBim_eval :
 
 /-! ## The configurations of a left-to-right pass -/
 
-lemma posAt_of_cfgAt {t : ℕ} {u v : List A} {q : Q}
+lemma posAt_of_cfgAt_conf {t : ℕ} {u v : List A} {q : Q}
     (h : cfgAt M w t = some (Cfg.conf u q v)) : posAt M w t = some u.length := by
   simp [posAt, h]
 
@@ -360,7 +360,7 @@ lemma widthLe_one_of_pass (h : w ∈ PassLang M) : WidthLe M w 1 := by
     by_cases htT : t < T
     · obtain ⟨prev, q, hpq⟩ := hinl t htT
       obtain ⟨-, hcfg⟩ := cfgAt_of_passAt M w t (by omega) hpq
-      rw [posAt_of_cfgAt M w hcfg] at hpos
+      rw [posAt_of_cfgAt_conf M w hcfg] at hpos
       simp only [Option.some.injEq] at hpos
       rw [← hpos, List.length_take]
       omega
@@ -400,7 +400,7 @@ private lemma flatten_map_range_eq {C : Type} (g : ℕ → List C) (T : ℕ) :
           hz m hge (Nat.lt_succ_self m), List.append_nil]
         exact ih hge (fun i h1 h2 => hz i h1 (by omega))
 
-lemma runOut_eq_outRange {T : ℕ} (hT : cfgAt M w T = some Cfg.halt) :
+lemma runOut_eq_outRange_of_halt {T : ℕ} (hT : cfgAt M w T = some Cfg.halt) :
     runOut M w = outRange M w 0 T := by
   classical
   have hex : ∃ T, cfgAt M w T = some Cfg.halt := ⟨T, hT⟩
@@ -411,7 +411,7 @@ bimachine. -/
 lemma runOut_eq_passBim (h : w ∈ PassLang M) : runOut M w = (passBim M).eval w := by
   classical
   obtain ⟨T, hTle, hThalt, hinl, hinr⟩ := pass_halt M w h
-  rw [runOut_eq_outRange M w hThalt, passBim_eval M w, outRange]
+  rw [runOut_eq_outRange_of_halt M w hThalt, passBim_eval M w, outRange]
   have hg : ∀ i, T ≤ i → i < w.length + 1 →
       (passBim M).out (passAt M w i) ((w.drop i).head?) = [] := by
     intro i h1 h2
@@ -501,10 +501,10 @@ lemma widthOut_one_of_not_pass (h : w ∉ PassLang M) : widthOut M 1 w = [] := b
             obtain ⟨prev0, q0, hpq0⟩ := hj2 (j - 1) (by omega)
             obtain ⟨-, hcfg0⟩ := cfgAt_of_passAt M w (j - 1) (by omega) hpq0
             refine hnowidth (t := j - 1) (t' := j + 1) (x := j - 1) (by omega) ?_ ?_
-            · rw [posAt_of_cfgAt M w hcfg0, List.length_take]
+            · rw [posAt_of_cfgAt_conf M w hcfg0, List.length_take]
               congr 1
               omega
-            · rw [posAt_of_cfgAt M w hcfg1, List.length_dropLast, List.length_take]
+            · rw [posAt_of_cfgAt_conf M w hcfg1, List.length_dropLast, List.length_take]
               congr 1
               omega
   · push_neg at hA
@@ -591,10 +591,10 @@ lemma widthOut_one_of_not_pass (h : w ∉ PassLang M) : widthOut M 1 w = [] := b
             obtain ⟨-, hcfg0⟩ := cfgAt_of_passAt M w (w.length - 1) (by omega) hpq0
             refine hnowidth (t := w.length - 1) (t' := w.length + 1) (x := w.length - 1)
               (by omega) ?_ ?_
-            · rw [posAt_of_cfgAt M w hcfg0, List.length_take]
+            · rw [posAt_of_cfgAt_conf M w hcfg0, List.length_take]
               congr 1
               omega
-            · rw [posAt_of_cfgAt M w hcfg1, List.length_dropLast]
+            · rw [posAt_of_cfgAt_conf M w hcfg1, List.length_dropLast]
 
 end Pass
 

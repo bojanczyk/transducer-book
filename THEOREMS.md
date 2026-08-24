@@ -47,6 +47,8 @@ RequestProject/
 | `PartA/Statements.lean` | Part A: Mealy machines |
 | `PartB/LabAut.lean` | automata with labelled transitions, nfas with output, rational relations and functions |
 | `PartB/Atomize.lean`, `PartB/OutLang.lean`, `PartB/EpsElim.lean`, `PartB/RatComp.lean`, `PartB/RatCont.lean`, `PartB/HomComplement.lean`, `PartB/LenNormalForm.lean`, `PartB/MealyChar.lean`, `PartB/Typing.lean`, `PartB/SeqChar.lean`, `PartB/Unambig.lean`, `PartB/Uniform.lean`, `PartB/Bimachine.lean`, `PartB/RatBimach.lean`, `PartB/PrimeRat.lean`, `PartB/BimachPrime.lean` | the constructions used in the proofs of Part B (see the list at the end of the Part B section below) |
+| `PartB/UniformFun.lean` | uniformisation in the form of a function (`Transducers.exists_rationalFun_of_total_rel`): a total rational relation contains the graph of a rational function |
+| `PartB/GuessCheck.lean` | "guess and check", one half of Nivat's theorem (`Transducers.isRationalRel_of_regular_nivat`): a regular language of annotated strings, read through one homomorphism and written through another, is a rational relation |
 | `PartB/Codes.lean` | finite descriptions (codes) of nfas with output, and the formalisation of (un)decidability statements |
 | `PartB/PCPRed.lean` | the Post correspondence problem and the reduction proving Theorem B.1.6 |
 | `PartB/PathComb.lean` | combinatorics of paths: splitting at a visited state, pigeonhole extraction of a short loop, replacement by a simple path |
@@ -82,6 +84,15 @@ RequestProject/
 | `PartC/SnakeMirror.lean` | mirroring a two-way transducer (`TwoWay.mirror`: swap the two letters adjacent to the head and the two directions), an involution that turns every run into the mirrored run on the reversed input, with the same output (`TwoWay.stepCfg_mirror`, `TwoWay.reaches_mirror_iff`); this is the book's "reverse the snake" |
 | `PartC/SnakeLoop.lean` | splitting a looping part of a walk into pieces of smaller width (intermediate visits to the base column, then the furthest column of each one-sided loop, the left-hand case being reduced to the right-hand one by reflecting the walk), and the induction step of the snake lemma at the level of runs: `Transducers.TwoWay.runOutput_splits` |
 | `PartC/SnakeLocal.lean`, `PartC/SnakePiece.lean`, `PartC/SnakePieceRev.lean` | a piece of a run seen as a complete run on a window of the input: the window transducer `TwoWay.withContext`, the transducer `TwoWay.stopRight` that halts on reaching the right end of the window, and the identification of a left-to-right (resp. right-to-left, by mirroring) piece with the whole run of such a transducer, so that the induction hypothesis of the snake lemma applies to it (`TwoWay.widthOut_stopRight`) |
+| `PartC/SnakeExc.lean` | the *excursions* of a record-breaking column: the intermediate visits `excT` to the column during its loop part, the time `excS` at which each excursion is at its furthest column `excC`, and the resulting cutting of the loop part into the `2k` halves of excursions |
+| `PartC/SnakeParts.lean` | the output of a halting run of width at most `k` as the concatenation of the `2k+1` pieces of each record-breaker (`TwoWay.pieceOutput`, `TwoWay.blockOut`, `TwoWay.runOut_eq_partsOut`) |
+| `PartC/SnakePieceIdent.lean` | the identification of a piece with the whole run of a window transducer on the interval between the record-breaking column and the furthest column of the excursion (`TwoWay.exists_widthOut_excHalves` for the two halves of an excursion, `TwoWay.exists_widthOut_prog` for a progress part) |
+| `PartC/SnakeFinalConf.lean` | the same for the progress part after the last record-breaker, which reaches the end of the input (`TwoWay.exists_widthOut_finalProg_confined`) |
+| `PartC/SnakeRegTools.lean` | the regular-function tools used to build the block function: cutting a factor out of an annotated pair of blocks and reading parameters off its first letter, both by bimachines |
+| `PartC/SnakeBlock.lean` | the *block function* of stages 2--4: the annotated alphabet `TwoWay.SnakeLet` with its `2·(2k+1)` piece slots (`TwoWay.slot`), the output `TwoWay.pieceOut` of a piece with given parameters, the regularity of the block function (`TwoWay.isRegularFun_blockFun`), the notion of a correct marking (`TwoWay.IsSnakeMarking`) and the fact that the neighbouring-block map combinator applied to the block function on a correct marking computes the output of the run (`TwoWay.pairMap_blockFun_eq_runOut`) |
+| `PartC/SnakeAssemble.lean` | the assembly of a correct marking out of purely numerical data — the cutting points of the blocks and, for every pair of blocks and every slot, the window and the parameters of that piece (`TwoWay.snakeAnn`, `TwoWay.isSnakeMarking_snakeAnn`) |
+| `PartC/SnakeData.lean` | the numerical data of the pieces of a run and the existence of a correct marking of every nonempty input whose run halts with width at most `k` (`TwoWay.snakeY`, `TwoWay.exists_pieceData`, `TwoWay.exists_isSnakeMarking`) |
+| `PartC/SnakeStage1.lean` | the book's stage 1: the guess-and-check formulation of the marking (`TwoWay.SnakeRel`, `TwoWay.exists_regular_snakeLang` — the only `sorry` of Section C.2 — `TwoWay.exists_rational_snakeRel`, `TwoWay.exists_snakeMarking`) and the equation `widthOut M K w = pairMap (blockFun …) (ann w)` that the induction step consumes (`TwoWay.widthOut_eq_pairMap`) |
 | `PartC/TwoWayOrder.lean` | the *order in time* of the visits of a run to a cut is a regular property: a cut marked with a pair of states `(q₁, q₂)` is accepted by the two-way automaton `TwoWay.orderAut` exactly when the run visits it in `q₁` before it ever visits it in `q₂` (`TwoWay.VisitsBefore`, `TwoWay.orderLang_isRegular`), together with the resulting API for the first and the last visit to a cut |
 | `PartC/TwoWayAnnotOrd.lean` | the same information as a *rational annotation* of the input (`TwoWay.exists_rational_visitOrder_annot`): from the annotation of the two letters adjacent to a cut one reads off, for every pair of states, which of the two visits comes first, and hence which visit to the cut is the first and which is the last |
 | `PartC/RatBi.lean` | *bilateral rewritings*: a rewriting in which the block produced at a letter depends on the letter, on the state of a deterministic automaton run left-to-right on the prefix and on the state of a deterministic automaton run right-to-left on the suffix, is computed by a bimachine and hence rational (`Transducers.isRationalFun_biEval`); the two standard instances are cutting out the factor selected by regular lookaround (`isRationalFun_biFilter`) and cutting the input into the blocks it delimits (`isRationalFun_biMarkSep`) |
@@ -486,7 +497,7 @@ The proofs are organised as follows.
 | Lemma C.2.6 (pre-composition with Mealy machines) | `Transducers.twoWay_precomp_mealy` | proved |
 | Corollary C.2.7 (pre-composition with rational functions) | `Transducers.twoWay_precomp_rational` | proved (`TwoWayHom.lean`, `TwoWayBlock.lean`, `TwoWayErase.lean` and `TwoWayRat.lean`, from Theorem B.2.6 and Lemma C.2.6) |
 | Corollary C.2.8 (regular ⊆ two-way) | `Transducers.regularFun_isTwoWay`, `Transducers.isTwoWay_of_isRegularFun` | proved (`TwoWaySweep.lean`, `TwoWayRegular.lean`, from Corollary C.2.7 and Theorem C.2.5); the direction printed in the book is a typo — see *A typo in Corollary C.2.8* below |
-| Theorem C.2.9 (two-way = regular) | `Transducers.twoWay_iff_regular`, `Transducers.twoWay_isRegular` | the right-to-left implication is proved (it is Corollary C.2.8 above); the left-to-right one, `Transducers.twoWay_isRegular` (two-way ⊆ regular, the inclusion printed in Corollary C.2.8), is **open**: it is reduced, sorry-free, to the snake lemma `Transducers.boundedWidth_isRegular` of `SnakeReg.lean`, whose base cases `k ≤ 1` are proved in `SnakeBase.lean` and whose combinatorial content is proved in `SnakeWalk.lean`, `SnakeRec.lean` and `SnakeLoop.lean`; what is left is the induction step `Transducers.boundedWidth_isRegular_step` — see *What is missing in Theorem C.2.9* below |
+| Theorem C.2.9 (two-way = regular) | `Transducers.twoWay_iff_regular`, `Transducers.twoWay_isRegular` | the right-to-left implication is proved (it is Corollary C.2.8 above); the left-to-right one, `Transducers.twoWay_isRegular` (two-way ⊆ regular, the inclusion printed in Corollary C.2.8), is **open**: it is reduced, sorry-free, to the snake lemma `Transducers.boundedWidth_isRegular` of `SnakeReg.lean`, whose base cases `k ≤ 1` are proved in `SnakeBase.lean` and whose combinatorial content is proved in `SnakeWalk.lean`, `SnakeRec.lean` and `SnakeLoop.lean`; what is left is the induction step `Transducers.boundedWidth_isRegular_step`, and inside it the single statement `Transducers.TwoWay.exists_regular_snakeLang` of `SnakeStage1.lean` (the book's stage 1: the correct markings of the input form a regular language) — see *What is missing in Theorem C.2.9* below |
 | Lemma C.2.10 (closure properties) | `Transducers.regular_closure_properties` | **proved** (`MapLiftAux.lean`, `MapLiftRat.lean`, `MapLiftPrime.lean`, `RegMapLift.lean`, `RatSeq.lean`, `RegClosure.lean`) |
 | Claim C.2.11 (disjoint sums) | `Transducers.sum_of_regular` | **proved** (`SumShape.lean`, `SumPrime.lean`, `SumReg.lean`, `RegSum.lean`), in the corrected form — the claim as printed is false on the empty input, see *An error in Claim C.2.11* below |
 | Definition C.3.1 (sst) | `Transducers.SST`, `Transducers.IsSST` | — |
@@ -789,30 +800,103 @@ sorry-free, reusable statements.
   cut readable locally.
 
 The remaining gap in `boundedWidth_isRegular_step` is therefore no longer
-combinatorial but machine-theoretic, and it consists of the book's stage 1
-together with the identification of the pieces: one has to produce, by a
-rational function, the marking of the record-breaking columns of the run, and to
-see that the output of each of the pieces living in a block is the value of a
-*width-`(k-1)` snake function* on a factor of that block that a rational
-function cuts out (which requires snakes with an arbitrary source and target,
-not only runs starting at the left end of the input; `TwoWay.widthOut_stopRight`
-of `SnakePiece.lean` covers the pieces that run from the left end of their
-window to its right end, and `SnakePieceRev.lean` those that run the other
-way).
+combinatorial but machine-theoretic: it is exactly the book's **stage 1**, the
+rational function that marks the record-breaking columns and the pieces that
+they delimit.  Everything that is built on top of that marking is proved.
 
-Concretely, closing the gap in the present formulation asks for a version of
-`TwoWay.widthOut` in which the source and the target vertex of the run are
-marked in the input by extra letters (the pieces of a run start and end in the
-middle of it, and the run of a deterministic transducer from a marked source
-stops at the first — hence the only — visit to the marked target, because a
-halting run does not repeat a configuration), together with the rational
-functions of the book's four stages: marking the record-breakers, forming the
-blocks `wᵢ₋₁ # wᵢ`, duplicating them, and gluing the results with the map
-combinator.  The book's "without loss of generality the source is to the left of
-the target, otherwise reverse the snake" is available in this formulation as
-well: mirroring a two-way transducer (swapping the two neighbouring letters in
-its transition function and swapping the two directions) turns the run on `w`
-into the run on `w.reverse`, with the same output.
+* The pieces are *identified with whole runs of window transducers*, to which
+  the induction hypothesis applies: `TwoWay.exists_widthOut_excHalves` and
+  `TwoWay.exists_widthOut_prog` (`SnakePieceIdent.lean`) and
+  `TwoWay.exists_widthOut_finalProg_confined` (`SnakeFinalConf.lean`).  The two
+  window transducers are `TwoWay.stopRight` (`SnakePiece.lean`) for a piece that
+  runs from the left end of its window to the right end, and its mirror image
+  (`SnakePieceRev.lean`) for a piece that runs the other way; the window of a
+  piece is the interval between the record-breaking column and the furthest
+  column of the excursion.  No separate notion of a snake with a marked source
+  and target is needed.
+* The *block function* — the function applied to one pair of neighbouring
+  blocks by the map combinator — is regular (`TwoWay.isRegularFun_blockFun`), and
+  applying the combinator to it on a correctly marked annotation computes the
+  output of the run (`TwoWay.pairMap_blockFun_eq_runOut`), both in
+  `SnakeBlock.lean`.  The annotation carries `2·(2k+1)` piece slots per letter,
+  two per piece of the pair, because a letter occurs in the pair in which its
+  block is the left one and in the pair in which it is the right one
+  (`TwoWay.slot`).
+* **A correct marking of every input exists**: `TwoWay.exists_isSnakeMarking`
+  (`SnakeData.lean`), through the assembly of an annotated string out of purely
+  numerical data (`TwoWay.isSnakeMarking_snakeAnn`, `SnakeAssemble.lean`).  This
+  is the mathematical content of stage 1, and it is sorry-free.
+
+What is left is only that the correct markings can be **recognised**.  It is
+isolated as the single named statement
+
+```lean
+theorem exists_regular_snakeLang [Finite A] [Finite B] [Finite Q]
+    (M : TwoWay A B Q) {K : ℕ} (hK : 2 ≤ K) :
+    ∃ L : Language (A × TwoWay.SnakeDatum A Q K), L.IsRegular ∧
+      (∀ u ∈ L, TwoWay.SnakeRel M K (homOf (TwoWay.snakeIn K) u)
+        (homOf (TwoWay.snakeOutLet K) u)) ∧
+      (∀ w : List A, ∃ u ∈ L, homOf (TwoWay.snakeIn K) u = w)
+```
+
+in `SnakeStage1.lean`, and it is the only `sorry` of the project that concerns
+Section C.2.  It renders the book's sentence "*this stage can be implemented by
+a rational function, since a nondeterministic automaton with output can guess
+the record-breakers, and then check that they satisfy the conditions in the
+definition*" literally: what has to be produced is the language of the
+**checking** automaton.  The annotation is kept letter to letter — a letter of
+the input together with a `TwoWay.SnakeDatum`, that is, the bit marking a block
+boundary before (or, at the last letter, after) it and the data of the piece
+slots — so that a position of an annotation is a position of the input; the
+separators are inserted afterwards by the homomorphism `TwoWay.snakeOutLet`.
+
+Everything that turns such a language into what the induction step consumes is
+proved:
+
+* `Transducers.isRationalRel_of_regular_nivat` (`PartB/GuessCheck.lean`): a
+  regular language of annotations, read through one homomorphism and written
+  through another, is a rational relation (one half of Nivat's theorem).  This
+  is the "guess and check" step.
+* `Transducers.exists_rationalFun_of_total_rel` (`PartB/UniformFun.lean`,
+  Lemma B.2.5): a total rational relation contains the graph of a rational
+  function.  This is why no functionality of the guessing has to be proved.
+* `TwoWay.exists_rational_snakeRel`, `TwoWay.exists_snakeMarking` and
+  `TwoWay.widthOut_eq_pairMap` (`SnakeStage1.lean`) chain the three together and
+  hand the induction step of `SnakeReg.lean` the equation
+  `widthOut M K w = pairMap (blockFun M (K-1) (2K+1)) (ann w)` for every nonempty
+  `w`; the empty input is treated separately, by a case distinction over the
+  regular language `{[]}`.
+
+The tools for the missing regularity are in the project.  The conditions to be
+checked on an annotation are conditions on the run of `M` at, and between, the
+marked positions, and each of them is a regular property of the input marked at
+one or at two positions:
+
+* that the run visits a given cut in a given state — `TwoWay.visitLang_isRegular`
+  (`TwoWayVisit.lean`);
+* the order in time of the visits to *one* cut — `TwoWay.orderLang_isRegular`
+  (`TwoWayOrder.lean`), available as a rational annotation through
+  `TwoWay.exists_rational_visitOrder_annot` (`TwoWayAnnotOrd.lean`);
+* the order in time of two configurations at *two different* marked positions —
+  `RunMark.isRegular_beforeLang` with `RunMark.mem_beforeLang`
+  (`RunMark.lean`).  This is precisely the comparison that the definition of the
+  record-breaking columns makes: `xᵢ₊₁` is the least column whose first visit
+  comes after the last visit to `xᵢ`.
+
+Since the annotation is letter to letter, these become mso formulas with one and
+with two free first-order variables by Theorem C.4.1 in the form of
+`MarkLogic.exists_form_of_regular` and of `MarkLogic2`, and the conditions on an
+annotation are first-order combinations of them: each condition relates a marked
+position to the *next* marked position, and the marks are letters of the
+annotated alphabet, so no quantification over sets and no unbounded counting is
+needed.  The language of correct annotations is then mso-definable, hence
+regular by `Transducers.isRegular_of_msoDefinable` (`MSOBuchi.lean`).  Two
+things have to be added for that route to go through: the data `a`, `b`, `p` of
+the pieces, which `TwoWay.exists_pieceData` currently produces by an existential
+statement, have to be given explicitly in terms of the run (the states involved
+are the states of the run at the boundary times of the excursions), and the
+regular languages of marked *inputs* have to be pulled back along the projection
+from the annotated alphabet to the input alphabet.
 
 #### The proof of Theorem C.3.2
 
@@ -1179,10 +1263,21 @@ neighbouring-block map combinator `Transducers.RegPair.isRegularFun_pairMap`
 (`RegPair.lean`, on top of the bilateral rewritings of `RatBi.lean`); and the
 order in time of the visits of a run to a cut, on which the definition of the
 record-breaking columns rests, is a regular property available as a rational
-annotation (`TwoWayOrder.lean`, `TwoWayAnnotOrd.lean`).  What is left is the
-book's stage 1, the rational function marking the record-breaking columns, and
-the identification of the individual pieces inside a block.  See *What is
-missing in Theorem C.2.9* above.  Claim C.2.11 is proved in a corrected form:
+annotation (`TwoWayOrder.lean`, `TwoWayAnnotOrd.lean`).  The identification of
+the individual pieces inside a block is proved as well
+(`SnakeExc.lean`, `SnakeParts.lean`, `SnakePieceIdent.lean`,
+`SnakeFinalConf.lean`), so is the regularity of the block function and the fact
+that the map combinator applied to it on a correct marking computes the output
+of the run (`SnakeBlock.lean`, `SnakeRegTools.lean`), and so is the **existence
+of a correct marking of every input** (`SnakeAssemble.lean`, `SnakeData.lean`,
+`Transducers.TwoWay.exists_isSnakeMarking`, which depends only on `propext`,
+`Classical.choice`, `Quot.sound`).  What is left is one statement,
+`Transducers.TwoWay.exists_regular_snakeLang` (`SnakeStage1.lean`): that the
+correct markings can be *recognised*, that is, that they form a regular language
+of letter-to-letter annotated inputs.  Everything that turns such a language into
+the regular marking function that the induction step consumes is proved --
+"guess and check" (`PartB/GuessCheck.lean`) and uniformisation
+(`PartB/UniformFun.lean`).  See *What is missing in Theorem C.2.9* above.  Claim C.2.11 is proved in a corrected form:
 the statement as printed is false on the empty input, see *An error in
 Claim C.2.11* above.
 

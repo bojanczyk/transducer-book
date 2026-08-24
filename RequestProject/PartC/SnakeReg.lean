@@ -45,17 +45,34 @@ that the book's proof of the induction step rests on is available:
   `Transducers.TwoWay.exists_rational_visitOrder_annot` in
   `RequestProject/PartC/TwoWayAnnotOrd.lean`.
 
-What is missing is the machine-theoretic half of the induction step: the
-rational function of stage 1 of the book's proof, which marks the
-record-breaking columns of the run, and the presentation of each piece of the
-run as the value, on the block cut out around a record-breaker, of the
-width-`(k-1)` output function of a snake *with an arbitrary source and target
-vertex*.  Carrying the latter out needs a version of `TwoWay.widthOut` in which
-the source and the target of the run are marked in the input, since the pieces
-of a run start and end in the middle of it; the present formulation, with the
-run started in the initial configuration, is only the case that the reduction
-below uses (`TwoWay.widthOut_stopRight` in
-`RequestProject/PartC/SnakePiece.lean` is the first step in that direction).
+* the presentation of each piece of the run as the whole run of a *window
+  transducer* on a factor of the input, to which the induction hypothesis
+  applies (`TwoWay.exists_widthOut_excHalves`, `TwoWay.exists_widthOut_prog`,
+  `TwoWay.exists_widthOut_finalProg_confined`, in
+  `RequestProject/PartC/SnakePieceIdent.lean` and
+  `RequestProject/PartC/SnakeFinalConf.lean`, on top of
+  `RequestProject/PartC/SnakePiece.lean` and
+  `RequestProject/PartC/SnakePieceRev.lean`).  No version of `TwoWay.widthOut`
+  with a marked source and target has to be introduced: a piece is the whole run
+  of `TwoWay.stopRight` applied to `M` (or to its mirror image) on the window;
+* the *block function* applied by the map combinator to one pair of
+  neighbouring blocks (`TwoWay.isRegularFun_blockFun`) and the fact that the
+  combinator applied to it on a correct marking of the input computes the output
+  of the run (`TwoWay.pairMap_blockFun_eq_runOut`), both in
+  `RequestProject/PartC/SnakeBlock.lean`;
+* the **existence of a correct marking** of every nonempty input whose run halts
+  with width at most `k` (`TwoWay.exists_isSnakeMarking`, in
+  `RequestProject/PartC/SnakeData.lean`, through the assembly of
+  `RequestProject/PartC/SnakeAssemble.lean`).
+
+What is missing is only the machine-theoretic half of the book's stage 1: that
+the correct markings can be *recognised*.  It is isolated as the single open
+statement `TwoWay.exists_regular_snakeLang` in
+`RequestProject/PartC/SnakeStage1.lean`, which asks for a regular language of
+correctly annotated inputs containing an annotation of every input; guessing an
+annotation and checking it (`Transducers.isRationalRel_of_regular_nivat`) and
+uniformisation (`Transducers.exists_rationalFun_of_total_rel`, Lemma B.2.5) then
+produce the regular marking function that the step below uses.
 -/
 import RequestProject.PartC.SnakeBase
 import RequestProject.PartC.SnakeLoop
@@ -87,16 +104,46 @@ properties of Lemma C.2.10 -- the last gluing step, the map combinator applied
 to the blocks `wᵢ₋₁ # wᵢ` cut out by the record-breakers, is available as
 `Transducers.RegPair.isRegularFun_pairMap`. -/
 theorem boundedWidth_isRegular_step (k : ℕ) (ih : SnakeReg (k + 1)) : SnakeReg (k + 2) := by
+  classical
   intro A B Q hA hB hQ M
   haveI := hA; haveI := hB; haveI := hQ
-  obtain ⟨ann, hrat, hann⟩ := exists_snakeMarking M (k + 2)
+  obtain ⟨ann, hreg, hann⟩ := exists_snakeMarking M (by omega : 2 ≤ k + 2)
   have hblock : IsRegularFun (blockFun M (k + 1) (2 * (k + 2) + 1)) :=
     isRegularFun_blockFun M (k + 1) (fun M' => ih A B Q hA hB hQ M') _
   have hpair : IsRegularFun (RegPair.pairMap (blockFun M (k + 1) (2 * (k + 2) + 1))) :=
     RegPair.isRegularFun_pairMap hblock
-  refine (IsRegularFun.of_rational hrat).comp' hpair ?_
+  have hcomp : IsRegularFun (fun w : List A =>
+      RegPair.pairMap (blockFun M (k + 1) (2 * (k + 2) + 1)) (ann w)) :=
+    hreg.comp' hpair (fun _ => rfl)
+  have hconst : IsRegularFun (fun _ : List A => widthOut M (k + 2) ([] : List A)) :=
+    IsRegularFun.of_rational (isRationalFun_const _)
+  have hfold : ∀ (u : List A) (b : Bool), u.foldl (fun _ _ => true) b = (b || !u.isEmpty) := by
+    intro u
+    induction u with
+    | nil => intro b; simp
+    | cons a u ih' => intro b; simpa using ih' true
+  have hL : Language.IsRegular {w : List A | w = []} := by
+    refine RegAut.isRegular_of_eq
+      (RegAut.isRegular_foldl (Γ := A) (S := Bool) (fun _ _ => true) false {b | b = false}) ?_
+    intro u
+    constructor
+    · intro hu
+      have hu' : u = [] := hu
+      subst hu'
+      show List.foldl (fun _ _ => true) false ([] : List A) = false
+      rfl
+    · intro hu
+      have hu' : List.foldl (fun _ _ => true) false u = false := hu
+      rw [hfold] at hu'
+      cases u with
+      | nil => rfl
+      | cons a v => simp at hu'
+  refine (isRegularFun_cond hconst hcomp hL).congr ?_
   intro w
-  exact widthOut_eq_pairMap M (k + 2) hann w
+  by_cases hw : w = []
+  · rw [if_pos (show w ∈ {v : List A | v = []} from hw), hw]
+  · rw [if_neg (show w ∉ {v : List A | v = []} from hw)]
+    exact (widthOut_eq_pairMap M (k + 2) hann hw).symm
 
 open TwoWay in
 /-- **The snake lemma** (the book's Lemma "the output of a snake graph is
