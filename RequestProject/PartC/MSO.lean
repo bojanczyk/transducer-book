@@ -4,7 +4,7 @@ Part C, Section C.4: Logic
 
 The numbered results of Section C.4 that are proved: Theorem C.4.1,
 Lemma C.4.2, Theorem C.4.4, Claim C.4.6, Theorem C.4.8, Lemma C.4.10,
-Theorem C.4.11, Lemma C.4.13 and Lemma C.4.15.  Every
+Theorem C.4.11, Lemma C.4.13, Lemma C.4.15 and Theorem C.4.16.  Every
 proof in this file is complete.
 
 The definitions they speak about (monadic second-order logic, mso relabellings,
@@ -25,10 +25,15 @@ Theorem C.4.11 and Lemma C.4.13 are proved below, out of
 `RequestProject/PartC/FOSubstRel.lean`, `RequestProject/PartC/FOFlipFlop.lean`
 and `RequestProject/PartC/FOMealy.lean`.
 
-The numbered results of Section C.4 that are still open (Theorem C.4.16 and
-Theorem C.4.17) are stated in `RequestProject/PartC/MSOOpen.lean`, which this
-file imports; so importing `RequestProject.PartC.MSO` gives, as before, all the
-statements of Section C.4.
+Theorem C.4.16 is proved below, out of `RequestProject/PartC/FORev.lean`,
+`RequestProject/PartC/FOPos.lean`, `RequestProject/PartC/FORelabBimach.lean`
+(first-order relabellings are computed by aperiodic bimachines) and
+`RequestProject/PartC/FOBimachRelab.lean` (the converse).
+
+The only numbered result of Section C.4 that is still open (Theorem C.4.17) is
+stated in `RequestProject/PartC/MSOOpen.lean`, which this file imports; so
+importing `RequestProject.PartC.MSO` gives, as before, all the statements of
+Section C.4.
 
 Not formalised: Claim C.4.5, Lemma C.4.9 and Claim C.4.14, which are internal
 steps of the proofs of Theorems C.4.4, C.4.8 and C.4.11.
@@ -42,6 +47,8 @@ import RequestProject.PartC.MSOReg
 import RequestProject.PartC.FOHintikka
 import RequestProject.PartC.FOTypeDFA
 import RequestProject.PartC.FOMealy
+import RequestProject.PartC.FORelabBimach
+import RequestProject.PartC.FOBimachRelab
 
 namespace Transducers
 
@@ -146,6 +153,12 @@ theorem tp_eq_iff_fo_equiv {A : Type} [Finite A] (k : ℕ) (w v : List A) :
     have hv : (∀ fo so, MSO.Sat v fo so φ) ↔ MSO.Sat v (fun _ => 0) (fun _ => ∅) φ :=
       ⟨fun hs => hs _ _, fun hs fo so => (MSO.sat_sentence_congr hfo hfree v _ _ _ _).mp hs⟩
     exact hw.symm.trans ((h φ hfo hfree hq).trans hv)
+
+/-- **Theorem C.4.16.**  A string-to-string function is a first-order
+relabelling if and only if it is computed by an aperiodic bimachine. -/
+theorem foRelabelling_iff_aperiodicBimachine {A B : Type} [Finite A] [Finite B]
+    (f : List A → List B) : IsFORelabelling f ↔ IsAperiodicBimachine f :=
+  ⟨isAperiodicBimachine_of_isFORelabelling, isFORelabelling_of_isAperiodicBimachine⟩
 
 /-- **Lemma C.4.15.**  Refinement, congruence and aperiodicity of `k`-types. -/
 theorem tp_properties {A : Type} (k : ℕ) :

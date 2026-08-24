@@ -130,8 +130,12 @@ RequestProject/
 | `PartC/FOSubstRel.lean` | substitution of a sentence for a label test in a first-order formula, relativised to the positions at most a variable (`MSO.substRel`), used for the composition of first-order definable Mealy machines |
 | `PartC/FOFlipFlop.lean` | flip-flop machines: the letter-indexed reset target (`Mealy.resetTo`) and the description of the state reached after a prefix as the target of the last resetting letter (`Mealy.trans_take_eq_iff`) |
 | `PartC/FOMealy.lean` | the hard direction of Theorem C.4.11: first-order definable Mealy machines (`Transducers.FODefMealy`), their closure under composition, the first-order definability of flip-flops and hence of every composition of flip-flops (through the aperiodic Krohn-Rhodes Theorem A.2.8), and the Mealy machine of a dfa (`Transducers.foDefinable_of_aperiodic_dfa`) |
-| `PartC/MSO.lean` | Section C.4: the numbered results that are **proved** — Theorem C.4.1, Lemma C.4.2, Theorem C.4.4, Claim C.4.6, Theorem C.4.8, Lemma C.4.10, Theorem C.4.11, Lemma C.4.13 and Lemma C.4.15 (this file contains no `sorry`) |
-| `PartC/MSOOpen.lean` | Section C.4: the numbered results that are **still open** — Theorems C.4.16 and C.4.17, stated faithfully with `sorry` proofs (moved unchanged out of `MSO.lean`, which imports this file, so all names remain available through `RequestProject.PartC.MSO`) |
+| `PartC/FORev.lean` | first-order definability and reversal: every first-order definable language is defined by a first-order *sentence* (`FODefinable.exists_sentence`), the characterisation of first-order definability by invariance under `k`-types, the reversal `tpRev` of a `k`-type and `FODefinable.reverse`, and the first-order definability of the languages `{u \| δ*(q₀,u) = q}` and `{u \| δ*(q₀,reverse u) = q}` of an aperiodic transition function |
+| `PartC/FOPos.lean` | compositionality at a position: whether a first-order formula of quantifier rank at most `k`, evaluated with the constant valuation at a position, holds depends only on the `k`-type of the prefix, the letter and the `k`-type of the suffix (`Transducers.sat_const_iff_of_tp_split`) |
+| `PartC/FORelabBimach.lean` | Theorem C.4.16, from first-order relabellings to aperiodic bimachines: the prefix and suffix automata compute the `k`-type of the prefix and of the suffix, which are aperiodic transition functions, and by `FOPos.lean` the index chosen at a position — hence the output block — is a function of those two types and of the letter |
+| `PartC/FOBimachRelab.lean` | Theorem C.4.16, from aperiodic bimachines to first-order relabellings: the formula attached to an index `(q, a, s, last?)` says that the prefix drives the prefix automaton to `q` (a first-order sentence by Theorem C.4.11, relativised to the positions below), the letter is `a`, the suffix drives the suffix automaton to `s` (relativised to the positions above, first-order by `FODefinable.reverse`), and the position is, or is not, the last one; the block of the last gap is appended to the block of the last position |
+| `PartC/MSO.lean` | Section C.4: the numbered results that are **proved** — Theorem C.4.1, Lemma C.4.2, Theorem C.4.4, Claim C.4.6, Theorem C.4.8, Lemma C.4.10, Theorem C.4.11, Lemma C.4.13, Lemma C.4.15 and Theorem C.4.16 (this file contains no `sorry`) |
+| `PartC/MSOOpen.lean` | Section C.4: the numbered result that is **still open** — Theorem C.4.17, stated faithfully with a `sorry` proof (moved unchanged out of `MSO.lean`, which imports this file, so all names remain available through `RequestProject.PartC.MSO`) |
 | `PartD/MarkedSquare.lean` | marked squaring and its continuity |
 | `PartD/Statements.lean` | Part D: polyregular functions, for-transducers, pebble transducers |
 
@@ -493,8 +497,8 @@ The proofs are organised as follows.
 | Lemma C.4.13 (types and formulas) | `Transducers.tp_eq_iff_fo_equiv` | **proved** (`MSO.lean`, from `FOComp.lean` and `FOHintikka.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`) |
 | Claim C.4.14 | internal step of the proof of Lemma C.4.13; not a numbered result, but formalised as `Transducers.sat_iff_of_kEquiv` (`FOComp.lean`) | — |
 | Lemma C.4.15 (properties of types) | `Transducers.tp_properties` | proved (`KTypes.lean`) |
-| Theorem C.4.16 (first-order relabellings) | `Transducers.foRelabelling_iff_aperiodicBimachine` | statement only (`MSOOpen.lean`) |
-| Theorem C.4.17 (first-order transductions) | `Transducers.foTransduction_iff_prime_composition` | statement only (`MSOOpen.lean`) |
+| Theorem C.4.16 (first-order relabellings) | `Transducers.foRelabelling_iff_aperiodicBimachine` | **proved** (`MSO.lean`, from `FORelabBimach.lean` for `first-order relabelling ⊆ aperiodic bimachine` and `FOBimachRelab.lean` for the converse, on top of `FORev.lean` and `FOPos.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`) |
+| Theorem C.4.17 (first-order transductions) | `Transducers.foTransduction_iff_prime_composition` | statement only (`MSOOpen.lean`); the book gives no proof either — see *Theorem C.4.17 is still open* below |
 
 Supporting files for Part C: `ContAux.lean` (continuity is closed under
 composition; letter-to-letter maps, reversal, duplication and the map lifting of
@@ -912,6 +916,79 @@ Theorem C.4.8 is closed with it, with no further work.  The converse inclusion
 `regular ⊆ mso`, `Transducers.isMSOTransduction_of_isTwoWay`, is proved outright
 and depends only on `propext`, `Classical.choice`, `Quot.sound`.
 
+#### The proof of Theorem C.4.16
+
+Theorem C.4.16 is the first-order counterpart of Theorem C.4.4, and it is proved
+outright, following the book's proof of Theorem C.4.4 with aperiodicity added
+throughout and with Theorem C.4.11 and Lemma C.4.13 in place of Theorem C.4.1.
+
+From a first-order relabelling to an aperiodic bimachine
+(`Transducers.isAperiodicBimachine_of_isFORelabelling`, `FORelabBimach.lean`):
+let `k` bound the quantifier rank of the finitely many formulas of the
+relabelling.  The prefix automaton of the bimachine computes the `k`-type of the
+prefix read so far and the suffix automaton the `k`-type of the suffix; both
+transition functions are aperiodic, because `k`-types are (Lemma C.4.15,
+`Transducers.transAperiodic_tpStep`).  By the compositionality of first-order
+logic at a position (`Transducers.sat_const_iff_of_tp_split`, `FOPos.lean`, an
+application of Claim C.4.14), whether a formula of the relabelling holds at a
+position depends only on the `k`-type of the prefix, the letter and the `k`-type
+of the suffix; so the index chosen at a position, hence the output block, is a
+function of the bimachine's two states, which is exactly the output function of
+a bimachine.  The one place where the two notions differ is bookkeeping: a
+bimachine outputs one block per *gap*, one more than the number of positions,
+while a relabelling outputs one block per position; the block of the last gap is
+appended to the block of the last position, and the empty input is handled by
+`emptyOut`.
+
+From an aperiodic bimachine to a first-order relabelling
+(`Transducers.isFORelabelling_of_isAperiodicBimachine`, `FOBimachRelab.lean`):
+the indices of the relabelling are the quadruples `(q, a, s, last?)` consisting
+of a state of the prefix automaton, a letter, a state of the suffix automaton and
+a Boolean.  The formula of such an index says that the prefix strictly before the
+position drives the prefix automaton to `q`, that the letter is `a`, that the
+suffix strictly after the position drives the suffix automaton to `s`, and that
+the position is (or is not) the last one.  The first conjunct is a first-order
+sentence by Theorem C.4.11 (the language `{u | δ*(q₀,u) = q}` of an aperiodic
+transition function is first-order definable), relativised to the positions below
+the free variable with `MSO.relLt`; the third one is the same statement for the
+*reverse* of such a language, which is first-order definable because first-order
+definability is preserved by reversal (`Transducers.FODefinable.reverse`,
+`FORev.lean`, proved through the `k`-type characterisation and the reversal
+`tpRev` of a `k`-type), relativised with `MSO.relGt`.  Exactly one index holds at
+each position, and its output block is the block of the corresponding gap, with
+the block of the last gap again appended at the last position.
+
+`#print axioms Transducers.foRelabelling_iff_aperiodicBimachine` reports only
+`propext`, `Classical.choice`, `Quot.sound`, as it does on the two implications
+`Transducers.isAperiodicBimachine_of_isFORelabelling` and
+`Transducers.isFORelabelling_of_isAperiodicBimachine`.
+
+#### Theorem C.4.17 is still open
+
+Theorem C.4.17 (the first-order transductions are exactly the compositions of
+map reverse, map duplicate and first-order rational functions) is stated
+faithfully in `PartC/MSOOpen.lean` and its proof is `sorry`.  The book does not
+prove it either: it only states the result and leaves the proof "for a future
+edition of these notes", with a sketch of what would be needed, namely
+first-order variants of (1) the lemma saying that a string representation of the
+configuration graph of a two-way transducer can be computed, and (2) the main
+step in the decomposition of two-way transducers into primes, which says that the
+output string can be read off the configuration graph by a composition of primes
+-- "the second one being more technical".
+
+In this project those two ingredients are the contents of the dozen files behind
+Theorem C.4.8 and Theorem B.2.6, and their aperiodic counterparts are not
+available; producing them is a development of the same order of magnitude as the
+mso case.  The converse (and, in the mso case, easy) inclusion is not free
+either: for mso transductions, closure under composition is obtained here
+*through* Theorem C.4.8 and the fact that regular functions are by definition
+compositions of primes, and that route is unavailable in the first-order setting,
+so closure of first-order transductions under composition would have to be proved
+directly, by substituting formulas (a backwards translation of first-order
+formulas along a first-order transduction).  What *is* available towards
+Theorem C.4.17 is its relabelling half, Theorem C.4.16 above, which identifies
+the first-order rational functions appearing among the primes.
+
 ### Part D: Polyregular functions
 
 | Book | Lean | Status |
@@ -953,15 +1030,17 @@ Theorem C.1.1, Lemmas C.1.2 and C.1.3,
 Theorem C.2.2, **Theorem C.2.5**, Lemma C.2.6, **Corollary C.2.7**,
 **Corollary C.2.8**, **Lemma C.2.10**, **Claim C.2.11**, **Theorem C.4.1**,
 **Lemma C.4.2**, **Theorem C.4.4**, **Claim C.4.6**, **Lemma C.4.10**,
-**Theorem C.4.11**, **Lemma C.4.13** and
+**Theorem C.4.11**, **Lemma C.4.13**, **Theorem C.4.16** and
 Lemma C.4.15 are
 proved.  Theorem C.4.1 (Büchi-Elgot-Trakhtenbrot), Lemma C.4.2, Theorem C.4.4
 (rational functions are exactly the mso relabellings), Claim C.4.6,
 Lemma C.4.10 (the precomputation of a finite family of formulas by a
 letter-to-letter rational function), Theorem C.4.11 (a language is first-order
-definable if and only if it is recognised by an aperiodic dfa) and Lemma C.4.13
+definable if and only if it is recognised by an aperiodic dfa), Lemma C.4.13
 (two strings have the same `k`-type if and only if they satisfy the same
-first-order sentences of quantifier rank at most `k`)
+first-order sentences of quantifier rank at most `k`) and Theorem C.4.16 (the
+first-order relabellings are exactly the functions computed by aperiodic
+bimachines)
 are proved outright: no file they use contains a `sorry`, and each of them
 depends only on `propext`, `Classical.choice`, `Quot.sound` (checked again on a
 clean build of the whole project, `lake build` with no errors, and with
@@ -976,10 +1055,11 @@ transducer.  So that the state of the section is visible file by file, the
 numbered results of Section C.4 that are
 still open have been moved, unchanged, from `PartC/MSO.lean` to
 `PartC/MSOOpen.lean`, which `PartC/MSO.lean` imports: `PartC/MSO.lean` now
-contains exactly the nine proved results of Section C.4 (C.4.1, C.4.2, C.4.4,
-C.4.6, C.4.8, C.4.10, C.4.11, C.4.13, C.4.15) and no `sorry`, while every name
-of Section C.4 is still available from `RequestProject.PartC.MSO` as before;
-only Theorems C.4.16 and C.4.17 are left in `PartC/MSOOpen.lean`.
+contains exactly the ten proved results of Section C.4 (C.4.1, C.4.2, C.4.4,
+C.4.6, C.4.8, C.4.10, C.4.11, C.4.13, C.4.15, C.4.16) and no `sorry`, while
+every name of Section C.4 is still available from `RequestProject.PartC.MSO` as
+before; only Theorem C.4.17 is left in `PartC/MSOOpen.lean`, and the book gives
+no proof of it either -- see *Theorem C.4.17 is still open* above.
 Lemma C.4.13 is proved by the Ehrenfeucht-Fraïssé argument of the book: the
 compositionality of first-order logic (Claim C.4.14, `FOComp.lean`) gives one
 direction, and Hintikka sentences of quantifier rank `k`, built by induction
@@ -1075,8 +1155,11 @@ in full, while the printed inclusion is the still open
 `Transducers.RegPair.isRegularFun_pairMap`,
 `Transducers.isSST_of_isRegularFun`,
 `Transducers.exists_nsst_of_sst`,
-`Transducers.isTwoWay_of_nsst` and
-`Transducers.isTwoWay_of_isSST`
+`Transducers.isTwoWay_of_nsst`,
+`Transducers.isTwoWay_of_isSST`,
+`Transducers.isAperiodicBimachine_of_isFORelabelling`,
+`Transducers.isFORelabelling_of_isAperiodicBimachine` and
+`Transducers.foRelabelling_iff_aperiodicBimachine`
 reports only `propext`, `Classical.choice`, `Quot.sound`.
 (`Transducers.twoWay_iff_regular`, `Transducers.twoWay_isRegular` and
 `Transducers.sst_iff_regular` still depend on `sorryAx`, through
