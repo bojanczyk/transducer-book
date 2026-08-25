@@ -71,6 +71,10 @@ RequestProject/
 | `PartC/TwoWayRun.lean`, `PartC/TwoWayVisit.lean`, `PartC/TwoWayAnnot.lean`, `PartC/TwoWayAnnotBim.lean`, `PartC/TwoWayCompAux.lean`, `PartC/TwoWayCompPred.lean`, `PartC/TwoWayComp.lean`, `PartC/TwoWayCompFinal.lean` | the composition of two two-way transducers (Theorem C.2.5) |
 | `PartC/TwoWaySweep.lean`, `PartC/TwoWayRegular.lean` | explicit two-way transducers for the identity, for post-composition with a letter-to-letter map, and for map reverse and map duplicate; every regular function is computed by a two-way transducer (corrected Corollary C.2.8) |
 | `PartC/RegularDef.lean` | the prime regular functions and the regular functions (Definition C.0.14), moved here unchanged from `PartC/Statements.lean`, together with their elementary closure properties |
+| `PartC/RegCodeSan.lean` | codes of two-way transducers (`TwoWayCode`, `twoWayCodeAut`, `twoWayCodeRel`, `TwoWayCodeTotal`, moved here unchanged from `PartC/Statements.lean`), and the fact that a coded transducer is blind to the letters that do not occur in its table: renaming them does not change the computed relation (`Transducers.RegDec.twoWayCodeRel_map`), which is what makes the equivalence test of Theorem C.1.4 a finite check |
+| `PartC/RegCodeBound.lean` | the existence of the equivalence bound of Theorem C.1.4 for two codes (`Transducers.exists_twoWayCode_bound`): the transducer of a code read over the finite alphabets and the finite state set that occur in it, the step-by-step correspondence between its runs and those of the coded transducer, the determinism of two-way transducers (`TwoWay.computes_unique`), and the application of `Transducers.regularFun_eq_of_short` |
+| `PartC/EffectiveReg.lean` | the two effectivity hypotheses `EffectiveTwoWayEvalEq` and `EffectiveTwoWayBound` from which Theorem C.1.4 is proved, with their justification |
+| `PartC/RegEqDec.lean` | the decision procedure of Theorem C.1.4: compare the two codes on the strings of length at most the bound over the letters of the two codes together with one fresh letter |
 | `PartC/RatBuild.lean`, `PartC/RatTools.lean`, `PartC/RatSeq.lean` | a bimachine-based builder for rational functions, and the rational functions used by Lemma C.2.10 and Claim C.2.11 (constants, `cons`, letter-to-letter maps, homomorphisms, conditionals on a regular language, and sequential letter-by-letter transducers) |
 | `PartC/MapLiftAux.lean`, `PartC/MapLiftRat.lean`, `PartC/MapLiftPrime.lean`, `PartC/RegMapLift.lean` | closure of the regular functions under map lifting (first item of Lemma C.2.10): the map lifting of a rational function is rational, the map liftings of map reverse and map duplicate are regular, and the general case follows by induction on the composition tree |
 | `PartC/SumShape.lean`, `PartC/SumPrime.lean`, `PartC/SumReg.lean`, `PartC/RegSum.lean` | Claim C.2.11: the *marked sum* of two regular functions, its compatibility with composition, its prime base cases, and the passage from the marked sum to the sum of the claim (with the counterexample `Transducers.not_sum_of_regular_nil` to the claim as printed) |
@@ -495,7 +499,7 @@ The proofs are organised as follows.
 | Theorem C.1.1 (continuity, composition) | `Transducers.regular_continuous`, `Transducers.regular_comp` | proved (continuity by induction on the decomposition into primes, `ContAux.lean`) |
 | Lemma C.1.2 (reversal, duplication) | `Transducers.reverse_duplicate_continuous` | proved (`ContAux.lean`) |
 | Lemma C.1.3 (map lifting) | `Transducers.mapLift_continuous` | proved (Myhill–Nerode, `ContAux.lean`) |
-| Theorem C.1.4 (decidable equivalence) | `Transducers.regular_equivalence_decidable` | statement only |
+| Theorem C.1.4 (decidable equivalence) | `Transducers.regular_equivalence_decidable`; the book's proof: `Transducers.isWeighted_comp_regular`, `Transducers.isWeighted_comp_mapReverse`, `Transducers.isWeighted_comp_mapDuplicate`, `Transducers.exists_injective_weighted`, `Transducers.regularFun_eq_iff_weighted_eq`, `Transducers.regularFun_eq_iff_weighted_zero`, `Transducers.regularFun_eq_of_short`, `Transducers.exists_twoWayCode_bound` | the mathematical content of the book's proof is **proved** (`WeightedLin.lean`, `WeightedMapLift.lean`, `WeightedRegClosure.lean`): the reduction to zeroness of weighted automata over `ℚ` through the prime decomposition, with the constructions for map reverse (transposition of the matrices of a linear representation, where commutativity of the semiring is used) and map duplicate (Kronecker squares), the injective encoding of output strings by rationals, and the resulting bound reducing equivalence to a finite check. The decidability statement on *codes*, `Transducers.regular_equivalence_decidable`, is **proved from two explicit effectivity hypotheses** (`EffectiveTwoWayEvalEq` and `EffectiveTwoWayBound` of `PartC/EffectiveReg.lean`, `PartC/RegEqDec.lean`), exactly as Theorems B.3.3 and B.3.7 are: what those hypotheses isolate is the missing `Primrec`/`Computable` arithmetic on `ℤ` and `ℚ`. The *existence* of the equivalence bound, the mathematical content of the second hypothesis, is proved (`Transducers.exists_twoWayCode_bound`, `PartC/RegCodeBound.lean`) |
 | Definition C.2.1 (two-way transducer) | `Transducers.TwoWay`, `Transducers.IsTwoWay` | — |
 | Theorem C.2.2 (continuity) | `Transducers.twoWay_continuous` | proved (`TwoWayCont.lean`, from Shepherdson's Theorem in `TwoDFA.lean`) |
 | Lemmas C.2.3, C.2.4, C.2.12 | not formalised (configuration-graph encodings used inside proofs) | — |
@@ -588,6 +592,50 @@ The files added for Theorem C.2.5 are:
   transducer are padded with a blank letter to a common length, which is
   harmless because two-way transducers are closed under pre-composition with the
   erasing homomorphism that deletes the blanks.
+
+#### The conditional result of Part C (C.1.4)
+
+Theorem C.1.4, in its form as a decision procedure on codes of two-way
+transducers, is proved in the same style as Theorems B.3.3 and B.3.7 of Part B:
+from explicit effectivity hypotheses, with everything else discharged in full
+and with no `sorry` anywhere in its dependencies (`#print axioms` reports only
+`propext`, `Classical.choice`, `Quot.sound`).  The unconditional statement is
+kept, commented out, in `PartC/Statements.lean`.
+
+The two hypotheses are in `PartC/EffectiveReg.lean`:
+
+* `EffectiveTwoWayEvalEq` — there is a computable procedure which, given two
+  codes of two-way transducers and an input, decides whether the two
+  transducers have the same outputs on it (correctly at least when both codes
+  describe total functions).  A deterministic two-way transducer promised to
+  halt can be simulated, so this is a true statement about ordinary
+  computability.
+* `EffectiveTwoWayBound` — there is a computable function which, given two
+  codes, returns a length bound after which agreement on all shorter inputs
+  forces the two coded transducers to compute the same relation.  Only its
+  *computability* is assumed: that such a bound exists is proved, in
+  `PartC/RegCodeBound.lean`, as `Transducers.exists_twoWayCode_bound`.
+
+Everything else is proved:
+
+* `RegCodeSan.lean` — a code is a finite table, so it cannot distinguish two
+  letters that are both absent from it; renaming the letters outside the table
+  does not change the computed relation (`Transducers.RegDec.twoWayCodeRel_map`,
+  by a step-by-step correspondence between the two runs).  This is what makes
+  the test finite: it is enough to compare the two codes on the strings over
+  their letters together with one fresh letter.
+* `RegCodeBound.lean` — the existence of the bound.  A code describes a
+  transducer over the infinite alphabet `ℕ` with the infinite state set `ℕ`,
+  while Theorem C.2.9 speaks about finite alphabets; but only finitely many
+  letters, output letters and states occur in a code, so the code also describes
+  a transducer `finAut` over those finite sets, whose runs correspond step by
+  step to the runs of the coded transducer.  Its computed function is regular
+  (`Transducers.isRegularFun_of_isTwoWay`), so
+  `Transducers.regularFun_eq_of_short` supplies the bound, and the determinism
+  of two-way transducers (`TwoWay.computes_unique`) turns the equality of the
+  two computed functions back into the equality of the two coded relations.
+* `RegEqDec.lean` — the decision procedure, assembled as in
+  `PartB/WeightedDec.lean`, and its computability.
 
 #### A typo in Corollary C.2.8
 
@@ -1173,14 +1221,17 @@ four results also need and which used to be a second hypothesis, is proved in
 Part B contains a `sorry`, and every numbered result of Part B depends only on
 `propext`, `Classical.choice`, `Quot.sound`.
 In Part C,
-Theorem C.1.1, Lemmas C.1.2 and C.1.3,
+Theorem C.1.1, **Theorem C.1.4**, Lemmas C.1.2 and C.1.3,
 Theorem C.2.2, **Theorem C.2.5**, Lemma C.2.6, **Corollary C.2.7**,
 **Corollary C.2.8**, **Theorem C.2.9**, **Lemma C.2.10**, **Claim C.2.11**,
 **Theorem C.3.2**, **Theorem C.4.8**, **Theorem C.4.1**,
 **Lemma C.4.2**, **Theorem C.4.4**, **Claim C.4.6**, **Lemma C.4.10**,
 **Theorem C.4.11**, **Lemma C.4.13**, **Theorem C.4.16** and
 Lemma C.4.15 are
-proved.  Theorem C.4.1 (Büchi-Elgot-Trakhtenbrot), Lemma C.4.2, Theorem C.4.4
+proved; Theorem C.1.4 is proved from the two effectivity hypotheses of
+`PartC/EffectiveReg.lean` — see the subsection *The conditional result of
+Part C (C.1.4)* above — and everything else it needs, including the existence of
+its equivalence bound, is proved.  Theorem C.4.1 (Büchi-Elgot-Trakhtenbrot), Lemma C.4.2, Theorem C.4.4
 (rational functions are exactly the mso relabellings), Claim C.4.6,
 Lemma C.4.10 (the precomputation of a finite family of formulas by a
 letter-to-letter rational function), Theorem C.4.11 (a language is first-order

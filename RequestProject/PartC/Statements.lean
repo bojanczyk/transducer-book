@@ -21,6 +21,8 @@ import RequestProject.PartC.RegClosure
 import RequestProject.PartC.SnakeReg
 import RequestProject.PartC.SSTRegular
 import RequestProject.PartC.SSTTwoWay
+import RequestProject.PartC.WeightedRegClosure
+import RequestProject.PartC.RegEqDec
 
 namespace Transducers
 
@@ -85,6 +87,49 @@ same is true for its map lifting. -/
 theorem mapLift_continuous {A B : Type} [Finite A] [Finite B] {f : List A → List B}
     (hf : Continuous f) : Continuous (mapLift f) :=
   continuous_mapLift hf
+
+/-! ### Equivalence (Theorem C.1.4)
+
+The book proves Theorem C.1.4 by a reduction to zeroness -- equivalently, to
+equivalence -- of weighted automata over the field of rationals, and the
+reduction uses the *prime decomposition* of a regular function: the class of
+functions that can be post-composed with weighted automata is closed under
+composition, contains the rational functions by Lemma B.3.5
+(`Transducers.weighted_precomp_rational`), and contains map reverse and map
+duplicate, for which the book gives the two constructions with triples of
+states.
+
+That proof is formalised in `RequestProject/PartC/WeightedRegClosure.lean` and
+`RequestProject/PartC/WeightedMapLift.lean`, on linear representations of
+weighted automata rather than on the automata themselves:
+
+* `Transducers.isWeighted_comp_mapReverse` -- the map reverse construction,
+  where running a block backwards is transposition of the matrices of the
+  representation (this is where commutativity of the semiring is used, as the
+  book points out);
+* `Transducers.isWeighted_comp_mapDuplicate` -- the map duplicate construction,
+  where the weight of a transition of the new automaton is a product of the
+  weights of two transitions of the original one, realised by the Kronecker
+  square of the matrices;
+* `Transducers.isWeighted_comp_regular` -- the induction on the prime
+  decomposition, i.e. the statement that weighted automata are closed under
+  pre-composition with regular functions;
+* `Transducers.exists_injective_weighted` -- observation (a) of the book:
+  output strings are represented injectively by rational numbers, by a weighted
+  automaton;
+* `Transducers.regularFun_eq_iff_weighted_eq` -- the reduction itself: two
+  regular functions are equal if and only if the two weighted automata over `ℚ`
+  obtained by post-composing them with the injective automaton are equal;
+* `Transducers.regularFun_eq_of_short` -- the resulting decision procedure in
+  semantic form: two regular functions over finite alphabets are equal as soon
+  as they agree on the finitely many inputs of length at most a bound supplied
+  by the zeroness criterion for weighted automata over a field
+  (`Transducers.weighted_eq_of_short`, the mathematical content of
+  Theorems B.3.3 and B.3.7).
+
+The statement of the decidability on *finite descriptions* of transducers is
+`Transducers.regular_equivalence_decidable` in Section C.2.3 below; see its
+docstring. -/
 
 /-! ## C.2 Two-way transducers -/
 
@@ -195,32 +240,58 @@ be run directly on two-way transducers.  A two-way transducer over the alphabet
 `ℕ` is coded by a finite lookup table for its transition function, transitions
 that are absent from the table halting with empty output. -/
 
-/-- A finite description of a two-way transducer with states and letters coded
-by natural numbers. -/
-abbrev TwoWayCode := List ((Option ℕ × ℕ × Option ℕ) × (List ℕ ⊕ (ℕ × List ℕ × Bool)))
+/-  The definitions `Transducers.TwoWayCode`, `Transducers.twoWayCodeAut`,
+`Transducers.twoWayCodeRel` and `Transducers.TwoWayCodeTotal` used to be given
+here; they have been moved, unchanged, to
+`RequestProject/PartC/RegCodeSan.lean`, which this file imports, so that the
+decision procedure below could be developed before this file. -/
 
-/-- The two-way transducer described by a code. -/
-def twoWayCodeAut (c : TwoWayCode) : TwoWay ℕ ℕ ℕ where
-  init := 0
-  step := fun l q r =>
-    match c.lookup (l, q, r) with
-    | some x => x
-    | none => Sum.inl []
+/-  The unconditional form of Theorem C.1.4 is
 
-/-- The relation computed by the two-way transducer described by a code. -/
-def twoWayCodeRel (c : TwoWayCode) : List ℕ → List ℕ → Prop := (twoWayCodeAut c).Computes
-
-/-- The promise that a code describes a transducer that computes a total
-function. -/
-def TwoWayCodeTotal (c : TwoWayCode) : Prop := ∀ w, ∃ v, twoWayCodeRel c w v
-
-/-- **Theorem C.1.4.**  Equivalence is decidable for regular functions (here:
-for the two-way transducers that compute them, cf. Theorem C.2.9). -/
 theorem regular_equivalence_decidable :
     DecidableUnderPromise
       (fun p : TwoWayCode × TwoWayCode => TwoWayCodeTotal p.1 ∧ TwoWayCodeTotal p.2)
       (fun p => twoWayCodeRel p.1 = twoWayCodeRel p.2) := by
   sorry
+
+The mathematical content of the book's proof -- the reduction to equivalence of
+weighted automata over the field of rationals through the prime decomposition,
+including the constructions for map reverse and map duplicate -- is proved in
+`RequestProject/PartC/WeightedRegClosure.lean`; see the note at the end of
+Section C.1 above, and in particular `Transducers.regularFun_eq_of_short`, which
+reduces the equivalence of two regular functions to a finite check.  What is
+missing for the unconditional statement is only the *effective* form of that
+chain on codes: a code has to be turned into a linear representation over `ℚ`
+and the bound has to be computed from it, and, as for Theorems B.3.3 and B.3.7,
+this runs into the absence of arithmetic on `ℤ` and `ℚ` in Mathlib's
+`Primrec`/`Computable` API (see `RequestProject/PartB/Effective.lean`).
+
+That missing ingredient is isolated in `RequestProject/PartC/EffectiveReg.lean`
+as the two hypotheses `Transducers.EffectiveTwoWayEvalEq` (two coded two-way
+transducers can be compared effectively on a given input) and
+`Transducers.EffectiveTwoWayBound` (an equivalence bound can be computed from
+the two codes; that such a bound *exists* is
+`Transducers.exists_twoWayCode_bound`, proved from the book's argument).  The
+version below takes them as explicit assumptions, exactly as Theorems B.3.3,
+B.3.4, B.3.7 and B.4.2 take `Transducers.EffectiveWeightedEvalEq` as an explicit
+assumption and Theorem B.1.6 takes the undecidability of the Post correspondence
+problem as an explicit assumption.  Everything else -- that the finitely many
+inputs to be tested may be taken over the letters of the two codes together with
+one fresh letter, and the assembly of the decision procedure -- is discharged in
+full in `RequestProject/PartC/RegEqDec.lean`. -/
+
+/-- **Theorem C.1.4.**  Equivalence is decidable for regular functions (here:
+for the two-way transducers that compute them, cf. Theorem C.2.9).
+
+Proved from the effectivity hypotheses `EffectiveTwoWayEvalEq` and
+`EffectiveTwoWayBound` of `RequestProject/PartC/EffectiveReg.lean`; see the
+comment above. -/
+theorem regular_equivalence_decidable (hEval : EffectiveTwoWayEvalEq)
+    (hBound : EffectiveTwoWayBound) :
+    DecidableUnderPromise
+      (fun p : TwoWayCode × TwoWayCode => TwoWayCodeTotal p.1 ∧ TwoWayCodeTotal p.2)
+      (fun p => twoWayCodeRel p.1 = twoWayCodeRel p.2) :=
+  regular_equivalence_decidable_aux hEval hBound
 
 /-! ### C.2.4 Decomposition into prime functions -/
 
