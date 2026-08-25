@@ -179,4 +179,26 @@ The above problem is one of the reasons why we avoid relations in this book. The
 K_1 \times L_1 \cup \cdots \cup K_n \times L_n 
 \end{align*}
 where each $K_i$ is a regular language over the input alphabet and each $L_i$ is a regular language over the output alphabet.}
-{ }
+{
+    We use the standard reformulation of recognisability: a subset of a monoid is recognisable if and only if it is the inverse image $h^{-1}(F)$ of some subset $F$, under some monoid homomorphism $h$ into a finite monoid. (Given a congruence of finite index, take the quotient monoid; conversely, the equivalence which identifies elements with the same image under $h$ is a congruence of finite index.)
+
+    Consider first a product $K \times L$ of regular languages, which are recognised by monoid homomorphisms
+    \begin{align*}
+    A^* \xrightarrow g M \qquad \text{and} \qquad B^* \xrightarrow k N.
+    \end{align*}
+    This product is recognised by the homomorphism into $M \times N$ which maps a pair $(w,v)$ to $(g(w),k(v))$. For a finite union of such products, we take the product of the corresponding monoids, thus obtaining a single homomorphism which recognises all of the products at the same time, and hence also their union, since the recognisable subsets for a fixed homomorphism are closed under Boolean operations.
+
+    For the converse implication, consider a recognisable relation $R = h^{-1}(F)$, for some homomorphism $h$ into a finite monoid $M$. The point is that the two coordinates are independent, because every pair factors as
+    \begin{align*}
+    (w,v) = (w,\varepsilon) \cdot (\varepsilon,v).
+    \end{align*}
+    Applying $h$ to this factorisation, we get $h(w,v) = g(w) \cdot k(v)$, where
+    \begin{align*}
+    g(w) \eqdef h(w,\varepsilon) \qquad \text{and} \qquad k(v) \eqdef h(\varepsilon,v)
+    \end{align*}
+    are monoid homomorphisms from $A^*$ and $B^*$ into $M$, and hence they recognise regular languages. It follows that
+    \begin{align*}
+    R = \bigcup g^{-1}(m) \times k^{-1}(n),
+    \end{align*}
+    where the union ranges over the finitely many pairs $(m,n) \in M \times M$ whose product $mn$ belongs to $F$. This is a finite union of products of regular languages, as required.
+}

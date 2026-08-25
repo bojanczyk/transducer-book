@@ -112,4 +112,20 @@ In the above proof, we showed that regular functions can be post-composed with w
 Note that continuity, in the sense of Definition~\ref{def:continuity}, is a special case of the post-composition closure in the above conjecture, when one considers weighted automata over the Boolean semiring. It is also possible that the conjecture holds already for a fixed semiring, such as the field of rationals.
 \exerciseheader 
 
-\exer{In  Definition~\ref{def:regular-functions}, we use map reverse and map duplicate over arbitrary alphabets of the form $A + 1$. Show that the definition remains the same if we only consider $A$ with two letters.   }{ }
+\exer{In  Definition~\ref{def:regular-functions}, we use map reverse and map duplicate over arbitrary alphabets of the form $A + 1$. Show that the definition remains the same if we only consider $A$ with two letters.   }{
+    One inclusion is immediate, since a two-letter alphabet is a special case. For the converse inclusion, we show how map reverse and map duplicate for an arbitrary alphabet $A$ can be simulated using their two-letter counterparts, together with rational functions.
+
+    Fix an injective encoding of the letters of $A$ as bit strings of a common length
+    \begin{align*}
+    \text{code} : A \to \set{0,1}^k,
+    \end{align*}
+    and extend it to a homomorphism on $(A+1)^*$, by mapping the separator to itself. This homomorphism is rational. Decoding is rational as well: a transducer reads the input in blocks of $k$ letters, restarting at each separator, and outputs one letter of $A$ per complete block. (A rational function must be total, so we also need to say what the decoder does on badly formatted inputs; this is irrelevant, so we can say that an incomplete last block is ignored.)
+
+    For map duplicate, we have the decomposition
+    \begin{align*}
+    \text{map duplicate over $A$} \quad = \quad \text{code} \ \cdot \ \text{map duplicate over $\set{0,1}$} \ \cdot \ \text{decode},
+    \end{align*}
+    because duplicating the encoding of a string is the same as encoding its duplication.
+
+    For map reverse, the same decomposition almost works, the problem being that reversing an encoded string reverses not only the order of the blocks, but also the bits inside each block. The second effect is undone before it happens: instead of the homomorphism above, we use the homomorphism which maps each letter to the reverse of its code. With this modification, reversing the encoded string yields the encoding of the reversed string, and the decomposition works as for map duplicate.
+}

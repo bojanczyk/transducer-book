@@ -106,8 +106,12 @@ def read_book():
         kind = anchor.split(".")[0].lower()
         if kind not in KINDS:
             continue
-        book[(kind, number)] = {"label": label, "number": number,
-                                "page": page, "anchor": anchor, "kind": kind}
+        # hyperref invents targets of its own (`autoref-1`); an authored label is
+        # the one to key on, and a generated one must not shadow it
+        prev = book.get((kind, number))
+        if prev is None or (":" in label and ":" not in prev["label"]):
+            book[(kind, number)] = {"label": label, "number": number,
+                                    "page": page, "anchor": anchor, "kind": kind}
     return book
 
 

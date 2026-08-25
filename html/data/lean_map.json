@@ -47,7 +47,7 @@
   },
   "Mealy": {
    "kind": "definition",
-   "label": "autoref-1",
+   "label": "def:mealy-machine",
    "number": "A.1.1"
   },
   "NFAO": {
@@ -92,7 +92,7 @@
   },
   "Transducers.IsMealy": {
    "kind": "definition",
-   "label": "autoref-1",
+   "label": "def:mealy-machine",
    "number": "A.1.1"
   },
   "Transducers.IsSST": {
@@ -117,7 +117,7 @@
   },
   "Transducers.Mealy.eval": {
    "kind": "definition",
-   "label": "autoref-1",
+   "label": "def:mealy-machine",
    "number": "A.1.1"
   },
   "Transducers.PrimeMealyFam": {
@@ -129,6 +129,36 @@
    "kind": "definition",
    "label": "def:regular-functions",
    "number": "C.0.14"
+  },
+  "Transducers.boundedWidth_isRegular": {
+   "kind": "lemma",
+   "label": "lem:output-of-snake-graph-is-regular",
+   "number": "C.2.12"
+  },
+  "Transducers.exists_injective_weighted": {
+   "kind": "theorem",
+   "label": "thm:decidable-equivalence-regular",
+   "number": "C.1.4"
+  },
+  "Transducers.exists_twoWayCode_bound": {
+   "kind": "theorem",
+   "label": "thm:decidable-equivalence-regular",
+   "number": "C.1.4"
+  },
+  "Transducers.isWeighted_comp_mapDuplicate": {
+   "kind": "theorem",
+   "label": "thm:decidable-equivalence-regular",
+   "number": "C.1.4"
+  },
+  "Transducers.isWeighted_comp_mapReverse": {
+   "kind": "theorem",
+   "label": "thm:decidable-equivalence-regular",
+   "number": "C.1.4"
+  },
+  "Transducers.isWeighted_comp_regular": {
+   "kind": "theorem",
+   "label": "thm:decidable-equivalence-regular",
+   "number": "C.1.4"
   },
   "TwoWay": {
    "kind": "definition",
@@ -555,6 +585,21 @@
    "label": "thm:rational-is-mealy-characterisation",
    "number": "B.2.7"
   },
+  "regularFun_eq_iff_weighted_eq": {
+   "kind": "theorem",
+   "label": "thm:decidable-equivalence-regular",
+   "number": "C.1.4"
+  },
+  "regularFun_eq_iff_weighted_zero": {
+   "kind": "theorem",
+   "label": "thm:decidable-equivalence-regular",
+   "number": "C.1.4"
+  },
+  "regularFun_eq_of_short": {
+   "kind": "theorem",
+   "label": "thm:decidable-equivalence-regular",
+   "number": "C.1.4"
+  },
   "regularFun_isTwoWay": {
    "kind": "corollary",
    "label": "cor:2dfa-computes-all-regular-functions",
@@ -576,6 +621,11 @@
    "number": "C.1.1"
   },
   "regular_equivalence_decidable": {
+   "kind": "theorem",
+   "label": "thm:decidable-equivalence-regular",
+   "number": "C.1.4"
+  },
+  "regular_equivalence_decidable_aux": {
    "kind": "theorem",
    "label": "thm:decidable-equivalence-regular",
    "number": "C.1.4"
@@ -727,10 +777,474 @@
   }
  },
  "entries": {
-  "autoref-1": {
+  "claim:aperiodic-pumping": {
+   "anchor": "claim.80",
+   "kind": "claim",
+   "label": "claim:aperiodic-pumping",
+   "lean": [
+    {
+     "decl_line": 656,
+     "end": 666,
+     "file": "RequestProject/PartA/Statements.lean",
+     "line": 653,
+     "name": "aperiodic_iff_pumping",
+     "primary": true,
+     "state": "proved"
+    }
+   ],
+   "number": "A.2.9",
+   "page": "24",
+   "theorems_md_status": "proved"
+  },
+  "claim:bounded-extensions": {
+   "anchor": "claim.195",
+   "kind": "claim",
+   "label": "claim:bounded-extensions",
+   "lean": [
+    {
+     "decl_line": 269,
+     "end": 287,
+     "file": "RequestProject/PartB/SubseqAlpha.lean",
+     "from": "THEOREMS.md",
+     "internal": true,
+     "line": 267,
+     "name": "delay_bound",
+     "primary": true,
+     "state": "proved"
+    }
+   ],
+   "number": "B.4.9",
+   "page": "60",
+   "theorems_md_status": "not formalised as numbered results; they appear as the internal steps `delay_bound`, `key_drop`, `incr_congr` and `exists_deletion_bound` of the proof of Theore"
+  },
+  "claim:computing-branching-part": {
+   "anchor": "claim.199",
+   "kind": "claim",
+   "label": "claim:computing-branching-part",
+   "lean": [
+    {
+     "decl_line": 227,
+     "end": 242,
+     "file": "RequestProject/PartB/SubseqState.lean",
+     "from": "THEOREMS.md",
+     "internal": true,
+     "line": 224,
+     "name": "key_drop",
+     "primary": true,
+     "state": "proved"
+    }
+   ],
+   "number": "B.4.10",
+   "page": "61",
+   "theorems_md_status": "not formalised as numbered results; they appear as the internal steps `delay_bound`, `key_drop`, `incr_congr` and `exists_deletion_bound` of the proof of Theore"
+  },
+  "claim:conditional": {
+   "anchor": "claim.251",
+   "kind": "claim",
+   "label": "claim:conditional",
+   "lean": [
+    {
+     "decl_line": 387,
+     "end": 398,
+     "file": "RequestProject/PartC/Statements.lean",
+     "line": 380,
+     "name": "sum_of_regular",
+     "primary": true,
+     "state": "proved"
+    },
+    {
+     "decl_line": 41,
+     "end": 53,
+     "file": "RequestProject/PartC/RegSum.lean",
+     "line": 35,
+     "name": "sum_of_regular_aux",
+     "state": "proved"
+    },
+    {
+     "decl_line": 211,
+     "end": 239,
+     "file": "RequestProject/PartC/SumReg.lean",
+     "line": 208,
+     "name": "msum_to_sum",
+     "state": "proved"
+    }
+   ],
+   "number": "C.2.11",
+   "page": "79",
+   "theorems_md_status": "**proved** (`SumShape.lean`, `SumPrime.lean`, `SumReg.lean`, `RegSum.lean`), in the corrected form — the claim as printed is false on the empty input, see *An error in Claim C.2.11* below"
+  },
+  "claim:eliminating-negative-letters": {
+   "anchor": "claim.203",
+   "kind": "claim",
+   "label": "claim:eliminating-negative-letters",
+   "lean": [
+    {
+     "decl_line": 154,
+     "end": 242,
+     "file": "RequestProject/PartB/SubseqBound.lean",
+     "from": "THEOREMS.md",
+     "internal": true,
+     "line": 152,
+     "name": "exists_deletion_bound",
+     "primary": true,
+     "state": "proved"
+    }
+   ],
+   "number": "B.4.12",
+   "page": "63",
+   "theorems_md_status": "not formalised as numbered results; they appear as the internal steps `delay_bound`, `key_drop`, `incr_congr` and `exists_deletion_bound` of the proof of Theore"
+  },
+  "claim:fo-composition-quantifier-rank": {
+   "anchor": "claim.321",
+   "kind": "claim",
+   "label": "claim:fo-composition-quantifier-rank",
+   "lean": [
+    {
+     "decl_line": 480,
+     "end": 529,
+     "file": "RequestProject/PartC/FOComp.lean",
+     "line": 477,
+     "name": "sat_iff_of_kEquiv",
+     "primary": true,
+     "state": "proved"
+    }
+   ],
+   "number": "C.4.14",
+   "page": "106",
+   "theorems_md_status": ""
+  },
+  "claim:from-child-configuration-graph-to-children": {
+   "anchor": "claim.474",
+   "kind": "claim",
+   "label": "claim:from-child-configuration-graph-to-children",
+   "lean": [],
+   "not_formalised": true,
+   "number": "D.2.7",
+   "page": "127",
+   "theorems_md_status": "not formalised (configuration encodings used inside proofs)"
+  },
+  "claim:from-configuration-to-child-configuration-graph": {
+   "anchor": "claim.473",
+   "kind": "claim",
+   "label": "claim:from-configuration-to-child-configuration-graph",
+   "lean": [],
+   "not_formalised": true,
+   "number": "D.2.6",
+   "page": "126",
+   "theorems_md_status": "not formalised (configuration encodings used inside proofs)"
+  },
+  "claim:homomorphism-complement-rational": {
+   "anchor": "claim.110",
+   "kind": "claim",
+   "label": "claim:homomorphism-complement-rational",
+   "lean": [
+    {
+     "decl_line": 84,
+     "end": 86,
+     "file": "RequestProject/PartB/RationalStatements.lean",
+     "line": 82,
+     "name": "hom_complement_rational",
+     "primary": true,
+     "state": "proved"
+    },
+    {
+     "decl_line": 319,
+     "end": 324,
+     "file": "RequestProject/PartB/HomComplement.lean",
+     "line": 317,
+     "name": "hom_complement_rational_aux",
+     "state": "proved"
+    }
+   ],
+   "number": "B.1.7",
+   "page": "34",
+   "theorems_md_status": "proved (explicit four-state automaton, `HomComplement.lean`)"
+  },
+  "claim:mso-annotation-regular": {
+   "anchor": "claim.285",
+   "kind": "claim",
+   "label": "claim:mso-annotation-regular",
+   "lean": [
+    {
+     "decl_line": 113,
+     "end": 117,
+     "file": "RequestProject/PartC/MSO.lean",
+     "line": 110,
+     "name": "msoRelabelling_annotation_regular",
+     "primary": true,
+     "state": "proved"
+    },
+    {
+     "decl_line": 198,
+     "end": 224,
+     "file": "RequestProject/PartC/MSORelab.lean",
+     "line": 195,
+     "name": "msoRelabelling_annotation_regular_aux",
+     "state": "proved"
+    }
+   ],
+   "number": "C.4.6",
+   "page": "96",
+   "theorems_md_status": "**proved** (`MSORelab.lean`, from Lemma C.4.2)"
+  },
+  "claim:offsets-are-regular": {
+   "anchor": "claim.202",
+   "kind": "claim",
+   "label": "claim:offsets-are-regular",
+   "lean": [
+    {
+     "decl_line": 345,
+     "end": 377,
+     "file": "RequestProject/PartB/SubseqState.lean",
+     "from": "THEOREMS.md",
+     "internal": true,
+     "line": 344,
+     "name": "incr_congr",
+     "primary": true,
+     "state": "proved"
+    }
+   ],
+   "number": "B.4.11",
+   "page": "62",
+   "theorems_md_status": "not formalised as numbered results; they appear as the internal steps `delay_bound`, `key_drop`, `incr_congr` and `exists_deletion_bound` of the proof of Theore"
+  },
+  "claim:reachability-basic-run": {
+   "anchor": "claim.469",
+   "kind": "claim",
+   "label": "claim:reachability-basic-run",
+   "lean": [],
+   "not_formalised": true,
+   "number": "D.2.3",
+   "page": "123",
+   "theorems_md_status": "not formalised (configuration encodings used inside proofs)"
+  },
+  "claim:transition-formula": {
+   "anchor": "claim.284",
+   "kind": "claim",
+   "label": "claim:transition-formula",
+   "lean": [
+    {
+     "decl_line": 196,
+     "end": 204,
+     "file": "RequestProject/PartC/MSORatRelab.lean",
+     "line": 193,
+     "name": "exists_form",
+     "primary": true,
+     "state": "proved"
+    }
+   ],
+   "number": "C.4.5",
+   "page": "95",
+   "theorems_md_status": ""
+  },
+  "claim:typing-length-preserving": {
+   "anchor": "claim.182",
+   "kind": "claim",
+   "label": "claim:typing-length-preserving",
+   "lean": [
+    {
+     "decl_line": 232,
+     "end": 239,
+     "file": "RequestProject/PartB/WeightedStatements.lean",
+     "line": 228,
+     "name": "lengthPreserving_iff_typing",
+     "primary": true,
+     "state": "proved"
+    },
+    {
+     "decl_line": 86,
+     "end": 138,
+     "file": "RequestProject/PartB/Typing.lean",
+     "line": 82,
+     "name": "lengthPreserving_iff_typing_aux",
+     "state": "proved"
+    }
+   ],
+   "number": "B.4.4",
+   "page": "55",
+   "theorems_md_status": "proved (`Typing.lean`)"
+  },
+  "cor:2dfa-closure-under-composition": {
+   "anchor": "corollary.245",
+   "kind": "corollary",
+   "label": "cor:2dfa-closure-under-composition",
+   "lean": [
+    {
+     "decl_line": 160,
+     "end": 163,
+     "file": "RequestProject/PartC/Statements.lean",
+     "line": 158,
+     "name": "twoWay_precomp_rational",
+     "primary": true,
+     "state": "proved"
+    },
+    {
+     "decl_line": 125,
+     "end": 131,
+     "file": "RequestProject/PartC/TwoWayRat.lean",
+     "line": 123,
+     "name": "isTwoWay_comp_rational",
+     "state": "proved"
+    }
+   ],
+   "number": "C.2.7",
+   "page": "77",
+   "theorems_md_status": "proved (`TwoWayHom.lean`, `TwoWayBlock.lean`, `TwoWayErase.lean` and `TwoWayRat.lean`, from Theorem B.2.6 and Lemma C.2.6)"
+  },
+  "cor:2dfa-computes-all-regular-functions": {
+   "anchor": "corollary.246",
+   "kind": "corollary",
+   "label": "cor:2dfa-computes-all-regular-functions",
+   "lean": [
+    {
+     "decl_line": 232,
+     "end": 234,
+     "file": "RequestProject/PartC/Statements.lean",
+     "line": 230,
+     "name": "regularFun_isTwoWay",
+     "primary": true,
+     "state": "proved"
+    },
+    {
+     "decl_line": 204,
+     "end": 228,
+     "file": "RequestProject/PartC/Statements.lean",
+     "line": 197,
+     "name": "isTwoWay_of_isRegularFun",
+     "state": "proved"
+    }
+   ],
+   "number": "C.2.8",
+   "page": "77",
+   "theorems_md_status": "proved (`TwoWaySweep.lean`, `TwoWayRegular.lean`, from Corollary C.2.7 and Theorem C.2.5); the direction printed in the book is a typo — see *A typo in Corollary C.2.8* below"
+  },
+  "def:aperiodic-mealy": {
+   "anchor": "definition.76",
+   "kind": "definition",
+   "label": "def:aperiodic-mealy",
+   "lean": [
+    {
+     "decl_line": 95,
+     "end": 97,
+     "file": "RequestProject/Common/Basic.lean",
+     "line": 79,
+     "name": "Aperiodic",
+     "primary": true,
+     "state": "proved"
+    }
+   ],
+   "number": "A.2.7",
+   "page": "23",
+   "theorems_md_status": ""
+  },
+  "def:bimachine": {
+   "anchor": "definition.116",
+   "kind": "definition",
+   "label": "def:bimachine",
+   "lean": [
+    {
+     "decl_line": 22,
+     "end": 36,
+     "file": "RequestProject/PartB/Bimachine.lean",
+     "line": 19,
+     "name": "Bimachine",
+     "primary": true,
+     "state": "proved"
+    },
+    {
+     "decl_line": 90,
+     "end": 91,
+     "file": "RequestProject/PartB/Bimachine.lean",
+     "from": "THEOREMS.md",
+     "line": 89,
+     "name": "Transducers.IsBimachine",
+     "state": "proved"
+    }
+   ],
+   "number": "B.2.2",
+   "page": "37",
+   "theorems_md_status": ""
+  },
+  "def:continuity": {
+   "anchor": "definition.7",
+   "kind": "definition",
+   "label": "def:continuity",
+   "lean": [
+    {
+     "decl_line": 21,
+     "end": 22,
+     "file": "RequestProject/Common/Basic.lean",
+     "line": 18,
+     "name": "Continuous",
+     "primary": true,
+     "state": "proved"
+    }
+   ],
+   "number": ".0.1",
+   "page": "1",
+   "theorems_md_status": ""
+  },
+  "def:k-types": {
+   "anchor": "definition.319",
+   "kind": "definition",
+   "label": "def:k-types",
+   "lean": [
+    {
+     "decl_line": 27,
+     "end": 33,
+     "file": "RequestProject/PartC/KTypes.lean",
+     "line": 24,
+     "name": "tp",
+     "primary": true,
+     "state": "proved"
+    }
+   ],
+   "number": "C.4.12",
+   "page": "105",
+   "theorems_md_status": ""
+  },
+  "def:left-distance": {
+   "anchor": "definition.193",
+   "kind": "definition",
+   "label": "def:left-distance",
+   "lean": [
+    {
+     "decl_line": 122,
+     "end": 124,
+     "file": "RequestProject/Common/Basic.lean",
+     "line": 120,
+     "name": "leftDist",
+     "primary": true,
+     "state": "proved"
+    }
+   ],
+   "number": "B.4.7",
+   "page": "59",
+   "theorems_md_status": ""
+  },
+  "def:map-lifting": {
+   "anchor": "definition.58",
+   "kind": "definition",
+   "label": "def:map-lifting",
+   "lean": [
+    {
+     "decl_line": 114,
+     "end": 116,
+     "file": "RequestProject/Common/Basic.lean",
+     "line": 111,
+     "name": "mapLift",
+     "primary": true,
+     "state": "proved"
+    }
+   ],
+   "number": "A.2.3",
+   "page": "17",
+   "theorems_md_status": ""
+  },
+  "def:mealy-machine": {
    "anchor": "definition.30",
    "kind": "definition",
-   "label": "autoref-1",
+   "label": "def:mealy-machine",
    "lean": [
     {
      "decl_line": 16,
@@ -764,472 +1278,8 @@
    "page": "9",
    "theorems_md_status": ""
   },
-  "claim:aperiodic-pumping": {
-   "anchor": "claim.80",
-   "kind": "claim",
-   "label": "claim:aperiodic-pumping",
-   "lean": [
-    {
-     "decl_line": 656,
-     "end": 666,
-     "file": "RequestProject/PartA/Statements.lean",
-     "line": 653,
-     "name": "aperiodic_iff_pumping",
-     "primary": true,
-     "state": "proved"
-    }
-   ],
-   "number": "A.2.9",
-   "page": "24",
-   "theorems_md_status": "proved"
-  },
-  "claim:bounded-extensions": {
-   "anchor": "claim.191",
-   "kind": "claim",
-   "label": "claim:bounded-extensions",
-   "lean": [
-    {
-     "decl_line": 269,
-     "end": 287,
-     "file": "RequestProject/PartB/SubseqAlpha.lean",
-     "from": "THEOREMS.md",
-     "internal": true,
-     "line": 267,
-     "name": "delay_bound",
-     "primary": true,
-     "state": "proved"
-    }
-   ],
-   "number": "B.4.9",
-   "page": "57",
-   "theorems_md_status": "not formalised as numbered results; they appear as the internal steps `delay_bound`, `key_drop`, `incr_congr` and `exists_deletion_bound` of the proof of Theore"
-  },
-  "claim:computing-branching-part": {
-   "anchor": "claim.195",
-   "kind": "claim",
-   "label": "claim:computing-branching-part",
-   "lean": [
-    {
-     "decl_line": 227,
-     "end": 242,
-     "file": "RequestProject/PartB/SubseqState.lean",
-     "from": "THEOREMS.md",
-     "internal": true,
-     "line": 224,
-     "name": "key_drop",
-     "primary": true,
-     "state": "proved"
-    }
-   ],
-   "number": "B.4.10",
-   "page": "58",
-   "theorems_md_status": "not formalised as numbered results; they appear as the internal steps `delay_bound`, `key_drop`, `incr_congr` and `exists_deletion_bound` of the proof of Theore"
-  },
-  "claim:conditional": {
-   "anchor": "claim.247",
-   "kind": "claim",
-   "label": "claim:conditional",
-   "lean": [
-    {
-     "decl_line": 316,
-     "end": 327,
-     "file": "RequestProject/PartC/Statements.lean",
-     "line": 309,
-     "name": "sum_of_regular",
-     "primary": true,
-     "state": "proved"
-    },
-    {
-     "decl_line": 41,
-     "end": 53,
-     "file": "RequestProject/PartC/RegSum.lean",
-     "line": 35,
-     "name": "sum_of_regular_aux",
-     "state": "proved"
-    },
-    {
-     "decl_line": 211,
-     "end": 239,
-     "file": "RequestProject/PartC/SumReg.lean",
-     "line": 208,
-     "name": "msum_to_sum",
-     "state": "proved"
-    }
-   ],
-   "number": "C.2.11",
-   "page": "76",
-   "theorems_md_status": "**proved** (`SumShape.lean`, `SumPrime.lean`, `SumReg.lean`, `RegSum.lean`), in the corrected form — the claim as printed is false on the empty input, see *An error in Claim C.2.11* below"
-  },
-  "claim:eliminating-negative-letters": {
-   "anchor": "claim.199",
-   "kind": "claim",
-   "label": "claim:eliminating-negative-letters",
-   "lean": [
-    {
-     "decl_line": 154,
-     "end": 242,
-     "file": "RequestProject/PartB/SubseqBound.lean",
-     "from": "THEOREMS.md",
-     "internal": true,
-     "line": 152,
-     "name": "exists_deletion_bound",
-     "primary": true,
-     "state": "proved"
-    }
-   ],
-   "number": "B.4.12",
-   "page": "60",
-   "theorems_md_status": "not formalised as numbered results; they appear as the internal steps `delay_bound`, `key_drop`, `incr_congr` and `exists_deletion_bound` of the proof of Theore"
-  },
-  "claim:fo-composition-quantifier-rank": {
-   "anchor": "claim.317",
-   "kind": "claim",
-   "label": "claim:fo-composition-quantifier-rank",
-   "lean": [
-    {
-     "decl_line": 480,
-     "end": 529,
-     "file": "RequestProject/PartC/FOComp.lean",
-     "line": 477,
-     "name": "sat_iff_of_kEquiv",
-     "primary": true,
-     "state": "proved"
-    }
-   ],
-   "number": "C.4.14",
-   "page": "103",
-   "theorems_md_status": ""
-  },
-  "claim:from-child-configuration-graph-to-children": {
-   "anchor": "claim.470",
-   "kind": "claim",
-   "label": "claim:from-child-configuration-graph-to-children",
-   "lean": [],
-   "not_formalised": true,
-   "number": "D.2.7",
-   "page": "124",
-   "theorems_md_status": "not formalised (configuration encodings used inside proofs)"
-  },
-  "claim:from-configuration-to-child-configuration-graph": {
-   "anchor": "claim.469",
-   "kind": "claim",
-   "label": "claim:from-configuration-to-child-configuration-graph",
-   "lean": [],
-   "not_formalised": true,
-   "number": "D.2.6",
-   "page": "123",
-   "theorems_md_status": "not formalised (configuration encodings used inside proofs)"
-  },
-  "claim:homomorphism-complement-rational": {
-   "anchor": "claim.107",
-   "kind": "claim",
-   "label": "claim:homomorphism-complement-rational",
-   "lean": [
-    {
-     "decl_line": 84,
-     "end": 86,
-     "file": "RequestProject/PartB/RationalStatements.lean",
-     "line": 82,
-     "name": "hom_complement_rational",
-     "primary": true,
-     "state": "proved"
-    },
-    {
-     "decl_line": 319,
-     "end": 324,
-     "file": "RequestProject/PartB/HomComplement.lean",
-     "line": 317,
-     "name": "hom_complement_rational_aux",
-     "state": "proved"
-    }
-   ],
-   "number": "B.1.7",
-   "page": "33",
-   "theorems_md_status": "proved (explicit four-state automaton, `HomComplement.lean`)"
-  },
-  "claim:mso-annotation-regular": {
-   "anchor": "claim.281",
-   "kind": "claim",
-   "label": "claim:mso-annotation-regular",
-   "lean": [
-    {
-     "decl_line": 113,
-     "end": 117,
-     "file": "RequestProject/PartC/MSO.lean",
-     "line": 110,
-     "name": "msoRelabelling_annotation_regular",
-     "primary": true,
-     "state": "proved"
-    },
-    {
-     "decl_line": 198,
-     "end": 224,
-     "file": "RequestProject/PartC/MSORelab.lean",
-     "line": 195,
-     "name": "msoRelabelling_annotation_regular_aux",
-     "state": "proved"
-    }
-   ],
-   "number": "C.4.6",
-   "page": "93",
-   "theorems_md_status": "**proved** (`MSORelab.lean`, from Lemma C.4.2)"
-  },
-  "claim:offsets-are-regular": {
-   "anchor": "claim.198",
-   "kind": "claim",
-   "label": "claim:offsets-are-regular",
-   "lean": [
-    {
-     "decl_line": 345,
-     "end": 377,
-     "file": "RequestProject/PartB/SubseqState.lean",
-     "from": "THEOREMS.md",
-     "internal": true,
-     "line": 344,
-     "name": "incr_congr",
-     "primary": true,
-     "state": "proved"
-    }
-   ],
-   "number": "B.4.11",
-   "page": "59",
-   "theorems_md_status": "not formalised as numbered results; they appear as the internal steps `delay_bound`, `key_drop`, `incr_congr` and `exists_deletion_bound` of the proof of Theore"
-  },
-  "claim:reachability-basic-run": {
-   "anchor": "claim.465",
-   "kind": "claim",
-   "label": "claim:reachability-basic-run",
-   "lean": [],
-   "not_formalised": true,
-   "number": "D.2.3",
-   "page": "120",
-   "theorems_md_status": "not formalised (configuration encodings used inside proofs)"
-  },
-  "claim:transition-formula": {
-   "anchor": "claim.280",
-   "kind": "claim",
-   "label": "claim:transition-formula",
-   "lean": [
-    {
-     "decl_line": 196,
-     "end": 204,
-     "file": "RequestProject/PartC/MSORatRelab.lean",
-     "line": 193,
-     "name": "exists_form",
-     "primary": true,
-     "state": "proved"
-    }
-   ],
-   "number": "C.4.5",
-   "page": "92",
-   "theorems_md_status": ""
-  },
-  "claim:typing-length-preserving": {
-   "anchor": "claim.178",
-   "kind": "claim",
-   "label": "claim:typing-length-preserving",
-   "lean": [
-    {
-     "decl_line": 232,
-     "end": 239,
-     "file": "RequestProject/PartB/WeightedStatements.lean",
-     "line": 228,
-     "name": "lengthPreserving_iff_typing",
-     "primary": true,
-     "state": "proved"
-    },
-    {
-     "decl_line": 86,
-     "end": 138,
-     "file": "RequestProject/PartB/Typing.lean",
-     "line": 82,
-     "name": "lengthPreserving_iff_typing_aux",
-     "state": "proved"
-    }
-   ],
-   "number": "B.4.4",
-   "page": "52",
-   "theorems_md_status": "proved (`Typing.lean`)"
-  },
-  "cor:2dfa-closure-under-composition": {
-   "anchor": "corollary.241",
-   "kind": "corollary",
-   "label": "cor:2dfa-closure-under-composition",
-   "lean": [
-    {
-     "decl_line": 115,
-     "end": 118,
-     "file": "RequestProject/PartC/Statements.lean",
-     "line": 113,
-     "name": "twoWay_precomp_rational",
-     "primary": true,
-     "state": "proved"
-    },
-    {
-     "decl_line": 125,
-     "end": 131,
-     "file": "RequestProject/PartC/TwoWayRat.lean",
-     "line": 123,
-     "name": "isTwoWay_comp_rational",
-     "state": "proved"
-    }
-   ],
-   "number": "C.2.7",
-   "page": "74",
-   "theorems_md_status": "proved (`TwoWayHom.lean`, `TwoWayBlock.lean`, `TwoWayErase.lean` and `TwoWayRat.lean`, from Theorem B.2.6 and Lemma C.2.6)"
-  },
-  "cor:2dfa-computes-all-regular-functions": {
-   "anchor": "corollary.242",
-   "kind": "corollary",
-   "label": "cor:2dfa-computes-all-regular-functions",
-   "lean": [
-    {
-     "decl_line": 187,
-     "end": 189,
-     "file": "RequestProject/PartC/Statements.lean",
-     "line": 185,
-     "name": "regularFun_isTwoWay",
-     "primary": true,
-     "state": "proved"
-    },
-    {
-     "decl_line": 159,
-     "end": 183,
-     "file": "RequestProject/PartC/Statements.lean",
-     "line": 152,
-     "name": "isTwoWay_of_isRegularFun",
-     "state": "proved"
-    }
-   ],
-   "number": "C.2.8",
-   "page": "74",
-   "theorems_md_status": "proved (`TwoWaySweep.lean`, `TwoWayRegular.lean`, from Corollary C.2.7 and Theorem C.2.5); the direction printed in the book is a typo — see *A typo in Corollary C.2.8* below"
-  },
-  "def:aperiodic-mealy": {
-   "anchor": "definition.76",
-   "kind": "definition",
-   "label": "def:aperiodic-mealy",
-   "lean": [
-    {
-     "decl_line": 95,
-     "end": 97,
-     "file": "RequestProject/Common/Basic.lean",
-     "line": 79,
-     "name": "Aperiodic",
-     "primary": true,
-     "state": "proved"
-    }
-   ],
-   "number": "A.2.7",
-   "page": "23",
-   "theorems_md_status": ""
-  },
-  "def:bimachine": {
-   "anchor": "definition.113",
-   "kind": "definition",
-   "label": "def:bimachine",
-   "lean": [
-    {
-     "decl_line": 22,
-     "end": 36,
-     "file": "RequestProject/PartB/Bimachine.lean",
-     "line": 19,
-     "name": "Bimachine",
-     "primary": true,
-     "state": "proved"
-    },
-    {
-     "decl_line": 90,
-     "end": 91,
-     "file": "RequestProject/PartB/Bimachine.lean",
-     "from": "THEOREMS.md",
-     "line": 89,
-     "name": "Transducers.IsBimachine",
-     "state": "proved"
-    }
-   ],
-   "number": "B.2.2",
-   "page": "35",
-   "theorems_md_status": ""
-  },
-  "def:continuity": {
-   "anchor": "definition.7",
-   "kind": "definition",
-   "label": "def:continuity",
-   "lean": [
-    {
-     "decl_line": 21,
-     "end": 22,
-     "file": "RequestProject/Common/Basic.lean",
-     "line": 18,
-     "name": "Continuous",
-     "primary": true,
-     "state": "proved"
-    }
-   ],
-   "number": ".0.1",
-   "page": "1",
-   "theorems_md_status": ""
-  },
-  "def:k-types": {
-   "anchor": "definition.315",
-   "kind": "definition",
-   "label": "def:k-types",
-   "lean": [
-    {
-     "decl_line": 27,
-     "end": 33,
-     "file": "RequestProject/PartC/KTypes.lean",
-     "line": 24,
-     "name": "tp",
-     "primary": true,
-     "state": "proved"
-    }
-   ],
-   "number": "C.4.12",
-   "page": "102",
-   "theorems_md_status": ""
-  },
-  "def:left-distance": {
-   "anchor": "definition.189",
-   "kind": "definition",
-   "label": "def:left-distance",
-   "lean": [
-    {
-     "decl_line": 122,
-     "end": 124,
-     "file": "RequestProject/Common/Basic.lean",
-     "line": 120,
-     "name": "leftDist",
-     "primary": true,
-     "state": "proved"
-    }
-   ],
-   "number": "B.4.7",
-   "page": "56",
-   "theorems_md_status": ""
-  },
-  "def:map-lifting": {
-   "anchor": "definition.58",
-   "kind": "definition",
-   "label": "def:map-lifting",
-   "lean": [
-    {
-     "decl_line": 114,
-     "end": 116,
-     "file": "RequestProject/Common/Basic.lean",
-     "line": 111,
-     "name": "mapLift",
-     "primary": true,
-     "state": "proved"
-    }
-   ],
-   "number": "A.2.3",
-   "page": "17",
-   "theorems_md_status": ""
-  },
   "def:mso-relabeling": {
-   "anchor": "definition.273",
+   "anchor": "definition.277",
    "kind": "definition",
    "label": "def:mso-relabeling",
    "lean": [
@@ -1253,11 +1303,11 @@
     }
    ],
    "number": "C.4.3",
-   "page": "91",
+   "page": "94",
    "theorems_md_status": ""
   },
   "def:mso-transduction": {
-   "anchor": "definition.295",
+   "anchor": "definition.299",
    "kind": "definition",
    "label": "def:mso-transduction",
    "lean": [
@@ -1281,11 +1331,11 @@
     }
    ],
    "number": "C.4.7",
-   "page": "96",
+   "page": "99",
    "theorems_md_status": ""
   },
   "def:nfa-with-output": {
-   "anchor": "definition.94",
+   "anchor": "definition.97",
    "kind": "definition",
    "label": "def:nfa-with-output",
    "lean": [
@@ -1309,19 +1359,19 @@
     }
    ],
    "number": "B.1.1",
-   "page": "29",
+   "page": "30",
    "theorems_md_status": ""
   },
   "def:polyregular-functions": {
-   "anchor": "definition.328",
+   "anchor": "definition.332",
    "kind": "definition",
    "label": "def:polyregular-functions",
    "lean": [],
    "number": "D.0.17",
-   "page": "107"
+   "page": "110"
   },
   "def:prenex-normal-form-for-transducers": {
-   "anchor": "definition.400",
+   "anchor": "definition.404",
    "kind": "definition",
    "label": "def:prenex-normal-form-for-transducers",
    "lean": [
@@ -1336,7 +1386,7 @@
     }
    ],
    "number": "D.1.2",
-   "page": "112",
+   "page": "115",
    "theorems_md_status": ""
   },
   "def:prime-mealy-machines": {
@@ -1376,7 +1426,7 @@
    "theorems_md_status": ""
   },
   "def:rational-function": {
-   "anchor": "definition.111",
+   "anchor": "definition.114",
    "kind": "definition",
    "label": "def:rational-function",
    "lean": [
@@ -1391,19 +1441,19 @@
     }
    ],
    "number": "B.2.1",
-   "page": "35",
+   "page": "37",
    "theorems_md_status": ""
   },
   "def:rational-recognisable-subsets": {
-   "anchor": "definition.99",
+   "anchor": "definition.102",
    "kind": "definition",
    "label": "def:rational-recognisable-subsets",
    "lean": [],
    "number": "B.1.3",
-   "page": "31"
+   "page": "32"
   },
   "def:rational-relation": {
-   "anchor": "definition.95",
+   "anchor": "definition.98",
    "kind": "definition",
    "label": "def:rational-relation",
    "lean": [
@@ -1418,11 +1468,11 @@
     }
    ],
    "number": "B.1.2",
-   "page": "29",
+   "page": "30",
    "theorems_md_status": ""
   },
   "def:regular-functions": {
-   "anchor": "definition.209",
+   "anchor": "definition.213",
    "kind": "definition",
    "label": "def:regular-functions",
    "lean": [
@@ -1446,11 +1496,11 @@
     }
    ],
    "number": "C.0.14",
-   "page": "63",
+   "page": "66",
    "theorems_md_status": ""
   },
   "def:semiring": {
-   "anchor": "definition.154",
+   "anchor": "definition.158",
    "kind": "definition",
    "label": "def:semiring",
    "lean": [
@@ -1464,11 +1514,11 @@
     }
    ],
    "number": "B.3.1",
-   "page": "44",
+   "page": "47",
    "theorems_md_status": ""
   },
   "def:sst": {
-   "anchor": "definition.261",
+   "anchor": "definition.265",
    "kind": "definition",
    "label": "def:sst",
    "lean": [
@@ -1492,11 +1542,11 @@
     }
    ],
    "number": "C.3.1",
-   "page": "82",
+   "page": "85",
    "theorems_md_status": ""
   },
   "def:two-way-transducer": {
-   "anchor": "definition.227",
+   "anchor": "definition.231",
    "kind": "definition",
    "label": "def:two-way-transducer",
    "lean": [
@@ -1520,11 +1570,11 @@
     }
    ],
    "number": "C.2.1",
-   "page": "68",
+   "page": "71",
    "theorems_md_status": ""
   },
   "def:weighted-automaton": {
-   "anchor": "definition.158",
+   "anchor": "definition.162",
    "kind": "definition",
    "label": "def:weighted-automaton",
    "lean": [
@@ -1548,7 +1598,7 @@
     }
    ],
    "number": "B.3.2",
-   "page": "44",
+   "page": "47",
    "theorems_md_status": ""
   },
   "ex:continuity-for-finite-images": {
@@ -1576,16 +1626,16 @@
    "lean": [],
    "not_formalised": true,
    "number": "A.2.5",
-   "page": "27"
+   "page": "28"
   },
   "ex:recognisable-relations": {
-   "anchor": "exercise.109",
+   "anchor": "exercise.112",
    "kind": "exercise",
    "label": "ex:recognisable-relations",
    "lean": [],
    "not_formalised": true,
    "number": "B.1.1",
-   "page": "34"
+   "page": "35"
   },
   "exer:invertible": {
    "anchor": "exercise.44",
@@ -1624,22 +1674,22 @@
    "page": "4"
   },
   "lem:2dfa-precomposition-with-mealy": {
-   "anchor": "lemma.239",
+   "anchor": "lemma.243",
    "kind": "lemma",
    "label": "lem:2dfa-precomposition-with-mealy",
    "lean": [
     {
-     "decl_line": 108,
-     "end": 111,
+     "decl_line": 153,
+     "end": 156,
      "file": "RequestProject/PartC/Statements.lean",
-     "line": 106,
+     "line": 151,
      "name": "twoWay_precomp_mealy",
      "primary": true,
      "state": "proved"
     }
    ],
    "number": "C.2.6",
-   "page": "73",
+   "page": "76",
    "theorems_md_status": "proved"
   },
   "lem:Mealy-map-lifting": {
@@ -1681,7 +1731,7 @@
    "theorems_md_status": "proved"
   },
   "lem:characterisation-length-preserving": {
-   "anchor": "lemma.179",
+   "anchor": "lemma.183",
    "kind": "lemma",
    "label": "lem:characterisation-length-preserving",
    "lean": [
@@ -1704,31 +1754,31 @@
     }
    ],
    "number": "B.4.5",
-   "page": "52",
+   "page": "55",
    "theorems_md_status": "proved (`LenNormalForm.lean`)"
   },
   "lem:check-if-output-string-of-configuration-graph-belongs-to-L": {
-   "anchor": "lemma.236",
+   "anchor": "lemma.240",
    "kind": "lemma",
    "label": "lem:check-if-output-string-of-configuration-graph-belongs-to-L",
    "lean": [],
    "not_formalised": true,
    "number": "C.2.4",
-   "page": "72",
+   "page": "75",
    "theorems_md_status": "not formalised (configuration-graph encodings used inside proofs)"
   },
   "lem:children-of-configuration-in-pebble-run": {
-   "anchor": "lemma.468",
+   "anchor": "lemma.472",
    "kind": "lemma",
    "label": "lem:children-of-configuration-in-pebble-run",
    "lean": [],
    "not_formalised": true,
    "number": "D.2.5",
-   "page": "122",
+   "page": "125",
    "theorems_md_status": "not formalised (configuration encodings used inside proofs)"
   },
   "lem:closure-weighted-automata-precomposition": {
-   "anchor": "lemma.167",
+   "anchor": "lemma.171",
    "kind": "lemma",
    "label": "lem:closure-weighted-automata-precomposition",
    "lean": [
@@ -1751,21 +1801,21 @@
     }
    ],
    "number": "B.3.5",
-   "page": "47",
+   "page": "50",
    "theorems_md_status": "proved (`WeightedNF.lean`, `WeightedLinRep.lean` and `WeightedPrecomp.lean`)"
   },
   "lem:compute-configuration-graph": {
-   "anchor": "lemma.234",
+   "anchor": "lemma.238",
    "kind": "lemma",
    "label": "lem:compute-configuration-graph",
    "lean": [],
    "not_formalised": true,
    "number": "C.2.3",
-   "page": "71",
+   "page": "74",
    "theorems_md_status": "not formalised (configuration-graph encodings used inside proofs)"
   },
   "lem:decide-if-length-preserving": {
-   "anchor": "lemma.177",
+   "anchor": "lemma.181",
    "kind": "lemma",
    "label": "lem:decide-if-length-preserving",
    "lean": [
@@ -1780,11 +1830,11 @@
     }
    ],
    "number": "B.4.3",
-   "page": "51",
+   "page": "54",
    "theorems_md_status": "proved (bounded enumeration of transition sequences, `PathComb.lean` and `LenDec.lean`)"
   },
   "lem:for-closed-under-composition": {
-   "anchor": "lemma.415",
+   "anchor": "lemma.419",
    "kind": "lemma",
    "label": "lem:for-closed-under-composition",
    "lean": [
@@ -1799,11 +1849,11 @@
     }
    ],
    "number": "D.1.4",
-   "page": "114",
+   "page": "117",
    "theorems_md_status": "statement only"
   },
   "lem:k-types-fo-equivalence": {
-   "anchor": "lemma.316",
+   "anchor": "lemma.320",
    "kind": "lemma",
    "label": "lem:k-types-fo-equivalence",
    "lean": [
@@ -1818,11 +1868,11 @@
     }
    ],
    "number": "C.4.13",
-   "page": "102",
+   "page": "106",
    "theorems_md_status": "**proved** (`MSO.lean`, from `FOComp.lean` and `FOHintikka.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`)"
   },
   "lem:k-types-properties": {
-   "anchor": "lemma.318",
+   "anchor": "lemma.322",
    "kind": "lemma",
    "label": "lem:k-types-properties",
    "lean": [
@@ -1845,11 +1895,11 @@
     }
    ],
    "number": "C.4.15",
-   "page": "103",
+   "page": "107",
    "theorems_md_status": "proved (`KTypes.lean`)"
   },
   "lem:logic-precomputation": {
-   "anchor": "lemma.301",
+   "anchor": "lemma.305",
    "kind": "lemma",
    "label": "lem:logic-precomputation",
    "lean": [
@@ -1872,11 +1922,11 @@
     }
    ],
    "number": "C.4.10",
-   "page": "99",
+   "page": "102",
    "theorems_md_status": "**proved** (`MSO.lean`, from `MSOPrecomp.lean`, `MarkStr.lean`, `MarkBimach.lean`, `MarkDelay.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`)"
   },
   "lem:logic-reduction-to-type-n": {
-   "anchor": "lemma.300",
+   "anchor": "lemma.304",
    "kind": "lemma",
    "label": "lem:logic-reduction-to-type-n",
    "lean": [
@@ -1891,19 +1941,19 @@
     }
    ],
    "number": "C.4.9",
-   "page": "98",
+   "page": "101",
    "theorems_md_status": ""
   },
   "lem:map-lifting-continuous": {
-   "anchor": "lemma.217",
+   "anchor": "lemma.221",
    "kind": "lemma",
    "label": "lem:map-lifting-continuous",
    "lean": [
     {
-     "decl_line": 85,
-     "end": 87,
+     "decl_line": 87,
+     "end": 89,
      "file": "RequestProject/PartC/Statements.lean",
-     "line": 83,
+     "line": 85,
      "name": "mapLift_continuous",
      "primary": true,
      "state": "proved"
@@ -1918,7 +1968,7 @@
     }
    ],
    "number": "C.1.3",
-   "page": "64",
+   "page": "67",
    "theorems_md_status": "proved (Myhill–Nerode, `ContAux.lean`)"
   },
   "lem:map-lifting-decomposition-mealy": {
@@ -1949,7 +1999,7 @@
    "theorems_md_status": "proved (in `MapLift.lean`)"
   },
   "lem:mso-free-variables": {
-   "anchor": "lemma.271",
+   "anchor": "lemma.275",
    "kind": "lemma",
    "label": "lem:mso-free-variables",
    "lean": [
@@ -1980,39 +2030,49 @@
     }
    ],
    "number": "C.4.2",
-   "page": "90",
+   "page": "93",
    "theorems_md_status": "**proved** (`RegAut.lean`, `MSOSyntax.lean`, `MSOAnnot.lean`)"
   },
   "lem:output-of-snake-graph-is-regular": {
-   "anchor": "lemma.248",
+   "anchor": "lemma.252",
    "kind": "lemma",
    "label": "lem:output-of-snake-graph-is-regular",
-   "lean": [],
-   "not_formalised": true,
+   "lean": [
+    {
+     "decl_line": 168,
+     "end": 172,
+     "file": "RequestProject/PartC/SnakeReg.lean",
+     "from": "THEOREMS.md",
+     "line": 167,
+     "name": "Transducers.boundedWidth_isRegular",
+     "primary": true,
+     "state": "proved"
+    }
+   ],
    "number": "C.2.12",
-   "page": "78",
-   "theorems_md_status": "not formalised (configuration-graph encodings used inside proofs)"
+   "page": "81",
+   "theorems_md_status": "**proved** (`SnakeReg.lean`): the induction on the width, with the base cases `k ≤ 1` in `SnakeBase.lean` and the step `Transducers.boundedWidth_isRegular_step` proved through the checking automaton of stage 1 (`SnakeStage1.lean`, `SnakeChk*.lean`). Stated for the run of a two-way transducer rather than for an alphabet of snake letters — the same thing up to the choice of input alphabet, see *How Theorem C.2.9 is proved* below. It is what the hard half of Theorem C.2.9 is reduced to, and depends only on `propext`, `Classical.choice`, `Quot.sound`"
   },
   "lem:reachability-pebble-automaton": {
-   "anchor": "lemma.464",
+   "anchor": "lemma.468",
    "kind": "lemma",
    "label": "lem:reachability-pebble-automaton",
    "lean": [],
    "not_formalised": true,
    "number": "D.2.2",
-   "page": "119",
+   "page": "122",
    "theorems_md_status": "not formalised (configuration encodings used inside proofs)"
   },
   "lem:regular-closure-properties": {
-   "anchor": "lemma.246",
+   "anchor": "lemma.250",
    "kind": "lemma",
    "label": "lem:regular-closure-properties",
    "lean": [
     {
-     "decl_line": 276,
-     "end": 307,
+     "decl_line": 347,
+     "end": 378,
      "file": "RequestProject/PartC/Statements.lean",
-     "line": 274,
+     "line": 345,
      "name": "regular_closure_properties",
      "primary": true,
      "state": "proved"
@@ -2051,26 +2111,26 @@
     }
    ],
    "number": "C.2.10",
-   "page": "75",
+   "page": "78",
    "theorems_md_status": "**proved** (`MapLiftAux.lean`, `MapLiftRat.lean`, `MapLiftPrime.lean`, `RegMapLift.lean`, `RatSeq.lean`, `RegClosure.lean`)"
   },
   "lem:reversal-duplication-continuous": {
-   "anchor": "lemma.215",
+   "anchor": "lemma.219",
    "kind": "lemma",
    "label": "lem:reversal-duplication-continuous",
    "lean": [
     {
-     "decl_line": 78,
-     "end": 81,
+     "decl_line": 80,
+     "end": 83,
      "file": "RequestProject/PartC/Statements.lean",
-     "line": 77,
+     "line": 79,
      "name": "reverse_duplicate_continuous",
      "primary": true,
      "state": "proved"
     }
    ],
    "number": "C.1.2",
-   "page": "64",
+   "page": "67",
    "theorems_md_status": "proved (`ContAux.lean`)"
   },
   "lem:reversible-composition": {
@@ -2093,7 +2153,7 @@
    "theorems_md_status": "proved"
   },
   "lem:uniformisation": {
-   "anchor": "lemma.124",
+   "anchor": "lemma.127",
    "kind": "lemma",
    "label": "lem:uniformisation",
    "lean": [
@@ -2116,7 +2176,7 @@
     }
    ],
    "number": "B.2.5",
-   "page": "38",
+   "page": "40",
    "theorems_md_status": "proved (`Uniform.lean`, from the ε-free normal form of Lemma B.2.4 and the unambiguisation of `Unambig.lean`)"
   },
   "lemma:derivatives": {
@@ -2155,7 +2215,7 @@
    "theorems_md_status": "proved"
   },
   "lemma:eliminate-epsilon-transitions": {
-   "anchor": "lemma.121",
+   "anchor": "lemma.124",
    "kind": "lemma",
    "label": "lemma:eliminate-epsilon-transitions",
    "lean": [
@@ -2178,11 +2238,11 @@
     }
    ],
    "number": "B.2.4",
-   "page": "37",
+   "page": "39",
    "theorems_md_status": "proved (`EpsElim.lean`, using the regularity of the outputs on a fixed input, `OutLang.lean`)"
   },
   "lemma:prenex-normal-form": {
-   "anchor": "lemma.414",
+   "anchor": "lemma.418",
    "kind": "lemma",
    "label": "lemma:prenex-normal-form",
    "lean": [
@@ -2197,19 +2257,19 @@
     }
    ],
    "number": "D.1.3",
-   "page": "114",
+   "page": "117",
    "theorems_md_status": "statement only"
   },
   "theorem:sst-two-way-equivalence": {
-   "anchor": "theorem.263",
+   "anchor": "theorem.267",
    "kind": "theorem",
    "label": "theorem:sst-two-way-equivalence",
    "lean": [
     {
-     "decl_line": 349,
-     "end": 353,
+     "decl_line": 420,
+     "end": 424,
      "file": "RequestProject/PartC/Statements.lean",
-     "line": 339,
+     "line": 410,
      "name": "sst_iff_regular",
      "primary": true,
      "state": "proved"
@@ -2232,34 +2292,34 @@
     }
    ],
    "number": "C.3.2",
-   "page": "83",
+   "page": "86",
    "theorems_md_status": "both implications are **proved** (`SSTComp.lean`, `SSTMealyRev.lean`, `SSTMealyFF.lean`, `SSTMealy.lean`, `SSTMapRev.lean`, `SSTMapDup.lean`, `SSTRegular.lean` for `regular ⊆ sst`; `SSTNorm.lean`, `SSTWalk.lean`, `SSTTwoWay.lean` for `sst ⊆ two-way`), and since Theorem C.2.9 is now proved the statement depends only on `propext`, `Classical.choice`, `Quot.sound` — see *The proof of Theorem C.3.2* below"
   },
   "thm:2dfa-decomposition-into-primes": {
-   "anchor": "theorem.245",
+   "anchor": "theorem.249",
    "kind": "theorem",
    "label": "thm:2dfa-decomposition-into-primes",
    "lean": [
     {
-     "decl_line": 269,
-     "end": 273,
+     "decl_line": 340,
+     "end": 344,
      "file": "RequestProject/PartC/Statements.lean",
-     "line": 263,
+     "line": 334,
      "name": "twoWay_iff_regular",
      "primary": true,
      "state": "proved"
     },
     {
-     "decl_line": 259,
-     "end": 261,
+     "decl_line": 330,
+     "end": 332,
      "file": "RequestProject/PartC/Statements.lean",
-     "line": 227,
+     "line": 298,
      "name": "twoWay_isRegular",
      "state": "proved"
     }
    ],
    "number": "C.2.9",
-   "page": "75",
+   "page": "78",
    "theorems_md_status": "**both implications are proved**: the right-to-left one is Corollary C.2.8 above, and the left-to-right one, `Transducers.twoWay_isRegular` (two-way ⊆ regular, the inclusion printed in Corollary C.2.8), is reduced to the snake lemma `Transducers.boundedWidth_isRegular` of `SnakeReg.lean`, whose base cases `k ≤ 1` are in `SnakeBase.lean`, whose combinatorial content is in `SnakeWalk.lean`, `SnakeRec.lean` and `SnakeLoop.lean`, and whose induction step `Transducers.boundedWidth_isRegular_step` is proved through the checking automaton of stage 1 (`SnakeStage1.lean`, `SnakeChk*.lean`); the whole theorem depends only on `propext`, `Classical.choice`, `Quot.sound` — see *How Theorem C.2.9 is proved* below"
   },
   "thm:aperiodic-mealy": {
@@ -2282,7 +2342,7 @@
    "theorems_md_status": "proved (\"⇐\" by `flipflop_composition_aperiodic`, \"⇒\" by `krohn_rhodes_flipFlop`, which runs the construction of `StateTrans.lean` inside the class of flip-flops, using that only realisable state transformations occur, see `StateTransAperiodic.lean`)"
   },
   "thm:bimachines": {
-   "anchor": "theorem.115",
+   "anchor": "theorem.118",
    "kind": "theorem",
    "label": "thm:bimachines",
    "lean": [
@@ -2297,11 +2357,11 @@
     }
    ],
    "number": "B.2.3",
-   "page": "36",
+   "page": "38",
    "theorems_md_status": "proved (unambiguity by the least accepting run, `Unambig.lean` and `Uniform.lean`; bimachine → rational in `Bimachine.lean`, rational → bimachine in `RatBimach.lean`)"
   },
   "thm:characterisation-rational-functions-weighted-automata": {
-   "anchor": "theorem.168",
+   "anchor": "theorem.172",
    "kind": "theorem",
    "label": "thm:characterisation-rational-functions-weighted-automata",
    "lean": [
@@ -2324,7 +2384,7 @@
     }
    ],
    "number": "B.3.6",
-   "page": "48",
+   "page": "51",
    "theorems_md_status": "proved (\"⇒\" is Lemma B.3.5, \"⇐\" in `WeightedRegular.lean`)"
   },
   "thm:composition-mealy": {
@@ -2347,15 +2407,15 @@
    "theorems_md_status": "proved"
   },
   "thm:composition-of-two-way-transducers": {
-   "anchor": "theorem.238",
+   "anchor": "theorem.242",
    "kind": "theorem",
    "label": "thm:composition-of-two-way-transducers",
    "lean": [
     {
-     "decl_line": 122,
-     "end": 125,
+     "decl_line": 167,
+     "end": 170,
      "file": "RequestProject/PartC/Statements.lean",
-     "line": 120,
+     "line": 165,
      "name": "twoWay_comp",
      "primary": true,
      "state": "proved"
@@ -2370,11 +2430,11 @@
     }
    ],
    "number": "C.2.5",
-   "page": "72",
+   "page": "75",
    "theorems_md_status": "proved (`TwoWayRun.lean`, `TwoWayVisit.lean`, `TwoWayAnnot.lean`, `TwoWayAnnotBim.lean`, `TwoWayCompAux.lean`, `TwoWayCompPred.lean`, `TwoWayComp.lean`, `TwoWayCompFinal.lean`)"
   },
   "thm:composition-rational-relations": {
-   "anchor": "theorem.103",
+   "anchor": "theorem.106",
    "kind": "theorem",
    "label": "thm:composition-rational-relations",
    "lean": [
@@ -2397,19 +2457,19 @@
     }
    ],
    "number": "B.1.4",
-   "page": "32",
+   "page": "33",
    "theorems_md_status": "proved (product automaton in `RatComp.lean`, on the atomic normal form of `Atomize.lean`)"
   },
   "thm:continuity-2dfas": {
-   "anchor": "theorem.230",
+   "anchor": "theorem.234",
    "kind": "theorem",
    "label": "thm:continuity-2dfas",
    "lean": [
     {
-     "decl_line": 100,
-     "end": 102,
+     "decl_line": 145,
+     "end": 147,
      "file": "RequestProject/PartC/Statements.lean",
-     "line": 98,
+     "line": 143,
      "name": "twoWay_continuous",
      "primary": true,
      "state": "proved"
@@ -2424,7 +2484,7 @@
     }
    ],
    "number": "C.2.2",
-   "page": "69",
+   "page": "72",
    "theorems_md_status": "proved (`TwoWayCont.lean`, from Shepherdson's Theorem in `TwoDFA.lean`)"
   },
   "thm:continuity-mealy": {
@@ -2447,7 +2507,7 @@
    "theorems_md_status": "proved"
   },
   "thm:continuity-rational-relations": {
-   "anchor": "theorem.104",
+   "anchor": "theorem.107",
    "kind": "theorem",
    "label": "thm:continuity-rational-relations",
    "lean": [
@@ -2470,30 +2530,107 @@
     }
    ],
    "number": "B.1.5",
-   "page": "32",
+   "page": "33",
    "theorems_md_status": "proved (ε-automaton running a dfa on the output, `RatCont.lean`)"
   },
   "thm:decidable-equivalence-regular": {
-   "anchor": "theorem.222",
+   "anchor": "theorem.226",
    "kind": "theorem",
    "label": "thm:decidable-equivalence-regular",
    "lean": [
     {
-     "decl_line": 219,
-     "end": 223,
+     "decl_line": 289,
+     "end": 294,
      "file": "RequestProject/PartC/Statements.lean",
-     "line": 217,
+     "line": 283,
      "name": "regular_equivalence_decidable",
      "primary": true,
-     "state": "open"
+     "state": "proved"
+    },
+    {
+     "decl_line": 106,
+     "end": 109,
+     "file": "RequestProject/PartC/WeightedRegClosure.lean",
+     "from": "THEOREMS.md",
+     "line": 102,
+     "name": "Transducers.isWeighted_comp_regular",
+     "state": "proved"
+    },
+    {
+     "decl_line": 43,
+     "end": 45,
+     "file": "RequestProject/PartC/WeightedRegClosure.lean",
+     "from": "THEOREMS.md",
+     "line": 41,
+     "name": "Transducers.isWeighted_comp_mapReverse",
+     "state": "proved"
+    },
+    {
+     "decl_line": 49,
+     "end": 51,
+     "file": "RequestProject/PartC/WeightedRegClosure.lean",
+     "from": "THEOREMS.md",
+     "line": 47,
+     "name": "Transducers.isWeighted_comp_mapDuplicate",
+     "state": "proved"
+    },
+    {
+     "decl_line": 161,
+     "end": 189,
+     "file": "RequestProject/PartC/WeightedRegClosure.lean",
+     "from": "THEOREMS.md",
+     "line": 157,
+     "name": "Transducers.exists_injective_weighted",
+     "state": "proved"
+    },
+    {
+     "decl_line": 219,
+     "end": 229,
+     "file": "RequestProject/PartC/WeightedRegClosure.lean",
+     "line": 214,
+     "name": "regularFun_eq_iff_weighted_eq",
+     "state": "proved"
+    },
+    {
+     "decl_line": 236,
+     "end": 249,
+     "file": "RequestProject/PartC/WeightedRegClosure.lean",
+     "line": 231,
+     "name": "regularFun_eq_iff_weighted_zero",
+     "state": "proved"
+    },
+    {
+     "decl_line": 201,
+     "end": 212,
+     "file": "RequestProject/PartC/WeightedRegClosure.lean",
+     "line": 193,
+     "name": "regularFun_eq_of_short",
+     "state": "proved"
+    },
+    {
+     "decl_line": 378,
+     "end": 384,
+     "file": "RequestProject/PartC/RegCodeBound.lean",
+     "from": "THEOREMS.md",
+     "line": 376,
+     "name": "Transducers.exists_twoWayCode_bound",
+     "state": "proved"
+    },
+    {
+     "decl_line": 121,
+     "end": 131,
+     "file": "RequestProject/PartC/RegEqDec.lean",
+     "line": 119,
+     "name": "regular_equivalence_decidable_aux",
+     "state": "proved"
     }
    ],
    "number": "C.1.4",
-   "page": "65",
-   "theorems_md_status": "statement only"
+   "page": "68",
+   "theorems_md_status": "the mathematical content of the book's proof is **proved** (`WeightedLin.lean`, `WeightedMapLift.lean`, `WeightedRegClosure.lean`): the reduction to zeroness of weighted automata over `ℚ` through the prime decomposition, with the constructions for map reverse (transposition of the matrices of a linear representation, where commutativity of the semiring is used) and map duplicate (Kronecker squares), the injective encoding of output strings by rationals, and the resulting bound reducing equivalence to a finite check. The decidability statement on *codes*, `Transducers.regular_equivalence_decidable`, is **proved from two explicit effectivity hypotheses** (`EffectiveTwoWayEvalEq` and `EffectiveTwoWayBound` of `PartC/EffectiveReg.lean`, `PartC/RegEqDec.lean`), exactly as Theorems B.3.3 and B.3.7 are: what those hypotheses isolate is the missing `Primrec`/`Computable` arithmetic on `ℤ` and `ℚ`. The *existence* of the equivalence bound, the mathematical content of the second hypothesis, is proved (`Transducers.exists_twoWayCode_bound`, `PartC/RegCodeBound.lean`)"
   },
   "thm:decide-if-mealy": {
-   "anchor": "theorem.176",
+   "anchor": "theorem.180",
    "kind": "theorem",
    "label": "thm:decide-if-mealy",
    "lean": [
@@ -2516,7 +2653,7 @@
     }
    ],
    "number": "B.4.2",
-   "page": "51",
+   "page": "54",
    "theorems_md_status": "proved from `EffectiveWeightedEvalEq` (`PrefixCodes.lean`, `CodeRat.lean`, `MealyDec.lean`); the statement is relativised to the strings over the alphabet of the code"
   },
   "thm:equivalence-decidable-mealy": {
@@ -2539,7 +2676,7 @@
    "theorems_md_status": "proved"
   },
   "thm:equivalence-rational-functions": {
-   "anchor": "theorem.166",
+   "anchor": "theorem.170",
    "kind": "theorem",
    "label": "thm:equivalence-rational-functions",
    "lean": [
@@ -2562,11 +2699,11 @@
     }
    ],
    "number": "B.3.4",
-   "page": "47",
+   "page": "50",
    "theorems_md_status": "proved from `EffectiveWeightedEvalEq` (reduction to B.3.3 in `RatEqDec.lean`)"
   },
   "thm:equivalence-weighted-automata": {
-   "anchor": "theorem.165",
+   "anchor": "theorem.169",
    "kind": "theorem",
    "label": "thm:equivalence-weighted-automata",
    "lean": [
@@ -2589,11 +2726,11 @@
     }
    ],
    "number": "B.3.3",
-   "page": "46",
+   "page": "49",
    "theorems_md_status": "proved from the effectivity hypothesis `EffectiveWeightedEvalEq` (`WeightedDec.lean`)"
   },
   "thm:fo-rational-functions": {
-   "anchor": "theorem.323",
+   "anchor": "theorem.327",
    "kind": "theorem",
    "label": "thm:fo-rational-functions",
    "lean": [
@@ -2608,11 +2745,11 @@
     }
    ],
    "number": "C.4.16",
-   "page": "105",
+   "page": "108",
    "theorems_md_status": "**proved** (`MSO.lean`, from `FORelabBimach.lean` for `first-order relabelling ⊆ aperiodic bimachine` and `FOBimachRelab.lean` for the converse, on top of `FORev.lean` and `FOPos.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`)"
   },
   "thm:for-transducers-are-polyregular": {
-   "anchor": "theorem.369",
+   "anchor": "theorem.373",
    "kind": "theorem",
    "label": "thm:for-transducers-are-polyregular",
    "lean": [
@@ -2627,7 +2764,7 @@
     }
    ],
    "number": "D.1.1",
-   "page": "112",
+   "page": "115",
    "theorems_md_status": "statement only"
   },
   "thm:krohn-rhodes": {
@@ -2650,7 +2787,7 @@
    "theorems_md_status": "proved"
   },
   "thm:logic-aperiodic": {
-   "anchor": "theorem.312",
+   "anchor": "theorem.316",
    "kind": "theorem",
    "label": "thm:logic-aperiodic",
    "lean": [
@@ -2665,11 +2802,11 @@
     }
    ],
    "number": "C.4.11",
-   "page": "101",
+   "page": "104",
    "theorems_md_status": "**proved** (`MSO.lean`, from `FOTypeDFA.lean` and `FOMealy.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`)"
   },
   "thm:logic-rational-functions": {
-   "anchor": "theorem.279",
+   "anchor": "theorem.283",
    "kind": "theorem",
    "label": "thm:logic-rational-functions",
    "lean": [
@@ -2692,11 +2829,11 @@
     }
    ],
    "number": "C.4.4",
-   "page": "92",
+   "page": "95",
    "theorems_md_status": "**proved** (`MSO.lean`, from `MSORatRelab.lean`, `MarkStr.lean`, `MarkLogic.lean`, `MarkBimach.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`)"
   },
   "thm:logic-regular-functions": {
-   "anchor": "theorem.299",
+   "anchor": "theorem.303",
    "kind": "theorem",
    "label": "thm:logic-regular-functions",
    "lean": [
@@ -2719,11 +2856,11 @@
     }
    ],
    "number": "C.4.8",
-   "page": "97",
+   "page": "101",
    "theorems_md_status": "both implications are **proved** (`MSO.lean`, from `MSOReg.lean`, `MSOWalkData.lean`, `WalkAut.lean`, `MSOWalkForms.lean`, `MSONorm.lean`, `SortedEnum.lean` for `mso ⊆ regular`; `TwoWayMSO.lean`, `RunProbe.lean`, `RunMark.lean`, `RunElts.lean`, `MarkLogic2.lean` for `regular ⊆ mso`), and since Theorem C.2.9 is now proved the statement depends only on `propext`, `Classical.choice`, `Quot.sound` — see *The proof of Theorem C.4.8* below"
   },
   "thm:machine-independent-rational-functions": {
-   "anchor": "theorem.203",
+   "anchor": "theorem.207",
    "kind": "theorem",
    "label": "thm:machine-independent-rational-functions",
    "lean": [
@@ -2746,11 +2883,11 @@
     }
    ],
    "number": "B.4.13",
-   "page": "61",
+   "page": "64",
    "theorems_md_status": "proved (`RatIndex.lean`, `SubseqRat.lean`, `RatAnnot.lean`)"
   },
   "thm:mealy-machine-independent": {
-   "anchor": "theorem.174",
+   "anchor": "theorem.178",
    "kind": "theorem",
    "label": "thm:mealy-machine-independent",
    "lean": [
@@ -2773,11 +2910,11 @@
     }
    ],
    "number": "B.4.1",
-   "page": "51",
+   "page": "54",
    "theorems_md_status": "proved (`MealyChar.lean`)"
   },
   "thm:mso-logic-languages": {
-   "anchor": "theorem.270",
+   "anchor": "theorem.274",
    "kind": "theorem",
    "label": "thm:mso-logic-languages",
    "lean": [
@@ -2816,11 +2953,11 @@
     }
    ],
    "number": "C.4.1",
-   "page": "89",
+   "page": "92",
    "theorems_md_status": "**proved** (`MSO.lean`, from `MSOSyntax.lean`, `RegAut.lean`, `MSOAnnot.lean`, `MSOBuchi.lean`)"
   },
   "thm:pebble-are-continuous": {
-   "anchor": "theorem.462",
+   "anchor": "theorem.466",
    "kind": "theorem",
    "label": "thm:pebble-are-continuous",
    "lean": [
@@ -2835,11 +2972,11 @@
     }
    ],
    "number": "D.2.1",
-   "page": "119",
+   "page": "122",
    "theorems_md_status": "statement only"
   },
   "thm:pebble-are-for": {
-   "anchor": "theorem.467",
+   "anchor": "theorem.471",
    "kind": "theorem",
    "label": "thm:pebble-are-for",
    "lean": [
@@ -2854,19 +2991,19 @@
     }
    ],
    "number": "D.2.4",
-   "page": "121",
+   "page": "124",
    "theorems_md_status": "statement only"
   },
   "thm:polyregular-functions-are-continuous": {
-   "anchor": "theorem.329",
+   "anchor": "theorem.333",
    "kind": "theorem",
    "label": "thm:polyregular-functions-are-continuous",
    "lean": [],
    "number": "D.0.18",
-   "page": "108"
+   "page": "111"
   },
   "thm:rational-is-mealy-characterisation": {
-   "anchor": "theorem.136",
+   "anchor": "theorem.139",
    "kind": "theorem",
    "label": "thm:rational-is-mealy-characterisation",
    "lean": [
@@ -2881,11 +3018,11 @@
     }
    ],
    "number": "B.2.7",
-   "page": "41",
+   "page": "43",
    "theorems_md_status": "proved (from Theorem B.4.1 and Theorem B.1.5)"
   },
   "thm:rational-primes": {
-   "anchor": "theorem.130",
+   "anchor": "theorem.133",
    "kind": "theorem",
    "label": "thm:rational-primes",
    "lean": [
@@ -2900,38 +3037,38 @@
     }
    ],
    "number": "B.2.6",
-   "page": "40",
+   "page": "42",
    "theorems_md_status": "proved (`PrimeRat.lean` and `BimachPrime.lean`, from Theorem B.2.3 and the Krohn–Rhodes Theorem)"
   },
   "thm:regular-functions-are-continuous-and-closed-under-composition": {
-   "anchor": "theorem.214",
+   "anchor": "theorem.218",
    "kind": "theorem",
    "label": "thm:regular-functions-are-continuous-and-closed-under-composition",
    "lean": [
     {
-     "decl_line": 67,
-     "end": 69,
+     "decl_line": 69,
+     "end": 71,
      "file": "RequestProject/PartC/Statements.lean",
-     "line": 66,
+     "line": 68,
      "name": "regular_continuous",
      "primary": true,
      "state": "proved"
     },
     {
-     "decl_line": 73,
-     "end": 75,
+     "decl_line": 75,
+     "end": 77,
      "file": "RequestProject/PartC/Statements.lean",
-     "line": 71,
+     "line": 73,
      "name": "regular_comp",
      "state": "proved"
     }
    ],
    "number": "C.1.1",
-   "page": "64",
+   "page": "67",
    "theorems_md_status": "proved (continuity by induction on the decomposition into primes, `ContAux.lean`)"
   },
   "thm:sequential-function-independent": {
-   "anchor": "theorem.185",
+   "anchor": "theorem.189",
    "kind": "theorem",
    "label": "thm:sequential-function-independent",
    "lean": [
@@ -2954,11 +3091,11 @@
     }
    ],
    "number": "B.4.6",
-   "page": "54",
+   "page": "57",
    "theorems_md_status": "proved (`SeqChar.lean`); the statement of the book needs the extra condition `f [] = []`"
   },
   "thm:subsequential-functions": {
-   "anchor": "theorem.190",
+   "anchor": "theorem.194",
    "kind": "theorem",
    "label": "thm:subsequential-functions",
    "lean": [
@@ -2981,11 +3118,11 @@
     }
    ],
    "number": "B.4.8",
-   "page": "57",
+   "page": "60",
    "theorems_md_status": "proved (`SubseqDef.lean`, `SubseqAlpha.lean`, `SubseqState.lean`, `SubseqBound.lean`, `SubseqChar.lean`)"
   },
   "thm:undecidable-equivalence-rational-relations": {
-   "anchor": "theorem.106",
+   "anchor": "theorem.109",
    "kind": "theorem",
    "label": "thm:undecidable-equivalence-rational-relations",
    "lean": [
@@ -3008,11 +3145,11 @@
     }
    ],
    "number": "B.1.6",
-   "page": "33",
+   "page": "34",
    "theorems_md_status": "proved from an explicit hypothesis that the Post correspondence problem is undecidable (reduction in `PCPRed.lean`)"
   },
   "thm:zeroness-weighted-automata": {
-   "anchor": "theorem.170",
+   "anchor": "theorem.174",
    "kind": "theorem",
    "label": "thm:zeroness-weighted-automata",
    "lean": [
@@ -3035,7 +3172,7 @@
     }
    ],
    "number": "B.3.7",
-   "page": "49",
+   "page": "52",
    "theorems_md_status": "proved from `EffectiveWeightedEvalEq` (special case of B.3.3, `WeightedDec.lean`)"
   }
  }
