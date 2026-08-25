@@ -12,7 +12,7 @@ Finally, since the language is defined by a first-order formula of quantifier
 rank at most `k`, it follows that strings that reach the same state cannot be
 distinguished by the language."
 
-The set of states is the whole type `TpType A k` of Definition `nolabel:def-fo-types`, which is
+The set of states is the whole type `TpType A k` of Definition `def:k-types`, which is
 finite for a finite alphabet; on the types that are not realised by any string
 the transition function is the identity, which is harmless both for the runs and
 for aperiodicity.

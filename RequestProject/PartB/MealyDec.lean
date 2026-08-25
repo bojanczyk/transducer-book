@@ -5,7 +5,7 @@ function is computed by a Mealy machine.
 By Theorem `thm:mealy-machine-independent` a function is computed by a Mealy machine exactly when it
 is continuous, prefix preserving and length preserving, and a rational function is automatically
 continuous (Theorem `thm:continuity-rational-relations`, used through Theorem
-`nolabel:thm-mealy-among-rational-functions` in `RequestProject/PartB/CodeRat.lean`).  Length
+`thm:rational-is-mealy-characterisation` in `RequestProject/PartB/CodeRat.lean`).  Length
 preservation is decided by Lemma `lem:decide-if-length-preserving`
 (`RequestProject/PartB/LenDec.lean`), and prefix preservation of a length preserving function is the
 equality

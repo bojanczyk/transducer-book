@@ -6,11 +6,11 @@ in monadic second-order logic.
 The two implications are proved separately.
 
 * From logic to automata (`isRegular_of_msoDefinable`).  This is the special case of Lemma
-  `nolabel:lem-mso-to-automaton` (`RequestProject/PartC/MSOAnnot.lean`) with no free variables: a
+  `lem:mso-free-variables` (`RequestProject/PartC/MSOAnnot.lean`) with no free variables: a
   formula whose truth value does not depend on the valuation is first turned into a sentence by
   existentially quantifying all its variables (`MSO.closeFO`, `MSO.closeSO`), and the language of a
   sentence is the inverse image, under the letter-to-letter map `a ↦ (a, (), ())`, of the language
-  of annotated strings of Lemma `nolabel:lem-mso-to-automaton` for `k = l = 0`.  The existential
+  of annotated strings of Lemma `lem:mso-free-variables` for `k = l = 0`.  The existential
   closure is false on the empty string as soon as the formula has a quantifier, so the empty string
   is treated separately.
 
@@ -64,7 +64,7 @@ lemma extFO_zero (fo : Fin 0 → ℕ) : extFO 0 fo = fun _ => 0 := by
 lemma extSO_zero (so : Fin 0 → Set ℕ) : extSO 0 so = fun _ => (∅ : Set ℕ) := by
   funext j; simp [extSO]
 
-/-- The language defined by a sentence is regular.  This is Lemma `nolabel:lem-mso-to-automaton`
+/-- The language defined by a sentence is regular.  This is Lemma `lem:mso-free-variables`
 with no free variables. -/
 lemma isRegular_satLang (φ : MSO A) (hfo : φ.freeFO = ∅) (hso : φ.freeSO = ∅)
     (fo₀ : ℕ → ℕ) (so₀ : ℕ → Set ℕ) :

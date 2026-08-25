@@ -17,11 +17,11 @@ book.
   of an unambiguous transducer.
 
 * mso relabellings ⊆ rational.  Each formula of the relabelling gives a regular language of marked
-  strings (Lemma `nolabel:lem-mso-to-automaton`, in the form `MarkStr.markedSat2`), and
+  strings (Lemma `lem:mso-free-variables`, in the form `MarkStr.markedSat2`), and
   `MarkBimach.markFun` turns a finite family of such languages into a bimachine; the output in a
   position is the output string of the unique formula that holds there.  This is the second half of
   the proof in the book, where the same is done with the regular language of Claim
-  `nolabel:claim-formula-annotation-regular`.
+  `claim:mso-annotation-regular`.
 -/
 import RequestProject.PartC.MarkLogic
 import RequestProject.PartC.MarkBimach

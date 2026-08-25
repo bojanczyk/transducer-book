@@ -115,9 +115,9 @@ def mapLift {A B : Type} (f : List A → List B) (w : List (Option A)) :
     List (Option B) :=
   List.intercalate [none] ((splitSep w).map (fun u => (f u).map some))
 
-/-! ## Left distance (Definition `nolabel:def-left-distance`) -/
+/-! ## Left distance (Definition `def:left-distance`) -/
 
-/-- **Definition `nolabel:def-left-distance` (Left distance).**  The left distance `‖w₁, w₂‖` is the
+/-- **Definition `def:left-distance` (Left distance).**  The left distance `‖w₁, w₂‖` is the
 least `k` such that `w₁ = v v₁` and `w₂ = v v₂` with `|v₁|, |v₂| ≤ k`. -/
 noncomputable def leftDist {B : Type} (w₁ w₂ : List B) : ℕ :=
   sInf {k : ℕ | ∃ v v₁ v₂ : List B,

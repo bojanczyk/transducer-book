@@ -1,6 +1,6 @@
 /-
 Closure properties of compositions of prime Mealy machines, used in the proof of
-the Krohn-Rhodes Theorem (Theorem `nolabel:thm-krohn-rhodes`) of *Transducers*
+the Krohn-Rhodes Theorem (Theorem `thm:krohn-rhodes`) of *Transducers*
 (M. Bojańczyk, June 25, 2026).
 
 The book uses freely the fact that "a prime Mealy machine can always be adapted

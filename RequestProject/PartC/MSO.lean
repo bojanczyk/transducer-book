@@ -3,10 +3,10 @@ Part C, Section *Logic*: Logic
   from *Transducers* (M. Bojańczyk, June 25, 2026).
 
 The numbered results of Section *Logic* that are proved: Theorem `thm:mso-logic-languages`, Lemma
-`nolabel:lem-mso-to-automaton`, Theorem `thm:logic-rational-functions`, Claim
-`nolabel:claim-formula-annotation-regular`, Theorem `thm:logic-regular-functions`, Lemma
+`lem:mso-free-variables`, Theorem `thm:logic-rational-functions`, Claim
+`claim:mso-annotation-regular`, Theorem `thm:logic-regular-functions`, Lemma
 `lem:logic-precomputation`, Theorem `thm:logic-aperiodic`, Lemma
-`nolabel:lem-fo-types-characterisation`, Lemma `item:fo-types-more-information` and Theorem
+`lem:k-types-fo-equivalence`, Lemma `lem:k-types-properties` and Theorem
 `thm:fo-rational-functions`.  Every proof in this file is complete.
 
 The definitions they speak about (monadic second-order logic, mso relabellings,
@@ -20,7 +20,7 @@ mso transductions and the first-order fragment) are in
 `RequestProject/PartC/MSORatRelab.lean` and
 `RequestProject/PartC/MSOPrecomp.lean`.
 
-Theorem `thm:logic-aperiodic` and Lemma `nolabel:lem-fo-types-characterisation` are proved below,
+Theorem `thm:logic-aperiodic` and Lemma `lem:k-types-fo-equivalence` are proved below,
 out of `RequestProject/PartC/FORel.lean`, `RequestProject/PartC/FOSeg.lean`,
 `RequestProject/PartC/FOComp.lean`, `RequestProject/PartC/FORename.lean`,
 `RequestProject/PartC/FOHintikka.lean`, `RequestProject/PartC/FOTypeDFA.lean`,
@@ -37,7 +37,7 @@ the user's request; its statement is kept only as a comment in `RequestProject/P
 which this file still imports.  No result of Section *Logic* is left unproved.
 
 Not formalised: Claim `claim:transition-formula`, Lemma `lem:logic-reduction-to-type-n` and Claim
-`nolabel:claim-fo-type-of-a-tuple`, which are internal steps of the proofs of Theorems
+`claim:fo-composition-quantifier-rank`, which are internal steps of the proofs of Theorems
 `thm:logic-rational-functions`, `thm:logic-regular-functions` and `thm:logic-aperiodic`. -/
 import RequestProject.PartC.Statements
 import RequestProject.PartC.MSOBuchi
@@ -62,7 +62,7 @@ theorem regular_iff_msoDefinable {A : Type} [Finite A] (L : Language A) :
     L.IsRegular ↔ MSODefinable L :=
   regular_iff_msoDefinable_aux L
 
-/-- **Lemma `nolabel:lem-mso-to-automaton`.**  For an mso formula whose free variables are among
+/-- **Lemma `lem:mso-free-variables`.**  For an mso formula whose free variables are among
 `x₁, …, x_k, X₁, …, X_l`, the set of annotated strings that satisfy it is a
 regular language over the alphabet `A × 2^{k+l}`. -/
 theorem mso_annotated_regular {A : Type} [Finite A] (φ : MSO A) (k l : ℕ)
@@ -108,7 +108,7 @@ theorem msoTransduction_iff_regular {A B : Type} [Finite A] [Finite B]
   ⟨fun h => isRegularFun_of_isMSOTransduction h,
     fun h => isMSOTransduction_of_isTwoWay (regularFun_isTwoWay h)⟩
 
-/-- **Claim `nolabel:claim-formula-annotation-regular`.**  For an mso relabelling, the language of
+/-- **Claim `claim:mso-annotation-regular`.**  For an mso relabelling, the language of
 strings over the alphabet `A × Φ` in which every position is labelled by a formula that holds in
 that position is regular. -/
 theorem msoRelabelling_annotation_regular {A B : Type} [Finite A] (R : MSORelabelling A B) :
@@ -119,9 +119,9 @@ theorem msoRelabelling_annotation_regular {A B : Type} [Finite A] (R : MSORelabe
 
 /-! ## The first-order fragment
 
-**Definition `nolabel:def-fo-types` (k-types)** (`TpType` and `tp`) is in
+**Definition `def:k-types` (k-types)** (`TpType` and `tp`) is in
 `RequestProject/PartC/KTypes.lean`, together with the proof of Lemma
-`item:fo-types-more-information` below. -/
+`lem:k-types-properties` below. -/
 
 /-- **Theorem `thm:logic-aperiodic`.**  A language is definable in first-order logic if and
 only if it is recognised by an aperiodic dfa. -/
@@ -133,7 +133,7 @@ theorem foDefinable_iff_aperiodic_dfa {A : Type} [Finite A] (L : Language A) :
   haveI := hσ
   exact foDefinable_of_aperiodic_dfa M hap
 
-/-- **Lemma `nolabel:lem-fo-types-characterisation`.**  Two strings have the same `k`-type if and
+/-- **Lemma `lem:k-types-fo-equivalence`.**  Two strings have the same `k`-type if and
 only if they satisfy the same first-order sentences of quantifier rank at most `k`. -/
 theorem tp_eq_iff_fo_equiv {A : Type} [Finite A] (k : ℕ) (w v : List A) :
     tp k w = tp k v ↔
@@ -162,7 +162,7 @@ theorem foRelabelling_iff_aperiodicBimachine {A B : Type} [Finite A] [Finite B]
     (f : List A → List B) : IsFORelabelling f ↔ IsAperiodicBimachine f :=
   ⟨isAperiodicBimachine_of_isFORelabelling, isFORelabelling_of_isAperiodicBimachine⟩
 
-/-- **Lemma `item:fo-types-more-information`.**  Refinement, congruence and aperiodicity of `k`-types. -/
+/-- **Lemma `lem:k-types-properties`.**  Refinement, congruence and aperiodicity of `k`-types. -/
 theorem tp_properties {A : Type} (k : ℕ) :
     (∀ w v : List A, tp (k + 1) w = tp (k + 1) v → tp k w = tp k v) ∧
     (∀ w w' v v' : List A, tp k w = tp k w' → tp k v = tp k v' →

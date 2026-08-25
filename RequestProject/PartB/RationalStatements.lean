@@ -24,8 +24,8 @@ namespace Transducers
 /-! ## Automata with labelled transitions
 
 The definitions of automata with labelled transitions (`LabAut`), of nondeterministic automata with
-output (Definition `nolabel:def-nfa-with-output`, `NFAO`), of rational relations (Definition
-`def:rational-relation`) and of rational functions (Definition `nolabel:def-rational-function`) are
+output (Definition `def:nfa-with-output`, `NFAO`), of rational relations (Definition
+`def:rational-relation`) and of rational functions (Definition `def:rational-function`) are
 in `RequestProject/PartB/LabAut.lean`, so that the constructions used in the proofs below can be
 developed before the statements of the numbered results. -/
 
@@ -76,7 +76,7 @@ theorem rationalRel_equivalence_undecidable
     ¬ ComputablePred (fun p : RelCode × RelCode => codeRel p.1 = codeRel p.2) :=
   PCP.equivalence_undecidable hPCP
 
-/-- **Claim `nolabel:claim-complement-of-homomorphism`.**  If `h : A* → B*` is a homomorphism, then
+/-- **Claim `claim:homomorphism-complement-rational`.**  If `h : A* → B*` is a homomorphism, then
 its complement `{(w, v) | v ≠ h w}` is a rational relation. -/
 theorem hom_complement_rational {A B : Type} [Finite A] [Finite B] (φ : A → List B) :
     IsRationalRel (fun (w : List A) (v : List B) => v ≠ homOf φ w) :=
@@ -210,7 +210,7 @@ lemma take_eq_take_of_prefix {A B : Type} {f : List A → List B} (hpre : Prefix
     rw [hw]
 
 /-- Length preservation together with the determinism condition of
-Theorem `nolabel:thm-mealy-among-rational-functions` implies prefix preservation. -/
+Theorem `thm:rational-is-mealy-characterisation` implies prefix preservation. -/
 lemma prefixPreserving_of_take {A B : Type} {f : List A → List B} (hlen : LengthPreserving f)
     (htake : ∀ (w v : List A) (n : ℕ), w.take n = v.take n → (f w).take n = (f v).take n) :
     PrefixPreserving f := by
@@ -224,7 +224,7 @@ lemma prefixPreserving_of_take {A B : Type} {f : List A → List B} (hlen : Leng
   rw [h1] at h
   exact h.symm ▸ List.take_prefix (l := f (w ++ t)) (i := (f w).length)
 
-/-- **Theorem `nolabel:thm-mealy-among-rational-functions`.**  A rational function is computed by a
+/-- **Theorem `thm:rational-is-mealy-characterisation`.**  A rational function is computed by a
 Mealy machine if and only if it is length preserving and deterministic in the sense that input
 strings agreeing on the first `n` letters have outputs agreeing on the first `n` letters. -/
 theorem rational_isMealy_iff {A B : Type} [Finite A] [Finite B] {f : List A → List B}

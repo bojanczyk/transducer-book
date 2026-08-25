@@ -31,9 +31,9 @@ namespace Transducers
 
 /-! ## Rational relations and weighted automata
 
-**Definition `nolabel:def-semiring` (Semiring)** is Mathlib's `Semiring`. -/
+**Definition `def:semiring` (Semiring)** is Mathlib's `Semiring`. -/
 
-/-! **Definition `nolabel:def-weighted-automaton` (Weighted automaton).**  The weight of a path
+/-! **Definition `def:weighted-automaton` (Weighted automaton).**  The weight of a path
 (`LabAut.weightOf`), the semantics of a weighted automaton (`LabAut.wEval`),
 the requirement that every input has finitely many accepting runs
 (`LabAut.FinitelyManyRuns`) and the functions computed by weighted automata

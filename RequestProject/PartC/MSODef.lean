@@ -5,8 +5,8 @@ Part C, Section *Logic*: Logic
 The *definitions* of Section *Logic*: monadic second-order logic over strings, mso relabellings and
 mso transductions.  They were originally stated in `RequestProject/PartC/MSO.lean`; they have been
 moved here, unchanged, so that the automata constructions used in the proofs of Theorem
-`thm:mso-logic-languages`, Lemma `nolabel:lem-mso-to-automaton` and Claim
-`nolabel:claim-formula-annotation-regular` can be developed before the statements of the numbered
+`thm:mso-logic-languages`, Lemma `lem:mso-free-variables` and Claim
+`claim:mso-annotation-regular` can be developed before the statements of the numbered
 results. `RequestProject/PartC/MSO.lean` imports this file, so all names are unchanged.
 
 Two conventions are used.

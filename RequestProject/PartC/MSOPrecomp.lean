@@ -3,7 +3,7 @@ Lemma `lem:logic-precomputation` of *Transducers* (M. Bojańczyk): the precomput
 family of mso formulas with one or two free first-order variables by a
 letter-to-letter rational function.
 
-Every formula `χ` of the family gives, by Lemma `nolabel:lem-mso-to-automaton` (in the form
+Every formula `χ` of the family gives, by Lemma `lem:mso-free-variables` (in the form
 `MarkStr.markedSat2`), a regular language of doubly marked strings; let `D χ` be
 a deterministic automaton for it.  The rational function `f` produced here is
 the letter-to-letter function that decorates every position `x` of the input `w`
