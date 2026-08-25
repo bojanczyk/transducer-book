@@ -1,6 +1,6 @@
 /-
 From first-order relabellings to aperiodic bimachines: one implication of
-Theorem C.4.16 of *Transducers* (M. Bojańczyk).
+Theorem `thm:fo-rational-functions` of *Transducers* (M. Bojańczyk).
 
 "Let `k` be the maximal quantifier rank of the first-order formulas used in the
 relabelling.  The output produced on the `i`-th position depends only on the
@@ -319,7 +319,7 @@ theorem eval_bimach {f : List A → List B} (hfo : R.AllFO) (hqr : ∀ i, (R.for
 
 end FORelabBimach
 
-/-- **One implication of Theorem C.4.16.**  A first-order relabelling is
+/-- **One implication of Theorem `thm:fo-rational-functions`.**  A first-order relabelling is
 computed by an aperiodic bimachine. -/
 theorem isAperiodicBimachine_of_isFORelabelling {A B : Type} [Finite A] {f : List A → List B}
     (h : IsFORelabelling f) : IsAperiodicBimachine f := by

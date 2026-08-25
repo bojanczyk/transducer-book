@@ -1,16 +1,15 @@
-/-
-Tools for building rational functions, used in the proofs of Lemma C.2.10 and
-Claim C.2.11 of *Transducers* (M. Bojańczyk).
+/- Tools for building rational functions, used in the proofs of Lemma
+`lem:regular-closure-properties` and Claim `claim:conditional` of *Transducers* (M. Bojańczyk).
 
 Three tools are provided.
 
 * `isRationalFun_comp`: rational functions are closed under composition (a
-  special case of Theorem B.1.4).
+  special case of Theorem `thm:composition-rational-relations`).
 * `ctxEval`: a *contextual rewriting*.  The input string is scanned once; at
   every gap an output block is produced, which may depend on the letters
   surrounding the gap and on a "mode", the state reached by a deterministic
   automaton on the whole input string.  Such a function is rational.  Most of
-  the rational functions used in Section C.2 are of this form: they insert,
+  the rational functions used in Section *Two-way transducers* are of this form: they insert,
   delete or recolour letters, in a way that depends on the global shape of the
   input.
 * `isRationalFun_ite`: rational functions are closed under case distinction over

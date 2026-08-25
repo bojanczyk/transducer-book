@@ -1,5 +1,5 @@
 /-
-The effectivity hypotheses used by Theorem C.1.4 of *Transducers*
+The effectivity hypotheses used by Theorem `thm:decidable-equivalence-regular` of *Transducers*
 (M. Bojańczyk): equivalence is decidable for regular functions.
 
 The mathematical content of the book's proof is developed in full in this
@@ -12,27 +12,25 @@ semantic form: two regular functions over a finite input alphabet are equal as
 soon as they agree on the finitely many inputs of length at most a bound coming
 from Schützenberger's criterion.
 
-The *formal* statement of Theorem C.1.4, however, asks for a `Computable`
-decision procedure on finite descriptions of two-way transducers, and there --
-exactly as for Theorems B.3.3 and B.3.7 of Part B, see
-`RequestProject/PartB/Effective.lean` -- the development runs into a gap in
-Mathlib rather than into a gap in the mathematics: Mathlib's `Primrec` and
-`Computable` API contains **no arithmetic on `ℤ` or on `ℚ`**, while both steps
-of the chain above manipulate rational weights (the bound is read off a linear
-representation over `ℚ` built from the code, and the values compared along the
-way are rational numbers).
+The *formal* statement of Theorem `thm:decidable-equivalence-regular`, however, asks for a
+`Computable` decision procedure on finite descriptions of two-way transducers, and there -- exactly
+as for Theorems `thm:equivalence-weighted-automata` and `thm:zeroness-weighted-automata` of Part B,
+see `RequestProject/PartB/Effective.lean` -- the development runs into a gap in Mathlib rather than
+into a gap in the mathematics: Mathlib's `Primrec` and `Computable` API contains **no arithmetic on
+`ℤ` or on `ℚ`**, while both steps of the chain above manipulate rational weights (the bound is read
+off a linear representation over `ℚ` built from the code, and the values compared along the way are
+rational numbers).
 
-The two facts that are needed are therefore isolated here as named hypotheses,
-in the style already used in this project for Theorem B.1.6 (which takes the
-undecidability of the Post correspondence problem as an explicit hypothesis) and
-for Theorems B.3.3, B.3.4, B.3.7 and B.4.2 (which take
-`Transducers.EffectiveWeightedEvalEq` as an explicit hypothesis).  Both are
-*true statements* about ordinary computability, and everything else -- that the
-finitely many strings to be tested may be taken over the letters of the two
-codes together with one fresh letter (`RequestProject/PartC/RegCodeSan.lean`),
-and the assembly of the decision procedure -- is discharged in full in
-`RequestProject/PartC/RegEqDec.lean`.
--/
+The two facts that are needed are therefore isolated here as named hypotheses, in the style already
+used in this project for Theorem `thm:undecidable-equivalence-rational-relations` (which takes the
+undecidability of the Post correspondence problem as an explicit hypothesis) and for Theorems
+`thm:equivalence-weighted-automata`, `thm:equivalence-rational-functions`,
+`thm:zeroness-weighted-automata` and `thm:decide-if-mealy` (which take
+`Transducers.EffectiveWeightedEvalEq` as an explicit hypothesis).  Both are *true statements* about
+ordinary computability, and everything else -- that the finitely many strings to be tested may be
+taken over the letters of the two codes together with one fresh letter
+(`RequestProject/PartC/RegCodeSan.lean`), and the assembly of the decision procedure -- is
+discharged in full in `RequestProject/PartC/RegEqDec.lean`. -/
 import RequestProject.PartC.RegCodeSan
 import RequestProject.PartB.Codes
 
@@ -74,21 +72,19 @@ transducers, returns a length bound with the following property: two total coded
 two-way transducers that agree on all inputs of length at most `N c₁ c₂`
 compute the same relation.
 
-*Why this is true.*  The *mathematical* content of the statement -- that such a
-bound exists for every pair of codes -- is **proved** in
-`RequestProject/PartC/RegCodeBound.lean`
-(`Transducers.exists_twoWayCode_bound`), from the conclusion
-`Transducers.regularFun_eq_of_short` of the book's proof of Theorem C.1.4 in
-`RequestProject/PartC/WeightedRegClosure.lean`: a
-coded two-way transducer computes a regular function (Theorem C.2.9,
-`Transducers.twoWay_isRegular`), the equality of two regular functions is the
-zeroness of a weighted automaton over `ℚ` obtained from them, and
-Schützenberger's criterion bounds the length of a witness of non-zeroness by the
-dimension of a linear representation of that automaton, which is a function of
-the two codes.  What is assumed here is only that this bound can be *computed*
-from the two codes; it is the same missing ingredient as in Theorems B.3.3 and
-B.3.7, namely arithmetic on `ℤ` and `ℚ` in Mathlib's `Primrec`/`Computable` API,
-which the construction of the linear representation from the code needs. -/
+*Why this is true.*  The *mathematical* content of the statement -- that such a bound exists for
+every pair of codes -- is **proved** in `RequestProject/PartC/RegCodeBound.lean`
+(`Transducers.exists_twoWayCode_bound`), from the conclusion `Transducers.regularFun_eq_of_short` of
+the book's proof of Theorem `thm:decidable-equivalence-regular` in
+`RequestProject/PartC/WeightedRegClosure.lean`: a coded two-way transducer computes a regular
+function (Theorem `thm:2dfa-decomposition-into-primes`, `Transducers.twoWay_isRegular`), the
+equality of two regular functions is the zeroness of a weighted automaton over `ℚ` obtained from
+them, and Schützenberger's criterion bounds the length of a witness of non-zeroness by the dimension
+of a linear representation of that automaton, which is a function of the two codes.  What is assumed
+here is only that this bound can be *computed* from the two codes; it is the same missing ingredient
+as in Theorems `thm:equivalence-weighted-automata` and `thm:zeroness-weighted-automata`, namely
+arithmetic on `ℤ` and `ℚ` in Mathlib's `Primrec`/`Computable` API, which the construction of the
+linear representation from the code needs. -/
 def EffectiveTwoWayBound : Prop :=
   ∃ N : TwoWayCode → TwoWayCode → ℕ, Computable₂ N ∧
     ∀ c₁ c₂, TwoWayCodeTotal c₁ → TwoWayCodeTotal c₂ →

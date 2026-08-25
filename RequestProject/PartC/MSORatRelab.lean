@@ -1,8 +1,7 @@
-/-
-Theorem C.4.4 of *Transducers* (M. Bojańczyk): a string-to-string function is
-rational if and only if it is definable by an mso relabelling.
+/- Theorem `thm:logic-rational-functions` of *Transducers* (M. Bojańczyk): a string-to-string
+function is rational if and only if it is definable by an mso relabelling.
 
-Both inclusions go through bimachines (Theorem B.2.3), which is a convenient
+Both inclusions go through bimachines (Theorem `thm:bimachines`), which is a convenient
 deterministic presentation of the unambiguous one-way transducer used in the
 book.
 
@@ -14,15 +13,15 @@ book.
   says that the prefix automaton reaches `p` and the suffix automaton reaches
   `s` in the position `x₀`, which is a regular property of the string marked at
   `x₀`, and hence definable in mso by `MarkLogic.exists_form_of_regular`.  This
-  is Claim C.4.5 of the book, which the book states in terms of the transitions
+  is Claim `claim:transition-formula` of the book, which the book states in terms of the transitions
   of an unambiguous transducer.
 
-* mso relabellings ⊆ rational.  Each formula of the relabelling gives a regular
-  language of marked strings (Lemma C.4.2, in the form `MarkStr.markedSat2`),
-  and `MarkBimach.markFun` turns a finite family of such languages into a
-  bimachine; the output in a position is the output string of the unique formula
-  that holds there.  This is the second half of the proof in the book, where the
-  same is done with the regular language of Claim C.4.6.
+* mso relabellings ⊆ rational.  Each formula of the relabelling gives a regular language of marked
+  strings (Lemma `nolabel:lem-mso-to-automaton`, in the form `MarkStr.markedSat2`), and
+  `MarkBimach.markFun` turns a finite family of such languages into a bimachine; the output in a
+  position is the output string of the unique formula that holds there.  This is the second half of
+  the proof in the book, where the same is done with the regular language of Claim
+  `nolabel:claim-formula-annotation-regular`.
 -/
 import RequestProject.PartC.MarkLogic
 import RequestProject.PartC.MarkBimach
@@ -190,9 +189,9 @@ lemma isRegular_idx (i : (P × S) × Option P) :
   RegAut.isRegular_foldl (stepM M) (startM M) (accSet M i)
 
 open scoped Classical in
-/-- **Claim C.4.5** (the internal step of Theorem C.4.4), for a bimachine: for
-every index there is an mso formula with one free variable that selects the
-positions with that index. -/
+/-- **Claim `claim:transition-formula`** (the internal step of Theorem
+`thm:logic-rational-functions`), for a bimachine: for every index there is an mso formula with one
+free variable that selects the positions with that index. -/
 lemma exists_form (i : (P × S) × Option P) :
     ∃ φ : MSO A, ∀ (w : List A) (x : ℕ), x < w.length →
       (MSO.Sat w (fun _ => x) (fun _ => ∅) φ ↔ idxOf M w x = i) := by
@@ -253,7 +252,7 @@ lemma eval_eq_flatten (w : List A) (hw : w ≠ []) :
 
 end Eval
 
-/-! ## Theorem C.4.4 -/
+/-! ## Theorem `thm:logic-rational-functions` -/
 
 section Main
 
@@ -338,8 +337,8 @@ end Main
 
 end RatRelab
 
-/-- **Theorem C.4.4.**  A string-to-string function is rational if and only if
-it is definable by an mso relabelling. -/
+/-- **Theorem `thm:logic-rational-functions`.**  A string-to-string function is rational if and only
+if it is definable by an mso relabelling. -/
 theorem rational_iff_msoRelabelling_aux {A B : Type} [Finite A] [Finite B]
     (f : List A → List B) : IsRationalFun f ↔ IsMSORelabelling f :=
   ⟨RatRelab.msoRelabelling_of_isRationalFun, RatRelab.isRationalFun_of_msoRelabelling⟩

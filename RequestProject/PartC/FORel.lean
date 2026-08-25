@@ -1,13 +1,12 @@
 /-
 Relativisation of a first-order formula to a prefix or to a suffix of the input
-string, used in Section C.4.4 of *Transducers* (M. Bojańczyk).
+string, used in Section *The first-order fragment* of *Transducers* (M. Bojańczyk).
 
-The book's proof of Lemma C.4.13 ("the formulas from the induction assumption
-need to have their quantification restricted to positions that are `< x` for
-`w₁` and `> x` for `w₂`, but this does not affect the quantifier rank") and the
-proof of the implication "aperiodic ⇒ first-order definable" of
-Theorem C.4.11 both need to say, inside a formula, that another formula holds in
-a prefix or in a suffix of the input string.
+The book's proof of Lemma `nolabel:lem-fo-types-characterisation` ("the formulas from the induction
+assumption need to have their quantification restricted to positions that are `< x` for `w₁` and `>
+x` for `w₂`, but this does not affect the quantifier rank") and the proof of the implication
+"aperiodic ⇒ first-order definable" of Theorem `thm:logic-aperiodic` both need to say, inside a
+formula, that another formula holds in a prefix or in a suffix of the input string.
 
 `MSO.relGuard g φ` relativises every quantifier of `φ` by the guard `g`: the
 quantifier `∃ x_i` becomes `∃ x_i (g i ∧ ⋯)`.  The three instances used are

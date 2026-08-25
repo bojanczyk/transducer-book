@@ -1,19 +1,18 @@
 /-
-Theorem C.4.1 of *Transducers* (M. Bojańczyk), the Büchi-Elgot-Trakhtenbrot
+Theorem `thm:mso-logic-languages` of *Transducers* (M. Bojańczyk), the Büchi-Elgot-Trakhtenbrot
 theorem: a language of finite strings is regular if and only if it is definable
 in monadic second-order logic.
 
 The two implications are proved separately.
 
-* From logic to automata (`isRegular_of_msoDefinable`).  This is the special
-  case of Lemma C.4.2 (`RequestProject/PartC/MSOAnnot.lean`) with no free
-  variables: a formula whose truth value does not depend on the valuation is
-  first turned into a sentence by existentially quantifying all its variables
-  (`MSO.closeFO`, `MSO.closeSO`), and the language of a sentence is the inverse
-  image, under the letter-to-letter map `a ↦ (a, (), ())`, of the language of
-  annotated strings of Lemma C.4.2 for `k = l = 0`.  The existential closure is
-  false on the empty string as soon as the formula has a quantifier, so the
-  empty string is treated separately.
+* From logic to automata (`isRegular_of_msoDefinable`).  This is the special case of Lemma
+  `nolabel:lem-mso-to-automaton` (`RequestProject/PartC/MSOAnnot.lean`) with no free variables: a
+  formula whose truth value does not depend on the valuation is first turned into a sentence by
+  existentially quantifying all its variables (`MSO.closeFO`, `MSO.closeSO`), and the language of a
+  sentence is the inverse image, under the letter-to-letter map `a ↦ (a, (), ())`, of the language
+  of annotated strings of Lemma `nolabel:lem-mso-to-automaton` for `k = l = 0`.  The existential
+  closure is false on the empty string as soon as the formula has a quantifier, so the empty string
+  is treated separately.
 
 * From automata to logic (`msoDefinable_of_isRegular`).  The formula guesses the
   run of a deterministic automaton as a tuple of second-order variables, one for
@@ -65,8 +64,8 @@ lemma extFO_zero (fo : Fin 0 → ℕ) : extFO 0 fo = fun _ => 0 := by
 lemma extSO_zero (so : Fin 0 → Set ℕ) : extSO 0 so = fun _ => (∅ : Set ℕ) := by
   funext j; simp [extSO]
 
-/-- The language defined by a sentence is regular.  This is Lemma C.4.2 with no
-free variables. -/
+/-- The language defined by a sentence is regular.  This is Lemma `nolabel:lem-mso-to-automaton`
+with no free variables. -/
 lemma isRegular_satLang (φ : MSO A) (hfo : φ.freeFO = ∅) (hso : φ.freeSO = ∅)
     (fo₀ : ℕ → ℕ) (so₀ : ℕ → Set ℕ) :
     Language.IsRegular {w : List A | Sat w fo₀ so₀ φ} := by
@@ -93,7 +92,7 @@ lemma isRegular_satLang (φ : MSO A) (hfo : φ.freeFO = ∅) (hso : φ.freeSO = 
     rw [extFO_zero, extSO_zero] at hsat
     exact (hcongr _ _).1 hsat
 
-/-- **Theorem C.4.1**, the implication from logic to automata. -/
+/-- **Theorem `thm:mso-logic-languages`**, the implication from logic to automata. -/
 theorem isRegular_of_msoDefinable {L : Language A} (h : MSODefinable L) : L.IsRegular := by
   classical
   obtain ⟨φ, hφ⟩ := h
@@ -536,7 +535,7 @@ lemma sat_runF_iff (hls : ∀ a : A, a ∈ ls) (hqs : ∀ q : σ, q ∈ qs)
 
 end FromAutomaton
 
-/-- **Theorem C.4.1**, the implication from automata to logic. -/
+/-- **Theorem `thm:mso-logic-languages`**, the implication from automata to logic. -/
 theorem msoDefinable_of_isRegular {A : Type} [Finite A] {L : Language A} (h : L.IsRegular) :
     MSODefinable L := by
   classical
@@ -590,7 +589,7 @@ theorem msoDefinable_of_isRegular {A : Type} [Finite A] {L : Language A} (h : L.
       rw [DFA.mem_accepts, DFA.eval_nil] at hacc
       exact hstart hacc
 
-/-- **Theorem C.4.1** (Büchi-Elgot-Trakhtenbrot).  A language of finite strings
+/-- **Theorem `thm:mso-logic-languages`** (Büchi-Elgot-Trakhtenbrot).  A language of finite strings
 is regular if and only if it is definable in monadic second-order logic. -/
 theorem regular_iff_msoDefinable_aux {A : Type} [Finite A] (L : Language A) :
     L.IsRegular ↔ MSODefinable L :=

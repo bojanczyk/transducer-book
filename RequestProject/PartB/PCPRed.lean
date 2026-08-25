@@ -1,6 +1,5 @@
-/-
-Theorem B.1.6 of *Transducers* (M. Bojańczyk): the equivalence problem for
-rational relations is undecidable.
+/- Theorem `thm:undecidable-equivalence-rational-relations` of *Transducers* (M. Bojańczyk): the
+equivalence problem for rational relations is undecidable.
 
 Following the book, undecidability is obtained by a reduction from the Post
 correspondence problem, whose undecidability is taken as an explicit hypothesis
@@ -15,11 +14,10 @@ instance.  The reduction produces the two relations
 * `R₁ = {(w, v) ∈ A* × B* | w = ε or v ≠ g w or v ≠ h w}`,
 * `R₂ = A* × B*`,
 
-which are equal exactly when the instance has no solution.  The relation `R₁` is
-rational because the complement of a homomorphism is rational (Claim B.1.7);
-the automaton is written out explicitly here, since the reduction has to be a
-computable function on codes.
--/
+which are equal exactly when the instance has no solution.  The relation `R₁` is rational because
+the complement of a homomorphism is rational (Claim `nolabel:claim-complement-of-homomorphism`); the
+automaton is written out explicitly here, since the reduction has to be a computable function on
+codes. -/
 import RequestProject.PartB.Codes
 
 namespace Transducers
@@ -765,10 +763,11 @@ lemma computable_reduction : Computable (fun P : Instance => (code1 P, code2 P))
     Primrec.pair (Primrec.list_append.comp hc2a hc2b) (Primrec.const ([0], [0]))
   exact (Primrec.pair hcode1 hcode2).to_comp
 
-/-! ## Theorem B.1.6 -/
+/-! ## Theorem `thm:undecidable-equivalence-rational-relations` -/
 
-/-- **Theorem B.1.6.**  Assuming that the Post correspondence problem is
-undecidable, the equivalence problem for rational relations is undecidable. -/
+/-- **Theorem `thm:undecidable-equivalence-rational-relations`.**  Assuming that the Post
+correspondence problem is undecidable, the equivalence problem for rational relations is
+undecidable. -/
 theorem equivalence_undecidable (hPCP : ¬ ComputablePred Solvable) :
     ¬ ComputablePred (fun p : RelCode × RelCode => codeRel p.1 = codeRel p.2) := by
   rintro ⟨hdec, hcomp⟩

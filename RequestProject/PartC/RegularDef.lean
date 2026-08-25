@@ -1,13 +1,13 @@
 /-
-The prime regular functions and the regular functions (Definition C.0.14) of
+The prime regular functions and the regular functions (Definition `def:regular-functions`) of
 *Transducers* (M. Bojańczyk), together with their basic closure properties.
 
-These definitions were originally stated in `RequestProject/PartC/Statements.lean`; they
-have been moved here, unchanged, so that the constructions used in the proofs of
-Lemma C.2.10, Claim C.2.11 and Theorem C.2.9 can be developed before the
-statements of the numbered results.  `RequestProject/PartC/Statements.lean` imports this
-file, so the names `Transducers.mapReverse`, `Transducers.mapDuplicate`,
-`Transducers.RegularFam` and `Transducers.IsRegularFun` are unchanged.
+These definitions were originally stated in `RequestProject/PartC/Statements.lean`; they have been
+moved here, unchanged, so that the constructions used in the proofs of Lemma
+`lem:regular-closure-properties`, Claim `claim:conditional` and Theorem
+`thm:2dfa-decomposition-into-primes` can be developed before the statements of the numbered results.
+`RequestProject/PartC/Statements.lean` imports this file, so the names `Transducers.mapReverse`,
+`Transducers.mapDuplicate`, `Transducers.RegularFam` and `Transducers.IsRegularFun` are unchanged.
 
 The file also collects the elementary facts about regular functions that are
 used everywhere later: a rational function is regular, `mapReverse` and
@@ -19,7 +19,7 @@ import RequestProject.PartC.RatBuild
 
 namespace Transducers
 
-/-! ## The prime regular functions (Definition C.0.14) -/
+/-! ## The prime regular functions (Definition `def:regular-functions`) -/
 
 /-- The map reverse function `w₁ # ⋯ # wₙ ↦ reverse w₁ # ⋯ # reverse wₙ`. -/
 def mapReverse (A : Type) : List (Option A) → List (Option A) := mapLift List.reverse
@@ -38,7 +38,7 @@ def RegularFam : ∀ (A B : Type), (List A → List B) → Prop := fun A B f =>
   (∃ (A₀ : Type) (e : A ≃ Option A₀) (e' : B ≃ Option A₀),
       ∀ w, f w = (mapDuplicate A₀ (w.map e)).map e'.symm)
 
-/-- **Definition C.0.14 (Regular functions).**  A string-to-string function is
+/-- **Definition `def:regular-functions` (Regular functions).**  A string-to-string function is
 regular if it is a finite composition of rational functions, map reverse and map
 duplicate. -/
 def IsRegularFun {A B : Type} (f : List A → List B) : Prop := CompClosure RegularFam A B f

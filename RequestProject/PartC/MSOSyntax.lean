@@ -1,6 +1,6 @@
 /-
 Elementary syntactic facts about the monadic second-order formulas of
-Section C.4 of *Transducers* (M. Bojańczyk):
+Section *Logic* of *Transducers* (M. Bojańczyk):
 
 * satisfaction depends on the valuation only through the free variables
   (`MSO.sat_congr`);

@@ -1,6 +1,6 @@
 /-
 The automaton of `k`-types, and the implication
-"first-order definable ⇒ aperiodic dfa" of Theorem C.4.11 of *Transducers*
+"first-order definable ⇒ aperiodic dfa" of Theorem `thm:logic-aperiodic` of *Transducers*
 (M. Bojańczyk).
 
 "Define the set of states `Q` to be the set of possible `k`-types of strings in
@@ -12,7 +12,7 @@ Finally, since the language is defined by a first-order formula of quantifier
 rank at most `k`, it follows that strings that reach the same state cannot be
 distinguished by the language."
 
-The set of states is the whole type `TpType A k` of Definition C.4.12, which is
+The set of states is the whole type `TpType A k` of Definition `nolabel:def-fo-types`, which is
 finite for a finite alphabet; on the types that are not realised by any string
 the transition function is the identity, which is harmless both for the runs and
 for aperiodicity.
@@ -116,7 +116,7 @@ lemma tpDFA_eval (k : ℕ) (L : Language A) (w : List A) : (tpDFA k L).eval w = 
   rw [h, strTrans_tpStep]
   simp
 
-/-! ## The easy implication of Theorem C.4.11 -/
+/-! ## The easy implication of Theorem `thm:logic-aperiodic` -/
 
 /-- The empty string is the only string of its `k`-type, as soon as `k ≥ 1`. -/
 lemma eq_nil_of_tp_succ_eq_nil {k : ℕ} {w : List A}
@@ -137,7 +137,7 @@ lemma MSO.isFO_closeFO : ∀ (is : List ℕ) {φ : MSO A}, φ.IsFO → (MSO.clos
   | nil => exact fun h => h
   | cons i is ih => exact fun h => ih h
 
-/-- **The easy implication of Theorem C.4.11.**  A first-order definable
+/-- **The easy implication of Theorem `thm:logic-aperiodic`.**  A first-order definable
 language is recognised by an aperiodic dfa. -/
 theorem aperiodic_dfa_of_foDefinable [Finite A] (L : Language A) (h : FODefinable L) :
     ∃ (σ : Type) (_ : Finite σ) (M : DFA A σ), TransAperiodic M.step ∧ M.accepts = L := by

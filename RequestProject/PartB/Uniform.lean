@@ -1,11 +1,10 @@
 /-
-Uniformisation of rational relations (Lemma B.2.5).
+Uniformisation of rational relations (Lemma `lem:uniformisation`).
 
-Let `R` be a total rational relation.  By Lemma B.2.4 it is computed by an
-automaton `N` with extended transitions (each transition is labelled by an input
-letter and a regular language of output strings) in which every accepting run
-reads exactly one letter per transition, except for the runs over the empty
-input, which consist of a single transition.
+Let `R` be a total rational relation.  By Lemma `lemma:eliminate-epsilon-transitions` it is computed
+by an automaton `N` with extended transitions (each transition is labelled by an input letter and a
+regular language of output strings) in which every accepting run reads exactly one letter per
+transition, except for the runs over the empty input, which consist of a single transition.
 
 Choosing one output string in each (nonempty) language of a transition turns `N`
 into an ordinary nfa with output `chosen N` whose relation is contained in `R`
@@ -147,7 +146,7 @@ theorem exists_unambiguous_epsFree_of_total {A B : Type} [Finite A] [Finite B]
   obtain ⟨P, hP, N', hunamb, hefN, hincl⟩ := Unambig.exists_unambiguous_of_epsFree M hefM htot
   exact ⟨P, hP, N', hunamb, hefN, fun w v hwv => hsub w v (hincl w v hwv)⟩
 
-/-- **Lemma B.2.5 (Uniformisation).**  A total rational relation contains an
+/-- **Lemma `lem:uniformisation` (Uniformisation).**  A total rational relation contains an
 unambiguous rational relation. -/
 theorem uniformisation_aux {A B : Type} [Finite A] [Finite B]
     {R : List A → List B → Prop} (hR : IsRationalRel R) (htotal : ∀ w, ∃ v, R w v) :

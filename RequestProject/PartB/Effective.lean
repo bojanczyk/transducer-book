@@ -1,35 +1,31 @@
-/-
-The effectivity hypothesis used by the decidability results of Section B.3 of
-*Transducers* (M. Bojańczyk).
+/- The effectivity hypothesis used by the decidability results of Section *Rational relations and
+weighted automata* of *Transducers* (M. Bojańczyk).
 
-Theorems B.3.3, B.3.4, B.3.7 and B.4.2 are decidability statements about
-weighted automata over the field `ℚ` and about rational functions.  Their
-mathematical content is developed in full in this project (Schützenberger's
-zeroness criterion in `RequestProject/PartB/WeightedZero.lean`, its effective
-form in `RequestProject/PartB/WeightedBound.lean`, the reduction of equivalence
-of rational functions to equivalence of weighted automata in
-`RequestProject/PartB/PairWeighted.lean`,
-`RequestProject/PartB/PairWeightedEval.lean` and
-`RequestProject/PartB/RatEqDec.lean`), but their *formal* statements ask for a
-`Computable` decision procedure in the sense of Mathlib's
-`Mathlib.Computability.Partrec`, and there the development runs into a gap in
-the library rather than into a gap in the mathematics: Mathlib's `Primrec` and
-`Computable` API contains **no arithmetic on `ℤ` or on `ℚ`**.  There is no lemma
-saying that addition, multiplication or comparison of integers or of rationals
-is primitive recursive, and no `Primcodable`-level machinery from which such
-lemmas could be obtained cheaply; every procedure that manipulates rational
-weights therefore cannot be shown `Computable` without first developing that
-API.
+Theorems `thm:equivalence-weighted-automata`, `thm:equivalence-rational-functions`,
+`thm:zeroness-weighted-automata` and `thm:decide-if-mealy` are decidability statements about
+weighted automata over the field `ℚ` and about rational functions.  Their mathematical content is
+developed in full in this project (Schützenberger's zeroness criterion in
+`RequestProject/PartB/WeightedZero.lean`, its effective form in
+`RequestProject/PartB/WeightedBound.lean`, the reduction of equivalence of rational functions to
+equivalence of weighted automata in `RequestProject/PartB/PairWeighted.lean`,
+`RequestProject/PartB/PairWeightedEval.lean` and `RequestProject/PartB/RatEqDec.lean`), but their
+*formal* statements ask for a `Computable` decision procedure in the sense of Mathlib's
+`Mathlib.Computability.Partrec`, and there the development runs into a gap in the library rather
+than into a gap in the mathematics: Mathlib's `Primrec` and `Computable` API contains **no
+arithmetic on `ℤ` or on `ℚ`**.  There is no lemma saying that addition, multiplication or comparison
+of integers or of rationals is primitive recursive, and no `Primcodable`-level machinery from which
+such lemmas could be obtained cheaply; every procedure that manipulates rational weights therefore
+cannot be shown `Computable` without first developing that API.
 
-Rather than developing it, the one fact that is needed is isolated here as a
-named hypothesis, in the style already used in this project for Theorem B.1.6
-(`Transducers.rationalRel_equivalence_undecidable`, which takes the
-undecidability of the Post correspondence problem as an explicit hypothesis).
-The hypothesis is a *true statement* about ordinary computability -- the
-justification is spelled out in the docstring -- and the results of Sections
-B.3 and B.4 that depend on it are proved from it, with everything else
-discharged in full.  When Mathlib gains arithmetic on `ℚ` in its `Primrec` API,
-the hypothesis can be proved and the four results become unconditional.
+Rather than developing it, the one fact that is needed is isolated here as a named hypothesis, in
+the style already used in this project for Theorem `thm:undecidable-equivalence-rational-relations`
+(`Transducers.rationalRel_equivalence_undecidable`, which takes the undecidability of the Post
+correspondence problem as an explicit hypothesis). The hypothesis is a *true statement* about
+ordinary computability -- the justification is spelled out in the docstring -- and the results of
+Sections *Rational relations and weighted automata* and *Machine independent characterisations* that
+depend on it are proved from it, with everything else discharged in full.  When Mathlib gains
+arithmetic on `ℚ` in its `Primrec` API, the hypothesis can be proved and the four results become
+unconditional.
 
 The second hypothesis that these results used to take, an effective form of the
 Schützenberger bound, is no longer assumed: it is stated below as
@@ -83,12 +79,10 @@ over `ℚ`, returns a length bound with the following property: two valid coded
 weighted automata that agree on all strings of length at most `N c₁ c₂` compute
 the same function.
 
-This is *not* a hypothesis: it is proved in
-`RequestProject/PartB/WeightedBound.lean`
-(`Transducers.effectiveWeightedBound`), with the explicit bound
-`Transducers.wcodeBound`.  The statement is kept here, next to the hypothesis
-above, because that is where the decision procedures of Section B.3 look for
-it.
+This is *not* a hypothesis: it is proved in `RequestProject/PartB/WeightedBound.lean`
+(`Transducers.effectiveWeightedBound`), with the explicit bound `Transducers.wcodeBound`.  The
+statement is kept here, next to the hypothesis above, because that is where the decision procedures
+of Section *Rational relations and weighted automata* look for it.
 
 The proof is the effective form of Schützenberger's criterion.
 `Transducers.linRep_eq_of_short` (in `RequestProject/PartB/WeightedZero.lean`)

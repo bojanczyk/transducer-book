@@ -9,7 +9,7 @@ induction step of the book's snake lemma uses over and over again:
 * a *bounded concatenation*: the concatenation of a fixed finite number of
   regular functions is regular (`Transducers.isRegularFun_flatMapRange`).
 
-Both are immediate consequences of Lemma C.2.10
+Both are immediate consequences of Lemma `lem:regular-closure-properties`
 (`RequestProject/PartC/RegClosure.lean`), but stating them once avoids repeating
 the same inductions in the construction of the block function of the snake
 lemma.

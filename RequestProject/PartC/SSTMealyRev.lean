@@ -1,7 +1,6 @@
-/-
-Post-composition of a streaming string transducer with a *reversible* Mealy
-machine (a step of the "regular to sst" half of Theorem C.3.2 of *Transducers*,
-M. Bojańczyk).
+/- Post-composition of a streaming string transducer with a *reversible* Mealy machine (a step of
+the "regular to sst" half of Theorem `theorem:sst-two-way-equivalence` of *Transducers*, M.
+Bojańczyk).
 
 For every register `X` of the sst and every state `q` of the Mealy machine, the
 new sst has a register `X_q`, which holds the image of the content of `X` under

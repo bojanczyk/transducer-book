@@ -1,25 +1,20 @@
-/-
-Codes of two-way transducers (Section C.2.3 of *Transducers*, M. Bojańczyk) and
-the behaviour of a coded transducer on letters that do not occur in its
-transition table.
+/- Codes of two-way transducers (Section *Decidability of equivalence* of *Transducers*, M.
+Bojańczyk) and the behaviour of a coded transducer on letters that do not occur in its transition
+table.
 
-The definitions of `TwoWayCode`, `twoWayCodeAut`, `twoWayCodeRel` and
-`TwoWayCodeTotal` used to be in `RequestProject/PartC/Statements.lean`; they are
-given here, unchanged, so that the decision procedure of Theorem C.1.4 can be
-developed before that file.
+The definitions of `TwoWayCode`, `twoWayCodeAut`, `twoWayCodeRel` and `TwoWayCodeTotal` used to be
+in `RequestProject/PartC/Statements.lean`; they are given here, unchanged, so that the decision
+procedure of Theorem `thm:decidable-equivalence-regular` can be developed before that file.
 
-A code is a finite lookup table, so it mentions only finitely many letters, and
-a transition whose adjacent letters are not both mentioned by the table is
-absent from it and therefore halts with empty output.  Consequently the
-behaviour of a coded transducer does not distinguish between two letters that
-are both absent from the table: renaming the letters of the input by any map
-which fixes the letters of the table and sends the other letters to letters
-outside the table does not change the computed relation
-(`Transducers.RegDec.twoWayCodeRel_map`).  This is what makes the equivalence
-test of Theorem C.1.4 a *finite* check: it is enough to compare the two coded
-transducers on the short strings over the letters of the two tables together
-with one fresh letter.
--/
+A code is a finite lookup table, so it mentions only finitely many letters, and a transition whose
+adjacent letters are not both mentioned by the table is absent from it and therefore halts with
+empty output.  Consequently the behaviour of a coded transducer does not distinguish between two
+letters that are both absent from the table: renaming the letters of the input by any map which
+fixes the letters of the table and sends the other letters to letters outside the table does not
+change the computed relation (`Transducers.RegDec.twoWayCodeRel_map`).  This is what makes the
+equivalence test of Theorem `thm:decidable-equivalence-regular` a *finite* check: it is enough to
+compare the two coded transducers on the short strings over the letters of the two tables together
+with one fresh letter. -/
 import RequestProject.PartC.TwoWayCont
 
 namespace Transducers

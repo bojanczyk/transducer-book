@@ -1,17 +1,17 @@
 /-
 From first-order relabellings to first-order transductions.
 
-An mso relabelling (Definition C.4.3) outputs, at every position of the input,
+An mso relabelling (Definition `def:mso-relabeling`) outputs, at every position of the input,
 the string `out i` attached to the unique formula `form i` that holds at that
 position (and the fixed string `emptyOut` on the empty input).  This is the
-special case of an mso transduction (Definition C.4.7) in which the copies of a
+special case of an mso transduction (Definition `def:mso-transduction`) in which the copies of a
 position are indexed by the pairs `(i, m)` with `i` an index of the relabelling
 and `m` a position of `out i`, the extra elements are the positions of
 `emptyOut`, and the order is the lexicographic order.  If the relabelling is
 first-order, so is the resulting transduction.
 
-This is the first ingredient of the easy inclusion of Theorem C.4.17.
--/
+This is the first ingredient of the easy inclusion of Theorem
+`nolabel:thm-fo-transduction-into-primes`. -/
 import RequestProject.PartC.ITransBuild
 
 namespace Transducers

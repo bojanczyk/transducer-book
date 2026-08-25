@@ -1,6 +1,6 @@
 /-
 The non-branching part of a continuous function with bounded variation
-(the first half of the proof of Theorem B.4.8).
+(the first half of the proof of Theorem `thm:subsequential-functions`).
 
 Let `f : A* → B*` be a partial function which is continuous and has bounded
 variation.  Continuity makes the domain of `f` regular, so that every string

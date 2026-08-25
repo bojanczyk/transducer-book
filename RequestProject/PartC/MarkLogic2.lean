@@ -1,10 +1,10 @@
 /-
 From automata back to logic, with *two* free first-order variables.
 
-`RequestProject/PartC/MarkLogic.lean` turns a regular language of strings marked
-at one position into an mso formula with one free variable.  The proof of
-Theorem C.4.8 needs the version with two free variables: a regular language `K`
-of doubly marked strings gives a formula `φ(x₀, x₁)` such that
+`RequestProject/PartC/MarkLogic.lean` turns a regular language of strings marked at one position
+into an mso formula with one free variable.  The proof of Theorem `thm:logic-regular-functions`
+needs the version with two free variables: a regular language `K` of doubly marked strings gives a
+formula `φ(x₀, x₁)` such that
 
   `w ⊨ φ(x, y)` iff the string `w`, with the position `x` carrying the first
   mark and the position `y` the second one, belongs to `K`.

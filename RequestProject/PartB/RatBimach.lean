@@ -1,6 +1,6 @@
 /-
 From rational functions to bimachines (the remaining implication of
-Theorem B.2.3).
+Theorem `thm:bimachines`).
 
 Let `f` be a rational function.  By `exists_unambiguous_aut_of_rationalFun` it is
 computed by an unambiguous ε-free nfa with output `N`.  The associated bimachine

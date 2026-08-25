@@ -1,5 +1,5 @@
 /-
-The proof of Theorem C.1.4 of the book (*Transducers*, M. Bojańczyk):
+The proof of Theorem `thm:decidable-equivalence-regular` of the book (*Transducers*, M. Bojańczyk):
 equivalence of regular functions, by a reduction to equivalence -- equivalently,
 to zeroness -- of weighted automata over the field of rationals.
 
@@ -10,23 +10,22 @@ i.e.
   `{ f : A* → B* | for every weighted automaton g : B* → S, the function f · g
      is a weighted automaton }`,
 
-is closed under composition, contains the rational functions
-(Lemma B.3.5, `Transducers.weighted_precomp_rational`) and contains the two
-remaining prime functions, map reverse and map duplicate.  The two prime cases
-are the constructions of `RequestProject/PartC/WeightedMapLift.lean`.  Since a
-regular function is by definition a composition of primes, the class contains
-all regular functions: this is `Transducers.isWeighted_comp_regular` below.
+is closed under composition, contains the rational functions (Lemma
+`lem:closure-weighted-automata-precomposition`, `Transducers.weighted_precomp_rational`) and
+contains the two remaining prime functions, map reverse and map duplicate.  The two prime cases are
+the constructions of `RequestProject/PartC/WeightedMapLift.lean`.  Since a regular function is by
+definition a composition of primes, the class contains all regular functions: this is
+`Transducers.isWeighted_comp_regular` below.
 
-Post-composing with an *injective* weighted automaton `ι : B* → ℚ` then
-represents a regular function faithfully by a weighted automaton over `ℚ`, so
-equivalence of regular functions reduces to equivalence of weighted automata
-over `ℚ`, which is decided by Schützenberger's criterion
-(`Transducers.weighted_eq_of_short`, the mathematical content of Theorem B.3.3
-and B.3.7).  The conclusion, `Transducers.regularFun_eq_of_short`, is the
-decision procedure of Theorem C.1.4 in semantic form: two regular functions over
-a finite input alphabet are equal as soon as they agree on the (finitely many)
-inputs of length at most a bound supplied by that criterion.
--/
+Post-composing with an *injective* weighted automaton `ι : B* → ℚ` then represents a regular
+function faithfully by a weighted automaton over `ℚ`, so equivalence of regular functions reduces to
+equivalence of weighted automata over `ℚ`, which is decided by Schützenberger's criterion
+(`Transducers.weighted_eq_of_short`, the mathematical content of Theorem
+`thm:equivalence-weighted-automata` and `thm:zeroness-weighted-automata`).  The conclusion,
+`Transducers.regularFun_eq_of_short`, is the decision procedure of Theorem
+`thm:decidable-equivalence-regular` in semantic form: two regular functions over a finite input
+alphabet are equal as soon as they agree on the (finitely many) inputs of length at most a bound
+supplied by that criterion. -/
 import RequestProject.PartC.WeightedMapLift
 import RequestProject.PartC.RegularDef
 import RequestProject.PartB.Iota
@@ -99,10 +98,10 @@ theorem isWeighted_comp_regular_aux {A B : Type} {f : List A → List B} (hf : I
       haveI := hA; haveI := hB; haveI := hC
       exact ihf hA hB (h ∘ g) (ihg hB hC h hh)
 
-/-- **Weighted automata are closed under pre-composition with regular
-functions.**  This is the heart of the book's proof of Theorem C.1.4: the class
-of functions that can be post-composed with weighted automata is closed under
-composition, and contains the three kinds of prime regular functions. -/
+/-- **Weighted automata are closed under pre-composition with regular functions.**  This is the
+heart of the book's proof of Theorem `thm:decidable-equivalence-regular`: the class of functions
+that can be post-composed with weighted automata is closed under composition, and contains the three
+kinds of prime regular functions. -/
 theorem isWeighted_comp_regular {A B S : Type} [Finite A] [Finite B] [CommSemiring S]
     {f : List A → List B} (hf : IsRegularFun f) {h : List B → S} (hh : IsWeighted h) :
     IsWeighted (h ∘ f) :=
@@ -157,7 +156,7 @@ end IotaW
 /-- **An injective weighted automaton.**  Over a finite alphabet there is an
 injective function `B* → ℚ` that is computed by a weighted automaton; strings
 are encoded by their digits in a large enough base, as in the book's
-observation (a) in the proof of Theorem B.3.4. -/
+observation (a) in the proof of Theorem `thm:equivalence-rational-functions`. -/
 theorem exists_injective_weighted (B : Type) [Finite B] :
     ∃ iota : List B → ℚ, IsWeighted iota ∧ Function.Injective iota := by
   classical
@@ -188,16 +187,15 @@ theorem exists_injective_weighted (B : Type) [Finite B] :
     Iota.iota_inj (hmem v) (hmem v') hnat
   exact List.map_injective_iff.mpr hphi_inj this
 
-/-! ## Theorem C.1.4: equivalence of regular functions -/
+/-! ## Theorem `thm:decidable-equivalence-regular`: equivalence of regular functions -/
 
-/-- **Theorem C.1.4 (semantic form).**  For two regular functions over finite
-alphabets there is a bound `n` such that the two functions are equal as soon as
-they agree on all inputs of length at most `n`.  Since the input alphabet is
-finite, there are finitely many such inputs, so this is the decision procedure
-of the book: post-compose the two functions with an injective weighted
-automaton, which by `Transducers.isWeighted_comp_regular` yields two weighted
-automata over `ℚ`, and apply the equivalence (zeroness) criterion for weighted
-automata over a field. -/
+/-- **Theorem `thm:decidable-equivalence-regular` (semantic form).**  For two regular functions over
+finite alphabets there is a bound `n` such that the two functions are equal as soon as they agree on
+all inputs of length at most `n`.  Since the input alphabet is finite, there are finitely many such
+inputs, so this is the decision procedure of the book: post-compose the two functions with an
+injective weighted automaton, which by `Transducers.isWeighted_comp_regular` yields two weighted
+automata over `ℚ`, and apply the equivalence (zeroness) criterion for weighted automata over a
+field. -/
 theorem regularFun_eq_of_short {A B : Type} [Finite A] [Finite B]
     {f g : List A → List B} (hf : IsRegularFun f) (hg : IsRegularFun g) :
     ∃ n : ℕ, (∀ w : List A, w.length ≤ n → f w = g w) → f = g := by
@@ -211,11 +209,11 @@ theorem regularFun_eq_of_short {A B : Type} [Finite A] [Finite B]
   funext w
   exact hiotaInj (congrFun hFG w)
 
-/-- **Theorem C.1.4 (reduction form).**  Two regular functions over finite
-alphabets are equal if and only if the two weighted automata over `ℚ` obtained
-by post-composing them with an injective weighted automaton are equal.  This is
-exactly the reduction drawn in the book, whose right hand side is decidable by
-Theorem B.3.3. -/
+/-- **Theorem `thm:decidable-equivalence-regular` (reduction form).**  Two regular functions over
+finite alphabets are equal if and only if the two weighted automata over `ℚ` obtained by
+post-composing them with an injective weighted automaton are equal.  This is exactly the reduction
+drawn in the book, whose right hand side is decidable by Theorem
+`thm:equivalence-weighted-automata`. -/
 theorem regularFun_eq_iff_weighted_eq {A B : Type} [Finite A] [Finite B]
     {f g : List A → List B} (hf : IsRegularFun f) (hg : IsRegularFun g) :
     ∃ F G : List A → ℚ, IsWeighted F ∧ IsWeighted G ∧ (f = g ↔ F = G) := by
@@ -228,11 +226,10 @@ theorem regularFun_eq_iff_weighted_eq {A B : Type} [Finite A] [Finite B]
     funext w
     exact hiotaInj (congrFun hFG w)
 
-/-- **Theorem C.1.4 (zeroness form).**  Two regular functions over finite
-alphabets are equal if and only if a single weighted automaton over `ℚ` -- the
-difference of the two automata obtained from the reduction -- is identically
-zero.  This is the book's remark that the essential problem is zeroness, since
-weighted automata can be subtracted from each other. -/
+/-- **Theorem `thm:decidable-equivalence-regular` (zeroness form).**  Two regular functions over
+finite alphabets are equal if and only if a single weighted automaton over `ℚ` -- the difference of
+the two automata obtained from the reduction -- is identically zero.  This is the book's remark that
+the essential problem is zeroness, since weighted automata can be subtracted from each other. -/
 theorem regularFun_eq_iff_weighted_zero {A B : Type} [Finite A] [Finite B]
     {f g : List A → List B} (hf : IsRegularFun f) (hg : IsRegularFun g) :
     ∃ H : List A → ℚ, IsWeighted H ∧ (f = g ↔ ∀ w, H w = 0) := by

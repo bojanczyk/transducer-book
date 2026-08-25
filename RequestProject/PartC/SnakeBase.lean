@@ -1,7 +1,7 @@
 /-
 The base of the induction on the width in the book's snake lemma (the lemma
 "the output of a snake graph is regular", which is the missing half of
-Theorem C.2.9 of *Transducers*, M. Bojańczyk).
+Theorem `thm:2dfa-decomposition-into-primes` of *Transducers*, M. Bojańczyk).
 
 The snake lemma says that for every two-way transducer `M` and every `k`, the
 function `TwoWay.widthOut M k` -- the output of the run of `M` on the inputs
@@ -16,7 +16,7 @@ proves the two base cases:
   because a leftward step would revisit the column that the run has just come
   from.  A run that only moves right is simulated by a left-to-right pass over
   the input, and its output is therefore produced by a bimachine, hence by a
-  rational function (Theorem B.2.3).  The inputs for which the run is such a
+  rational function (Theorem `thm:bimachines`).  The inputs for which the run is such a
   pass form a regular language `TwoWay.PassLang M`, recognised by the automaton
   that performs the simulation, so the case distinction between them and the
   remaining inputs -- on which the width-`1` output is empty -- is available

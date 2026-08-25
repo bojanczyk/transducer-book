@@ -3,7 +3,7 @@ Linear representations of weighted automata, with an arbitrary initial vector.
 
 This file provides the converse of `Transducers.WNF.exists_linRep`: a function
 given by a linear representation is computed by a weighted automaton.  It is the
-basic tool for the proof of Theorem C.1.4 in the book (*Transducers*,
+basic tool for the proof of Theorem `thm:decidable-equivalence-regular` in the book (*Transducers*,
 M. Bojańczyk), where the equivalence problem for regular functions is reduced to
 the zeroness problem for weighted automata by showing that weighted automata are
 closed under pre-composition with the prime regular functions: the constructions

@@ -1,12 +1,11 @@
-/-
-Normal forms for weighted automata (Section B.3 of *Transducers*).
+/- Normal forms for weighted automata (Section *Rational relations and weighted automata* of
+*Transducers*).
 
-A weighted automaton, as defined in `RequestProject/PartB/LabAut.lean`, is an
-automaton whose transitions are labelled by an input *string* and a weight, and
-whose value on an input string is the sum of the weights of the accepting runs.
-In order to compare the runs of a weighted automaton with the runs of another
-automaton (which is what the product construction of Lemma B.3.5 does) one first
-brings it into a normal form:
+A weighted automaton, as defined in `RequestProject/PartB/LabAut.lean`, is an automaton whose
+transitions are labelled by an input *string* and a weight, and whose value on an input string is
+the sum of the weights of the accepting runs. In order to compare the runs of a weighted automaton
+with the runs of another automaton (which is what the product construction of Lemma
+`lem:closure-weighted-automata-precomposition` does) one first brings it into a normal form:
 
 * at most one state is both initial and final (`UniqueEmptyRun`), so that the
   runs can be grouped according to their first state;

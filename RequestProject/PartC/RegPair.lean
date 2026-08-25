@@ -2,7 +2,7 @@
 The *neighbouring-block map combinator* is a regular operation.
 
 This is the content of stages 1--3 of the induction step in the book's proof of
-the snake lemma (see `RequestProject/PartC/SnakeReg.lean` and Section C.2 of
+the snake lemma (see `RequestProject/PartC/SnakeReg.lean` and Section *Two-way transducers* of
 *Transducers*, M. Bojańczyk).  There, a string
 
   `w₀ # w₁ # ⋯ # wₙ`
@@ -11,12 +11,11 @@ whose separators mark the record-breaking columns of a run has to be turned into
 
   `(w₀ # w₁) (w₁ # w₂) ⋯ (wₙ₋₁ # wₙ)`,
 
-so that the map combinator of Lemma C.2.10 can then be applied to each of the
-blocks `wᵢ₋₁ # wᵢ`, which is where the loop part and the progress part of the
-`i`-th record-breaker live.  The book performs this stage with map duplicate,
-which procures the two copies of every `wᵢ` that are needed, and rational
-functions, which arrange the brackets and remove the extra copies of `w₀` and
-of `wₙ`.
+so that the map combinator of Lemma `lem:regular-closure-properties` can then be applied to each of
+the blocks `wᵢ₋₁ # wᵢ`, which is where the loop part and the progress part of the `i`-th
+record-breaker live.  The book performs this stage with map duplicate, which procures the two copies
+of every `wᵢ` that are needed, and rational functions, which arrange the brackets and remove the
+extra copies of `w₀` and of `wₙ`.
 
 The main result is `Transducers.isRegularFun_pairMap`: if `f` is regular, then
 so is
@@ -29,7 +28,7 @@ duplicate turns this into `w₀$w₀$ # ⋯ # wₙ$wₙ$`; and a *bilateral rewr
 (`RequestProject/PartC/RatBi.lean`) -- which is what makes the two exceptional
 blocks, the first and the last, treatable -- deletes the first copy of `w₀` and
 the second copy of `wₙ` and re-brackets the rest.  Finally the map lifting of
-`f` (Lemma C.2.10) is applied and a homomorphism erases the separators.
+`f` (Lemma `lem:regular-closure-properties`) is applied and a homomorphism erases the separators.
 -/
 import RequestProject.PartC.RatBi
 import RequestProject.PartC.RegClosure

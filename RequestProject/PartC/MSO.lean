@@ -1,11 +1,13 @@
 /-
-Part C, Section C.4: Logic
+Part C, Section *Logic*: Logic
   from *Transducers* (M. Bojańczyk, June 25, 2026).
 
-The numbered results of Section C.4 that are proved: Theorem C.4.1,
-Lemma C.4.2, Theorem C.4.4, Claim C.4.6, Theorem C.4.8, Lemma C.4.10,
-Theorem C.4.11, Lemma C.4.13, Lemma C.4.15 and Theorem C.4.16.  Every
-proof in this file is complete.
+The numbered results of Section *Logic* that are proved: Theorem `thm:mso-logic-languages`, Lemma
+`nolabel:lem-mso-to-automaton`, Theorem `thm:logic-rational-functions`, Claim
+`nolabel:claim-formula-annotation-regular`, Theorem `thm:logic-regular-functions`, Lemma
+`lem:logic-precomputation`, Theorem `thm:logic-aperiodic`, Lemma
+`nolabel:lem-fo-types-characterisation`, Lemma `item:fo-types-more-information` and Theorem
+`thm:fo-rational-functions`.  Every proof in this file is complete.
 
 The definitions they speak about (monadic second-order logic, mso relabellings,
 mso transductions and the first-order fragment) are in
@@ -18,26 +20,25 @@ mso transductions and the first-order fragment) are in
 `RequestProject/PartC/MSORatRelab.lean` and
 `RequestProject/PartC/MSOPrecomp.lean`.
 
-Theorem C.4.11 and Lemma C.4.13 are proved below, out of
-`RequestProject/PartC/FORel.lean`, `RequestProject/PartC/FOSeg.lean`,
+Theorem `thm:logic-aperiodic` and Lemma `nolabel:lem-fo-types-characterisation` are proved below,
+out of `RequestProject/PartC/FORel.lean`, `RequestProject/PartC/FOSeg.lean`,
 `RequestProject/PartC/FOComp.lean`, `RequestProject/PartC/FORename.lean`,
 `RequestProject/PartC/FOHintikka.lean`, `RequestProject/PartC/FOTypeDFA.lean`,
-`RequestProject/PartC/FOSubstRel.lean`, `RequestProject/PartC/FOFlipFlop.lean`
-and `RequestProject/PartC/FOMealy.lean`.
+`RequestProject/PartC/FOSubstRel.lean`, `RequestProject/PartC/FOFlipFlop.lean` and
+`RequestProject/PartC/FOMealy.lean`.
 
-Theorem C.4.16 is proved below, out of `RequestProject/PartC/FORev.lean`,
+Theorem `thm:fo-rational-functions` is proved below, out of `RequestProject/PartC/FORev.lean`,
 `RequestProject/PartC/FOPos.lean`, `RequestProject/PartC/FORelabBimach.lean`
 (first-order relabellings are computed by aperiodic bimachines) and
 `RequestProject/PartC/FOBimachRelab.lean` (the converse).
 
-Theorem C.4.17 has been removed from the formalised theorems at the user's
-request; its statement is kept only as a comment in
-`RequestProject/PartC/MSOOpen.lean`, which this file still imports.  No result
-of Section C.4 is left unproved.
+Theorem `nolabel:thm-fo-transduction-into-primes` has been removed from the formalised theorems at
+the user's request; its statement is kept only as a comment in `RequestProject/PartC/MSOOpen.lean`,
+which this file still imports.  No result of Section *Logic* is left unproved.
 
-Not formalised: Claim C.4.5, Lemma C.4.9 and Claim C.4.14, which are internal
-steps of the proofs of Theorems C.4.4, C.4.8 and C.4.11.
--/
+Not formalised: Claim `claim:transition-formula`, Lemma `lem:logic-reduction-to-type-n` and Claim
+`nolabel:claim-fo-type-of-a-tuple`, which are internal steps of the proofs of Theorems
+`thm:logic-rational-functions`, `thm:logic-regular-functions` and `thm:logic-aperiodic`. -/
 import RequestProject.PartC.Statements
 import RequestProject.PartC.MSOBuchi
 import RequestProject.PartC.MSORelab
@@ -53,15 +54,15 @@ import RequestProject.PartC.FOBimachRelab
 
 namespace Transducers
 
-/-! ## C.4.1 Monadic second-order logic -/
+/-! ## Monadic second-order logic -/
 
-/-- **Theorem C.4.1.**  A language is regular if and only if it is definable in
+/-- **Theorem `thm:mso-logic-languages`.**  A language is regular if and only if it is definable in
 monadic second-order logic. -/
 theorem regular_iff_msoDefinable {A : Type} [Finite A] (L : Language A) :
     L.IsRegular ↔ MSODefinable L :=
   regular_iff_msoDefinable_aux L
 
-/-- **Lemma C.4.2.**  For an mso formula whose free variables are among
+/-- **Lemma `nolabel:lem-mso-to-automaton`.**  For an mso formula whose free variables are among
 `x₁, …, x_k, X₁, …, X_l`, the set of annotated strings that satisfy it is a
 regular language over the alphabet `A × 2^{k+l}`. -/
 theorem mso_annotated_regular {A : Type} [Finite A] (φ : MSO A) (k l : ℕ)
@@ -73,15 +74,15 @@ theorem mso_annotated_regular {A : Type} [Finite A] (φ : MSO A) (k l : ℕ)
           u = annotate k l w fo so ∧ MSO.Sat w (extFO k fo) (extSO l so) φ} :=
   mso_annotated_regular_aux φ k l hfo hso
 
-/-! ## C.4.2 Rational functions in terms of logic -/
+/-! ## Rational functions in terms of logic -/
 
-/-- **Theorem C.4.4.**  A string-to-string function is rational if and only if
-it is definable by an mso relabelling. -/
+/-- **Theorem `thm:logic-rational-functions`.**  A string-to-string function is rational if and only
+if it is definable by an mso relabelling. -/
 theorem rational_iff_msoRelabelling {A B : Type} [Finite A] [Finite B]
     (f : List A → List B) : IsRationalFun f ↔ IsMSORelabelling f :=
   rational_iff_msoRelabelling_aux f
 
-/-- **Lemma C.4.10.**  For a finite set of mso formulas with one or two free
+/-- **Lemma `lem:logic-precomputation`.**  For a finite set of mso formulas with one or two free
 first-order variables there is a letter-to-letter rational function `f : A* → C*`
 such that the formulas with one free variable correspond to sets of letters of
 the output, and the formulas with two free variables correspond to regular
@@ -98,17 +99,17 @@ theorem mso_formulas_via_rational {A : Type} [Finite A]
           ((f w).drop x).take (y - x + 1) ∈ L)) :=
   mso_formulas_via_rational_aux Φ₁ Φ₂ hΦ₁ hΦ₂
 
-/-! ## C.4.3 Regular functions in terms of logic -/
+/-! ## Regular functions in terms of logic -/
 
-/-- **Theorem C.4.8.**  String-to-string mso transductions define exactly the
-regular functions. -/
+/-- **Theorem `thm:logic-regular-functions`.**  String-to-string mso transductions define exactly
+the regular functions. -/
 theorem msoTransduction_iff_regular {A B : Type} [Finite A] [Finite B]
     (f : List A → List B) : IsMSOTransduction f ↔ IsRegularFun f :=
   ⟨fun h => isRegularFun_of_isMSOTransduction h,
     fun h => isMSOTransduction_of_isTwoWay (regularFun_isTwoWay h)⟩
 
-/-- **Claim C.4.6.**  For an mso relabelling, the language of strings over the
-alphabet `A × Φ` in which every position is labelled by a formula that holds in
+/-- **Claim `nolabel:claim-formula-annotation-regular`.**  For an mso relabelling, the language of
+strings over the alphabet `A × Φ` in which every position is labelled by a formula that holds in
 that position is regular. -/
 theorem msoRelabelling_annotation_regular {A B : Type} [Finite A] (R : MSORelabelling A B) :
     Language.IsRegular
@@ -116,13 +117,13 @@ theorem msoRelabelling_annotation_regular {A B : Type} [Finite A] (R : MSORelabe
         MSO.Sat (u.map Prod.fst) (fun _ => p) (fun _ => ∅) (R.form (u.get ⟨p, hp⟩).2)} :=
   msoRelabelling_annotation_regular_aux R
 
-/-! ## C.4.4 The first-order fragment
+/-! ## The first-order fragment
 
-**Definition C.4.12 (k-types)** (`TpType` and `tp`) is in
-`RequestProject/PartC/KTypes.lean`, together with the proof of Lemma C.4.15
-below. -/
+**Definition `nolabel:def-fo-types` (k-types)** (`TpType` and `tp`) is in
+`RequestProject/PartC/KTypes.lean`, together with the proof of Lemma
+`item:fo-types-more-information` below. -/
 
-/-- **Theorem C.4.11.**  A language is definable in first-order logic if and
+/-- **Theorem `thm:logic-aperiodic`.**  A language is definable in first-order logic if and
 only if it is recognised by an aperiodic dfa. -/
 theorem foDefinable_iff_aperiodic_dfa {A : Type} [Finite A] (L : Language A) :
     FODefinable L ↔
@@ -132,8 +133,8 @@ theorem foDefinable_iff_aperiodic_dfa {A : Type} [Finite A] (L : Language A) :
   haveI := hσ
   exact foDefinable_of_aperiodic_dfa M hap
 
-/-- **Lemma C.4.13.**  Two strings have the same `k`-type if and only if they
-satisfy the same first-order sentences of quantifier rank at most `k`. -/
+/-- **Lemma `nolabel:lem-fo-types-characterisation`.**  Two strings have the same `k`-type if and
+only if they satisfy the same first-order sentences of quantifier rank at most `k`. -/
 theorem tp_eq_iff_fo_equiv {A : Type} [Finite A] (k : ℕ) (w v : List A) :
     tp k w = tp k v ↔
       ∀ φ : MSO A, φ.IsFO → φ.freeFO = ∅ → φ.qrank ≤ k →
@@ -155,13 +156,13 @@ theorem tp_eq_iff_fo_equiv {A : Type} [Finite A] (k : ℕ) (w v : List A) :
       ⟨fun hs => hs _ _, fun hs fo so => (MSO.sat_sentence_congr hfo hfree v _ _ _ _).mp hs⟩
     exact hw.symm.trans ((h φ hfo hfree hq).trans hv)
 
-/-- **Theorem C.4.16.**  A string-to-string function is a first-order
+/-- **Theorem `thm:fo-rational-functions`.**  A string-to-string function is a first-order
 relabelling if and only if it is computed by an aperiodic bimachine. -/
 theorem foRelabelling_iff_aperiodicBimachine {A B : Type} [Finite A] [Finite B]
     (f : List A → List B) : IsFORelabelling f ↔ IsAperiodicBimachine f :=
   ⟨isAperiodicBimachine_of_isFORelabelling, isFORelabelling_of_isAperiodicBimachine⟩
 
-/-- **Lemma C.4.15.**  Refinement, congruence and aperiodicity of `k`-types. -/
+/-- **Lemma `item:fo-types-more-information`.**  Refinement, congruence and aperiodicity of `k`-types. -/
 theorem tp_properties {A : Type} (k : ℕ) :
     (∀ w v : List A, tp (k + 1) w = tp (k + 1) v → tp k w = tp k v) ∧
     (∀ w w' v v' : List A, tp k w = tp k w' → tp k v = tp k v' →

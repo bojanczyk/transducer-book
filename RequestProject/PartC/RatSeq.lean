@@ -1,13 +1,11 @@
 /-
 Sequential rewritings are rational functions.
 
-A *sequential rewriting* reads the input string from left to right and, at every
-letter, produces a block that depends on the letter and on the state of a
-deterministic automaton on the prefix that precedes it.  This is a special case
-of a bimachine (the suffix automaton only has to remember the letter that
-follows the current gap), and it is the last of the small builders of rational
-functions used in the proof of Lemma C.2.10 of *Transducers* (M. Bojańczyk).
--/
+A *sequential rewriting* reads the input string from left to right and, at every letter, produces a
+block that depends on the letter and on the state of a deterministic automaton on the prefix that
+precedes it.  This is a special case of a bimachine (the suffix automaton only has to remember the
+letter that follows the current gap), and it is the last of the small builders of rational functions
+used in the proof of Lemma `lem:regular-closure-properties` of *Transducers* (M. Bojańczyk). -/
 import RequestProject.PartC.RatBuild
 
 namespace Transducers

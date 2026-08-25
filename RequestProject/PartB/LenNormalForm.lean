@@ -1,5 +1,5 @@
-/-
-The normal form of length preserving rational functions (Lemma B.4.5).
+/- The normal form of length preserving rational functions (Lemma
+`lem:characterisation-length-preserving`).
 
 Let `f` be a length preserving rational function and let `M` be an nfa with
 output computing it in which every transition reads at most one letter and
@@ -443,9 +443,9 @@ lemma bAut_rel [Finite A] [Finite B] [Finite Q]
 
 end LenNF
 
-/-- **Lemma B.4.5.**  If a rational function is length-preserving, then it is
-computed by an nfa with output in which the input and output strings of every
-transition have the same length. -/
+/-- **Lemma `lem:characterisation-length-preserving`.**  If a rational function is
+length-preserving, then it is computed by an nfa with output in which the input and output strings
+of every transition have the same length. -/
 theorem lengthPreserving_rational_normal_form_aux {A B : Type} [Finite A] [Finite B]
     {f : List A → List B} (hf : IsRationalFun f) (hlen : LengthPreserving f) :
     ∃ (Q : Type) (_ : Finite Q) (M : NFAO A B Q),

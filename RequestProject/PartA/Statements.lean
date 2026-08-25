@@ -5,12 +5,11 @@ Part A: Mealy machines
 This file contains the definitions of Part A and the statements of all its
 theorems, lemmas and claims, together with their proofs.
 
-All the results of Part A are proved.  Lemma A.2.5, the main ingredient of the
-Krohn-Rhodes Theorem A.2.2, is proved in `RequestProject/PartA/StateTrans.lean`, and
-its aperiodic version, which gives the implication
-"aperiodic ⇒ composition of flip-flops" of Theorem A.2.8, is proved in
-`RequestProject/PartA/StateTransAperiodic.lean`.
--/
+All the results of Part A are proved.  Lemma `lem:Mealy-map-lifting`, the main ingredient of the
+Krohn-Rhodes Theorem `nolabel:thm-krohn-rhodes`, is proved in
+`RequestProject/PartA/StateTrans.lean`, and its aperiodic version, which gives the implication
+"aperiodic ⇒ composition of flip-flops" of Theorem `thm:aperiodic-mealy`, is proved in
+`RequestProject/PartA/StateTransAperiodic.lean`. -/
 import RequestProject.PartA.MealyBasic
 import RequestProject.Common.Aux
 import RequestProject.PartA.PrimeClosure
@@ -20,7 +19,7 @@ import RequestProject.PartA.StateTransAperiodic
 
 namespace Transducers
 
-/-! ### A.1.1 Equivalence, compositions and continuity -/
+/-! ### Equivalence, compositions and continuity -/
 
 /-- Cutting a loop out of an input string.  If two Mealy machines are in the
 same pair of states after reading `w.take i` and after reading `w.take j`, and
@@ -107,7 +106,8 @@ lemma mealy_diff_short {A B Q₁ Q₂ : Type} [Fintype Q₁] [Fintype Q₂]
           (by rw [List.length_append, List.length_take, List.length_drop])
       · exact ih (w.take j).length hj_len _ hj_agree rfl
 
-/-- **Theorem A.1.2.**  The equivalence problem for Mealy machines is decidable.
+/-- **Theorem `thm:equivalence-decidable-mealy`.**  The equivalence problem for Mealy machines is
+decidable.
 
 Decidability is expressed here by its mathematical content: two Mealy machines
 are equivalent if and only if they agree on the finitely many input strings
@@ -126,7 +126,7 @@ theorem mealy_equiv_iff_bounded {A B Q₁ Q₂ : Type} [Fintype Q₁] [Fintype Q
     obtain ⟨v, hv, hvne⟩ := mealy_diff_short M N w hne
     exact hvne (h v hv)
 
-/-- **Theorem A.1.3.**  Mealy machines are closed under composition. -/
+/-- **Theorem `thm:composition-mealy`.**  Mealy machines are closed under composition. -/
 theorem mealy_comp {A B C : Type} [Finite B] {f : List A → List B} {g : List B → List C}
     (hf : IsMealy f) (hg : IsMealy g) : IsMealy (g ∘ f) := by
   obtain ⟨Q, hQ, M, hM⟩ := hf
@@ -135,7 +135,7 @@ theorem mealy_comp {A B C : Type} [Finite B] {f : List A → List B} {g : List B
   haveI := hP
   exact ⟨Q × P, inferInstance, M.compose N, by rw [Mealy.eval_compose, hM, hN]⟩
 
-/-- **Theorem A.1.4.**  Mealy machines are continuous. -/
+/-- **Theorem `thm:continuity-mealy`.**  Mealy machines are continuous. -/
 theorem mealy_continuous {A B : Type} [Finite A] [Finite B] {f : List A → List B}
     (hf : IsMealy f) : Continuous f := by
   obtain ⟨Q, hQ, M, hM⟩ := hf
@@ -144,13 +144,13 @@ theorem mealy_continuous {A B : Type} [Finite A] [Finite B] {f : List A → List
   refine ⟨Q × σ, Fintype.ofFinite _, M.dfaComp D, ?_⟩
   rw [M.dfaComp_accepts, hM, ← hD]
 
-/-! ## A.2 The Krohn-Rhodes Decomposition Theorem -/
+/-! ## The Krohn-Rhodes Decomposition Theorem -/
 
-/-! Theorem A.2.2, the Krohn-Rhodes Theorem, is stated and proved below, after
-Lemma A.2.5, on which its proof relies. -/
+/-! Theorem `nolabel:thm-krohn-rhodes`, the Krohn-Rhodes Theorem, is stated and proved below, after
+Lemma `lem:Mealy-map-lifting`, on which its proof relies. -/
 
-/-- **Lemma A.2.4.**  If a Mealy machine decomposes into prime Mealy machines,
-then the same is true for its map lifting.
+/-- **Lemma `lem:map-lifting-decomposition-mealy`.**  If a Mealy machine decomposes into prime Mealy
+machines, then the same is true for its map lifting.
 
 The construction is carried out in `RequestProject/PartA/MapLift.lean`; finiteness of
 the output alphabet, which the book assumes globally, is not needed. -/
@@ -159,17 +159,17 @@ theorem mapLift_prime_decomposition {A B : Type} [Finite A]
     CompClosure PrimeMealyFam (Option A) (Option B) (mapLift f) :=
   mapLift_compClosure inferInstance hf
 
-/-! ### A.2.2 State transformations -/
+/-! ### State transformations -/
 
 /-! The state transformation transducer of a pre-automaton, and the proof of
-Lemma A.2.5, are in `RequestProject/PartA/StateTrans.lean`:
+Lemma `lem:Mealy-map-lifting`, are in `RequestProject/PartA/StateTrans.lean`:
 
 * `stateTransTransducer` -- the transducer itself;
 * `stateTransTransducer_reversible` and `stateTransTransducer_prime_of_reversible`
   -- the induction basis (a reversible pre-automaton);
-* `stateTransTransducer_prime_decomposition` -- **Lemma A.2.5**, proved by the
-  book's induction, whose step uses the map lifting of Lemma A.2.4 and the
-  tripartite decomposition of the input into `a`-blocks. -/
+* `stateTransTransducer_prime_decomposition` -- **Lemma `lem:Mealy-map-lifting`**, proved by the
+  book's induction, whose step uses the map lifting of Lemma `lem:map-lifting-decomposition-mealy`
+  and the tripartite decomposition of the input into `a`-blocks. -/
 
 /-- The machine which reconstructs the output of `M` from the input letters
 paired with the state transformations of the prefixes of the input: its state is
@@ -196,12 +196,12 @@ lemma outputMealy_eval {A B Q : Type} (M : Mealy A B Q) :
   funext w
   exact outputMealy_run M w id
 
-/-- **Theorem A.2.2 (Krohn-Rhodes Theorem).**  Every Mealy machine `f` admits a
+/-- **Theorem `nolabel:thm-krohn-rhodes` (Krohn-Rhodes Theorem).**  Every Mealy machine `f` admits a
 decomposition `f = f₁ · f₂ ⋯ fₙ` in which every `fᵢ` is either reversible or
 flip-flop.
 
 The proof follows the book: the state transformations of the prefixes of the
-input are computed by a composition of primes (Lemma A.2.5), they are paired
+input are computed by a composition of primes (Lemma `lem:Mealy-map-lifting`), they are paired
 with the input letters (`compClosure_zipInput`), and the output of the machine
 is then produced by the flip-flop machine `outputMealy`. -/
 theorem krohn_rhodes {A B : Type} [Finite A] [Finite B] {f : List A → List B}
@@ -217,11 +217,11 @@ theorem krohn_rhodes {A B : Type} [Finite A] [Finite B] {f : List A → List B}
   have h4 := CompClosure.comp h2 (CompClosure.base h3)
   rwa [outputMealy_eval] at h4
 
-/-- The flip-flop version of the Krohn-Rhodes Theorem: a Mealy machine whose
-state transformations satisfy condition (*) of Lemma A.2.11 is a composition of
-flip-flop Mealy machines.  The proof is the one of `krohn_rhodes`, with the
-decomposition of the state transformation transducer taken in the class of
-flip-flop machines (`stateTransTransducer_flipFlop_decomposition`). -/
+/-- The flip-flop version of the Krohn-Rhodes Theorem: a Mealy machine whose state transformations
+satisfy condition (*) of Lemma `lem:aperiodicity-minimal-machine` is a composition of flip-flop
+Mealy machines.  The proof is the one of `krohn_rhodes`, with the decomposition of the state
+transformation transducer taken in the class of flip-flop machines
+(`stateTransTransducer_flipFlop_decomposition`). -/
 theorem krohn_rhodes_flipFlop {A B Q : Type} [Finite A] [Finite Q] (M : Mealy A B Q)
     (hM : M.TransStabilises) : CompClosure FlipFlopFam A B M.eval := by
   have h2 : CompClosure FlipFlopFam A (A × (Q → Q))
@@ -249,7 +249,7 @@ lemma Mealy.Reversible.compose {A B C Q P : Type} {M : Mealy A B Q} {N : Mealy B
     obtain ⟨p, hp⟩ := (hN ((M.step q a).2)).surjective p'
     exact ⟨(q, p), by simp [Mealy.letterTrans_compose, hq, hp]⟩
 
-/-- **Lemma A.2.6.**  Reversible Mealy machines are closed under composition. -/
+/-- **Lemma `lem:reversible-composition`.**  Reversible Mealy machines are closed under composition. -/
 theorem reversible_comp {A B C : Type} [Finite B] {f : List A → List B} {g : List B → List C}
     (hf : IsReversibleMealy f) (hg : IsReversibleMealy g) : IsReversibleMealy (g ∘ f) := by
   obtain ⟨Q, hQ, M, hM, hMr⟩ := hf
@@ -258,9 +258,9 @@ theorem reversible_comp {A B C : Type} [Finite B] {f : List A → List B} {g : L
   haveI := hP
   exact ⟨Q × P, inferInstance, M.compose N, by rw [Mealy.eval_compose, hM, hN], hMr.compose hNr⟩
 
-/-! ### A.2.3 Aperiodic Mealy machines -/
+/-! ### Aperiodic Mealy machines -/
 
-/-- Condition (3) of Lemma A.2.10: the `n`-th output letter depends only on the
+/-- Condition (3) of Lemma `lemma:derivatives`: the `n`-th output letter depends only on the
 first `n` input letters. -/
 def PrefixDetermined {A B : Type} (f : List A → List B) : Prop :=
   ∀ (w v : List A) (n : ℕ), w.take n = v.take n → (f w).take n = (f v).take n
@@ -269,7 +269,7 @@ def PrefixDetermined {A B : Type} (f : List A → List B) : Prop :=
 produces *after* having read `w`, that is `f⁽ʷ⁾ (v) = drop |w| (f (w v))`.
 
 The book writes `f⁽ʷ⁾ (v) = f (w v)`, without removing the part of the output
-that was produced while reading `w`.  With that reading, Lemma A.2.10 below
+that was produced while reading `w`.  With that reading, Lemma `lemma:derivatives` below
 would be false: the identity function on `A*` is computed by a Mealy machine,
 yet the functions `v ↦ w v` are pairwise different for different `w`, so there
 would be infinitely many derivatives.  Dropping the first `|w|` output letters
@@ -438,7 +438,7 @@ lemma isEmpty_input_mealy {A B : Type} [IsEmpty A] (f : List A → List B) (hf :
   · intro z
     exact ⟨0, fun n _ => Subsingleton.elim _ _⟩
 
-/-- **Lemma A.2.10 (Myhill-Nerode for Mealy machines), left-to-right.** -/
+/-- **Lemma `lemma:derivatives` (Myhill-Nerode for Mealy machines), left-to-right.** -/
 lemma myhill_nerode_mealy_forward {A B : Type} (f : List A → List B) (hf : IsMealy f) :
     ({g | ∃ w : List A, g = deriv f w}.Finite ∧
       LengthPreserving f ∧
@@ -463,7 +463,7 @@ lemma myhill_nerode_mealy_forward {A B : Type} (f : List A → List B) (hf : IsM
         | succ n => simp [ih]
     simp [Mealy.eval, run_take, h]
 
-/-- **Lemma A.2.10 (Myhill-Nerode for Mealy machines), right-to-left.** -/
+/-- **Lemma `lemma:derivatives` (Myhill-Nerode for Mealy machines), right-to-left.** -/
 lemma myhill_nerode_mealy_backward {A B : Type} (f : List A → List B)
     (h1 : {g | ∃ w : List A, g = deriv f w}.Finite)
     (h2 : LengthPreserving f)
@@ -479,7 +479,7 @@ lemma myhill_nerode_mealy_backward {A B : Type} (f : List A → List B)
     obtain ⟨Q, hQ, M, hM, _⟩ := isEmpty_input_mealy f (List.eq_nil_of_length_eq_zero (h2 []))
     exact ⟨Q, hQ, M, hM⟩
 
-/-- **Lemma A.2.10 (Myhill-Nerode for Mealy machines).**  A string-to-string
+/-- **Lemma `lemma:derivatives` (Myhill-Nerode for Mealy machines).**  A string-to-string
 function is computed by a Mealy machine if and only if: (1) it has finitely many
 derivatives; (2) it is letter-to-letter; (3) the `n`-th output letter depends
 only on the first `n` input letters. -/
@@ -521,7 +521,7 @@ lemma run_npow_of_fixed {A B Q : Type} (M : Mealy A B Q) {v : List A} {q : Q}
   | succ n ih => rw [npow_succ, Mealy.run_append, hq, ih, npow_succ]
 
 /-- A machine whose state transformations stabilise has the pumping property of
-Claim A.2.9. -/
+Claim `nolabel:claim-aperiodic-pumping`. -/
 lemma transStabilises_pumping {A B Q : Type} (M : Mealy A B Q) (hM : M.TransStabilises)
     (u v w : List A) :
     ∃ (x y z : List B) (k : ℕ), ∀ n > 0,
@@ -545,7 +545,7 @@ lemma transStabilises_pumping {A B Q : Type} (M : Mealy A B Q) (hM : M.TransStab
     run_npow_of_fixed M hfixed n]
   simp [List.append_assoc]
 
-/-- The pumping property of Claim A.2.9 implies aperiodicity. -/
+/-- The pumping property of Claim `nolabel:claim-aperiodic-pumping` implies aperiodicity. -/
 lemma pumping_aperiodic {A B : Type} (f : List A → List B)
     (h : ∀ u v w : List A, ∃ (x y z : List B) (k : ℕ), ∀ n > 0,
       f (u ++ npow v (n + k) ++ w) = x ++ npow y n ++ z) : Aperiodic f := by
@@ -619,10 +619,9 @@ lemma aperiodic_derivMealy_transStabilises {A B : Type} [Inhabited B] {f : List 
   rw [hg, derivMealy_trans_iterate, derivMealy_trans_iterate]
   exact Subtype.ext (hNN n hn)
 
-/-- **Lemma A.2.11.**  A function computed by a Mealy machine is aperiodic if
-and only if its minimal Mealy machine satisfies condition (*): for every state
-transformation `δ` arising from an input string, the sequence `δ¹, δ², …`
-eventually stabilises.
+/-- **Lemma `lem:aperiodicity-minimal-machine`.**  A function computed by a Mealy machine is
+aperiodic if and only if its minimal Mealy machine satisfies condition (*): for every state
+transformation `δ` arising from an input string, the sequence `δ¹, δ², …` eventually stabilises.
 
 The statement below avoids constructing the minimal machine explicitly: since
 condition (*) is inherited by the minimal machine from any machine computing
@@ -650,8 +649,8 @@ theorem aperiodic_iff_transStabilises {A B : Type} {f : List A → List B} (hf :
     rw [← heval]
     exact pumping_aperiodic _ (transStabilises_pumping M hM)
 
-/-- **Claim A.2.9.**  A function computed by a Mealy machine is aperiodic if and
-only if for all input strings `u, v, w` there are output strings `x, y, z` and a
+/-- **Claim `nolabel:claim-aperiodic-pumping`.**  A function computed by a Mealy machine is
+aperiodic if and only if for all input strings `u, v, w` there are output strings `x, y, z` and a
 number `k` such that `f (u v^{n+k} w) = x yⁿ z` for all `n > 0`. -/
 theorem aperiodic_iff_pumping {A B : Type} {f : List A → List B} (hf : IsMealy f) :
     Aperiodic f ↔
@@ -740,7 +739,7 @@ lemma aperiodic_comp {A B C : Type} {f : List A → List B} {g : List B → List
   rw [harith, hk (n + k') (by omega), hk' n hn]
 
 /-- A composition of flip-flop Mealy machines is aperiodic: this is the
-right-to-left implication of Theorem A.2.8. -/
+right-to-left implication of Theorem `thm:aperiodic-mealy`. -/
 lemma flipflop_composition_aperiodic {A B : Type} {f : List A → List B}
     (h : CompClosure FlipFlopFam A B f) : Aperiodic f := by
   induction h with
@@ -755,9 +754,9 @@ lemma flipflop_composition_aperiodic {A B : Type} {f : List A → List B}
       exact aperiodic_comp (isMealy_of_flipflop_composition hf)
         (isMealy_of_flipflop_composition hg) ihf ihg
 
-/-- **Theorem A.2.8.**  A function computed by a Mealy machine is aperiodic if
-and only if it is computed by a composition of flip-flop Mealy machines.  (The
-decidability part of the theorem is the content of Lemma A.2.11 above.) -/
+/-- **Theorem `thm:aperiodic-mealy`.**  A function computed by a Mealy machine is aperiodic if and
+only if it is computed by a composition of flip-flop Mealy machines.  (The decidability part of the
+theorem is the content of Lemma `lem:aperiodicity-minimal-machine` above.) -/
 theorem aperiodic_iff_flipflop_composition {A B : Type} [Finite A] [Finite B]
     {f : List A → List B} (hf : IsMealy f) :
     Aperiodic f ↔ CompClosure FlipFlopFam A B f := by

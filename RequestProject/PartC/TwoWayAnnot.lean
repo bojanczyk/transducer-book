@@ -15,7 +15,7 @@ for every state `q` of `M`, whether the run of `M` visits that cut (or either of
 the two neighbouring cuts) in the state `q`.  The annotation is computed by a
 bimachine -- the prefix automaton is `D`, the suffix automaton computes the
 acceptance function of the suffix -- and hence it is a rational function
-(Theorem B.2.3).
+(Theorem `thm:bimachines`).
 -/
 import RequestProject.PartB.Bimachine
 import RequestProject.PartC.TwoWayVisit

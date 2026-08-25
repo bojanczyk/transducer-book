@@ -1,13 +1,13 @@
 /-
 First-order definable Mealy machines, and the implication
-"aperiodic dfa ⇒ first-order definable" of Theorem C.4.11 of *Transducers*
+"aperiodic dfa ⇒ first-order definable" of Theorem `thm:logic-aperiodic` of *Transducers*
 (M. Bojańczyk).
 
 The book's argument: a language recognised by an aperiodic dfa is computed by an
-aperiodic Mealy machine, which by the aperiodic Krohn-Rhodes Theorem A.2.8 is a
+aperiodic Mealy machine, which by the aperiodic Krohn-Rhodes Theorem `thm:aperiodic-mealy` is a
 composition of flip-flops; flip-flop machines are first-order definable, and
 first-order definable Mealy machines are closed under composition, by
-substitution of formulas.  Here the passage through Theorem A.2.8 is direct:
+substitution of formulas.  Here the passage through Theorem `thm:aperiodic-mealy` is direct:
 the Mealy machine attached to the dfa has the transition function of the dfa,
 so the aperiodicity hypothesis is literally the hypothesis
 `Mealy.TransStabilises` of `Transducers.krohn_rhodes_flipFlop`.
@@ -568,7 +568,7 @@ lemma dfaMealy_getLast? {σ : Type} (M : DFA A σ) (w : List A) (hw : w ≠ []) 
   · simp
   · simp
 
-/-- **The hard implication of Theorem C.4.11.**  A language recognised by an
+/-- **The hard implication of Theorem `thm:logic-aperiodic`.**  A language recognised by an
 aperiodic dfa is first-order definable. -/
 theorem foDefinable_of_aperiodic_dfa {σ : Type} [Finite A] [Finite σ] (M : DFA A σ)
     (h : TransAperiodic M.step) : FODefinable M.accepts := by

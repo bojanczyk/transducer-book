@@ -1,16 +1,13 @@
-/-
-Finite descriptions (codes) of weighted automata over the field of rationals,
-used in the decidability statements of Section B.3 of *Transducers*
-(M. Bojańczyk).
+/- Finite descriptions (codes) of weighted automata over the field of rationals, used in the
+decidability statements of Section *Rational relations and weighted automata* of *Transducers* (M.
+Bojańczyk).
 
-These definitions were moved here from
-`RequestProject/PartB/WeightedStatements.lean`, so that the decision procedures
-of Theorems B.3.3, B.3.4 and B.3.7 can be developed before the statements of the
-numbered results.  The file also contains the basic facts about codes that those
-procedures need: a coded automaton reads only the finitely many letters
-occurring in its transitions, so it computes the value `0` on every string that
-uses another letter.
--/
+These definitions were moved here from `RequestProject/PartB/WeightedStatements.lean`, so that the
+decision procedures of Theorems `thm:equivalence-weighted-automata`,
+`thm:equivalence-rational-functions` and `thm:zeroness-weighted-automata` can be developed before
+the statements of the numbered results.  The file also contains the basic facts about codes that
+those procedures need: a coded automaton reads only the finitely many letters occurring in its
+transitions, so it computes the value `0` on every string that uses another letter. -/
 import RequestProject.PartB.Codes
 
 namespace Transducers

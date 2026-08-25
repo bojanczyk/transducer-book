@@ -4,7 +4,7 @@ path at a visited state, extracting a short loop (pigeonhole), and replacing a
 path by a simple one with the same endpoints.
 
 These are the ingredients of the pumping arguments used for the decidability
-results of Section B.4 of *Transducers* (M. Bojańczyk).
+results of Section *Machine independent characterisations* of *Transducers* (M. Bojańczyk).
 -/
 import RequestProject.PartB.LabAut
 

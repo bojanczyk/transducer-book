@@ -1,16 +1,15 @@
 /-
-Subsequential transducers (Section B.4.3 of *Transducers*, M. Bojańczyk) and the
-easy implication of Theorem B.4.8.
+Subsequential transducers (Section *Subsequential functions* of *Transducers*, M. Bojańczyk) and the
+easy implication of Theorem `thm:subsequential-functions`.
 
 A subsequential transducer is a sequential transducer with a partial
 end-of-input function, which is applied to the last state of the computation.
 The definitions are stated here (rather than in `WeightedStatements.lean`) so
-that the constructions used in the proof of Theorem B.4.8 can be developed
+that the constructions used in the proof of Theorem `thm:subsequential-functions` can be developed
 before the statements of the numbered results, as elsewhere in the project.
 
-This file also contains the easy implication of Theorem B.4.8: a subsequential
-function is continuous and has bounded variation.
--/
+This file also contains the easy implication of Theorem `thm:subsequential-functions`: a
+subsequential function is continuous and has bounded variation. -/
 import RequestProject.PartB.SeqChar
 import RequestProject.PartB.Lcp
 
@@ -37,9 +36,9 @@ end Subsequential
 def IsSubsequential {A B : Type} (f : List A → Option (List B)) : Prop :=
   ∃ (Q : Type) (_ : Finite Q) (T : Subsequential A B Q), T.eval = f
 
-/-- The bounded variation property of Theorem B.4.8: for all `w₁, w₂` the left
-distances `‖f (w w₁), f (w w₂)‖` are bounded, where `w` ranges over the strings
-for which both outputs are defined. -/
+/-- The bounded variation property of Theorem `thm:subsequential-functions`: for all `w₁, w₂` the
+left distances `‖f (w w₁), f (w w₂)‖` are bounded, where `w` ranges over the strings for which both
+outputs are defined. -/
 def BoundedVariation {A B : Type} (f : List A → Option (List B)) : Prop :=
   ∀ w₁ w₂ : List A, ∃ K : ℕ, ∀ (w : List A) (v₁ v₂ : List B),
     f (w ++ w₁) = some v₁ → f (w ++ w₂) = some v₂ → leftDist v₁ v₂ ≤ K
@@ -85,7 +84,7 @@ lemma dfaComp_accepts (T : Subsequential A B Q) {σ : Type} (D : DFA B σ) :
 
 end Subsequential
 
-/-! ## The easy implication of Theorem B.4.8 -/
+/-! ## The easy implication of Theorem `thm:subsequential-functions` -/
 
 lemma IsSubsequential.partialContinuous {A B : Type} [Finite A] [Finite B]
     {f : List A → Option (List B)} (hf : IsSubsequential f) : PartialContinuous f := by

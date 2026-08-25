@@ -1,7 +1,7 @@
 /-
 The two-way transducer that simulates a normalised streaming string transducer,
 by a depth-first traversal of its register flow tree (the "sst to regular" half
-of Theorem C.3.2 of *Transducers*, M. Bojańczyk).
+of Theorem `theorem:sst-two-way-equivalence` of *Transducers*, M. Bojańczyk).
 
 Fix a normalised sst `N` (see `RequestProject/PartC/SSTNorm.lean`) and an input
 `w`.  The *frame* at head position `p < |w|` is the register update

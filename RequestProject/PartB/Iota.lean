@@ -1,6 +1,6 @@
 /-
 The injective encoding of strings by numbers used in the proof of
-Theorem B.3.4 of *Transducers* (M. Bojańczyk).
+Theorem `thm:equivalence-rational-functions` of *Transducers* (M. Bojańczyk).
 
 Following the book, output strings are represented by numbers: a string
 `a₁ ⋯ a_n` over an alphabet of numbers smaller than `K - 1` is represented by the

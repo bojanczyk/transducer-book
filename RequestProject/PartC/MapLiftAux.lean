@@ -1,6 +1,6 @@
 /-
-General facts about the map lifting (Definition A.2.3), used in the proof of
-Lemma C.2.10 of *Transducers* (M. Bojańczyk).
+General facts about the map lifting (Definition `def:map-lifting`), used in the proof of
+Lemma `lem:regular-closure-properties` of *Transducers* (M. Bojańczyk).
 
 `RequestProject/PartA/MapLift.lean` proves that the map lifting commutes with
 composition for functions that are computed letter by letter (`OneStep`).  Here

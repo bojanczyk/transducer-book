@@ -1,7 +1,7 @@
 /-
-The map lifting (Definition A.2.3) of *Transducers* (M. Bojańczyk, June 25, 2026)
+The map lifting (Definition `def:map-lifting`) of *Transducers* (M. Bojańczyk, June 25, 2026)
 and its behaviour with respect to decompositions into prime Mealy machines
-(Lemma A.2.4).
+(Lemma `lem:map-lifting-decomposition-mealy`).
 -/
 import RequestProject.PartA.PrimeClosure
 
@@ -355,8 +355,8 @@ lemma mapLift_reversible_compClosure [Finite A] [Finite Q] {M : Mealy A B Q}
     exact h
   rwa [hcomp] at h4
 
-/-- **Lemma A.2.4.**  If a Mealy machine decomposes into prime Mealy machines,
-then the same is true for its map lifting. -/
+/-- **Lemma `lem:map-lifting-decomposition-mealy`.**  If a Mealy machine decomposes into prime Mealy
+machines, then the same is true for its map lifting. -/
 theorem mapLift_compClosure {A B : Type} {f : List A → List B} (hA : Finite A)
     (hf : CompClosure PrimeMealyFam A B f) :
     CompClosure PrimeMealyFam (Option A) (Option B) (mapLift f) := by

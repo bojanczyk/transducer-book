@@ -1,13 +1,12 @@
 /-
 The Myhill-Nerode state of the transducer computing the non-branching part
-(the second half of the proof of Theorem B.4.8).
+(the second half of the proof of Theorem `thm:subsequential-functions`).
 
-As in the proof of Theorem B.4.6, the state of the transducer after reading `w`
-is the tuple of the left quotients at `w` of finitely many regular languages:
-the domain, the languages of inputs whose output has a prescribed short suffix,
-and the languages of inputs whose output has a prescribed length modulo a fixed
-modulus.  Continuity makes these languages regular, so the state takes finitely
-many values.
+As in the proof of Theorem `thm:sequential-function-independent`, the state of the transducer after
+reading `w` is the tuple of the left quotients at `w` of finitely many regular languages: the
+domain, the languages of inputs whose output has a prescribed short suffix, and the languages of
+inputs whose output has a prescribed length modulo a fixed modulus.  Continuity makes these
+languages regular, so the state takes finitely many values.
 
 The main results of this file say that the state determines the data used by the
 transducer: the *branching part* (the piece of the output of a short extension

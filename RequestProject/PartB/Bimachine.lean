@@ -1,10 +1,10 @@
 /-
-Bimachines (Definition B.2.2) and the easy implication of Theorem B.2.3: every
+Bimachines (Definition `def:bimachine`) and the easy implication of Theorem `thm:bimachines`: every
 function computed by a bimachine is rational.
 
 The definitions of a bimachine and of its semantics are here (moved from
 `RequestProject/PartB/RationalStatements.lean`) so that they can be used in the proofs
-of Theorem B.2.3.
+of Theorem `thm:bimachines`.
 
 A bimachine is turned into an nfa with output by guessing, at each position, the
 state of the suffix automaton at the *next* gap: the automaton reads the input
@@ -16,7 +16,7 @@ import RequestProject.PartB.Uniform
 
 namespace Transducers
 
-/-- **Definition B.2.2 (Bimachine).**  A bimachine consists of a deterministic
+/-- **Definition `def:bimachine` (Bimachine).**  A bimachine consists of a deterministic
 prefix automaton, a deterministic suffix automaton (which is run on the reverse
 of the suffix) and an output function on pairs of states. -/
 structure Bimachine (A B P S : Type) where
@@ -91,7 +91,7 @@ def IsBimachine {A B : Type} (f : List A → List B) : Prop :=
   ∃ (P S : Type) (_ : Finite P) (_ : Finite S) (M : Bimachine A B P S), M.eval = f
 
 /-- A function computed by an *aperiodic* bimachine: both the prefix and the
-suffix automaton are aperiodic (Section C.4.4). -/
+suffix automaton are aperiodic (Section *The first-order fragment*). -/
 def IsAperiodicBimachine {A B : Type} (f : List A → List B) : Prop :=
   ∃ (P S : Type) (_ : Finite P) (_ : Finite S) (M : Bimachine A B P S),
     M.eval = f ∧ TransAperiodic M.prefixStep ∧ TransAperiodic M.suffixStep

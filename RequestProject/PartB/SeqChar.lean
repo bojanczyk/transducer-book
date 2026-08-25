@@ -1,6 +1,6 @@
 /-
 The machine independent characterisation of sequential functions
-(Theorem B.4.6) from *Transducers* (M. Bojanczyk).
+(Theorem `thm:sequential-function-independent`) from *Transducers* (M. Bojanczyk).
 
 Following the book, the transducer computing `f` outputs the *derivative*
 `f(wa)` with `f(w)` removed, and its states are the Myhill-Nerode classes of two
@@ -439,9 +439,9 @@ lemma seqTransducer_eval (hpre : PrefixPreserving f) (hnil : f [] = [])
 
 end SeqChar
 
-/-- **Theorem B.4.6.**  A function is sequential if and only if its value on the
-empty input is empty and it is continuous, prefix preserving, and has the
-bounded increase property.
+/-- **Theorem `thm:sequential-function-independent`.**  A function is sequential if and only if its
+value on the empty input is empty and it is continuous, prefix preserving, and has the bounded
+increase property.
 
 The condition `f [] = []` is missing from the statement in the book; it is
 necessary, since a sequential transducer produces no output before reading any

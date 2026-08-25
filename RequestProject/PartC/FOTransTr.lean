@@ -4,7 +4,7 @@ The backwards translation of first-order formulas along an mso transduction.
 This is the syntactic heart of the closure of first-order transductions under
 composition ("first-order transductions are closed under composition, which is
 proved by substituting formulas", in the sketch that the book gives for
-Theorem C.4.17).
+Theorem `nolabel:thm-fo-transduction-into-primes`).
 
 Let `T : ITrans A B` be a transduction, `w` an input string and `v` its output.
 The positions of `v` are the elements selected by the universe formulas of `T`,

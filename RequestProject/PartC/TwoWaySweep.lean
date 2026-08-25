@@ -2,8 +2,8 @@
 Explicit two-way transducers for the identity, for post-composition with a
 letter-to-letter map, and for the *block sweeping* functions.
 
-This file provides the constructions that are missing for the corrected form of
-Corollary C.2.8 of *Transducers* (M. Bojańczyk): the prime regular functions
+This file provides the constructions that are missing for the corrected form of Corollary
+`nolabel:cor-two-way-implies-regular` of *Transducers* (M. Bojańczyk): the prime regular functions
 `map reverse` and `map duplicate` are computed by two-way transducers.
 
 Both of them are instances of one construction: on each block of the input
@@ -109,7 +109,7 @@ end PostMap
 /-! ## Rational functions -/
 
 /-- Every rational function is computed by a two-way transducer (the case of
-Corollary C.2.7 in which the second function is the identity). -/
+Corollary `cor:2dfa-closure-under-composition` in which the second function is the identity). -/
 theorem isTwoWay_of_rational {A B : Type} [Finite A] [Finite B] {f : List A → List B}
     (hf : IsRationalFun f) : IsTwoWay f := by
   simpa using isTwoWay_comp_rational hf (isTwoWay_id (A := B))

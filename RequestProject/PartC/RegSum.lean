@@ -1,24 +1,21 @@
 /-
-Claim C.2.11 of *Transducers* (M. Bojańczyk): the disjoint sum of two regular
+Claim `claim:conditional` of *Transducers* (M. Bojańczyk): the disjoint sum of two regular
 functions is regular.
 
-*Discrepancy with the book.*  The claim, as printed, asks for a function
-`f₁ + f₂` on `(A₁ + A₂)*` which agrees with `f₁` on the strings that use only
-letters of `A₁` and with `f₂` on the strings that use only letters of `A₂`.  The
-empty string uses only letters of `A₁` *and* only letters of `A₂`, so the two
-requirements conflict on it: no function whatsoever can satisfy both unless
-`f₁ ε` and `f₂ ε` are both empty (`Transducers.not_sum_of_regular_nil` below is
-a counterexample with `f₁ ε = a` and `f₂ = id`).  The claim is therefore
-formalised, and proved, for *nonempty* inputs; the value on the empty string is
-left unspecified.  This is the only change, and it is harmless for the way the
-claim is used in the book (in the proof of Lemma C.2.10 the two blocks that the
-sum is applied to are always nonempty).
--/
+*Discrepancy with the book.*  The claim, as printed, asks for a function `f₁ + f₂` on `(A₁ + A₂)*`
+which agrees with `f₁` on the strings that use only letters of `A₁` and with `f₂` on the strings
+that use only letters of `A₂`.  The empty string uses only letters of `A₁` *and* only letters of
+`A₂`, so the two requirements conflict on it: no function whatsoever can satisfy both unless `f₁ ε`
+and `f₂ ε` are both empty (`Transducers.not_sum_of_regular_nil` below is a counterexample with `f₁ ε
+= a` and `f₂ = id`).  The claim is therefore formalised, and proved, for *nonempty* inputs; the
+value on the empty string is left unspecified.  This is the only change, and it is harmless for the
+way the claim is used in the book (in the proof of Lemma `lem:regular-closure-properties` the two
+blocks that the sum is applied to are always nonempty). -/
 import RequestProject.PartC.SumReg
 
 namespace Transducers
 
-/-- The empty string is a witness that the claim of C.2.11 cannot hold on *all*
+/-- The empty string is a witness that the claim of `claim:conditional` cannot hold on *all*
 inputs: it uses only letters of `A₁` and only letters of `A₂` at the same time.
 Here `f₁` is the constant function with value `a` and `f₂` is the identity. -/
 theorem not_sum_of_regular_nil :
@@ -32,7 +29,7 @@ theorem not_sum_of_regular_nil :
   rw [e₂] at e₁
   exact absurd e₁ (by simp)
 
-/-- **Claim C.2.11** (corrected on the empty input; see the note at the top of
+/-- **Claim `claim:conditional`** (corrected on the empty input; see the note at the top of
 the file).  For regular functions `f₁ : A₁* → B₁*` and `f₂ : A₂* → B₂*` there is
 a regular function `F : (A₁ + A₂)* → (B₁ + B₂)*` which applies `f₁` to the
 nonempty strings that use only letters of `A₁`, applies `f₂` to the nonempty

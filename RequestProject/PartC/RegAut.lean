@@ -1,6 +1,6 @@
 /-
 A toolkit of regular languages, used for the automata constructions of
-Section C.4 of *Transducers* (M. Bojańczyk).
+Section *Logic* of *Transducers* (M. Bojańczyk).
 
 Mathlib provides closure of `Language.IsRegular` under Boolean operations; the
 facts collected here are the remaining ones that the translation of monadic

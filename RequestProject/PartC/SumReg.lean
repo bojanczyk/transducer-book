@@ -1,6 +1,6 @@
 /-
 The marked sum of two arbitrary regular functions, and the passage from the
-marked sum to the statement of Claim C.2.11 of *Transducers* (M. Bojańczyk).
+marked sum to the statement of Claim `claim:conditional` of *Transducers* (M. Bojańczyk).
 
 The marked sum is built by induction on the composition tree of the two regular
 functions: the base cases are in `RequestProject/PartC/SumShape.lean` (a
@@ -8,7 +8,7 @@ rational function) and in `RequestProject/PartC/SumPrime.lean` (map reverse and
 map duplicate), and the induction step is closure under composition.
 
 Once the marked sum `F` of `f₁` and `f₂` is available, the function asked for by
-Claim C.2.11 is obtained by composing `F` with two rational functions: the first
+Claim `claim:conditional` is obtained by composing `F` with two rational functions: the first
 one prepends the marker that says whether the input is a nonempty string over
 the second alphabet, and the second one deletes the marker of the output (and
 replaces the outputs that are not marked strings by a fixed string using both
@@ -205,7 +205,7 @@ lemma isRationalFun_post [Finite B₁] [Finite B₂] (botOut : List (B₁ ⊕ B�
 
 end SumTo
 
-/-- **Claim C.2.11** (corrected on the empty input).  See
+/-- **Claim `claim:conditional`** (corrected on the empty input).  See
 `RequestProject/PartC/RegSum.lean` for the statement of the claim and for the
 discussion of the correction. -/
 theorem msum_to_sum {A₁ A₂ B₁ B₂ : Type} [Finite A₁] [Finite A₂] [Finite B₁] [Finite B₂]

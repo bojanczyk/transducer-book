@@ -1,6 +1,5 @@
-/-
-Two-way transducers (Definition C.2.1 of *Transducers*, M. Bojańczyk) and the
-proof that they compute continuous functions (Theorem C.2.2).
+/- Two-way transducers (Definition `nolabel:def-two-way-transducer` of *Transducers*, M. Bojańczyk)
+and the proof that they compute continuous functions (Theorem `thm:continuity-2dfas`).
 
 The definitions of two-way transducers are in this file, so that the
 construction below can be developed before the statements of Part C.
@@ -16,10 +15,10 @@ import RequestProject.PartC.TwoDFA
 
 namespace Transducers
 
-/-- **Definition C.2.1.**  A two-way transducer: based on the letters adjacent
-to the head and the current state, it either produces an output string and
-halts (`Sum.inl`), or produces an output string, changes state, and moves the
-head left (`false`) or right (`true`). -/
+/-- **Definition `nolabel:def-two-way-transducer`.**  A two-way transducer: based on the letters
+adjacent to the head and the current state, it either produces an output string and halts
+(`Sum.inl`), or produces an output string, changes state, and moves the head left (`false`) or right
+(`true`). -/
 structure TwoWay (A B Q : Type) where
   /-- The initial state. -/
   init : Q
@@ -253,7 +252,7 @@ lemma outAut_accepts_iff {f : List A → List B} (hf : ∀ w, M.Computes w (f w)
 
 end TwoWay
 
-/-- **Theorem C.2.2.**  Every function computed by a two-way transducer is
+/-- **Theorem `thm:continuity-2dfas`.**  Every function computed by a two-way transducer is
 continuous. -/
 theorem twoWay_continuous_aux {A B : Type} [Finite A] {f : List A → List B}
     (hf : IsTwoWay f) : Continuous f := by

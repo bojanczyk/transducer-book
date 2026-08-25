@@ -1,12 +1,12 @@
 /-
-Why Definition C.4.7 needs its two requirements.
+Why Definition `def:mso-transduction` needs its two requirements.
 
-Definition C.4.7 of *Transducers* (M. Bojańczyk) asks that, in an mso
+Definition `def:mso-transduction` of *Transducers* (M. Bojańczyk) asks that, in an mso
 transduction, every selected element satisfy exactly one letter formula and that
 the order formula define a linear order on the selected elements.  The first
 formalisation of `RequestProject/PartC/MSODef.lean` dropped these two
 requirements; this file shows that they cannot be dropped, i.e. that
-Theorem C.4.8 fails for the resulting weaker notion
+Theorem `thm:logic-regular-functions` fails for the resulting weaker notion
 (`Transducers.IsWeakMSOTransduction`).
 
 The counterexample is the transduction over the alphabet `Bool` whose universe,
@@ -189,7 +189,7 @@ lemma not_isRegularFun_badFun : ¬ IsRegularFun badFun := by
     rw [decide_eq_false hns] at hd
     exact Bool.noConfusion hd
 
-/-- **The requirements of Definition C.4.7 cannot be dropped.**  There is a
+/-- **The requirements of Definition `def:mso-transduction` cannot be dropped.**  There is a
 function which is a *weak* mso transduction (an mso transduction in which the
 letter formulas need not be exclusive and the order formula need not define a
 linear order) and which is not regular. -/

@@ -1,10 +1,10 @@
 /-
 From automata back to logic, with a free first-order variable.
 
-Theorem C.4.1 (`RequestProject/PartC/MSOBuchi.lean`) turns a regular language
-into an mso *sentence*.  For the inclusion "rational ⊆ mso relabellings" of
-Theorem C.4.4 one needs the version with one free variable: a regular language
-`K` of strings marked at one position gives a formula `φ(x₀)` such that
+Theorem `thm:mso-logic-languages` (`RequestProject/PartC/MSOBuchi.lean`) turns a regular language
+into an mso *sentence*.  For the inclusion "rational ⊆ mso relabellings" of Theorem
+`thm:logic-rational-functions` one needs the version with one free variable: a regular language `K`
+of strings marked at one position gives a formula `φ(x₀)` such that
 
   `w ⊨ φ(x)` iff the string `w` with the position `x` marked belongs to `K`.
 
@@ -16,7 +16,7 @@ distinguished position `x₀`.  Only strings marked twice at the same position
 (`markAt2 w x x`) are used, which is why the two marks of `MarkStr.Mark2` are
 translated in the same way; using the doubly marked alphabet here avoids a
 second family of marked strings, since the doubly marked alphabet is the one
-needed for Lemma C.4.10.
+needed for Lemma `lem:logic-precomputation`.
 -/
 import RequestProject.PartC.MSOBuchi
 import RequestProject.PartC.MarkStr

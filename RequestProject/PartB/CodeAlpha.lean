@@ -1,6 +1,6 @@
-/-
-The alphabets of a code, and the elementary facts about them that the decision
-procedures of Sections B.3 and B.4 of *Transducers* (M. Bojańczyk) need.
+/- The alphabets of a code, and the elementary facts about them that the decision procedures of
+Sections *Rational relations and weighted automata* and *Machine independent characterisations* of
+*Transducers* (M. Bojańczyk) need.
 
 A code has finitely many transitions, so the automaton that it describes reads
 only the letters occurring in the input strings of its transitions

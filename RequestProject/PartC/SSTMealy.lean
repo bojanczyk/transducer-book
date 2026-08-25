@@ -1,14 +1,14 @@
 /-
 Post-composition of a streaming string transducer with a Mealy machine, and
 hence with an arbitrary rational function (a step of the "regular to sst" half
-of Theorem C.3.2 of *Transducers*, M. Bojańczyk).
+of Theorem `theorem:sst-two-way-equivalence` of *Transducers*, M. Bojańczyk).
 
 As the book explains, the naive construction -- keep, for every register `X` of
 the sst and every state `q` of the Mealy machine, a register `X_q` holding the
 Mealy image of the content of `X` read from the state `q` -- is *not* copyless:
 simulating a concatenation `X ↦ Y Z` needs `Z_{q'}` where `q'` is the state
 reached after the content of `Y`, and the map `q ↦ q'` need not be injective.
-The book therefore uses the Krohn-Rhodes decomposition (Theorem A.2.2, already
+The book therefore uses the Krohn-Rhodes decomposition (Theorem `nolabel:thm-krohn-rhodes`, already
 available in this development through `PrimeMealyFam`) and does the construction
 for the two kinds of prime Mealy machines:
 

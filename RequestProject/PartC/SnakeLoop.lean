@@ -341,7 +341,7 @@ content of the induction step in the book's proof that the output of a snake
 graph is a regular function; what remains to be seen, in order to complete
 `Transducers.boundedWidth_isRegular`, is that the outputs of the pieces are
 computed by regular functions of factors of the input, and that they can be
-glued back together by Lemma C.2.10. -/
+glued back together by Lemma `lem:regular-closure-properties`. -/
 theorem runOutput_splits (M : TwoWay A B Q) (w : List A) {T k : ℕ}
     (hT : cfgAt M w T = some Cfg.halt) (hwidth : WidthLe M w k) (hk2 : 2 ≤ k) :
     ∃ ts : List ℕ, List.IsChain (· ≤ ·) (0 :: ts) ∧ (0 :: ts).getLast? = some (T - 1) ∧

@@ -1,6 +1,6 @@
 /-
 An *effective* Schützenberger bound for coded weighted automata over `ℚ`
-(Section B.3 of *Transducers*, M. Bojańczyk).
+(Section *Rational relations and weighted automata* of *Transducers*, M. Bojańczyk).
 
 `RequestProject/PartB/WeightedZero.lean` proves Schützenberger's criterion: two
 functions given by linear representations of dimensions `d₁` and `d₂` are equal

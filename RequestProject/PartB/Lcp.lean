@@ -1,12 +1,10 @@
 /-
-Longest common prefixes of strings and the left distance (Definition B.4.7).
+Longest common prefixes of strings and the left distance (Definition `nolabel:def-left-distance`).
 
-These notions are the combinatorial core of the machine independent
-characterisation of subsequential functions (Theorem B.4.8): the transducer that
-we construct outputs the longest common prefix of the outputs on the short
-extensions of the input read so far, and the bounded variation property is an
-upper bound on the left distance.
--/
+These notions are the combinatorial core of the machine independent characterisation of
+subsequential functions (Theorem `thm:subsequential-functions`): the transducer that we construct
+outputs the longest common prefix of the outputs on the short extensions of the input read so far,
+and the bounded variation property is an upper bound on the left distance. -/
 import RequestProject.Common.Basic
 
 namespace Transducers

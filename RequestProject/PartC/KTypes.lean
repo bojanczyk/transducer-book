@@ -1,10 +1,10 @@
 /-
-`k`-types of strings (Definition C.4.12 of *Transducers*, M. Bojańczyk) and
-their combinatorial properties (Lemma C.4.15): refinement, congruence and
+`k`-types of strings (Definition `nolabel:def-fo-types` of *Transducers*, M. Bojańczyk) and
+their combinatorial properties (Lemma `item:fo-types-more-information`): refinement, congruence and
 aperiodicity.
 
 The definitions live in this file so that the proofs can be developed before the
-statements of Section C.4 in `RequestProject/PartC/MSO.lean`.
+statements of Section *Logic* in `RequestProject/PartC/MSO.lean`.
 
 The three properties are proved by induction on `k`, with no reference to
 logic.  For aperiodicity the bound `tpBound k` is used: two powers `uⁿ` and `uᵐ`
@@ -21,7 +21,7 @@ def TpType (A : Type) : ℕ → Type
   | 0 => Unit
   | k + 1 => Set (TpType A k × A × TpType A k)
 
-/-- **Definition C.4.12 (k-types).**  `tp k w` is the `k`-type of the string
+/-- **Definition `nolabel:def-fo-types` (k-types).**  `tp k w` is the `k`-type of the string
 `w`:  `tp 0 w = ∅` and
 `tp (k+1) w = {(tp k w₁, a, tp k w₂) | w = w₁ a w₂}`. -/
 def tp {A : Type} : (k : ℕ) → List A → TpType A k
@@ -240,7 +240,7 @@ lemma tp_npow_eq : ∀ (k : ℕ) (u : List A) (m n : ℕ),
       rw [tp_succ_eq_iff_tpSet]
       exact Set.Subset.antisymm (key u m n hm hn) (key u n m hn hm)
 
-/-- **Lemma C.4.15.**  Refinement, congruence and aperiodicity of `k`-types. -/
+/-- **Lemma `item:fo-types-more-information`.**  Refinement, congruence and aperiodicity of `k`-types. -/
 theorem tp_properties_aux (k : ℕ) :
     (∀ w v : List A, tp (k + 1) w = tp (k + 1) v → tp k w = tp k v) ∧
     (∀ w w' v v' : List A, tp k w = tp k w' → tp k v = tp k v' →

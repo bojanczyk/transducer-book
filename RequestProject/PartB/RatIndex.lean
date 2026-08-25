@@ -1,13 +1,12 @@
-/-
-The equivalence relation of Theorem B.4.13 and the easy implication of that
-theorem: a rational function is continuous and the relation has finite index.
+/- The equivalence relation of Theorem `thm:machine-independent-rational-functions` and the easy
+implication of that theorem: a rational function is continuous and the relation has finite index.
 
 Two input strings are equivalent when the left distances of the outputs of their
 common extensions on the left are bounded (`BoundedVarRel`).  This is an
 equivalence relation, because the left distance is a metric, and it is a *left*
 congruence.
 
-For a rational function, presented as a bimachine by Theorem B.2.3, two strings
+For a rational function, presented as a bimachine by Theorem `thm:bimachines`, two strings
 that give the same state of the suffix automaton are equivalent: the output of
 the bimachine on `w w₁` splits as the part produced at the positions of `w`,
 which only depends on `w` and on the state of the suffix automaton after `w₁`,
@@ -18,9 +17,9 @@ import RequestProject.PartB.RatBimach
 
 namespace Transducers
 
-/-- The equivalence relation on input strings used in Theorem B.4.13:
-`w₁ ∼ w₂` if the left distances `‖f (w w₁), f (w w₂)‖` are bounded uniformly
-in `w`. -/
+/-- The equivalence relation on input strings used in Theorem
+`thm:machine-independent-rational-functions`: `w₁ ∼ w₂` if the left distances `‖f (w w₁), f (w w₂)‖`
+are bounded uniformly in `w`. -/
 def BoundedVarRel {A B : Type} (f : List A → List B) (w₁ w₂ : List A) : Prop :=
   ∃ K : ℕ, ∀ w : List A, leftDist (f (w ++ w₁)) (f (w ++ w₂)) ≤ K
 
@@ -120,8 +119,8 @@ lemma boundedVarRel_of_sfx_eq (M : Bimachine A B P S) [Finite P] {w₁ w₂ : Li
 
 end BimachIndex
 
-/-- **The easy half of Theorem B.4.13.**  For a rational function the relation
-`BoundedVarRel` has finite index. -/
+/-- **The easy half of Theorem `thm:machine-independent-rational-functions`.**  For a rational
+function the relation `BoundedVarRel` has finite index. -/
 theorem finiteIndex_of_isRationalFun {A B : Type} [Finite A] [Finite B] {f : List A → List B}
     (hf : IsRationalFun f) :
     {C : Set (List A) | ∃ w₁, C = {w₂ | BoundedVarRel f w₁ w₂}}.Finite := by

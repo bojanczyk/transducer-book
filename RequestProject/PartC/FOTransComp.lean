@@ -1,9 +1,9 @@
 /-
 First-order transductions are closed under composition.
 
-This is the step that the book quotes in the (deferred) proof of
-Theorem C.4.17: "first-order transductions are closed under composition, which
-is proved by substituting formulas".
+This is the step that the book quotes in the (deferred) proof of Theorem
+`nolabel:thm-fo-transduction-into-primes`: "first-order transductions are closed under composition,
+which is proved by substituting formulas".
 
 Given transductions `T₁ : ITrans A B` and `T₂ : ITrans B C`, the composed
 transduction has one copy of the input positions for every pair (copy of `T₂`,
@@ -505,7 +505,7 @@ end FOTr
 /-- **First-order transductions are closed under composition.**  This is the
 step "first-order transductions are closed under composition, which is proved by
 substituting formulas" of the proof that the book sketches for
-Theorem C.4.17. -/
+Theorem `nolabel:thm-fo-transduction-into-primes`. -/
 theorem isFOTransduction_comp {A B C : Type} {f : List A → List B} {g : List B → List C}
     (hf : IsFOTransduction f) (hg : IsFOTransduction g) : IsFOTransduction (g ∘ f) := by
   classical

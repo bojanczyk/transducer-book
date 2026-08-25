@@ -1,5 +1,5 @@
-/-
-The bound on the deletions in the non-branching part (Claim B.4.12 of the book).
+/- The bound on the deletions in the non-branching part (Claim `claim:eliminating-negative-letters`
+of the book).
 
 Reading one more letter may *shorten* the non-branching part `alpha D w`; in the
 book this is expressed by allowing the transducer to output negative letters,

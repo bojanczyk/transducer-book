@@ -1,9 +1,10 @@
 /-
 Unambiguity by means of the lexicographically least accepting run.
 
-Let `M` be an nfa with output in the ε-free normal form of Lemma B.2.4: in every
-accepting run over a nonempty input each transition reads exactly one letter,
-and the accepting runs over the empty input consist of a single transition.
+Let `M` be an nfa with output in the ε-free normal form of Lemma
+`lemma:eliminate-epsilon-transitions`: in every accepting run over a nonempty input each transition
+reads exactly one letter, and the accepting runs over the empty input consist of a single
+transition.
 
 Fix a linear order on the transitions of `M` and on its states.  Every run over
 a fixed nonempty input then has exactly one transition per letter, so the runs

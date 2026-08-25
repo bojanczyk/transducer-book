@@ -1,7 +1,6 @@
-/-
-First-order definable languages: sentences, invariance under `k`-types, and
-closure under reversal.  These are the tools of Section C.4.4 of *Transducers*
-(M. Bojańczyk) that are needed for Theorem C.4.16, on top of Theorem C.4.11.
+/- First-order definable languages: sentences, invariance under `k`-types, and closure under
+reversal.  These are the tools of Section *The first-order fragment* of *Transducers* (M. Bojańczyk)
+that are needed for Theorem `thm:fo-rational-functions`, on top of Theorem `thm:logic-aperiodic`.
 
 Three things are proved here.
 
@@ -15,7 +14,7 @@ Three things are proved here.
   language is such a union for a suitable `k`
   (`Transducers.foDefinable_of_tp_invariant`,
   `Transducers.exists_tp_invariant_of_foDefinable`).  Both directions are
-  Theorem C.4.11 together with the automaton of `k`-types.
+  Theorem `thm:logic-aperiodic` together with the automaton of `k`-types.
 * The `k`-type of the reverse of a string is determined by the `k`-type of the
   string (`Transducers.tp_reverse`), because the definition of a type is
   symmetric.  Consequently first-order definable languages are closed under

@@ -2,19 +2,16 @@
 The rational function described by a code, over the finite alphabets that the
 code can see.
 
-The decidability statements of Part B speak about codes, whose alphabet is the
-infinite set `ℕ`, while the machine independent characterisations of Section B.4
-are about functions over *finite* alphabets.  This file bridges the two.  A code
-has finitely many transitions, so it reads only the letters of `codeAlphabet c`
-and writes only the letters of `codeOutAlphabet c`; the corresponding subtypes
-`InA c` and `OutA c` of `ℕ` are finite (a spurious letter `0` is added to the
-output alphabet so that it is nonempty, which is convenient when a machine over
-`ℕ` has to be turned into a machine over `OutA c`).  Under the promise that the
-code describes a total function on the strings over its alphabet, that function
-is `codeFun c : List (InA c) → List (OutA c)`; it is rational, and it is
-computed by a Mealy machine exactly when the property appearing in Theorem B.4.2
-holds.
--/
+The decidability statements of Part B speak about codes, whose alphabet is the infinite set `ℕ`,
+while the machine independent characterisations of Section *Machine independent characterisations*
+are about functions over *finite* alphabets.  This file bridges the two.  A code has finitely many
+transitions, so it reads only the letters of `codeAlphabet c` and writes only the letters of
+`codeOutAlphabet c`; the corresponding subtypes `InA c` and `OutA c` of `ℕ` are finite (a spurious
+letter `0` is added to the output alphabet so that it is nonempty, which is convenient when a
+machine over `ℕ` has to be turned into a machine over `OutA c`).  Under the promise that the code
+describes a total function on the strings over its alphabet, that function is `codeFun c : List (InA
+c) → List (OutA c)`; it is rational, and it is computed by a Mealy machine exactly when the property
+appearing in Theorem `thm:decide-if-mealy` holds. -/
 import RequestProject.PartB.PrefixCodes
 import RequestProject.PartB.RationalStatements
 
@@ -338,7 +335,7 @@ lemma widen_eval {c : RelCode} {Q : Type} (M : Mealy (InA c) (OutA c) Q) (w : Li
     (widen M).eval (w.map Subtype.val) = (M.eval w).map Subtype.val :=
   widen_run M M.init w
 
-/-- Under the promise, the property of Theorem B.4.2 -- that the relation
+/-- Under the promise, the property of Theorem `thm:decide-if-mealy` -- that the relation
 described by the code agrees on the strings over its alphabet with a function
 computed by a Mealy machine over `ℕ` -- is equivalent to the function described
 by the code over its own alphabets being computed by a Mealy machine. -/

@@ -14,7 +14,7 @@ the set variables at all, the second-order binding can simply be dropped.
 It also provides `MSO.atZeroF φ`, a first-order formula whose truth value is the
 truth value of `φ` under the valuation that sends *every* variable to the
 position `0`, which is how the formulas of the "extra" elements of an mso
-transduction (Definition C.4.7) are evaluated.  On a non-empty string this is
+transduction (Definition `def:mso-transduction`) are evaluated.  On a non-empty string this is
 `atvF` at the first position; on the empty string the truth value of `φ` is a
 constant, and the formula is the corresponding truth value guarded by
 "the input string is empty".

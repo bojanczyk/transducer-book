@@ -1,7 +1,7 @@
 /-
 The combinatorics of the trajectory of a two-way run: *walks*.
 
-This file is part of the proof of the hard half of Theorem C.2.9 of
+This file is part of the proof of the hard half of Theorem `thm:2dfa-decomposition-into-primes` of
 *Transducers* (M. Bojańczyk): the missing ingredient there is the book's snake
 lemma (`Transducers.boundedWidth_isRegular`, stated in
 `RequestProject/PartC/SnakeWidth.lean`), whose proof decomposes a run of width

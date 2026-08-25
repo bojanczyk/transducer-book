@@ -1,7 +1,6 @@
-/-
-Normalised streaming string transducers, and the reduction of an arbitrary sst
-to a normalised one (a step in the proof of Theorem C.3.2 of *Transducers*,
-M. Bojańczyk).
+/- Normalised streaming string transducers, and the reduction of an arbitrary sst to a normalised
+one (a step in the proof of Theorem `theorem:sst-two-way-equivalence` of *Transducers*, M.
+Bojańczyk).
 
 The two-way transducer that simulates an sst has to perform a depth-first
 traversal of the register flow tree.  Two features of the definition of an sst

@@ -1,6 +1,6 @@
 /-
 The annotation of `TwoWayAnnot.lean` is computed by a bimachine, and is
-therefore a rational function (Theorem B.2.3).  The prefix automaton is the
+therefore a rational function (Theorem `thm:bimachines`).  The prefix automaton is the
 automaton `D` itself; the suffix automaton computes, for the suffix that is
 still to be read, the acceptance function `s ↦ (D accepts the suffix from s)`,
 together with the two letters that the output function needs.

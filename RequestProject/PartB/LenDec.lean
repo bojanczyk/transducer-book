@@ -1,6 +1,5 @@
-/-
-Lemma B.4.3 of *Transducers* (M. Bojańczyk): one can decide whether the relation
-described by a code is length preserving.
+/- Lemma `lem:decide-if-length-preserving` of *Transducers* (M. Bojańczyk): one can decide whether
+the relation described by a code is length preserving.
 
 The decision procedure enumerates all transition sequences of length at most
 `3n`, where `n` bounds the number of states of the coded automaton, and checks
@@ -296,7 +295,7 @@ lemma mem_seqsUpto (L : List Tr) (k : ℕ) (ts : List Tr) :
             refine Or.inr ⟨t, h2 t (by simp), rest, ?_, rfl⟩
             exact (ih rest).2 ⟨by simpa using h1, fun s hs => h2 s (by simp [hs])⟩
 
-/-- The decision procedure for Lemma B.4.3. -/
+/-- The decision procedure for Lemma `lem:decide-if-length-preserving`. -/
 def lenDec (c : RelCode) : Bool :=
   allB (seqsUpto c.1 (3 * (c.2.1.length + c.1.length)))
     (fun ts => !acceptB c ts || balB ts)

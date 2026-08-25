@@ -1,6 +1,5 @@
-/-
-The hard implication of Theorem B.4.13: a continuous function whose equivalence
-relation `BoundedVarRel` has finite index is rational.
+/- The hard implication of Theorem `thm:machine-independent-rational-functions`: a continuous
+function whose equivalence relation `BoundedVarRel` has finite index is rational.
 
 The proof follows the book.  Let `∼` be the relation `BoundedVarRel f`, and let
 `Cls f` be its (finite) set of equivalence classes.  An input string
@@ -364,8 +363,8 @@ lemma isRationalRel_ann :
 
 end RatAnnot
 
-/-- **The hard half of Theorem B.4.13.**  A continuous function whose relation
-`BoundedVarRel` has finite index is rational. -/
+/-- **The hard half of Theorem `thm:machine-independent-rational-functions`.**  A continuous
+function whose relation `BoundedVarRel` has finite index is rational. -/
 theorem isRationalFun_of_finiteIndex {A B : Type} [Finite A] [Finite B] {f : List A → List B}
     (hcont : Continuous f)
     (hfin : {C : Set (List A) | ∃ w₁, C = {w₂ | BoundedVarRel f w₁ w₂}}.Finite) :
@@ -388,8 +387,8 @@ theorem isRationalFun_of_finiteIndex {A B : Type} [Finite A] [Finite B] {f : Lis
     rw [RatAnnot.g_ann w] at hu
     exact (Option.some_injective _ hu).symm
 
-/-- **Theorem B.4.13.**  A function is rational if and only if it is continuous
-and the equivalence relation `BoundedVarRel f` has finite index. -/
+/-- **Theorem `thm:machine-independent-rational-functions`.**  A function is rational if and only if
+it is continuous and the equivalence relation `BoundedVarRel f` has finite index. -/
 theorem isRationalFun_iff_aux {A B : Type} [Finite A] [Finite B] (f : List A → List B) :
     IsRationalFun f ↔
       (Continuous f ∧

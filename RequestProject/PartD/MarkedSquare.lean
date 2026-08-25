@@ -1,6 +1,6 @@
 /-
 Marked squaring (Example 33 of *Transducers*, M. Bojańczyk) and its continuity,
-which is the missing ingredient in the proof of Theorem D.0.19.
+which is the missing ingredient in the proof of Theorem `thm:polyregular-functions-are-continuous`.
 
 The definition of marked squaring itself lives in this file, so that the
 construction below can be developed before the statements of Part D.

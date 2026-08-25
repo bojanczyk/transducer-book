@@ -1,7 +1,7 @@
 /-
 Sorted enumerations of a finite linear order.
 
-The semantics of an mso transduction (Definition C.4.7) presents the output
+The semantics of an mso transduction (Definition `def:mso-transduction`) presents the output
 string through *some* list of the selected elements which is strictly increasing
 for the order formula.  The two-way transducer of
 `RequestProject/PartC/WalkAut.lean` walks that list by repeatedly asking for the

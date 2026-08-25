@@ -1,10 +1,9 @@
-/-
-Every mso transduction is a regular function: the hard half of Theorem C.4.8 of
-*Transducers* (M. Bojańczyk).
+/- Every mso transduction is a regular function: the hard half of Theorem
+`thm:logic-regular-functions` of *Transducers* (M. Bojańczyk).
 
 The proof follows the book.  Let `f` be defined by an mso transduction.
 
-* By Lemma C.4.9 (`MSOTransduction.exists_norm`, in
+* By Lemma `lem:logic-reduction-to-type-n` (`MSOTransduction.exists_norm`, in
   `RequestProject/PartC/MSONorm.lean`) the transduction is *normalised*: on a
   non-empty input its output is presented by a list of pairs (tag, position)
   enumerated in the order given by the order formula.
@@ -15,7 +14,7 @@ The proof follows the book.  Let `f` be defined by an mso transduction.
   "which letter does it carry?", "is it the first element?") and the two binary
   ones ("is the element at the right-hand marked position the successor of the
   element at the left-hand one?", and its mirror image).
-* Lemma C.4.10 (`mso_formulas_via_rational`) precomputes the answers: it
+* Lemma `lem:logic-precomputation` (`mso_formulas_via_rational`) precomputes the answers: it
   provides a letter-to-letter *rational* function `pre : A* → C*` such that the
   unary questions become sets of letters of `pre w` and the binary ones become
   regular languages of infixes of `pre w`.  The infix languages are read by a
@@ -23,12 +22,11 @@ The proof follows the book.  Let `f` be defined by an mso transduction.
   letter read) is the automaton carried by the walking transducer;
   `RequestProject/PartC/MSOWalkData.lean` assembles this and proves that the
   walking transducer computes `f w` on the input `pre w`.
-* Finally `f` is the composition of the rational function `pre` with the
-  function computed by the walking transducer, and the latter is regular by
-  Theorem C.2.9.  Instead of the two-way transducer itself -- which need not
-  halt on the strings of `C*` that are not of the form `pre w` -- we use its
-  *width-bounded output* `TwoWay.widthOut`, which is a total function, is
-  regular by the snake lemma, and agrees with the run wherever the run halts.
+* Finally `f` is the composition of the rational function `pre` with the function computed by the
+  walking transducer, and the latter is regular by Theorem `thm:2dfa-decomposition-into-primes`.
+  Instead of the two-way transducer itself -- which need not halt on the strings of `C*` that are
+  not of the form `pre w` -- we use its *width-bounded output* `TwoWay.widthOut`, which is a total
+  function, is regular by the snake lemma, and agrees with the run wherever the run halts.
 
 The converse implication (every regular function is an mso transduction) is
 `Transducers.isMSOTransduction_of_isTwoWay`, in
@@ -73,8 +71,8 @@ noncomputable def bForm (N : NormT A B) : QIdx N → MSO A
 /-! ## From an mso transduction to a regular function -/
 
 open TwoWay in
-/-- **Theorem C.4.8, left-to-right implication.**  Every string-to-string mso
-transduction defines a regular function. -/
+/-- **Theorem `thm:logic-regular-functions`, left-to-right implication.**  Every string-to-string
+mso transduction defines a regular function. -/
 theorem isRegularFun_of_isMSOTransduction {f : List A → List B}
     (hf : IsMSOTransduction f) : IsRegularFun f := by
   classical
@@ -98,7 +96,7 @@ theorem isRegularFun_of_isMSOTransduction {f : List A → List B}
       exact ⟨es, fun _ => hes⟩
     · exact ⟨[], fun h => absurd h hw⟩
   choose esf hesf using hex
-  -- the precomputation of Lemma C.4.10
+  -- the precomputation of Lemma `lem:logic-precomputation`
   obtain ⟨C, hC, pre, hrat, hlenpre, h1, h2⟩ :=
     mso_formulas_via_rational_aux (Set.range (uForm N)) (Set.range (bForm N))
       (Set.finite_range _) (Set.finite_range _)

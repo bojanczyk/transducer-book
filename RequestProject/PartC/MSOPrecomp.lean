@@ -1,9 +1,9 @@
 /-
-Lemma C.4.10 of *Transducers* (M. Bojańczyk): the precomputation of a finite
+Lemma `lem:logic-precomputation` of *Transducers* (M. Bojańczyk): the precomputation of a finite
 family of mso formulas with one or two free first-order variables by a
 letter-to-letter rational function.
 
-Every formula `χ` of the family gives, by Lemma C.4.2 (in the form
+Every formula `χ` of the family gives, by Lemma `nolabel:lem-mso-to-automaton` (in the form
 `MarkStr.markedSat2`), a regular language of doubly marked strings; let `D χ` be
 a deterministic automaton for it.  The rational function `f` produced here is
 the letter-to-letter function that decorates every position `x` of the input `w`
@@ -12,7 +12,7 @@ by the tuple of pairs
   `(state of D χ before x, state transformation of D χ after x)`,
 
 which is `MarkBimach.markFun`; it is rational because it is computed by a
-bimachine (Theorem B.2.3).
+bimachine (Theorem `thm:bimachines`).
 
 * A formula `φ(x)` with one free variable holds in the position `x` if and only
   if the letter in the position `x` of `f w` belongs to the set of letters for
@@ -32,7 +32,7 @@ namespace Transducers
 
 open MarkStr MarkBimach MarkDelay
 
-/-- **Lemma C.4.10.**  For a finite set of mso formulas with one or two free
+/-- **Lemma `lem:logic-precomputation`.**  For a finite set of mso formulas with one or two free
 first-order variables there is a letter-to-letter rational function
 `f : A* → C*` such that the formulas with one free variable correspond to sets
 of letters of the output, and the formulas with two free variables correspond to

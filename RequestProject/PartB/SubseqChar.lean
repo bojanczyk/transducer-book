@@ -1,6 +1,6 @@
 /-
 The machine independent characterisation of subsequential functions
-(Theorem B.4.8).
+(Theorem `thm:subsequential-functions`).
 
 The transducer constructed here reads the input and outputs the non-branching
 part `alpha D w` of the prefix `w` read so far, with a delay of `M` letters,
@@ -313,8 +313,8 @@ lemma isSubsequential_of_continuous_boundedVariation [Finite A] [Finite B]
 
 end Subseq
 
-/-- **Theorem B.4.8.**  A partial function is subsequential if and only if it is
-continuous and has bounded variation. -/
+/-- **Theorem `thm:subsequential-functions`.**  A partial function is subsequential if and only if
+it is continuous and has bounded variation. -/
 theorem isSubsequential_iff_aux {A B : Type} [Finite A] [Finite B]
     (f : List A → Option (List B)) :
     IsSubsequential f ↔

@@ -1,19 +1,19 @@
 /-
 The prime regular functions are computed by two-way transducers (the content of
-the proof of Corollary C.2.8 of *Transducers*, M. Bojańczyk).
+the proof of Corollary `nolabel:cor-two-way-implies-regular` of *Transducers*, M. Bojańczyk).
 
-The book's proof of Corollary C.2.8 reads: "Two-way transducers can compute all
-rational functions by Corollary C.2.7, and they can compute map reverse and map
-duplicate by Example C.2.4.  Finally, they are closed under composition thanks
-to Theorem C.2.5."  This establishes that every *regular* function is computed
-by a two-way transducer, i.e. the inclusion opposite to the one in the printed
-statement of the corollary; see `RequestProject/PartC/Statements.lean` for a
+The book's proof of Corollary `nolabel:cor-two-way-implies-regular` reads: "Two-way transducers can
+compute all rational functions by Corollary `cor:2dfa-closure-under-composition`, and they can
+compute map reverse and map duplicate by Example
+`lem:check-if-output-string-of-configuration-graph-belongs-to-L`.  Finally, they are closed under
+composition thanks to Theorem `thm:composition-of-two-way-transducers`."  This establishes that
+every *regular* function is computed by a two-way transducer, i.e. the inclusion opposite to the one
+in the printed statement of the corollary; see `RequestProject/PartC/Statements.lean` for a
 discussion.
 
-This file collects the three ingredients: closure under pre-composition with a
-letter-to-letter map (a special case of Corollary C.2.7), and the two-way
-transducers for map reverse and map duplicate (`TwoWaySweep.lean`).
--/
+This file collects the three ingredients: closure under pre-composition with a letter-to-letter map
+(a special case of Corollary `cor:2dfa-closure-under-composition`), and the two-way transducers for
+map reverse and map duplicate (`TwoWaySweep.lean`). -/
 import RequestProject.PartC.TwoWaySweep
 
 namespace Transducers

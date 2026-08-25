@@ -1,6 +1,5 @@
-/-
-Pre-composition of two-way transducers with Mealy machines (Lemma C.2.6 of
-*Transducers*, M. Bojańczyk).
+/- Pre-composition of two-way transducers with Mealy machines (Lemma
+`lem:2dfa-precomposition-with-mealy` of *Transducers*, M. Bojańczyk).
 
 A two-way transducer that reads the output of a Mealy machine has to know, at
 every gap of the input, the state of the Mealy machine at that gap.  Moving to

@@ -1,10 +1,11 @@
 /-
 Atomisation of nondeterministic automata with output.
 
-Every nfa with output is equivalent to one in which each transition reads at
-most one input letter and writes at most one output letter.  This normal form is
-the basis of the constructions of Section B.1: closure of rational relations
-under composition (Theorem B.1.4) and their continuity (Theorem B.1.5).
+Every nfa with output is equivalent to one in which each transition reads at most one input letter
+and writes at most one output letter.  This normal form is the basis of the constructions of Section
+*Rational relations*: closure of rational relations under composition (Theorem
+`thm:composition-rational-relations`) and their continuity (Theorem
+`thm:continuity-rational-relations`).
 
 The construction replaces a transition reading `a₁ ⋯ aₘ` and writing
 `b₁ ⋯ bₙ` by a chain of `m + n` transitions, which first read the letters `aᵢ`

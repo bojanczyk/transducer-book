@@ -5,22 +5,23 @@ Part D: Polyregular functions
 This file contains the definitions of Part D and the statements of its
 theorems and lemmas.  Proofs are left as `sorry`.
 
-Not formalised here: Lemma D.2.2, Claim D.2.3, Lemma D.2.5 and Claims D.2.6,
-D.2.7, which are internal steps of the proofs of Theorems D.2.1 and D.2.4.
-They speak about the string representation of configurations and configuration
-graphs of pebble transducers, an auxiliary encoding used only inside those
-proofs.
--/
+Not formalised here: Lemma `lem:reachability-pebble-automaton`, Claim
+`claim:reachability-basic-run`, Lemma `lem:children-of-configuration-in-pebble-run` and Claims
+`claim:from-configuration-to-child-configuration-graph`,
+`claim:from-child-configuration-graph-to-children`, which are internal steps of the proofs of
+Theorems `thm:pebble-are-continuous` and `thm:pebble-are-for`. They speak about the string
+representation of configurations and configuration graphs of pebble transducers, an auxiliary
+encoding used only inside those proofs. -/
 import RequestProject.PartC.MSO
 import RequestProject.PartD.MarkedSquare
 
 namespace Transducers
 
-/-! ## Polyregular functions (Definition D.0.18) -/
+/-! ## Polyregular functions (Definition `def:polyregular-functions`) -/
 
 /-! **Example 33 (Marked squaring)** (`markedSquare`) is defined in
-`RequestProject/PartD/MarkedSquare.lean`, together with the proof that it is
-continuous, which is the main step in the proof of Theorem D.0.19 below. -/
+`RequestProject/PartD/MarkedSquare.lean`, together with the proof that it is continuous, which is
+the main step in the proof of Theorem `thm:polyregular-functions-are-continuous` below. -/
 
 /-- The family of prime polyregular functions: regular functions and marked
 squaring. -/
@@ -29,13 +30,13 @@ def PolyregularFam : ∀ (A B : Type), (List A → List B) → Prop := fun A B f
   (∃ (A₀ : Type) (e : A ≃ A₀) (e' : B ≃ A₀ ⊕ A₀),
       ∀ w, f w = (markedSquare A₀ (w.map e)).map e'.symm)
 
-/-- **Definition D.0.18 (Polyregular functions).**  A string-to-string function
+/-- **Definition `def:polyregular-functions` (Polyregular functions).**  A string-to-string function
 is polyregular if it is a finite composition of regular functions and marked
 squaring. -/
 def IsPolyregular {A B : Type} (f : List A → List B) : Prop :=
   CompClosure PolyregularFam A B f
 
-/-- **Theorem D.0.19.**  Polyregular functions are continuous. -/
+/-- **Theorem `thm:polyregular-functions-are-continuous`.**  Polyregular functions are continuous. -/
 theorem polyregular_continuous {A B : Type} [Finite A] [Finite B] {f : List A → List B}
     (hf : IsPolyregular f) : Continuous f := by
   induction hf with
@@ -49,7 +50,7 @@ theorem polyregular_continuous {A B : Type} [Finite A] [Finite B] {f : List A �
   | id A => exact continuous_id
   | comp _ _ ihf ihg => exact ihg.comp ihf
 
-/-! ## D.1 For-transducers -/
+/-! ## For-transducers -/
 
 /-- Tests of a for-transducer: Boolean variables, equality and order tests on
 position variables, and label tests. -/
@@ -157,8 +158,8 @@ def nestLoops : List (Bool × ℕ) → ForProg A B → ForProg A B
 def OutputsAtMostOne (P : ForProg A B) : Prop :=
   ∀ (w : List A) (pos : ℕ → ℕ) (bv : ℕ → Bool), ((exec w P pos bv).2).length ≤ 1
 
-/-- **Definition D.1.2 (Prenex form).**  A block of nested loops whose body is
-loop-free and produces at most one output letter per iteration, followed by a
+/-- **Definition `def:prenex-normal-form-for-transducers` (Prenex form).**  A block of nested loops
+whose body is loop-free and produces at most one output letter per iteration, followed by a
 loop-free epilogue. -/
 def PrenexForm (P : ForProg A B) : Prop :=
   ∃ (ls : List (Bool × ℕ)) (body epilogue : ForProg A B),
@@ -171,27 +172,27 @@ end ForProg
 def IsForTransducer {A B : Type} (f : List A → List B) : Prop :=
   ∃ P : ForProg A B, ∀ w, P.eval w = f w
 
-/-! ### D.1.1 Equivalence with polyregular functions -/
+/-! ### Equivalence with polyregular functions -/
 
-/-- **Theorem D.1.1.**  A string-to-string function is polyregular if and only
-if it is computed by a for-transducer. -/
+/-- **Theorem `thm:for-transducers-are-polyregular`.**  A string-to-string function is polyregular
+if and only if it is computed by a for-transducer. -/
 theorem polyregular_iff_forTransducer {A B : Type} [Finite A] [Finite B]
     (f : List A → List B) : IsPolyregular f ↔ IsForTransducer f := by
   sorry
 
-/-- **Lemma D.1.3.**  Every for-transducer is equivalent to one in prenex
+/-- **Lemma `lemma:prenex-normal-form`.**  Every for-transducer is equivalent to one in prenex
 form. -/
 theorem forTransducer_prenex {A B : Type} (P : ForProg A B) :
     ∃ P' : ForProg A B, P'.PrenexForm ∧ ∀ w, P'.eval w = P.eval w := by
   sorry
 
-/-- **Lemma D.1.4.**  String-to-string functions computed by for-transducers are
-closed under composition. -/
+/-- **Lemma `lem:for-closed-under-composition`.**  String-to-string functions computed by
+for-transducers are closed under composition. -/
 theorem forTransducer_comp {A B C : Type} {f : List A → List B} {g : List B → List C}
     (hf : IsForTransducer f) (hg : IsForTransducer g) : IsForTransducer (g ∘ f) := by
   sorry
 
-/-! ## D.2 Pebble transducers -/
+/-! ## Pebble transducers -/
 
 /-- The information available to a pebble transducer: for every pebble on the
 stack (listed from the bottom), the two adjacent input letters and the set of
@@ -280,16 +281,16 @@ end Pebble
 def IsPebbleTransducer {A B : Type} (f : List A → List B) : Prop :=
   ∃ (k : ℕ) (Q : Type) (_ : Finite Q) (M : Pebble A B Q k), ∀ w, M.Computes w (f w)
 
-/-! ### D.2.1 Continuity -/
+/-! ### Continuity -/
 
-/-- **Theorem D.2.1.**  Pebble transducers compute continuous functions. -/
+/-- **Theorem `thm:pebble-are-continuous`.**  Pebble transducers compute continuous functions. -/
 theorem pebble_continuous {A B : Type} [Finite A] [Finite B] {f : List A → List B}
     (hf : IsPebbleTransducer f) : Continuous f := by
   sorry
 
-/-! ### D.2.2 Equivalence with for-transducers -/
+/-! ### Equivalence with for-transducers -/
 
-/-- **Theorem D.2.4.**  Pebble transducers and for-transducers compute the same
+/-- **Theorem `thm:pebble-are-for`.**  Pebble transducers and for-transducers compute the same
 string-to-string functions. -/
 theorem pebble_iff_forTransducer {A B : Type} [Finite A] [Finite B] (f : List A → List B) :
     IsPebbleTransducer f ↔ IsForTransducer f := by

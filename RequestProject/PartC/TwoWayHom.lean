@@ -1,7 +1,7 @@
 /-
 Pre-composition of two-way transducers with homomorphisms and with appending a
 letter (the constructions that are "left to the reader" in the proof of
-Corollary C.2.7 of *Transducers*, M. Bojańczyk).
+Corollary `cor:2dfa-closure-under-composition` of *Transducers*, M. Bojańczyk).
 
 The file begins with a general simulation principle: if a relation between the
 configurations of a two-way transducer `aut` over the input `w` and the

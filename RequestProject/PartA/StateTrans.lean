@@ -1,8 +1,8 @@
 /-
 The state transformation transducer of a pre-automaton and the proof of
-Lemma A.2.5 of *Transducers* (M. Bojańczyk, June 25, 2026).
+Lemma `lem:Mealy-map-lifting` of *Transducers* (M. Bojańczyk, June 25, 2026).
 
-Lemma A.2.5 says that the state transformation transducer of a pre-automaton is
+Lemma `lem:Mealy-map-lifting` says that the state transformation transducer of a pre-automaton is
 a composition of prime Mealy machines.  The proof is by induction, following the
 book, with one deviation that keeps the input alphabet fixed: instead of
 removing the letter `a` from the alphabet, we replace its state transformation
@@ -29,9 +29,9 @@ with the following intended meaning at a position `i` of the input `w`
 * `letter` : the `i`-th letter of the input;
 * `seen`   : whether `a` occurs strictly before position `i`;
 * `L`      : the state transformation of the maximal `a`-free suffix of `v`
-             (this is the book's first stage, computed with the map lifting of
-             Lemma A.2.4 applied to the pre-automaton in which `a` acts as the
-             identity);
+             (this is the book's first stage, computed with the map lifting of Lemma
+             `lem:map-lifting-decomposition-mealy` applied to the pre-automaton in which `a` acts as
+             the identity);
 * `prev`   : the value of `L` at the previous position (a delay machine);
 * `fp`     : the value of `prev` at the first `a`-position, if any (this
              determines the state transformation of the first `a`-block, which
@@ -57,7 +57,7 @@ def stateTransTransducer {A Q : Type} (δ : Q → A → Q) : Mealy A (Q → Q) (
   init := id
   step := fun t y => (fun q => δ (t q) y, fun q => δ (t q) y)
 
-/-- Induction basis of Lemma A.2.5: if every letter of the pre-automaton acts as
+/-- Induction basis of Lemma `lem:Mealy-map-lifting`: if every letter of the pre-automaton acts as
 a permutation of the state space, then the state transformation transducer is
 itself reversible. -/
 lemma stateTransTransducer_reversible {A Q : Type} {δ : Q → A → Q}
@@ -72,7 +72,7 @@ lemma stateTransTransducer_reversible {A Q : Type} {δ : Q → A → Q}
     choose g hg using fun q => (h y).surjective (t q)
     exact ⟨g, funext hg⟩
 
-/-- Induction basis of Lemma A.2.5, in the form of a decomposition. -/
+/-- Induction basis of Lemma `lem:Mealy-map-lifting`, in the form of a decomposition. -/
 lemma stateTransTransducer_prime_of_reversible {A Q : Type} [Finite A] [Finite Q]
     {δ : Q → A → Q} (h : ∀ y : A, Function.Bijective (fun q => δ q y)) :
     CompClosure PrimeMealyFam A (Q → Q) (stateTransTransducer δ).eval :=
@@ -112,7 +112,7 @@ lemma stateTransTransducer_eval_getLast? {A Q : Type} (δ : Q → A → Q) (u : 
     ((stateTransTransducer δ).eval (u ++ [y])).getLast? = some (strTrans δ (u ++ [y])) :=
   stateTransTransducer_getLast? δ id u y
 
-/-! ## The induction step of Lemma A.2.5 -/
+/-! ## The induction step of Lemma `lem:Mealy-map-lifting` -/
 
 section Step
 
@@ -167,9 +167,9 @@ def tailMealy : Mealy (Enr δ a) (Q → Q) (Q → Q) where
     ((if e.1 = a then id else fun q => δ (t q) e.1),
       (if e.1 = a then id else fun q => δ (t q) e.1))
 
-/-- Stage 2, as a composition of primes: the map lifting (Lemma A.2.4) of the
-state transformation transducer of `deltaFree`, with the `a`-positions used as
-separators. -/
+/-- Stage 2, as a composition of primes: the map lifting (Lemma
+`lem:map-lifting-decomposition-mealy`) of the state transformation transducer of `deltaFree`, with
+the `a`-positions used as separators. -/
 def tailFun : List (Enr δ a) → List (Q → Q) :=
   List.map (fun o : Option (Q → Q) => o.getD id) ∘
     mapLift (stateTransTransducer (deltaFree δ a)).eval ∘
@@ -534,7 +534,7 @@ lemma tailFun_compClosure [Finite A] [Finite Q]
   exact h4
 
 /-- The chain of stages is a composition of prime Mealy machines, provided the
-two smaller pre-automata satisfy the conclusion of Lemma A.2.5. -/
+two smaller pre-automata satisfy the conclusion of Lemma `lem:Mealy-map-lifting`. -/
 theorem krStages_compClosure [Finite A] [Finite Q]
     (hfree : CompClosure PrimeMealyFam A (Q → Q) (stateTransTransducer (deltaFree δ a)).eval)
     (hmid : CompClosure PrimeMealyFam (Enr δ a) (Img δ a → Img δ a)
@@ -601,7 +601,7 @@ lemma card_img_lt {A Q : Type} [Finite Q] (δ : Q → A → Q) {a : A}
   rw [Set.ncard_univ, ← Nat.card_coe_set_eq] at h3
   exact h3
 
-/-- The double induction of Lemma A.2.5. -/
+/-- The double induction of Lemma `lem:Mealy-map-lifting`. -/
 theorem stateTrans_aux : ∀ (n : ℕ) (Q : Type) (_ : Finite Q), Nat.card Q ≤ n →
     ∀ (m : ℕ) (A : Type) (_ : Finite A) (δ : Q → A → Q), (nonBijSet δ).ncard ≤ m →
     CompClosure PrimeMealyFam A (Q → Q) (stateTransTransducer δ).eval := by
@@ -631,7 +631,7 @@ theorem stateTrans_aux : ∀ (n : ℕ) (Q : Type) (_ : Finite Q), Nat.card Q ≤
         rw [← krStages_eq δ a]
         exact krStages_compClosure δ a hfree hmid
 
-/-- **Lemma A.2.5.**  For every pre-automaton, its state transformation
+/-- **Lemma `lem:Mealy-map-lifting`.**  For every pre-automaton, its state transformation
 transducer is a composition of prime Mealy machines. -/
 theorem stateTransTransducer_prime_decomposition {A Q : Type} [Finite A] [Finite Q]
     (δ : Q → A → Q) :

@@ -1,9 +1,8 @@
-/-
-Lemma B.3.5: weighted automata are closed under pre-composition with rational
-functions.
+/- Lemma `lem:closure-weighted-automata-precomposition`: weighted automata are closed under
+pre-composition with rational functions.
 
 Let `f : A* → B*` be a rational function and `h : B* → S` a function computed by
-a weighted automaton.  By Theorem B.2.3 the function `f` is computed by a
+a weighted automaton.  By Theorem `thm:bimachines` the function `f` is computed by a
 bimachine, and by `WNF.exists_linRep` the function `h` has a linear
 representation: matrices `m b` for the letters `b` and a final vector `bta`,
 such that `h v` is the sum over the initial states of `m v₁ ⋯ m v_k *ᵥ bta`.
@@ -587,8 +586,8 @@ theorem wEval_W (w : List A) :
 
 end WPre
 
-/-- **Lemma B.3.5.**  Weighted automata are closed under pre-composition with
-rational functions. -/
+/-- **Lemma `lem:closure-weighted-automata-precomposition`.**  Weighted automata are closed under
+pre-composition with rational functions. -/
 theorem weighted_precomp_rational_aux {A B S : Type} [Finite A] [Finite B] [Semiring S]
     {f : List A → List B} {h : List B → S}
     (hf : IsRationalFun f) (hh : IsWeighted h) : IsWeighted (h ∘ f) := by

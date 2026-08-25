@@ -1,12 +1,10 @@
-/-
-Theorem B.3.4 of *Transducers* (M. Bojańczyk): the equivalence problem is
-decidable for rational functions.
+/- Theorem `thm:equivalence-rational-functions` of *Transducers* (M. Bojańczyk): the equivalence
+problem is decidable for rational functions.
 
-Following the book, equivalence of two rational functions is reduced to
-equivalence of two weighted automata over `ℚ` (Theorem B.3.3).  The reduction
-is the one of `RequestProject/PartB/PairWeighted.lean`: after putting the two
-codes into the letter-atomic normal form `normCode`, the product automaton
-`pairW K M N` computes, on a nonempty input `w`,
+Following the book, equivalence of two rational functions is reduced to equivalence of two weighted
+automata over `ℚ` (Theorem `thm:equivalence-weighted-automata`).  The reduction is the one of
+`RequestProject/PartB/PairWeighted.lean`: after putting the two codes into the letter-atomic normal
+form `normCode`, the product automaton `pairW K M N` computes, on a nonempty input `w`,
 
   `(number of accepting runs of M over w) * (number of accepting runs of N over w)
      * iota K (value of M on w)`,
@@ -168,8 +166,9 @@ lemma value_eq_iff {c₁ c₂ : RelCode} (h₁ : CodeFunctional c₁) (h₂ : Co
 
 /-! ## The decision procedure -/
 
-/-- The decision procedure for Theorem B.3.4, built from a decision procedure
-`D` for equivalence of weighted automata over `ℚ` (Theorem B.3.3). -/
+/-- The decision procedure for Theorem `thm:equivalence-rational-functions`, built from a decision
+procedure `D` for equivalence of weighted automata over `ℚ` (Theorem
+`thm:equivalence-weighted-automata`). -/
 def ratEqB (D : WCode × WCode → Bool) (p : RelCode × RelCode) : Bool :=
   sameAlpha p.1 p.2 && decide (epsOut p.1 = epsOut p.2) &&
     D (pairW (kBound p.1 p.2) (normCode p.1) (normCode p.2),
@@ -263,7 +262,7 @@ lemma computable_ratEqB {D : WCode × WCode → Bool} (hD : Computable D) :
 
 end RatEq
 
-/-- **Theorem B.3.4** from the effectivity hypotheses of
+/-- **Theorem `thm:equivalence-rational-functions`** from the effectivity hypotheses of
 `RequestProject/PartB/Effective.lean`: the equivalence problem `f = g` is
 decidable for rational functions. -/
 theorem rationalFun_equivalence_decidable_aux

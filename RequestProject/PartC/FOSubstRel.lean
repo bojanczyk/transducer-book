@@ -1,6 +1,6 @@
 /-
 Substitution of formulas for the label tests of a first-order formula, used for
-the implication "aperiodic ⇒ first-order definable" of Theorem C.4.11 of
+the implication "aperiodic ⇒ first-order definable" of Theorem `thm:logic-aperiodic` of
 *Transducers* (M. Bojańczyk): "it is also easy to see -- using substitution of
 formulas -- that first-order definable Mealy machines are closed under
 composition".

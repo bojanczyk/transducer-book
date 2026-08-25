@@ -1,6 +1,5 @@
-/-
-The map lifting of a rational function is rational.  This is the first step of
-the proof of the first item of Lemma C.2.10 of *Transducers* (M. Bojańczyk).
+/- The map lifting of a rational function is rational.  This is the first step of the proof of the
+first item of Lemma `lem:regular-closure-properties` of *Transducers* (M. Bojańczyk).
 
 If `f` is computed by a bimachine `M`, then `mapLift f` is computed by the
 bimachine which resets the prefix automaton of `M` at every separator, resets

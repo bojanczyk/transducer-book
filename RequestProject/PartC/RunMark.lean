@@ -2,17 +2,14 @@
 The regular languages of doubly marked strings that describe the run of a
 two-way transducer.
 
-Part of the proof of Theorem C.4.8 of *Transducers* (M. Bojańczyk).  A *target*
-is a state of the transducer together with the kind of position at which it is
-to be observed: the first mark of the doubly marked input, its second mark, or
-the right end of the input.  For a target one can ask whether the run reaches
-it, which letter it produces there, and, for two targets, which of the two is
-reached first.  All these questions are answered by the probing automaton of
-`RequestProject/PartC/RunProbe.lean`, so the corresponding languages of doubly
-marked strings are regular, and Theorem C.4.1 turns them into mso formulas
-(`RequestProject/PartC/MarkLogic.lean` and
-`RequestProject/PartC/MarkLogic2.lean`).
--/
+Part of the proof of Theorem `thm:logic-regular-functions` of *Transducers* (M. Bojańczyk).  A
+*target* is a state of the transducer together with the kind of position at which it is to be
+observed: the first mark of the doubly marked input, its second mark, or the right end of the input.
+For a target one can ask whether the run reaches it, which letter it produces there, and, for two
+targets, which of the two is reached first.  All these questions are answered by the probing
+automaton of `RequestProject/PartC/RunProbe.lean`, so the corresponding languages of doubly marked
+strings are regular, and Theorem `thm:mso-logic-languages` turns them into mso formulas
+(`RequestProject/PartC/MarkLogic.lean` and `RequestProject/PartC/MarkLogic2.lean`). -/
 import RequestProject.PartC.RunProbe
 import RequestProject.PartC.MarkStr
 

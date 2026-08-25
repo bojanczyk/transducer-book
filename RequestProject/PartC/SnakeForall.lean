@@ -11,7 +11,7 @@ because it is expressed by the mso sentence
   `∀ x₀ ∀ x₁  φ (x₀, x₁)`,
 
 where `φ` is the formula of `MarkLogic2.exists_form2_of_regular` and mso
-sentences define regular languages (Theorem C.4.1,
+sentences define regular languages (Theorem `thm:mso-logic-languages`,
 `Transducers.isRegular_of_msoDefinable`).
 
 The guards -- that the two positions are marked, that they are consecutive

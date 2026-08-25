@@ -1,9 +1,9 @@
 /-
 From aperiodic bimachines to first-order relabellings: one implication of
-Theorem C.4.16 of *Transducers* (M. Bojańczyk).
+Theorem `thm:fo-rational-functions` of *Transducers* (M. Bojańczyk).
 
 "Consider the prefix automaton, which is aperiodic.  Thanks to
-Theorem C.4.11 we can describe runs of this automaton in first-order logic. [...]
+Theorem `thm:logic-aperiodic` we can describe runs of this automaton in first-order logic. [...]
 Similarly, we can describe in first-order logic the transitions of the suffix
 automaton.  By combining these formulas, we can describe in first-order logic
 the pairs (transition of the prefix automaton, transition of the suffix
@@ -12,7 +12,7 @@ compute the corresponding parts of the output string."
 
 The formula attached to a position `x` says: the prefix strictly before `x`
 takes the prefix automaton to the state `q` (a sentence given by
-Theorem C.4.11, relativised to the positions `< x`), the letter at `x` is `a`,
+Theorem `thm:logic-aperiodic`, relativised to the positions `< x`), the letter at `x` is `a`,
 the suffix strictly after `x` takes the suffix automaton to the state `s` (a
 sentence for the *reverse* of a language recognised by an aperiodic automaton,
 which is first-order definable by `Transducers.FODefinable.reverse`, relativised
@@ -218,7 +218,7 @@ lemma flatten_gaps (M : Bimachine A B P S) (w : List A) (m : ℕ) (hm : w.length
 
 end FOBimachRelab
 
-/-- **One implication of Theorem C.4.16.**  A function computed by an aperiodic
+/-- **One implication of Theorem `thm:fo-rational-functions`.**  A function computed by an aperiodic
 bimachine is a first-order relabelling. -/
 theorem isFORelabelling_of_isAperiodicBimachine {A B : Type} [Finite A] {f : List A → List B}
     (h : IsAperiodicBimachine f) : IsFORelabelling f := by

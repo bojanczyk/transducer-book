@@ -5,14 +5,12 @@ a state of the transducer and a side (left or right of that letter, which
 selects a cut of the input); the marked inputs for which the run visits the
 selected cut in the selected state form a regular language.
 
-This is the step of the proof of Theorem C.2.5 of *Transducers*
-(M. Bojańczyk) that replaces the analysis of the reachable configuration graph
-of Lemma C.2.3: instead of describing the reachable configuration graph by hand,
-we obtain the information needed to walk backwards along the run from a
-deterministic automaton, using Shepherdson's Theorem (`TwoDFA.accepts_isRegular`)
-for the two-way automaton that simulates the transducer and accepts as soon as
-the run reaches the marked cut in the marked state.
--/
+This is the step of the proof of Theorem `thm:composition-of-two-way-transducers` of *Transducers*
+(M. Bojańczyk) that replaces the analysis of the reachable configuration graph of Lemma
+`lem:compute-configuration-graph`: instead of describing the reachable configuration graph by hand,
+we obtain the information needed to walk backwards along the run from a deterministic automaton,
+using Shepherdson's Theorem (`TwoDFA.accepts_isRegular`) for the two-way automaton that simulates
+the transducer and accepts as soon as the run reaches the marked cut in the marked state. -/
 import RequestProject.PartC.TwoWayRun
 
 namespace Transducers

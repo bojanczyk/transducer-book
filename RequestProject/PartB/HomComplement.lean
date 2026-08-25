@@ -1,6 +1,5 @@
-/-
-Claim B.1.7: the complement of the graph of a string homomorphism is a rational
-relation.
+/- Claim `nolabel:claim-complement-of-homomorphism`: the complement of the graph of a string
+homomorphism is a rational relation.
 
 The automaton has four states:
 
@@ -314,8 +313,8 @@ lemma aut_sound (w : List A) (v : List B) (h : (aut φ).rel w v) : v ≠ homOf �
 
 end HomCompl
 
-/-- **Claim B.1.7.**  If `h : A* → B*` is a homomorphism, then its complement
-`{(w, v) | v ≠ h w}` is a rational relation. -/
+/-- **Claim `nolabel:claim-complement-of-homomorphism`.**  If `h : A* → B*` is a homomorphism, then
+its complement `{(w, v) | v ≠ h w}` is a rational relation. -/
 theorem hom_complement_rational_aux {A B : Type} [Finite A] [Finite B] (φ : A → List B) :
     IsRationalRel (fun (w : List A) (v : List B) => v ≠ homOf φ w) :=
   ⟨Fin 4, inferInstance, HomCompl.aut φ,

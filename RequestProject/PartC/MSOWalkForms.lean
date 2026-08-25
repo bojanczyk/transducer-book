@@ -1,6 +1,5 @@
-/-
-The mso formulas that the walking transducer of the hard half of Theorem C.4.8
-asks about.
+/- The mso formulas that the walking transducer of the hard half of Theorem
+`thm:logic-regular-functions` asks about.
 
 For a normalised mso transduction (`NormT`, see
 `RequestProject/PartC/MSONorm.lean`) the walking transducer needs to know, of a

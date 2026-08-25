@@ -1,11 +1,10 @@
-/-
-Pre-composition of two-way transducers with rational functions (Corollary C.2.7
-of *Transducers*, M. Bojańczyk).
+/- Pre-composition of two-way transducers with rational functions (Corollary
+`cor:2dfa-closure-under-composition` of *Transducers*, M. Bojańczyk).
 
-By Theorem B.2.6 a rational function is a composition of prime rational
+By Theorem `thm:rational-primes` a rational function is a composition of prime rational
 functions: prime Mealy machines, their right-to-left variants, homomorphisms,
 and the function `w ↦ w#` appending a fresh separator.  Pre-composition with a
-prime Mealy machine is Lemma C.2.6, and reversal transports it to the
+prime Mealy machine is Lemma `lem:2dfa-precomposition-with-mealy`, and reversal transports it to the
 right-to-left variant.  An arbitrary homomorphism is the composition of a
 homomorphism whose blocks all have the same length (`TwoWayBlock.lean`), the
 blocks being padded with a fresh letter, and of the erasing homomorphism that
@@ -120,8 +119,8 @@ lemma isTwoWay_comp_compClosureRat {A B : Type} {f : List A → List B}
       have h1 := ih₁ hA hB h2
       simpa [Function.comp_assoc] using h1
 
-/-- **Corollary C.2.7.**  Two-way transducers are closed under pre-composition
-with rational functions. -/
+/-- **Corollary `cor:2dfa-closure-under-composition`.**  Two-way transducers are closed under
+pre-composition with rational functions. -/
 theorem isTwoWay_comp_rational {A B : Type} [Finite A] [Finite B] {f : List A → List B}
     (hf : IsRationalFun f) {C : Type} {g : List B → List C} (hg : IsTwoWay g) :
     IsTwoWay (g ∘ f) :=

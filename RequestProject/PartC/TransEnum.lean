@@ -5,7 +5,7 @@ The output of an mso transduction, read as an ordered enumeration.
 enumerates, without repetitions and in the order given by the order formulas,
 the elements selected by the universe formulas, and that `v` is the
 corresponding sequence of letters.  Together with the requirements of
-Definition C.4.7 (`ITrans.Proper`) this makes `q ↦ es[q]` an *isomorphism*
+Definition `def:mso-transduction` (`ITrans.Proper`) this makes `q ↦ es[q]` an *isomorphism*
 between the positions of `v` and the selected elements ordered by the order
 formulas.  This file records that fact in the form in which the backwards
 translation of `RequestProject/PartC/FOTransTr.lean` uses it:

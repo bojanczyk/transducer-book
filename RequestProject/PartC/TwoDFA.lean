@@ -1,7 +1,7 @@
 /-
 Deterministic two-way automata and the fact that they recognise only regular
 languages (Shepherdson's Theorem).  This is the combinatorial core of the proof
-that two-way transducers compute continuous functions (Theorem C.2.2 of
+that two-way transducers compute continuous functions (Theorem `thm:continuity-2dfas` of
 *Transducers*, M. Bojańczyk): running a deterministic automaton on the output
 of a two-way transducer turns the transducer into a two-way automaton.
 

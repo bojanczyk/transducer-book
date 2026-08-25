@@ -1,6 +1,5 @@
-/-
-The book's snake lemma ("the output of a snake graph is regular") and the
-reduction of the hard half of Theorem C.2.9 (`two-way ⊆ regular`) to it.
+/- The book's snake lemma ("the output of a snake graph is regular") and the reduction of the hard
+half of Theorem `thm:2dfa-decomposition-into-primes` (`two-way ⊆ regular`) to it.
 
 The lemma is proved in the book by induction on the width `k` of the snake.
 The two base cases, `k = 0` and `k = 1`, are proved in
@@ -8,8 +7,8 @@ The two base cases, `k = 0` and `k = 1`, are proved in
 `k + 2`, is `boundedWidth_isRegular_step`, which is proved here.  Everything
 that the book's proof of the induction step rests on is available:
 
-* the closure properties of regular functions, Lemma C.2.10
-  (`Transducers.regular_closure_properties`) and Claim C.2.11
+* the closure properties of regular functions, Lemma `lem:regular-closure-properties`
+  (`Transducers.regular_closure_properties`) and Claim `claim:conditional`
   (`Transducers.sum_of_regular`), are proved in
   `RequestProject/PartC/RegClosure.lean` and `RequestProject/PartC/RegSum.lean`;
 * the combinatorics of the induction step -- the decomposition of a run of
@@ -71,7 +70,7 @@ statement `TwoWay.exists_regular_snakeLang` in
 `RequestProject/PartC/SnakeStage1.lean`, which asks for a regular language of
 correctly annotated inputs containing an annotation of every input; guessing an
 annotation and checking it (`Transducers.isRationalRel_of_regular_nivat`) and
-uniformisation (`Transducers.exists_rationalFun_of_total_rel`, Lemma B.2.5) then
+uniformisation (`Transducers.exists_rationalFun_of_total_rel`, Lemma `lem:uniformisation`) then
 produce the regular marking function that the step below uses.
 -/
 import RequestProject.PartC.SnakeBase
@@ -96,12 +95,11 @@ open TwoWay in
 width at most `k + 1` is regular,
 then so is the output of every snake of width at most `k + 2`.
 
-The book's proof splits a run of width at most `k + 2` into the loop parts and
-the progress parts of its record-breaking columns, all of which have width at
-most `k + 1` (`TwoWay.run_splitsInto_pred`), computes the outputs of the parts
-by the induction hypothesis `ih`, and glues them with the three closure
-properties of Lemma C.2.10 -- the last gluing step, the map combinator applied
-to the blocks `wᵢ₋₁ # wᵢ` cut out by the record-breakers, is available as
+The book's proof splits a run of width at most `k + 2` into the loop parts and the progress parts of
+its record-breaking columns, all of which have width at most `k + 1` (`TwoWay.run_splitsInto_pred`),
+computes the outputs of the parts by the induction hypothesis `ih`, and glues them with the three
+closure properties of Lemma `lem:regular-closure-properties` -- the last gluing step, the map
+combinator applied to the blocks `wᵢ₋₁ # wᵢ` cut out by the record-breakers, is available as
 `Transducers.RegPair.isRegularFun_pairMap`. -/
 theorem boundedWidth_isRegular_step (k : ℕ) (ih : SnakeReg (k + 1)) : SnakeReg (k + 2) := by
   classical
@@ -146,11 +144,10 @@ theorem boundedWidth_isRegular_step (k : ℕ) (ih : SnakeReg (k + 1)) : SnakeReg
     exact (widthOut_eq_pairMap M (k + 2) hann hw).symm
 
 open TwoWay in
-/-- **The snake lemma** (the book's Lemma "the output of a snake graph is
-regular", the main ingredient of the hard half of Theorem C.2.9).  For every
-two-way transducer `M` and every bound `k`, the function that outputs the run of
-`M` on the inputs whose run has width at most `k`, and the empty string on all
-other inputs, is regular.
+/-- **The snake lemma** (the book's Lemma "the output of a snake graph is regular", the main
+ingredient of the hard half of Theorem `thm:2dfa-decomposition-into-primes`).  For every two-way
+transducer `M` and every bound `k`, the function that outputs the run of `M` on the inputs whose run
+has width at most `k`, and the empty string on all other inputs, is regular.
 
 The base cases `k = 0` and `k = 1` are proved in
 `RequestProject/PartC/SnakeBase.lean`; the induction step is

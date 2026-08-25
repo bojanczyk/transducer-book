@@ -1,17 +1,16 @@
 /-
-Basic API for streaming string transducers (Section C.3 of *Transducers*,
+Basic API for streaming string transducers (Section *Streaming string transducers* of *Transducers*,
 M. Bojańczyk).
 
 This file collects the elementary facts about the semantics of an sst that all
-the constructions of Section C.3 use:
+the constructions of Section *Streaming string transducers* use:
 
 * the substitution `SST.subst` of register contents into a string over `X + B`,
   and its compatibility with concatenation;
 * a workable criterion for the copyless restriction (`Transducers.copyless_iff`);
-* the *simulation lemma* `Transducers.SST.eval_of_sim`, which is how every
-  construction in the proof of Theorem C.3.2 is verified: to see that a new sst
-  computes `p ∘ T.eval` it suffices to exhibit an invariant relating the
-  configurations of the two machines.
+* the *simulation lemma* `Transducers.SST.eval_of_sim`, which is how every construction in the proof
+  of Theorem `theorem:sst-two-way-equivalence` is verified: to see that a new sst computes `p ∘
+  T.eval` it suffices to exhibit an invariant relating the configurations of the two machines.
 -/
 import RequestProject.PartC.SSTDef
 

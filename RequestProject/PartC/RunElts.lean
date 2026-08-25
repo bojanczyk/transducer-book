@@ -1,17 +1,14 @@
 /-
 The output positions of the mso transduction built from a two-way transducer.
 
-Part of the proof of Theorem C.4.8 of *Transducers* (M. Bojańczyk).  The output
-of a two-way transducer is the concatenation of the strings produced by the
-successive steps of its run, so its positions are indexed by pairs `(t, i)`
-where `t` is a step of the run and `i` a position inside the string produced at
-that step.  The elements of the mso transduction are (state, index) copies of
-the input positions, and this file contains the purely combinatorial half of the
-correspondence: given an abstract type `E` of elements equipped with the state,
-the position, the index and the semantic predicates of the transduction, it
-produces the list of elements required by `MSOTransduction.Outputs` and checks
-the requirements of Definition C.4.7.
--/
+Part of the proof of Theorem `thm:logic-regular-functions` of *Transducers* (M. Bojańczyk).  The
+output of a two-way transducer is the concatenation of the strings produced by the successive steps
+of its run, so its positions are indexed by pairs `(t, i)` where `t` is a step of the run and `i` a
+position inside the string produced at that step.  The elements of the mso transduction are (state,
+index) copies of the input positions, and this file contains the purely combinatorial half of the
+correspondence: given an abstract type `E` of elements equipped with the state, the position, the
+index and the semantic predicates of the transduction, it produces the list of elements required by
+`MSOTransduction.Outputs` and checks the requirements of Definition `def:mso-transduction`. -/
 import RequestProject.PartC.RunProbe
 import RequestProject.PartC.FlatIndex
 
@@ -233,7 +230,7 @@ theorem exists_elts (hs : Spec M w st pos ix mk sel ord lab) :
   ⟨elts M w T mk, nodup_elts hT hs, mem_elts_iff hT hs,
     ord_elts hT hs, length_elts hT, lab_elts hT hs⟩
 
-/-- **The requirements of Definition C.4.7.** -/
+/-- **The requirements of Definition `def:mso-transduction`.** -/
 theorem proper_props (hs : Spec M w st pos ix mk sel ord lab) :
     (∀ e, sel e → ∃! b, lab e b) ∧
     (∀ e, sel e → ord e e) ∧

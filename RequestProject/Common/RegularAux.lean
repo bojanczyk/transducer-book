@@ -4,7 +4,7 @@ Auxiliary facts about regular languages that are used in Part B.
 Mathlib provides regularity of finite unions, intersections and complements,
 together with the Myhill-Nerode theorem, but not the closure properties that we
 need for the automata constructions of Part B.  The facts collected here are the
-ones used in the characterisation theorems of Section B.4.
+ones used in the characterisation theorems of Section *Machine independent characterisations*.
 -/
 import RequestProject.Common.Basic
 

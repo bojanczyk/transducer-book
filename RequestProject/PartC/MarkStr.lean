@@ -1,6 +1,5 @@
-/-
-Marked strings, used in the proofs of Theorem C.4.4 and Lemma C.4.10 of
-*Transducers* (M. Bojańczyk).
+/- Marked strings, used in the proofs of Theorem `thm:logic-rational-functions` and Lemma
+`lem:logic-precomputation` of *Transducers* (M. Bojańczyk).
 
 Both results relate mso formulas with one or two free first-order variables to
 automata.  The bridge between the two is the *doubly marked* alphabet
@@ -9,12 +8,12 @@ encoded by the string `markAt2 w x y`, in which the first Boolean marks the
 position `x` and the second one the position `y`.  A formula `φ` with free
 variables among `x₀` (interpreted as `x`) and the remaining ones (interpreted as
 `y`) then corresponds to the language `markedSat2 φ` of doubly marked strings,
-which is regular by Lemma C.4.2.
+which is regular by Lemma `nolabel:lem-mso-to-automaton`.
 
 The file also contains the decomposition of a doubly marked string into the
 part before `x`, the infix `[x..y]` and the part after `y`, which is what turns
 the evaluation of an automaton on `markAt2 w x y` into the composition of three
-state transformations, as in the proof of Lemma C.4.10 in the book.
+state transformations, as in the proof of Lemma `lem:logic-precomputation` in the book.
 -/
 import RequestProject.PartC.MSOAnnot
 

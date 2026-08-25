@@ -1,13 +1,11 @@
 /-
 Walking backwards along the run of a two-way transducer.
 
-This is the step of the proof of Theorem C.2.5 of *Transducers* (M. Bojańczyk)
-that makes it possible for the composed transducer to move the head of the
-second transducer to the left: from the annotation of the two letters adjacent
-to a cut one can read off which configurations of the first transducer lie on
-the run at the two neighbouring cuts, and a configuration on the run has a
-unique predecessor on the run (`TwoWay.pred_unique`).
--/
+This is the step of the proof of Theorem `thm:composition-of-two-way-transducers` of *Transducers*
+(M. Bojańczyk) that makes it possible for the composed transducer to move the head of the second
+transducer to the left: from the annotation of the two letters adjacent to a cut one can read off
+which configurations of the first transducer lie on the run at the two neighbouring cuts, and a
+configuration on the run has a unique predecessor on the run (`TwoWay.pred_unique`). -/
 import RequestProject.PartC.TwoWayCompAux
 
 namespace Transducers

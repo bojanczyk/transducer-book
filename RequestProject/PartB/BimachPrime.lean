@@ -1,6 +1,6 @@
 /-
 From bimachines to compositions of prime rational functions (the hard
-implication of Theorem B.2.6).
+implication of Theorem `thm:rational-primes`).
 
 A bimachine is decomposed into four steps:
 
@@ -14,7 +14,7 @@ A bimachine is decomposed into four steps:
    bimachine at the corresponding gap.
 
 The two Mealy machines are compositions of prime Mealy machines by the
-Krohn-Rhodes Theorem (Theorem A.2.2), and reversal turns a decomposition of a
+Krohn-Rhodes Theorem (Theorem `nolabel:thm-krohn-rhodes`), and reversal turns a decomposition of a
 Mealy machine into a decomposition of its right-to-left variant.
 -/
 import RequestProject.PartA.Statements

@@ -2,7 +2,7 @@
 Renaming of variables and first-order formulas.
 
 Auxiliary syntactic lemmas about `MSO.rename` and `MSO.shiftUp` of
-`RequestProject/PartC/MSOSubst.lean`, used in Section C.4.4: renaming preserves
+`RequestProject/PartC/MSOSubst.lean`, used in Section *The first-order fragment*: renaming preserves
 first-orderness and the quantifier rank, it acts on the variables of a formula
 in the obvious way, and it does not change the meaning of a first-order
 sentence.  Shifting a sentence up is the standard way of making a variable

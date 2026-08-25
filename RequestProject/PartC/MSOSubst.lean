@@ -2,7 +2,7 @@
 A small hygiene toolkit for the mso formulas of `RequestProject/PartC/MSODef.lean`.
 
 The semantics of `MSO.Sat` evaluates a formula in a valuation of *all* variables,
-and the formulas of an mso transduction (Definition C.4.7) are used with the two
+and the formulas of an mso transduction (Definition `def:mso-transduction`) are used with the two
 special valuations
 
   `fun _ => x`                          (one free variable)

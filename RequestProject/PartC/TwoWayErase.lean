@@ -1,7 +1,7 @@
 /-
 Pre-composition of two-way transducers with an *erasing* homomorphism, i.e. one
 that maps every letter either to a single letter or to the empty word (part of
-the proof of Corollary C.2.7 of *Transducers*, M. Bojańczyk).  Such a
+the proof of Corollary `cor:2dfa-closure-under-composition` of *Transducers*, M. Bojańczyk).  Such a
 homomorphism is the same thing as `List.filterMap e` for a partial map
 `e : A → Option B` on the letters.
 

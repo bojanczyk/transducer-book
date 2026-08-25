@@ -1,7 +1,6 @@
-/-
-Lemma C.4.2 of *Transducers* (M. Bojańczyk): for a monadic second-order formula
-whose free variables are among `x₁, …, x_k, X₁, …, X_l`, the set of annotated
-strings that satisfy it is a regular language over the alphabet `A × 2^{k+l}`.
+/- Lemma `nolabel:lem-mso-to-automaton` of *Transducers* (M. Bojańczyk): for a monadic second-order
+formula whose free variables are among `x₁, …, x_k, X₁, …, X_l`, the set of annotated strings that
+satisfy it is a regular language over the alphabet `A × 2^{k+l}`.
 
 The proof is the translation of a formula into an automaton, by induction on the
 syntax of the formula.  An annotated string over `A × 2^{k+l}` is *valid* if
@@ -11,12 +10,10 @@ variables (`foOf`, `soOf`), so that the language
 
   `AnnLang A k l φ = {u | u is valid and w, foOf u, soOf u satisfy φ}`
 
-is the language of Lemma C.4.2 (see `annLang_eq`).  The atomic formulas give
-languages recognised by the scanning automata of
-`RequestProject/PartC/RegAut.lean`; negation, conjunction and disjunction use
-the Boolean closure properties; and a quantifier is a projection, i.e. the image
-of a language under a letter-to-letter map, which is where nondeterminism
-enters.
+is the language of Lemma `nolabel:lem-mso-to-automaton` (see `annLang_eq`).  The atomic formulas
+give languages recognised by the scanning automata of `RequestProject/PartC/RegAut.lean`; negation,
+conjunction and disjunction use the Boolean closure properties; and a quantifier is a projection,
+i.e. the image of a language under a letter-to-letter map, which is where nondeterminism enters.
 
 For a quantifier `∃ x_i` the variable `i` need not be one of `0, …, k-1`, so the
 induction hypothesis is applied with `k' = max k (i+1)` variables: the annotated
@@ -118,8 +115,8 @@ lemma isRegular_valid (A : Type) (k l : ℕ) :
 /-! ## The induction on the formula -/
 
 open scoped Classical in
-/-- **Lemma C.4.2**, in terms of the language `AnnLang`: the valid annotated
-strings satisfying `φ` form a regular language. -/
+/-- **Lemma `nolabel:lem-mso-to-automaton`**, in terms of the language `AnnLang`: the valid
+annotated strings satisfying `φ` form a regular language. -/
 theorem isRegular_annLang (φ : MSO A) : ∀ (k l : ℕ),
     φ.freeFO ⊆ {i | i < k} → φ.freeSO ⊆ {j | j < l} →
     Language.IsRegular (AnnLang A k l φ) := by
@@ -499,10 +496,10 @@ theorem isRegular_annLang (φ : MSO A) : ∀ (k l : ℕ),
           hagree).1 hsu
         rwa [hfst] at hs
 
-/-! ## The language of Lemma C.4.2
+/-! ## The language of Lemma `nolabel:lem-mso-to-automaton`
 
 `AnnLang A k l φ` is exactly the language of annotated strings that appears in
-the statement of Lemma C.4.2. -/
+the statement of Lemma `nolabel:lem-mso-to-automaton`. -/
 
 @[simp] lemma annotate_length (k l : ℕ) (w : List A) (fo : Fin k → ℕ) (so : Fin l → Set ℕ) :
     (annotate k l w fo so).length = w.length := by
@@ -576,9 +573,8 @@ lemma soOf_annotate {k l : ℕ} {w : List A} {fo : Fin k → ℕ} {so : Fin l �
   · rw [soOf_of_not_lt _ hm, extSO, dif_neg hm]
 
 open scoped Classical in
-/-- The language `AnnLang A k l φ` is the language of Lemma C.4.2: the annotated
-strings `w ⊗ x₁ ⊗ ⋯ ⊗ x_k ⊗ X₁ ⊗ ⋯ ⊗ X_l` such that the valuation satisfies
-`φ` in `w`. -/
+/-- The language `AnnLang A k l φ` is the language of Lemma `nolabel:lem-mso-to-automaton`: the
+annotated strings `w ⊗ x₁ ⊗ ⋯ ⊗ x_k ⊗ X₁ ⊗ ⋯ ⊗ X_l` such that the valuation satisfies `φ` in `w`. -/
 lemma annLang_eq (φ : MSO A) (k l : ℕ) :
     AnnLang A k l φ =
       {u : List (Ann A k l) |
@@ -652,7 +648,7 @@ lemma annLang_eq (φ : MSO A) (k l : ℕ) :
     exact hsat
 
 open scoped Classical in
-/-- **Lemma C.4.2** in the form in which it is stated in
+/-- **Lemma `nolabel:lem-mso-to-automaton`** in the form in which it is stated in
 `RequestProject/PartC/MSO.lean`. -/
 theorem mso_annotated_regular_aux (φ : MSO A) (k l : ℕ)
     (hfo : φ.freeFO ⊆ {i | i < k}) (hso : φ.freeSO ⊆ {j | j < l}) :

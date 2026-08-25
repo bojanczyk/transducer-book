@@ -5,9 +5,9 @@ variables at one position `p` of a string `w`, holds depends only on the
 `k`-type of the prefix before `p`, the letter at `p` and the `k`-type of the
 suffix after `p`.
 
-This is the instance of Claim C.4.14 (`Transducers.sat_iff_of_kEquiv` in
+This is the instance of Claim `nolabel:claim-fo-type-of-a-tuple` (`Transducers.sat_iff_of_kEquiv` in
 `RequestProject/PartC/FOComp.lean`) that is used in the proof of
-Theorem C.4.16 of *Transducers* (M. Bojańczyk): "the output produced by the
+Theorem `thm:fo-rational-functions` of *Transducers* (M. Bojańczyk): "the output produced by the
 first-order relabelling on the `i`-th position depends [...] only on the
 `k`-type of the prefix `a₁ ⋯ a_{i-1}`, the letter `a_i` and the `k`-type of the
 suffix `a_{i+1} ⋯ a_n`".

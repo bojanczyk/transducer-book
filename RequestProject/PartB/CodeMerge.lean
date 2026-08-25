@@ -527,9 +527,9 @@ lemma normCode_complete (c : RelCode) {w v : List ℕ} (h : codeRel c w v) (hw :
 
 /-! ## Computability of the normal form
 
-The normal form must be computable for the reduction of Theorem B.3.4 to
-Theorem B.3.3 to be effective.  All the ingredients are manifestly primitive
-recursive; the proofs below are the usual combinator plumbing. -/
+The normal form must be computable for the reduction of Theorem `thm:equivalence-rational-functions`
+to Theorem `thm:equivalence-weighted-automata` to be effective.  All the ingredients are manifestly
+primitive recursive; the proofs below are the usual combinator plumbing. -/
 
 lemma filter_eq_filterMap {α : Type} (p : α → Bool) (l : List α) :
     l.filter p = l.filterMap (fun x => bif p x then some x else none) := by

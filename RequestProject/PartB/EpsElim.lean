@@ -1,5 +1,5 @@
 /-
-Elimination of ε-transitions (Lemma B.2.4).
+Elimination of ε-transitions (Lemma `lemma:eliminate-epsilon-transitions`).
 
 Let `M` be an nfa with output in the atomic normal form of
 `RequestProject/PartB/Atomize.lean`.  The automaton with extended transitions that
@@ -503,11 +503,11 @@ lemma nAut_rel (hatom : ∀ t ∈ M.δ, t.2.1.length ≤ 1 ∧ t.2.2.1.length �
 
 end EpsElim
 
-/-- **Lemma B.2.4 (Elimination of ε-transitions).**  Every rational relation is
-computed by an nfa with output and extended transitions in which every accepting
-run reads exactly one letter per transition (or consists of a single transition,
-if the input is empty).  If moreover every input string has finitely many
-outputs, then extended transitions are not needed. -/
+/-- **Lemma `lemma:eliminate-epsilon-transitions` (Elimination of ε-transitions).**  Every rational
+relation is computed by an nfa with output and extended transitions in which every accepting run
+reads exactly one letter per transition (or consists of a single transition, if the input is empty).
+If moreover every input string has finitely many outputs, then extended transitions are not needed.
+-/
 theorem epsilon_elimination_aux {A B : Type} [Finite A] [Finite B]
     {R : List A → List B → Prop} (hR : IsRationalRel R) :
     (∃ (Q : Type) (_ : Finite Q) (N : LabAut A (Language B) Q),

@@ -1,6 +1,6 @@
-/-
-Mealy machines: definitions (Definitions A.1.1 and A.2.1) and their basic
-properties, from *Transducers* (M. Bojańczyk, June 25, 2026).
+/- Mealy machines: definitions (Definitions `def:mealy-machine` and
+`nolabel:def-prime-mealy-machines`) and their basic properties, from *Transducers* (M. Bojańczyk,
+June 25, 2026).
 
 This file collects the definitions of Part A that are used throughout the book,
 together with elementary lemmas about runs, state transformations and the
@@ -10,7 +10,7 @@ import RequestProject.Common.Basic
 
 namespace Transducers
 
-/-- **Definition A.1.1 (Mealy machine).**  A Mealy machine consists of an input
+/-- **Definition `def:mealy-machine` (Mealy machine).**  A Mealy machine consists of an input
 alphabet `A`, an output alphabet `B`, a state space `Q`, an initial state and a
 transition function `Q × A → Q × B`. -/
 structure Mealy (A B Q : Type) where
@@ -41,17 +41,17 @@ def transFun (M : Mealy A B Q) : Q → A → Q := fun q a => (M.step q a).1
 /-- The state transformation of an input string. -/
 def trans (M : Mealy A B Q) (w : List A) : Q → Q := strTrans M.transFun w
 
-/-- **Definition A.2.1 (Reversible machine).**  All state transformations of all
-letters are permutations. -/
+/-- **Definition `nolabel:def-prime-mealy-machines` (Reversible machine).**  All state
+transformations of all letters are permutations. -/
 def Reversible (M : Mealy A B Q) : Prop := ∀ a : A, Function.Bijective (M.letterTrans a)
 
-/-- **Definition A.2.1 (Flip-flop machine).**  The state transformation of each
-letter is either the identity or a constant. -/
+/-- **Definition `nolabel:def-prime-mealy-machines` (Flip-flop machine).**  The state transformation
+of each letter is either the identity or a constant. -/
 def FlipFlop (M : Mealy A B Q) : Prop :=
   ∀ a : A, M.letterTrans a = id ∨ ∃ q₀ : Q, ∀ q : Q, M.letterTrans a q = q₀
 
-/-- Condition (*) of Lemma A.2.11: for every state transformation `δ` arising
-from an input string, the sequence `δ¹, δ², …` eventually stabilises. -/
+/-- Condition (*) of Lemma `lem:aperiodicity-minimal-machine`: for every state transformation `δ`
+arising from an input string, the sequence `δ¹, δ², …` eventually stabilises. -/
 def TransStabilises (M : Mealy A B Q) : Prop := TransAperiodic M.transFun
 
 /-! ### Elementary lemmas about runs and state transformations -/
@@ -100,7 +100,7 @@ lemma eval_prefix (M : Mealy A B Q) {u v : List A} (h : u <+: v) : M.eval u <+: 
 /-! ### The product (composition) construction -/
 
 /-- The product of two Mealy machines: it runs `M`, and feeds its output letters
-to `N`.  This is the construction used in Theorem A.1.3. -/
+to `N`.  This is the construction used in Theorem `thm:composition-mealy`. -/
 def compose (M : Mealy A B Q) (N : Mealy B C P) : Mealy A C (Q × P) where
   init := (M.init, N.init)
   step := fun qp a =>
@@ -167,8 +167,8 @@ def IsReversibleMealy {A B : Type} (f : List A → List B) : Prop :=
 def IsFlipFlopMealy {A B : Type} (f : List A → List B) : Prop :=
   ∃ (Q : Type) (_ : Finite Q) (M : Mealy A B Q), M.eval = f ∧ M.FlipFlop
 
-/-- The family of **prime Mealy machines** (Definition A.2.1): reversible or
-flip-flop. -/
+/-- The family of **prime Mealy machines** (Definition `nolabel:def-prime-mealy-machines`):
+reversible or flip-flop. -/
 def PrimeMealyFam : ∀ (A B : Type), (List A → List B) → Prop :=
   fun _ _ f => IsReversibleMealy f ∨ IsFlipFlopMealy f
 

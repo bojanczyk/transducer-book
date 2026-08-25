@@ -2,7 +2,7 @@
 Weighted automata are closed under pre-composition with map lifting of the
 prime block functions, i.e. with map reverse and map duplicate.
 
-This is the construction of the proof of Theorem C.1.4 in the book
+This is the construction of the proof of Theorem `thm:decidable-equivalence-regular` in the book
 (*Transducers*, M. Bojańczyk): equivalence of regular functions is decided by a
 reduction to zeroness of weighted automata over the rationals, and the reduction
 needs that the class of functions that can be post-composed with weighted

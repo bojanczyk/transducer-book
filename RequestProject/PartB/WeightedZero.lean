@@ -1,10 +1,9 @@
-/-
-The zeroness criterion for weighted automata over a field (the mathematical
-content of Theorems B.3.3 and B.3.7 of *Transducers*).
+/- The zeroness criterion for weighted automata over a field (the mathematical content of Theorems
+`thm:equivalence-weighted-automata` and `thm:zeroness-weighted-automata` of *Transducers*).
 
-A weighted automaton over a field is described by a linear representation
-(Lemma B.3.5, `exists_linRep`): a finite set of states `Q`, an initial set `I`,
-a matrix `m a` for every letter and a final vector `bta`, with
+A weighted automaton over a field is described by a linear representation (Lemma
+`lem:closure-weighted-automata-precomposition`, `exists_linRep`): a finite set of states `Q`, an
+initial set `I`, a matrix `m a` for every letter and a final vector `bta`, with
 
   `h v = ∑_{q ∈ I} ∑_{q'} (m v₁ ⋯ m v_k) q q' * bta q'`.
 
@@ -14,10 +13,9 @@ subspaces spanned by the row vectors `u₀ · m v` for `|v| ≤ k` form an incre
 chain, which must stabilise after at most `|Q|` steps, and the final vector
 annihilates the stabilised subspace.
 
-This is the key step of the decision procedures of Theorems B.3.3 and B.3.7
-(the decidability statements themselves, which require the computability of the
-resulting algorithm, are still open in this development).
--/
+This is the key step of the decision procedures of Theorems `thm:equivalence-weighted-automata` and
+`thm:zeroness-weighted-automata` (the decidability statements themselves, which require the
+computability of the resulting algorithm, are still open in this development). -/
 import RequestProject.PartB.WeightedLinRep
 
 namespace Transducers
@@ -186,7 +184,7 @@ theorem linRep_zero_of_short {B Q K : Type} [Field K] [Fintype Q] [DecidableEq Q
 /-- **The zeroness criterion for weighted automata over a field.**  For every
 function computed by a weighted automaton there is a bound `n` such that the
 function is identically zero as soon as it vanishes on all inputs of length at
-most `n`.  This is the mathematical content of Theorem B.3.7. -/
+most `n`.  This is the mathematical content of Theorem `thm:zeroness-weighted-automata`. -/
 theorem weighted_zero_of_short {B K : Type} [Field K] {h : List B → K} (hw : IsWeighted h) :
     ∃ n : ℕ, (∀ v : List B, v.length ≤ n → h v = 0) → ∀ v : List B, h v = 0 := by
   obtain ⟨Q, hQ, hQd, I, m, bta, hrep⟩ := WNF.exists_linRep hw
@@ -249,7 +247,7 @@ theorem linRep_eq_of_short {B K Q₁ Q₂ : Type} [Field K] [Fintype Q₁] [Deci
 /-- **The equivalence criterion for weighted automata over a field.**  For every
 two functions computed by weighted automata there is a bound `n` such that the
 two functions are equal as soon as they agree on all inputs of length at most
-`n`.  This is the mathematical content of Theorem B.3.3. -/
+`n`.  This is the mathematical content of Theorem `thm:equivalence-weighted-automata`. -/
 theorem weighted_eq_of_short {B K : Type} [Field K] {h₁ h₂ : List B → K}
     (hw₁ : IsWeighted h₁) (hw₂ : IsWeighted h₂) :
     ∃ n : ℕ, (∀ v : List B, v.length ≤ n → h₁ v = h₂ v) → h₁ = h₂ := by

@@ -1,5 +1,5 @@
 /-
-The prime rational functions of Theorem B.2.6 and the easy implication of that
+The prime rational functions of Theorem `thm:rational-primes` and the easy implication of that
 theorem: every composition of prime rational functions is rational.
 
 The four kinds of prime rational functions are
@@ -19,7 +19,7 @@ import RequestProject.PartB.RatComp
 
 namespace Transducers
 
-/-- The family of **prime rational functions** (Theorem B.2.6): prime Mealy
+/-- The family of **prime rational functions** (Theorem `thm:rational-primes`): prime Mealy
 machines, their right-to-left variants, string homomorphisms, and the function
 `w ↦ w#` appending a fresh separator. -/
 def PrimeRationalFam : ∀ (A B : Type), (List A → List B) → Prop := fun A B f =>

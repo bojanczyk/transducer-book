@@ -1,8 +1,7 @@
-/-
-The *walking* two-way transducer: the machine of the hard half of Theorem C.4.8
-of *Transducers* (M. Bojańczyk).
+/- The *walking* two-way transducer: the machine of the hard half of Theorem
+`thm:logic-regular-functions` of *Transducers* (M. Bojańczyk).
 
-After the precomputation of Lemma C.4.10 the input string carries, in each of
+After the precomputation of Lemma `lem:logic-precomputation` the input string carries, in each of
 its letters, the answers to all the unary questions about the mso transduction,
 and the answers to the binary questions are read off by finite automata running
 on infixes.  The two-way transducer then simply *walks* along the output order:

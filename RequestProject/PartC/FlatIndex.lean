@@ -1,15 +1,13 @@
 /-
 Indexing the flattening of a list of lists.
 
-Used in the proof of Theorem C.4.8 of *Transducers* (M. Bojańczyk): the output
-of a two-way transducer is the concatenation of the strings produced by the
-successive steps of its run, and the corresponding output positions of the mso
-transduction are indexed by pairs (step of the run, position inside the string
-produced at that step).  This file defines that list of pairs and proves the
-four facts about it that are needed: it enumerates the pairs without
-repetitions, it is sorted lexicographically, and reading the letters at those
-pairs gives back the flattened list.
--/
+Used in the proof of Theorem `thm:logic-regular-functions` of *Transducers* (M. Bojańczyk): the
+output of a two-way transducer is the concatenation of the strings produced by the successive steps
+of its run, and the corresponding output positions of the mso transduction are indexed by pairs
+(step of the run, position inside the string produced at that step).  This file defines that list of
+pairs and proves the four facts about it that are needed: it enumerates the pairs without
+repetitions, it is sorted lexicographically, and reading the letters at those pairs gives back the
+flattened list. -/
 import RequestProject.Common.Aux
 
 namespace Transducers

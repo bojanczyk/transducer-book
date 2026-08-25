@@ -1,9 +1,9 @@
 /-
 The easy cases of the closure of the streaming string transducers under
 post-composition with the prime regular functions (the "regular to sst" half of
-Theorem C.3.2 of *Transducers*, M. Bojańczyk).
+Theorem `theorem:sst-two-way-equivalence` of *Transducers*, M. Bojańczyk).
 
-The book's proof of that half of Theorem C.3.2 shows that
+The book's proof of that half of Theorem `theorem:sst-two-way-equivalence` shows that
 
   sst · primes ⊆ sst,
 

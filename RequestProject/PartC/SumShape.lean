@@ -1,5 +1,5 @@
 /-
-The marked disjoint sum of two functions, used in the proof of Claim C.2.11 of
+The marked disjoint sum of two functions, used in the proof of Claim `claim:conditional` of
 *Transducers* (M. Bojańczyk).
 
 The claim asks for a regular function on `(A₁ + A₂)*` that applies `f₁` to the
@@ -17,7 +17,7 @@ This file develops the general theory of the marked sum: the shape of a marked
 string, the specification `MSumSpec`, closure under composition, the swap of the
 two summands, the base case where both functions are the identity, the base case
 where the first function is rational, and the passage from the marked sum to the
-statement of Claim C.2.11.  The two remaining base cases, where one of the
+statement of Claim `claim:conditional`.  The two remaining base cases, where one of the
 functions is map reverse or map duplicate, are in
 `RequestProject/PartC/SumPrime.lean`.
 -/

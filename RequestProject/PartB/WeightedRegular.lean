@@ -1,6 +1,6 @@
 /-
 Weighted automata over the semiring of languages, and the hard implication of
-Theorem B.3.6.
+Theorem `thm:characterisation-rational-functions-weighted-automata`.
 
 Over the semiring of languages (with union as addition and concatenation as
 multiplication) the function `v ↦ {v}` is computed by a weighted automaton.  If
@@ -284,8 +284,8 @@ theorem rationalFun_of_isWeighted_singleton {A B : Type} [Finite A] [Finite B]
 
 end WLang
 
-/-- **Theorem B.3.6.**  A string-to-string function is rational if and only if
-weighted automata are closed under pre-composition with it. -/
+/-- **Theorem `thm:characterisation-rational-functions-weighted-automata`.**  A string-to-string
+function is rational if and only if weighted automata are closed under pre-composition with it. -/
 theorem rational_iff_weighted_precomp_aux {A B : Type} [Finite A] [Finite B]
     (f : List A → List B) :
     IsRationalFun f ↔

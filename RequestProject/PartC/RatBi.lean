@@ -1,18 +1,15 @@
 /-
 Rewritings with regular lookaround are rational functions.
 
-`RequestProject/PartC/RatSeq.lean` provides *sequential* rewritings, in which the
-block produced at a letter depends on the letter and on the state of a
-deterministic automaton on the prefix that precedes it.  Several of the rational
-functions needed for the proof of the snake lemma of Theorem C.2.9 also have to
-look at the suffix that follows the letter -- for instance "delete this letter
-if no separator occurs after it".  This file provides the corresponding builder:
-a *bilateral rewriting* `biEval`, in which the block produced at a letter
-depends on the letter, on the state of a deterministic automaton run
-left-to-right on the prefix, and on the state of a deterministic automaton run
-right-to-left on the suffix.  Such a function is computed by a bimachine
-(Definition B.2.2), and is therefore rational by Theorem B.2.3.
--/
+`RequestProject/PartC/RatSeq.lean` provides *sequential* rewritings, in which the block produced at
+a letter depends on the letter and on the state of a deterministic automaton on the prefix that
+precedes it.  Several of the rational functions needed for the proof of the snake lemma of Theorem
+`thm:2dfa-decomposition-into-primes` also have to look at the suffix that follows the letter -- for
+instance "delete this letter if no separator occurs after it".  This file provides the corresponding
+builder: a *bilateral rewriting* `biEval`, in which the block produced at a letter depends on the
+letter, on the state of a deterministic automaton run left-to-right on the prefix, and on the state
+of a deterministic automaton run right-to-left on the suffix.  Such a function is computed by a
+bimachine (Definition `def:bimachine`), and is therefore rational by Theorem `thm:bimachines`. -/
 import RequestProject.PartC.RatBuild
 
 namespace Transducers

@@ -1,7 +1,6 @@
-/-
-Every function computed by a streaming string transducer is computed by a
-two-way transducer: the "sst to regular" half of Theorem C.3.2 of *Transducers*
-(M. Bojańczyk), through Theorem C.2.9.
+/- Every function computed by a streaming string transducer is computed by a two-way transducer: the
+"sst to regular" half of Theorem `theorem:sst-two-way-equivalence` of *Transducers* (M. Bojańczyk),
+through Theorem `thm:2dfa-decomposition-into-primes`.
 
 The book's argument runs the two-way transducer over the *register flow tree* of
 the sst: the composition of all the register updates applied along the input,
@@ -11,7 +10,7 @@ perform that traversal directly on the input string, provided that it can see,
 at every position, the state of the sst before reading that position -- which is
 an annotation computed by a Mealy machine, hence a rational function, and
 two-way transducers are closed under pre-composition with rational functions
-(Corollary C.2.7).
+(Corollary `cor:2dfa-closure-under-composition`).
 
 The copyless restriction is what makes the traversal possible: when the
 traversal of the content of a register `y` at position `i-1` is finished, the
@@ -29,9 +28,9 @@ import RequestProject.PartC.SSTWalk
 
 namespace Transducers
 
-/-- **Theorem C.3.2, left-to-right implication (through Theorem C.2.9).**  Every
-function computed by a streaming string transducer is computed by a two-way
-transducer. -/
+/-- **Theorem `theorem:sst-two-way-equivalence`, left-to-right implication (through Theorem
+`thm:2dfa-decomposition-into-primes`).**  Every function computed by a streaming string transducer
+is computed by a two-way transducer. -/
 theorem isTwoWay_of_isSST {A B : Type} [Finite A] {f : List A → List B}
     (hf : IsSST f) : IsTwoWay f := by
   classical

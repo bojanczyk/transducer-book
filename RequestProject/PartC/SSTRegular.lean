@@ -1,6 +1,6 @@
 /-
 Every regular function is computed by a streaming string transducer: the
-"regular to sst" half of Theorem C.3.2 of *Transducers* (M. Bojańczyk).
+"regular to sst" half of Theorem `theorem:sst-two-way-equivalence` of *Transducers* (M. Bojańczyk).
 
 The book's argument is that sst's are closed under post-composition with each of
 the prime regular functions -- rational functions (`SSTMealy.lean`), map reverse
@@ -48,8 +48,8 @@ theorem isSST_comp_regular {B C : Type} [Finite B] [Finite C] {p : List B → Li
     IsSST (fun w => p (f w)) :=
   isSST_comp_compClosureRegular hp inferInstance inferInstance hf
 
-/-- **Theorem C.3.2, right-to-left implication.**  Every regular function is
-computed by a streaming string transducer. -/
+/-- **Theorem `theorem:sst-two-way-equivalence`, right-to-left implication.**  Every regular
+function is computed by a streaming string transducer. -/
 theorem isSST_of_isRegularFun {A B : Type} [Finite A] [Finite B] {f : List A → List B}
     (hf : IsRegularFun f) : IsSST f :=
   (isSST_comp_regular hf (isSST_id (A := A))).congr (fun _ => rfl)

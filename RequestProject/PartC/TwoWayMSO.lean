@@ -1,6 +1,5 @@
-/-
-From two-way transducers to mso transductions: the easy half of Theorem C.4.8
-of *Transducers* (M. Bojańczyk).
+/- From two-way transducers to mso transductions: the easy half of Theorem
+`thm:logic-regular-functions` of *Transducers* (M. Bojańczyk).
 
 As in the book, the mso transduction simply formalises the semantics of the
 two-way transducer: the elements of the output universe are the pairs
@@ -16,7 +15,7 @@ order is the order of time.
 
 All the formulas are obtained from `RequestProject/PartC/RunMark.lean`, where
 the corresponding properties of the marked input string are shown to be regular,
-through Theorem C.4.1 in the form of
+through Theorem `thm:mso-logic-languages` in the form of
 `RequestProject/PartC/MarkLogic.lean` (one free variable) and
 `RequestProject/PartC/MarkLogic2.lean` (two free variables).  The combinatorics
 of the output list is in `RequestProject/PartC/RunElts.lean`.
@@ -505,8 +504,8 @@ end Spec
 
 variable [Finite A] [Finite Q]
 
-/-- **The easy half of Theorem C.4.8.**  Every function computed by a two-way
-transducer is defined by an mso transduction. -/
+/-- **The easy half of Theorem `thm:logic-regular-functions`.**  Every function computed by a
+two-way transducer is defined by an mso transduction. -/
 theorem isMSOTransduction_of_isTwoWay {f : List A → List B} (hf : IsTwoWay f) :
     IsMSOTransduction f := by
   classical

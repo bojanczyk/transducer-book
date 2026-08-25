@@ -1,5 +1,5 @@
 /-
-The machine independent characterisation of Mealy machines (Theorem B.4.1)
+The machine independent characterisation of Mealy machines (Theorem `thm:mealy-machine-independent`)
 from *Transducers* (M. Bojanczyk).
 
 A function is computed by a Mealy machine if and only if it is continuous,
@@ -188,8 +188,8 @@ lemma isMealy_of_isEmpty_output [IsEmpty B] {f : List A → List B}
       · exact isEmptyElim b
     · exact isEmptyElim a⟩
 
-/-- **Theorem B.4.1.**  A function is computed by a Mealy machine if and only if
-it is continuous, prefix preserving and length preserving. -/
+/-- **Theorem `thm:mealy-machine-independent`.**  A function is computed by a Mealy machine if and
+only if it is continuous, prefix preserving and length preserving. -/
 theorem isMealy_iff_aux [Finite A] [Finite B] (f : List A → List B) :
     IsMealy f ↔ (Continuous f ∧ PrefixPreserving f ∧ LengthPreserving f) := by
   constructor

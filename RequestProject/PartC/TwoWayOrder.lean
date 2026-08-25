@@ -2,18 +2,17 @@
 The *order* in which the run of a two-way transducer visits a cut of the input
 is a regular property of the marked input.
 
-`RequestProject/PartC/TwoWayVisit.lean` shows that the set of configurations
-that lie on the run is regular: mark a cut of the input and a state, and the
-marked inputs whose run visits the marked cut in the marked state form a regular
-language (`TwoWay.visitLang_isRegular`).  That is the information needed to walk
-*backwards* along the run, and it is what the proof of Theorem C.2.5 uses.
+`RequestProject/PartC/TwoWayVisit.lean` shows that the set of configurations that lie on the run is
+regular: mark a cut of the input and a state, and the marked inputs whose run visits the marked cut
+in the marked state form a regular language (`TwoWay.visitLang_isRegular`).  That is the information
+needed to walk *backwards* along the run, and it is what the proof of Theorem
+`thm:composition-of-two-way-transducers` uses.
 
-The proof of the snake lemma (the induction step
-`Transducers.boundedWidth_isRegular_step` of Theorem C.2.9) needs more: the
-record-breaking columns of the book are defined by a recursion that refers to
-the *first* and the *last* visit to a column, so the marking of the
-record-breakers requires knowing in which order the run visits a cut, not only
-which states occur there.
+The proof of the snake lemma (the induction step `Transducers.boundedWidth_isRegular_step` of
+Theorem `thm:2dfa-decomposition-into-primes`) needs more: the record-breaking columns of the book
+are defined by a recursion that refers to the *first* and the *last* visit to a column, so the
+marking of the record-breakers requires knowing in which order the run visits a cut, not only which
+states occur there.
 
 This file supplies exactly that.  A cut is marked with a *pair* of states
 `(q₁, q₂)`, and the two-way automaton `TwoWay.orderAut M` simulates `M` and

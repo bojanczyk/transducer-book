@@ -7,8 +7,8 @@ position; inside a block, all first copies come before all second copies, and
 the blocks keep their order.  This turns the input `w₁ # ⋯ # wₙ` into
 `w₁w₁ # ⋯ # wₙwₙ`.
 
-This is one of the ingredients of the easy inclusion of Theorem C.4.17.
--/
+This is one of the ingredients of the easy inclusion of Theorem
+`nolabel:thm-fo-transduction-into-primes`. -/
 import RequestProject.PartC.BlockForm
 import RequestProject.PartC.ITransBuild
 import RequestProject.PartC.ContAux

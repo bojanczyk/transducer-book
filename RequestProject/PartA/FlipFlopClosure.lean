@@ -4,8 +4,8 @@ Closure properties of compositions of flip-flop Mealy machines.
 These are the analogues, for the family `FlipFlopFam`, of the closure properties
 of `PrimeMealyFam` proved in `RequestProject/PartA/PrimeClosure.lean` and
 `RequestProject/PartA/MapLift.lean`.  They are what is needed to run the Krohn-Rhodes
-construction of Lemma A.2.5 inside the class of flip-flop machines, which is the
-missing implication of Theorem A.2.8 of *Transducers* (M. Bojańczyk).
+construction of Lemma `lem:Mealy-map-lifting` inside the class of flip-flop machines, which is the
+missing implication of Theorem `thm:aperiodic-mealy` of *Transducers* (M. Bojańczyk).
 -/
 import RequestProject.PartA.MapLift
 
@@ -95,10 +95,9 @@ lemma compClosure_zipInput_flipFlop {A B : Type} {f : List A → List B} (hA : F
       rw [zipInput_comp (lengthPreserving_of_compClosure_flipFlop hf₁)]
       exact CompClosure.comp (ih₁ hA₁) (compClosure_liftSnd_flipFlop hg₁)
 
-/-- The map lifting of a decomposition into flip-flops is a decomposition into
-flip-flops.  This is the flip-flop version of Lemma A.2.4; here it is even
-simpler, since the map lifting of a single flip-flop machine is again a single
-flip-flop machine. -/
+/-- The map lifting of a decomposition into flip-flops is a decomposition into flip-flops.  This is
+the flip-flop version of Lemma `lem:map-lifting-decomposition-mealy`; here it is even simpler, since
+the map lifting of a single flip-flop machine is again a single flip-flop machine. -/
 theorem mapLift_compClosure_flipFlop {A B : Type} {f : List A → List B} (hA : Finite A)
     (hf : CompClosure FlipFlopFam A B f) :
     CompClosure FlipFlopFam (Option A) (Option B) (mapLift f) := by

@@ -1,6 +1,5 @@
-/-
-Pre-composition of two-way transducers with a homomorphism all of whose blocks
-have the same positive length (part of the proof of Corollary C.2.7 of
+/- Pre-composition of two-way transducers with a homomorphism all of whose blocks have the same
+positive length (part of the proof of Corollary `cor:2dfa-closure-under-composition` of
 *Transducers*, M. Bojańczyk).
 
 The simulating transducer keeps in its state, besides the state of the simulated

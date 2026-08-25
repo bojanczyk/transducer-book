@@ -3,8 +3,8 @@ The bimachine that precomputes, in every position of the input, the state of a
 family of automata on the marked string.
 
 This is the construction that is used both for the inclusion
-"mso relabellings ⊆ rational" of Theorem C.4.4 and for the letter-to-letter
-rational function of Lemma C.4.10.  Fix a finite family of deterministic
+"mso relabellings ⊆ rational" of Theorem `thm:logic-rational-functions` and for the letter-to-letter
+rational function of Lemma `lem:logic-precomputation`.  Fix a finite family of deterministic
 automata over the doubly marked alphabet `A × 2 × 2`.  For an input string `w`
 and a position `x` of it, the run of such an automaton on `markAt2 w x y` is the
 composition of three state transformations: the one of the unmarked prefix
@@ -19,7 +19,7 @@ is available to a bimachine in every position of the input.  `markFun` is the
 function that outputs, in every position, an arbitrary function `h` of the
 letter and of that pair, together with a fixed string on the empty input; the
 main result of the file is that `markFun` is computed by a bimachine, and hence
-rational by Theorem B.2.3.
+rational by Theorem `thm:bimachines`.
 -/
 import RequestProject.PartC.MarkStr
 import RequestProject.PartB.Bimachine

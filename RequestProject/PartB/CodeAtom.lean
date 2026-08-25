@@ -1,11 +1,10 @@
 /-
 Atomisation of the input of a coded nfa with output.
 
-The decision procedures of Theorems B.3.4 and B.4.2 need a normal form of a code
-in which every transition reads exactly one letter.  The first step towards it,
-carried out here, splits every transition into a chain of transitions each of
-which reads at most one letter: the transition `p --u/v--> q` with
-`u = a₁ ⋯ a_k` becomes
+The decision procedures of Theorems `thm:equivalence-rational-functions` and `thm:decide-if-mealy`
+need a normal form of a code in which every transition reads exactly one letter.  The first step
+towards it, carried out here, splits every transition into a chain of transitions each of which
+reads at most one letter: the transition `p --u/v--> q` with `u = a₁ ⋯ a_k` becomes
 
   `p --a₁/ε--> m₀ --a₂/ε--> ⋯ --a_k/ε--> m_{k-1} --ε/v--> q`,
 

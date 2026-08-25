@@ -1,15 +1,13 @@
 /-
-Streaming string transducers (Definition C.3.1 of *Transducers*,
+Streaming string transducers (Definition `def:sst` of *Transducers*,
 M. Bojańczyk) and their semantics.
 
-These definitions were originally stated in `RequestProject/PartC/Statements.lean`;
-they have been moved here, unchanged, so that the constructions used in the
-proof of Theorem C.3.2 can be developed before the statements of the numbered
-results.  `RequestProject/PartC/Statements.lean` imports this file, so the names
-`Transducers.Copyless`, `Transducers.SST`, `Transducers.SST.subst`,
-`Transducers.SST.stepConfig`, `Transducers.SST.runConfig`,
-`Transducers.SST.eval` and `Transducers.IsSST` are unchanged.
--/
+These definitions were originally stated in `RequestProject/PartC/Statements.lean`; they have been
+moved here, unchanged, so that the constructions used in the proof of Theorem
+`theorem:sst-two-way-equivalence` can be developed before the statements of the numbered results.
+`RequestProject/PartC/Statements.lean` imports this file, so the names `Transducers.Copyless`,
+`Transducers.SST`, `Transducers.SST.subst`, `Transducers.SST.stepConfig`,
+`Transducers.SST.runConfig`, `Transducers.SST.eval` and `Transducers.IsSST` are unchanged. -/
 import RequestProject.Common.Basic
 
 namespace Transducers
@@ -20,7 +18,7 @@ def Copyless {X B : Type} [Fintype X] (u : X → List (X ⊕ B)) : Prop :=
   ((Finset.univ.toList.map u).flatten.filterMap
       (fun z => match z with | Sum.inl x => some x | Sum.inr _ => none)).Nodup
 
-/-- **Definition C.3.1 (sst).**  A streaming string transducer. -/
+/-- **Definition `def:sst` (sst).**  A streaming string transducer. -/
 structure SST (A B Q X : Type) [Fintype X] where
   /-- The initial state. -/
   init : Q

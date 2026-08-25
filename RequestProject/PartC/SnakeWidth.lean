@@ -1,7 +1,6 @@
-/-
-The *width* of the run of a two-way transducer, and the reduction of the hard
-half of Theorem C.2.9 (`two-way ⊆ regular`) to the width-bounded case, which is
-the book's Lemma "the output of a snake graph is regular".
+/- The *width* of the run of a two-way transducer, and the reduction of the hard half of Theorem
+`thm:2dfa-decomposition-into-primes` (`two-way ⊆ regular`) to the width-bounded case, which is the
+book's Lemma "the output of a snake graph is regular".
 
 The book represents a run of a two-way transducer by a *snake graph*: a graph
 whose vertices are pairs (state, column) and whose edges, labelled by output

@@ -11,6 +11,14 @@ A Lean 4 formalisation of the numbered results of the book `main.pdf`
 (*Transducers*, M. Bojańczyk).  `THEOREMS.md` indexes every numbered result
 together with its Lean name and its current status.
 
+The results of the book are referred to by their LaTeX labels
+(Theorem `thm:decidable-equivalence-regular`) rather than by their numbers,
+which change when the sources are edited; `LABELS.md` explains the convention
+and lists the labels.  The correspondence is checked by Lean in
+`RequestProject/Labels.lean`, which declares, for every formalised result, an
+alias whose Lean name is the label of the result together with an assertion
+recording whether it is proved outright.
+
 Structure of the sources (`RequestProject.lean` imports everything):
 
 ```
@@ -20,6 +28,7 @@ RequestProject/
   PartB.lean    PartB/         -- Part B: rational relations and functions
   PartC.lean    PartC/         -- Part C: regular functions
   PartD.lean    PartD/         -- Part D: polyregular functions
+  Labels.lean                  -- the results of the book indexed by their LaTeX labels
   Main.lean                    -- global options used by the project
 ```
 

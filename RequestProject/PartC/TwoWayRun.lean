@@ -1,12 +1,11 @@
 /-
 The run of a two-way transducer, indexed by time.
 
-This file is part of the proof of Theorem C.2.5 (closure of two-way transducers
-under composition) of *Transducers* (M. Bojańczyk).  The configuration graph of
-a deterministic two-way transducer on a fixed input is a partial function, so
-the run started in the initial configuration is a sequence of configurations
-`cfgAt 0, cfgAt 1, …` which is defined until the run halts or gets stuck.  The
-two facts that matter for the composition construction are:
+This file is part of the proof of Theorem `thm:composition-of-two-way-transducers` (closure of
+two-way transducers under composition) of *Transducers* (M. Bojańczyk).  The configuration graph of
+a deterministic two-way transducer on a fixed input is a partial function, so the run started in the
+initial configuration is a sequence of configurations `cfgAt 0, cfgAt 1, …` which is defined until
+the run halts or gets stuck.  The two facts that matter for the composition construction are:
 
 * the run is *injective* up to the halting time -- otherwise it would cycle and
   never halt;

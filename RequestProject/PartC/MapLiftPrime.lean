@@ -1,7 +1,5 @@
-/-
-The map lifting of map reverse and of map duplicate is regular.  This is the
-second step of the proof of the first item of Lemma C.2.10 of *Transducers*
-(M. Bojańczyk).
+/- The map lifting of map reverse and of map duplicate is regular.  This is the second step of the
+proof of the first item of Lemma `lem:regular-closure-properties` of *Transducers* (M. Bojańczyk).
 
 The map lifting of map reverse reverses every maximal factor of a string over
 `A₀ + 1 + 1` that uses no separator, of either of the two kinds.  Following the

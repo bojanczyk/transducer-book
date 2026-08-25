@@ -2,7 +2,7 @@
 Building first-order transductions.
 
 This file collects the elementary tools that are used to exhibit concrete
-functions as first-order transductions (Definition C.4.7 together with the
+functions as first-order transductions (Definition `def:mso-transduction` together with the
 first-orderness requirement):
 
 * `Transducers.ITrans.outputs_of_pairwise`, which reduces the semantic

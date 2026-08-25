@@ -1,14 +1,12 @@
 /-
 The state of a flip-flop machine, in terms of the last resetting letter.
 
-In a flip-flop machine (Definition A.2.1) every letter either leaves the state
-unchanged or resets it to a fixed state.  Hence the state reached after reading
-a prefix of the input is the target of the *last* resetting letter of that
-prefix, and the initial state if the prefix has no resetting letter.  This is
-the combinatorial content of the fact that flip-flop machines are first-order
-definable, used in Theorem C.4.11; the corresponding formulas are built in
-`RequestProject/PartC/FOMealy.lean`.
--/
+In a flip-flop machine (Definition `nolabel:def-prime-mealy-machines`) every letter either leaves
+the state unchanged or resets it to a fixed state.  Hence the state reached after reading a prefix
+of the input is the target of the *last* resetting letter of that prefix, and the initial state if
+the prefix has no resetting letter.  This is the combinatorial content of the fact that flip-flop
+machines are first-order definable, used in Theorem `thm:logic-aperiodic`; the corresponding
+formulas are built in `RequestProject/PartC/FOMealy.lean`. -/
 import RequestProject.PartA.MealyBasic
 
 namespace Transducers

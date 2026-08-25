@@ -1,5 +1,5 @@
 /-
-The weighted automaton over `ℚ` used in the proof of Theorem B.3.4 of
+The weighted automaton over `ℚ` used in the proof of Theorem `thm:equivalence-rational-functions` of
 *Transducers* (M. Bojańczyk): the product of two letter-atomic codes, weighted
 by the numerical encoding `iota` of the output of the first one.
 

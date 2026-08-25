@@ -1,14 +1,14 @@
 /-
 The data of the walking transducer of an mso transduction, and its correctness:
-the hard half of Theorem C.4.8 of *Transducers* (M. Bojańczyk).
+the hard half of Theorem `thm:logic-regular-functions` of *Transducers* (M. Bojańczyk).
 
 After the normalisation of the type `τ` (`RequestProject/PartC/MSONorm.lean`,
-Lemma C.4.9) an mso transduction is presented by a finite set of tags, a
+Lemma `lem:logic-reduction-to-type-n`) an mso transduction is presented by a finite set of tags, a
 universe formula and letter formulas with one free variable, and an order
 formula with two free variables (`NormT`).  The questions that the walking
 transducer of `RequestProject/PartC/WalkAut.lean` asks -- "is this element the
 last one?", "where is its successor?" -- are the mso formulas built in
-`RequestProject/PartC/MSOWalkForms.lean`; by Lemma C.4.10 the unary ones are
+`RequestProject/PartC/MSOWalkForms.lean`; by Lemma `lem:logic-precomputation` the unary ones are
 precomputed into the letters of a rational, letter-to-letter function `pre`, and
 the binary ones become regular languages of infixes of `pre w`, read by a finite
 family of deterministic automata.
@@ -161,7 +161,7 @@ lemma nodup_index {α : Type} {l : List α} (h : l.Nodup) {r r' : ℕ} {x : α}
   obtain ⟨hr', hre'⟩ := List.getElem?_eq_some_iff.1 h2
   exact h.getElem_inj_iff.1 (hre.trans hre'.symm)
 
-/-- The letter form of the unary part of Lemma C.4.10: a formula with one free
+/-- The letter form of the unary part of Lemma `lem:logic-precomputation`: a formula with one free
 variable holds at a position if and only if the letter of the precomputed
 string at that position belongs to the corresponding set. -/
 lemma letter_mem_iff {A C : Type} {pre : List A → List C} {F : Set C} {φ : MSO A}

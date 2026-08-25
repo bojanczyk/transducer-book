@@ -1,13 +1,13 @@
 /-
-Part C, Section C.4: Logic
+Part C, Section *Logic*: Logic
   from *Transducers* (M. Bojańczyk, June 25, 2026).
 
-The *definitions* of Section C.4: monadic second-order logic over strings, mso
-relabellings and mso transductions.  They were originally stated in
-`RequestProject/PartC/MSO.lean`; they have been moved here, unchanged, so that
-the automata constructions used in the proofs of Theorem C.4.1, Lemma C.4.2 and
-Claim C.4.6 can be developed before the statements of the numbered results.
-`RequestProject/PartC/MSO.lean` imports this file, so all names are unchanged.
+The *definitions* of Section *Logic*: monadic second-order logic over strings, mso relabellings and
+mso transductions.  They were originally stated in `RequestProject/PartC/MSO.lean`; they have been
+moved here, unchanged, so that the automata constructions used in the proofs of Theorem
+`thm:mso-logic-languages`, Lemma `nolabel:lem-mso-to-automaton` and Claim
+`nolabel:claim-formula-annotation-regular` can be developed before the statements of the numbered
+results. `RequestProject/PartC/MSO.lean` imports this file, so all names are unchanged.
 
 Two conventions are used.
 
@@ -15,14 +15,13 @@ Two conventions are used.
   every first-order variable and a set of positions to every second-order
   variable.  A formula with `k` free first-order variables is used with the
   variables `0, …, k-1`.
-* The book uses an extended syntax in which first-order variables have
-  polynomial types `τ = n^{d₁} + ⋯ + n^{d_k}` (Section C.4.3).  For the linear
-  types `τ = k · n + c` that are used in mso transductions, quantification over
-  an element of `τ (w)` is the same as a case distinction over the `k + c`
-  variants, and a variable of type `2^τ` is the same as `k` set variables plus
-  `c` Booleans.  Accordingly, `MSOTransduction` below is presented by families
-  of ordinary mso formulas indexed by the variants, which is equivalent to the
-  presentation in Definition C.4.7.
+* The book uses an extended syntax in which first-order variables have polynomial types `τ = n^{d₁}
+  + ⋯ + n^{d_k}` (Section *Regular functions in terms of logic*).  For the linear types `τ = k · n +
+  c` that are used in mso transductions, quantification over an element of `τ (w)` is the same as a
+  case distinction over the `k + c` variants, and a variable of type `2^τ` is the same as `k` set
+  variables plus `c` Booleans.  Accordingly, `MSOTransduction` below is presented by families of
+  ordinary mso formulas indexed by the variants, which is equivalent to the presentation in
+  Definition `def:mso-transduction`.
 -/
 import RequestProject.PartB.WeightedStatements
 import RequestProject.PartC.ContAux
@@ -38,7 +37,7 @@ import RequestProject.PartC.KTypes
 
 namespace Transducers
 
-/-! ## C.4.1 Monadic second-order logic -/
+/-! ## Monadic second-order logic -/
 
 /-- Formulas of monadic second-order logic over strings with letters in `A`.
 First-order variables range over positions, second-order variables over sets of
@@ -150,9 +149,9 @@ def extFO (k : ℕ) (fo : Fin k → ℕ) : ℕ → ℕ :=
 def extSO (l : ℕ) (so : Fin l → Set ℕ) : ℕ → Set ℕ :=
   fun j => if h : j < l then so ⟨j, h⟩ else ∅
 
-/-! ## C.4.2 Rational functions in terms of logic -/
+/-! ## Rational functions in terms of logic -/
 
-/-- **Definition C.4.3 (mso relabelling).**  A finite family of mso formulas
+/-- **Definition `def:mso-relabeling` (mso relabelling).**  A finite family of mso formulas
 with one free first-order variable (the variable `0`), exactly one of which
 holds in each position, together with an output string for each formula and an
 output string for the empty input. -/
@@ -196,9 +195,9 @@ def IsMSORelabelling {A B : Type} (f : List A → List B) : Prop :=
 def IsFORelabelling {A B : Type} (f : List A → List B) : Prop :=
   ∃ R : MSORelabelling A B, R.AllFO ∧ ∀ w, R.Relabels w (f w)
 
-/-! ## C.4.3 Regular functions in terms of logic -/
+/-! ## Regular functions in terms of logic -/
 
-/-- **Definition C.4.7 (string-to-string mso transduction).**  The elements of
+/-- **Definition `def:mso-transduction` (string-to-string mso transduction).**  The elements of
 the output universe come from a linear type `τ = k · n + c`: `k` copies of the
 positions of the input string, and `c` extra elements.  The universe, letter and
 order formulas are given by families indexed by the variants of `τ`. -/
@@ -263,14 +262,14 @@ def Outputs (T : MSOTransduction A B) (w : List A) (v : List B) : Prop :=
     ∀ (i : ℕ) (hi : i < es.length) (hi' : i < v.length),
       T.labRel w (es.get ⟨i, hi⟩) (v.get ⟨i, hi'⟩)
 
-/-- The two requirements that Definition C.4.7 imposes on the formulas of an
+/-- The two requirements that Definition `def:mso-transduction` imposes on the formulas of an
 mso transduction: for every input string, every element selected by the
 universe formula satisfies *exactly one* letter formula, and the order formula
 defines a *linear order* on the selected elements (reflexive, antisymmetric,
 transitive and total on them).
 
-These requirements are part of Definition C.4.7 in the book; they were missing
-from the first formalisation of this file, and without them Theorem C.4.8 is
+These requirements are part of Definition `def:mso-transduction` in the book; they were missing
+from the first formalisation of this file, and without them Theorem `thm:logic-regular-functions` is
 false -- see `Transducers.exists_weakMSOTransduction_not_regular` in
 `RequestProject/PartC/MSOWeak.lean`. -/
 def Proper (T : MSOTransduction A B) : Prop :=
@@ -293,7 +292,7 @@ def AllFO (T : MSOTransduction A B) : Prop :=
 end MSOTransduction
 
 /-- A function defined by a string-to-string mso transduction, in the sense of
-Definition C.4.7: the transduction has to satisfy the requirements
+Definition `def:mso-transduction`: the transduction has to satisfy the requirements
 `MSOTransduction.Proper` of that definition (exactly one letter formula per
 selected element, and a linear order on the selected elements). -/
 def IsMSOTransduction {A B : Type} (f : List A → List B) : Prop :=
@@ -304,7 +303,7 @@ def IsFOTransduction {A B : Type} (f : List A → List B) : Prop :=
   ∃ T : MSOTransduction A B, T.Proper ∧ T.AllFO ∧ ∀ w, T.Outputs w (f w)
 
 /-- The variant of `IsMSOTransduction` in which the requirements of
-Definition C.4.7 collected in `MSOTransduction.Proper` are dropped.  It is
+Definition `def:mso-transduction` collected in `MSOTransduction.Proper` are dropped.  It is
 *strictly* weaker: `Transducers.exists_weakMSOTransduction_not_regular` exhibits
 a function that is a weak mso transduction and is not regular. -/
 def IsWeakMSOTransduction {A B : Type} (f : List A → List B) : Prop :=

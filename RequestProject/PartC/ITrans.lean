@@ -1,7 +1,7 @@
 /-
 Mso transductions with arbitrary finite index sets.
 
-Definition C.4.7 presents the output universe of an mso transduction by the
+Definition `def:mso-transduction` presents the output universe of an mso transduction by the
 linear type `τ = k · n + c`, and accordingly `Transducers.MSOTransduction`
 indexes its formulas by `Fin k` and `Fin c`.  The transductions that are built
 in `RequestProject/PartC/FOTransComp.lean` (the composition of two
@@ -19,7 +19,7 @@ import RequestProject.PartC.MSODef
 
 namespace Transducers
 
-/-- An mso transduction (Definition C.4.7) whose copies and extra elements are
+/-- An mso transduction (Definition `def:mso-transduction`) whose copies and extra elements are
 indexed by arbitrary finite types. -/
 structure ITrans (A B : Type) where
   /-- The index type of the copies of the input positions. -/
@@ -84,7 +84,7 @@ def Outputs (T : ITrans A B) (w : List A) (v : List B) : Prop :=
     ∀ (i : ℕ) (hi : i < es.length) (hi' : i < v.length),
       T.labRel w (es.get ⟨i, hi⟩) (v.get ⟨i, hi'⟩)
 
-/-- The requirements of Definition C.4.7. -/
+/-- The requirements of Definition `def:mso-transduction`. -/
 def Proper (T : ITrans A B) : Prop :=
   ∀ w : List A,
     (∀ x, T.selected w x → ∃! b, T.labRel w x b) ∧

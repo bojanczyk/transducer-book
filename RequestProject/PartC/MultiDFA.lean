@@ -1,12 +1,11 @@
 /-
 One deterministic automaton for a finite family of regular languages.
 
-The walking transducer of Theorem C.4.8 runs, on the infix between the current
-position and the position it is walking towards, an automaton for each of the
-finitely many binary questions it may ask.  Running them all at once is the
-usual product construction: a single deterministic transition function whose
-state space is the product of the state spaces, with one acceptance condition
-per question.  This is what `MultiDFA.exists_prod` provides.
+The walking transducer of Theorem `thm:logic-regular-functions` runs, on the infix between the
+current position and the position it is walking towards, an automaton for each of the finitely many
+binary questions it may ask.  Running them all at once is the usual product construction: a single
+deterministic transition function whose state space is the product of the state spaces, with one
+acceptance condition per question.  This is what `MultiDFA.exists_prod` provides.
 
 The file also contains the regular language "the last letter belongs to `F`",
 used for the question "which is the first element of the output order?", whose

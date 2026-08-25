@@ -1,5 +1,5 @@
 /-
-A "delayed" automaton, used in the proof of Lemma C.4.10 of *Transducers*
+A "delayed" automaton, used in the proof of Lemma `lem:logic-precomputation` of *Transducers*
 (M. Bojańczyk).
 
 Fix an automaton `D` over the doubly marked alphabet `Mark2 A`, and an alphabet

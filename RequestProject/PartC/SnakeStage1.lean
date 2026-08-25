@@ -46,7 +46,7 @@ through the homomorphism that erases the annotation and written through the
 homomorphism that produces the marked string, is a rational relation
 (`TwoWay.exists_rational_snakeRel`).  Since a total rational relation contains
 the graph of a rational function (`Transducers.exists_rationalFun_of_total_rel`,
-Lemma B.2.5), this gives the regular function that the induction step needs
+Lemma `lem:uniformisation`), this gives the regular function that the induction step needs
 (`TwoWay.exists_snakeMarking`), and no functionality of the guessing has to be
 proved.
 
@@ -93,7 +93,7 @@ theorem exists_rational_snakeRel [Finite A] [Finite B] [Finite Q] (M : TwoWay A 
 
 /-- **The marking of stage 1 is computed by a regular function**: the guessing
 relation of `TwoWay.exists_rational_snakeRel` is total and rational, hence it
-contains the graph of a rational -- so regular -- function (Lemma B.2.5). -/
+contains the graph of a rational -- so regular -- function (Lemma `lem:uniformisation`). -/
 theorem exists_snakeMarking [Finite A] [Finite B] [Finite Q] (M : TwoWay A B Q) {K : ℕ}
     (hK : 2 ≤ K) :
     ∃ ann : List A → List (Option (SnakeLet A Q (2 * (2 * K + 1)))),

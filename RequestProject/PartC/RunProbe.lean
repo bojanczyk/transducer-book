@@ -1,7 +1,7 @@
 /-
 Probing the run of a two-way transducer with a two-way automaton.
 
-This file is part of the proof of Theorem C.4.8 of *Transducers*
+This file is part of the proof of Theorem `thm:logic-regular-functions` of *Transducers*
 (M. Bojańczyk).  For the inclusion "regular ⊆ mso transductions" one has to say,
 in monadic second-order logic, things such as
 
@@ -13,7 +13,7 @@ properties are properties of the marked input string that a *deterministic
 two-way automaton* can check, simply by simulating the run of `M`: it stops at
 the first configuration satisfying a trigger condition and answers there.  By
 Shepherdson's Theorem (`TwoDFA.accepts_isRegular`) the resulting language is
-regular, and Theorem C.4.1 then turns it into a formula.
+regular, and Theorem `thm:mso-logic-languages` then turns it into a formula.
 
 The alphabet of the automaton is an arbitrary alphabet `A'` mapped to the
 alphabet `A` of the transducer by a letter-to-letter projection `π` (in the

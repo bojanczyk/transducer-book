@@ -1,16 +1,14 @@
 /-
 The value of a coded rational function on the empty input.
 
-The reduction of Theorem B.3.4 to Theorem B.3.3 compares two coded functions on
-all *nonempty* strings; the empty string has to be treated separately, and this
-file does so.  A run over the empty input uses only transitions reading no
-letter, and if it visits a state twice the loop may be removed
-(`CodeMerge.eps_short`), so under the promise that the code describes a function
-the value on the empty input is the output of one of the finitely many
-transition sequences of length smaller than the number of states of the code.
-`epsOut` picks the first such sequence, and the promise guarantees that all of
-them have the same output.
--/
+The reduction of Theorem `thm:equivalence-rational-functions` to Theorem
+`thm:equivalence-weighted-automata` compares two coded functions on all *nonempty* strings; the
+empty string has to be treated separately, and this file does so.  A run over the empty input uses
+only transitions reading no letter, and if it visits a state twice the loop may be removed
+(`CodeMerge.eps_short`), so under the promise that the code describes a function the value on the
+empty input is the output of one of the finitely many transition sequences of length smaller than
+the number of states of the code. `epsOut` picks the first such sequence, and the promise guarantees
+that all of them have the same output. -/
 import RequestProject.PartB.CodeAlpha
 
 namespace Transducers

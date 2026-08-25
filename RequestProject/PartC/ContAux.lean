@@ -1,11 +1,11 @@
 /-
-Auxiliary facts about continuity (Definition .0.1) that are used in Part C of
+Auxiliary facts about continuity (Definition `def:continuity`) that are used in Part C of
 *Transducers* (M. Bojańczyk, June 25, 2026).
 
 Continuity is closed under composition, and the basic string operations of
 Part C -- letter-to-letter maps, reversal, duplication -- are continuous.  The
 main result of this file is that the map lifting of a continuous function is
-continuous (Lemma C.1.3), which is proved with the Myhill-Nerode theorem: the
+continuous (Lemma `lem:map-lifting-continuous`), which is proved with the Myhill-Nerode theorem: the
 left quotients of the inverse image are determined by the state of the
 automaton at the beginning of the current block together with the left
 quotients of the (finitely many) languages `{u | the block `u` takes the state
@@ -52,7 +52,7 @@ lemma continuous_map {A B : Type} (h : A → B) : Continuous (fun w : List A => 
   simp only [DFA.mem_accepts, DFA.eval, mapDFA_evalFrom]
   rfl
 
-/-! ## Reversal and duplication (Lemma C.1.2) -/
+/-! ## Reversal and duplication (Lemma `nolabel:lem-reverse-and-duplicate-continuous`) -/
 
 /-- String reversal is continuous. -/
 lemma continuous_reverse {A : Type} : Continuous (List.reverse : List A → List A) := by
@@ -102,7 +102,7 @@ lemma mapLift_map_some_cons_none (f : List A → List B) (u : List A) (v : List 
     intercalate_cons_cons _ _ _ (by simpa using (splitSep_ne_nil v).imp (fun h => by simp [h]))]
   simp [mapLift]
 
-/-! ## Continuity of the map lifting (Lemma C.1.3) -/
+/-! ## Continuity of the map lifting (Lemma `lem:map-lifting-continuous`) -/
 
 section MapLift
 
@@ -237,7 +237,7 @@ lemma finite_range_of_factors {α β γ : Type} (F : α → β) (ψ : α → γ)
   refine ⟨⟨ψ a, ⟨a, rfl⟩⟩, ?_⟩
   exact h _ a (Exists.choose_spec (⟨a, rfl⟩ : ∃ x, ψ x = ψ a))
 
-/-- **Lemma C.1.3.**  The map lifting of a continuous function is continuous. -/
+/-- **Lemma `lem:map-lifting-continuous`.**  The map lifting of a continuous function is continuous. -/
 theorem continuous_mapLift {f : List A → List B} (hf : Continuous f) :
     Continuous (mapLift f) := by
   classical

@@ -1,6 +1,5 @@
-/-
-The equivalence bound for codes of two-way transducers (Theorem C.1.4 of
-*Transducers*, M. Bojańczyk).
+/- The equivalence bound for codes of two-way transducers (Theorem
+`thm:decidable-equivalence-regular` of *Transducers*, M. Bojańczyk).
 
 This file proves the *mathematical* content of the hypothesis
 `Transducers.EffectiveTwoWayBound` of `RequestProject/PartC/EffectiveReg.lean`:
@@ -10,23 +9,20 @@ coded transducers to compute the same relation
 (`Transducers.exists_twoWayCode_bound`).  Only the *computability* of a bound as
 a function of the two codes is left as a hypothesis there.
 
-The proof is the book's: a coded two-way transducer computes a regular function
-(Theorem C.2.9, here in the form `Transducers.isRegularFun_of_isTwoWay`), and
-two regular functions over finite alphabets agree everywhere as soon as they
-agree on the short inputs (`Transducers.regularFun_eq_of_short`, the conclusion
-of the reduction to weighted automata over `ℚ` in
-`RequestProject/PartC/WeightedRegClosure.lean`).
+The proof is the book's: a coded two-way transducer computes a regular function (Theorem
+`thm:2dfa-decomposition-into-primes`, here in the form `Transducers.isRegularFun_of_isTwoWay`), and
+two regular functions over finite alphabets agree everywhere as soon as they agree on the short
+inputs (`Transducers.regularFun_eq_of_short`, the conclusion of the reduction to weighted automata
+over `ℚ` in `RequestProject/PartC/WeightedRegClosure.lean`).
 
-The work in between is bookkeeping on codes.  A code describes a transducer
-over the *infinite* alphabet `ℕ` with the *infinite* state set `ℕ`, whereas
-Theorem C.2.9 speaks about finite alphabets and finitely many states; but a code
-is a finite table, so only finitely many letters, output letters and states
-occur in it, and everything outside is inert.  `finAut` is the transducer of a
-code read over a finite alphabet `L` of input letters, a finite alphabet `O` of
-output letters and the finite set of states occurring in the code, and
-`decCfg` decodes its configurations back to configurations of the coded
-transducer; the two runs correspond step by step.
--/
+The work in between is bookkeeping on codes.  A code describes a transducer over the *infinite*
+alphabet `ℕ` with the *infinite* state set `ℕ`, whereas Theorem `thm:2dfa-decomposition-into-primes`
+speaks about finite alphabets and finitely many states; but a code is a finite table, so only
+finitely many letters, output letters and states occur in it, and everything outside is inert.
+`finAut` is the transducer of a code read over a finite alphabet `L` of input letters, a finite
+alphabet `O` of output letters and the finite set of states occurring in the code, and `decCfg`
+decodes its configurations back to configurations of the coded transducer; the two runs correspond
+step by step. -/
 import RequestProject.PartC.RegCodeSan
 import RequestProject.PartC.SnakeReg
 import RequestProject.PartC.WeightedRegClosure
@@ -300,7 +296,7 @@ lemma isRegularFun_finFun {c : TwoWayCode} {L O : List ℕ} (hO : 0 ∈ O)
 
 /-! ## The bound -/
 
-/-- **The equivalence bound of Theorem C.1.4 exists.**  For two codes
+/-- **The equivalence bound of Theorem `thm:decidable-equivalence-regular` exists.**  For two codes
 describing total two-way transducers there is a length `n` such that the two
 codes describe the same relation as soon as they describe the same relation on
 the inputs of length at most `n`.
@@ -373,7 +369,7 @@ theorem exists_bound (c₁ c₂ : TwoWayCode) (h₁ : TwoWayCodeTotal c₁)
 
 end RegDec
 
-/-- **The equivalence bound of Theorem C.1.4 exists** (see
+/-- **The equivalence bound of Theorem `thm:decidable-equivalence-regular` exists** (see
 `Transducers.RegDec.exists_bound`). -/
 theorem exists_twoWayCode_bound (c₁ c₂ : TwoWayCode) (h₁ : TwoWayCodeTotal c₁)
     (h₂ : TwoWayCodeTotal c₂) :

@@ -1,5 +1,5 @@
 /-
-Continuity of rational relations (Theorem B.1.5).
+Continuity of rational relations (Theorem `thm:continuity-rational-relations`).
 
 Given an nfa with output all of whose transitions read at most one letter, and
 a deterministic automaton `D` for a regular language `L` over the output
@@ -161,8 +161,8 @@ lemma isRegular_of_εNFA {A σ : Type} [Finite σ] (E : εNFA A σ) : E.accepts.
   letI : Fintype σ := Fintype.ofFinite σ
   exact ⟨Set σ, inferInstance, E.toNFA.toDFA, by rw [NFA.toDFA_correct, εNFA.toNFA_correct]⟩
 
-/-- **Theorem B.1.5.**  The inverse image of a regular language under a rational
-relation is regular. -/
+/-- **Theorem `thm:continuity-rational-relations`.**  The inverse image of a regular language under
+a rational relation is regular. -/
 theorem rationalRel_continuous_aux {A B : Type} {R : List A → List B → Prop}
     (hR : IsRationalRel R) : RelContinuous R := by
   intro L hL

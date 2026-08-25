@@ -1,6 +1,6 @@
 /-
 The two remaining base cases of the marked sum (see
-`RequestProject/PartC/SumShape.lean`), used in the proof of Claim C.2.11 of
+`RequestProject/PartC/SumShape.lean`), used in the proof of Claim `claim:conditional` of
 *Transducers* (M. Bojańczyk): the marked sum of map reverse (resp. map
 duplicate) with the identity.
 

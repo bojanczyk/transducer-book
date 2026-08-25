@@ -1,5 +1,5 @@
 /-
-Two constructions on codes used for Theorem B.4.2 of *Transducers*
+Two constructions on codes used for Theorem `thm:decide-if-mealy` of *Transducers*
 (M. Bojańczyk): deciding whether the function described by a code is prefix
 preserving.
 
@@ -8,8 +8,8 @@ code, prefix preservation is the identity
 
   `dropLast (f w) = f (dropLast w)`,
 
-so it is an equality of two rational functions, and Theorem B.3.4 decides it.
-This file builds codes for the two sides.
+so it is an equality of two rational functions, and Theorem `thm:equivalence-rational-functions`
+decides it. This file builds codes for the two sides.
 
 * `dropCode c` computes `w ↦ dropLast (f w)`.  Its states are the states of `c`
   with a phase in `{0, 1, 2}`: the phase `2` means that the run has produced no

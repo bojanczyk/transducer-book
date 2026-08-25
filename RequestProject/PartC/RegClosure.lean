@@ -1,14 +1,14 @@
 /-
-The remaining two items of Lemma C.2.10 of *Transducers* (M. Bojańczyk):
+The remaining two items of Lemma `lem:regular-closure-properties` of *Transducers* (M. Bojańczyk):
 regular functions are closed under concatenation and under case distinction over
 a regular language.
 
-Both are obtained from Claim C.2.11 (`sum_of_regular_aux`), following the book.
+Both are obtained from Claim `claim:conditional` (`sum_of_regular_aux`), following the book.
 
 * For the case distinction, a rational function turns `w` into `# w` recoloured
   by the first or the second copy of the alphabet `A + 1`, according to whether
   `w` belongs to the language.  The marker `#` makes the recoloured string
-  nonempty, which is what Claim C.2.11 requires; it is deleted again by the two
+  nonempty, which is what Claim `claim:conditional` requires; it is deleted again by the two
   summands.  The sum of the two summands is then applied, and a rational
   function forgets the colour of the output.
 * For the concatenation, a rational function turns `w` into `# w`, map duplicate
@@ -18,7 +18,7 @@ Both are obtained from Claim C.2.11 (`sum_of_regular_aux`), following the book.
   colours.
 
 Both proofs treat the case of an empty output alphabet separately, since
-Claim C.2.11 needs the output alphabets to be nonempty; when `B` is empty both
+Claim `claim:conditional` needs the output alphabets to be nonempty; when `B` is empty both
 functions are constant equal to the empty string.
 -/
 import RequestProject.PartC.RegSum
@@ -175,8 +175,8 @@ lemma isRegularFun_clean [Finite B] : IsRegularFun (clean : List (Option (B ⊕ 
 end RegCl
 
 open RegCl in
-/-- **Lemma C.2.10 (concatenation).**  If `f` and `g` are regular, then so is
-`w ↦ f w · g w`. -/
+/-- **Lemma `lem:regular-closure-properties` (concatenation).**  If `f` and `g` are regular, then so
+is `w ↦ f w · g w`. -/
 theorem isRegularFun_concat {A B : Type} [Finite A] [Finite B] {f g : List A → List B}
     (hf : IsRegularFun f) (hg : IsRegularFun g) : IsRegularFun (fun w => f w ++ g w) := by
   classical
@@ -248,9 +248,9 @@ theorem isRegularFun_concat {A B : Type} [Finite A] [Finite B] {f g : List A →
 
 open scoped Classical in
 open RegCl in
-/-- **Lemma C.2.10 (conditionals).**  If `f` and `g` are regular and `L` is a
-regular language, then the function that applies `f` on `L` and `g` outside of
-`L` is regular. -/
+/-- **Lemma `lem:regular-closure-properties` (conditionals).**  If `f` and `g` are regular and `L`
+is a regular language, then the function that applies `f` on `L` and `g` outside of `L` is regular.
+-/
 theorem isRegularFun_cond {A B : Type} [Finite A] [Finite B] {f g : List A → List B}
     (hf : IsRegularFun f) (hg : IsRegularFun g) {L : Language A} (hL : L.IsRegular) :
     IsRegularFun (fun w => if w ∈ L then f w else g w) := by

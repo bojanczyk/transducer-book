@@ -1,6 +1,6 @@
 /-
 Post-composition of a streaming string transducer with the map reverse function
-(a step of the "regular to sst" half of Theorem C.3.2 of *Transducers*,
+(a step of the "regular to sst" half of Theorem `theorem:sst-two-way-equivalence` of *Transducers*,
 M. Bojańczyk).
 
 Following the book, every register `X` of the sst is replaced by three

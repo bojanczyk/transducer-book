@@ -7,8 +7,8 @@ are non-separator positions of the same block (`Transducers.SameBlk`), then
 `q ≤ p`, and otherwise `p ≤ q`.  Reversing the order inside every block turns
 the input `w₁ # ⋯ # wₙ` into `reverse w₁ # ⋯ # reverse wₙ`.
 
-This is one of the ingredients of the easy inclusion of Theorem C.4.17.
--/
+This is one of the ingredients of the easy inclusion of Theorem
+`nolabel:thm-fo-transduction-into-primes`. -/
 import RequestProject.PartC.BlockForm
 import RequestProject.PartC.ITransBuild
 import RequestProject.PartC.ContAux

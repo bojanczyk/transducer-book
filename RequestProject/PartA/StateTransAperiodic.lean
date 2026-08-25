@@ -1,14 +1,13 @@
 /-
 The aperiodic case of the Krohn-Rhodes construction: the implication
-"aperiodic ⇒ composition of flip-flops" of Theorem A.2.8 of *Transducers*
+"aperiodic ⇒ composition of flip-flops" of Theorem `thm:aperiodic-mealy` of *Transducers*
 (M. Bojańczyk, June 25, 2026).
 
-The book proves this implication by going through the proof of the Krohn-Rhodes
-Theorem once more, for a machine satisfying condition (*) of Lemma A.2.11 (the
-powers of every state transformation stabilise), and observing that all the
-machines of the construction still satisfy (*) -- because they only use state
-transformations of the original machine -- so that no reversible machine with
-more than one state ever arises.
+The book proves this implication by going through the proof of the Krohn-Rhodes Theorem once more,
+for a machine satisfying condition (*) of Lemma `lem:aperiodicity-minimal-machine` (the powers of
+every state transformation stabilise), and observing that all the machines of the construction still
+satisfy (*) -- because they only use state transformations of the original machine -- so that no
+reversible machine with more than one state ever arises.
 
 This file carries that out for the construction of `RequestProject/PartA/StateTrans.lean`.
 The two smaller pre-automata used in the induction step inherit condition (*):
@@ -185,7 +184,7 @@ end
 
 /-! ## The induction -/
 
-/-- The double induction of Lemma A.2.5, in the aperiodic case. -/
+/-- The double induction of Lemma `lem:Mealy-map-lifting`, in the aperiodic case. -/
 theorem stateTrans_aux_flipFlop : ∀ (n : ℕ) (Q : Type) (_ : Finite Q), Nat.card Q ≤ n →
     ∀ (m : ℕ) (A : Type) (_ : Finite A) (δ : Q → A → Q), (nonBijSet δ).ncard ≤ m →
     TransAperiodic δ → CompClosure FlipFlopFam A (Q → Q) (stateTransTransducer δ).eval := by

@@ -1,15 +1,12 @@
-/-
-Part B: Rational relations and rational functions (Sections B.1 and B.2)
+/- Part B: Rational relations and rational functions (Sections *Rational relations* and *Rational
+functions*)
   from *Transducers* (M. Bojańczyk, June 25, 2026).
 
-This file contains the definitions of Sections B.1-B.2 and the statements of
-their theorems, lemmas and claims.  The proofs are in the supporting files
-(`RatComp.lean`, `RatCont.lean`, `HomComplement.lean`, `EpsElim.lean`,
-`Unambig.lean`, `Uniform.lean`, `Bimachine.lean`, `RatBimach.lean`,
-`PrimeRat.lean`, `BimachPrime.lean`, ...);
-the results that are not proved yet are left as `sorry` and are listed in
-`THEOREMS.md`.
--/
+This file contains the definitions of Sections *Rational relations* to *Rational functions* and the
+statements of their theorems, lemmas and claims.  The proofs are in the supporting files
+(`RatComp.lean`, `RatCont.lean`, `HomComplement.lean`, `EpsElim.lean`, `Unambig.lean`,
+`Uniform.lean`, `Bimachine.lean`, `RatBimach.lean`, `PrimeRat.lean`, `BimachPrime.lean`, ...); the
+results that are not proved yet are left as `sorry` and are listed in `THEOREMS.md`. -/
 import RequestProject.PartA.Statements
 import RequestProject.PartB.RatComp
 import RequestProject.PartB.RatCont
@@ -26,29 +23,29 @@ namespace Transducers
 
 /-! ## Automata with labelled transitions
 
-The definitions of automata with labelled transitions (`LabAut`), of
-nondeterministic automata with output (Definition B.1.1, `NFAO`), of rational
-relations (Definition B.1.2) and of rational functions (Definition B.2.1) are in
-`RequestProject/PartB/LabAut.lean`, so that the constructions used in the proofs below
-can be developed before the statements of the numbered results. -/
+The definitions of automata with labelled transitions (`LabAut`), of nondeterministic automata with
+output (Definition `nolabel:def-nfa-with-output`, `NFAO`), of rational relations (Definition
+`def:rational-relation`) and of rational functions (Definition `nolabel:def-rational-function`) are
+in `RequestProject/PartB/LabAut.lean`, so that the constructions used in the proofs below can be
+developed before the statements of the numbered results. -/
 
-/-! ### B.1.1 Composition and continuity -/
+/-! ### Composition and continuity -/
 
-/-- **Theorem B.1.4.**  Rational relations are closed under relational
-composition. -/
+/-- **Theorem `thm:composition-rational-relations`.**  Rational relations are closed under
+relational composition. -/
 theorem rationalRel_comp {A B C : Type}
     {R : List A → List B → Prop} {S : List B → List C → Prop}
     (hR : IsRationalRel R) (hS : IsRationalRel S) :
     IsRationalRel (fun w v => ∃ u, R w u ∧ S u v) :=
   rationalRel_comp_aux hR hS
 
-/-- **Theorem B.1.5.**  The inverse image of a regular language under a rational
-relation is regular; that is, rational relations are continuous. -/
+/-- **Theorem `thm:continuity-rational-relations`.**  The inverse image of a regular language under
+a rational relation is regular; that is, rational relations are continuous. -/
 theorem rationalRel_continuous {A B : Type}
     {R : List A → List B → Prop} (hR : IsRationalRel R) : RelContinuous R :=
   rationalRel_continuous_aux hR
 
-/-! ### B.1.2 Undecidable equivalence
+/-! ### Undecidable equivalence
 
 Decidability statements are formalised by means of Mathlib's notion of a
 computable function.  A rational relation over the alphabet `ℕ` (every relation
@@ -66,8 +63,8 @@ that the reduction from the Post correspondence problem
 (`RequestProject/PartB/PCPRed.lean`) can be developed before the statements of
 the numbered results. -/
 
-/-- **Theorem B.1.6.**  The equivalence problem `R = S` is undecidable for
-rational relations.
+/-- **Theorem `thm:undecidable-equivalence-rational-relations`.**  The equivalence problem `R = S`
+is undecidable for rational relations.
 
 As is customary, undecidability is proved by a reduction from the Post
 correspondence problem, whose undecidability is *not* proved here but is taken
@@ -79,23 +76,23 @@ theorem rationalRel_equivalence_undecidable
     ¬ ComputablePred (fun p : RelCode × RelCode => codeRel p.1 = codeRel p.2) :=
   PCP.equivalence_undecidable hPCP
 
-/-- **Claim B.1.7.**  If `h : A* → B*` is a homomorphism, then its complement
-`{(w, v) | v ≠ h w}` is a rational relation. -/
+/-- **Claim `nolabel:claim-complement-of-homomorphism`.**  If `h : A* → B*` is a homomorphism, then
+its complement `{(w, v) | v ≠ h w}` is a rational relation. -/
 theorem hom_complement_rational {A B : Type} [Finite A] [Finite B] (φ : A → List B) :
     IsRationalRel (fun (w : List A) (v : List B) => v ≠ homOf φ w) :=
   hom_complement_rational_aux φ
 
-/-! ## B.2 Rational functions -/
+/-! ## Rational functions -/
 
-/-! ### B.2.1 Bimachines -/
+/-! ### Bimachines -/
 
-/-! **Definition B.2.2 (Bimachine).**  The definition of a bimachine
+/-! **Definition `def:bimachine` (Bimachine).**  The definition of a bimachine
 (`Bimachine`), of its semantics (`Bimachine.eval`) and of the functions that
 bimachines compute (`IsBimachine`, `IsAperiodicBimachine`) is in
 `RequestProject/PartB/Bimachine.lean`, together with the proof that these functions are
 rational. -/
 
-/-- **Theorem B.2.3.**  For a string-to-string function the following are
+/-- **Theorem `thm:bimachines`.**  For a string-to-string function the following are
 equivalent: (1) it is a rational relation which happens to be functional;
 (2) it is computed by an unambiguous nfa with output; (3) it is computed by a
 bimachine. -/
@@ -115,8 +112,8 @@ theorem rational_iff_unambiguous_iff_bimachine {A B : Type} [Finite A] [Finite B
   tfae_have 3 → 1 := rationalFun_of_isBimachine
   tfae_finish
 
-/-- An automaton with *extended transitions*: transitions are labelled by an
-input string and a regular language of output strings (used in Lemma B.2.4). -/
+/-- An automaton with *extended transitions*: transitions are labelled by an input string and a
+regular language of output strings (used in Lemma `lemma:eliminate-epsilon-transitions`). -/
 def IsExtendedNFAO {A B Q : Type} (M : LabAut A (Language B) Q) : Prop :=
   ∀ t ∈ M.δ, Language.IsRegular t.2.2.1
 
@@ -125,19 +122,18 @@ is any string in the concatenation of the languages along an accepting path. -/
 def extRel {A B Q : Type} (M : LabAut A (Language B) Q) (w : List A) (v : List B) : Prop :=
   ∃ ts, M.Accepting ts ∧ LabAut.inputOf ts = w ∧ v ∈ (LabAut.labelsOf ts).prod
 
-/-- The normal form of Lemma B.2.4: in every accepting run, either the input is
-nonempty and each transition inputs exactly one letter, or the input is empty
-and the run consists of exactly one transition. -/
+/-- The normal form of Lemma `lemma:eliminate-epsilon-transitions`: in every accepting run, either
+the input is nonempty and each transition inputs exactly one letter, or the input is empty and the
+run consists of exactly one transition. -/
 def EpsilonFree {A L Q : Type} (M : LabAut A L Q) : Prop :=
   ∀ ts, M.Accepting ts →
     (LabAut.inputOf ts ≠ [] → ∀ t ∈ ts, t.2.1.length = 1) ∧
     (LabAut.inputOf ts = [] → ts.length = 1)
 
-/-- **Lemma B.2.4 (Elimination of ε-transitions).**  Every rational relation can
-be computed by an nfa with output and extended transitions in which every
-accepting run is in the normal form described by `EpsilonFree`.  Furthermore, if
-every input string has finitely many outputs, then extended transitions are not
-needed. -/
+/-- **Lemma `lemma:eliminate-epsilon-transitions` (Elimination of ε-transitions).**  Every rational
+relation can be computed by an nfa with output and extended transitions in which every accepting run
+is in the normal form described by `EpsilonFree`.  Furthermore, if every input string has finitely
+many outputs, then extended transitions are not needed. -/
 theorem epsilon_elimination {A B : Type} [Finite A] [Finite B]
     {R : List A → List B → Prop} (hR : IsRationalRel R) :
     (∃ (Q : Type) (_ : Finite Q) (M : LabAut A (Language B) Q),
@@ -147,21 +143,21 @@ theorem epsilon_elimination {A B : Type} [Finite A] [Finite B]
           EpsilonFree M ∧ ∀ w v, R w v ↔ M.rel w v) :=
   epsilon_elimination_aux hR
 
-/-- **Lemma B.2.5 (Uniformisation).**  If a rational relation is total, then it
+/-- **Lemma `lem:uniformisation` (Uniformisation).**  If a rational relation is total, then it
 contains an unambiguous rational relation. -/
 theorem uniformisation {A B : Type} [Finite A] [Finite B]
     {R : List A → List B → Prop} (hR : IsRationalRel R) (htotal : ∀ w, ∃ v, R w v) :
     ∃ S : List A → List B → Prop, (∀ w v, S w v → R w v) ∧ IsUnambiguousRel S :=
   uniformisation_aux hR htotal
 
-/-! ### B.2.2 Decomposition into primes -/
+/-! ### Decomposition into primes -/
 
 /-! The family of **prime rational functions** `PrimeRationalFam`
-(Theorem B.2.6) — prime Mealy machines, their right-to-left variants, string
+(Theorem `thm:rational-primes`) — prime Mealy machines, their right-to-left variants, string
 homomorphisms, and the function `w ↦ w#` appending a fresh separator — is
 defined in `RequestProject/PartB/PrimeRat.lean`. -/
 
-/-- **Theorem B.2.6.**  A string-to-string function is rational if and only if
+/-- **Theorem `thm:rational-primes`.**  A string-to-string function is rational if and only if
 it can be obtained by composing prime rational functions. -/
 theorem rational_iff_prime_composition {A B : Type} [Finite A] [Finite B]
     (f : List A → List B) :
@@ -172,9 +168,9 @@ theorem rational_iff_prime_composition {A B : Type} [Finite A] [Finite B]
   · intro hf
     exact PrimeRat.rationalFun_of_compClosure hf inferInstance inferInstance
 
-/-! ### B.2.3 Mealy machines as a subset of the rational functions -/
+/-! ### Mealy machines as a subset of the rational functions -/
 
-/-- A rational function is continuous, by Theorem B.1.5. -/
+/-- A rational function is continuous, by Theorem `thm:continuity-rational-relations`. -/
 lemma continuous_of_isRationalFun {A B : Type} {f : List A → List B} (hf : IsRationalFun f) :
     Continuous f := by
   intro L hL
@@ -214,7 +210,7 @@ lemma take_eq_take_of_prefix {A B : Type} {f : List A → List B} (hpre : Prefix
     rw [hw]
 
 /-- Length preservation together with the determinism condition of
-Theorem B.2.7 implies prefix preservation. -/
+Theorem `nolabel:thm-mealy-among-rational-functions` implies prefix preservation. -/
 lemma prefixPreserving_of_take {A B : Type} {f : List A → List B} (hlen : LengthPreserving f)
     (htake : ∀ (w v : List A) (n : ℕ), w.take n = v.take n → (f w).take n = (f v).take n) :
     PrefixPreserving f := by
@@ -228,10 +224,9 @@ lemma prefixPreserving_of_take {A B : Type} {f : List A → List B} (hlen : Leng
   rw [h1] at h
   exact h.symm ▸ List.take_prefix (l := f (w ++ t)) (i := (f w).length)
 
-/-- **Theorem B.2.7.**  A rational function is computed by a Mealy machine if
-and only if it is length preserving and deterministic in the sense that input
-strings agreeing on the first `n` letters have outputs agreeing on the first `n`
-letters. -/
+/-- **Theorem `nolabel:thm-mealy-among-rational-functions`.**  A rational function is computed by a
+Mealy machine if and only if it is length preserving and deterministic in the sense that input
+strings agreeing on the first `n` letters have outputs agreeing on the first `n` letters. -/
 theorem rational_isMealy_iff {A B : Type} [Finite A] [Finite B] {f : List A → List B}
     (hf : IsRationalFun f) :
     IsMealy f ↔

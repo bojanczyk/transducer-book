@@ -1,13 +1,12 @@
-/-
-A convenient builder for rational functions, used in the proofs of Lemma C.2.10
-and Claim C.2.11 of *Transducers* (M. Bojańczyk).
+/- A convenient builder for rational functions, used in the proofs of Lemma
+`lem:regular-closure-properties` and Claim `claim:conditional` of *Transducers* (M. Bojańczyk).
 
 Most of the rational functions that appear in these proofs are "contextual
 rewritings": at every gap of the input string an output block is produced, which
 depends on the state of a deterministic automaton on the prefix and on the state
 of a deterministic automaton run right-to-left on the suffix.  This is exactly
-what a bimachine (Definition B.2.2) computes, and functions computed by
-bimachines are rational by Theorem B.2.3 (`rationalFun_of_isBimachine`).
+what a bimachine (Definition `def:bimachine`) computes, and functions computed by
+bimachines are rational by Theorem `thm:bimachines` (`rationalFun_of_isBimachine`).
 
 This file collects the small API that makes such machines easy to use: the state
 `bmSfx M w` of the suffix automaton, its recursion `bmSfx_cons`, the recursion

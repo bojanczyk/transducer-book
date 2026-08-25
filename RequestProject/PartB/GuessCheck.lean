@@ -18,7 +18,7 @@ with output runs a deterministic automaton for `L` on the annotation `u` that it
 guesses, reading `f γ` and writing `g γ` at each letter `γ` of `u`.  This is one
 half of Nivat's theorem; the other half is not needed here.
 
-Together with `Transducers.exists_rationalFun_of_total_rel` (Lemma B.2.5,
+Together with `Transducers.exists_rationalFun_of_total_rel` (Lemma `lem:uniformisation`,
 `RequestProject/PartB/UniformFun.lean`) this turns a regular language of correct
 annotations that has at least one member over every input into a *rational
 function* producing a correct output, with no functionality of the guessing to

@@ -1,5 +1,5 @@
 /-
-Theorem C.2.5: two-way transducers are closed under composition.
+Theorem `thm:composition-of-two-way-transducers`: two-way transducers are closed under composition.
 
 The construction of `TwoWayComp.lean` assumes that all the transitions of the
 first transducer produce an output of the same length, ending with a fixed
@@ -121,8 +121,8 @@ lemma padFun_filterMap (M : TwoWay A B Q) (m : ℕ) {f : List A → List B}
 
 end TwoWay
 
-/-- **Theorem C.2.5.**  Functions computed by two-way transducers are closed
-under composition. -/
+/-- **Theorem `thm:composition-of-two-way-transducers`.**  Functions computed by two-way transducers
+are closed under composition. -/
 theorem isTwoWay_comp_twoWay {A B C : Type} [Finite A] [Finite B] [Finite C]
     {f : List A → List B} {g : List B → List C} (hf : IsTwoWay f) (hg : IsTwoWay g) :
     IsTwoWay (g ∘ f) := by

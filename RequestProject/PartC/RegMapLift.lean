@@ -1,5 +1,5 @@
 /-
-The first item of Lemma C.2.10 of *Transducers* (M. Bojańczyk): regular
+The first item of Lemma `lem:regular-closure-properties` of *Transducers* (M. Bojańczyk): regular
 functions are closed under map lifting.
 
 Since the map lifting commutes with composition (`mapLift_comp'`), it is enough
@@ -16,10 +16,9 @@ import RequestProject.PartC.MapLiftPrime
 
 namespace Transducers
 
-/-- **Lemma C.2.10 (map lifting).**  The map lifting of a regular function is
-regular.  The finiteness of the two alphabets is carried as an explicit
-hypothesis, so that the induction on the composition tree has access to the
-finiteness of the intermediate alphabets. -/
+/-- **Lemma `lem:regular-closure-properties` (map lifting).**  The map lifting of a regular function
+is regular.  The finiteness of the two alphabets is carried as an explicit hypothesis, so that the
+induction on the composition tree has access to the finiteness of the intermediate alphabets. -/
 theorem isRegularFun_mapLift_aux {A B : Type} {f : List A → List B} (hf : IsRegularFun f) :
     Finite A → Finite B → IsRegularFun (mapLift f) := by
   induction hf with
@@ -70,8 +69,8 @@ theorem isRegularFun_mapLift_aux {A B : Type} {f : List A → List B} (hf : IsRe
       rw [mapLift_comp']
       exact (ihf hA hB).comp (ihg hB hC)
 
-/-- **Lemma C.2.10 (map lifting).**  The map lifting of a regular function is
-regular. -/
+/-- **Lemma `lem:regular-closure-properties` (map lifting).**  The map lifting of a regular function
+is regular. -/
 theorem isRegularFun_mapLift {A B : Type} [Finite A] [Finite B] {f : List A → List B}
     (hf : IsRegularFun f) : IsRegularFun (mapLift f) :=
   isRegularFun_mapLift_aux hf ‹_› ‹_›

@@ -16,10 +16,9 @@ enters through the identification of the window of an excursion as the interval
 between the record-breaking column and the column furthest away from it that the
 excursion reaches.
 
-What is *not* proved here -- and is the one remaining gap of Theorem C.2.9, see
-`RequestProject/PartC/SnakeStage1.lean` -- is that a marking can be chosen by a
-*regular function* of the input.
--/
+What is *not* proved here -- and is the one remaining gap of Theorem
+`thm:2dfa-decomposition-into-primes`, see `RequestProject/PartC/SnakeStage1.lean` -- is that a
+marking can be chosen by a *regular function* of the input. -/
 import RequestProject.PartC.SnakeAssemble
 import RequestProject.PartC.SnakeFinalConf
 import RequestProject.PartC.SnakeConfine

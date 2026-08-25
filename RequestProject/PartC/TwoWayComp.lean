@@ -1,6 +1,5 @@
-/-
-The composed two-way transducer (the main construction for Theorem C.2.5 of
-*Transducers*, M. Bojańczyk).
+/- The composed two-way transducer (the main construction for Theorem
+`thm:composition-of-two-way-transducers` of *Transducers*, M. Bojańczyk).
 
 Let `M` be a two-way transducer whose transitions all produce an output of the
 same length `m+1`, ending with a fixed letter `b₀`, and let `N` be a second

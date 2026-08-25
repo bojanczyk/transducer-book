@@ -3,10 +3,9 @@ Finite descriptions (codes) of nondeterministic automata with output, and the
 formalisation of decidability statements used in Part B of *Transducers*
 (M. Bojańczyk).
 
-These definitions were moved here from
-`RequestProject/PartB/RationalStatements.lean` so that the reduction proving
-Theorem B.1.6 (in `RequestProject/PartB/PCPRed.lean`) can be developed before
-the statements of the numbered results.
+These definitions were moved here from `RequestProject/PartB/RationalStatements.lean` so that the
+reduction proving Theorem `thm:undecidable-equivalence-rational-relations` (in
+`RequestProject/PartB/PCPRed.lean`) can be developed before the statements of the numbered results.
 -/
 import RequestProject.PartB.PathComb
 

@@ -1,8 +1,8 @@
 /-
-**Uniformisation, in the form of a function** (Lemma B.2.5).
+**Uniformisation, in the form of a function** (Lemma `lem:uniformisation`).
 
 `Transducers.uniformisation` (`RequestProject/PartB/Uniform.lean`) states the
-book's Lemma B.2.5: a total rational relation contains an *unambiguous* rational
+book's Lemma `lem:uniformisation`: a total rational relation contains an *unambiguous* rational
 relation.  An unambiguous nfa with output has exactly one accepting run over
 every input, so the relation it computes is the graph of a (total) function,
 which is therefore a rational function contained in the original relation.  That
@@ -17,7 +17,7 @@ namespace Transducers
 
 open LabAut NFAO
 
-/-- **Uniformisation as a function** (Lemma B.2.5).  A total rational relation
+/-- **Uniformisation as a function** (Lemma `lem:uniformisation`).  A total rational relation
 contains the graph of a rational function. -/
 theorem exists_rationalFun_of_total_rel {A B : Type} [Finite A] [Finite B]
     {R : List A → List B → Prop} (hR : IsRationalRel R) (htotal : ∀ w, ∃ v, R w v) :

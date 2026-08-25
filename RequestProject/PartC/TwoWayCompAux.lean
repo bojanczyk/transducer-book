@@ -1,6 +1,5 @@
-/-
-Auxiliary lemmas for the composition of two two-way transducers (Theorem C.2.5
-of *Transducers*, M. Bojańczyk).
+/- Auxiliary lemmas for the composition of two two-way transducers (Theorem
+`thm:composition-of-two-way-transducers` of *Transducers*, M. Bojańczyk).
 
 This file collects the bookkeeping that the construction of `TwoWayComp.lean`
 needs: the output word produced by a transition, the splitting of the output of

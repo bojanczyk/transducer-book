@@ -1,8 +1,7 @@
-/-
-Computability of the constructions used in the reduction of Theorem B.3.4 to
-Theorem B.3.3: the product weighted automaton `pairW` of
-`RequestProject/PartB/PairWeighted.lean` is a primitive recursive function of
-the base `K` and of the two codes.
+/- Computability of the constructions used in the reduction of Theorem
+`thm:equivalence-rational-functions` to Theorem `thm:equivalence-weighted-automata`: the product
+weighted automaton `pairW` of `RequestProject/PartB/PairWeighted.lean` is a primitive recursive
+function of the base `K` and of the two codes.
 
 Mathlib's `Primrec` API has no arithmetic on `ℤ`, but the weights produced here
 are the *natural* numbers `K ^ |x|`, `iota K x` and `1`, written as fractions

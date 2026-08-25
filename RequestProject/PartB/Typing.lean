@@ -1,9 +1,6 @@
-/-
-Claim B.4.4: for an nfa with output all of whose states are productive, the
-computed function is length preserving if and only if the states can be typed
-by integers measuring the difference between the length of the output and the
-length of the input.
--/
+/- Claim `claim:typing-length-preserving`: for an nfa with output all of whose states are
+productive, the computed function is length preserving if and only if the states can be typed by
+integers measuring the difference between the length of the output and the length of the input. -/
 import RequestProject.PartB.LabAut
 
 namespace Transducers
@@ -79,10 +76,10 @@ lemma defect_well_defined {f : List A → List B} (hM : ∀ w v, M.rel w v ↔ v
 
 end Typing
 
-/-- **Claim B.4.4.**  For an nfa with output whose states are all productive,
-the computed function is length-preserving if and only if a typing
-`τ : Q → ℤ` exists (i.e. every run from an initial state to `q` satisfies
-`|output| = |input| + τ q`) and all accepting states are mapped to zero. -/
+/-- **Claim `claim:typing-length-preserving`.**  For an nfa with output whose states are all
+productive, the computed function is length-preserving if and only if a typing `τ : Q → ℤ` exists
+(i.e. every run from an initial state to `q` satisfies `|output| = |input| + τ q`) and all accepting
+states are mapped to zero. -/
 theorem lengthPreserving_iff_typing_aux {A B Q : Type} (M : NFAO A B Q)
     (hprod : ∀ q, Productive M q) {f : List A → List B} (hM : ∀ w v, M.rel w v ↔ v = f w) :
     LengthPreserving f ↔

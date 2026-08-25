@@ -13,9 +13,9 @@ import Mathlib
 
 namespace Transducers
 
-/-! ## Continuity (Definition .0.1) -/
+/-! ## Continuity (Definition `def:continuity`) -/
 
-/-- **Definition .0.1 (Continuous string-to-string functions).**
+/-- **Definition `def:continuity` (Continuous string-to-string functions).**
 A function `f : A* → B*` is continuous if the inverse image of every regular
 language over the output alphabet is regular. -/
 def Continuous {A B : Type} (f : List A → List B) : Prop :=
@@ -76,7 +76,7 @@ lemma npow_succ' {A : Type} (v : List A) (n : ℕ) : npow v (n + 1) = npow v n +
   | zero => rfl
   | succ n ih => simp [npow_succ, ih]
 
-/-- **Definition A.2.7 (Aperiodic).**  A string-to-string function is aperiodic
+/-- **Definition `def:aperiodic-mealy` (Aperiodic).**  A string-to-string function is aperiodic
 if for all input strings `u, v, w` the last letter of `f (u vⁿ w)` is the same
 for all sufficiently large `n`.
 
@@ -96,7 +96,7 @@ def Aperiodic {A B : Type} (f : List A → List B) : Prop :=
   ∀ u v w : List A, ∃ o : Option B, ∃ N : ℕ, ∀ n ≥ N,
     (f (u ++ npow v n ++ w)).getLast? = o
 
-/-! ## The map lifting (Definition A.2.3) -/
+/-! ## The map lifting (Definition `def:map-lifting`) -/
 
 /-- Split a string over the alphabet `A + 1` (where `none` is the separator `#`)
 into the list of maximal blocks that do not use the separator. -/
@@ -108,16 +108,16 @@ def splitSep {A : Type} : List (Option A) → List (List A)
       | [] => [[a]]
       | u :: us => (a :: u) :: us
 
-/-- **Definition A.2.3 (Map lifting).**  `mapLift f` applies `f` to every block
+/-- **Definition `def:map-lifting` (Map lifting).**  `mapLift f` applies `f` to every block
 of the input string that is delimited by the fresh separator `#` (modelled by
 `none`):  `w₁ # ⋯ # wₙ ↦ f w₁ # ⋯ # f wₙ`. -/
 def mapLift {A B : Type} (f : List A → List B) (w : List (Option A)) :
     List (Option B) :=
   List.intercalate [none] ((splitSep w).map (fun u => (f u).map some))
 
-/-! ## Left distance (Definition B.4.7) -/
+/-! ## Left distance (Definition `nolabel:def-left-distance`) -/
 
-/-- **Definition B.4.7 (Left distance).**  The left distance `‖w₁, w₂‖` is the
+/-- **Definition `nolabel:def-left-distance` (Left distance).**  The left distance `‖w₁, w₂‖` is the
 least `k` such that `w₁ = v v₁` and `w₂ = v v₂` with `|v₁|, |v₂| ≤ k`. -/
 noncomputable def leftDist {B : Type} (w₁ w₂ : List B) : ℕ :=
   sInf {k : ℕ | ∃ v v₁ v₂ : List B,
@@ -129,9 +129,9 @@ noncomputable def leftDist {B : Type} (w₁ w₂ : List B) : ℕ :=
 function `δ : Q × A → Q`. -/
 def strTrans {A Q : Type} (δ : Q → A → Q) (w : List A) : Q → Q := fun q => w.foldl δ q
 
-/-- A deterministic transition function is *aperiodic* if for every state
-transformation `δ_w` arising from an input string, the sequence
-`δ_w¹, δ_w², …` eventually stabilises (condition (*) of Lemma A.2.11). -/
+/-- A deterministic transition function is *aperiodic* if for every state transformation `δ_w`
+arising from an input string, the sequence `δ_w¹, δ_w², …` eventually stabilises (condition (*) of
+Lemma `lem:aperiodicity-minimal-machine`). -/
 def TransAperiodic {A Q : Type} (δ : Q → A → Q) : Prop :=
   ∀ w : List A, ∃ N : ℕ, ∀ n ≥ N, (strTrans δ w)^[n] = (strTrans δ w)^[N]
 

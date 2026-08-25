@@ -1,7 +1,7 @@
 /-
 Automata with labelled transitions: the common basis of nondeterministic
-automata with output (Definition B.1.1) and of weighted automata
-(Definition B.3.2) of *Transducers* (M. Bojanczyk).
+automata with output (Definition `nolabel:def-nfa-with-output`) and of weighted automata
+(Definition `nolabel:def-weighted-automaton`) of *Transducers* (M. Bojanczyk).
 
 This file contains the definitions themselves (moved here from
 `RequestProject/PartB/RationalStatements.lean`, so that the constructions of Part B can be
@@ -17,11 +17,10 @@ namespace Transducers
 
 /-! ## Automata with labelled transitions
 
-Both nondeterministic automata with output (Definition B.1.1) and weighted
-automata (Definition B.3.2) are automata whose transitions are labelled by an
-input string together with a label from some set `L` (output strings in the
-first case, semiring elements in the second).  We therefore define them at
-once. -/
+Both nondeterministic automata with output (Definition `nolabel:def-nfa-with-output`) and weighted
+automata (Definition `nolabel:def-weighted-automaton`) are automata whose transitions are labelled
+by an input string together with a label from some set `L` (output strings in the first case,
+semiring elements in the second).  We therefore define them at once. -/
 
 /-- An automaton whose finitely many transitions are labelled by an input string
 and a label from `L`, with distinguished sets of initial and final states. -/
@@ -80,9 +79,9 @@ end LabAut
 
 /-! ## Weighted automata
 
-The semantics of a weighted automaton (Definition B.3.2) is also given here, so
-that the constructions of Section B.3 can be developed before the statements of
-the numbered results; the statements themselves are in
+The semantics of a weighted automaton (Definition `nolabel:def-weighted-automaton`) is also given
+here, so that the constructions of Section *Rational relations and weighted automata* can be
+developed before the statements of the numbered results; the statements themselves are in
 `RequestProject/PartB/WeightedStatements.lean`. -/
 
 namespace LabAut
@@ -102,13 +101,13 @@ lemma weightOf_append (ts ts' : List (Q × List A × S × Q)) :
     weightOf (ts ++ ts') = weightOf ts * weightOf ts' := by
   simp [weightOf, labelsOf]
 
-/-- **Definition B.3.2 (Weighted automaton), semantics.**  The output on an
-input string `w` is the sum of the weights of the accepting runs over `w`. -/
+/-- **Definition `nolabel:def-weighted-automaton` (Weighted automaton), semantics.**  The output on
+an input string `w` is the sum of the weights of the accepting runs over `w`. -/
 noncomputable def wEval (M : LabAut A S Q) (w : List A) : S :=
   ∑ᶠ ts ∈ M.acceptingOn w, weightOf ts
 
-/-- The requirement, part of Definition B.3.2, that every input string has only
-finitely many accepting runs. -/
+/-- The requirement, part of Definition `nolabel:def-weighted-automaton`, that every input string
+has only finitely many accepting runs. -/
 def FinitelyManyRuns (M : LabAut A S Q) : Prop := ∀ w : List A, (M.acceptingOn w).Finite
 
 end LabAut
@@ -119,11 +118,11 @@ def IsWeighted {A S : Type} [Semiring S] (f : List A → S) : Prop :=
   ∃ (Q : Type) (_ : Finite Q) (M : LabAut A S Q),
     M.FinitelyManyRuns ∧ M.wEval = f
 
-/-! ## B.1 Rational relations -/
+/-! ## Rational relations -/
 
-/-- **Definition B.1.1 (nfa with output).**  A nondeterministic automaton with
-output is an automaton whose transitions are labelled by pairs of an input
-string and an output string. -/
+/-- **Definition `nolabel:def-nfa-with-output` (nfa with output).**  A nondeterministic automaton
+with output is an automaton whose transitions are labelled by pairs of an input string and an output
+string. -/
 abbrev NFAO (A B Q : Type) := LabAut A (List B) Q
 
 namespace NFAO
@@ -205,7 +204,7 @@ accepting run. -/
 def Productive {A B Q : Type} (M : NFAO A B Q) (q : Q) : Prop :=
   ∃ q₀ ∈ M.init, ∃ p ∈ M.final, ∃ ts₁ ts₂, M.Path q₀ ts₁ q ∧ M.Path q ts₂ p
 
-/-- **Definition B.1.2 (Rational relation).**  A relation is rational if it is
+/-- **Definition `def:rational-relation` (Rational relation).**  A relation is rational if it is
 computed by a nondeterministic automaton with output. -/
 def IsRationalRel {A B : Type} (R : List A → List B → Prop) : Prop :=
   ∃ (Q : Type) (_ : Finite Q) (M : NFAO A B Q), ∀ w v, R w v ↔ M.rel w v
@@ -214,7 +213,7 @@ def IsRationalRel {A B : Type} (R : List A → List B → Prop) : Prop :=
 def IsUnambiguousRel {A B : Type} (R : List A → List B → Prop) : Prop :=
   ∃ (Q : Type) (_ : Finite Q) (M : NFAO A B Q), M.Unambiguous ∧ ∀ w v, R w v ↔ M.rel w v
 
-/-- **Definition B.2.1 (Rational function).**  A (total) string-to-string
+/-- **Definition `nolabel:def-rational-function` (Rational function).**  A (total) string-to-string
 function is rational if its graph is a rational relation. -/
 def IsRationalFun {A B : Type} (f : List A → List B) : Prop :=
   IsRationalRel (fun w v => v = f w)

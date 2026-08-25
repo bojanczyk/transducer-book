@@ -5,7 +5,7 @@ transitions.
 If every transition of an automaton reads exactly one letter, then a run over an
 input string `w` has exactly `|w|` transitions, and the runs can be listed by a
 simple recursion on `w`.  This file develops that enumeration and the facts that
-the constructions of Section B.3 need:
+the constructions of Section *Rational relations and weighted automata* need:
 
 * `RunList.runs δ q w` lists the runs from the state `q` over the string `w`;
 * `RunList.mem_runs` identifies its members with the paths of the automaton;

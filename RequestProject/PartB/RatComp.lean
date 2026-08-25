@@ -1,5 +1,5 @@
 /-
-Closure of rational relations under composition (Theorem B.1.4).
+Closure of rational relations under composition (Theorem `thm:composition-rational-relations`).
 
 Both relations are first put in the atomic normal form of
 `RequestProject/PartB/Atomize.lean`, so that a transition reads at most one letter and
@@ -222,8 +222,8 @@ lemma prodAut_rel [Finite Q] [Finite P]
 
 end RatComp
 
-/-- **Theorem B.1.4.**  Rational relations are closed under relational
-composition. -/
+/-- **Theorem `thm:composition-rational-relations`.**  Rational relations are closed under
+relational composition. -/
 theorem rationalRel_comp_aux {A B C : Type} {R : List A → List B → Prop}
     {S : List B → List C → Prop} (hR : IsRationalRel R) (hS : IsRationalRel S) :
     IsRationalRel (fun w v => ∃ u, R w u ∧ S u v) := by

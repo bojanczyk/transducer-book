@@ -1,18 +1,19 @@
 /-
-Theorem B.4.2 of *Transducers* (M. Bojańczyk): one can decide whether a rational
+Theorem `thm:decide-if-mealy` of *Transducers* (M. Bojańczyk): one can decide whether a rational
 function is computed by a Mealy machine.
 
-By Theorem B.4.1 a function is computed by a Mealy machine exactly when it is
-continuous, prefix preserving and length preserving, and a rational function is
-automatically continuous (Theorem B.1.5, used through Theorem B.2.7 in
-`RequestProject/PartB/CodeRat.lean`).  Length preservation is decided by
-Lemma B.4.3 (`RequestProject/PartB/LenDec.lean`), and prefix preservation of a
-length preserving function is the equality
+By Theorem `thm:mealy-machine-independent` a function is computed by a Mealy machine exactly when it
+is continuous, prefix preserving and length preserving, and a rational function is automatically
+continuous (Theorem `thm:continuity-rational-relations`, used through Theorem
+`nolabel:thm-mealy-among-rational-functions` in `RequestProject/PartB/CodeRat.lean`).  Length
+preservation is decided by Lemma `lem:decide-if-length-preserving`
+(`RequestProject/PartB/LenDec.lean`), and prefix preservation of a length preserving function is the
+equality
 
   `dropLast (f w) = f (dropLast w)`
 
 of two rational functions, for which `RequestProject/PartB/PrefixCodes.lean`
-builds codes; the equality is decided by Theorem B.3.4.
+builds codes; the equality is decided by Theorem `thm:equivalence-rational-functions`.
 -/
 import RequestProject.PartB.CodeRat
 import RequestProject.PartB.RatEqDec
@@ -22,8 +23,8 @@ namespace MealyDec
 
 open PrefixCodes CodeRat
 
-/-- The decision procedure for Theorem B.4.2, built from a decision procedure
-`D` for equivalence of coded rational functions (Theorem B.3.4). -/
+/-- The decision procedure for Theorem `thm:decide-if-mealy`, built from a decision procedure
+`D` for equivalence of coded rational functions (Theorem `thm:equivalence-rational-functions`). -/
 def mealyDecB (D : RelCode × RelCode → Bool) (c : RelCode) : Bool :=
   LenDec.lenDec c && D (dropCode c, shiftCode c)
 
@@ -54,7 +55,7 @@ lemma computable_mealyDecB {D : RelCode × RelCode → Bool} (hD : Computable D)
 
 end MealyDec
 
-/-- **Theorem B.4.2** from the effectivity hypotheses of
+/-- **Theorem `thm:decide-if-mealy`** from the effectivity hypotheses of
 `RequestProject/PartB/Effective.lean`: one can decide whether a rational
 function is computed by a Mealy machine. -/
 theorem rationalFun_isMealy_decidable_aux

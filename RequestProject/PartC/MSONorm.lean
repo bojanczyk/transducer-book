@@ -1,17 +1,15 @@
 /-
-Normalisation of the type `τ` of an mso transduction: **Lemma C.4.9** of
+Normalisation of the type `τ` of an mso transduction: **Lemma `lem:logic-reduction-to-type-n`** of
 *Transducers* (M. Bojańczyk).
 
-Definition C.4.7 presents the output universe of an mso transduction by a
-*linear* type `τ = k · n + c`: `k` copies of the positions of the input string
-and `c` extra elements, with separate families of formulas for the two kinds of
-elements.  Lemma C.4.9 of the book removes the extra elements by padding the
-input string; here we do the same thing without changing the input, by
-attaching each extra element to the *first* position of the input string.  The
-result is a *normalised* transduction (`NormT` below): a single finite set of
-tags, a universe formula and a family of letter formulas with one free
-first-order variable for every tag, and an order formula with two free
-first-order variables for every pair of tags.
+Definition `def:mso-transduction` presents the output universe of an mso transduction by a *linear*
+type `τ = k · n + c`: `k` copies of the positions of the input string and `c` extra elements, with
+separate families of formulas for the two kinds of elements.  Lemma `lem:logic-reduction-to-type-n`
+of the book removes the extra elements by padding the input string; here we do the same thing
+without changing the input, by attaching each extra element to the *first* position of the input
+string.  The result is a *normalised* transduction (`NormT` below): a single finite set of tags, a
+universe formula and a family of letter formulas with one free first-order variable for every tag,
+and an order formula with two free first-order variables for every pair of tags.
 
 The empty input string has no first position, so the normalisation is only
 claimed for non-empty inputs; the value of the transduction on the empty input
@@ -64,7 +62,7 @@ def Presents (N : NormT A B) (w : List A) (es : List N.Elt) (v : List B) : Prop 
   es.length = v.length ∧
   ∀ (i : ℕ) (hi : i < es.length) (hi' : i < v.length), N.lab w es[i] v[i]
 
-/-- The requirements of Definition C.4.7, for a normalised transduction: on the
+/-- The requirements of Definition `def:mso-transduction`, for a normalised transduction: on the
 selected elements the letter formulas are exclusive and the order formula is a
 linear order (transitivity is not needed below and is therefore omitted). -/
 def Proper (N : NormT A B) (w : List A) : Prop :=
@@ -196,8 +194,8 @@ lemma exists_normElt (T : MSOTransduction A B) {w : List A} (hw : 0 < w.length)
       simpa using this
     simp [normElt, this]
 
-/-- **Lemma C.4.9 (normalisation of `τ`).**  Every mso transduction agrees, on
-non-empty inputs, with a normalised transduction. -/
+/-- **Lemma `lem:logic-reduction-to-type-n` (normalisation of `τ`).**  Every mso transduction
+agrees, on non-empty inputs, with a normalised transduction. -/
 theorem exists_norm (T : MSOTransduction A B) (hP : T.Proper) :
     ∃ N : NormT A B,
       (∀ w : List A, 0 < w.length → N.Proper w) ∧

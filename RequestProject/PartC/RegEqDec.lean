@@ -1,13 +1,13 @@
-/-
-Theorem C.1.4 of *Transducers* (M. Bojańczyk): equivalence is decidable for
-regular functions, here in the form of a decision procedure on codes of two-way
-transducers (which compute exactly the regular functions, Theorem C.2.9).
+/- Theorem `thm:decidable-equivalence-regular` of *Transducers* (M. Bojańczyk): equivalence is
+decidable for regular functions, here in the form of a decision procedure on codes of two-way
+transducers (which compute exactly the regular functions, Theorem
+`thm:2dfa-decomposition-into-primes`).
 
-The proof is the expected one, and follows the shape of the decision procedure
-of Theorems B.3.3 and B.3.7 in `RequestProject/PartB/WeightedDec.lean`: compute
-the equivalence bound `N` for the two codes and compare the two behaviours on
-all inputs of length at most `N`.  Two things have to be checked for this to be
-a *total* procedure and a correct one.
+The proof is the expected one, and follows the shape of the decision procedure of Theorems
+`thm:equivalence-weighted-automata` and `thm:zeroness-weighted-automata` in
+`RequestProject/PartB/WeightedDec.lean`: compute the equivalence bound `N` for the two codes and
+compare the two behaviours on all inputs of length at most `N`.  Two things have to be checked for
+this to be a *total* procedure and a correct one.
 
 * Only the finitely many strings over the letters occurring in the two codes,
   together with one fresh letter, are tested.  This is enough because a code
@@ -36,7 +36,7 @@ def testWords (N : TwoWayCode → TwoWayCode → ℕ) (p : TwoWayCode × TwoWayC
     List (List ℕ) :=
   WDec.wordsUpto (testAlphabet p) (N p.1 p.2)
 
-/-- The decision procedure for Theorem C.1.4, built from a pointwise
+/-- The decision procedure for Theorem `thm:decidable-equivalence-regular`, built from a pointwise
 equivalence test `D` and an equivalence bound `N`. -/
 def regEqB (D : TwoWayCode × TwoWayCode × List ℕ → Bool) (N : TwoWayCode → TwoWayCode → ℕ)
     (p : TwoWayCode × TwoWayCode) : Bool :=
@@ -116,8 +116,8 @@ lemma computable_regEqB {D : TwoWayCode × TwoWayCode × List ℕ → Bool}
 
 end RegDec
 
-/-- **Theorem C.1.4** from the effectivity hypotheses.  Equivalence is decidable
-for the two-way transducers computing regular functions. -/
+/-- **Theorem `thm:decidable-equivalence-regular`** from the effectivity hypotheses.  Equivalence is
+decidable for the two-way transducers computing regular functions. -/
 theorem regular_equivalence_decidable_aux (hEval : EffectiveTwoWayEvalEq)
     (hBound : EffectiveTwoWayBound) :
     DecidableUnderPromise
