@@ -41,6 +41,10 @@ AUX = BODY / "main.aux"
 MACROS = BODY / "macros.sty"
 OUT = ROOT / "static" / "search-index.js"
 
+# The preface, which the site shows as its landing page and so has no directory
+# of its own — an empty slug. Searchable like anything else the book says.
+FRONT = [("", "preface.tex", "Preface")]
+
 # (page slug, source file) in book order — the same list build-references.py
 # keeps, for the same reason: nothing in the sources states it.
 CHAPTERS = [
@@ -378,11 +382,12 @@ def build():
     titles = page_titles()
 
     pages, entries = [], []
-    for index, (slug, source) in enumerate(CHAPTERS):
+    everything = FRONT + [(slug, source, None) for slug, source in CHAPTERS]
+    for slug, source, name in everything:
         if not (BODY / source).exists():
             print(f"  skipped {source}: not found", file=sys.stderr)
             continue
-        pages.append({"u": slug, "t": titles.get(slug, slug)})
+        pages.append({"u": slug, "t": name or titles.get(slug, slug)})
         for e in chapter_entries(slug, source, labels, anchors):
             e["p"] = len(pages) - 1
             entries.append(e)

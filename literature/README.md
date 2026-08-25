@@ -11,6 +11,12 @@ BibTeX entries for everything listed here live in the book's bibliography, [../b
   RAND: https://www.rand.org/pubs/research_memoranda/RM704.html (report RM-704)  
   PDF: [Kleene1951_Representation_of_Events_in_Nerve_Nets_and_Finite_Automata.pdf](pdfs/Kleene1951_Representation_of_Events_in_Nerve_Nets_and_Finite_Automata.pdf) (RAND memorandum)
 
+- **Jean-Éric Pin (2025), _Mathematical Foundations of Automata Theory_ (MPRI lecture notes).**  
+  General algebraic-automata-theory reference: semigroups, Green's relations, recognisable and rational sets, star-free and piecewise testable languages, varieties. The profinite material is **Chapter X, _Profinite words_, pp. 175-188** — profinite metric and topology (§2.1), free profinite monoid and its universal property (§2.2-2.3), ω-terms (§2.4), recognisable languages as clopen sets (§3).  
+  Link: https://www.irif.fr/~jep/PDF/MPRI/MPRI.pdf  
+  PDF: [Pin2025_Mathematical_Foundations_of_Automata_Theory.pdf](pdfs/Pin2025_Mathematical_Foundations_of_Automata_Theory.pdf) (version of 24 March 2025, 344 pp.)  
+  Note: a living document, so quote the version date when citing. It is also cited in the literature as [Pin22], which is the version of 18 February 2022; Chapter X sits at pp. 175-188 in both.
+
 ## Part A — Mealy machines
 
 - **George H. Mealy (1955), _A Method for Synthesizing Sequential Circuits_.**  
@@ -194,6 +200,7 @@ BibTeX entries for everything listed here live in the book's bibliography, [../b
 
 The PDFs currently stored here are:
 
+- [pdfs/Pin2025_Mathematical_Foundations_of_Automata_Theory.pdf](pdfs/Pin2025_Mathematical_Foundations_of_Automata_Theory.pdf)
 - [pdfs/Eilenberg1974_Automata_Languages_and_Machines_Volume_A.pdf](pdfs/Eilenberg1974_Automata_Languages_and_Machines_Volume_A.pdf)
 - [pdfs/Dubreil1941_Contribution_a_la_theorie_des_demi-groupes.pdf](pdfs/Dubreil1941_Contribution_a_la_theorie_des_demi-groupes.pdf)
 - [pdfs/Schutzenberger1956_Une_theorie_algebrique_du_codage.pdf](pdfs/Schutzenberger1956_Une_theorie_algebrique_du_codage.pdf)

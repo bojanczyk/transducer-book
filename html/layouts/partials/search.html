@@ -27,7 +27,16 @@
   var results = document.getElementById('search-results');
   if (!input) return;
 
-  var HERE = location.pathname.replace(/[^/]*$/, '');   // this chapter's directory
+  // Where the site's root is from here — read off the index script's own src,
+  // which Hugo has already rewritten to "../search-index.js" on a chapter page
+  // and "./search-index.js" on the landing page. Hugo's relativeURLs rewriting
+  // reaches attributes only, never the inside of a script, so asking it for the
+  // path here would yield an absolute one and break the site opened off disk;
+  // and trimming location.pathname cannot tell the landing page from a chapter.
+  var indexScript = document.querySelector('script[src*="search-index.js"]');
+  var ROOT = indexScript
+    ? indexScript.getAttribute('src').replace(/search-index\.js.*$/, '').replace(/^\.\//, '')
+    : '';
   var MAX = 40;                                          // results shown at once
 
   // ---- matching ------------------------------------------------------------
@@ -146,7 +155,8 @@
   // the anchor to the words themselves.
   function href(entry, query) {
     var page = window.__bookSearch.pages[entry.p];
-    var base = HERE.replace(/[^/]*\/$/, '') + page.u + '/';
+    // The preface is the landing page, and has no directory of its own.
+    var base = ROOT + (page.u ? page.u + '/' : '');
     if (location.protocol === 'file:') base += 'index.html';
     return base + '?find=' + encodeURIComponent(query) +
            (entry.a ? '#' + entry.a : '');

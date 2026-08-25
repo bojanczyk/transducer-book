@@ -9,5 +9,6 @@ part = true
 \setcounter{mypart}{3}
 \setcounter{section}{0}
 \setcounter{ourexamplecounter}{17}
+% source stamp regular-intro.tex:8a4eba42
 \input{../../../regular-intro.tex}
 {{< /latex >}}

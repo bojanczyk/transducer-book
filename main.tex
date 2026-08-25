@@ -6,10 +6,19 @@
 
 \begin{document}
 
+% The front matter — title, preface, contents — is numbered separately and
+% shown without numbers, so that page 1 of the book is the first page of the
+% introduction. Roman rather than simply unnumbered: \pagenumbering also resets
+% the counter, which keeps hyperref's anchors for these pages distinct from the
+% arabic ones that follow (page.i, not a second page.1).
+\pagenumbering{roman}
+\pagestyle{empty}
+
 \title{Transducers}
 \author{Miko{\l}aj Boja\'nczyk}
 
 \maketitle
+\thispagestyle{empty}     % \maketitle asks for `plain` on its own page
 % \begin{abstract}
 %     Lecture notes for a course on transducers
 % \end{abstract}
@@ -23,7 +32,11 @@
 \newpage
 \tableofcontents
 
-\newpage 
+\newpage
+
+% Here the book proper starts, and with it page 1.
+\pagenumbering{arabic}
+\pagestyle{plain}
 
 \input{intro}
 

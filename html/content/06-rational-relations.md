@@ -9,6 +9,7 @@ source = "rational-relations.tex"
 \setcounter{section}{0}
 \setcounter{ourexamplecounter}{6}
 \renewcommand{\exer}[2]{}
+% source stamp rational-relations.tex:17ea882f
 \input{../../../rational-relations.tex}
 {{< /latex >}}
 

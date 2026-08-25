@@ -132,8 +132,6 @@
     html[data-width="normal"] { --reading-width: 46rem; }
     html[data-width="wide"] { --reading-width: 64rem; }
     .shell { display: grid; grid-template-columns: 17rem minmax(0, 1fr); gap: 3rem; width: min(100%, calc(24rem + var(--reading-width))); margin: 0 auto; padding: 2rem; }
-    .shell-home { display: block; width: min(100%, 38rem); }
-    .shell-home .book-toc { position: static; width: 34rem; max-width: calc(100vw - 4rem); max-height: none; }
     .book-toc { position: sticky; top: 1.5rem; align-self: start; max-height: calc(100vh - 3rem); overflow-y: auto; }
     .book-toc h1 { margin: 0 0 1rem; font-size: 1.15rem; line-height: 1.2; }
     .book-toc ol { margin: 0; padding-left: 1rem; list-style: none; }
@@ -326,27 +324,23 @@
     @media (max-width: 900px) {
       .shell { display: block; width: 100%; padding: 1.25rem; }
       #lt-content { width: 100%; max-width: none; }
-      body:not(.home) .shell > .book-toc {
+      .shell > .book-toc {
         position: fixed; z-index: 1200; inset: 0 auto 0 0; width: min(22rem, 86vw);
         max-height: none; padding: 4.75rem 1.4rem 2rem; overflow-y: auto;
         background: var(--page-bg); box-shadow: .5rem 0 2rem rgb(0 0 0 / .24);
         transform: translateX(-105%); transition: transform .22s ease;
       }
-      body.toc-open:not(.home) .shell > .book-toc { transform: translateX(0); }
+      body.toc-open .shell > .book-toc { transform: translateX(0); }
       body.toc-open { overflow: hidden; }
       #lt-pill #toc-toggle { display: grid; }
       #toc-scrim { position: fixed; z-index: 1100; inset: 0; border: 0; background: rgb(0 0 0 / .38); }
       body.toc-open #toc-scrim { display: block; }
-      .home .shell { padding: 1.25rem; }
-      .home .shell > .book-toc { position: static; width: min(34rem, 100%); max-width: 100%; max-height: none; }
     }
   </style>
 </head>
-<body{{ if .IsHome }} class="home"{{ end }}>
-{{ if not .IsHome }}
+<body>
 <button id="toc-scrim" type="button" aria-label="Close table of contents"></button>
-{{ end }}
-<div class="shell{{ if .IsHome }} shell-home{{ end }}">
+<div class="shell">
   {{- $current := "/" -}}
   {{- with .File }}{{ $current = printf "/%s/" .ContentBaseName }}{{ end -}}
   <nav class="book-toc" id="book-toc" aria-label="Contents">
@@ -354,12 +348,11 @@
     {{ partial "search.html" . }}
     <ol>{{ range hugo.Data.book_toc }}{{ partial "book-toc-node.html" (dict "node" . "current" $current) }}{{ end }}</ol>
   </nav>
-  {{ if not .IsHome }}<main id="lt-content">{{ block "main" . }}{{ end }}</main>{{ end }}
-  {{ if not .IsHome }}{{ partial "lean-pane.html" . }}{{ end }}
+  <main id="lt-content">{{ block "main" . }}{{ end }}</main>
+  {{ partial "lean-pane.html" . }}
 </div>
-{{ if not .IsHome }}{{ partial "reader-switches.html" . }}{{ end }}
+{{ partial "reader-switches.html" . }}
 {{ partial "reflowtex-viewer.html" . }}
-{{ if not .IsHome }}
 <script>
   (function () {
     var body = document.body, toggle = document.getElementById('toc-toggle');
@@ -410,6 +403,5 @@
     });
   })();
 </script>
-{{ end }}
 </body>
 </html>

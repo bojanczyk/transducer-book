@@ -7,9 +7,9 @@
 #   ./rebuild.sh --no-pdf     # skip the latexmk step (cross-references keep
 #                             # whatever ../main.aux currently says)
 #   ./rebuild.sh --pdf        # run latexmk even if nothing looks stale
-#   ./rebuild.sh --force      # recompile every LaTeX block from scratch
-#                             # (after changing macros.sty, the preamble, or
-#                             # reflowtex itself), and drop stale cache entries
+#   ./rebuild.sh --force      # recompile every LaTeX block from scratch and
+#                             # drop stale cache entries. Rarely needed: step 2d
+#                             # already invalidates what an edit affects.
 #
 # Anything else on the command line is passed straight to hugo.
 #
@@ -23,6 +23,8 @@
 #      counterpart in ../transducer-lean, writing data/lean_map.json.
 #   2c. build-search-index.py --write — turns the book's LaTeX into the text
 #      the sidebar's search box reads, writing static/search-index.js.
+#   2d. build-source-stamps.py --write — stamps each block with the hash of the
+#      source it \inputs, which is what makes the block cache notice an edit.
 #   3. reflowtex's prebuild.py — compiles each {{< latex >}} block to a node
 #      list, provisions fonts, writes data/ and static/.
 #   4. hugo — assembles dist/.
@@ -140,6 +142,33 @@ if [ "$PDF" != "no" ]; then
   fi
 fi
 
+# ── 1b. a snapshot of main.aux, so the build reads a file nobody is writing ──
+# Every block resolves its cross-references against ../main.aux (xr-hyper, see
+# latex-preambles/book.tex). That file is also what an editor rewrites every
+# time the author saves and their LaTeX plugin rebuilds the PDF — and a block
+# that reads it mid-write dies with "File ended within \read", taking the whole
+# build with it. So the aux is copied once, checked for the line LaTeX writes
+# last, and every block reads the copy: no race, and every block in one build
+# sees the same numbering.
+SNAP="$SITE/.aux-snapshot"
+mkdir -p "$SNAP"
+if [ -f "$BOOK/main.aux" ]; then
+  for attempt in 1 2 3 4 5; do
+    cp "$BOOK/main.aux" "$SNAP/main.aux.part" 2>/dev/null || true
+    if tail -1 "$SNAP/main.aux.part" 2>/dev/null | grep -q '@abspage@last'; then
+      mv "$SNAP/main.aux.part" "$SNAP/main.aux"
+      break
+    fi
+    echo "== main.aux looks half-written (someone is compiling?) — retrying in 3s"
+    sleep 3
+  done
+  rm -f "$SNAP/main.aux.part"
+fi
+if [ ! -f "$SNAP/main.aux" ]; then
+  echo "warning: no usable snapshot of ../main.aux — cross-references will not" >&2
+  echo "         resolve. Build the PDF, then re-run." >&2
+fi
+
 # ── 2. per-chapter counters, cross-checked against main.aux ─────────────────
 "$PYTHON" "$SITE/build-references.py" --write
 
@@ -167,6 +196,12 @@ fi
 # prose, so it runs on every build like the rest.
 "$PYTHON" "$SITE/build-search-index.py" --write
 
+# ── 2d. make the blocks depend on the sources they read ─────────────────────
+# Last of the content steps, and it has to be: a block's cache key is the hash
+# of its own text, and ours only \input the chapter — so without this, editing
+# a chapter changes nothing on the site. See the script's docstring.
+"$PYTHON" "$SITE/build-source-stamps.py" --write
+
 # ── 3. compile the LaTeX blocks ─────────────────────────────────────────────
 # Vendor the two integration layout files first (the docs' "copy these into
 # layouts/" step, done automatically so they can never drift).
@@ -178,7 +213,21 @@ cp "$HUGO_INT/layouts/partials/reflowtex-viewer.html" "$SITE/layouts/partials/re
 # chapter's lualatex run is already the long pole and parallel runs mostly
 # fight over the same TeX caches.
 # shellcheck disable=SC2086
-"$PYTHON" "$HUGO_INT/prebuild.py" "$SITE" -j 1 ${PREBUILD_ARGS:-}
+"$PYTHON" "$HUGO_INT/prebuild.py" "$SITE" -j 1 --prune ${PREBUILD_ARGS:-}
+
+# Now that an edit really does mint a new key (step 2d), the old key's compiled
+# block and build directory are dead the moment it lands — and a full rebuild
+# leaves fifty of them, a few hundred megabytes. --prune above drops the
+# compiled blocks nothing references; their build directories go here. The cost
+# is that undoing an edit recompiles that chapter instead of finding it in the
+# cache, which is a minute against a cache that would otherwise grow all year.
+if [ -d "$SITE/.reflowtex-build" ]; then
+  for dir in "$SITE"/.reflowtex-build/*/; do
+    [ -d "$dir" ] || continue
+    key="$(basename "$dir")"
+    [ -f "$SITE/data/latex_blocks/$key.json" ] || rm -rf "$dir"
+  done
+fi
 
 # ── 4. the site ─────────────────────────────────────────────────────────────
 if [ -n "$SERVE" ]; then

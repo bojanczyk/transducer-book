@@ -9,6 +9,7 @@ source = "regular-primes.tex"
 \setcounter{section}{0}
 \setcounter{ourexamplecounter}{18}
 \renewcommand{\exer}[2]{}
+% source stamp regular-primes.tex:4c794da4
 \input{../../../regular-primes.tex}
 {{< /latex >}}
 

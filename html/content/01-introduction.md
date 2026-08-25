@@ -10,6 +10,7 @@ source = "intro.tex"
 \setcounter{section}{0}
 \setcounter{ourexamplecounter}{0}
 \renewcommand{\exer}[2]{}
+% source stamp intro.tex:c5ea089b
 \input{../../../intro.tex}
 {{< /latex >}}
 
@@ -44,7 +45,8 @@ source = "intro.tex"
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
 \setcounter{mypart}{0}\setcounter{section}{0}\setcounter{exercise}{1}
 \begin{exercise}
-Show continuity for  the duplication function $w \mapsto ww$.
+Show continuity for  the duplication\footnote{We use the name duplication for the function because the output length is double the input length. This clashes with the notation $ww = w^2$ which seems to suggest squaring. The reason for the clash is that string concatenation is traditionally written in  multiplicative notation, while additive notation is used for string lengths. For us, the more important one will be string length. This notation clash would be resolved by additve notation for strings, which is done for example in Haskell, where the concatenation operator is called \texttt{++}.  Nevertheless, we stay with the standard multiplicative notation for string concatenation.
+} function $w \mapsto ww$.
 \end{exercise}
 {{< /latex >}}
 <details class="solution">
@@ -61,9 +63,39 @@ Show continuity for  the duplication function $w \mapsto ww$.
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
 \setcounter{mypart}{0}\setcounter{section}{0}\setcounter{exercise}{2}
 \begin{exercise}
-Show continuity for the squaring function $w \mapsto w^{|w|}$.
+Show continuity for the squaring\footnote{Similarly to the duplication function, the notation $w^{|w|}$ suggest exponentiation, but we call it squaring because of the output length.} function $w \mapsto w^{|w|}$.
 \end{exercise}
 {{< /latex >}}
+<details class="solution">
+<summary>Show solution</summary>
+<div class="solution-body">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{0}\setcounter{section}{0}
+\noindent\textbf{Solution.}\quad Suppose that the original language $L$ is recognised by a monoid homomorphism
+    \begin{align*}
+    A^*
+    \xrightarrow h
+    M.
+    \end{align*}
+    The inverse image in the statement of the exercise is the language 
+    \begin{align*}
+    \setbuild{ w \in A^*}{$(h(w))^{|w|}$ belongs to the accepting set of the original language}
+    \end{align*}
+    To recognise this inverse image, we use a deterministic finite automaton where the state space is 
+    \begin{align*}
+     M \times M^M,
+    \end{align*}
+    subject to the following invariant: after reading an input string $w$,  the first coordinate is  the image $h(w)$; and the second coordinate  the function $m \mapsto m^{|w|}$. To maintain the invariant, the  state is updated as follows: 
+    \begin{align*}
+    (m, \varphi) \xmapsto a (m \cdot h(a), \lambda n \mapsto \varphi(n) \cdot n).
+    \end{align*}
+    The accepting set is
+    \begin{align*}
+    \setbuild{ (m,\varphi)}{$\varphi(m)$ belongs to the original accepting set}.
+    \end{align*}
+{{< /latex >}}
+</div>
+</details>
 </div>
 <div class="exercise" id="exercise-4">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
@@ -72,45 +104,167 @@ Show continuity for the squaring function $w \mapsto w^{|w|}$.
 Show continuity for the factorial function $w \mapsto w^{|w|!}$.
 \end{exercise}
 {{< /latex >}}
+<details class="solution">
+<summary>Show solution</summary>
+<div class="solution-body">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{0}\setcounter{section}{0}
+\noindent\textbf{Solution.}\quad We use a similar construction as in the monoid solution to the previous exercise.  Let $h$ and $g$ be as in that solution. We define a deterministic finite automaton for the inverse image, where the  state space is 
+\begin{align*}
+M \times M^M \times M^M.
+\end{align*}
+The first two coordinates are updated as in the previous exercise, while the third coordinate is updated so that it stores the function $m \mapsto m^{|w|!}$. This is implemented by taking the previous value of the third component, and multiplying it coordinatewise with the new value of the second coordinate.  The accepting set is defined similarly to the previous exercise, using the third coordinate instead of the second one.
+{{< /latex >}}
+</div>
+</details>
 </div>
 <div class="exercise" id="exercise-5">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
 \setcounter{mypart}{0}\setcounter{section}{0}\setcounter{exercise}{4}
 \begin{exercise}
-Show that the class of continuous functions is closed under composition.
+Let $g : \Nat \to \Nat$ be any non-decreasing function, possiby non-computable.  Show that the function $
+w  \mapsto w^{g(|w|)!}
+$
+is continuous.
 \end{exercise}
 {{< /latex >}}
+<details class="solution">
+<summary>Show solution</summary>
+<div class="solution-body">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{0}\setcounter{section}{0}
+\noindent\textbf{Solution.}\quad The main observation is the following claim, which says that factorial powers in a monoid must necessarily stabilise.  
+    \begin{claim}
+        For every finite monoid $M$  and every $m \in M$, the following sequence of monoid elements is eventually constant:
+        \begin{align*}
+        m^{1!}, m^{2!}, m^{3!}, \ldots
+        \end{align*}
+    \end{claim}
+    Let us write $m^{!} \in M$ for the stable value of the sequence in the above claim. By the above claim, if we take a monoid homomorphism $h$ into a monoid $M$ and we replace the accepting set $F$ by 
+    \begin{align*}
+    \setbuild{ m \in M}{$m^{!} \in F$},
+    \end{align*}
+    then the new regular language will agree with the inverse image of the original language up to a finite number of exceptions. Since regular languages are closed under finite differences, the inverse image will be regular, and the function is continuous.
+{{< /latex >}}
+</div>
+</details>
 </div>
 <div class="exercise" id="exercise-6">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
 \setcounter{mypart}{0}\setcounter{section}{0}\setcounter{exercise}{5}
 \begin{exercise}
-For words over an alphabet $A$, define a metric so that the distance between two  strings $w\neq w'$ is 
-       \begin{align*}
-         \frac{1}{\text{minimal number of states in a \textsc{dfa} that accepts $w$ but not $w'$}}.
-       \end{align*}
-       Show that this is a metric, and in fact it satisfies the stronger inequality
-       \begin{align*}
-       d(w_1,w_3)  \leq \max (d(w_1,w_2), d(w_2,w_3)).
-       \end{align*}
+\label{ex:continuity-for-finite-images}Consider a string-to-string function  with finitely many output values. Show that this function is continuous if and only if the inverse image of each output value is regular.
 \end{exercise}
 {{< /latex >}}
+<details class="solution">
+<summary>Show solution</summary>
+<div class="solution-body">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{0}\setcounter{section}{0}
+\noindent\textbf{Solution.}\quad The ``only if'' direction is immediate from the definition of continuity, since the inverse image of a singleton set is the inverse image of a regular language. For the ``if'' direction, we use the fact that every regular language can be expressed as a finite union of singleton sets, and that regular languages are closed under finite unions. Therefore, if the inverse image of each output value is regular, then the inverse image of any regular language will also be regular.
+{{< /latex >}}
+</div>
+</details>
 </div>
 <div class="exercise" id="exercise-7">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
 \setcounter{mypart}{0}\setcounter{section}{0}\setcounter{exercise}{6}
 \begin{exercise}
-Show that all string-to-string functions are continuous with respect to the above metric.
+Show that the assumption on finitely many output values in \cref{ex:continuity-for-finite-images} is necessary.
 \end{exercise}
 {{< /latex >}}
+<details class="solution">
+<summary>Show solution</summary>
+<div class="solution-body">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{0}\setcounter{section}{0}
+\noindent\textbf{Solution.}\quad Otherwise, every injective string-to-string function would be continuous, since images of singletons would also be singletons and hence regular. Clearly not all injective functions are continuous, since every function can be made injective by adding a copy of the input string to the output, after some  separator symbol.
+{{< /latex >}}
+</div>
+</details>
 </div>
 <div class="exercise" id="exercise-8">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
 \setcounter{mypart}{0}\setcounter{section}{0}\setcounter{exercise}{7}
 \begin{exercise}
+Consider a function which has an empty output for inputs of even length, and otherwise outputs the (one-letter string consisting of) the letter in the middle of the input string. Show that this function is not continuous when the alphabet has at least two letters.
+\end{exercise}
+{{< /latex >}}
+<details class="solution">
+<summary>Show solution</summary>
+<div class="solution-body">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{0}\setcounter{section}{0}
+\noindent\textbf{Solution.}\quad For a letter $a$ in the alphabet, the inverse image of the regular language $\set{a}$ is the set of strings of odd length whose middle letter is $a$. This language is not regular, since it is not recognised by any finite automaton, which can be proved using the pumping lemma.
+{{< /latex >}}
+</div>
+</details>
+</div>
+<div class="exercise" id="exercise-9">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{0}\setcounter{section}{0}\setcounter{exercise}{8}
+\begin{exercise}
+\label{ex:distance}For words over an alphabet $A$, define the distance  between two  strings $w,w'$ to be zero if they are equal, and otherwise to be
+       \begin{align*}
+         \frac{1}{\text{minimal number of states in a \textsc{dfa} that accepts $w$ but not $w'$}}.
+       \end{align*}
+       Show that this is indeed a distance.
+\end{exercise}
+{{< /latex >}}
+<details class="solution">
+<summary>Show solution</summary>
+<div class="solution-body">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{0}\setcounter{section}{0}
+\noindent\textbf{Solution.}\quad The distance is symmetric and zero if and only if the two strings are equal. The only thing to check is the triangle inequality. We will show a stronger inequality, where $\max$ is used instead of $+$ (which is called an ultrametric):
+       \begin{align*}
+       d(w_1,w_3)  \leq \max (d(w_1,w_2), d(w_2,w_3)).
+       \end{align*}
+       By unfolding the reciprocals in the definition, this is the same as 
+       \begin{align*}
+       s(w_1,w_3) \geq \min (s(w_1,w_2), s(w_2,w_3)),
+       \end{align*}
+       where $s$ is the minimal number of states in a \dfa that distinguishes two words. To see why the inequality holds, we observe that if a \dfa  distinguishes $w_1$ from $w_3$, then the same \dfa must also distinguish $w_1$ from $w_2$ or $w_2$ from $w_3$. Observe that this proof does not use any properties of automata, and we would also get a metric if used any class of distinguishers, such as Turing machines or pushdown automata.
+{{< /latex >}}
+</div>
+</details>
+</div>
+<div class="exercise" id="exercise-10">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{0}\setcounter{section}{0}\setcounter{exercise}{9}
+\begin{exercise}
+Show that all string-to-string functions are continuous with respect to the distance from \cref{ex:distance}.
+\end{exercise}
+{{< /latex >}}
+<details class="solution">
+<summary>Show solution</summary>
+<div class="solution-body">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{0}\setcounter{section}{0}
+\noindent\textbf{Solution.}\quad Continuity means that for every input string $w \in A^*$ and every $\varepsilon > 0$, there is some $\delta > 0$ such that for all input strings at distance at most $\delta$ from $w$, the output is at distance at most $\epsilon$ from $w$. This is true, because there is a \dfa whose language is the singleton $\set{w}$, and the distance from $w$ to any other string is at least $\delta = 1/n$, where $n$ is the number of states in the \dfa. All input strings at distance $< \delta$ will be mapped to exactly $f(w)$, because $w$ is the only such string.  
+
+        Here is a topological description of the  same argument. As we explained above, for sufficiently small $\delta$, the $\delta$-neighbourhood of $w$ is just the singleton $\set{w}$. This means that all singletons are open sets, and therefore all sets are open. Hence the topology is discrete, and all functions are continuous
+        \footnote{It is worth pointing out that the issues go away if we consider a completion of the space, i.e.~we extend $A^*$ to include limits of Cauchy sequences. The resulting topological space is called the space of \emph{profinite strings}, and it is compact. For more information, see \cite[Chapter X]{pin2025}.}.
+{{< /latex >}}
+</div>
+</details>
+</div>
+<div class="exercise" id="exercise-11">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{0}\setcounter{section}{0}\setcounter{exercise}{10}
+\begin{exercise}
 Show that the continuous functions, in the sense of Definition~\ref{def:continuity}, are exactly the uniformly continuous functions with respect to the above metric.
 \end{exercise}
 {{< /latex >}}
+<details class="solution">
+<summary>Show solution</summary>
+<div class="solution-body">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{0}\setcounter{section}{0}
+\noindent\textbf{Solution.}\quad Uniform continuity means that for every $\varepsilon > 0$, there is some $\delta > 0$ such that for all input strings $w,w'$ at distance at most $\delta$, the outputs are at distance at most $\epsilon$. This means that for every $n \in \Nat$ (think of $1/\varepsilon$) there is some $m\in \Nat$  (think of $1/\delta$) such that if input strings cannot be distinguished by automata with at most $m$ states, then the corresponding output strings cannot be distinguished by automata with at most $n$ states.  This is the same as continuity in the sense of Definition~\ref{def:continuity}, because there are finitely many automata with a given number of states (and a given alphabet).
+{{< /latex >}}
+</div>
+</details>
 </div>
 </div>
 <!-- end exercises -->

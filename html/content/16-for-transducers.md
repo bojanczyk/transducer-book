@@ -8,5 +8,6 @@ source = "polyregular-for.tex"
 \setcounter{mypart}{4}
 \setcounter{section}{0}
 \setcounter{ourexamplecounter}{33}
+% source stamp polyregular-for.tex:6c87e8f1
 \input{../../../polyregular-for.tex}
 {{< /latex >}}

@@ -1,3 +1,4 @@
+% source stamp shared:42c2323e — maintained by build-source-stamps.py; it is what makes editing ../macros.sty, the pictures or the book's numbering recompile every block
 % Each extraction job runs in html/.reflowtex-build/HASH, i.e. always exactly
 % three directories below the book repository root, so ../../../ reaches the
 % book's own LaTeX sources (macros.sty, knowledges.tex, main.aux) wherever the
@@ -8,7 +9,11 @@
 \input{../../../knowledges}
 \newcommand{\map}{\mathsf{map}}
 \usepackage{xr-hyper}
-\externaldocument{../../../main}
+% …against a snapshot of main.aux rather than the file itself: the author's
+% editor rewrites that file whenever it rebuilds the PDF, and a block that reads
+% it mid-write brings the build down. rebuild.sh makes the copy; ../../ is the
+% site root from a block's build directory.
+\externaldocument{../../.aux-snapshot/main}
 
 % Keep Inconsolata for \ttfamily. libertine loads fontspec (so the document is
 % TU-encoded), but the inconsolata package only ever defines the 8-bit family

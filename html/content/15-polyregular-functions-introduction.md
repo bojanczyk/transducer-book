@@ -9,5 +9,6 @@ part = true
 \setcounter{mypart}{4}
 \setcounter{section}{0}
 \setcounter{ourexamplecounter}{32}
+% source stamp polyregular-intro.tex:dbd189dd
 \input{../../../polyregular-intro.tex}
 {{< /latex >}}

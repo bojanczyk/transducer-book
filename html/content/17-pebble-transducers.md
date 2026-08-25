@@ -8,5 +8,6 @@ source = "polyregular-pebble.tex"
 \setcounter{mypart}{4}
 \setcounter{section}{1}
 \setcounter{ourexamplecounter}{37}
+% source stamp polyregular-pebble.tex:c8ece197
 \input{../../../polyregular-pebble.tex}
 {{< /latex >}}

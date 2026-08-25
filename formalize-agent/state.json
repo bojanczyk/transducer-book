@@ -200,33 +200,34 @@
       "note": null
     },
     "C2-snake-step": {
-      "status": "running",
-      "attempts": 5,
-      "continues": 4,
+      "status": "done",
+      "attempts": 6,
+      "continues": 5,
       "reattempts": 0,
       "task_ids": [
         "bf8f63c2-810c-4492-9aeb-01d06ed91049",
         "8e83d3af-ded0-44c2-bc9d-5113ee96a653",
         "4e641244-60f9-492c-ace3-a72a373a6996",
         "963cd151-95e7-46b1-bee4-9fa807caf4f8",
-        "9ab9fd08-6c0d-4edd-af32-d1b8c16ba7de"
+        "9ab9fd08-6c0d-4edd-af32-d1b8c16ba7de",
+        "bfa0f826-ae5d-4511-a96e-ba77e78e1ba3"
       ],
       "started_at": "2026-08-24 08:06:46Z",
-      "finished_at": null,
+      "finished_at": "2026-08-25 03:41:55Z",
       "note": null,
       "sorries_at_start": 8
     }
   },
   "current": {
-    "target_id": "C2-snake-step",
-    "task_id": "9ab9fd08-6c0d-4edd-af32-d1b8c16ba7de",
-    "submitted_at": "2026-08-24 23:29:54Z",
-    "kind": "continue"
+    "target_id": "external",
+    "task_id": "2a952f59-ce5d-4611-8538-8582d36f8bbe",
+    "submitted_at": "2026-08-25 03:41:57Z",
+    "kind": "adopted"
   },
-  "paused": false,
-  "pause_reason": null,
+  "paused": true,
+  "pause_reason": "paused by hand",
   "finished_at": null,
-  "ticks": 210,
-  "last_tick": "2026-08-25 01:10:58Z",
+  "ticks": 225,
+  "last_tick": "2026-08-25 04:57:10Z",
   "review_pending": 0
 }

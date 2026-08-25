@@ -8,5 +8,6 @@ source = "sst.tex"
 \setcounter{mypart}{3}
 \setcounter{section}{2}
 \setcounter{ourexamplecounter}{19}
+% source stamp sst.tex:8edf7cf0
 \input{../../../sst.tex}
 {{< /latex >}}

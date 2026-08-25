@@ -8,5 +8,6 @@ source = "2dfa.tex"
 \setcounter{mypart}{3}
 \setcounter{section}{1}
 \setcounter{ourexamplecounter}{18}
+% source stamp 2dfa.tex:eef43630
 \input{../../../2dfa.tex}
 {{< /latex >}}

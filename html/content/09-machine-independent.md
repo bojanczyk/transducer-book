@@ -8,5 +8,6 @@ source = "myhill-nerode.tex"
 \setcounter{mypart}{2}
 \setcounter{section}{3}
 \setcounter{ourexamplecounter}{14}
+% source stamp myhill-nerode.tex:5aea5430
 \input{../../../myhill-nerode.tex}
 {{< /latex >}}

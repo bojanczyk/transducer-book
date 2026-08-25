@@ -51,20 +51,45 @@ server needed.
    only reason this step exists — and why the web edition's numbers are always
    the printed edition's numbers. Skip it with `--no-pdf`, force it with
    `--pdf`.
-2. **`build-references.py --write`** — per-chapter counter bookkeeping, below.
-3. **`prebuild.py`** (from reflowtex) — compiles every `{{< latex >}}` block
+2. **A snapshot of `../main.aux`** into `.aux-snapshot/`, checked for the line
+   LaTeX writes last. Every block resolves its cross-references against that
+   copy rather than against `../main.aux` itself, because your editor rewrites
+   that file every time it rebuilds the PDF — and a block that reads it
+   mid-write dies with `! File ended within \read`, taking the build down with
+   it. The copy also means every block in one build sees the same numbering.
+3. **The content steps**, each with `--write`: `build-references.py`
+   (per-chapter counters, below), `build-exercises.py` (a block per exercise so
+   its solution can be folded), `build-lean-map.py` (the book ↔ Lean join) and
+   `build-search-index.py` (the search index).
+4. **`build-source-stamps.py --write`** — writes a hash of each chapter's
+   source into the block that `\input`s it, and a hash of the shared inputs
+   into the preamble. This is load-bearing; see below.
+5. **`prebuild.py`** (from reflowtex) — compiles every `{{< latex >}}` block
    into a binary node list under `data/latex_blocks/`, subsets the fonts it
    used into `static/fonts/`, and copies the viewer into `static/`. Blocks are
-   cached by content hash, so an edit to one chapter recompiles that chapter
-   only: a routine rebuild is seconds to a couple of minutes, a cold one
-   (or `--force`) is more like twenty.
-4. **`hugo`** — assembles `dist/`.
+   cached by key, so an edit to one chapter recompiles that chapter only: a
+   routine rebuild is seconds to a couple of minutes, a cold one (or `--force`)
+   is more like twenty.
+6. **`hugo`** — assembles `dist/`.
 
-Use `--force` after editing `../macros.sty`, `latex-preambles/book.tex`, or
-after updating reflowtex itself: those change how *every* block compiles, and
-nothing in a chapter's own content hash reflects it.
+`--force` is rarely needed now — the stamps below invalidate what an edit
+affects. Reach for it after updating reflowtex itself, which changes how blocks
+compile without changing anything this repository can hash.
 
 ## How the site is put together
+
+### The landing page is the preface
+
+`content/_index.md` holds one LaTeX block that `\input`s `../preface.tex`, so
+opening the site without asking for anything in particular shows what the book
+says about itself. It is an ordinary reading page in every other respect —
+sidebar, search, reader controls, the lot — which is why `baseof.html` no
+longer treats the home page as a special case, and why `list.html` is now just
+`{{ .Content }}`: the chapter list it used to print is the sidebar's job.
+
+The preface has no entry of its own in `data/book_toc.json`; the book's title
+at the top of the sidebar is the link back to it. Say the word if you would
+rather it were listed above "Introduction" as well.
 
 ### One content page per chapter
 
@@ -87,6 +112,46 @@ book root. There is deliberately no second copy of the LaTeX for the web
 edition — this is the same `intro.tex` the PDF uses, so the two cannot drift.
 Keep it that way, and keep absolute paths (`/Users/…`) out of this directory
 entirely.
+
+### Why the blocks carry source stamps
+
+reflowtex caches a compiled block under the hash of the block's own text plus
+its preamble, and skips any block whose key it already has. That is right for a
+block that *contains* its LaTeX. Ours do not — a chapter's block is three
+`\setcounter` lines and an `\input` — so its key did not move when the chapter
+was rewritten, and **editing a chapter changed nothing on the site** until
+someone passed `--force`. A silent wrong answer, and the reason this step
+exists.
+
+`build-source-stamps.py` writes the missing dependency in as a LaTeX comment,
+which changes the key and nothing else:
+
+- `% source stamp intro.tex:8a3f2b1c` inside the chapter's own block, so
+  editing that chapter recompiles that chapter;
+- one stamp in `latex-preambles/book.tex`, which is part of *every* block's key
+  by construction, covering what every block reads through the preamble:
+  `../macros.sty`, `../knowledges.tex`, the picture file — and the numbers in
+  `../main.aux`, since a `\ref` is typeset as whatever number the continuous
+  build gave it, and a chapter showing last week's numbering is stale in the
+  same silent way.
+
+Only the *numbers* are taken from `main.aux`, not the whole file: page numbers
+move whenever anything above them grows, and recompiling the whole book because
+a paragraph got longer would make every build a cold one. Expect a cold build
+whenever a numbered result is added or removed, though — that really does
+change what other chapters print.
+
+Copying the chapters into `content/` so that reflowtex could hash them would
+also have worked, and was rejected: there is deliberately one copy of the
+book's LaTeX, and it is the one the PDF builds from.
+
+Because every edit now mints a new key, the old key's compiled block and build
+directory are dead as soon as it lands — a few hundred megabytes per month of
+editing if nothing collects them. So `rebuild.sh` passes `--prune` and deletes
+the build directories that no longer have a compiled block, keeping
+`data/latex_blocks/` and `.reflowtex-build/` to exactly the blocks the site
+uses. The cost is that undoing an edit recompiles that chapter rather than
+finding it in the cache.
 
 ### Per-chapter counters
 
@@ -233,6 +298,13 @@ to the next chapter.
   bare name and it isn't in the book root. Either give it a relative path from
   the block's build directory (`../../../X`) or extend `TEXINPUTS` at the top
   of `rebuild.sh`.
+- **`! File ended within \read`, or a block dies inside `xr-hyper`** — the aux
+  it was reading was being rewritten at that moment, i.e. something rebuilt the
+  PDF while the site was building. Step 2 above is meant to prevent this; if it
+  happens anyway, the snapshot was taken during the write, so just re-run.
+- **An edit to a chapter does not show up** — that was the cache bug the source
+  stamps fix; check that `build-source-stamps.py` ran (it prints what it
+  invalidated) and that the chapter is listed in its `PAGES`.
 - **A page shows "LaTeX block not compiled"** — a name in `book_toc.json` or
   `page_titles.json` doesn't match any `as="…"` in `content/menu-block-cache.md`
   (or prebuild hasn't run since it was added).

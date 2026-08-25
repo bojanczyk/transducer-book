@@ -1,5 +1,6 @@
+{{/* The home page. Its content is the preface (see content/_index.md), so it
+     is an ordinary reading page — the contents are in the sidebar, where they
+     are on every other page, rather than being the whole of it. */}}
 {{ define "main" }}
-{{ partial "latex-file-block.html" (dict "file" "book-title.tex" "class" "page-title" "color_map" "transducer-book-color-map") }}
 {{ .Content }}
-<ol>{{ range .RegularPages.ByWeight }}<li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>{{ end }}</ol>
 {{ end }}

@@ -9,5 +9,6 @@ part = true
 \setcounter{mypart}{1}
 \setcounter{section}{0}
 \setcounter{ourexamplecounter}{1}
+% source stamp mealy-intro.tex:222377fd
 \input{../../../mealy-intro.tex}
 {{< /latex >}}

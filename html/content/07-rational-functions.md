@@ -9,6 +9,7 @@ source = "rational-functions.tex"
 \setcounter{section}{1}
 \setcounter{ourexamplecounter}{8}
 \renewcommand{\exer}[2]{}
+% source stamp rational-functions.tex:a69e94de
 \input{../../../rational-functions.tex}
 {{< /latex >}}
 
