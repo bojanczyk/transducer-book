@@ -145,7 +145,7 @@ corollary is a typo: what is a corollary of Theorem C.2.5 is the inclusion
 as `Transducers.isTwoWay_of_isRegularFun` and `Transducers.regularFun_isTwoWay`.
 
 The inclusion `two-way ⊆ regular` as printed is exactly the hard half of
-Theorem C.2.9; it is stated (and still open) below as
+Theorem C.2.9; it is stated (and proved) below as
 `Transducers.twoWay_isRegular`, the left-to-right implication of
 `Transducers.twoWay_iff_regular`, and is therefore not duplicated here. -/
 
@@ -232,8 +232,8 @@ This is the hard half of Theorem C.2.9.  It is reduced, in
 `RequestProject/PartC/SnakeReg.lean`, to the book's snake lemma
 `Transducers.boundedWidth_isRegular`, whose base cases `k = 0` and `k = 1` are
 proved in `RequestProject/PartC/SnakeBase.lean` and whose induction step
-`Transducers.boundedWidth_isRegular_step` is **still open** in this
-formalisation: a run that halts visits every column at most `|Q|` times
+`Transducers.boundedWidth_isRegular_step` is proved in
+`RequestProject/PartC/SnakeReg.lean`: a run that halts visits every column at most `|Q|` times
 (`TwoWay.widthLe_card`), so the function computed by a two-way transducer with
 state set `Q` is its own width-`|Q|` output function `TwoWay.widthOut M |Q|`,
 and it remains to see that the width-`k` output function of a two-way transducer
@@ -245,16 +245,17 @@ width `k` into *looping* parts and *progressing* parts along the
 out of the input by rational functions, and they are glued back together with
 the three closure properties of `regular_closure_properties` (Lemma C.2.10)
 below.  The two closure ingredients that the book's argument rests on
-(Lemma C.2.10 and Claim C.2.11) are available and fully proved, as is the
-reduction to snakes, and so is the combinatorics of the width induction:
+(Lemma C.2.10 and Claim C.2.11) are proved, as is the reduction to snakes and
+the combinatorics of the width induction:
 `RequestProject/PartC/SnakeWalk.lean`, `RequestProject/PartC/SnakeRec.lean` and
 `RequestProject/PartC/SnakeLoop.lean` prove that a halting run of width at most
 `k ≥ 2` splits into finitely many consecutive pieces of width at most `k - 1`
 whose outputs concatenate to the output of the run
-(`TwoWay.runOutput_splits`).  What is still missing is the machine-theoretic
-half of the induction step: that the output of such a piece is the value of a
-width-`(k-1)` snake function on a factor of the input cut out by a rational
-function. -/
+(`TwoWay.runOutput_splits`).  The machine-theoretic half of the induction step
+-- that the output of such a piece is the value of a width-`(k-1)` snake
+function on a factor of the input cut out by a rational function -- is supplied
+by the `RequestProject/PartC/SnakeChk*.lean` family, which builds the rational
+annotation marking the record-breaking columns. -/
 theorem twoWay_isRegular {A B : Type} [Finite A] [Finite B] {f : List A → List B}
     (hf : IsTwoWay f) : IsRegularFun f :=
   isRegularFun_of_isTwoWay hf
@@ -264,7 +265,7 @@ functions.
 
 The right-to-left implication is Corollary C.2.8 (`regularFun_isTwoWay`, proved
 above).  The left-to-right implication is `twoWay_isRegular` above, the hard
-half, which is still open; see the discussion in its docstring. -/
+half; see the discussion in its docstring. -/
 theorem twoWay_iff_regular {A B : Type} [Finite A] [Finite B] (f : List A → List B) :
     IsTwoWay f ↔ IsRegularFun f :=
   ⟨fun hf => twoWay_isRegular hf, fun hf => regularFun_isTwoWay hf⟩

@@ -5,7 +5,7 @@ reduction of the hard half of Theorem C.2.9 (`two-way ⊆ regular`) to it.
 The lemma is proved in the book by induction on the width `k` of the snake.
 The two base cases, `k = 0` and `k = 1`, are proved in
 `RequestProject/PartC/SnakeBase.lean`; the induction step, from `k + 1` to
-`k + 2`, is `boundedWidth_isRegular_step`, which is **still open**.  Everything
+`k + 2`, is `boundedWidth_isRegular_step`, which is proved here.  Everything
 that the book's proof of the induction step rests on is available:
 
 * the closure properties of regular functions, Lemma C.2.10
@@ -92,8 +92,8 @@ def SnakeReg (k : ℕ) : Prop :=
     ∀ M : TwoWay A B Q, IsRegularFun (widthOut M k)
 
 open TwoWay in
-/-- **The induction step of the snake lemma**, the only remaining gap in
-Theorem C.2.9: if the output of every snake of width at most `k + 1` is regular,
+/-- **The induction step of the snake lemma**: if the output of every snake of
+width at most `k + 1` is regular,
 then so is the output of every snake of width at most `k + 2`.
 
 The book's proof splits a run of width at most `k + 2` into the loop parts and
@@ -147,14 +147,14 @@ theorem boundedWidth_isRegular_step (k : ℕ) (ih : SnakeReg (k + 1)) : SnakeReg
 
 open TwoWay in
 /-- **The snake lemma** (the book's Lemma "the output of a snake graph is
-regular", the missing ingredient of the hard half of Theorem C.2.9).  For every
+regular", the main ingredient of the hard half of Theorem C.2.9).  For every
 two-way transducer `M` and every bound `k`, the function that outputs the run of
 `M` on the inputs whose run has width at most `k`, and the empty string on all
 other inputs, is regular.
 
 The base cases `k = 0` and `k = 1` are proved in
 `RequestProject/PartC/SnakeBase.lean`; the induction step is
-`boundedWidth_isRegular_step`, which is still open. -/
+`boundedWidth_isRegular_step`. -/
 theorem snakeReg (k : ℕ) : SnakeReg k := by
   induction k using Nat.strong_induction_on with
   | _ k ih =>
