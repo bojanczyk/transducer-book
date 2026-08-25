@@ -21,6 +21,8 @@
 #      values into content/*.md and cross-checks every number against main.aux.
 #   2b. build-lean-map.py --write — joins each numbered result to its Lean
 #      counterpart in ../transducer-lean, writing data/lean_map.json.
+#   2c. build-search-index.py --write — turns the book's LaTeX into the text
+#      the sidebar's search box reads, writing static/search-index.js.
 #   3. reflowtex's prebuild.py — compiles each {{< latex >}} block to a node
 #      list, provisions fonts, writes data/ and static/.
 #   4. hugo — assembles dist/.
@@ -141,6 +143,11 @@ fi
 # ── 2. per-chapter counters, cross-checked against main.aux ─────────────────
 "$PYTHON" "$SITE/build-references.py" --write
 
+# ── 2a. one block per exercise, so solutions can be folded ─────────────────
+# Must come before prebuild: it rewrites the {{< latex >}} blocks that prebuild
+# then compiles.
+"$PYTHON" "$SITE/build-exercises.py" --write
+
 # ── 2b. the book ↔ Lean map ─────────────────────────────────────────────────
 # Regenerated on every build rather than kept by hand, because ../transducer-lean
 # is a mirror of Aristotle's server and is replaced wholesale on each harvest:
@@ -153,6 +160,12 @@ if ! "$PYTHON" "$SITE/build-lean-map.py" --write; then
   echo "         Affected results will render without a formalisation link." >&2
   echo >&2
 fi
+
+# ── 2c. the search index ────────────────────────────────────────────────────
+# Built from the LaTeX, because nothing on a rendered page is searchable text
+# (see the script's docstring). Cheap, and it has to follow every edit to the
+# prose, so it runs on every build like the rest.
+"$PYTHON" "$SITE/build-search-index.py" --write
 
 # ── 3. compile the LaTeX blocks ─────────────────────────────────────────────
 # Vendor the two integration layout files first (the docs' "copy these into

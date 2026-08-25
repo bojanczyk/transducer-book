@@ -21,3 +21,37 @@
   UprightFont = *-Regular,
   BoldFont = *-Bold,
   Scale = MatchLowercase]
+
+% ── the bibliography ────────────────────────────────────────────────────────
+% Each chapter is extracted on its own, and the pipeline runs lualatex only —
+% never biber (src/encode/pipeline.py). So no \jobname.bbl can ever exist here,
+% however many passes it makes, and every \cite comes out undefined.
+%
+% In a footnote that is worse than it sounds. macros.sty makes \cite mean
+% \incite inside a footnote, and \incite prints author, title and year straight
+% from the bibliography data — so with no data it prints *nothing*, and the
+% sentence simply stops ("first appear in .").
+%
+% The book's own bibliography is already resolved by biber during the PDF build,
+% next door in ../../../main.bbl, and main.tex \inputs every chapter, so that
+% file holds every entry any chapter can cite. This is biblatex's own loader
+% with two changes: it reads that file instead of \jobname.bbl, and it drops the
+% \blx@ifsigned guard, which would otherwise refuse a .bbl belonging to another
+% job. Everything after the input — the toggle, the checksum, the rerun check —
+% is biblatex's, left alone, so its bookkeeping stays consistent.
+\makeatletter
+\def\blx@bblfile{%
+  \blx@secinit
+  \begingroup
+  \blx@bblstart
+  \InputIfFileExists{../../../main.bbl}
+    {\global\toggletrue{blx@bbldone}%
+     \blx@generate@bbl@mdfivesum@found{../../../main.bbl}}
+    {\blx@warning@noline{No ../../../main.bbl -- run latexmk on the book first,
+       or citations will be empty}%
+     \blx@generate@bbl@mdfivesum@notfound}%
+  \blx@bblend
+  \endgroup
+  \blx@check@bbl@rerun@mdfivesum
+  \csnumgdef{blx@labelnumber@\the\c@refsection}{0}}
+\makeatother

@@ -39,6 +39,10 @@
       if (!a) return;
       var href = a.getAttribute('href');
       if (!href || href.charAt(0) === '#') return;
+      // A citation is meant to be copied and handed on, so it must stay the
+      // plain address of a result — this reader's theme and zoom have no
+      // business travelling with it.
+      if (a.hasAttribute('data-no-params')) return;
       var url;
       try { url = new URL(href, location.href); } catch (err) { return; }
       if (url.protocol !== location.protocol || url.host !== location.host) return;
@@ -140,6 +144,29 @@
     .book-toc > ol > li.part-item { margin-top: 1.25rem; }
     .part-sections { position: static; width: min(34rem, 100%); max-height: none; margin-top: 2rem; overflow: visible; }
     .part-sections > ol { padding-left: 0; }
+    {{- /* The search box, and the results it folds out between itself and the
+           contents. The contents are pushed down rather than replaced — the
+           reader keeps their place in the book while looking at hits — and the
+           results get their own scroll so a long list cannot push the contents
+           out of reach entirely. */ -}}
+    #book-search { display: flex; align-items: center; gap: .25rem; margin: 0 0 .9rem; }
+    #search-input { flex: 1 1 auto; min-width: 0; padding: .3rem .5rem; border: 1px solid color-mix(in srgb, currentColor 25%, transparent); border-radius: .35rem; background: color-mix(in srgb, currentColor 4%, transparent); color: inherit; font: inherit; font-size: .8rem; }
+    #search-input::placeholder { color: inherit; opacity: .45; }
+    #search-input:focus { outline: none; border-color: var(--accent); }
+    #search-input::-webkit-search-cancel-button { display: none; }
+    #search-close { flex: 0 0 auto; border: 0; background: none; color: inherit; cursor: pointer; font-size: 1.1rem; line-height: 1; padding: 0 .25rem; opacity: .5; }
+    #search-close:hover { opacity: 1; }
+    #search-close[hidden] { display: none; }
+    #search-results { margin: 0 0 1.1rem; max-height: 60vh; overflow-y: auto; font-size: .74rem; }
+    #search-results[hidden] { display: none; }
+    .search-chapter { margin: .7rem 0 .3rem; font-size: .66rem; letter-spacing: .04em; text-transform: uppercase; opacity: .5; }
+    .search-chapter:first-child { margin-top: 0; }
+    .search-hit { display: block; padding: .3rem .4rem; border-radius: .3rem; text-decoration: none; opacity: 1; }
+    .search-hit:hover, .search-hit.on { background: color-mix(in srgb, currentColor 9%, transparent); text-decoration: none; }
+    .search-where { display: block; font-size: .68rem; font-weight: 600; opacity: .85; }
+    .search-text { display: block; line-height: 1.45; opacity: .7; }
+    #search-results mark { background: color-mix(in srgb, var(--accent) 30%, transparent); color: inherit; border-radius: .15rem; }
+    .search-none { margin: 0; padding: .3rem .4rem 0; opacity: .6; }
     .book-toc a { opacity: .76; text-decoration: none; }
     .book-toc a:hover { color: var(--accent); opacity: 1; text-decoration: underline; }
     .book-toc a[aria-current="page"] { color: var(--accent); opacity: 1; text-decoration: underline; }
@@ -186,6 +213,21 @@
     body.toc-open #toc-toggle span:nth-child(2) { opacity: 0; }
     body.toc-open #toc-toggle span:nth-child(3) { transform: translateY(-.38rem) rotate(-45deg); }
     #toc-scrim { display: none; }
+    {{- /* ── exercises and their solutions ─────────────────────────────────
+           Each exercise is its own rendered block (build-exercises.py), which is
+           what lets a solution be folded away in an ordinary <details>. */ -}}
+    .exercises { margin-top: 1.5rem; }
+    .exercise { margin: 0 0 1.75rem; }
+    .exercise > .latex-block { margin: 0; }
+    details.solution { margin: .5rem 0 0 1.5rem; }
+    details.solution > summary { display: inline-flex; align-items: center; gap: .35rem; width: fit-content; padding: .2rem .6rem; border: 1px solid color-mix(in srgb, currentColor 25%, transparent); border-radius: .3rem; font-size: .8rem; opacity: .72; cursor: pointer; list-style: none; user-select: none; }
+    details.solution > summary::-webkit-details-marker { display: none; }
+    details.solution > summary::before { content: "\25B8"; font-size: .8em; transition: transform .15s ease; }
+    details.solution[open] > summary::before { transform: rotate(90deg); }
+    details.solution > summary:hover { opacity: 1; color: var(--accent); border-color: color-mix(in srgb, var(--accent) 45%, transparent); }
+    details.solution[open] > summary { opacity: .9; margin-bottom: .5rem; }
+    .solution-body { border-inline-start: 2px solid color-mix(in srgb, var(--accent) 35%, transparent); padding-inline-start: .9rem; }
+    .solution-body > .latex-block { margin: 0; }
     {{- /* ── the Lean column ────────────────────────────────────────────────
            A third column beside the contents and the book, holding the Lean
            file that formalises whatever result the reader clicks. It is a
@@ -200,6 +242,9 @@
     #lean-pane-title { font-size: .82rem; font-weight: 600; }
     #lean-pane-close { border: 0; background: none; color: inherit; cursor: pointer; font-size: 1.15rem; line-height: 1; padding: 0 .2rem; opacity: .55; }
     #lean-pane-close:hover { opacity: 1; }
+    #lean-pane-back { margin-left: auto; border: 1px solid color-mix(in srgb, currentColor 22%, transparent); border-radius: .3rem; background: none; color: inherit; cursor: pointer; font: inherit; font-size: .68rem; padding: .15rem .4rem; opacity: .7; }
+    #lean-pane-back:hover { opacity: 1; }
+    #lean-pane-back[hidden] { display: none; }
     #lean-pane-sub { display: flex; flex-wrap: wrap; align-items: center; gap: .45rem; padding: .4rem .75rem; font-size: .7rem; }
     #lean-pane-sub:empty { display: none; }
     #lean-pane-sub code { font-size: .72rem; }
@@ -248,8 +293,27 @@
            the viewer's per-line <svg> segments, so the hover cue can sit on the
            line itself rather than on a wrapper we would have to keep in step
            with the viewer's relayout. */ -}}
-    #lt-content [data-lean-for] { cursor: pointer; border-radius: .25rem; transition: background .12s ease; }
-    #lt-content [data-lean-for]:hover { background: color-mix(in srgb, var(--accent) 12%, transparent); }
+    #lt-content [data-result-for] { cursor: pointer; border-radius: .25rem; transition: background .12s ease; scroll-margin-top: 1.5rem; }
+    #lt-content [data-result-for]:hover { background: color-mix(in srgb, var(--accent) 12%, transparent); }
+    {{- /* Where a citation lands. Zero-sized and inside the viewer's own
+           anchor, offset down onto the heading; scroll-margin keeps the line
+           off the very top edge of the window when it is jumped to. */ -}}
+    .cite-anchor { position: absolute; left: 0; width: 0; height: 0; scroll-margin-top: 1.5rem; }
+    {{- /* Following a citation, the reader has to be shown which line they were
+           sent to — a moment's glow on the heading, then out of the way. */ -}}
+    @keyframes cite-flash { from { background: color-mix(in srgb, var(--accent) 34%, transparent); } to { background: transparent; } }
+    #lt-content .cite-flash { animation: cite-flash 2.2s ease-out; border-radius: .25rem; }
+    @media (prefers-reduced-motion: reduce) { #lt-content .cite-flash { animation-duration: .01s; background: color-mix(in srgb, var(--accent) 22%, transparent); } }
+    {{- /* The citable address, above the formalisation. It is a long string
+           that must stay copyable in one piece, so it wraps anywhere rather
+           than widening the column or scrolling sideways. */ -}}
+    #cite-box { display: flex; align-items: flex-start; gap: .4rem; padding: .45rem .75rem; border-bottom: 1px solid color-mix(in srgb, currentColor 12%, transparent); }
+    #cite-box[hidden] { display: none; }
+    #cite-link { flex: 1 1 auto; min-width: 0; font-family: ui-monospace, "Inconsolata", "SFMono-Regular", monospace; font-size: .68rem; line-height: 1.45; word-break: break-all; opacity: .8; text-decoration: none; }
+    #cite-link:hover { opacity: 1; text-decoration: underline; }
+    #cite-copy { flex: 0 0 auto; border: 1px solid color-mix(in srgb, currentColor 22%, transparent); border-radius: .3rem; background: none; color: inherit; cursor: pointer; font: inherit; font-size: .66rem; padding: .12rem .4rem; opacity: .7; }
+    #cite-copy:hover { opacity: 1; }
+    .lean-st-none { opacity: .55; font-style: italic; }
     .lean-badge-demo { position: static; cursor: default; opacity: .8; }
     #lean-toggle[hidden] { display: none; }
     #lt-pill #lean-toggle[aria-expanded="true"] { opacity: 1; background: color-mix(in srgb, currentColor 18%, transparent); }
@@ -287,6 +351,7 @@
   {{- with .File }}{{ $current = printf "/%s/" .ContentBaseName }}{{ end -}}
   <nav class="book-toc" id="book-toc" aria-label="Contents">
     <a class="book-title-link" href="{{ "index.html" | relURL }}">{{ partial "latex-file-block.html" (dict "file" "book-title.tex" "class" "book-title" "color_map" "transducer-book-color-map") }}</a>
+    {{ partial "search.html" . }}
     <ol>{{ range hugo.Data.book_toc }}{{ partial "book-toc-node.html" (dict "node" . "current" $current) }}{{ end }}</ol>
   </nav>
   {{ if not .IsHome }}<main id="lt-content">{{ block "main" . }}{{ end }}</main>{{ end }}
@@ -309,6 +374,19 @@
       if (event.target.closest('a')) set(false);
     });
     matchMedia('(min-width: 901px)').addEventListener('change', function (event) { if (event.matches) set(false); });
+
+    // A solution is a rendered LaTeX block inside a <details>. While that is
+    // closed the block has no width to lay out against, so the viewer would
+    // measure zero and break the lines at the wrong place; re-measure the first
+    // time each one is opened.
+    document.querySelectorAll('details.solution').forEach(function (d) {
+      d.addEventListener('toggle', function () {
+        if (d.open && !d.dataset.laidOut) {
+          d.dataset.laidOut = '1';
+          window.dispatchEvent(new Event('resize'));
+        }
+      });
+    });
 
     // The "Tt" text-options popover: same idea as the TOC drawer above, but
     // a plain click-outside/Escape close rather than a full-screen scrim —

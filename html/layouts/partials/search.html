@@ -1,0 +1,459 @@
+{{/* The search box above the contents, and what it folds out.
+
+     The index it reads is built by build-search-index.py from the book's LaTeX
+     — see that script for why it cannot come from the rendered page. It is one
+     file shared by every chapter, pulled in with a plain <script src> rather
+     than fetched, because the built site has to work opened off disk and
+     file:// refuses a fetch of a sibling file.
+
+     Results push the contents down rather than replacing them: the reader can
+     always see where they are in the book, and the × folds the results away
+     again. */}}
+
+<form id="book-search" role="search" onsubmit="return false">
+  <input id="search-input" type="search" placeholder="Search the book"
+         aria-label="Search the book" aria-controls="search-results"
+         autocomplete="off" spellcheck="false" enterkeyhint="search">
+  <button id="search-close" type="button" hidden
+          aria-label="Close the search results">&times;</button>
+</form>
+<div id="search-results" hidden></div>
+
+<script src="{{ "search-index.js" | relURL }}?v={{ substr (readFile "static/search-index.js" | crypto.MD5) 0 8 }}" defer></script>
+<script>
+(function () {
+  var input   = document.getElementById('search-input');
+  var closeB  = document.getElementById('search-close');
+  var results = document.getElementById('search-results');
+  if (!input) return;
+
+  var HERE = location.pathname.replace(/[^/]*$/, '');   // this chapter's directory
+  var MAX = 40;                                          // results shown at once
+
+  // ---- matching ------------------------------------------------------------
+  // Folded to lowercase without accents, so that a query typed without them
+  // still finds Bojańczyk, and — for the in-page part below — with the spaces
+  // taken out, because the viewer's painted text does not always have them.
+  // Punctuation becomes a space, one character for one, so that Myhill--Nerode
+  // in the book answers to Myhill-Nerode typed in the box — and so that every
+  // offset found in the folded text still addresses the original exactly, which
+  // is what lets snippet() mark the words it found. Dots are kept: they are
+  // what makes C.2.5 a number rather than three of them.
+  function fold(s) {
+    return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '')
+            .replace(/[^a-z0-9.]/g, ' ');
+  }
+  // For matching against the painted page, where nothing can be relied on to
+  // survive typesetting: no spaces, no punctuation, just the letters.
+  function squeeze(s) { return fold(s).replace(/[^a-z0-9]/g, ''); }
+
+  function terms(query) {
+    return fold(query).split(/\s+/)
+             .map(function (t) { return t.replace(/^\.+|\.+$/g, ''); })
+             .filter(function (t) { return t.length > 1; });
+  }
+  // The query as typed, allowing for whatever punctuation and spacing the book
+  // happens to use between its words.
+  function phraseRe(ts) {
+    if (ts.length < 2) return null;
+    return new RegExp(ts.map(function (t) {
+      return t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    }).join('[^a-z0-9]+'));
+  }
+
+  // Every term has to appear. Where they appear is what orders the results: a
+  // whole-word hit beats one inside a longer word, a hit in a heading or in a
+  // result's own statement beats one in the prose around it, and the query
+  // appearing as typed beats the same words scattered through a paragraph.
+  function score(entry, ts, phrase) {
+    var hay = entry._t || (entry._t = fold(entry.t));
+    var title = entry._n || (entry._n = fold((entry.n || '') + ' ' + (entry.h || '')));
+    var total = 0;
+    for (var i = 0; i < ts.length; i++) {
+      var t = ts[i];
+      var at = hay.indexOf(t), inTitle = title.indexOf(t);
+      if (at < 0 && inTitle < 0) return 0;
+      if (at >= 0) {
+        total += 4;
+        if (at === 0 || /[^a-z0-9]/.test(hay.charAt(at - 1))) total += 3;  // word start
+        if (hay.indexOf(t, at + 1) >= 0) total += 1;                       // again
+      }
+      if (inTitle >= 0) total += 6;
+    }
+    if (phrase && phrase.test(hay)) total += 8;
+    if (entry.k === 'section') total += 5;      // a heading is a strong answer
+    return total;
+  }
+
+  function search(query) {
+    var ts = terms(query);
+    if (!ts.length) return [];
+    var phrase = phraseRe(ts);
+    var index = window.__bookSearch;
+    if (!index) return [];
+    var hits = [];
+    for (var i = 0; i < index.entries.length; i++) {
+      var s = score(index.entries[i], ts, phrase);
+      if (s) hits.push({ e: index.entries[i], s: s, i: i });
+    }
+    // Ties fall back to book order, so a page's hits stay in reading order.
+    hits.sort(function (a, b) { return b.s - a.s || a.i - b.i; });
+    return hits.slice(0, MAX);
+  }
+
+  // ---- rendering -----------------------------------------------------------
+  function esc(s) {
+    return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;');
+  }
+
+  // A window of the passage around the first term, with every term marked. The
+  // fold() above changes no character's *position*, only its shape, so offsets
+  // found in the folded text address the original exactly.
+  function snippet(text, ts) {
+    var hay = fold(text), first = text.length;
+    for (var i = 0; i < ts.length; i++) {
+      var at = hay.indexOf(ts[i]);
+      if (at >= 0 && at < first) first = at;
+    }
+    var from = 0;
+    if (first > 90) {                          // keep some run-up to the hit
+      from = text.lastIndexOf(' ', first - 60);
+      if (from < 0) from = first - 60;
+    }
+    var cut = text.slice(from, from + 240);
+    var marks = [];
+    var folded = fold(cut);
+    for (var j = 0; j < ts.length; j++) {
+      for (var at = folded.indexOf(ts[j]); at >= 0; at = folded.indexOf(ts[j], at + 1)) {
+        marks.push([at, at + ts[j].length]);
+      }
+    }
+    marks.sort(function (a, b) { return a[0] - b[0]; });
+    var out = '', at2 = 0;
+    for (var k = 0; k < marks.length; k++) {
+      if (marks[k][0] < at2) continue;         // overlapping terms: keep the first
+      out += esc(cut.slice(at2, marks[k][0])) +
+             '<mark>' + esc(cut.slice(marks[k][0], marks[k][1])) + '</mark>';
+      at2 = marks[k][1];
+    }
+    out += esc(cut.slice(at2));
+    return (from > 0 ? '…' : '') + out + (from + 240 < text.length ? '…' : '');
+  }
+
+  // The address of a hit: the page, the anchor it is attributed to, and the
+  // query — which the landing code below uses to move the last few lines, from
+  // the anchor to the words themselves.
+  function href(entry, query) {
+    var page = window.__bookSearch.pages[entry.p];
+    var base = HERE.replace(/[^/]*\/$/, '') + page.u + '/';
+    if (location.protocol === 'file:') base += 'index.html';
+    return base + '?find=' + encodeURIComponent(query) +
+           (entry.a ? '#' + entry.a : '');
+  }
+
+  var shown = [];
+  function render(hits, query) {
+    if (!hits.length) {
+      results.innerHTML = '<p class="search-none">Nothing found for “' +
+                          esc(query) + '”.</p>';
+      shown = [];
+      return;
+    }
+    var index = window.__bookSearch, html = '', lastPage = -1;
+    shown = hits;
+    for (var i = 0; i < hits.length; i++) {
+      var e = hits[i].e;
+      if (e.p !== lastPage) {
+        html += '<div class="search-chapter">' + esc(index.pages[e.p].t) + '</div>';
+        lastPage = e.p;
+      }
+      // The chapter is already named above the group; repeating it on every hit
+      // in it says nothing. A result's own name, or the section within the
+      // chapter, is what tells one hit from another.
+      var where = e.n || e.h || '';
+      if (fold(where) === fold(index.pages[e.p].t)) where = '';
+      html += '<a class="search-hit" href="' + esc(href(e, query)) +
+              '" data-i="' + i + '">' +
+              (where ? '<span class="search-where">' + esc(where) + '</span>' : '') +
+              '<span class="search-text">' + snippet(e.t, terms(query)) + '</span></a>';
+    }
+    results.innerHTML = html;
+  }
+
+  // ---- the box itself ------------------------------------------------------
+  var timer = null, current = '';
+  function update() {
+    var query = input.value.trim();
+    closeB.hidden = !query;
+    if (query === current) return;
+    current = query;
+    if (!query) { fold_away(); return; }
+    if (!window.__bookSearch) {                // the index is still loading
+      results.innerHTML = '<p class="search-none">Loading the index…</p>';
+      results.hidden = false;
+      return;
+    }
+    render(search(query), query);
+    results.hidden = false;
+    document.body.classList.add('searching');
+    sel = -1;
+  }
+  function fold_away() {
+    results.hidden = true;
+    results.innerHTML = '';
+    document.body.classList.remove('searching');
+    current = '';
+    sel = -1;
+  }
+  function clear() {
+    input.value = '';
+    closeB.hidden = true;
+    fold_away();
+  }
+
+  input.addEventListener('input', function () {
+    clearTimeout(timer);
+    timer = setTimeout(update, 90);
+  });
+  // Coming back to a box that already has a query in it (arriving by a search
+  // result, see below): show what it finds again rather than sitting inert.
+  input.addEventListener('focus', function () {
+    if (input.value.trim() && results.hidden) { current = ''; update(); }
+  });
+  closeB.addEventListener('click', function () { clear(); input.focus(); });
+
+  // ---- keyboard ------------------------------------------------------------
+  var sel = -1;
+  function highlight(n) {
+    var links = results.querySelectorAll('.search-hit');
+    if (!links.length) return;
+    if (sel >= 0 && links[sel]) links[sel].classList.remove('on');
+    sel = (n + links.length) % links.length;
+    links[sel].classList.add('on');
+    links[sel].scrollIntoView({ block: 'nearest' });
+  }
+  input.addEventListener('keydown', function (ev) {
+    if (ev.key === 'Escape') { clear(); input.blur(); return; }
+    if (ev.key === 'ArrowDown') { ev.preventDefault(); highlight(sel + 1); return; }
+    if (ev.key === 'ArrowUp') { ev.preventDefault(); highlight(sel - 1); return; }
+    if (ev.key === 'Enter') {
+      ev.preventDefault();
+      var links = results.querySelectorAll('.search-hit');
+      var pick = links[sel >= 0 ? sel : 0];
+      if (pick) pick.click();
+    }
+  });
+  // A slash, or the shortcut every search box answers to.
+  document.addEventListener('keydown', function (ev) {
+    var typing = /^(INPUT|TEXTAREA|SELECT)$/.test((ev.target.tagName || '')) ||
+                 ev.target.isContentEditable;
+    if ((ev.key === '/' && !typing && !ev.metaKey && !ev.ctrlKey) ||
+        (ev.key === 'k' && (ev.metaKey || ev.ctrlKey))) {
+      ev.preventDefault();
+      input.focus();
+      input.select();
+    }
+  });
+
+  // A hit on the page being read is a scroll, not a page load: reloading would
+  // throw away the layout the viewer has already done to arrive where we are.
+  results.addEventListener('click', function (ev) {
+    var a = ev.target.closest && ev.target.closest('.search-hit');
+    if (!a) return;
+    var url = new URL(a.getAttribute('href'), location.href);
+    if (url.pathname !== location.pathname) return;      // another chapter: let it load
+    ev.preventDefault();
+    history.replaceState(null, '', url.href);
+    landOn(url.hash.replace(/^#/, ''), input.value.trim());
+  });
+
+  // ---- landing on a hit ----------------------------------------------------
+  // Two steps, because the index knows the passage but the page knows the
+  // pixels: scroll to the anchor the passage was attributed to, then look for
+  // the words themselves in the lines the viewer has painted and move onto
+  // them. The second step is what turns "somewhere in this section" into "this
+  // line", and it is also how a hit inside a folded solution gets the fold
+  // opened.
+  // Looked up when needed, not now: this partial is inside the sidebar, which
+  // the parser reaches before <main>, so at this point the text of the chapter
+  // does not exist yet.
+  function contentEl() { return document.getElementById('lt-content'); }
+  var wanted = null, until = 0, moved = false;
+  ['wheel', 'touchstart', 'keydown', 'mousedown'].forEach(function (ev) {
+    window.addEventListener(ev, function () { moved = true; }, { passive: true });
+  });
+
+  function landOn(anchor, query) {
+    wanted = { anchor: anchor, needle: squeeze(query),
+               needles: needlesFor(query), score: 0 };
+    until = Date.now() + 9000;   // the longest chapters take a while to paint
+    moved = false;
+    step();
+  }
+
+  function step() {
+    if (!wanted || Date.now() > until || moved) { wanted = null; return; }
+    var target = wanted.anchor ? document.getElementById(wanted.anchor) : null;
+    if (wanted.anchor && !target) return;      // not painted yet; try again later
+    if (target && !wanted.jumped) {
+      openFold(target, wanted.needle);
+      target.scrollIntoView({ block: 'start', behavior: 'auto' });
+      wanted.jumped = true;
+    }
+    if (!wanted.needle) { wanted = null; return; }
+    // A weaker match is taken now and given up the moment a better one is
+    // painted, so that a search for "prime decomposition" does not settle on
+    // the first line that merely says "decomposition". Looked for on every
+    // pass, not only when something better might have appeared: the viewer
+    // replaces its segments as it repaints, and the line settled on last time
+    // may no longer be in the document — the glow having gone out of the page
+    // with it.
+    var found = findLine(wanted.needles, target);
+    var line = wanted.at;
+    if (found && (!line || !line.isConnected || found.score > wanted.score)) {
+      line = found.el;
+      wanted.score = found.score;
+    }
+    if (!line || !line.isConnected) return;     // nothing painted yet to go to
+
+    // Arriving at the line is not the same as staying there. The browser makes
+    // its own jump to the fragment as soon as the anchor exists — which is
+    // after this one, and undoes it — and the viewer keeps painting, which
+    // moves everything below what it paints. So the line is put back in view
+    // whenever it has drifted out of the middle band, for as long as the
+    // window in landOn lasts or until the reader takes over.
+    var box = line.getBoundingClientRect();
+    var height = window.innerHeight || 800;
+    if (box.top < 40 || box.bottom > height - 40) {
+      line.scrollIntoView({ block: 'center', behavior: 'auto' });
+    }
+    wanted.at = line;
+    // Flashed once — again only if the viewer has replaced the element under
+    // us, in which case the glow went with it.
+    if (wanted.flashed !== line) {
+      wanted.flashed = line;
+      line.classList.add('cite-flash');
+      setTimeout(function () { line.classList.remove('cite-flash'); }, 2200);
+    }
+  }
+
+  // What to look for in the painted text: the whole query, and each of its
+  // words. The whole query is the precise answer and often is not there to be
+  // had — the typesetter is free to break a line between any two of its words,
+  // and a phrase split over two lines is in neither of them.
+  function needlesFor(query) {
+    var whole = squeeze(query), words = [];
+    fold(query).split(/\s+/).forEach(function (w) {
+      w = squeeze(w);
+      if (w.length > 2 && words.indexOf(w) < 0) words.push(w);
+    });
+    return { whole: words.length > 1 ? whole : "", words: words.length ? words : [whole] };
+  }
+
+  // The best painted line at or below the anchor, and how good it is: the whole
+  // query in one line beats several of its words, which beats one of them. Ties
+  // go to the earliest line, which is the one nearest the anchor the passage
+  // was attributed to.
+  //
+  // Matched with the spaces and punctuation taken out on both sides: a line's
+  // textContent runs words together wherever the typesetter changed font
+  // mid-line, so "twowaytransducer" is what "two-way transducer" often looks
+  // like in the DOM. Consecutive lines are also tried joined, which is what
+  // catches a phrase broken across a line break — the first of the two is the
+  // line to go to.
+  function findLine(needles, target) {
+    var content = contentEl();
+    if (!content) return null;
+    var svgs = content.getElementsByTagName('svg'), lines = [];
+    for (var i = 0; i < svgs.length; i++) {
+      lines.push({ el: svgs[i], top: svgs[i].getBoundingClientRect().top,
+                   text: squeeze(svgs[i].textContent || '') });
+    }
+    var from = target ? target.getBoundingClientRect().top - 40 : -Infinity;
+    var below = [];
+    for (var j = 0; j < lines.length; j++) if (lines[j].top >= from) below.push(lines[j]);
+    // Below the anchor first — that is where the passage the reader picked
+    // lives. Failing that, anywhere on the page, nearest the anchor: a passage
+    // is attributed to the last anchor *before* it, so the words can perfectly
+    // well be a paragraph above the thing they were attributed to.
+    return bestLine(needles, below, null) || bestLine(needles, lines, from);
+  }
+
+  function bestLine(needles, lines, near) {
+    var best = null, bestScore = 0, bestGap = Infinity;
+    for (var j = 0; j < lines.length; j++) {
+      var alone = lines[j].text;
+      var pair = alone + (j + 1 < lines.length ? lines[j + 1].text : '');
+      var score = 0;
+      // The pair counts for the phrase only. A single word found on the *next*
+      // line is a hit on that line, not on this one, and flagging this one
+      // leaves the reader looking at the line above the answer.
+      if (needles.whole && pair.indexOf(needles.whole) >= 0) score += 10;
+      for (var w = 0; w < needles.words.length; w++) {
+        if (alone.indexOf(needles.words[w]) >= 0) score += 1;
+      }
+      if (!score) continue;
+      var gap = near === null ? 0 : Math.abs(lines[j].top - near);
+      if (score > bestScore || (score === bestScore && gap < bestGap)) {
+        bestScore = score; bestGap = gap; best = lines[j].el;
+      }
+    }
+    if (best) return { el: best, score: bestScore };
+    // Nothing at all: the words may have been hyphenated across a line break,
+    // which leaves neither line holding one. Allow the pair to answer for a
+    // single word too, now that no line can be preferred wrongly over another.
+    for (var k = 0; k < lines.length; k++) {
+      var both = lines[k].text + (k + 1 < lines.length ? lines[k + 1].text : '');
+      for (var v = 0; v < needles.words.length; v++) {
+        if (both.indexOf(needles.words[v]) >= 0) return { el: lines[k].el, score: 1 };
+      }
+    }
+    return null;
+  }
+
+  // A hit inside an exercise's solution: the solution is folded away, so the
+  // words are in the DOM but not on the screen until the fold is opened.
+  function openFold(target, needle) {
+    var folds = target.querySelectorAll ? target.querySelectorAll('details') : [];
+    for (var i = 0; i < folds.length; i++) {
+      if (!needle || squeeze(folds[i].textContent || '').indexOf(needle) >= 0) {
+        folds[i].open = true;
+      }
+    }
+  }
+
+  // Painting is lazy, so the line we want usually does not exist yet when we
+  // arrive; the same relayout that brings it into being is the signal to look
+  // again. Bounded by the six seconds in landOn, and abandoned the moment the
+  // reader scrolls for themselves.
+  function watch() {
+    var content = contentEl();
+    if (content && window.MutationObserver) {
+      new MutationObserver(function () { if (wanted) step(); })
+        .observe(content, { childList: true, subtree: true });
+    }
+    [200, 600, 1200, 2400, 4000, 6000, 8000].forEach(function (ms) {
+      setTimeout(function () { if (wanted) step(); }, ms);
+    });
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', watch);
+  } else {
+    watch();
+  }
+
+  // ---- arriving from another chapter ---------------------------------------
+  // ?find= carries the query across the page load. The box is filled in so the
+  // reader can see what they searched for and step through the other hits, but
+  // the results stay folded: they asked for this passage, not for the list.
+  var came = /[?&]find=([^&#]*)/.exec(location.search);
+  if (came) {
+    var query = decodeURIComponent(came[1].replace(/\+/g, ' '));
+    input.value = query;
+    closeB.hidden = false;
+    current = query;
+    landOn(location.hash.replace(/^#/, ''), query);
+  }
+})();
+</script>

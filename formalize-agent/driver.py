@@ -259,10 +259,16 @@ DECL_RE = re.compile(r"^\s*(?:@\[[^\]]*\]\s*)?(?:private\s+|protected\s+|noncomp
 
 
 def declaration_bodies(path: Path) -> dict[str, str]:
-    """Map declaration name -> its source text, up to the next declaration."""
+    """Map declaration name -> its source text, up to the next declaration.
+
+    Read from the comment-free view of the file, not the raw one: a declaration
+    that has been commented out is not a declaration, and slicing the raw text
+    first would hand each chunk to `strip_comments` without the `/-` that opened
+    the block it sits in, so the comment would look like code.
+    """
     out: dict[str, str] = {}
     name, buf = None, []
-    for line in path.read_text(errors="ignore").splitlines():
+    for line in strip_comments(path.read_text(errors="ignore")).splitlines():
         m = DECL_RE.match(line)
         if m and not line.startswith(" "):
             if name:
@@ -276,8 +282,38 @@ def declaration_bodies(path: Path) -> dict[str, str]:
 
 
 def strip_comments(text: str) -> str:
-    text = re.sub(r"/-.*?-/", " ", text, flags=re.S)
-    return re.sub(r"--[^\n]*", " ", text)
+    """Comments blanked to spaces, character for character.
+
+    Lean's block comments nest, and a withdrawn result is left in the sources
+    commented out -- `/- ... /-- **Theorem C.4.17.** ... -/ ... -/`. A
+    non-nesting `/-.*?-/` stops at the first `-/`, which is the docstring's,
+    and everything after it reads as live code: a commented-out `sorry` then
+    counts, and `open_results` calls a finished result unproved and burns a
+    reattempt on it. Length and newlines are preserved so offsets still line up.
+    """
+    out, i, n = list(text), 0, len(text)
+    while i < n:
+        if text.startswith("/-", i):
+            depth, j = 1, i + 2
+            while j < n and depth:
+                if text.startswith("/-", j):
+                    depth += 1; j += 2
+                elif text.startswith("-/", j):
+                    depth -= 1; j += 2
+                else:
+                    j += 1
+        elif text.startswith("--", i):
+            j = text.find("\n", i)
+            if j == -1:
+                j = n
+        else:
+            i += 1
+            continue
+        for k in range(i, j):
+            if out[k] != "\n":
+                out[k] = " "
+        i = j
+    return "".join(out)
 
 
 def collect_bodies(ld: Path) -> dict[str, str]:

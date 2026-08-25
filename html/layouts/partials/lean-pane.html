@@ -25,19 +25,21 @@
     {{ with index $link $label }}
       {{ with site.GetPage . }}
         {{ if eq .RelPermalink $here }}
-          {{/* Every declaration, including one with no file of its own: a result
-               discharged by Mathlib (Definition B.3.1 is Mathlib's Semiring) is
-               still formalised, and saying so is better than saying nothing. */}}
-          {{ with $entry.lean }}
-            {{ $keep := . }}
-            {{ $labels = merge $labels (dict $label (dict
-                 "kind" $entry.kind "number" $entry.number "lean" $keep)) }}
-            {{ range $keep }}
-              {{ $f := .file }}
-              {{ with $f }}
-                {{ with index $sources $f }}
-                  {{ $files = merge $files (dict $f .) }}
-                {{ end }}
+          {{/* Every numbered result, whether or not it is formalised: each one
+               has a citable address, which is reason enough to know it is here.
+               And every declaration of the ones that are, including one with no
+               file of its own — a result discharged by Mathlib (Definition
+               B.3.1 is Mathlib's Semiring) is still formalised, and saying so is
+               better than saying nothing. */}}
+          {{ $keep := $entry.lean }}
+          {{ $labels = merge $labels (dict $label (dict
+               "kind" $entry.kind "number" $entry.number "lean" $keep
+               "why" (or $entry.theorems_md_status ""))) }}
+          {{ range $keep }}
+            {{ $f := .file }}
+            {{ with $f }}
+              {{ with index $sources $f }}
+                {{ $files = merge $files (dict $f .) }}
               {{ end }}
             {{ end }}
           {{ end }}
@@ -52,10 +54,20 @@
 <aside id="lean-pane" aria-label="Lean formalisation" hidden>
   <header id="lean-pane-head">
     <div id="lean-pane-title">Lean formalisation</div>
+    <button id="lean-pane-back" type="button" hidden>All results</button>
     <button id="lean-pane-close" type="button" aria-label="Close the Lean column">&times;</button>
   </header>
+  {{/* The citable address of whatever is being shown, above the formalisation
+       because it is the part a reader is more often after: a link to put in a
+       paper, an email or a lecture's slides. data-no-params keeps baseof's
+       click handler from stamping the reader's theme/width/zoom onto it — those
+       belong in this reader's address bar, not in a citation. */}}
+  <div id="cite-box" hidden>
+    <a id="cite-link" href="" data-no-params></a>
+    <button id="cite-copy" type="button" title="Copy this link">Copy</button>
+  </div>
   <div id="lean-pane-sub"></div>
-  <div id="lean-pane-body"><div id="lean-index"></div></div>
+  <div id="lean-pane-body"></div>
 </aside>
 
 <script>
@@ -67,21 +79,73 @@
   var body  = document.getElementById('lean-pane-body');
   var title = document.getElementById('lean-pane-title');
   var sub   = document.getElementById('lean-pane-sub');
+  var back  = document.getElementById('lean-pane-back');
+  var citeBox  = document.getElementById('cite-box');
+  var citeLink = document.getElementById('cite-link');
+  var citeCopy = document.getElementById('cite-copy');
   var KEY = 'reflowtex-lean';
 
-  // ---- open / closed, remembered like the other reader settings -----------
-  function setOpen(open) {
+  // ---- the citable address of a result ------------------------------------
+  // "theorem-C.4.1", not the LaTeX \label: a citation should say what it points
+  // at without the reader having to follow it, and some labels are generated
+  // (autoref-1) and say nothing at all. The pair (kind, number) is unique by
+  // construction — it is the key build-lean-map.py joins the book to Lean on.
+  //
+  // The book's own anchors keep working: this is a second, readable name for
+  // the same place, added beside the viewer's, never instead of it, so links
+  // handed out before today still land where they did.
+  function printed(e) { return e.number.replace(/^\./, ''); }   // .0.1 prints as 0.1
+  function slugOf(label) {
+    var e = DATA.labels[label];
+    return e.kind + '-' + printed(e);
+  }
+  var BY_SLUG = {};
+  Object.keys(DATA.labels).forEach(function (l) { BY_SLUG[slugOf(l)] = l; });
+
+  // Everything left of the first ? or #: the page, without this reader's theme,
+  // width and zoom, which are settings and not part of the address of a result.
+  // Taken from location rather than from a base configured at build time so the
+  // link is right wherever the site is served from — including, unavoidably, a
+  // file:// path when the built site is opened straight off disk.
+  function citeURL(label) {
+    return location.href.replace(/[?#].*$/, '') + '#' + slugOf(label);
+  }
+
+  function showCite(label) {
+    var url = citeURL(label);
+    citeLink.textContent = url;
+    citeLink.href = url;
+    citeBox.hidden = false;
+    citeCopy.textContent = 'Copy';
+  }
+
+  // ---- open / closed ------------------------------------------------------
+  // The column is closed until it is asked for. Opening it by clicking a result
+  // is a look at that one result, not a change of mind about the layout, so
+  // only the λ button and the close button move the remembered preference —
+  // otherwise one click on a theorem would leave every later page opening on a
+  // list of declarations nobody asked to see.
+  var pref = '0';
+  function setOpen(open, explicit) {
     document.body.classList.toggle('lean-open', open);
     pane.hidden = !open;
     var t = document.getElementById('lean-toggle');
     if (t) t.setAttribute('aria-expanded', String(open));
-    try { localStorage.setItem(KEY, open ? '1' : '0'); } catch (e) {}
+    if (explicit) {
+      pref = open ? '1' : '0';
+      try { localStorage.setItem(KEY, pref); } catch (e) {}
+      if (window.__syncReaderURL) window.__syncReaderURL();
+    }
     // the viewer lays out against the width it is given, which just changed
     window.dispatchEvent(new Event('resize'));
-    if (window.__syncReaderURL) window.__syncReaderURL();
   }
-  window.__setLean = setOpen;
-  window.__leanOpen = function () { return document.body.classList.contains('lean-open') ? '1' : '0'; };
+  window.__setLean = function (open) {
+    // asked for by hand: if nothing has been looked at yet, the list is the
+    // useful thing to land on
+    if (open && !shownFile) showIndex();
+    setOpen(open, true);
+  };
+  window.__leanOpen = function () { return pref; };
 
   // ---- syntax highlighting ------------------------------------------------
   // Small on purpose: Lean is not in Chroma's lexer set, and the pane needs
@@ -156,6 +220,8 @@
   }
 
   // ---- showing one result -------------------------------------------------
+  function formalised(e) { return (e.lean || []).length > 0; }
+
   function pick(e) {
     // A result can name several declarations; show one with a file if there is
     // one, since that is the one we can actually open.
@@ -172,10 +238,31 @@
   var shownFile = null;
   function show(label) {
     var e = DATA.labels[label];
-    if (!e || !e.lean.length) return;
+    if (!e) return;
+    setOpen(true, false);
+    back.hidden = false;
+    title.textContent = e.kind.charAt(0).toUpperCase() + e.kind.slice(1) + ' ' + printed(e);
+    showCite(label);
+    // The address bar follows the pane, so that copying it from there and
+    // copying it from the box below give the same result. replaceState, not a
+    // hash assignment: clicking through a chapter should not fill the back
+    // button with every result looked at on the way.
+    try { history.replaceState(null, '', citeURL(label)); } catch (err) {}
+    if (window.__syncReaderURL) window.__syncReaderURL();
+
+    if (!formalised(e)) {
+      // Nothing in Lean answers to this one. THEOREMS.md often says why, and
+      // that reason is more useful than silence.
+      sub.innerHTML = '';
+      body.innerHTML = '<p class="lean-hint">Not formalised' +
+        (e.why ? ': ' + esc(e.why.replace(/^not formalised\s*\(?/i, '')
+                              .replace(/\)$/, '')) : '.') +
+        '</p>';
+      shownFile = null;
+      return;
+    }
+
     var d = pick(e);
-    setOpen(true);
-    title.textContent = e.kind.charAt(0).toUpperCase() + e.kind.slice(1) + ' ' + e.number;
     sub.innerHTML = '<code>' + esc(d.name) + '</code>' +
       '<span class="lean-state lean-st-' + d.state + '">' + esc(stateLabel(d)) + '</span>' +
       (d.internal ? '<span class="lean-state lean-st-internal">internal step</span>' : '') +
@@ -205,29 +292,48 @@
     if (first) body.scrollTop = first.offsetTop - body.offsetTop - 8;
   }
 
-  // ---- the index, shown before anything has been clicked ------------------
+  // ---- the index -----------------------------------------------------------
+  // Not what the column opens on any more: it is what the λ button lands on,
+  // and what "All results" comes back to.
+  var indexHTML = null;
   function buildIndex() {
     var keys = Object.keys(DATA.labels).sort(function (a, b) {
       return DATA.labels[a].number.localeCompare(DATA.labels[b].number, undefined,
                                                  { numeric: true });
     });
-    var html = '<p class="lean-hint">' + keys.length + ' result' +
-      (keys.length === 1 ? '' : 's') + ' on this page ' +
-      (keys.length === 1 ? 'is' : 'are') + ' formalised. Click one below, or ' +
-      'click the result itself in the text \u2014 it is marked ' +
-      '<span class="lean-badge lean-badge-demo">Lean</span>.</p><ol class="lean-list">';
+    var done = keys.filter(function (k) { return formalised(DATA.labels[k]); }).length;
+    var html = '<p class="lean-hint">' + keys.length + ' numbered result' +
+      (keys.length === 1 ? '' : 's') + ' on this page, ' + done + ' of them ' +
+      'formalised. Click one below, or click the result itself in the text \u2014 ' +
+      'a formalised one is marked <span class="lean-badge lean-badge-demo">Lean</span>. ' +
+      'Either way you get its link.</p><ol class="lean-list">';
     keys.forEach(function (k) {
-      var e = DATA.labels[k], d = pick(e);
+      var e = DATA.labels[k];
       html += '<li><button type="button" data-label="' + k + '">' +
-              '<span class="lean-num">' + esc(e.kind) + ' ' + esc(e.number) + '</span>' +
-              '<code>' + esc(d.name) + '</code>' +
-              '<span class="lean-state lean-st-' + d.state + '">' + esc(d.state) + '</span>' +
-              (d.internal ? '<span class="lean-state lean-st-internal">internal</span>' : '') +
-              '</button></li>';
+              '<span class="lean-num">' + esc(e.kind) + ' ' + esc(printed(e)) + '</span>';
+      if (formalised(e)) {
+        var d = pick(e);
+        html += '<code>' + esc(d.name) + '</code>' +
+                '<span class="lean-state lean-st-' + d.state + '">' + esc(d.state) + '</span>' +
+                (d.internal ? '<span class="lean-state lean-st-internal">internal</span>' : '');
+      } else {
+        html += '<span class="lean-state lean-st-none">not formalised</span>';
+      }
+      html += '</button></li>';
     });
-    document.getElementById('lean-index').innerHTML = html + '</ol>';
+    indexHTML = html + '</ol>';
   }
   buildIndex();
+
+  function showIndex() {
+    title.textContent = 'Results on this page';
+    sub.innerHTML = '';
+    citeBox.hidden = true;          // nothing in particular is being shown
+    body.innerHTML = indexHTML;
+    body.scrollTop = 0;
+    shownFile = null;
+    back.hidden = true;
+  }
 
   body.addEventListener('click', function (ev) {
     var b = ev.target.closest('button[data-label]');
@@ -239,7 +345,43 @@
   });
 
   document.getElementById('lean-pane-close').addEventListener('click', function () {
-    setOpen(false);
+    setOpen(false, true);
+  });
+  back.addEventListener('click', showIndex);
+
+  // The citation points at this very page, so following it is a jump, not a
+  // page load: reloading would discard the reader's theme and the pane's state
+  // only to arrive where we already are.
+  citeLink.addEventListener('click', function (ev) {
+    ev.preventDefault();
+    scrollToSlug(citeLink.getAttribute('href').replace(/^[^#]*#/, ''), true);
+  });
+
+  citeCopy.addEventListener('click', function () {
+    var text = citeLink.textContent;
+    function done() {
+      citeCopy.textContent = 'Copied';
+      setTimeout(function () { citeCopy.textContent = 'Copy'; }, 1400);
+    }
+    function fallback() {
+      // execCommand is on its way out of the platform, but it is what still
+      // works where the clipboard API is refused — which includes a page
+      // opened over file://, the way the built site is meant to be readable.
+      var ta = document.createElement('textarea');
+      ta.value = text;
+      ta.setAttribute('readonly', '');
+      ta.style.position = 'fixed';
+      ta.style.top = '-1000px';
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); done(); } catch (e) {}
+      document.body.removeChild(ta);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done, fallback);
+    } else {
+      fallback();
+    }
   });
 
   // ---- the result in the text, as the click target ------------------------
@@ -300,7 +442,7 @@
     b.type = 'button';
     b.className = 'lean-badge';
     b.textContent = 'Lean';
-    b.title = 'Show the Lean formalisation of ' + e.kind + ' ' + e.number;
+    b.title = 'Show the Lean formalisation of ' + e.kind + ' ' + printed(e);
     b.addEventListener('click', function (ev) {
       ev.preventDefault(); ev.stopPropagation(); show(label);
     });
@@ -313,7 +455,7 @@
   // different <svg> entirely.
   var hooked = [];
   function hookAll() {
-    for (var i = 0; i < hooked.length; i++) hooked[i].removeAttribute('data-lean-for');
+    for (var i = 0; i < hooked.length; i++) hooked[i].removeAttribute('data-result-for');
     hooked = [];
 
     // Every measurement first, every mutation after: interleaving them would
@@ -333,21 +475,138 @@
     });
 
     plan.forEach(function (p) {
-      var badge = p.a.querySelector('.lean-badge') || addBadge(p.a, p.label);
-      if (!p.seg) { badge.style.top = ''; return; }   // fall back to the anchor
-      p.seg.el.setAttribute('data-lean-for', p.label);
+      var e = DATA.labels[p.label];
+      // The readable anchor a citation points at. It lives inside the viewer's
+      // own anchor — zero-height and position:relative — as a second name for
+      // the same place rather than a replacement for it, and gets nudged down
+      // onto the heading, so that following a citation lands on the result
+      // instead of a line or three above it.
+      var cite = p.a.querySelector('.cite-anchor');
+      if (!cite) {
+        cite = document.createElement('div');
+        cite.className = 'cite-anchor';
+        cite.id = slugOf(p.label);
+        p.a.appendChild(cite);
+      }
+      // The badge announces a formalisation, so only a formalised result gets
+      // one. Every result is clickable all the same — each has a link.
+      var badge = formalised(e)
+        ? (p.a.querySelector('.lean-badge') || addBadge(p.a, p.label))
+        : null;
+      p.cite = cite;
+      p.badge = badge;
+      if (!p.seg) {                                   // fall back to the anchor
+        cite.style.top = '';
+        if (badge) badge.style.top = '';
+        return;
+      }
+      p.seg.el.setAttribute('data-result-for', p.label);
       hooked.push(p.seg.el);
-      // the badge belongs beside the heading, not beside the anchor
-      badge.style.top = p.delta + 'px';
+      cite.style.top = p.delta + 'px';
+      if (badge) badge.style.top = p.delta + 'px';
     });
+
+
+    // A citation may have been waiting for exactly this to be painted.
+    tryPending();
+    reaim();
+    retryFlash();
   }
+
+  // ---- arriving by citation ------------------------------------------------
+  // A link into the middle of a chapter cannot be left to the browser alone:
+  // the viewer paints lazily, so at load time the anchor a fragment names
+  // usually does not exist yet, and the jump silently does nothing. The wanted
+  // anchor is remembered instead and tried again after each relayout, until it
+  // is there to scroll to.
+  var pending = null, smoothly = false;
+  function scrollToSlug(slug, smooth) {
+    pending = BY_SLUG[slug] ? slug : null;
+    smoothly = !!smooth;
+    tryPending();
+  }
+  // The heading itself is the better thing to scroll to once it has been
+  // painted and hooked: it is a real, laid-out line, whereas the anchor is a
+  // zero-height div the viewer moves about as it repaints, and whose reported
+  // position is not always the one its own offsets are resolved against. Until
+  // then the anchor is what there is, and reaim below refines the landing as
+  // soon as the heading appears.
+  function targetFor(slug) {
+    var seg = content && content.querySelector('[data-result-for="' + BY_SLUG[slug] + '"]');
+    return seg || document.getElementById(slug);
+  }
+
+  function tryPending() {
+    if (!pending) return;
+    var el = targetFor(pending);
+    if (!el) return;
+    el.scrollIntoView({ block: 'start', behavior: smoothly ? 'smooth' : 'auto' });
+    flash(BY_SLUG[pending]);
+    if (!smoothly) aim(pending);
+    pending = null;
+  }
+
+  // Landing is a moving target: the scroll brings new lines into view, the
+  // viewer paints them, and what was painted above the result grows — leaving
+  // it a few hundred pixels below where it was put. So the aim is corrected as
+  // the page settles, for a couple of seconds after arriving and no longer.
+  //
+  // What stops the correction is the reader reaching for the page — a wheel, a
+  // touch, an arrow key — and not a change in scrollY, which moves on its own
+  // here: the browser's scroll anchoring shifts it to hold the view steady
+  // while those lines above are painted, and cannot be told apart from the
+  // reader scrolling by position alone.
+  var aimSlug = null, aimUntil = 0, userMoved = false;
+  function tookOver() { userMoved = true; }
+  ['wheel', 'touchstart', 'keydown', 'mousedown'].forEach(function (ev) {
+    window.addEventListener(ev, tookOver, { passive: true });
+  });
+  function aim(slug) {
+    aimSlug = slug;
+    aimUntil = Date.now() + 3000;   // covers the settling passes below
+    userMoved = false;
+  }
+  function reaim() {
+    if (!aimSlug) return;
+    if (userMoved || Date.now() > aimUntil) { aimSlug = null; return; }
+    var el = targetFor(aimSlug);
+    if (!el) return;
+    if (Math.abs(el.getBoundingClientRect().top - 24) < 40) return;   // close enough
+    el.scrollIntoView({ block: 'start', behavior: 'auto' });
+  }
+  // Landing in the middle of a chapter, the reader has to be told which line
+  // they were sent to; the heading answers to that for a moment.
+  //
+  // The heading is usually not hooked at the instant we arrive — it is far down
+  // a chapter that has only painted its first screen, and it is the scroll we
+  // just did that brings it into being. So a flash that cannot be given yet is
+  // held over to the next relayout, but only briefly: a glow arriving seconds
+  // late, after the reader has moved on, would point at nothing they asked for.
+  var flashWanted = null, flashUntil = 0;
+  function flash(label) {
+    var seg = content && content.querySelector('[data-result-for="' + label + '"]');
+    if (!seg) { flashWanted = label; flashUntil = Date.now() + 6000; return; }
+    flashWanted = null;
+    seg.classList.remove('cite-flash');
+    void seg.offsetWidth;                    // restart the animation
+    seg.classList.add('cite-flash');
+    setTimeout(function () { seg.classList.remove('cite-flash'); }, 2200);
+  }
+  function retryFlash() {
+    if (!flashWanted) return;
+    if (Date.now() > flashUntil) { flashWanted = null; return; }
+    flash(flashWanted);
+  }
+  window.addEventListener('hashchange', function () {
+    scrollToSlug((location.hash || '').replace(/^#/, ''));
+  });
 
   if (content) {
     content.addEventListener('click', function (ev) {
       // a click that ends a text selection is not a click on the theorem
       if (window.getSelection && String(window.getSelection()).length) return;
-      var seg = ev.target.closest && ev.target.closest('[data-lean-for]');
-      if (seg) show(seg.getAttribute('data-lean-for'));
+      var seg = ev.target.closest && ev.target.closest('[data-result-for]');
+      if (seg) show(seg.getAttribute('data-result-for'));
     });
     // Debounced, not per-frame: the observer fires for every line the viewer
     // paints while scrolling, and hookAll reads layout. But a pure debounce
@@ -364,18 +623,33 @@
     }
     window.addEventListener('resize', schedule);
     schedule();
+    // A short chapter paints in one go, so the observer above fires once — and
+    // that once can land while the layout is still settling, leaving every
+    // badge and citation anchor measured against positions that then move. A
+    // few passes as the page comes to rest cost a handful of layout reads and
+    // are what keeps a citation landing on its heading rather than a screen
+    // below it.
+    [300, 900, 1800].forEach(function (ms) { setTimeout(hookAll, ms); });
   }
 
   // ---- initial state ------------------------------------------------------
+  // Closed unless the reader left it open on purpose. The book is the point;
+  // the formalisation is something to ask for, by clicking a result or the λ.
   var fromURL = null;
   if (window.__fromQuery) fromURL = window.__fromQuery('lean');
   var saved; try { saved = localStorage.getItem(KEY); } catch (e) {}
-  // Open by default only where the layout can actually afford a third column;
-  // narrower than that it is a drawer over the text, which should be asked for.
-  var wide = window.matchMedia('(min-width: 1500px)').matches;
-  setOpen(fromURL !== null && fromURL !== undefined ? fromURL === '1'
-          : saved !== null && saved !== undefined ? saved === '1'
-          : wide);
+  pref = fromURL === '1' || (fromURL === null && saved === '1') ? '1' : '0';
+  // Arriving by citation: the fragment names one result, so go there. And if
+  // the column is open anyway, let it be about the result the reader was sent
+  // to, rather than about a list they did not ask for.
+  var arrived = BY_SLUG[(location.hash || '').replace(/^#/, '')] || null;
+  if (pref === '1') { if (arrived) show(arrived); else showIndex(); }
+  setOpen(pref === '1', false);
+  // …but not the scrolling, if the reader came from the search box (?find=).
+  // Both would be landing on the same page at once: this one on the result's
+  // heading, search.html's on the words that were searched for, which is
+  // further down and is what was actually asked for.
+  if (arrived && !/[?&]find=/.test(location.search)) scrollToSlug(slugOf(arrived));
   if (window.__regReaderParam) window.__regReaderParam('lean', window.__leanOpen);
 
   // The control pill is rendered after this partial — it is outside .shell —

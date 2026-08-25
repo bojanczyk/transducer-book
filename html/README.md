@@ -128,6 +128,85 @@ shortcodes only expand in content. Three hand-written pieces:
 Adding or renaming a chapter means touching all three, plus `CHAPTERS` in
 `build-references.py` and a new `content/NN-slug.md`. Nothing generates them.
 
+### Citable links to results
+
+Clicking any numbered result — theorem, lemma, definition, claim, corollary,
+exercise — opens the third column on it, with its address at the top, above
+the formalisation:
+
+```
+https://…/12-two-way-transducers/#theorem-C.2.5      [Copy]
+```
+
+The fragment is `kind-number`, built from the same `(kind, number)` pair
+`build-lean-map.py` joins the book to Lean on, so it is unique and reads as
+the citation itself. The book's own `#thm:composition-of-two-way-transducers`
+anchors are untouched and still work — the readable name is added beside the
+viewer's, never instead of it — so links given out earlier keep landing where
+they did.
+
+Two things worth knowing:
+
+- **The address is taken from the browser, not from a base configured here.**
+  It is therefore right wherever the site is served from, and shows a
+  `file://` path when you are reading the built site off disk. Nothing needs
+  configuring when the site is published; if you ever want the citation to
+  read as the public URL even in local preview, that is the one thing to
+  change (in `layouts/partials/lean-pane.html`, `citeURL`).
+- **A number-based link moves if the book is renumbered.** Inserting a chapter
+  ahead of Part C turns `#theorem-C.2.5` into a link to nothing in particular.
+  That is the price of a citation that is legible; the LaTeX-label anchors are
+  the stable alternative if a link ever has to outlive a renumbering.
+
+Following such a link scrolls to the result and glows on its heading for a
+moment. That takes some work behind the scenes, because the viewer paints
+lazily: the anchor a fragment names usually does not exist yet when the page
+loads, so the wanted one is remembered and tried again after each relayout,
+and the landing is corrected as the lines above it are painted (until the
+reader takes over with a wheel, a touch or a key). See `scrollToSlug`, `aim`
+and `flash` in `layouts/partials/lean-pane.html`.
+
+### Searching
+
+The box above the contents searches the whole book, not just the chapter being
+read. Typing folds the results out between the box and the contents — the
+contents are pushed down, not replaced, so you can still see where you are —
+and the × (or Escape) folds them away again. `/` or ⌘K puts the cursor in the
+box; the arrow keys and Enter work through the results without the mouse.
+
+**Where the text comes from.** Nothing on a rendered page is searchable text:
+Reflow TeX ships each chapter as a compiled node list and the viewer paints it
+as line-level `<svg>`s, so the words in the browser are glyph runs with the
+spaces between them implied by position. `build-search-index.py` therefore
+builds the index from the LaTeX itself — stripping the maths, resolving `\ref`s
+to the numbers the book gives them, expanding `\mso` and its friends to the
+words they print — and cuts each chapter into ~1000 passages, one per
+paragraph, per section heading and per numbered result.
+
+It writes `static/search-index.js`, ~300 KB, as a **plain script rather than
+JSON**: the built site has to work opened off disk, and over `file://` fetching
+a sibling file is a cross-origin request the browser refuses, while a
+`<script src>` is not. One copy is shared by every page.
+
+**Where a hit takes you.** Each passage is attributed to an anchor the page
+already has — a readable `theorem-C.2.5` anchor, a `\label`, or the exercise
+block it belongs to (98% of passages have one; the rest land at the top of
+their chapter). That gets the reader to the right neighbourhood. The last few
+lines are then done in the browser: `?find=` carries the query across the page
+load, and `search.html`'s `findLine` looks for the words in the painted text
+and scrolls onto the line holding them, which then glows for a moment.
+
+That last step has to work around the same things the citation landing does,
+plus two of its own: the painted text runs words together wherever the
+typesetter changed font mid-line (so matching is done with the spaces and
+punctuation removed on both sides), and a phrase can be broken across a line
+break (so consecutive lines are also tried joined). A hit inside an exercise's
+folded solution opens the fold.
+
+**When the sources change**, `rebuild.sh` regenerates the index like everything
+else. `python3 build-search-index.py` on its own reports what it would write
+and exits non-zero if `static/search-index.js` has fallen behind.
+
 ### Colour theme
 
 `latex-color-maps/transducer-book-color-map.json` remaps the colours
