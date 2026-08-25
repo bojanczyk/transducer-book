@@ -188,9 +188,10 @@ def AdjSep [Inhabited S] (K : ℕ) (stp : S → A → S) (ini : S)
   ∧ (∀ r, r < 2 * K + 1 → ds c false r = (if wb c false r then stp ini (lt c) else ini))
   ∧ (∀ r, flL c false r = true → lOf (pr c false r) = some (lt b))
   ∧ (∀ r, flR c false r = true → rOf (pr c false r) = some (lt c))
-  ∧ (∀ r, flL b true r = false → lOf (pr b true r) = some (lt b))
-  ∧ (∀ r, flR b true r = false → rOf (pr b true r) = some (lt c))
+  ∧ (∀ r, r < 2 * K + 1 → flL b true r = false → lOf (pr b true r) = some (lt b))
+  ∧ (∀ r, r < 2 * K + 1 → flR b true r = false → rOf (pr b true r) = some (lt c))
   ∧ (∀ r, r < 2 * K + 1 → acc (pr b true r) (ds b true r))
+  ∧ lp b true = false
 
 /-- The conditions on the first annotated letter of the input. -/
 def StartOK [Inhabited S] {B : Type} (M : TwoWay A B Q) (K : ℕ) (stp : S → A → S) (ini : S)
@@ -205,12 +206,13 @@ def StartOK [Inhabited S] {B : Type} (M : TwoWay A B Q) (K : ℕ) (stp : S → A
 def EndOK [Inhabited S] (K : ℕ) (acc : PieceParam A Q → S → Prop) (b : Gam A Q S K) : Prop :=
   (sa b = false →
     lp b true = true
-    ∧ (∀ r, flL b true r = false → lOf (pr b true r) = some (lt b))
+    ∧ (∀ r, r < 2 * K + 1 → flL b true r = false → lOf (pr b true r) = some (lt b))
     ∧ (∀ r, flR b true r = false → rOf (pr b true r) = none)
     ∧ (∀ r, r < 2 * K + 1 → acc (pr b true r) (ds b true r)))
   ∧ (sa b = true →
     lp b false = true
-    ∧ (∀ s r, flL b s r = false → lOf (pr b s r) = some (lt b))
+    ∧ lp b true = false
+    ∧ (∀ s r, r < 2 * K + 1 → flL b s r = false → lOf (pr b s r) = some (lt b))
     ∧ (∀ s r, flR b s r = false → rOf (pr b s r) = none)
     ∧ (∀ s r, r < 2 * K + 1 → acc (pr b s r) (ds b s r)))
 

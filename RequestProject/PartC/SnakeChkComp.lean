@@ -3,13 +3,14 @@
 book's snake lemma.**
 
 Every good input carries an annotation that the checking automaton accepts: the
-one built from the record-breaker decomposition of its run, whose existence is
-the mathematical half of the book's first stage
-(`RequestProject/PartC/SnakeData.lean`).
+one built from the record-breaker decomposition of its run, which is a chain of
+pieces (`Transducers.TwoWay.Chk.nonempty_chainData_of_good`), and every chain of
+pieces is described by an accepted annotation
+(`Transducers.TwoWay.Chk.exists_mem_chkLang_of_chainData`).
 -/
-import RequestProject.PartC.SnakeChkEnc
+import RequestProject.PartC.SnakeChkRB
+import RequestProject.PartC.SnakeChkBuild
 import RequestProject.PartC.SnakeChkRel
-import RequestProject.PartC.SnakeData
 
 namespace Transducers
 
@@ -30,7 +31,8 @@ theorem chk_complete [Finite A] [Finite B] [Finite Q] [Inhabited S]
       v ∈ WinCond M (K - 1) p ↔ acc p (v.foldl stp ini))
     {w : List A} (hgood : GoodInput M K w) :
     ∃ u ∈ ChkLang M K stp ini acc, u.map lt = w := by
-  sorry
+  obtain ⟨d⟩ := nonempty_chainData_of_good M hK hgood
+  exact exists_mem_chkLang_of_chainData M hK stp ini acc hacc d
 
 end Chk
 
