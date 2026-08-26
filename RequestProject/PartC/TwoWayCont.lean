@@ -1,4 +1,4 @@
-/- Two-way transducers (Definition `nolabel:def-two-way-transducer` of *Transducers*, M. Bojańczyk)
+/- Two-way transducers (Definition `def:two-way-transducer` of *Transducers*, M. Bojańczyk)
 and the proof that they compute continuous functions (Theorem `thm:continuity-2dfas`).
 
 The definitions of two-way transducers are in this file, so that the
@@ -15,7 +15,7 @@ import RequestProject.PartC.TwoDFA
 
 namespace Transducers
 
-/-- **Definition `nolabel:def-two-way-transducer`.**  A two-way transducer: based on the letters
+/-- **Definition `def:two-way-transducer`.**  A two-way transducer: based on the letters
 adjacent to the head and the current state, it either produces an output string and halts
 (`Sum.inl`), or produces an output string, changes state, and moves the head left (`false`) or right
 (`true`). -/

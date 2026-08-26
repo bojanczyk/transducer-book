@@ -6,7 +6,7 @@ This file contains the definitions of Part A and the statements of all its
 theorems, lemmas and claims, together with their proofs.
 
 All the results of Part A are proved.  Lemma `lem:Mealy-map-lifting`, the main ingredient of the
-Krohn-Rhodes Theorem `nolabel:thm-krohn-rhodes`, is proved in
+Krohn-Rhodes Theorem `thm:krohn-rhodes`, is proved in
 `RequestProject/PartA/StateTrans.lean`, and its aperiodic version, which gives the implication
 "aperiodic ⇒ composition of flip-flops" of Theorem `thm:aperiodic-mealy`, is proved in
 `RequestProject/PartA/StateTransAperiodic.lean`. -/
@@ -146,7 +146,7 @@ theorem mealy_continuous {A B : Type} [Finite A] [Finite B] {f : List A → List
 
 /-! ## The Krohn-Rhodes Decomposition Theorem -/
 
-/-! Theorem `nolabel:thm-krohn-rhodes`, the Krohn-Rhodes Theorem, is stated and proved below, after
+/-! Theorem `thm:krohn-rhodes`, the Krohn-Rhodes Theorem, is stated and proved below, after
 Lemma `lem:Mealy-map-lifting`, on which its proof relies. -/
 
 /-- **Lemma `lem:map-lifting-decomposition-mealy`.**  If a Mealy machine decomposes into prime Mealy
@@ -196,7 +196,7 @@ lemma outputMealy_eval {A B Q : Type} (M : Mealy A B Q) :
   funext w
   exact outputMealy_run M w id
 
-/-- **Theorem `nolabel:thm-krohn-rhodes` (Krohn-Rhodes Theorem).**  Every Mealy machine `f` admits a
+/-- **Theorem `thm:krohn-rhodes` (Krohn-Rhodes Theorem).**  Every Mealy machine `f` admits a
 decomposition `f = f₁ · f₂ ⋯ fₙ` in which every `fᵢ` is either reversible or
 flip-flop.
 
@@ -521,7 +521,7 @@ lemma run_npow_of_fixed {A B Q : Type} (M : Mealy A B Q) {v : List A} {q : Q}
   | succ n ih => rw [npow_succ, Mealy.run_append, hq, ih, npow_succ]
 
 /-- A machine whose state transformations stabilise has the pumping property of
-Claim `nolabel:claim-aperiodic-pumping`. -/
+Claim `claim:aperiodic-pumping`. -/
 lemma transStabilises_pumping {A B Q : Type} (M : Mealy A B Q) (hM : M.TransStabilises)
     (u v w : List A) :
     ∃ (x y z : List B) (k : ℕ), ∀ n > 0,
@@ -545,7 +545,7 @@ lemma transStabilises_pumping {A B Q : Type} (M : Mealy A B Q) (hM : M.TransStab
     run_npow_of_fixed M hfixed n]
   simp [List.append_assoc]
 
-/-- The pumping property of Claim `nolabel:claim-aperiodic-pumping` implies aperiodicity. -/
+/-- The pumping property of Claim `claim:aperiodic-pumping` implies aperiodicity. -/
 lemma pumping_aperiodic {A B : Type} (f : List A → List B)
     (h : ∀ u v w : List A, ∃ (x y z : List B) (k : ℕ), ∀ n > 0,
       f (u ++ npow v (n + k) ++ w) = x ++ npow y n ++ z) : Aperiodic f := by
@@ -649,7 +649,7 @@ theorem aperiodic_iff_transStabilises {A B : Type} {f : List A → List B} (hf :
     rw [← heval]
     exact pumping_aperiodic _ (transStabilises_pumping M hM)
 
-/-- **Claim `nolabel:claim-aperiodic-pumping`.**  A function computed by a Mealy machine is
+/-- **Claim `claim:aperiodic-pumping`.**  A function computed by a Mealy machine is
 aperiodic if and only if for all input strings `u, v, w` there are output strings `x, y, z` and a
 number `k` such that `f (u v^{n+k} w) = x yⁿ z` for all `n > 0`. -/
 theorem aperiodic_iff_pumping {A B : Type} {f : List A → List B} (hf : IsMealy f) :

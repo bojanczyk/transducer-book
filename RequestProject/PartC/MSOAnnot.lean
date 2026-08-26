@@ -1,4 +1,4 @@
-/- Lemma `nolabel:lem-mso-to-automaton` of *Transducers* (M. Bojańczyk): for a monadic second-order
+/- Lemma `lem:mso-free-variables` of *Transducers* (M. Bojańczyk): for a monadic second-order
 formula whose free variables are among `x₁, …, x_k, X₁, …, X_l`, the set of annotated strings that
 satisfy it is a regular language over the alphabet `A × 2^{k+l}`.
 
@@ -10,7 +10,7 @@ variables (`foOf`, `soOf`), so that the language
 
   `AnnLang A k l φ = {u | u is valid and w, foOf u, soOf u satisfy φ}`
 
-is the language of Lemma `nolabel:lem-mso-to-automaton` (see `annLang_eq`).  The atomic formulas
+is the language of Lemma `lem:mso-free-variables` (see `annLang_eq`).  The atomic formulas
 give languages recognised by the scanning automata of `RequestProject/PartC/RegAut.lean`; negation,
 conjunction and disjunction use the Boolean closure properties; and a quantifier is a projection,
 i.e. the image of a language under a letter-to-letter map, which is where nondeterminism enters.
@@ -115,7 +115,7 @@ lemma isRegular_valid (A : Type) (k l : ℕ) :
 /-! ## The induction on the formula -/
 
 open scoped Classical in
-/-- **Lemma `nolabel:lem-mso-to-automaton`**, in terms of the language `AnnLang`: the valid
+/-- **Lemma `lem:mso-free-variables`**, in terms of the language `AnnLang`: the valid
 annotated strings satisfying `φ` form a regular language. -/
 theorem isRegular_annLang (φ : MSO A) : ∀ (k l : ℕ),
     φ.freeFO ⊆ {i | i < k} → φ.freeSO ⊆ {j | j < l} →
@@ -496,10 +496,10 @@ theorem isRegular_annLang (φ : MSO A) : ∀ (k l : ℕ),
           hagree).1 hsu
         rwa [hfst] at hs
 
-/-! ## The language of Lemma `nolabel:lem-mso-to-automaton`
+/-! ## The language of Lemma `lem:mso-free-variables`
 
 `AnnLang A k l φ` is exactly the language of annotated strings that appears in
-the statement of Lemma `nolabel:lem-mso-to-automaton`. -/
+the statement of Lemma `lem:mso-free-variables`. -/
 
 @[simp] lemma annotate_length (k l : ℕ) (w : List A) (fo : Fin k → ℕ) (so : Fin l → Set ℕ) :
     (annotate k l w fo so).length = w.length := by
@@ -573,7 +573,7 @@ lemma soOf_annotate {k l : ℕ} {w : List A} {fo : Fin k → ℕ} {so : Fin l �
   · rw [soOf_of_not_lt _ hm, extSO, dif_neg hm]
 
 open scoped Classical in
-/-- The language `AnnLang A k l φ` is the language of Lemma `nolabel:lem-mso-to-automaton`: the
+/-- The language `AnnLang A k l φ` is the language of Lemma `lem:mso-free-variables`: the
 annotated strings `w ⊗ x₁ ⊗ ⋯ ⊗ x_k ⊗ X₁ ⊗ ⋯ ⊗ X_l` such that the valuation satisfies `φ` in `w`. -/
 lemma annLang_eq (φ : MSO A) (k l : ℕ) :
     AnnLang A k l φ =
@@ -648,7 +648,7 @@ lemma annLang_eq (φ : MSO A) (k l : ℕ) :
     exact hsat
 
 open scoped Classical in
-/-- **Lemma `nolabel:lem-mso-to-automaton`** in the form in which it is stated in
+/-- **Lemma `lem:mso-free-variables`** in the form in which it is stated in
 `RequestProject/PartC/MSO.lean`. -/
 theorem mso_annotated_regular_aux (φ : MSO A) (k l : ℕ)
     (hfo : φ.freeFO ⊆ {i | i < k}) (hso : φ.freeSO ⊆ {j | j < l}) :

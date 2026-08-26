@@ -77,7 +77,7 @@ theorem regular_comp {A B C : Type} [Finite B] {f : List A → List B} {g : List
     (hf : IsRegularFun f) (hg : IsRegularFun g) : IsRegularFun (g ∘ f) :=
   CompClosure.comp hf hg
 
-/-- **Lemma `nolabel:lem-reverse-and-duplicate-continuous`.**  String reversal and string duplication are continuous. -/
+/-- **Lemma `lem:reversal-duplication-continuous`.**  String reversal and string duplication are continuous. -/
 theorem reverse_duplicate_continuous {A : Type} [Finite A] :
     Continuous (List.reverse : List A → List A) ∧
       Continuous (fun w : List A => w ++ w) :=
@@ -133,7 +133,7 @@ docstring. -/
 
 /-! ## Two-way transducers -/
 
-/-! **Definition `nolabel:def-two-way-transducer` (two-way transducers)** (`TwoWay`, `Cfg`,
+/-! **Definition `def:two-way-transducer` (two-way transducers)** (`TwoWay`, `Cfg`,
 `TwoWay.stepCfg`, `TwoWay.Reaches`, `TwoWay.Computes` and `IsTwoWay`) is in
 `RequestProject/PartC/TwoWayCont.lean`, together with the proof of
 Theorem `thm:continuity-2dfas` below. -/
@@ -169,7 +169,7 @@ theorem twoWay_comp {A B C : Type} [Finite A] [Finite B] [Finite C]
     (hf : IsTwoWay f) (hg : IsTwoWay g) : IsTwoWay (g ∘ f) :=
   isTwoWay_comp_twoWay hf hg
 
-/-! **Corollary `nolabel:cor-two-way-implies-regular`.**  The corollary is *printed* in the book as
+/-! **Corollary `cor:2dfa-computes-all-regular-functions`.**  The corollary is *printed* in the book as
 the inclusion `two-way ⊆ regular`:
 
 ```
@@ -195,9 +195,9 @@ Theorem `thm:2dfa-decomposition-into-primes`; it is stated (and proved) below as
 `Transducers.twoWay_isRegular`, the left-to-right implication of
 `Transducers.twoWay_iff_regular`, and is therefore not duplicated here. -/
 
-/-- **Corollary `nolabel:cor-two-way-implies-regular`** (corrected): every regular function is
+/-- **Corollary `cor:2dfa-computes-all-regular-functions`** (corrected): every regular function is
 computed by a two-way transducer.  This is the statement that the book's proof of Corollary
-`nolabel:cor-two-way-implies-regular` establishes; see the discussion in the note above.
+`cor:2dfa-computes-all-regular-functions` establishes; see the discussion in the note above.
 
 The auxiliary form carries the finiteness of the two alphabets as explicit
 hypotheses, so that the induction on the composition tree has access to the
@@ -228,7 +228,7 @@ theorem isTwoWay_of_isRegularFun {A B : Type} {f : List A → List B}
       haveI := hA; haveI := hB; haveI := hC
       exact isTwoWay_comp_twoWay (ihf hA hB) (ihg hB hC)
 
-/-- **Corollary `nolabel:cor-two-way-implies-regular`** (corrected): every regular function is
+/-- **Corollary `cor:2dfa-computes-all-regular-functions`** (corrected): every regular function is
 computed by a two-way transducer. -/
 theorem regularFun_isTwoWay {A B : Type} [Finite A] [Finite B] {f : List A → List B}
     (hf : IsRegularFun f) : IsTwoWay f :=
@@ -296,7 +296,7 @@ theorem regular_equivalence_decidable (hEval : EffectiveTwoWayEvalEq)
 /-! ### Decomposition into prime functions -/
 
 /-- **Theorem `thm:2dfa-decomposition-into-primes`, left-to-right implication** (equivalently, the
-inclusion as it is *printed* in Corollary `nolabel:cor-two-way-implies-regular`): every function
+inclusion as it is *printed* in Corollary `cor:2dfa-computes-all-regular-functions`): every function
 computed by a two-way transducer is regular, i.e. it can be decomposed into prime functions.
 
 This is the hard half of Theorem `thm:2dfa-decomposition-into-primes`.  It is reduced, in
@@ -331,7 +331,7 @@ theorem twoWay_isRegular {A B : Type} [Finite A] [Finite B] {f : List A → List
 /-- **Theorem `thm:2dfa-decomposition-into-primes`.**  Two-way transducers compute exactly the
 regular functions.
 
-The right-to-left implication is Corollary `nolabel:cor-two-way-implies-regular`
+The right-to-left implication is Corollary `cor:2dfa-computes-all-regular-functions`
 (`regularFun_isTwoWay`, proved above).  The left-to-right implication is `twoWay_isRegular` above,
 the hard half; see the discussion in its docstring. -/
 theorem twoWay_iff_regular {A B : Type} [Finite A] [Finite B] (f : List A → List B) :

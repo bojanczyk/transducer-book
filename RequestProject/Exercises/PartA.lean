@@ -21,7 +21,7 @@ namespace Transducers
 
 /-- **Exercise `exer:letter-to-letter-not-mealy`.**  A function that is continuous and
 letter-to-letter but is not computed by a Mealy machine: the author's solution is string
-reversal, whose continuity is Lemma `nolabel:lem-reverse-and-duplicate-continuous` of the book
+reversal, whose continuity is Lemma `lem:reversal-duplication-continuous` of the book
 (`Transducers.continuous_reverse`).  Reversal is not computed by a Mealy machine as soon as the
 alphabet has two distinct letters, since the semantics of a Mealy machine is prefix preserving. -/
 theorem reverse_continuous_lengthPreserving_not_mealy {A : Type} {a b : A} (hab : a ≠ b) :

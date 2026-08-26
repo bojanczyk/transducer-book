@@ -1,5 +1,5 @@
 /- Mealy machines: definitions (Definitions `def:mealy-machine` and
-`nolabel:def-prime-mealy-machines`) and their basic properties, from *Transducers* (M. Bojańczyk,
+`def:prime-mealy-machines`) and their basic properties, from *Transducers* (M. Bojańczyk,
 June 25, 2026).
 
 This file collects the definitions of Part A that are used throughout the book,
@@ -41,11 +41,11 @@ def transFun (M : Mealy A B Q) : Q → A → Q := fun q a => (M.step q a).1
 /-- The state transformation of an input string. -/
 def trans (M : Mealy A B Q) (w : List A) : Q → Q := strTrans M.transFun w
 
-/-- **Definition `nolabel:def-prime-mealy-machines` (Reversible machine).**  All state
+/-- **Definition `def:prime-mealy-machines` (Reversible machine).**  All state
 transformations of all letters are permutations. -/
 def Reversible (M : Mealy A B Q) : Prop := ∀ a : A, Function.Bijective (M.letterTrans a)
 
-/-- **Definition `nolabel:def-prime-mealy-machines` (Flip-flop machine).**  The state transformation
+/-- **Definition `def:prime-mealy-machines` (Flip-flop machine).**  The state transformation
 of each letter is either the identity or a constant. -/
 def FlipFlop (M : Mealy A B Q) : Prop :=
   ∀ a : A, M.letterTrans a = id ∨ ∃ q₀ : Q, ∀ q : Q, M.letterTrans a q = q₀
@@ -167,7 +167,7 @@ def IsReversibleMealy {A B : Type} (f : List A → List B) : Prop :=
 def IsFlipFlopMealy {A B : Type} (f : List A → List B) : Prop :=
   ∃ (Q : Type) (_ : Finite Q) (M : Mealy A B Q), M.eval = f ∧ M.FlipFlop
 
-/-- The family of **prime Mealy machines** (Definition `nolabel:def-prime-mealy-machines`):
+/-- The family of **prime Mealy machines** (Definition `def:prime-mealy-machines`):
 reversible or flip-flop. -/
 def PrimeMealyFam : ∀ (A B : Type), (List A → List B) → Prop :=
   fun _ _ f => IsReversibleMealy f ∨ IsFlipFlopMealy f

@@ -74,7 +74,7 @@ all eleven are aliased in `RequestProject/Labels.lean`.
 
 * **`exer:reverse-continuous` and `exer:duplication-continuous`.**  These two
   exercises are also the two halves of Lemma
-  `nolabel:lem-reverse-and-duplicate-continuous` of the main text, which is
+  `lem:reversal-duplication-continuous` of the main text, which is
   formalised in `PartC/ContAux.lean` (`Transducers.continuous_reverse` and
   `Transducers.continuous_dup`).  Rather than restating the proof, the two
   exercises are deduced from that lemma.

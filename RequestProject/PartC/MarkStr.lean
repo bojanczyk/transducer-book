@@ -8,7 +8,7 @@ encoded by the string `markAt2 w x y`, in which the first Boolean marks the
 position `x` and the second one the position `y`.  A formula `φ` with free
 variables among `x₀` (interpreted as `x`) and the remaining ones (interpreted as
 `y`) then corresponds to the language `markedSat2 φ` of doubly marked strings,
-which is regular by Lemma `nolabel:lem-mso-to-automaton`.
+which is regular by Lemma `lem:mso-free-variables`.
 
 The file also contains the decomposition of a doubly marked string into the
 part before `x`, the infix `[x..y]` and the part after `y`, which is what turns

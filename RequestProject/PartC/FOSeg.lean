@@ -1,6 +1,6 @@
 /- Factors of a string between two optional bounds, and the transfer of a split along an equality of
-`(k+1)`-types.  These are the combinatorial ingredients of Claim `nolabel:claim-fo-type-of-a-tuple`
-(the compositionality claim inside the proof of Lemma `nolabel:lem-fo-types-characterisation` of
+`(k+1)`-types.  These are the combinatorial ingredients of Claim `claim:fo-composition-quantifier-rank`
+(the compositionality claim inside the proof of Lemma `lem:k-types-fo-equivalence` of
 *Transducers*, M. Bojańczyk).
 
 A bound is an element of `Option ℕ`: `none` stands for the beginning of the
@@ -130,7 +130,7 @@ lemma segP_drop (w : List A) (l r : Option ℕ) (q : ℕ) :
 /-- If two strings have the same `(k+1)`-type, then every position of the first
 one is matched by a position of the second one carrying the same letter and
 splitting the string into two factors of the same `k`-types.  This is the
-content of Definition `nolabel:def-fo-types` of the `(k+1)`-type as a set of triples. -/
+content of Definition `def:k-types` of the `(k+1)`-type as a set of triples. -/
 lemma exists_split_of_tp_succ_eq (k : ℕ) (g g' : List A) (h : tp (k + 1) g = tp (k + 1) g')
     (p : ℕ) (hp : p < g.length) :
     ∃ q, q < g'.length ∧ g'[q]? = g[p]? ∧

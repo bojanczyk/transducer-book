@@ -32,7 +32,7 @@ section Introduction
 `a₁ ⋯ aₙ ↦ aₙ ⋯ a₁` is continuous.
 
 Reversal continuity is also the first half of the book's
-Lemma `nolabel:lem-reverse-and-duplicate-continuous`, which is formalised in `PartC/ContAux.lean`;
+Lemma `lem:reversal-duplication-continuous`, which is formalised in `PartC/ContAux.lean`;
 rather than restating its proof, the exercise is deduced from it. -/
 theorem reverse_continuous {A : Type} : Continuous (List.reverse : List A → List A) :=
   continuous_reverse
@@ -43,7 +43,7 @@ theorem reverse_continuous {A : Type} : Continuous (List.reverse : List A → Li
 `w ↦ ww` is continuous.
 
 Duplication continuity is also the second half of the book's
-Lemma `nolabel:lem-reverse-and-duplicate-continuous`, which is formalised in `PartC/ContAux.lean`
+Lemma `lem:reversal-duplication-continuous`, which is formalised in `PartC/ContAux.lean`
 by the automaton of the author's solution: besides the state reached from the
 initial state, it stores the state transformation of the string read so far. -/
 theorem duplication_continuous {A : Type} : Continuous (fun w : List A => w ++ w) :=
