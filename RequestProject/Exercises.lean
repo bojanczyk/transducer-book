@@ -8,3 +8,6 @@ live next to them in the corresponding `*Aux.lean` file.
 -/
 import RequestProject.Exercises.IntroAux
 import RequestProject.Exercises.Intro
+import RequestProject.Exercises.PartBCAux
+import RequestProject.Exercises.PartBCPCP
+import RequestProject.Exercises.PartBC
