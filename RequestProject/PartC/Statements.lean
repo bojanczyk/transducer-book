@@ -3,15 +3,21 @@
   from *Transducers* (M. Bojańczyk, June 25, 2026).
 
 This file contains the definitions of Sections *The prime regular functions* to *Streaming string
-transducers* and the statements of their theorems, lemmas and claims.  Proofs are left as `sorry`.
+transducers* and the statements of their theorems, lemmas and claims.  All of them are proved, in
+the supporting files of `RequestProject/PartC/`; Theorem `thm:decidable-equivalence-regular` is
+proved from the two effectivity hypotheses of `RequestProject/PartC/EffectiveReg.lean`, which it
+takes as explicit arguments.  No file of Part C contains a `sorry`.
 
-Not formalised here: Lemmas `lem:compute-configuration-graph`,
-`lem:check-if-output-string-of-configuration-graph-belongs-to-L` and
-`lem:output-of-snake-graph-is-regular`, which are internal steps in the proofs of Theorems
-`thm:continuity-2dfas`, `thm:composition-of-two-way-transducers` and
-`thm:2dfa-decomposition-into-primes`.  They speak about the string representation of the reachable
-configuration graph of a two-way transducer, an auxiliary encoding that is used only inside those
-proofs. -/
+Not formalised: Lemmas `lem:compute-configuration-graph` and
+`lem:check-if-output-string-of-configuration-graph-belongs-to-L`, which are internal steps in the
+proofs of Theorems `thm:continuity-2dfas` and `thm:composition-of-two-way-transducers`.  They speak
+about the string representation of the reachable configuration graph of a two-way transducer, an
+auxiliary encoding that is used only inside those proofs.
+
+Lemma `lem:output-of-snake-graph-is-regular`, the book's snake lemma, *is* formalised -- as
+`Transducers.boundedWidth_isRegular`, in `RequestProject/PartC/SnakeReg.lean`, for the width-`k`
+output function of a two-way transducer rather than for an alphabet of snake letters -- and it is
+the step through which Theorem `thm:2dfa-decomposition-into-primes` is proved. -/
 import RequestProject.PartB.WeightedStatements
 import RequestProject.PartC.ContAux
 import RequestProject.PartC.TwoWayCont

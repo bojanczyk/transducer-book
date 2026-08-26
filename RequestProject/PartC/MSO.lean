@@ -36,9 +36,14 @@ Theorem `nolabel:thm-fo-transduction-into-primes` has been removed from the form
 the user's request; its statement is kept only as a comment in `RequestProject/PartC/MSOOpen.lean`,
 which this file still imports.  No result of Section *Logic* is left unproved.
 
-Not formalised: Claim `claim:transition-formula`, Lemma `lem:logic-reduction-to-type-n` and Claim
-`claim:fo-composition-quantifier-rank`, which are internal steps of the proofs of Theorems
-`thm:logic-rational-functions`, `thm:logic-regular-functions` and `thm:logic-aperiodic`. -/
+Claim `claim:transition-formula`, Lemma `lem:logic-reduction-to-type-n` and Claim
+`claim:fo-composition-quantifier-rank` are internal steps of the proofs of Theorems
+`thm:logic-rational-functions`, `thm:logic-regular-functions` and Lemma
+`lem:k-types-fo-equivalence`, so they are not stated here as numbered results of their own; each of
+them is nevertheless formalised, as `Transducers.RatRelab.exists_form`
+(`RequestProject/PartC/MSORatRelab.lean`), `Transducers.MSOTransduction.exists_norm`
+(`RequestProject/PartC/MSONorm.lean`) and `Transducers.sat_iff_of_kEquiv`
+(`RequestProject/PartC/FOComp.lean`). -/
 import RequestProject.PartC.Statements
 import RequestProject.PartC.MSOBuchi
 import RequestProject.PartC.MSORelab

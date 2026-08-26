@@ -3,7 +3,10 @@ Part D: Polyregular functions
   from *Transducers* (M. Bojańczyk, June 25, 2026).
 
 This file contains the definitions of Part D and the statements of its
-theorems and lemmas.  Proofs are left as `sorry`.
+theorems and lemmas.  Theorem `thm:polyregular-functions-are-continuous` is proved; the five
+remaining results (`thm:for-transducers-are-polyregular`, `lemma:prenex-normal-form`,
+`lem:for-closed-under-composition`, `thm:pebble-are-continuous` and `thm:pebble-are-for`) are
+statements only, with their proofs left as `sorry`.
 
 Not formalised here: Lemma `lem:reachability-pebble-automaton`, Claim
 `claim:reachability-basic-run`, Lemma `lem:children-of-configuration-in-pebble-run` and Claims

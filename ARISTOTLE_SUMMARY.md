@@ -1,3 +1,26 @@
+# Summary of the audit of the index (Parts A, B and C)
+
+Every numbered result that `THEOREMS.md` records as proved was re-checked mechanically, and the
+index, `EXERCISES.md`, `LABELS.md` and `RequestProject/Labels.lean` were corrected where they were
+wrong.  What the check consists of, and what it found, is written up in `THEOREMS.md`, in the
+section *The audit of this index*.  In brief:
+
+* `lake build` from scratch succeeds (8272 jobs, no errors).  The only `sorry`s in the project are
+  the five statements of Part D that are still open, in `RequestProject/PartD/Statements.lean`.
+* `#print axioms` on all 157 aliases of `RequestProject/Labels.lean` reports `sorryAx` for exactly
+  those five results and for nothing else; every other result, and every formalised exercise,
+  depends only on `propext`, `Classical.choice`, `Quot.sound`.
+* The six deliberately conditional results carry their hypothesis as an explicit first argument,
+  confirmed by `#check`.
+* Every divergence between a Lean statement and the book is collected in one list, *Divergences
+  from the book*.
+* The results of the book are named by their LaTeX `\label` everywhere -- docstrings, tables and
+  prose -- and `tools/` now holds the three scripts that `README.md`, `LABELS.md` and `THEOREMS.md`
+  promise (`gen_labels.py`, `tex_numbering.py`, `relabel.py`), all of which report no problem.
+* Stale claims of the form "not formalised" were re-checked against the Lean environment rather
+  than against their own history, in the index and in the headers of the Lean files alike; the
+  ones that were wrong are listed in *The audit of this index*.
+
 # Summary of changes for the exercises of Parts B and C (continuation)
 
 Continuing the formalisation of the exercises of Parts B and C, the one exercise of

@@ -5,8 +5,10 @@ functions*)
 This file contains the definitions of Sections *Rational relations* to *Rational functions* and the
 statements of their theorems, lemmas and claims.  The proofs are in the supporting files
 (`RatComp.lean`, `RatCont.lean`, `HomComplement.lean`, `EpsElim.lean`, `Unambig.lean`,
-`Uniform.lean`, `Bimachine.lean`, `RatBimach.lean`, `PrimeRat.lean`, `BimachPrime.lean`, ...); the
-results that are not proved yet are left as `sorry` and are listed in `THEOREMS.md`. -/
+`Uniform.lean`, `Bimachine.lean`, `RatBimach.lean`, `PrimeRat.lean`, `BimachPrime.lean`, ...).
+Every result of these sections is proved; Theorem `thm:undecidable-equivalence-rational-relations`
+is proved from the undecidability of the Post correspondence problem, which it takes as an explicit
+argument, and `THEOREMS.md` records that.  No file of Part B contains a `sorry`. -/
 import RequestProject.PartA.Statements
 import RequestProject.PartB.RatComp
 import RequestProject.PartB.RatCont

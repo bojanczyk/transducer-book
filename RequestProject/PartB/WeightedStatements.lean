@@ -6,13 +6,17 @@ Part B: Weighted automata and machine independent characterisations
 This file contains the definitions of Sections *Rational relations and weighted automata* to
 *Machine independent characterisations* and the statements of their theorems, lemmas and claims.
 The proofs are in the supporting files (`MealyChar.lean`, `Typing.lean`, `LenNormalForm.lean`,
-`SeqChar.lean`); the results that are not proved yet are left as `sorry` and are listed in
-`THEOREMS.md`.
+`SeqChar.lean`).  Every result of these sections is proved; four of them are proved from the
+effectivity hypothesis `Transducers.EffectiveWeightedEvalEq`, which they take as an explicit
+argument, and `THEOREMS.md` records that.  No file of Part B contains a `sorry`.
 
-Not formalised here: Claims `claim:bounded-extensions` to `claim:eliminating-negative-letters`,
-which are internal steps of the proof of Theorem `thm:subsequential-functions`.  They speak about
-the branching and non-branching parts of the outputs of a subsequential function, auxiliary notions
-used only inside that proof. -/
+Not stated here: Claims `claim:bounded-extensions` to `claim:eliminating-negative-letters`, which
+are internal steps of the proof of Theorem `thm:subsequential-functions`.  They speak about the
+branching and non-branching parts of the outputs of a subsequential function, auxiliary notions used
+only inside that proof; each of them is formalised there, in the `Subseq*.lean` files
+(`Transducers.Subseq.delay_bound`, `Transducers.Subseq.key_drop`, `Transducers.Subseq.incr_congr`
+and `Transducers.Subseq.exists_deletion_bound`), in the reorganised form recorded in
+`THEOREMS.md`. -/
 import RequestProject.PartB.RationalStatements
 import RequestProject.PartB.Typing
 import RequestProject.PartB.SeqChar

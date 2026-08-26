@@ -110,11 +110,11 @@ RequestProject/
 | `PartC/SnakeLoop.lean` | splitting a looping part of a walk into pieces of smaller width (intermediate visits to the base column, then the furthest column of each one-sided loop, the left-hand case being reduced to the right-hand one by reflecting the walk), and the induction step of the snake lemma at the level of runs: `Transducers.TwoWay.runOutput_splits` |
 | `PartC/SnakeLocal.lean`, `PartC/SnakePiece.lean`, `PartC/SnakePieceRev.lean` | a piece of a run seen as a complete run on a window of the input: the window transducer `TwoWay.withContext`, the transducer `TwoWay.stopRight` that halts on reaching the right end of the window, and the identification of a left-to-right (resp. right-to-left, by mirroring) piece with the whole run of such a transducer, so that the induction hypothesis of the snake lemma applies to it (`TwoWay.widthOut_stopRight`) |
 | `PartC/SnakeExc.lean` | the *excursions* of a record-breaking column: the intermediate visits `excT` to the column during its loop part, the time `excS` at which each excursion is at its furthest column `excC`, and the resulting cutting of the loop part into the `2k` halves of excursions |
-| `PartC/SnakeParts.lean` | the output of a halting run of width at most `k` as the concatenation of the `2k+1` pieces of each record-breaker (`TwoWay.pieceOutput`, `TwoWay.blockOut`, `TwoWay.runOut_eq_partsOut`) |
+| `PartC/SnakeParts.lean` | the output of a halting run of width at most `k` as the concatenation of the `2k+1` pieces of each record-breaker (`TwoWay.blockOut`, `TwoWay.runOut_eq_partsOut`) |
 | `PartC/SnakePieceIdent.lean` | the identification of a piece with the whole run of a window transducer on the interval between the record-breaking column and the furthest column of the excursion (`TwoWay.exists_widthOut_excHalves` for the two halves of an excursion, `TwoWay.exists_widthOut_prog` for a progress part) |
 | `PartC/SnakeFinalConf.lean` | the same for the progress part after the last record-breaker, which reaches the end of the input (`TwoWay.exists_widthOut_finalProg_confined`) |
 | `PartC/SnakeRegTools.lean` | the regular-function tools used to build the block function: cutting a factor out of an annotated pair of blocks and reading parameters off its first letter, both by bimachines |
-| `PartC/SnakeBlock.lean` | the *block function* of stages 2--4: the annotated alphabet `TwoWay.SnakeLet` with its `2·(2k+1)` piece slots (`TwoWay.slot`), the output `TwoWay.pieceOut` of a piece with given parameters, the regularity of the block function (`TwoWay.isRegularFun_blockFun`), the notion of a correct marking (`TwoWay.IsSnakeMarking`) and the fact that the neighbouring-block map combinator applied to the block function on a correct marking computes the output of the run (`TwoWay.pairMap_blockFun_eq_runOut`) |
+| `PartC/SnakeBlock.lean` | the *block function* of stages 2--4: the annotated alphabet `TwoWay.SnakeLet` with its `2·(2k+1)` piece slots (`TwoWay.slot`), the output `TwoWay.pieceOut` of a piece with given parameters, the output `TwoWay.pieceOutput` of the `r`-th piece of a block, the regularity of the block function (`TwoWay.isRegularFun_blockFun`), the notion of a correct marking (`TwoWay.IsSnakeMarking`) and the fact that the neighbouring-block map combinator applied to the block function on a correct marking computes the output of the run (`TwoWay.pairMap_blockFun_eq_runOut`) |
 | `PartC/SnakeAssemble.lean` | the assembly of a correct marking out of purely numerical data — the cutting points of the blocks and, for every pair of blocks and every slot, the window and the parameters of that piece (`TwoWay.snakeAnn`, `TwoWay.isSnakeMarking_snakeAnn`) |
 | `PartC/SnakeData.lean` | the numerical data of the pieces of a run and the existence of a correct marking of every nonempty input whose run halts with width at most `k` (`TwoWay.snakeY`, `TwoWay.exists_pieceData`, `TwoWay.exists_isSnakeMarking`) |
 | `PartC/SnakeStage1.lean` | the book's stage 1: the guess-and-check formulation of the marking (`TwoWay.SnakeRel`, `TwoWay.exists_regular_snakeLang`, `TwoWay.exists_rational_snakeRel`, `TwoWay.exists_snakeMarking`) and the equation `widthOut M K w = pairMap (blockFun …) (ann w)` that the induction step consumes (`TwoWay.widthOut_eq_pairMap`) |
@@ -1550,7 +1550,7 @@ Lean files, and this section records what that check found.
 
 * `lake build` from scratch succeeds: 8272 jobs, no errors.  The only warnings
   are style warnings of the Lean linter and the five `declaration uses sorry`
-  of `PartD/Statements.lean` (lines 179, 185, 191, 287, 295), which are the
+  of `PartD/Statements.lean` (lines 182, 188, 194, 290, 298), which are the
   five statements of Part D that are still open.
 * `#print axioms` was run on every alias of `RequestProject/Labels.lean` — 157
   of them, one per label of the book that this formalisation covers — and on
@@ -1589,10 +1589,40 @@ Lean files, and this section records what that check found.
   `conj:regular-via-weighted-automata` — gained a row saying so.
 * The file list of *Layout* was compared with what is on disk; eleven files
   that existed but were not listed have been added, and no listed file is
-  missing.
+  missing.  Two further discrepancies came out of that comparison: the row for
+  `PartC/SnakeParts.lean` credited it with `TwoWay.pieceOutput`, which is
+  declared in `PartC/SnakeBlock.lean` (the row now names it there), and a
+  hidden file `.section.lean` sat in the root of the project — a draft of the
+  last section of `PartC/SnakeBlock.lean`, imported by nothing and built by
+  nothing, which has been deleted.
+* The same check was then applied to the *headers of the Lean files*, which are
+  where a "not formalised" claim rots least visibly, and six of them said
+  something that is no longer true.  `PartC/Statements.lean` listed Lemma
+  `lem:output-of-snake-graph-is-regular` among the results it does not
+  formalise; `PartC/MSO.lean` and `PartC/MSOOpen.lean` said that Claim
+  `claim:transition-formula`, Lemma `lem:logic-reduction-to-type-n` and Claim
+  `claim:fo-composition-quantifier-rank` are not formalised, when all three
+  are, inside the proofs they belong to;
+  `PartB/WeightedStatements.lean` said the same of Claims
+  `claim:bounded-extensions` to `claim:eliminating-negative-letters`; and
+  `PartB/RationalStatements.lean`, `PartB/WeightedStatements.lean`,
+  `PartC/Statements.lean` and `PartD/Statements.lean` still announced that the
+  proofs of their results are left as `sorry`.  Each header now says what is
+  actually the case; no statement and no proof was changed.  (Part D's header
+  now names the five results that really are statements only.)
 * `EXERCISES.md` was checked the same way: every exercise it calls proved has
   an alias in `Labels.lean` with `assert_no_sorry`, and none of them depends on
   `sorryAx`; the seven exercises it calls not formalised have no alias.
+* The dictionary of `LABELS.md` was compared with the `\newlabel` entries of
+  the book's `main.aux`: every theorem-like label of the book has a row, and
+  the only tag of the dictionary that is not a label of the book is the
+  placeholder `nolabel:thm-fo-transduction-into-primes`, for the unnumbered
+  paragraph that carries none.
+* The whole check was run a second time, on a clean build, after the headers
+  above were corrected: `lake build` succeeds (8272 jobs, no errors), the same
+  five `sorry`s and no others remain, `#print axioms` on the 157 aliases
+  reports `sorryAx` for exactly those five, and the six conditional results
+  still carry their hypotheses as explicit arguments.
 * The three scripts that this file, `README.md` and `LABELS.md` promise now
   exist, in `tools/`.  `tools/gen_labels.py` checks `Labels.lean` against the
   index tables rather than regenerating it, because the tables do not carry the

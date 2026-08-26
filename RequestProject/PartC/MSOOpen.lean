@@ -18,10 +18,12 @@ Theorem `thm:logic-rational-functions`, Lemma `lem:logic-precomputation`, Theore
 `lem:k-types-fo-equivalence` used to be stated here as well; they are now proved, and
 their statements have moved back to `RequestProject/PartC/MSO.lean`.
 
-Not formalised as numbered results: Claim `claim:transition-formula`, Lemma
+Not stated as numbered results: Claim `claim:transition-formula`, Lemma
 `lem:logic-reduction-to-type-n` and Claim `claim:fo-composition-quantifier-rank`, which are internal
 steps of the proofs of Theorems `thm:logic-rational-functions`, `thm:logic-regular-functions` and
-Lemma `lem:k-types-fo-equivalence`. -/
+Lemma `lem:k-types-fo-equivalence`.  All three are formalised inside those proofs, as
+`Transducers.RatRelab.exists_form`, `Transducers.MSOTransduction.exists_norm` and
+`Transducers.sat_iff_of_kEquiv`. -/
 import RequestProject.PartC.FOTransPrimeComp
 
 namespace Transducers
