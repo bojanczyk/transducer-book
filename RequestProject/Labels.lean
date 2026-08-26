@@ -26,6 +26,7 @@ import RequestProject.PartA
 import RequestProject.PartB
 import RequestProject.PartC
 import RequestProject.PartD
+import RequestProject.Exercises
 
 namespace Transducers.Book
 
@@ -450,6 +451,71 @@ assert_uses_sorry «thm:pebble-are-continuous»
 /-- **Theorem `thm:pebble-are-for`** (pebble = for-transducers): `Transducers.pebble_iff_forTransducer`. -/
 alias «thm:pebble-are-for» := Transducers.pebble_iff_forTransducer
 assert_uses_sorry «thm:pebble-are-for»
+
+/-
+The exercises that carry a `\label` in the sources, from `EXERCISES.md`.
+Exercises are not numbered results of the main text; the ones with no label in
+the sources are listed in `EXERCISES.md` by chapter and position instead, and
+are not aliased here.
+-/
+
+/-- **Exercise `exer:reverse-continuous`** (continuity of reversal): `Transducers.Exercises.reverse_continuous`. -/
+alias «exer:reverse-continuous» := Transducers.Exercises.reverse_continuous
+assert_no_sorry «exer:reverse-continuous»
+
+/-- **Exercise `exer:duplication-continuous`** (continuity of duplication): `Transducers.Exercises.duplication_continuous`. -/
+alias «exer:duplication-continuous» := Transducers.Exercises.duplication_continuous
+assert_no_sorry «exer:duplication-continuous»
+
+/-- **Exercise `exer:squaring-continuous`** (continuity of squaring): `Transducers.Exercises.squaring_continuous`. -/
+alias «exer:squaring-continuous» := Transducers.Exercises.squaring_continuous
+assert_no_sorry «exer:squaring-continuous»
+
+/-- **Exercise `exer:factorial-continuous`** (continuity of the factorial function): `Transducers.Exercises.factorial_continuous`. -/
+alias «exer:factorial-continuous» := Transducers.Exercises.factorial_continuous
+assert_no_sorry «exer:factorial-continuous»
+
+/-- **Exercise `exer:factorial-power-continuous`** (continuity of `w ↦ w^{g(|w|)!}`): `Transducers.Exercises.factorial_power_continuous`. -/
+alias «exer:factorial-power-continuous» := Transducers.Exercises.factorial_power_continuous
+assert_no_sorry «exer:factorial-power-continuous»
+
+/-- **Exercise `ex:continuity-for-finite-images`** (finitely many output values): `Transducers.Exercises.continuous_iff_regular_fibers`. -/
+alias «ex:continuity-for-finite-images» := Transducers.Exercises.continuous_iff_regular_fibers
+assert_no_sorry «ex:continuity-for-finite-images»
+
+/-- **Exercise `exer:finite-images-assumption-necessary`** (the assumption is necessary): `Transducers.Exercises.exists_regular_fibers_not_continuous`. -/
+alias «exer:finite-images-assumption-necessary» :=
+  Transducers.Exercises.exists_regular_fibers_not_continuous
+assert_no_sorry «exer:finite-images-assumption-necessary»
+
+/-- **Exercise `exer:middle-letter-not-continuous`** (the middle letter function): `Transducers.Exercises.middleLetter_not_continuous`. -/
+alias «exer:middle-letter-not-continuous» := Transducers.Exercises.middleLetter_not_continuous
+assert_no_sorry «exer:middle-letter-not-continuous»
+
+/-- **Exercise `ex:distance`** (the distance on strings): `Transducers.Exercises.strDist`. -/
+alias «ex:distance» := Transducers.Exercises.strDist
+assert_no_sorry «ex:distance»
+
+/-- **Exercise `ex:distance`** (it is a distance): `Transducers.Exercises.strDist_isMetric`. -/
+alias «ex:distance#2» := Transducers.Exercises.strDist_isMetric
+assert_no_sorry «ex:distance#2»
+
+/-- **Exercise `ex:distance`** (it is even an ultrametric): `Transducers.Exercises.strDist_ultrametric`. -/
+alias «ex:distance#3» := Transducers.Exercises.strDist_ultrametric
+assert_no_sorry «ex:distance#3»
+
+/-- **Exercise `ex:distance`** (the resulting metric space): `Transducers.Exercises.strMetric`. -/
+alias «ex:distance#4» := Transducers.Exercises.strMetric
+assert_no_sorry «ex:distance#4»
+
+/-- **Exercise `exer:all-functions-continuous-for-metric`** (all functions are continuous): `Transducers.Exercises.strDist_all_continuous`. -/
+alias «exer:all-functions-continuous-for-metric» := Transducers.Exercises.strDist_all_continuous
+assert_no_sorry «exer:all-functions-continuous-for-metric»
+
+/-- **Exercise `exer:continuous-iff-uniformly-continuous`** (continuity is uniform continuity): `Transducers.Exercises.continuous_iff_uniformContinuous`. -/
+alias «exer:continuous-iff-uniformly-continuous» :=
+  Transducers.Exercises.continuous_iff_uniformContinuous
+assert_no_sorry «exer:continuous-iff-uniformly-continuous»
 
 /-
 The theorem-like environments of the book that are not aliased
