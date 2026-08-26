@@ -261,6 +261,7 @@ transformations of the prefixes of the input).
 | --- | --- | --- |
 | Definition `def:nfa-with-output` (nfa with output) | `Transducers.NFAO` (via `Transducers.LabAut`) | — |
 | Definition `def:rational-relation` (rational relation) | `Transducers.IsRationalRel` | — |
+| Definition `def:rational-recognisable-subsets` (rational and recognisable subsets of a monoid) | `Transducers.IsRecognisableSubset`, `Transducers.IsRationalSubset` | — (the definition of the paragraph *Why the name rational?*; a congruence of finite index is Mathlib's `Con M` with `Finite c.Quotient`, and the rational subsets are an inductive predicate whose constructors are the finite sets, union, product and the Kleene star `⋃ₙ Lⁿ`) |
 | Theorem `thm:composition-rational-relations` (composition) | `Transducers.rationalRel_comp` | proved (product automaton in `RatComp.lean`, on the atomic normal form of `Atomize.lean`) |
 | Theorem `thm:continuity-rational-relations` (continuity) | `Transducers.rationalRel_continuous` | proved (ε-automaton running a dfa on the output, `RatCont.lean`) |
 | Theorem `thm:undecidable-equivalence-rational-relations` (undecidable equivalence) | `Transducers.rationalRel_equivalence_undecidable` | proved from an explicit hypothesis that the Post correspondence problem is undecidable (reduction in `PCPRed.lean`) |
@@ -302,6 +303,14 @@ produced but not yet emitted, or emitted but not yet produced), `SeqChar.lean` (
 Myhill–Nerode classes of the length-modulo and suffix languages), `RegularAux.lean` (regularity of
 the auxiliary languages), `OutLang.lean` (for a fixed input, the set of outputs is a regular
 language over the output alphabet) and `EpsElim.lean` (Lemma `lemma:eliminate-epsilon-transitions`).
+
+Definition `def:rational-recognisable-subsets` (the paragraph *Why the name rational?*) is stated in
+`RationalStatements.lean` itself, since nothing else uses it, together with sanity checks on
+the formalised definitions: `Transducers.iUnion_pow_eq_submonoidClosure` (the Kleene star of a
+subset is the submonoid that it generates), `Transducers.isRecognisableSubset_iff_exists_hom` (a
+subset is recognisable exactly when it is the preimage of a subset of a finite monoid under a
+homomorphism) and `Transducers.isRecognisableSubset_of_finite` together with
+`Transducers.isRationalSubset_of_finite` (in a finite monoid every subset is both).
 
 The files added for Theorem `thm:subsequential-functions` are:
 

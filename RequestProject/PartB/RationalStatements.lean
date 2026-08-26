@@ -29,6 +29,100 @@ output (Definition `def:nfa-with-output`, `NFAO`), of rational relations (Defini
 in `RequestProject/PartB/LabAut.lean`, so that the constructions used in the proofs below can be
 developed before the statements of the numbered results. -/
 
+/-! ### Rational and recognisable subsets of a monoid
+
+Section *Why the name rational?* of the book explains the terminology by identifying, in an
+arbitrary monoid `M`, the two candidate notions of a "regular" subset: the recognisable subsets,
+which generalise the (two-sided) Myhill-Nerode equivalence, and the rational subsets, which
+generalise the regular expressions.  In the free monoid `A*` the two notions coincide, by the
+Kleene Theorem; the book states the definition only to explain the name "rational", and no later
+result uses it. -/
+
+section MonoidSubsets
+
+open scoped Pointwise
+
+universe u
+
+/-- **Definition `def:rational-recognisable-subsets`** (recognisable subsets of a monoid).  A
+subset `L` of a monoid `M` is *recognisable* if it is a union of finitely many equivalence classes
+of an equivalence relation on `M` that has finite index and is a congruence, i.e. is compatible
+with the multiplication of `M`.
+
+A congruence of a monoid is Mathlib's `Con M`, its classes are the elements of the quotient
+`c.Quotient`, and finite index is `Finite c.Quotient`; a union of the classes in `S` is the
+preimage of `S` under the quotient map.  The finiteness of `S` is then automatic, and is
+nevertheless required here, as in the book. -/
+def IsRecognisableSubset {M : Type*} [Monoid M] (L : Set M) : Prop :=
+  ∃ c : Con M, Finite c.Quotient ∧
+    ∃ S : Set c.Quotient, S.Finite ∧ L = (fun m : M => (m : c.Quotient)) ⁻¹' S
+
+/-- **Definition `def:rational-recognisable-subsets`** (rational subsets of a monoid).  The
+*rational* subsets of a monoid `M` are those that can be obtained from the finite subsets by
+applying finitely many times union, product and Kleene star `L* = ⋃ₙ Lⁿ`.  Being the least such
+class, this is an inductive predicate, whose constructors are the operations of the definition and
+whose recursor is the induction principle "every class of subsets that contains the finite sets and
+is closed under union, product and star contains all rational subsets". -/
+inductive IsRationalSubset {M : Type*} [Monoid M] : Set M → Prop
+  | finite {L : Set M} (hL : L.Finite) : IsRationalSubset L
+  | union {K L : Set M} : IsRationalSubset K → IsRationalSubset L → IsRationalSubset (K ∪ L)
+  | mul {K L : Set M} : IsRationalSubset K → IsRationalSubset L → IsRationalSubset (K * L)
+  | star {L : Set M} : IsRationalSubset L → IsRationalSubset (⋃ n : ℕ, L ^ n)
+
+/-- The Kleene star `L* = ⋃ₙ Lⁿ` of a subset of a monoid is the submonoid that it generates. -/
+theorem iUnion_pow_eq_submonoidClosure {M : Type*} [Monoid M] (L : Set M) :
+    (⋃ n : ℕ, L ^ n) = (Submonoid.closure L : Set M) := by
+  ext m
+  simp only [Set.mem_iUnion, SetLike.mem_coe]
+  constructor
+  · rintro ⟨n, hn⟩
+    induction n generalizing m with
+    | zero =>
+        rw [pow_zero, Set.mem_one] at hn
+        exact hn ▸ one_mem _
+    | succ n ih =>
+        rw [pow_succ, Set.mem_mul] at hn
+        obtain ⟨x, hx, y, hy, rfl⟩ := hn
+        exact mul_mem (ih x hx) (Submonoid.subset_closure hy)
+  · intro hm
+    induction hm using Submonoid.closure_induction with
+    | mem x hx => exact ⟨1, by simpa using hx⟩
+    | one => exact ⟨0, by simp⟩
+    | mul x y _ _ hx hy =>
+        obtain ⟨n, hn⟩ := hx
+        obtain ⟨k, hk⟩ := hy
+        exact ⟨n + k, by rw [pow_add]; exact Set.mul_mem_mul hn hk⟩
+
+/-- A subset of a monoid is recognisable if and only if it is the preimage of some subset of a
+finite monoid under a homomorphism.  This is the usual formulation of Definition
+`def:rational-recognisable-subsets`: the congruence of finite index and the finite monoid are the
+same datum, seen through the quotient map. -/
+theorem isRecognisableSubset_iff_exists_hom {M : Type u} [Monoid M] (L : Set M) :
+    IsRecognisableSubset L ↔
+      ∃ (N : Type u) (_ : Monoid N) (_ : Finite N) (φ : M →* N) (S : Set N), L = φ ⁻¹' S := by
+  constructor
+  · rintro ⟨c, hfin, S, -, rfl⟩
+    exact ⟨c.Quotient, inferInstance, hfin, c.mk', S, rfl⟩
+  · rintro ⟨N, _, _, φ, S, rfl⟩
+    have hfin : Finite (Con.ker φ).Quotient :=
+      Finite.of_injective (Con.kerLift φ) (Con.kerLift_injective φ)
+    refine ⟨Con.ker φ, hfin, (Con.kerLift φ) ⁻¹' S, Set.toFinite _, ?_⟩
+    ext m
+    simp [Con.kerLift]
+
+/-- In a finite monoid every subset is recognisable. -/
+theorem isRecognisableSubset_of_finite {M : Type*} [Monoid M] [Finite M] (L : Set M) :
+    IsRecognisableSubset L :=
+  (isRecognisableSubset_iff_exists_hom L).2
+    ⟨M, inferInstance, inferInstance, MonoidHom.id M, L, rfl⟩
+
+/-- In a finite monoid every subset is rational, being finite. -/
+theorem isRationalSubset_of_finite {M : Type*} [Monoid M] [Finite M] (L : Set M) :
+    IsRationalSubset L :=
+  .finite L.toFinite
+
+end MonoidSubsets
+
 /-! ### Composition and continuity -/
 
 /-- **Theorem `thm:composition-rational-relations`.**  Rational relations are closed under

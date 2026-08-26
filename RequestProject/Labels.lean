@@ -139,6 +139,14 @@ assert_no_sorry «def:nfa-with-output#2»
 alias «def:rational-relation» := Transducers.IsRationalRel
 assert_no_sorry «def:rational-relation»
 
+/-- **Definition `def:rational-recognisable-subsets`** (rational and recognisable subsets of a monoid): `Transducers.IsRecognisableSubset`. -/
+alias «def:rational-recognisable-subsets» := Transducers.IsRecognisableSubset
+assert_no_sorry «def:rational-recognisable-subsets»
+
+/-- **Definition `def:rational-recognisable-subsets`** (rational and recognisable subsets of a monoid): `Transducers.IsRationalSubset`. -/
+alias «def:rational-recognisable-subsets#2» := Transducers.IsRationalSubset
+assert_no_sorry «def:rational-recognisable-subsets#2»
+
 /-- **Theorem `thm:composition-rational-relations`** (composition): `Transducers.rationalRel_comp`. -/
 alias «thm:composition-rational-relations» := Transducers.rationalRel_comp
 assert_no_sorry «thm:composition-rational-relations»
@@ -455,7 +463,6 @@ assert_uses_sorry «thm:pebble-are-for»
 The theorem-like environments of the book that are not aliased
 above, so that this file accounts for all of them:
 
-* `def:rational-recognisable-subsets` (definition) -- not formalised (rational and recognisable subsets of a monoid, which the later sections do not use);
 * `claim:bounded-extensions` (claim) -- not formalised (internal step of Theorem `thm:subsequential-functions`);
 * `claim:computing-branching-part` (claim) -- not formalised (internal step of Theorem `thm:subsequential-functions`);
 * `claim:offsets-are-regular` (claim) -- not formalised (internal step of Theorem `thm:subsequential-functions`);
