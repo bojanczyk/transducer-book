@@ -5,7 +5,7 @@ Definition `def:mso-transduction` presents the output universe of an mso transdu
 linear type `τ = k · n + c`, and accordingly `Transducers.MSOTransduction`
 indexes its formulas by `Fin k` and `Fin c`.  The transductions that are built
 in `RequestProject/PartC/FOTransComp.lean` (the composition of two
-transductions) and in `RequestProject/PartC/FOTransPrime.lean` (the prime
+transductions) and in `RequestProject/PartC/FOTransPrimeComp.lean` (the prime
 functions) have index sets that are naturally *products* and *sums* of such
 types, and threading the bijections `Fin k × Fin l ≃ Fin (k * l)` through every
 construction is pure noise.

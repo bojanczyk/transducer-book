@@ -169,35 +169,18 @@ theorem twoWay_comp {A B C : Type} [Finite A] [Finite B] [Finite C]
     (hf : IsTwoWay f) (hg : IsTwoWay g) : IsTwoWay (g ∘ f) :=
   isTwoWay_comp_twoWay hf hg
 
-/-! **Corollary `cor:2dfa-computes-all-regular-functions`.**  The corollary is *printed* in the book as
-the inclusion `two-way ⊆ regular`:
+/-! **Corollary `cor:2dfa-computes-all-regular-functions`.**  The book states it as "Every regular
+function is computed by a two-way transducer", which is what is formalised immediately below, as
+`Transducers.isTwoWay_of_isRegularFun` and `Transducers.regularFun_isTwoWay`, and proved in full.
 
-```
-theorem twoWay_isRegular {A B : Type} [Finite A] [Finite B] {f : List A → List B}
-    (hf : IsTwoWay f) : IsRegularFun f
-```
-
-*Discrepancy with the book (a typo in the printed statement).*  The proof given for the corollary --
-"two-way transducers can compute all rational functions by Corollary
-`cor:2dfa-closure-under-composition`, and they can compute map reverse and map duplicate by Example
-`lem:check-if-output-string-of-configuration-graph-belongs-to-L`; finally, they are closed under
-composition thanks to Theorem `thm:composition-of-two-way-transducers`" -- establishes the opposite
-inclusion `regular ⊆ two-way`, and the sentence that follows the corollary in the book announces
-"the converse inclusion" (that two-way transducers can be decomposed into the prime regular
-functions) as Theorem `thm:2dfa-decomposition-into-primes`.  So the direction printed in the
-statement of the corollary is a typo: what is a corollary of Theorem
-`thm:composition-of-two-way-transducers` is the inclusion `regular ⊆ two-way`, which is formalised
-and proved in full immediately below, as `Transducers.isTwoWay_of_isRegularFun` and
-`Transducers.regularFun_isTwoWay`.
-
-The inclusion `two-way ⊆ regular` as printed is exactly the hard half of
-Theorem `thm:2dfa-decomposition-into-primes`; it is stated (and proved) below as
-`Transducers.twoWay_isRegular`, the left-to-right implication of
+An earlier edition printed the corollary the other way round, as `two-way ⊆ regular`, which is
+the opposite of what its proof establishes; that discrepancy no longer exists.  The inclusion
+`two-way ⊆ regular` is the hard half of Theorem `thm:2dfa-decomposition-into-primes`; it is
+stated (and proved) below as `Transducers.twoWay_isRegular`, the left-to-right implication of
 `Transducers.twoWay_iff_regular`, and is therefore not duplicated here. -/
 
-/-- **Corollary `cor:2dfa-computes-all-regular-functions`** (corrected): every regular function is
-computed by a two-way transducer.  This is the statement that the book's proof of Corollary
-`cor:2dfa-computes-all-regular-functions` establishes; see the discussion in the note above.
+/-- **Corollary `cor:2dfa-computes-all-regular-functions`**: every regular function is
+computed by a two-way transducer.
 
 The auxiliary form carries the finiteness of the two alphabets as explicit
 hypotheses, so that the induction on the composition tree has access to the
@@ -228,7 +211,7 @@ theorem isTwoWay_of_isRegularFun {A B : Type} {f : List A → List B}
       haveI := hA; haveI := hB; haveI := hC
       exact isTwoWay_comp_twoWay (ihf hA hB) (ihg hB hC)
 
-/-- **Corollary `cor:2dfa-computes-all-regular-functions`** (corrected): every regular function is
+/-- **Corollary `cor:2dfa-computes-all-regular-functions`**: every regular function is
 computed by a two-way transducer. -/
 theorem regularFun_isTwoWay {A B : Type} [Finite A] [Finite B] {f : List A → List B}
     (hf : IsRegularFun f) : IsTwoWay f :=

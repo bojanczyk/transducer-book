@@ -1308,7 +1308,7 @@ lemma restrictedRelabelling_of_isMealy [Finite A] [Finite B] {f : List A → Lis
 /-- An mso relabelling with the three restrictions is a Mealy machine.  It is rational by Theorem
 `thm:logic-rational-functions`, it is length preserving because every formula outputs one letter,
 and past-dependence of the formulas makes the output at a position depend only on the prefix up to
-that position, so Theorem `nolabel:thm-mealy-among-rational-functions` applies. -/
+that position, so Theorem `thm:rational-is-mealy-characterisation` applies. -/
 lemma isMealy_of_restrictedRelabelling [Finite A] [Finite B] {f : List A → List B}
     {R : MSORelabelling A B} (hres : RestrictedRelabelling R) (hR : ∀ w, R.Relabels w (f w)) :
     IsMealy f := by

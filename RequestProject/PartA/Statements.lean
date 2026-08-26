@@ -755,8 +755,13 @@ lemma flipflop_composition_aperiodic {A B : Type} {f : List A → List B}
         (isMealy_of_flipflop_composition hg) ihf ihg
 
 /-- **Theorem `thm:aperiodic-mealy`.**  A function computed by a Mealy machine is aperiodic if and
-only if it is computed by a composition of flip-flop Mealy machines.  (The decidability part of the
-theorem is the content of Lemma `lem:aperiodicity-minimal-machine` above.) -/
+only if it is computed by a composition of flip-flop Mealy machines.
+
+*Divergence from the book.*  The theorem also asserts that "this property can be decided, given a
+Mealy machine that computes `f`", and that part is **not** formalised.  What is formalised is the
+characterisation that the book's decision procedure rests on, Lemma
+`lem:aperiodicity-minimal-machine` above; the enumeration of the state transformations that arise
+from input strings, and the resulting decision procedure, are not. -/
 theorem aperiodic_iff_flipflop_composition {A B : Type} [Finite A] [Finite B]
     {f : List A → List B} (hf : IsMealy f) :
     Aperiodic f ↔ CompClosure FlipFlopFam A B f := by

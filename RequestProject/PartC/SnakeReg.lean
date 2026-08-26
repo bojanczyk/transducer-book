@@ -161,7 +161,15 @@ theorem snakeReg (k : ℕ) : SnakeReg k := by
       | (j + 2) => exact boundedWidth_isRegular_step j (ih (j + 1) (by omega))
 
 open TwoWay in
-/-- **The snake lemma**, for a single two-way transducer. -/
+/-- **Lemma `lem:output-of-snake-graph-is-regular`** (the snake lemma), for a single two-way
+transducer: the width-`k` output function of `M` is regular.
+
+*Divergence from the book.*  The book states the lemma for an alphabet `C` of *snake letters*,
+as a function `C* → B*` that returns the output of the snake graph a string represents (and `ε`
+when it represents none), for `k ∈ {1, …, |Q|}`.  Here the lemma is stated directly for the run
+of the transducer, as the regularity of `TwoWay.widthOut M k`, and for every `k : ℕ`; that is
+the form in which Theorem `thm:2dfa-decomposition-into-primes` consumes it, and the bound
+`k ≤ |Q|` is not needed. -/
 theorem boundedWidth_isRegular {A B Q : Type} [Finite A] [Finite B] [Finite Q]
     (M : TwoWay A B Q) (k : ℕ) : IsRegularFun (widthOut M k) :=
   snakeReg k A B Q ‹_› ‹_› ‹_› M

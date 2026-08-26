@@ -21,6 +21,16 @@ and lists the labels.  The correspondence is checked by Lean in
 alias whose Lean name is the label of the result together with an assertion
 recording whether it is proved outright.
 
+`tools/` holds the three scripts that keep this bookkeeping honest:
+`tools/tex_numbering.py` reads the label-to-number dictionary of the book out of
+`main.aux` and can check the number column of `LABELS.md` against it;
+`tools/relabel.py` finds (and, with `--fix`, rewrites) any place where a result
+of the book is still named by its number; and `tools/gen_labels.py --check`
+verifies `RequestProject/Labels.lean` against `LABELS.md`, `THEOREMS.md` and
+`EXERCISES.md`, with `--emit LABEL` printing the boilerplate for a new entry.
+All three expect the LaTeX sources of the book, and `main.aux` in particular, in
+the parent directory; pass `--book DIR` if they are elsewhere.
+
 Structure of the sources (`RequestProject.lean` imports everything):
 
 ```

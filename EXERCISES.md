@@ -41,12 +41,16 @@ RequestProject/
 | `Exercises/PartBCAux.lean` | the auxiliary facts those solutions take for granted: the symmetry of rational relations in input and output (so that the inverse of a rational relation is rational), the small regular languages given by explicit dfas that guess-and-check is applied to, the non-regularity, by the pumping lemma, of the languages the counterexamples produce (`bⁿcⁿ`, the balanced strings, `aⁱbʲ` with `j ≤ i`, and the squares `uu`), bounds on the length of the output of a run, the dfa that marks the position where a Mealy machine outputs a given letter, the encoding of an arbitrary finite alphabet by blocks over a two-letter one, and the two directions of the identification of the regular languages with the languages recognised by a homomorphism into a finite monoid |
 | `Exercises/PartBCUnary.lean` | bimachines over a one-letter input alphabet, used by the solution to `exer:rational-one-letter-input`: the eventual periodicity of the runs of the prefix and of the suffix automaton, the output of the bimachine as the concatenation of the pieces of its gaps, and the resulting form `x yᵏ z` of the output on the inputs of a fixed length modulo the period |
 
-The file `Exercises/PartA.lean`, which holds the exercises of Part A, is
-built but is not imported by `RequestProject/Exercises.lean`, and its
-exercises are not indexed here: several of its auxiliary declarations have
-names that already occur in the main development (`Transducers.dfaMealy`,
-`Transducers.annot`, `Transducers.bits`, `Transducers.Reach`), so that file
-cannot at present be imported together with the rest of the project.
+The file `Exercises/PartA.lean` holds the twelve exercises of Part A.  An
+earlier note here said that it was built but could not be imported together
+with the rest of the project, because several of its auxiliary declarations
+had names that already occurred in the main development (`Transducers.dfaMealy`,
+`Transducers.annot`, `Transducers.bits`, `Transducers.Reach`); that clash has
+since been resolved — the file now reuses `Transducers.dfaMealy` of
+`PartC/FOMealy.lean` and keeps the other three to itself — so
+`RequestProject/Exercises.lean` imports it like every other exercise file, and
+its exercises are indexed below, in *Mealy machines* and in *The Krohn-Rhodes
+Decomposition Theorem*.
 
 ## Conventions
 
@@ -223,7 +227,7 @@ of the declaration in each case.  In detail:
   is that the example of the solution — string reversal over an alphabet with
   two distinct letters — is continuous, letter-to-letter and not computed by a
   Mealy machine.  Its continuity is Lemma
-  `nolabel:lem-reverse-and-duplicate-continuous` of the main text, which is
+  `lem:reversal-duplication-continuous` of the main text, which is
   reused, not restated.
 * `exer:composition-needs-many-states` is stated as: for every `n` there is a
   composition of `n` Mealy machines with at most two states each that no Mealy
@@ -280,8 +284,10 @@ of the declaration in each case.  In detail:
 
 All eleven exercises of the introduction are proved, with no `sorry` anywhere
 in `Exercises/`, and each of the declarations above depends only on `propext`,
-`Classical.choice`, `Quot.sound` (checked with `#print axioms`).  No other
-chapter of the book has its exercises formalised yet.
+`Classical.choice`, `Quot.sound` (checked with `#print axioms`).  (The last
+sentence of this paragraph used to read "no other chapter of the book has its
+exercises formalised yet"; that was true when it was written, and the chapters
+formalised since are indexed above and described in the sections below.)
 
 
 All twelve exercises of Part A are proved, with no `sorry`; each depends only on
@@ -436,6 +442,15 @@ numbered result — as an explicit hypothesis, and
 correspondence problem as an explicit hypothesis, as the numbered
 undecidability results of the book do.
 
-The exercises of the remaining chapters are not formalised; those of Part A are
-in `Exercises/PartA.lean` but are not indexed here (see the note in the Layout
-section above).
+The exercises of the remaining chapters are not formalised.  Those of Part A
+are in `Exercises/PartA.lean`, and are indexed above, in *Mealy machines* and
+in *The Krohn-Rhodes Decomposition Theorem*; that file is imported by
+`RequestProject/Exercises.lean` like every other exercise file.
+
+Counted by rows of the index: thirty-nine exercises are formalised — eleven of
+the introduction, twelve of Part A, sixteen of Parts B and C — and seven are
+not, all seven of them in *Rational functions*.
+Each of the thirty-nine has an alias in `RequestProject/Labels.lean` carrying
+`assert_no_sorry`, and none of the seven has one, which is what makes this
+index self-checking; `#print axioms` on all thirty-nine reports only `propext`,
+`Classical.choice`, `Quot.sound`.

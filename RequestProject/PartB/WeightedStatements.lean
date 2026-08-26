@@ -250,11 +250,12 @@ theorem lengthPreserving_rational_normal_form {A B : Type} [Finite A] [Finite B]
 (`IsSequential`) is in `RequestProject/PartB/SeqChar.lean`, together with the proof of Theorem
 `thm:sequential-function-independent`. -/
 
-/-  **Theorem `thm:sequential-function-independent`** as stated in the book is *false*: a sequential
-transducer produces no output before reading any input, so a sequential function satisfies `f [] =
-[]`, while the three conditions on the right hand side are satisfied for instance by the function
-`aⁿ ↦ aⁿ⁺¹`.  The original statement is kept here, commented out, and the corrected statement
-follows it.
+/-  An earlier edition of the book stated **Theorem `thm:sequential-function-independent`** without
+the condition `f [] = []`, and in that form it is *false*: a sequential transducer produces no
+output before reading any input, so a sequential function satisfies `f [] = []`, while the three
+remaining conditions are satisfied for instance by the function `aⁿ ↦ aⁿ⁺¹`.  The sources now list
+that condition as item (c) of the theorem, so the statement below is faithful; the earlier version
+is kept here, commented out, as a record.
 
 theorem isSequential_iff {A B : Type} [Finite A] [Finite B] (f : List A → List B) :
     IsSequential f ↔
@@ -268,9 +269,9 @@ maps the empty input to the empty output and it is continuous, prefix preserving
 bounded increase property: the increase in output length caused by extending the input by one letter
 is bounded.
 
-The condition `f [] = []` is missing from the statement in the book; without it
-the statement is false, since a sequential transducer produces no output before
-reading any input. -/
+The conjunct `f [] = []` is item (c) of the theorem in the book ("outputs ε when the input is
+ε"); an earlier edition omitted it, and without it the statement is false, since a sequential
+transducer produces no output before reading any input. -/
 theorem isSequential_iff {A B : Type} [Finite A] [Finite B] (f : List A → List B) :
     IsSequential f ↔
       (f [] = [] ∧ Continuous f ∧ PrefixPreserving f ∧

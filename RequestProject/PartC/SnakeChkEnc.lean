@@ -34,7 +34,8 @@ interval -- the window -- and the whole annotation is checked to describe a
 *chain of pieces*: the first piece starts at the left end of the input in the
 initial state, consecutive pieces meet at a common cut in a common state, and
 the last piece of the last pair halts.  This is what
-`RequestProject/PartC/SnakeChkSound.lean` reads off the checking condition.
+`RequestProject/PartC/SnakeChkGeom.lean` reads off the checking condition
+(`Transducers.TwoWay.Chk.chk_sound`).
 -/
 import RequestProject.PartC.SnakeChkWin
 import RequestProject.PartC.SnakeLocLang

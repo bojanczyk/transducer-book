@@ -253,6 +253,40 @@ assert_no_sorry «def:left-distance»
 alias «thm:subsequential-functions» := Transducers.isSubsequential_iff
 assert_no_sorry «thm:subsequential-functions»
 
+/-- **Claim `claim:bounded-extensions`** (a short extension into the domain suffices):
+`Transducers.Subseq.delay_bound`.  The proof of Theorem `thm:subsequential-functions`
+reorganises the book's four claims, so this is not a literal rendering: `delay_bound` is the
+bound `M0` on the length of the branching part, i.e. the constant `K` that the book extracts
+from this claim.  The claim itself, in the book's words, is
+`Transducers.Subseq.exists_short_extension`. -/
+alias «claim:bounded-extensions» := Transducers.Subseq.delay_bound
+assert_no_sorry «claim:bounded-extensions»
+
+/-- **Claim `claim:bounded-extensions`** (a short extension into the domain suffices):
+`Transducers.Subseq.exists_short_extension`, the literal rendering. -/
+alias «claim:bounded-extensions#2» := Transducers.Subseq.exists_short_extension
+assert_no_sorry «claim:bounded-extensions#2»
+
+/-- **Claim `claim:computing-branching-part`** (the branching part is computed by an automaton):
+`Transducers.Subseq.key_drop`.  Phrased through Myhill-Nerode states rather than through regular
+languages: the branching part of a string is determined by its state. -/
+alias «claim:computing-branching-part» := Transducers.Subseq.key_drop
+assert_no_sorry «claim:computing-branching-part»
+
+/-- **Claim `claim:offsets-are-regular`** (the offsets are computed by an automaton):
+`Transducers.Subseq.incr_congr`.  Phrased through Myhill-Nerode states rather than through
+regular languages: the offset at a letter is determined by the state. -/
+alias «claim:offsets-are-regular» := Transducers.Subseq.incr_congr
+assert_no_sorry «claim:offsets-are-regular»
+
+/-- **Claim `claim:eliminating-negative-letters`** (elimination of the negative letters):
+`Transducers.Subseq.exists_deletion_bound`.  The free group is not used: instead of reducing a
+word over `B ∪ B⁻¹`, the transducer emits the non-branching part with a bounded delay, and what
+makes the delay bounded is that extending the input never shortens the non-branching part by
+more than a fixed constant, which is this lemma. -/
+alias «claim:eliminating-negative-letters» := Transducers.Subseq.exists_deletion_bound
+assert_no_sorry «claim:eliminating-negative-letters»
+
 /-- **Theorem `thm:machine-independent-rational-functions`** (rational functions): `Transducers.isRationalFun_iff`. -/
 alias «thm:machine-independent-rational-functions» := Transducers.isRationalFun_iff
 assert_no_sorry «thm:machine-independent-rational-functions»
@@ -332,6 +366,13 @@ assert_no_sorry «lem:regular-closure-properties»
 /-- **Claim `claim:conditional`** (disjoint sums): `Transducers.sum_of_regular`. -/
 alias «claim:conditional» := Transducers.sum_of_regular
 assert_no_sorry «claim:conditional»
+
+/-- **Lemma `lem:output-of-snake-graph-is-regular`** (the output of a snake graph is regular):
+`Transducers.boundedWidth_isRegular`.  Stated for the run of a two-way transducer -- the
+width-`k` output function `TwoWay.widthOut` -- rather than for an alphabet of snake letters,
+and for every `k : ℕ` rather than for `k ∈ {1, …, |Q|}`. -/
+alias «lem:output-of-snake-graph-is-regular» := Transducers.boundedWidth_isRegular
+assert_no_sorry «lem:output-of-snake-graph-is-regular»
 
 /-- **Definition `def:sst`** (sst): `Transducers.SST`. -/
 alias «def:sst» := Transducers.SST
@@ -686,14 +727,9 @@ The theorem-like environments of the book that are not aliased
 above, so that this file accounts for all of them:
 
 * `def:rational-recognisable-subsets` (definition) -- not formalised (rational and recognisable subsets of a monoid, which the later sections do not use);
-* `claim:bounded-extensions` (claim) -- not formalised (internal step of Theorem `thm:subsequential-functions`);
-* `claim:computing-branching-part` (claim) -- not formalised (internal step of Theorem `thm:subsequential-functions`);
-* `claim:offsets-are-regular` (claim) -- not formalised (internal step of Theorem `thm:subsequential-functions`);
-* `claim:eliminating-negative-letters` (claim) -- not formalised (internal step of Theorem `thm:subsequential-functions`);
 * `conj:regular-via-weighted-automata` (conjecture) -- a conjecture of the book, not a result to formalise;
 * `lem:compute-configuration-graph` (lemma) -- not formalised (the string encoding of the configuration graph, used only inside proofs of Part C);
 * `lem:check-if-output-string-of-configuration-graph-belongs-to-L` (lemma) -- not formalised (the string encoding of the configuration graph, used only inside proofs of Part C);
-* `lem:output-of-snake-graph-is-regular` (lemma) -- not formalised (the string encoding of the configuration graph, used only inside proofs of Part C);
 * `nolabel:thm-fo-transduction-into-primes` (theorem) -- removed from the formalised theorems at the user's request; its statement is kept, commented out, in `PartC/MSOOpen.lean`;
 * `lem:reachability-pebble-automaton` (lemma) -- not formalised (configuration encodings used inside proofs);
 * `claim:reachability-basic-run` (claim) -- not formalised (configuration encodings used inside proofs);

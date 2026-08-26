@@ -16,11 +16,18 @@ LaTeX source, the placeholder should be replaced by it.
 Sections and subsections carry no labels either, and are referred to by their
 titles, as in `Section *Rational relations and weighted automata*`.
 
-The dictionary below was computed from the LaTeX sources by
-`tools/tex_numbering.py`, which replays the numbering scheme of `macros.sty`;
-`tools/relabel.py` performed the rewriting and can be re-run to check that no
-number is left.  The numbers are those of the sources as of this writing and are
-recorded only to make the table easy to check against the pdf.
+The number column of the dictionary below is read out of the `\newlabel`
+entries of `main.aux` by `tools/tex_numbering.py`; `tools/relabel.py` checks that
+no book number is left in the sources of this project, and
+`tools/gen_labels.py --check` checks `RequestProject/Labels.lean` against this
+dictionary and against the index tables.  The numbers are those of the
+sources as of this writing and are recorded only to make the table easy to check
+against the pdf -- nothing in the project refers to a result by its number.
+
+The one row with no number is the withdrawn Theorem
+`nolabel:thm-fo-transduction-into-primes`: the book no longer states it as a
+numbered environment, only as an unnumbered paragraph at the end of `logic.tex`,
+so it has neither a number nor a `\label`, and the placeholder tag stays.
 
 ## The correspondence is checked by Lean
 
@@ -40,15 +47,25 @@ the declaration depends on `sorryAx`, and the statements that are formalised but
 not proved yet carry `assert_uses_sorry` instead, so the statuses recorded in
 `THEOREMS.md` cannot silently go stale.  The file ends with a comment listing the
 theorem-like environments of the book that are not aliased, with a reason for
-each, so that all of them are accounted for.  It is generated from the status
-tables of `THEOREMS.md` by `tools/gen_labels.py`; nothing in it is used in a
-proof.
+each, so that all of them are accounted for.  Nothing in it is used in a proof.
+
+The file is kept in step with the status tables of `THEOREMS.md` and
+`EXERCISES.md` by `tools/gen_labels.py`: `--check` (the default) verifies that
+every formalised result has an alias and every alias a row, that each alias
+target is named in its row, that the kinds agree, that the `#2`, `#3`, ...
+suffixes run consecutively, that every environment of the dictionary above is
+either aliased or listed with a reason in the trailing comment, and that every
+label the project mentions is a label of the book; `--emit LABEL` prints the
+boilerplate for a new entry.  It stops short of rewriting the file, because
+several entries carry a docstring note that the tables do not contain — the
+sense in which a reorganised Lean step renders a claim of the book, say — and a
+generator working from the tables alone would delete them.
 
 ## Dictionary of labels
 
 | Number | Kind | Label used in the Lean files | LaTeX file |
 | --- | --- | --- | --- |
-| (intro) | definition | `def:continuity` | `intro.tex` |
+| .0.1 | definition | `def:continuity` | `intro.tex` |
 | A.1.1 | definition | `def:mealy-machine` | `mealy.tex` |
 | A.1.2 | theorem | `thm:equivalence-decidable-mealy` | `mealy.tex` |
 | A.1.3 | theorem | `thm:composition-mealy` | `mealy.tex` |
@@ -134,9 +151,9 @@ proof.
 | C.4.14 | claim | `claim:fo-composition-quantifier-rank` | `logic.tex` |
 | C.4.15 | lemma | `lem:k-types-properties` | `logic.tex` |
 | C.4.16 | theorem | `thm:fo-rational-functions` | `logic.tex` |
-| C.4.17 | theorem | `nolabel:thm-fo-transduction-into-primes` | `logic.tex` |
-| D.0.18 | definition | `def:polyregular-functions` | `polyregular-intro.tex` |
-| D.0.19 | theorem | `thm:polyregular-functions-are-continuous` | `polyregular-intro.tex` |
+| (unnumbered) | paragraph | `nolabel:thm-fo-transduction-into-primes` | `logic.tex` |
+| D.0.17 | definition | `def:polyregular-functions` | `polyregular-intro.tex` |
+| D.0.18 | theorem | `thm:polyregular-functions-are-continuous` | `polyregular-intro.tex` |
 | D.1.1 | theorem | `thm:for-transducers-are-polyregular` | `polyregular-for.tex` |
 | D.1.2 | definition | `def:prenex-normal-form-for-transducers` | `polyregular-for.tex` |
 | D.1.3 | lemma | `lemma:prenex-normal-form` | `polyregular-for.tex` |
