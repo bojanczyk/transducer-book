@@ -65,6 +65,7 @@ RequestProject/
 | `PartA/FlipFlopClosure.lean` | closure properties of compositions of flip-flop Mealy machines (the flip-flop analogues of `PrimeClosure.lean` and Lemma `lem:map-lifting-decomposition-mealy`) |
 | `PartA/StateTransAperiodic.lean` | the aperiodic case of the Krohn-Rhodes construction: condition (*) is inherited by the smaller pre-automata, and all the machines are flip-flops |
 | `PartA/Statements.lean` | Part A: Mealy machines |
+| `Exercises/PartA.lean` | the exercises of Part A (`mealy.tex` and `krohn-rhodes.tex`), which are not numbered results of the book and are indexed in `EXERCISES.md`, not here |
 | `PartB/LabAut.lean` | automata with labelled transitions, nfas with output, rational relations and functions |
 | `PartB/Atomize.lean`, `PartB/OutLang.lean`, `PartB/EpsElim.lean`, `PartB/RatComp.lean`, `PartB/RatCont.lean`, `PartB/HomComplement.lean`, `PartB/LenNormalForm.lean`, `PartB/MealyChar.lean`, `PartB/Typing.lean`, `PartB/SeqChar.lean`, `PartB/Unambig.lean`, `PartB/Uniform.lean`, `PartB/Bimachine.lean`, `PartB/RatBimach.lean`, `PartB/PrimeRat.lean`, `PartB/BimachPrime.lean` | the constructions used in the proofs of Part B (see the list at the end of the Part B section below) |
 | `PartB/UniformFun.lean` | uniformisation in the form of a function (`Transducers.exists_rationalFun_of_total_rel`): a total rational relation contains the graph of a rational function |
@@ -1306,7 +1307,9 @@ a two-way transducer (`Transducers.isTwoWay_of_isSST`) being itself proved outri
 `Transducers.sst_iff_regular` depends only on `propext`, `Classical.choice`, `Quot.sound` — see *The
 proof of Theorem `theorem:sst-two-way-equivalence`* above. In Part D, Theorem
 `thm:polyregular-functions-are-continuous` is proved.  The remaining results are statements only
-(`sorry`).  Exercises and examples of the book are not included.
+(`sorry`).  Examples of the book are not included; the exercises are not numbered results either,
+and are formalised separately, in `RequestProject/Exercises/` and indexed in `EXERCISES.md` — all
+twelve exercises of Part A (`mealy.tex` and `krohn-rhodes.tex`) are formalised and proved there.
 
 **Theorem `thm:2dfa-decomposition-into-primes`** (two-way transducers compute exactly the regular
 functions) is now **proved outright**, in both directions, and Section *Two-way transducers*

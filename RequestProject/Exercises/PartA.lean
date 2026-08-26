@@ -12,6 +12,7 @@ docstring says otherwise.
 -/
 import RequestProject.PartA
 import RequestProject.PartC.Statements
+import RequestProject.PartC.FOMealy
 
 namespace Transducers
 
@@ -965,12 +966,10 @@ lemma isMealy_concat {A B : Type} {f : List A → List B} (hf : IsMealy f) (w : 
   obtain ⟨Q, hQ, M, rfl⟩ := hf
   exact ⟨(M.step (M.trans w M.init) x).2, by rw [M.eval_append]; rfl⟩
 
-open Classical in
-/-- The Mealy machine which marks every position by whether the prefix ending at that position is
-accepted by a given deterministic automaton.  This is the reduction of the author's solution to
-Exercise `exer:regular-complete-mealy`. -/
-noncomputable def dfaMealy {B σ : Type} (D : DFA B σ) : Mealy B Bool σ :=
-  ⟨D.start, fun s x => (D.step s x, decide (D.step s x ∈ D.accept))⟩
+/-! The reduction of the author's solution to Exercise `exer:regular-complete-mealy` is the Mealy
+machine which marks every position by whether the prefix ending at that position is accepted by a
+given deterministic automaton.  That machine is already in the project, as
+`Transducers.dfaMealy` (`PartC/FOMealy.lean`), and is reused here. -/
 
 lemma dfaMealy_trans {B σ : Type} (D : DFA B σ) (u : List B) (q : σ) :
     (dfaMealy D).trans u q = D.evalFrom q u := rfl

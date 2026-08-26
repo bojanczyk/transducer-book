@@ -1,3 +1,28 @@
+# Summary of changes for the exercises of Part A
+
+The twelve exercises of Part A of the book — the seven of `mealy.tex` and the five of
+`krohn-rhodes.tex` — are formalised and proved in the new file
+`RequestProject/Exercises/PartA.lean` (rolled up by `RequestProject/Exercises.lean`), one section per
+chapter, in the order in which the book states them.  Each proof follows the author's own solution,
+which the printed edition does not typeset; the docstrings say where a proof deviates.
+
+Every exercise of Part A carries a LaTeX `\label`, so all of them are referred to by their labels,
+and all of them get an alias in `RequestProject/Labels.lean`, in a new *Exercises* section, each
+followed by `assert_no_sorry`.  The exercises are indexed in the new `EXERCISES.md`, in the style of
+`THEOREMS.md`, which is where they belong since an exercise is not a numbered result;
+`THEOREMS.md` and `README.md` only record that the exercises live elsewhere.
+
+Several exercises are not mathematical statements as they stand ("give an example of…", "is the
+generated subgroup necessarily finite?", "give an algorithm which…").  For those, what is stated is
+the concrete claim that the author's solution establishes — the example works, the answer is no, the
+criterion of the solution is correct and decidable — and the choice is recorded in the docstring and
+in `EXERCISES.md`.  No exercise was left out.
+
+No numbered result of the main text was changed.  The Mealy machine of a dfa, which the solution to
+`exer:regular-complete-mealy` uses, is reused from `PartC/FOMealy.lean` rather than restated.  The
+whole project builds (`lake build`, no errors), the exercise file contains no `sorry`, and each of
+the fifteen exercise declarations depends only on `propext`, `Classical.choice`, `Quot.sound`.
+
 # Summary of changes for run c706a37d-d15c-4e09-a55b-368490936c99
 I reorganised the Lean sources into a directory per part of the book, without changing any definition, statement or proof.
 
