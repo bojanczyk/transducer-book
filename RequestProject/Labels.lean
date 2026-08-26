@@ -484,7 +484,7 @@ assert_no_sorry «lemma:prenex-normal-form»
 
 /-- **Lemma `lem:for-closed-under-composition`** (composition): `Transducers.forTransducer_comp`. -/
 alias «lem:for-closed-under-composition» := Transducers.forTransducer_comp
-assert_uses_sorry «lem:for-closed-under-composition»
+assert_no_sorry «lem:for-closed-under-composition»
 
 /-- **Theorem `thm:pebble-are-continuous`** (continuity): `Transducers.pebble_continuous`. -/
 alias «thm:pebble-are-continuous» := Transducers.pebble_continuous

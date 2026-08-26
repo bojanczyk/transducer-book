@@ -5,6 +5,7 @@ This file proves that the translation `Transducers.tr` of the outer for-transduc
 assembles from it the proof of Lemma `lem:for-closed-under-composition`.
 -/
 import RequestProject.PartD.ForCompDef
+import RequestProject.PartD.ForFree
 
 namespace Transducers
 
@@ -151,9 +152,9 @@ lemma map_getD_range {α : Type} (l : List α) (dflt : α) :
 theorem tr_spec (hok : CompOk L p base flQ flS) :
     ∀ (S : ForProg B C) (env : ℕ → ℕ) (lvl : ℕ), S.AllAtomic →
       ∀ (posQ : ℕ → ℕ) (bvQ : ℕ → Bool) (posR : ℕ → ℕ) (bvR : ℕ → Bool),
-        (∀ y ∈ S.posVars, env y < lvl) →
+        (∀ y ∈ S.freePos, env y < lvl) →
         (∀ i, i < base → posR i = 0) →
-        (∀ y ∈ S.posVars, posQ y < (innerEvents w L p).length ∧
+        (∀ y ∈ S.freePos, posQ y < (innerEvents w L p).length ∧
           (blk L base (env y)).map posR = (innerEvents w L p)[posQ y]?.getD []) →
         (∀ i, bvR (qbv base i) = bvQ i) →
         (ForProg.exec w (tr L p base flQ flS env lvl S) posR bvR).2
@@ -183,13 +184,13 @@ theorem tr_spec (hok : CompOk L p base flQ flS) :
   | seq S T ihS ihT =>
       intro env lvl hatom posQ bvQ posR bvR henv hpos0 hEv hbv
       obtain ⟨o1, b1, k1⟩ := ihS env lvl hatom.1 posQ bvQ posR bvR
-        (fun y hy => henv y (by simp [ForProg.posVars, hy]))
-        hpos0 (fun y hy => hEv y (by simp [ForProg.posVars, hy])) hbv
+        (fun y hy => henv y (by simp [hy]))
+        hpos0 (fun y hy => hEv y (by simp [hy])) hbv
       obtain ⟨o2, b2, k2⟩ := ihT env lvl hatom.2 posQ
         (ForProg.exec (innerOut w L p) S posQ bvQ).1 posR
         (ForProg.exec w (tr L p base flQ flS env lvl S) posR bvR).1
-        (fun y hy => henv y (by simp [ForProg.posVars, hy]))
-        hpos0 (fun y hy => hEv y (by simp [ForProg.posVars, hy])) b1
+        (fun y hy => henv y (by simp [hy]))
+        hpos0 (fun y hy => hEv y (by simp [hy])) b1
       refine ⟨?_, ?_, ?_⟩
       · show (ForProg.exec w (ForProg.seq (tr L p base flQ flS env lvl S)
             (tr L p base flQ flS env lvl T)) posR bvR).2 = _
@@ -206,10 +207,10 @@ theorem tr_spec (hok : CompOk L p base flQ flS) :
         exact (k2 i h1 h2 h3 h4).trans (k1 i h1 h2 h3 h4)
   | ite t S T ihS ihT =>
       intro env lvl hatom posQ bvQ posR bvR henv hpos0 hEv hbv
-      have hSsub : ∀ y ∈ S.posVars, y ∈ (ForProg.ite t S T).posVars := by
-        intro y hy; simp [ForProg.posVars, hy]
-      have hTsub : ∀ y ∈ T.posVars, y ∈ (ForProg.ite t S T).posVars := by
-        intro y hy; simp [ForProg.posVars, hy]
+      have hSsub : ∀ y ∈ S.freePos, y ∈ (ForProg.ite t S T).freePos := by
+        intro y hy; simp [hy]
+      have hTsub : ∀ y ∈ T.freePos, y ∈ (ForProg.ite t S T).freePos := by
+        intro y hy; simp [hy]
       have key : ∀ (pre : ForProg A C) (tt : ForTest A),
           (ForProg.exec w pre posR bvR).2 = [] →
           (∀ i, (ForProg.exec w pre posR bvR).1 (qbv base i) = bvQ i) →
@@ -257,8 +258,8 @@ theorem tr_spec (hok : CompOk L p base flQ flS) :
           exact key ForProg.skip (ForTest.boolVar (qbv base i)) rfl hbv (fun _ _ _ _ _ => rfl)
             (by show bvR (qbv base i) = true ↔ bvQ i = true; rw [hbv])
       | eqPos y y' =>
-          obtain ⟨hy1, hy2⟩ := hEv y (by simp [ForProg.posVars, ForTest.posVars])
-          obtain ⟨hz1, hz2⟩ := hEv y' (by simp [ForProg.posVars, ForTest.posVars])
+          obtain ⟨hy1, hy2⟩ := hEv y (by simp [ForTest.posVars])
+          obtain ⟨hz1, hz2⟩ := hEv y' (by simp [ForTest.posVars])
           refine key ForProg.skip (eqTupleTest (blk L base (env y)) (blk L base (env y'))) rfl hbv
             (fun _ _ _ _ _ => rfl) ?_
           rw [holds_eqTupleTest w posR _ _ _ (by simp), hy2, hz2,
@@ -270,8 +271,8 @@ theorem tr_spec (hok : CompOk L p base flQ flS) :
               (innerEvents_sorted w L p) _ _ hy1 hz1 h
           · intro h; exact getElem_congr_idx _ hy1 hz1 h
       | lePos y y' =>
-          obtain ⟨hy1, hy2⟩ := hEv y (by simp [ForProg.posVars, ForTest.posVars])
-          obtain ⟨hz1, hz2⟩ := hEv y' (by simp [ForProg.posVars, ForTest.posVars])
+          obtain ⟨hy1, hy2⟩ := hEv y (by simp [ForTest.posVars])
+          obtain ⟨hz1, hz2⟩ := hEv y' (by simp [ForTest.posVars])
           refine key ForProg.skip (ForTest.not (lexLtTest (L.map Prod.fst)
             (blk L base (env y')) (blk L base (env y)))) rfl hbv (fun _ _ _ _ _ => rfl) ?_
           show (¬ ForTest.Holds w posR bvR (lexLtTest (L.map Prod.fst) _ _)) ↔ posQ y ≤ posQ y'
@@ -279,7 +280,7 @@ theorem tr_spec (hok : CompOk L p base flQ flS) :
           exact (lexLt_getElem_le_iff (L.map Prod.fst) (innerEvents w L p)
             (innerEvents_sorted w L p) _ _ hy1 hz1).symm
       | label y b =>
-          obtain ⟨hy1, hy2⟩ := hEv y (by simp [ForProg.posVars, ForTest.posVars])
+          obtain ⟨hy1, hy2⟩ := hEv y (by simp [ForTest.posVars])
           obtain ⟨hr1, hr2, hr3⟩ := resim_block_spec (C := C) w L p base flQ flS hok (env y)
             (fun c => decide (c = b)) posR bvR hpos0
           obtain ⟨c, hc1, hc2⟩ := innerAt_getElem w L p hok.out1 (posQ y) hy1
@@ -302,8 +303,8 @@ theorem tr_spec (hok : CompOk L p base flQ flS) :
       | or t s => exact absurd hatom.1 (by exact fun h => h)
   | loop d y S ih =>
       intro env lvl hatom posQ bvQ posR bvR henv hpos0 hEv hbv
-      have hSsub : ∀ y' ∈ S.posVars, y' ∈ (ForProg.loop d y S).posVars := by
-        intro y' hy'; simp [ForProg.posVars, hy']
+      have hSsub : ∀ y' ∈ S.freePos, y' ≠ y → y' ∈ (ForProg.loop d y S).freePos :=
+        fun y' hy' hne => ForProg.mem_freePos_loop hy' hne
       have hqne1 : ∀ i, qbv base i ≠ flQ := fun i hc => by
         have := le_qbv base i; have := hok.flQS; have := hok.flSbase; omega
       have hqne2 : ∀ i, qbv base i ≠ flS := fun i hc => by
@@ -415,13 +416,13 @@ theorem tr_spec (hok : CompOk L p base flQ flS) :
                   have hgq : (innerEvents w L p)[q] = t := by
                     rw [← getD_getElem? _ ([] : List ℕ) _ hqlt]
                     exact hm.1.symm
-                  have henv' : ∀ y' ∈ S.posVars, (Function.update env y lvl) y' < lvl + 1 := by
+                  have henv' : ∀ y' ∈ S.freePos, (Function.update env y lvl) y' < lvl + 1 := by
                     intro y' hy'
                     by_cases hyy : y' = y
                     · subst hyy; rw [Function.update_self]; omega
                     · rw [Function.update_of_ne hyy]
-                      have := henv y' (hSsub y' hy'); omega
-                  have hEv' : ∀ y' ∈ S.posVars,
+                      have := henv y' (hSsub y' hy' hyy); omega
+                  have hEv' : ∀ y' ∈ S.freePos,
                       (Function.update posQ y q) y' < (innerEvents w L p).length ∧
                       (blk L base ((Function.update env y lvl) y')).map (setTuple LN t posR)
                         = (innerEvents w L p)[(Function.update posQ y q) y']?.getD [] := by
@@ -431,13 +432,13 @@ theorem tr_spec (hok : CompOk L p base flQ flS) :
                       rw [Function.update_self, Function.update_self]
                       exact ⟨hqlt, by rw [hblkt, ← hm.1]⟩
                     · rw [Function.update_of_ne hyy, Function.update_of_ne hyy]
-                      obtain ⟨c1, c2⟩ := hEv y' (hSsub y' hy')
+                      obtain ⟨c1, c2⟩ := hEv y' (hSsub y' hy' hyy)
                       refine ⟨c1, ?_⟩
                       rw [← c2]
                       refine List.map_congr_left (fun z hz => ?_)
                       refine setTuple_of_not_mem LN t posR ?_
                       rw [map_snd_loopNest]
-                      exact blk_disjoint (by have := henv y' (hSsub y' hy'); omega) hz
+                      exact blk_disjoint (by have := henv y' (hSsub y' hy' hyy); omega) hz
                   obtain ⟨o, b, k⟩ := ih (Function.update env y lvl) (lvl + 1) hatom
                     (Function.update posQ y q) sQ (setTuple LN t posR) s₁ henv' hposR' hEv'
                     hs₁qbv

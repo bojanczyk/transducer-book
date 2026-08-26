@@ -3,10 +3,10 @@ Part D: Polyregular functions
   from *Transducers* (M. Bojańczyk, June 25, 2026).
 
 This file contains the definitions of Part D and the statements of its
-theorems and lemmas.  Theorem `thm:polyregular-functions-are-continuous` is proved; the five
-remaining results (`thm:for-transducers-are-polyregular`, `lemma:prenex-normal-form`,
-`lem:for-closed-under-composition`, `thm:pebble-are-continuous` and `thm:pebble-are-for`) are
-statements only, with their proofs left as `sorry`.
+theorems and lemmas.  Theorem `thm:polyregular-functions-are-continuous`, Lemma
+`lemma:prenex-normal-form` and Lemma `lem:for-closed-under-composition` are proved; the three
+remaining results (`thm:for-transducers-are-polyregular`, `thm:pebble-are-continuous` and
+`thm:pebble-are-for`) are statements only, with their proofs left as `sorry`.
 
 Not formalised here: Lemma `lem:reachability-pebble-automaton`, Claim
 `claim:reachability-basic-run`, Lemma `lem:children-of-configuration-in-pebble-run` and Claims
@@ -17,7 +17,7 @@ representation of configurations and configuration graphs of pebble transducers,
 encoding used only inside those proofs. -/
 import RequestProject.PartC.MSO
 import RequestProject.PartD.MarkedSquare
-import RequestProject.PartD.ForPrenexTop
+import RequestProject.PartD.ForCompTop
 
 namespace Transducers
 
@@ -63,7 +63,8 @@ The syntax and the semantics of the for-transducers -- `Transducers.ForTest`,
 `def:prenex-normal-form-for-transducers` (`Transducers.ForProg.PrenexForm`) and
 `Transducers.IsForTransducer` -- are defined, unchanged, in
 `RequestProject/PartD/ForDef.lean`, so that the constructions proving Lemma
-`lemma:prenex-normal-form` can be developed before the statements below. -/
+`lemma:prenex-normal-form` and Lemma `lem:for-closed-under-composition` can be developed before
+the statements below. -/
 
 /-! ### Equivalence with polyregular functions -/
 
@@ -82,8 +83,8 @@ theorem forTransducer_prenex {A B : Type} (P : ForProg A B) :
 /-- **Lemma `lem:for-closed-under-composition`.**  String-to-string functions computed by
 for-transducers are closed under composition. -/
 theorem forTransducer_comp {A B C : Type} {f : List A → List B} {g : List B → List C}
-    (hf : IsForTransducer f) (hg : IsForTransducer g) : IsForTransducer (g ∘ f) := by
-  sorry
+    (hf : IsForTransducer f) (hg : IsForTransducer g) : IsForTransducer (g ∘ f) :=
+  forTransducer_comp_aux hf hg
 
 /-! ## Pebble transducers -/
 

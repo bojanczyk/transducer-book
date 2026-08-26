@@ -199,6 +199,15 @@ RequestProject/
 | `PartC/MSO.lean` | Section *Logic*: the numbered results that are **proved** — Theorem `thm:mso-logic-languages`, Lemma `lem:mso-free-variables`, Theorem `thm:logic-rational-functions`, Claim `claim:mso-annotation-regular`, Theorem `thm:logic-regular-functions`, Lemma `lem:logic-precomputation`, Theorem `thm:logic-aperiodic`, Lemma `lem:k-types-fo-equivalence`, Lemma `lem:k-types-properties` and Theorem `thm:fo-rational-functions` (this file contains no `sorry`) |
 | `PartC/MSOOpen.lean` | Section *Logic*: pointer comments only. It used to hold the results of Section *Logic* that were not yet proved; the last one, Theorem `nolabel:thm-fo-transduction-into-primes`, has been **removed from the formalised theorems at the user's request** and is kept there only as a comment, so the file now declares nothing and Section *Logic* has no `sorry` left |
 | `PartD/MarkedSquare.lean` | marked squaring and its continuity |
+| `PartD/ForDef.lean` | the syntax and the semantics of the for-transducers, and Definition `def:prenex-normal-form-for-transducers` |
+| `PartD/ForSem.lean` | the semantic toolkit: folds over lists, nests of loops as folds over tuples, the variables and the letters of a program |
+| `PartD/ForNest.lean`, `PartD/ForMerge.lean`, `PartD/ForPrenex.lean`, `PartD/ForLex.lean`, `PartD/ForTrace.lean`, `PartD/ForPrenexTop.lean` | the translation of a program into a single nest of loops and the proof of Lemma `lemma:prenex-normal-form` |
+| `PartD/ForAtom.lean` | atomic tests, the atomisation of a program, constant programs, and the letters a program can see |
+| `PartD/ForEvents.lean` | the tuples at which the body of a nest produces a letter, and their lexicographic order |
+| `PartD/ForResim.lean` | the re-simulation of the inner nest of loops: answering, inside the composed program, a question about the letter produced at a given tuple |
+| `PartD/ForFree.lean` | the free position variables of a program, and the transformation making a program closed (every free position variable bound by a loop that runs at the first position only) |
+| `PartD/ForCompDef.lean`, `PartD/ForComp.lean` | the translation of the outer for-transducer over the tuples of the inner one, and its correctness (`Transducers.tr_spec`) |
+| `PartD/ForCompTop.lean` | the assembly of Lemma `lem:for-closed-under-composition`: the length flags, the continuation-passing simulation on the inputs of length at most one, and the composed program |
 | `PartD/Statements.lean` | Part D: polyregular functions, for-transducers, pebble transducers |
 | `Labels.lean` | the label-indexed view of the formalisation: for every result of the book that is formalised, an alias in the namespace `Transducers.Book` whose Lean name is the LaTeX label of the result, followed by `assert_no_sorry` or `assert_uses_sorry` according to its status in the tables below.  Kept in step with those tables by `tools/gen_labels.py --check`; see `LABELS.md` |
 
@@ -1335,14 +1344,18 @@ among the primes.
 | Theorem `thm:for-transducers-are-polyregular` (polyregular = for-transducers) | `Transducers.polyregular_iff_forTransducer` | statement only |
 | Definition `def:prenex-normal-form-for-transducers` (prenex form) | `Transducers.ForProg.PrenexForm` | — |
 | Lemma `lemma:prenex-normal-form` (prenex normal form) | `Transducers.forTransducer_prenex` | proved (`ForPrenexTop.lean`) |
-| Lemma `lem:for-closed-under-composition` (composition) | `Transducers.forTransducer_comp` | statement only |
+| Lemma `lem:for-closed-under-composition` (composition) | `Transducers.forTransducer_comp` | proved (`ForCompTop.lean`) |
 | Pebble transducers (Section *Pebble transducers*) | `Transducers.Pebble`, `Transducers.IsPebbleTransducer` | — |
 | Theorem `thm:pebble-are-continuous` (continuity) | `Transducers.pebble_continuous` | statement only |
 | Lemma `lem:reachability-pebble-automaton`, Claim `claim:reachability-basic-run`, Lemma `lem:children-of-configuration-in-pebble-run`, Claims `claim:from-configuration-to-child-configuration-graph`, `claim:from-child-configuration-graph-to-children` | not formalised (configuration encodings used inside proofs) | — |
 | Theorem `thm:pebble-are-for` (pebble = for-transducers) | `Transducers.pebble_iff_forTransducer` | statement only |
 
-Supporting file for Part D: `MarkedSquare.lean` (marked squaring and the
-right-to-left automaton showing that it is continuous).
+Supporting files for Part D: `MarkedSquare.lean` (marked squaring and the
+right-to-left automaton showing that it is continuous) and the thirteen
+`For*.lean` files listed in the table of files above, which carry the syntax and
+the semantics of the for-transducers, the prenex form of Lemma
+`lemma:prenex-normal-form`, and the composition of two for-transducers of Lemma
+`lem:for-closed-under-composition`.
 
 ## Status
 
@@ -1446,8 +1459,13 @@ with every file it uses sorry-free: `regular ⊆ sst` is `Transducers.isSST_of_i
 a two-way transducer (`Transducers.isTwoWay_of_isSST`) being itself proved outright;
 `Transducers.sst_iff_regular` depends only on `propext`, `Classical.choice`, `Quot.sound` — see *The
 proof of Theorem `theorem:sst-two-way-equivalence`* above. In Part D, Theorem
-`thm:polyregular-functions-are-continuous` is proved.  The remaining results are statements only
-(`sorry`).  Examples of the book are not included; the exercises are not numbered results either,
+`thm:polyregular-functions-are-continuous`, **Lemma `lemma:prenex-normal-form`** (every
+for-transducer is equivalent to one in prenex form) and **Lemma
+`lem:for-closed-under-composition`** (the functions computed by for-transducers are closed under
+composition) are proved outright, each depending only on `propext`, `Classical.choice`,
+`Quot.sound`; the three remaining results of Part D
+(`thm:for-transducers-are-polyregular`, `thm:pebble-are-continuous`, `thm:pebble-are-for`) are
+statements only (`sorry`).  Examples of the book are not included; the exercises are not numbered results either,
 and are formalised separately, in `RequestProject/Exercises/` and indexed in `EXERCISES.md` — all
 twelve exercises of Part A (`mealy.tex` and `krohn-rhodes.tex`) are formalised and proved there.
 
@@ -1548,17 +1566,22 @@ touched.
 The whole index was checked mechanically against the sources and against the
 Lean files, and this section records what that check found.
 
-* `lake build` from scratch succeeds: 8272 jobs, no errors.  The only warnings
-  are style warnings of the Lean linter and the five `declaration uses sorry`
-  of `PartD/Statements.lean` (lines 182, 188, 194, 290, 298), which are the
-  five statements of Part D that are still open.
+* `lake build` from scratch succeeds, with no errors.  The only warnings are
+  style warnings of the Lean linter and the `declaration uses sorry` of
+  `PartD/Statements.lean`, which are the statements of Part D that are still
+  open — five of them when this audit was made, three of them now that Lemma
+  `lemma:prenex-normal-form` and Lemma `lem:for-closed-under-composition` are
+  proved.
 * `#print axioms` was run on every alias of `RequestProject/Labels.lean` — 157
   of them, one per label of the book that this formalisation covers — and on
   every Lean name named in a row of this file and of `EXERCISES.md`.  Exactly
-  five depend on `sorryAx`: `thm:for-transducers-are-polyregular`,
-  `lemma:prenex-normal-form`, `lem:for-closed-under-composition`,
-  `thm:pebble-are-continuous` and `thm:pebble-are-for`, all five carrying
-  `assert_uses_sorry` in `Labels.lean` and marked open here.  Every other
+  five depended on `sorryAx` when this audit was made:
+  `thm:for-transducers-are-polyregular`, `lemma:prenex-normal-form`,
+  `lem:for-closed-under-composition`, `thm:pebble-are-continuous` and
+  `thm:pebble-are-for`.  Two of those five, `lemma:prenex-normal-form` and
+  `lem:for-closed-under-composition`, have since been proved and now carry
+  `assert_no_sorry`; the other three still carry `assert_uses_sorry` in
+  `Labels.lean` and are marked open here.  Every other
   result depends only on `propext`, `Classical.choice`, `Quot.sound`.
 * The six results that are proved from an explicit hypothesis carry it as the
   first explicit argument of the theorem, which was confirmed by `#check`:

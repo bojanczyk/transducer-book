@@ -192,3 +192,36 @@ I read the uploaded book (`main.pdf`, *Transducers* by M. Bojańczyk) and produc
 A small number of statements are deliberately not formalised, and each file says so in its header: the internal claims B.4.9–B.4.12, C.2.3, C.2.4, C.2.12, C.4.5, C.4.9, C.4.14, D.2.2, D.2.3, D.2.5–D.2.7, which talk about auxiliary encodings (configuration graphs, branching parts) used only inside the corresponding proofs.
 
 The whole project builds; the only warnings are the expected `declaration uses 'sorry'` for the 64 statements. I also checked the definitions computationally on small examples (Mealy machines, bimachines, sst, two-way and pebble transducers, for-transducers, map lifting, marked squaring) to confirm they behave as the book describes. All work is committed and pushed.
+# Summary of changes for Lemma `lem:for-closed-under-composition` (Part D)
+
+Lemma `lemma:prenex-normal-form` (`Transducers.forTransducer_prenex`) was already proved, in
+`RequestProject/PartD/ForPrenexTop.lean`, and is left unchanged.  Lemma
+`lem:for-closed-under-composition` (`Transducers.forTransducer_comp`) is now proved as well, so
+`RequestProject/PartD/Statements.lean` contains three `sorry`s instead of four, and
+`RequestProject/Labels.lean` records the new status with `assert_no_sorry`.
+
+The proof of the composition follows the book: the inner for-transducer is put into the form of a
+single nest of loops (`Transducers.for_nest_form`), a position of its output is represented by the
+tuple of positions at which the nest produces the corresponding letter, and the outer
+for-transducer is translated over those tuples (`Transducers.tr`, whose correctness
+`Transducers.tr_spec` was already proved).  What this run added is:
+
+* `RequestProject/PartD/ForFree.lean` -- the free position variables of a program
+  (`Transducers.ForProg.freePos`) and the transformation `Transducers.closeProg` making a program
+  closed: every free position variable is bound by an extra loop that runs only at the first
+  position of the input, and the empty input is dealt with by a constant program.  This is what
+  makes the translation applicable at the top level: only a *bound* position variable of the outer
+  program can be represented by a tuple of positions of the inner input.
+* The hypotheses of `Transducers.tr_spec` were correspondingly weakened from all the position
+  variables of the translated program to its free ones, which is what the induction actually
+  needs.
+* `RequestProject/PartD/ForCompTop.lean` -- the assembly.  The composed program first computes two
+  flags saying whether the input has at least one and at least two letters
+  (`Transducers.lenProg`).  On the inputs of length at least two it runs the translation; on the
+  inputs of length at most one, where a nest of loops is of no use, it runs the loop-free
+  simulation `Transducers.shortSim` of the inner transducer in continuation-passing style
+  (`Transducers.cpsFree`), replacing each of its finitely many possible outputs `v` by the constant
+  string that the outer transducer produces on `v`.
+
+`lake build` succeeds with no errors, and `#print axioms` on `Transducers.forTransducer_prenex` and
+on `Transducers.forTransducer_comp` reports only `propext`, `Classical.choice`, `Quot.sound`.
