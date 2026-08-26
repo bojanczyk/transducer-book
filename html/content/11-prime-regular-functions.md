@@ -9,7 +9,7 @@ source = "regular-primes.tex"
 \setcounter{section}{0}
 \setcounter{ourexamplecounter}{18}
 \renewcommand{\exer}[2]{}
-% source stamp regular-primes.tex:88ca1637
+% source stamp regular-primes.tex:b9f041e4
 \input{../../../regular-primes.tex}
 {{< /latex >}}
 
@@ -19,7 +19,7 @@ source = "regular-primes.tex"
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
 \setcounter{mypart}{3}\setcounter{section}{1}\setcounter{theorem}{5}\setcounter{exercise}{0}
 \begin{exercise}
-In  Definition~\ref{def:regular-functions}, we use map reverse and map duplicate over arbitrary alphabets of the form $A + 1$. Show that the definition remains the same if we only consider $A$ with two letters.
+\label{exer:two-letter-alphabet-suffices}In  Definition~\ref{def:regular-functions}, we use map reverse and map duplicate over arbitrary alphabets of the form $A + 1$. Show that the definition remains the same if we only consider $A$ with two letters.
 \end{exercise}
 {{< /latex >}}
 <details class="solution">

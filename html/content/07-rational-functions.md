@@ -9,7 +9,7 @@ source = "rational-functions.tex"
 \setcounter{section}{1}
 \setcounter{ourexamplecounter}{8}
 \renewcommand{\exer}[2]{}
-% source stamp rational-functions.tex:d5666852
+% source stamp rational-functions.tex:77de05e2
 \input{../../../rational-functions.tex}
 {{< /latex >}}
 
@@ -19,55 +19,7 @@ source = "rational-functions.tex"
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
 \setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{0}
 \begin{exercise}
-Show that rational relations are not closed under intersection.
-\end{exercise}
-{{< /latex >}}
-<details class="solution">
-<summary>Show solution</summary>
-<div class="solution-body">
-{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}
-\noindent\textbf{Solution.}\quad Consider the two relations
-    \begin{align*}
-    R = \setbuild{(a^n, b^n c^m)}{$n,m \geq 0$}
-    \qquad \text{and} \qquad
-    S = \setbuild{(a^n, b^m c^n)}{$n,m \geq 0$}.
-    \end{align*}
-    Both are rational: the automaton for $R$ first outputs one letter $b$ for each input letter, and then, without consuming any input, outputs any number of letters $c$; the automaton for $S$ does the same with the two phases swapped. Their intersection is
-    \begin{align*}
-    \setbuild{(a^n,b^nc^n)}{$n \geq 0$},
-    \end{align*}
-    which is not rational. Indeed, the image of the regular language $a^*$ under this relation is $\setbuild{b^nc^n}{$n \geq 0$}$, which is not regular, while rational relations map regular languages to regular languages, as observed after Theorem~\ref{thm:continuity-rational-relations}.
-{{< /latex >}}
-</div>
-</details>
-</div>
-<div class="exercise" id="exercise-2">
-{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{1}
-\begin{exercise}
-Show that it is undecidable if two rational relations have nonempty intersection
-\end{exercise}
-{{< /latex >}}
-<details class="solution">
-<summary>Show solution</summary>
-<div class="solution-body">
-{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}
-\noindent\textbf{Solution.}\quad We reduce from the Post Correspondence Problem, as in the proof of Theorem~\ref{thm:undecidable-equivalence-rational-relations}, except that this time we do not need to complement the homomorphisms. Consider two homomorphisms $g,h : A^* \to B^*$, and view each of them as a relation, e.g.
-    \begin{align*}
-    \setbuild{(w,g(w))}{$w \in A^*$ is nonempty}.
-    \end{align*}
-    This relation is rational: the automaton has an initial and a final state, and for each input letter $a$ it has a transition with input $a$ and output $g(a)$, which goes from the initial to the final state, and also from the final state to itself. (The two states are used only to rule out the empty input string.) The intersection of the two relations obtained this way is nonempty if and only if the two homomorphisms agree on some nonempty input string, which is exactly the Post Correspondence Problem. Since the two relations used in the reduction are functions, the problem remains undecidable for rational functions.
-{{< /latex >}}
-</div>
-</details>
-</div>
-<div class="exercise" id="exercise-3">
-{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{2}
-\begin{exercise}
-Show that there is a function
+\label{exer:function-that-is-not-rational} Show that there is a function
 \begin{align*}
 f : A^* \to B^*
 \end{align*}
@@ -94,35 +46,163 @@ the composition $f \cdot g$ is rational.
 </div>
 </details>
 </div>
+<div class="exercise" id="exercise-2">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{1}
+\begin{exercise}
+\label{exer:some-ideals} 
+Show that the following are ideals: 
+    \begin{itemize}
+        \item functions with range of size at most $k$ for $k \in \set{1,2,3,\ldots}$;
+        \item functions where the number of outputs is  $\Oo(n^k)$, where $n$ is the input length and $k \in \set{0,1,2,\ldots}$ is some fixed constant.
+    \end{itemize}
+\end{exercise}
+{{< /latex >}}
+<details class="solution">
+<summary>Show solution</summary>
+<div class="solution-body">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}
+\noindent\textbf{Solution.}\quad Observe that the ideal in the second item for $k=0$ describes the class of rational functions with finitely many outputs.
+
+Pre-composing or post-composing with rational functions (or any functions) cannot increase the size of the range, and therefore the first item describes an ideal.  For the second item, we use a similar argument, but for precomposition we observe that the output size of a rational function is at most linear in the input length, and therefore pre-composing with a rational function cannot increase the degree of the polynomial.
+{{< /latex >}}
+</div>
+</details>
+</div>
+<div class="exercise" id="exercise-3">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{2}
+\begin{exercise}
+\label{exer:finite-range-ideals} Consider an ideal where all functions have finite range. Show that the ideal is equal to one of the ideals from the first item in \cref{exer:some-ideals}, or to the ideal $\Oo(n^0)$ from the second item.
+\end{exercise}
+{{< /latex >}}
+<details class="solution">
+<summary>Show solution</summary>
+<div class="solution-body">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}
+\noindent\textbf{Solution.}\quad Suppose that the ideal contains a rational function $f$ with distinct outputs
+    \begin{align*}
+    f(w_1), \ldots, f(w_k).
+    \end{align*}
+    Every  rational function  $g$ with at most $k$ possible outputs $v_1,\ldots,v_\ell$  can be obtained as follows: first apply $g$ with $v_i$ replaced by $w_i$, then apply $f$, and finally replace $f(w_i)$ with $v_i$.  The first and third steps are rational functions, and therefore $g$ factors through $f$, which means that it is in the ideal.
+{{< /latex >}}
+</div>
+</details>
+</div>
 <div class="exercise" id="exercise-4">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
 \setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{3}
 \begin{exercise}
-Consider two rational functions $f$ and $g$, possibly with different input and output alphabets. We say that $f$ factors through $g$ if one can decompose $f$ as 
-\begin{align*}
-f = g_1 \cdot g \cdot g_2
-\end{align*}
-for some rational functions $g_1$ and $g_2$. Show an algorithm that decides this property, given rational functions $f$ and $g$.
+\label{exer:full-ideal} Show that an ideal contains all rational functions if and only if it contains some function whose range is a regular language with super-polynomial growth. (The growth rate of a language is a function that maps an input length $n$ to the number of strings in the language that have length at most $n$.)
 \end{exercise}
 {{< /latex >}}
+<details class="solution">
+<summary>Show solution</summary>
+<div class="solution-body">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}
+\noindent\textbf{Solution.}\quad By  the analysis from \cref{exer:polynomial-image-growth-decidable},  a regular language has super-polynomial growth if and only if an automaton recognising it contains a pattern of the form 
+\[
+\begin{tikzcd}[ampersand replacement=\&]
+I \ni q_0
+\arrow[r]
+\& q_1
+\arrow[loop above]
+\arrow[loop below]
+\arrow[r]
+\& q_2 \in F
+\end{tikzcd}
+\]
+such that the two loops have different output strings of the same length.
+By pre- and post-composing with suitable rational functions, we can ensure that the two horizontal arrows have empty input and output strings, and that each of the two loops reads copies a single letter to the output, with the letters being different for the two loops. In other words, the ideal contains the identity function on the two-letter alphabet $\set{a,b}$. From this we can get the identity function on any alphabet, and therefore all rational functions.
+{{< /latex >}}
+</div>
+</details>
 </div>
 <div class="exercise" id="exercise-5">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
 \setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{4}
 \begin{exercise}
-A set $I$ of rational functions is called an ideal if
-\begin{align*}
-I  = \text{Rational} \cdot I \cdot \text{Rational},
-\end{align*}
-i.e.~functions that factor through the ideal must stay in the ideal. Show that there are countably many ideals.
+\label{exer:polynomial-ideals} Show that if an ideal contains some function whose range has growth $\Omega(n^k)$, then it contains all functions whose range has growth $\Oo(n^k)$.
 \end{exercise}
 {{< /latex >}}
+<details class="solution">
+<summary>Show solution</summary>
+<div class="solution-body">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}
+\noindent\textbf{Solution.}\quad Define a $k$-pattern in an automaton that recognises a language (not a function or relation) to be a sequence of states and runs as in the following diagram:
+\[
+\begin{tikzcd}[ampersand replacement=\&]
+I \ni q_0
+\ar[r,"x_1"']
+\& q_1
+\ar[loop above,"y_1"]
+\ar[r,"x_2"']
+\& q_2
+\ar[loop above,"y_2"]
+\ar[r,"x_3"']
+\& 
+\cdots
+\ar[r,"x_k"']
+\& q_k
+\ar[loop above,"y_k"]
+\ar[r,"x_{k+1}"']
+\& q_{k+1} \in F
+\end{tikzcd}
+\]
+such that for every $i \in \set{2,\ldots,k}$, the language $y_{i-1}^* x_i y_i^*$ is not contained in the prefixes of $y_i^*$.  Using the analysis of loops in automata from \cref{exer:polynomial-image-growth-decidable}, we can show that the growth rate of a regular language is $\Omega(n^k)$ if and only if it contains a $k$-pattern. (In particular, containing a $k$-pattern does not depend on the choice of automaton that recognises the language.) Next, using a similar analysis as in the previous exercise, one can show that if the range of some rational in the ideal contains a $k$-pattern, then the ideal contains the function 
+\begin{align*}
+\set{a_1,\ldots,a_k}^* \xrightarrow {f_k} \set{a_1,\ldots,a_k}^*
+\end{align*}
+which is the identity on sorted strings (i.e.~strings from $a_1^* a_2^* \cdots a_k^*$) and outputs the empty string otherwise. 
+
+Finally, it remains to show that  if an ideal contains the function $f_k$, then it contains all rational functions whose range has growth $\Oo(n^k)$. This can be proved by analysing the structure of strongly connected components in the automaton that computes a rational function whose range has growth $\Oo(n^k)$.
+{{< /latex >}}
+</div>
+</details>
 </div>
 <div class="exercise" id="exercise-6">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
 \setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{5}
 \begin{exercise}
-Show that if  a rational function $f : A^* \to B^*$ is surjective, then it has a one-sided inverse, i.e.~a rational function $g : B^* \to A^*$ such that $g \cdot f$ is the identity on $B^*$.
+\label{exer:all-ideals} Show that the ideals from the previous exercise are all the ideals, i.e.~all possible  ideals are: ``range of size at most $k$'', ``range has growth rate $\Oo(n^k)$'', and ``all rational functions'', where $k \in \set{0,1,2,\ldots}$.
+\end{exercise}
+{{< /latex >}}
+<details class="solution">
+<summary>Show solution</summary>
+<div class="solution-body">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}
+\noindent\textbf{Solution.}\quad Let us begin by clarifying an edge case in the statement. When $k=0$, then the ideal ``range has size at most $k$'' is the empty ideal (since functions have at least one output), and the ideal ``range has growth rate $\Oo(n^k)$'' is the ideal of functions with finitely many outputs.  Indeed, by \cref{exer:finite-range-ideals}, all ideals with functions of finite range are either of the form ``range of size at most $k$'' or ``range has growth rate $\Oo(n^0)$''. By \cref{exer:full-ideal}, all ideals that contain a function with super-polynomial growth are equal to the ideal of all rational functions. Finally, by \cref{exer:polynomial-ideals}, all ideals that contain a function with polynomial growth $\Omega(n^k)$ are equal to the ideal of functions with growth $\Oo(n^k)$ for some $k$.
+{{< /latex >}}
+</div>
+</details>
+</div>
+<div class="exercise" id="exercise-7">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{6}
+\begin{exercise}
+\label{exer:decide-same-ideal} Show that it is decidable if two rational functions generate the same ideal (the ideal generated by a function is the last ideal that contains it).
+\end{exercise}
+{{< /latex >}}
+<details class="solution">
+<summary>Show solution</summary>
+<div class="solution-body">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}
+\noindent\textbf{Solution.}\quad By \cref{exer:all-ideals}, it suffices to compute the growth rate of the range of each function, which can be done by looking for patterns in the  the automaton for the range of the function.
+{{< /latex >}}
+</div>
+</details>
+</div>
+<div class="exercise" id="exercise-8">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{7}
+\begin{exercise}
+\label{exer:surjective-rational-function}Show that if  a rational function $f : A^* \to B^*$ is surjective, then it has a one-sided inverse, i.e.~a rational function $g : B^* \to A^*$ such that $g \cdot f$ is the identity on $B^*$.
 \end{exercise}
 {{< /latex >}}
 <details class="solution">
@@ -139,11 +219,11 @@ Show that if  a rational function $f : A^* \to B^*$ is surjective, then it has a
 </div>
 </details>
 </div>
-<div class="exercise" id="exercise-7">
+<div class="exercise" id="exercise-9">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{6}
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{8}
 \begin{exercise}
-Show that the following problem is decidable: given a rational function $f$, we want to know if it is injective, i.e.~different input strings are mapped to different output strings.
+\label{exer:rational-injectivity-decidable}Show that the following problem is decidable: given a rational function $f$, we want to know if it is injective, i.e.~different input strings are mapped to different output strings.
 \end{exercise}
 {{< /latex >}}
 <details class="solution">
@@ -156,11 +236,11 @@ Show that the following problem is decidable: given a rational function $f$, we 
 </div>
 </details>
 </div>
-<div class="exercise" id="exercise-8">
+<div class="exercise" id="exercise-10">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{7}
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{9}
 \begin{exercise}
-Show that the following problem is undecidable: given a rational function $f : A^* \to A^*$, we want to know if it generates finitely many functions under composition, i.e.~if the following set is finite:
+\label{exer:rational-composition-finiteness-undecidable}Show that the following problem is undecidable: given a rational function $f : A^* \to A^*$, we want to know if it generates finitely many functions under composition, i.e.~if the following set is finite:
 \begin{align*}
 \setbuild{f^n}{$n \in \set{0,1,2,\ldots}$}.
 \end{align*}

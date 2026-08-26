@@ -9,7 +9,7 @@ source = "krohn-rhodes.tex"
 \setcounter{section}{1}
 \setcounter{ourexamplecounter}{4}
 \renewcommand{\exer}[2]{}
-% source stamp krohn-rhodes.tex:88138105
+% source stamp krohn-rhodes.tex:26eded10
 \input{../../../krohn-rhodes.tex}
 {{< /latex >}}
 
@@ -19,7 +19,29 @@ source = "krohn-rhodes.tex"
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
 \setcounter{mypart}{1}\setcounter{section}{2}\setcounter{theorem}{11}\setcounter{exercise}{0}
 \begin{exercise}
-Show that every flip-flop machine can be obtained as a sequential composition of two-state flip-flop machines.
+\label{exer:simple-decomposition-example}
+    Consider the function which replaces all letters in the input string by the first input letter, as in 
+    \begin{align*}
+    a_1 \cdots a_n \mapsto a_1^n.
+    \end{align*}
+    Decompose this function into flip-flops.
+\end{exercise}
+{{< /latex >}}
+</div>
+<div class="exercise" id="exercise-2">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{1}\setcounter{section}{2}\setcounter{theorem}{11}\setcounter{exercise}{1}
+\begin{exercise}
+\label{exer:simple-decomposition-example-2}
+    Show that the function from the previous example cannot be decomposed into reversible machines only.
+\end{exercise}
+{{< /latex >}}
+</div>
+<div class="exercise" id="exercise-3">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{1}\setcounter{section}{2}\setcounter{theorem}{11}\setcounter{exercise}{2}
+\begin{exercise}
+\label{exer:flip-flop-from-sequential-composition} Show that every flip-flop machine can be obtained as a sequential composition of two-state flip-flop machines.
 \end{exercise}
 {{< /latex >}}
 <details class="solution">
@@ -40,11 +62,11 @@ Show that every flip-flop machine can be obtained as a sequential composition of
 </div>
 </details>
 </div>
-<div class="exercise" id="exercise-2">
+<div class="exercise" id="exercise-4">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-\setcounter{mypart}{1}\setcounter{section}{2}\setcounter{theorem}{11}\setcounter{exercise}{1}
+\setcounter{mypart}{1}\setcounter{section}{2}\setcounter{theorem}{11}\setcounter{exercise}{3}
 \begin{exercise}
-Show that the delay function from Example~\ref{ex:delay} is not  a composition of reversible Mealy machines.
+\label{exer:delay-not-flip-flop-composition} Show that the delay function from Example~\ref{ex:delay} is not  a composition of reversible Mealy machines.
 \end{exercise}
 {{< /latex >}}
 <details class="solution">
@@ -61,11 +83,11 @@ Show that the delay function from Example~\ref{ex:delay} is not  a composition o
 </div>
 </details>
 </div>
-<div class="exercise" id="exercise-3">
+<div class="exercise" id="exercise-5">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-\setcounter{mypart}{1}\setcounter{section}{2}\setcounter{theorem}{11}\setcounter{exercise}{2}
+\setcounter{mypart}{1}\setcounter{section}{2}\setcounter{theorem}{11}\setcounter{exercise}{4}
 \begin{exercise}
-Show that the function from Example~\ref{ex:alternating-a-b} is not  a composition of flip-flop Mealy machines.
+\label{exer:alternating-not-flip-flop-composition} Show that the function from Example~\ref{ex:alternating-a-b} is not  a composition of flip-flop Mealy machines.
 \end{exercise}
 {{< /latex >}}
 <details class="solution">
@@ -78,11 +100,11 @@ Show that the function from Example~\ref{ex:alternating-a-b} is not  a compositi
 </div>
 </details>
 </div>
-<div class="exercise" id="exercise-4">
+<div class="exercise" id="exercise-6">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-\setcounter{mypart}{1}\setcounter{section}{2}\setcounter{theorem}{11}\setcounter{exercise}{3}
+\setcounter{mypart}{1}\setcounter{section}{2}\setcounter{theorem}{11}\setcounter{exercise}{5}
 \begin{exercise}
-Is every invertible Mealy machine, as defined in Exercise~\ref{exer:invertible}, necessarily reversible? The other way round?
+\label{exer:invertible-mealy-is-reversible} Is every invertible Mealy machine, as defined in Exercise~\ref{exer:invertible}, necessarily reversible? The other way round?
 \end{exercise}
 {{< /latex >}}
 <details class="solution">
@@ -99,9 +121,9 @@ Is every invertible Mealy machine, as defined in Exercise~\ref{exer:invertible},
 </div>
 </details>
 </div>
-<div class="exercise" id="exercise-5">
+<div class="exercise" id="exercise-7">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-\setcounter{mypart}{1}\setcounter{section}{2}\setcounter{theorem}{11}\setcounter{exercise}{4}
+\setcounter{mypart}{1}\setcounter{section}{2}\setcounter{theorem}{11}\setcounter{exercise}{6}
 \begin{exercise}
 \label{ex:map-lifting-continuous} Show that if $f : A^* \to B^*$ is continuous, then the same is true for its map lifting.
 \end{exercise}

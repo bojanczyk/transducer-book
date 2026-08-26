@@ -9,7 +9,7 @@ source = "mealy.tex"
 \setcounter{section}{0}
 \setcounter{ourexamplecounter}{1}
 \renewcommand{\exer}[2]{}
-% source stamp mealy.tex:1a87fe5e
+% source stamp mealy.tex:0084d904
 \input{../../../mealy.tex}
 {{< /latex >}}
 
@@ -19,7 +19,7 @@ source = "mealy.tex"
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
 \setcounter{mypart}{1}\setcounter{section}{1}\setcounter{theorem}{4}\setcounter{exercise}{0}
 \begin{exercise}
-Give an example of a function that is continuous, letter-to-letter (i.e.~input length is the same as output length), and is not computed by a "Mealy machine".
+\label{exer:letter-to-letter-not-mealy}Give an example of a function that is continuous, letter-to-letter (i.e.~input length is the same as output length), and is not computed by a "Mealy machine".
 \end{exercise}
 {{< /latex >}}
 <details class="solution">
@@ -36,7 +36,7 @@ Give an example of a function that is continuous, letter-to-letter (i.e.~input l
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
 \setcounter{mypart}{1}\setcounter{section}{1}\setcounter{theorem}{4}\setcounter{exercise}{1}
 \begin{exercise}
-Show that a composition of $n$ "Mealy machines", each one with at most $n$ states, might require a number of states that is exponential in $n$.
+\label{exer:composition-needs-many-states}   Show that a composition of $n$ "Mealy machines", each one with at most $n$ states, might require a number of states that is exponential in $n$.
 \end{exercise}
 {{< /latex >}}
 <details class="solution">
@@ -86,7 +86,7 @@ Show that a composition of $n$ "Mealy machines", each one with at most $n$ state
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
 \setcounter{mypart}{1}\setcounter{section}{1}\setcounter{theorem}{4}\setcounter{exercise}{3}
 \begin{exercise}
-Consider the group of invertible "Mealy machines" of type $A^* \to A^*$, with the group operation being composition. If we take a finite set of generators, is the generated subgroup necessarily finite?
+\label{exer:invertible-mealy-group} Consider the group of invertible "Mealy machines" of type $A^* \to A^*$, with the group operation being composition. If we take a finite set of generators, is the generated subgroup necessarily finite?
 \end{exercise}
 {{< /latex >}}
 <details class="solution">
@@ -103,7 +103,7 @@ Consider the group of invertible "Mealy machines" of type $A^* \to A^*$, with th
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
 \setcounter{mypart}{1}\setcounter{section}{1}\setcounter{theorem}{4}\setcounter{exercise}{4}
 \begin{exercise}
-Give an algorithm which inputs a "Mealy machine" $f : A^* \to B^*$ and decides if the following is bounded by a polynomial in $n$:
+\label{exer:polynomial-image-growth-decidable}Give an algorithm which inputs a "Mealy machine" $f : A^* \to B^*$ and decides if the following is bounded by a polynomial in $n$:
     \begin{align*}
     n \in \Nat \quad \mapsto \quad |\setbuild{f(w)}{$w \in A^*$ has length at most $n$}|.
      \end{align*}

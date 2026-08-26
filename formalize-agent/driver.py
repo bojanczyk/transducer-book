@@ -631,7 +631,8 @@ def integrate(cfg: dict, st: dict, src: Path, base: str, branch: str,
         shutil.rmtree(work, ignore_errors=True)
 
 
-def harvest(cfg: dict, st: dict, project, task, target: dict | None) -> None:
+def harvest(cfg: dict, st: dict, project, task, target: dict | None,
+            base: str | None = None) -> None:
     """Download the current project files and sync them into the Lean directory."""
     ld = lean_dir(cfg)
     tid = target["id"] if target else "external"
@@ -689,7 +690,7 @@ def harvest(cfg: dict, st: dict, project, task, target: dict | None) -> None:
                f"{summary.strip()}\n\n"
                f"Co-authored-by: Aristotle (Harmonic) <aristotle-harmonic@harmonic.fun>\n")
 
-        base = (st.get("current") or {}).get("base") or "HEAD"
+        base = base or (st.get("current") or {}).get("base") or "HEAD"
         outcome = integrate(cfg, st, src, base,
                             f"aristotle/{task.agent_task_id[:8]}", msg)
         if outcome == "conflict":
@@ -1017,7 +1018,7 @@ def cmd_integrate(args) -> None:
     ld = lean_dir(cfg)
     base = args.base or git(ld, "rev-parse", "HEAD").stdout.strip()
     log(f"integrating {args.project[:8]} ({state}) onto {base[:8]}")
-    harvest(cfg, st, project, task, None)
+    harvest(cfg, st, project, task, None, base=base)
     save_json(STATE_PATH, st)
 
 

@@ -9,7 +9,7 @@ source = "logic.tex"
 \setcounter{section}{3}
 \setcounter{ourexamplecounter}{23}
 \renewcommand{\exer}[2]{}
-% source stamp logic.tex:703f64d4
+% source stamp logic.tex:adb3eac3
 \input{../../../logic.tex}
 {{< /latex >}}
 
@@ -19,7 +19,7 @@ source = "logic.tex"
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
 \setcounter{mypart}{3}\setcounter{section}{4}\setcounter{theorem}{16}\setcounter{exercise}{0}
 \begin{exercise}
-Show that a function $f : A^* \to B^*$ is computed by a Mealy machine if and only if it is definable by an \mso relabelling with the following additional restrictions imposed on Definition~\ref{def:mso-relabeling}:
+\label{exer:mealy-as-restricted-mso-relabelling}Show that a function $f : A^* \to B^*$ is computed by a Mealy machine if and only if it is definable by an \mso relabelling with the following additional restrictions imposed on Definition~\ref{def:mso-relabeling}:
 \begin{enumerate}
     \item the string for empty input in item~\ref{item:mso-relabeling-empty-input} is empty;
     \item the output map in item~\ref{item:mso-relabeling-output-map} maps each formula to a one-letter string;

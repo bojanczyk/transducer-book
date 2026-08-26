@@ -281,6 +281,23 @@ Consider a function $f$ that is computed by a Mealy machine and is aperiodic. By
 
 \exerciseheader
 
+    \exer{\label{exer:simple-decomposition-example}
+    Consider the function which replaces all letters in the input string by the first input letter, as in 
+    \begin{align*}
+    a_1 \cdots a_n \mapsto a_1^n.
+    \end{align*}
+    Decompose this function into flip-flops.
+    }
+    {
+        
+    }
+
+    \exer{\label{exer:simple-decomposition-example-2}
+    Show that the function from the previous example cannot be decomposed into reversible machines only.}{
+
+    }
+
+
     \exer{\label{exer:flip-flop-from-sequential-composition} Show that every flip-flop machine can be obtained as a sequential composition of two-state flip-flop machines.}{
     In a flip-flop machine, the state after reading an input string is determined by the last letter which has a constant state transformation: the state is the value of that constant, or the initial state if there is no such letter. In particular, the state can be tracked one bit at a time.
 

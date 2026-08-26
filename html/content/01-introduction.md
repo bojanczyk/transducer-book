@@ -10,7 +10,7 @@ source = "intro.tex"
 \setcounter{section}{0}
 \setcounter{ourexamplecounter}{0}
 \renewcommand{\exer}[2]{}
-% source stamp intro.tex:c5ea089b
+% source stamp intro.tex:171c560f
 \input{../../../intro.tex}
 {{< /latex >}}
 
@@ -45,7 +45,7 @@ source = "intro.tex"
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
 \setcounter{mypart}{0}\setcounter{section}{0}\setcounter{theorem}{1}\setcounter{exercise}{1}
 \begin{exercise}
-Show continuity for  the duplication\footnote{We use the name duplication for the function because the output length is double the input length. This clashes with the notation $ww = w^2$ which seems to suggest squaring. The reason for the clash is that string concatenation is traditionally written in  multiplicative notation, while additive notation is used for string lengths. For us, the more important one will be string length. This notation clash would be resolved by additve notation for strings, which is done for example in Haskell, where the concatenation operator is called \texttt{++}.  Nevertheless, we stay with the standard multiplicative notation for string concatenation.
+\label{exer:duplication-continuous} Show continuity for  the duplication\footnote{We use the name duplication for the function because the output length is double the input length. This clashes with the notation $ww = w^2$ which seems to suggest squaring. The reason for the clash is that string concatenation is traditionally written in  multiplicative notation, while additive notation is used for string lengths. For us, the more important one will be string length. This notation clash would be resolved by additve notation for strings, which is done for example in Haskell, where the concatenation operator is called \texttt{++}.  Nevertheless, we stay with the standard multiplicative notation for string concatenation.
 } function $w \mapsto ww$.
 \end{exercise}
 {{< /latex >}}
@@ -63,7 +63,7 @@ Show continuity for  the duplication\footnote{We use the name duplication for th
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
 \setcounter{mypart}{0}\setcounter{section}{0}\setcounter{theorem}{1}\setcounter{exercise}{2}
 \begin{exercise}
-Show continuity for the squaring\footnote{Similarly to the duplication function, the notation $w^{|w|}$ suggest exponentiation, but we call it squaring because of the output length.} function $w \mapsto w^{|w|}$.
+\label{exer:squaring-continuous} Show continuity for the squaring\footnote{Similarly to the duplication function, the notation $w^{|w|}$ suggest exponentiation, but we call it squaring because of the output length.} function $w \mapsto w^{|w|}$.
 \end{exercise}
 {{< /latex >}}
 <details class="solution">
@@ -101,7 +101,7 @@ Show continuity for the squaring\footnote{Similarly to the duplication function,
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
 \setcounter{mypart}{0}\setcounter{section}{0}\setcounter{theorem}{1}\setcounter{exercise}{3}
 \begin{exercise}
-Show continuity for the factorial function $w \mapsto w^{|w|!}$.
+\label{exer:factorial-continuous} Show continuity for the factorial function $w \mapsto w^{|w|!}$.
 \end{exercise}
 {{< /latex >}}
 <details class="solution">
@@ -122,7 +122,7 @@ The first two coordinates are updated as in the previous exercise, while the thi
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
 \setcounter{mypart}{0}\setcounter{section}{0}\setcounter{theorem}{1}\setcounter{exercise}{4}
 \begin{exercise}
-Let $g : \Nat \to \Nat$ be any non-decreasing function, possiby non-computable.  Show that the function $
+\label{exer:factorial-power-continuous}Let $g : \Nat \to \Nat$ be any non-decreasing function, possiby non-computable.  Show that the function $
 w  \mapsto w^{g(|w|)!}
 $
 is continuous.
@@ -170,7 +170,7 @@ is continuous.
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
 \setcounter{mypart}{0}\setcounter{section}{0}\setcounter{theorem}{2}\setcounter{exercise}{6}
 \begin{exercise}
-Show that the assumption on finitely many output values in \cref{ex:continuity-for-finite-images} is necessary.
+\label{exer:finite-images-assumption-necessary}Show that the assumption on finitely many output values in \cref{ex:continuity-for-finite-images} is necessary.
 \end{exercise}
 {{< /latex >}}
 <details class="solution">
@@ -187,7 +187,7 @@ Show that the assumption on finitely many output values in \cref{ex:continuity-f
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
 \setcounter{mypart}{0}\setcounter{section}{0}\setcounter{theorem}{2}\setcounter{exercise}{7}
 \begin{exercise}
-Consider a function which has an empty output for inputs of even length, and otherwise outputs the (one-letter string consisting of) the letter in the middle of the input string. Show that this function is not continuous when the alphabet has at least two letters.
+\label{exer:middle-letter-not-continuous}Consider a function which has an empty output for inputs of even length, and otherwise outputs the (one-letter string consisting of) the letter in the middle of the input string. Show that this function is not continuous when the alphabet has at least two letters.
 \end{exercise}
 {{< /latex >}}
 <details class="solution">
@@ -233,7 +233,7 @@ Consider a function which has an empty output for inputs of even length, and oth
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
 \setcounter{mypart}{0}\setcounter{section}{0}\setcounter{theorem}{2}\setcounter{exercise}{9}
 \begin{exercise}
-Show that all string-to-string functions are continuous with respect to the distance from \cref{ex:distance}.
+\label{exer:all-functions-continuous-for-metric} Show that all string-to-string functions are continuous with respect to the distance from \cref{ex:distance}.
 \end{exercise}
 {{< /latex >}}
 <details class="solution">
@@ -253,7 +253,7 @@ Show that all string-to-string functions are continuous with respect to the dist
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
 \setcounter{mypart}{0}\setcounter{section}{0}\setcounter{theorem}{2}\setcounter{exercise}{10}
 \begin{exercise}
-Show that the continuous functions, in the sense of Definition~\ref{def:continuity}, are exactly the uniformly continuous functions with respect to the above metric.
+\label{exer:continuous-iff-uniformly-continuous} Show that the continuous functions, in the sense of Definition~\ref{def:continuity}, are exactly the uniformly continuous functions with respect to the above metric.
 \end{exercise}
 {{< /latex >}}
 <details class="solution">

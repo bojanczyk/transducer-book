@@ -9,7 +9,7 @@ source = "rational-relations.tex"
 \setcounter{section}{0}
 \setcounter{ourexamplecounter}{6}
 \renewcommand{\exer}[2]{}
-% source stamp rational-relations.tex:ec83e78c
+% source stamp rational-relations.tex:b37de7d2
 \input{../../../rational-relations.tex}
 {{< /latex >}}
 
@@ -18,6 +18,102 @@ source = "rational-relations.tex"
 <div class="exercise" id="exercise-1">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
 \setcounter{mypart}{2}\setcounter{section}{1}\setcounter{theorem}{7}\setcounter{exercise}{0}
+\begin{exercise}
+\label{exer:regular-languages-for-rational-relations}
+Show that for every rational relation $R \subseteq A^* \times B^*$, the following languages are regular:
+\begin{enumerate}
+    \item its domain, i.e.~input strings that produce at least one output;
+    \item its range, i.e.~output strings that arise from at least one input;
+    \item input strings that produce infinitely many outputs.
+\end{enumerate}
+\end{exercise}
+{{< /latex >}}
+</div>
+<div class="exercise" id="exercise-2">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{2}\setcounter{section}{1}\setcounter{theorem}{7}\setcounter{exercise}{1}
+\begin{exercise}
+\label{exer:non-regular-languages-for-rational-relations}
+Show that for some rational relation $R \subseteq A^* \times B^*$, the set of inputs that produce at most one output is non-regular.
+\end{exercise}
+{{< /latex >}}
+<details class="solution">
+<summary>Show solution</summary>
+<div class="solution-body">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{2}\setcounter{section}{1}\setcounter{theorem}{7}
+\noindent\textbf{Solution.}\quad The crucial idea is to  find two rational functions for which the following language is non-regular:
+\begin{align*}
+\setbuild{ w \in A^*}{$f(w) \neq g(w)$}.
+\end{align*}
+Once we have found them, the relation is simply the union of the two functions, and the set of inputs that produce at most one output is exactly the above language. A simple example of such functions is when $f$ keeps only the $a$'s, and $g$ keeps only the $b$'s.
+{{< /latex >}}
+</div>
+</details>
+</div>
+<div class="exercise" id="exercise-3">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{2}\setcounter{section}{1}\setcounter{theorem}{7}\setcounter{exercise}{2}
+\begin{exercise}
+\label{exer:rational-relations-not-closed-under-intersection} Show that rational relations are not closed under intersection.
+\end{exercise}
+{{< /latex >}}
+<details class="solution">
+<summary>Show solution</summary>
+<div class="solution-body">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{2}\setcounter{section}{1}\setcounter{theorem}{7}
+\noindent\textbf{Solution.}\quad Consider the two relations
+    \begin{align*}
+    R = \setbuild{(a^n, b^n c^m)}{$n,m \geq 0$}
+    \qquad \text{and} \qquad
+    S = \setbuild{(a^n, b^m c^n)}{$n,m \geq 0$}.
+    \end{align*}
+    Both are rational: the automaton for $R$ first outputs one letter $b$ for each input letter, and then, without consuming any input, outputs any number of letters $c$; the automaton for $S$ does the same with the two phases swapped. Their intersection is
+    \begin{align*}
+    \setbuild{(a^n,b^nc^n)}{$n \geq 0$},
+    \end{align*}
+    which is not rational. Indeed, the image of the regular language $a^*$ under this relation is $\setbuild{b^nc^n}{$n \geq 0$}$, which is not regular, while rational relations map regular languages to regular languages, as observed after Theorem~\ref{thm:continuity-rational-relations}.
+{{< /latex >}}
+</div>
+</details>
+</div>
+<div class="exercise" id="exercise-4">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{2}\setcounter{section}{1}\setcounter{theorem}{7}\setcounter{exercise}{3}
+\begin{exercise}
+\label{exer:rational-relations-intersection-undecidable} Show that it is undecidable if two rational relations have nonempty intersection
+\end{exercise}
+{{< /latex >}}
+<details class="solution">
+<summary>Show solution</summary>
+<div class="solution-body">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{2}\setcounter{section}{1}\setcounter{theorem}{7}
+\noindent\textbf{Solution.}\quad We reduce from the Post Correspondence Problem, as in the proof of Theorem~\ref{thm:undecidable-equivalence-rational-relations}, except that this time we do not need to complement the homomorphisms. Consider two homomorphisms $g,h : A^* \to B^*$, and view each of them as a relation, e.g.
+    \begin{align*}
+    \setbuild{(w,g(w))}{$w \in A^*$ is nonempty}.
+    \end{align*}
+    This relation is rational: the automaton has an initial and a final state, and for each input letter $a$ it has a transition with input $a$ and output $g(a)$, which goes from the initial to the final state, and also from the final state to itself. (The two states are used only to rule out the empty input string.) The intersection of the two relations obtained this way is nonempty if and only if the two homomorphisms agree on some nonempty input string, which is exactly the Post Correspondence Problem. Since the two relations used in the reduction are functions, the problem remains undecidable for rational functions.
+{{< /latex >}}
+</div>
+</details>
+</div>
+<div class="exercise" id="exercise-5">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{2}\setcounter{section}{1}\setcounter{theorem}{7}\setcounter{exercise}{4}
+\begin{exercise}
+\label{exer:rational-output-size} Show that the following conditions are equivalent for a rational relation:
+\begin{itemize}
+    \item every input string produces at most finitely many outputs;
+    \item output lengths are bounded by an affine function of the input length.
+\end{itemize}
+\end{exercise}
+{{< /latex >}}
+</div>
+<div class="exercise" id="exercise-6">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{2}\setcounter{section}{1}\setcounter{theorem}{7}\setcounter{exercise}{5}
 \begin{exercise}
 \label{ex:recognisable-relations}Show that the recognisable subsets of $A^* \times B^*$ are exactly the unions of finitely many products of regular languages, i.e.~unions of the form 
 \begin{align*}
