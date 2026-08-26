@@ -9,7 +9,9 @@ Co-authored-by: Aristotle (Harmonic) <aristotle-harmonic@harmonic.fun>
 
 A Lean 4 formalisation of the numbered results of the book `main.pdf`
 (*Transducers*, M. Bojańczyk).  `THEOREMS.md` indexes every numbered result
-together with its Lean name and its current status.
+together with its Lean name and its current status.  The exercises of the book
+are not numbered results; those that are formalised are indexed separately, in
+`EXERCISES.md`.
 
 The results of the book are referred to by their LaTeX labels
 (Theorem `thm:decidable-equivalence-regular`) rather than by their numbers,
@@ -28,6 +30,7 @@ RequestProject/
   PartB.lean    PartB/         -- Part B: rational relations and functions
   PartC.lean    PartC/         -- Part C: regular functions
   PartD.lean    PartD/         -- Part D: polyregular functions
+  Exercises.lean Exercises/    -- the exercises of the book (indexed in `EXERCISES.md`)
   Labels.lean                  -- the results of the book indexed by their LaTeX labels
   Main.lean                    -- global options used by the project
 ```

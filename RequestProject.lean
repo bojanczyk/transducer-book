@@ -13,6 +13,8 @@ The project is organised as follows.
   streaming string transducers and monadic second-order logic.
 * `RequestProject/PartD` — Part D: polyregular functions, for-transducers and
   pebble transducers.
+* `RequestProject/Exercises` — the exercises of the book, indexed in
+  `EXERCISES.md`.
 
 In each part, the file `Statements.lean` (for Part B, `RationalStatements.lean`
 and `WeightedStatements.lean`) contains the definitions and the statements of
@@ -25,4 +27,5 @@ import RequestProject.PartA
 import RequestProject.PartB
 import RequestProject.PartC
 import RequestProject.PartD
+import RequestProject.Exercises
 import RequestProject.Labels
