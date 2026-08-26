@@ -243,7 +243,7 @@
       ]
     },
     "exercises-partA": {
-      "status": "running",
+      "status": "done",
       "attempts": 2,
       "continues": 1,
       "reattempts": 0,
@@ -252,7 +252,7 @@
         "fd9fa871-c814-4fb3-8cc9-62b2580aa974"
       ],
       "started_at": "2026-08-26 01:41:24Z",
-      "finished_at": null,
+      "finished_at": "2026-08-26 05:24:13Z",
       "note": null,
       "sorries_at_start": 5,
       "runs": [
@@ -266,14 +266,26 @@
       ]
     },
     "exercises-partBC": {
-      "status": "pending",
-      "attempts": 0,
+      "status": "running",
+      "attempts": 1,
       "continues": 0,
       "reattempts": 0,
-      "task_ids": [],
-      "started_at": null,
+      "task_ids": [
+        "b4fce171-fb9c-463a-96c4-4ad8762ada46"
+      ],
+      "started_at": "2026-08-26 05:24:20Z",
       "finished_at": null,
-      "note": null
+      "note": null,
+      "sorries_at_start": 5,
+      "runs": [
+        {
+          "task_id": "b4fce171-fb9c-463a-96c4-4ad8762ada46",
+          "project_id": "4043e24a-402a-43cf-b381-816b35adb0e7",
+          "base": "a361636cb0478ef2cf17ca337b553e399c9ca738",
+          "kind": "initial",
+          "at": "2026-08-26 05:24:20Z"
+        }
+      ]
     },
     "D1-tools": {
       "status": "pending",
@@ -317,17 +329,17 @@
     }
   },
   "current": {
-    "target_id": "exercises-partA",
-    "task_id": "fd9fa871-c814-4fb3-8cc9-62b2580aa974",
-    "project_id": "0ef0aef3-818e-456d-b8f6-fda359c4ba65",
-    "base": "f0c656d637a5703ac4e1e347dd727b2c00c5ecdd",
-    "submitted_at": "2026-08-26 03:53:54Z",
-    "kind": "continue"
+    "target_id": "exercises-partBC",
+    "task_id": "b4fce171-fb9c-463a-96c4-4ad8762ada46",
+    "project_id": "4043e24a-402a-43cf-b381-816b35adb0e7",
+    "base": "a361636cb0478ef2cf17ca337b553e399c9ca738",
+    "submitted_at": "2026-08-26 05:24:20Z",
+    "kind": "initial"
   },
-  "paused": false,
-  "pause_reason": null,
+  "paused": true,
+  "pause_reason": "exercises-partA needs a merge by hand",
   "finished_at": null,
-  "ticks": 239,
-  "last_tick": "2026-08-26 04:53:59Z",
-  "review_pending": 0
+  "ticks": 244,
+  "last_tick": "2026-08-26 06:09:21Z",
+  "review_pending": 1
 }

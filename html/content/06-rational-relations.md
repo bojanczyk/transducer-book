@@ -9,7 +9,7 @@ source = "rational-relations.tex"
 \setcounter{section}{0}
 \setcounter{ourexamplecounter}{6}
 \renewcommand{\exer}[2]{}
-% source stamp rational-relations.tex:b37de7d2
+% source stamp rational-relations.tex:7c861148
 \input{../../../rational-relations.tex}
 {{< /latex >}}
 
@@ -28,6 +28,19 @@ Show that for every rational relation $R \subseteq A^* \times B^*$, the followin
 \end{enumerate}
 \end{exercise}
 {{< /latex >}}
+<details class="solution">
+<summary>Show solution</summary>
+<div class="solution-body">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{2}\setcounter{section}{1}\setcounter{theorem}{7}
+\noindent\textbf{Solution.}\quad For the domain, we use continuity from Theorem~\ref{thm:continuity-rational-relations}: the domain is the inverse image of the regular language $B^*$. A more direct argument is that an automaton for the domain is obtained from the automaton with output by erasing the output part of every transition. The range is handled in the same way, using the symmetry of rational relations with respect to input and output.
+
+    The third language requires an analysis of the runs. Call a state \emph{pumping} if it admits a cycle with empty input and nonempty output. We claim that an input string has infinitely many outputs if and only if it admits an accepting run which visits a pumping state. The right-to-left implication is clear, since the cycle in a pumping state can be repeated any number of times, each repetition making the output longer. For the left-to-right implication, consider an input string with infinitely many outputs, and for each of these outputs choose an accepting run which uses the least number of transitions. Since each transition produces a bounded amount of output, these runs use unboundedly many transitions, while the number of transitions that consume a nonempty input is at most the length of the input string. Therefore, some run uses more consecutive transitions with empty input than there are states, and hence it visits some state twice, with empty input in between. The cycle obtained this way must have nonempty output, since otherwise we could remove it, contradicting the minimal choice of the run.
+
+    Since the pumping states can be computed, the third language is recognised by the automaton which is obtained from the automaton with output by erasing the outputs, and adding to the state a bit which says if a pumping state has already been visited.
+{{< /latex >}}
+</div>
+</details>
 </div>
 <div class="exercise" id="exercise-2">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
@@ -44,9 +57,9 @@ Show that for some rational relation $R \subseteq A^* \times B^*$, the set of in
 \setcounter{mypart}{2}\setcounter{section}{1}\setcounter{theorem}{7}
 \noindent\textbf{Solution.}\quad The crucial idea is to  find two rational functions for which the following language is non-regular:
 \begin{align*}
-\setbuild{ w \in A^*}{$f(w) \neq g(w)$}.
+\setbuild{ w \in A^*}{$f(w) = g(w)$}.
 \end{align*}
-Once we have found them, the relation is simply the union of the two functions, and the set of inputs that produce at most one output is exactly the above language. A simple example of such functions is when $f$ keeps only the $a$'s, and $g$ keeps only the $b$'s.
+Once we have found them, the relation is simply the union of the two functions, and the set of inputs that produce at most one output is exactly the above language, since an input produces two outputs exactly when the two functions disagree on it. A simple example of such functions is when $f$ keeps only the $a$'s, while $g$ keeps only the $b$'s and replaces them by $a$'s; the two functions agree exactly on the strings that have as many $a$'s as $b$'s. (The two functions must use the same output alphabet, since otherwise they could only agree on the empty string.)
 {{< /latex >}}
 </div>
 </details>
@@ -110,6 +123,21 @@ Once we have found them, the relation is simply the union of the two functions, 
 \end{itemize}
 \end{exercise}
 {{< /latex >}}
+<details class="solution">
+<summary>Show solution</summary>
+<div class="solution-body">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{2}\setcounter{section}{1}\setcounter{theorem}{7}
+\noindent\textbf{Solution.}\quad The implication from the second condition to the first one is immediate, since there are finitely many strings of bounded length.
+
+    For the converse implication, we use the analysis of runs from \cref{exer:regular-languages-for-rational-relations}. Assume that every input string has finitely many outputs. As we have seen in that exercise, this means that no accepting run visits a state which admits a cycle with empty input and nonempty output. Consider an accepting run, and shorten it as long as possible by removing cycles with empty input. By the previous sentence, the cycles that are removed this way have empty output, and therefore removing them changes neither the input string nor the output string. In the run that remains, every group of consecutive transitions with empty input is shorter than the number of states, since otherwise some state would repeat and we could shorten the run further. Since the transitions that consume a nonempty input are at most as many as the letters in the input string, it follows that the total number of transitions in the run is at most
+    \begin{align*}
+    (\text{number of states}) \cdot (\text{length of the input string} + 1).
+    \end{align*}
+    Each transition produces a bounded amount of output, and hence the length of the output is bounded by an affine function of the length of the input.
+{{< /latex >}}
+</div>
+</details>
 </div>
 <div class="exercise" id="exercise-6">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}

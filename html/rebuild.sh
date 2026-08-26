@@ -233,4 +233,7 @@ fi
 if [ -n "$SERVE" ]; then
   exec hugo server --source "$SITE" "${HUGO_ARGS[@]+"${HUGO_ARGS[@]}"}"
 fi
-exec hugo --source "$SITE" --minify "${HUGO_ARGS[@]+"${HUGO_ARGS[@]}"}"
+# --cleanDestinationDir: hugo leaves whatever it wrote last time in place, so a
+# renamed chapter or a font that fell out of use would sit in dist/ and be
+# uploaded for ever. What is published should be what this build produced.
+exec hugo --source "$SITE" --minify --cleanDestinationDir "${HUGO_ARGS[@]+"${HUGO_ARGS[@]}"}"

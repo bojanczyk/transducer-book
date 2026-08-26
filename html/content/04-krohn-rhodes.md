@@ -9,7 +9,7 @@ source = "krohn-rhodes.tex"
 \setcounter{section}{1}
 \setcounter{ourexamplecounter}{4}
 \renewcommand{\exer}[2]{}
-% source stamp krohn-rhodes.tex:26eded10
+% source stamp krohn-rhodes.tex:9e965b18
 \input{../../../krohn-rhodes.tex}
 {{< /latex >}}
 
@@ -27,6 +27,19 @@ source = "krohn-rhodes.tex"
     Decompose this function into flip-flops.
 \end{exercise}
 {{< /latex >}}
+<details class="solution">
+<summary>Show solution</summary>
+<div class="solution-body">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{1}\setcounter{section}{2}\setcounter{theorem}{11}
+\noindent\textbf{Solution.}\quad The natural machine for this function is not a flip-flop. Its states are $A+1$, and they store the first input letter, with the extra state used before the first letter has been read. The state transformation of a letter $a$ maps the extra state to $a$ and leaves all other states unchanged, which is neither the identity nor a constant. The remedy is to first find out which position is the first one, using a separate machine.
+
+    In the first machine, the states are $\set{0,1}$, the initial state is $0$, and every letter has the constant state transformation with value $1$. The output is the state before the transition, and therefore the first position is labelled with $0$, while all remaining positions are labelled with $1$. This machine is a flip-flop and, as usual, we assume that it also copies the input letter to its output.
+
+    In the second machine, the states are $A+1$ as in the natural machine described above, but this time the state transformation of a letter depends on the label that was added by the first machine: a letter labelled $0$, i.e.~a first letter $a$, has the constant state transformation with value $a$, while a letter labelled $1$ has the identity state transformation. This machine is a flip-flop as well, and if its output is the state after the transition, then this output is the first letter of the input string in every position, as required.
+{{< /latex >}}
+</div>
+</details>
 </div>
 <div class="exercise" id="exercise-2">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
@@ -36,6 +49,19 @@ source = "krohn-rhodes.tex"
     Show that the function from the previous example cannot be decomposed into reversible machines only.
 \end{exercise}
 {{< /latex >}}
+<details class="solution">
+<summary>Show solution</summary>
+<div class="solution-body">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{1}\setcounter{section}{2}\setcounter{theorem}{11}
+\noindent\textbf{Solution.}\quad We use the same argument as for the delay function. We assume that the input alphabet has at least two letters, since otherwise the function is the identity, which is reversible. By Lemma~\ref{lem:reversible-composition}, a composition of reversible machines is again a reversible machine, and therefore it is enough to rule out a single reversible machine. Suppose that some reversible machine computes the function, and let $a$ and $b$ be two different input letters. The state transformation of $a$ is a permutation of a finite set, and hence it has finite order, i.e.~there is some $k \geq 1$ such that reading $a^k$ leads from the initial state back to the initial state. Consequently, the machine is in the initial state just before reading the last letter of both input strings
+    \begin{align*}
+    b \qquad \text{and} \qquad a^k b,
+    \end{align*}
+    and therefore it produces the same last output letter for both of them. This is a contradiction, since the function outputs $b$ for the first input string and $a$ for the second one.
+{{< /latex >}}
+</div>
+</details>
 </div>
 <div class="exercise" id="exercise-3">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}

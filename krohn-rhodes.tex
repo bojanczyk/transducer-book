@@ -289,13 +289,21 @@ Consider a function $f$ that is computed by a Mealy machine and is aperiodic. By
     Decompose this function into flip-flops.
     }
     {
-        
-    }
+    The natural machine for this function is not a flip-flop. Its states are $A+1$, and they store the first input letter, with the extra state used before the first letter has been read. The state transformation of a letter $a$ maps the extra state to $a$ and leaves all other states unchanged, which is neither the identity nor a constant. The remedy is to first find out which position is the first one, using a separate machine.
+
+    In the first machine, the states are $\set{0,1}$, the initial state is $0$, and every letter has the constant state transformation with value $1$. The output is the state before the transition, and therefore the first position is labelled with $0$, while all remaining positions are labelled with $1$. This machine is a flip-flop and, as usual, we assume that it also copies the input letter to its output.
+
+    In the second machine, the states are $A+1$ as in the natural machine described above, but this time the state transformation of a letter depends on the label that was added by the first machine: a letter labelled $0$, i.e.~a first letter $a$, has the constant state transformation with value $a$, while a letter labelled $1$ has the identity state transformation. This machine is a flip-flop as well, and if its output is the state after the transition, then this output is the first letter of the input string in every position, as required.
+}
 
     \exer{\label{exer:simple-decomposition-example-2}
     Show that the function from the previous example cannot be decomposed into reversible machines only.}{
-
-    }
+    We use the same argument as for the delay function. We assume that the input alphabet has at least two letters, since otherwise the function is the identity, which is reversible. By Lemma~\ref{lem:reversible-composition}, a composition of reversible machines is again a reversible machine, and therefore it is enough to rule out a single reversible machine. Suppose that some reversible machine computes the function, and let $a$ and $b$ be two different input letters. The state transformation of $a$ is a permutation of a finite set, and hence it has finite order, i.e.~there is some $k \geq 1$ such that reading $a^k$ leads from the initial state back to the initial state. Consequently, the machine is in the initial state just before reading the last letter of both input strings
+    \begin{align*}
+    b \qquad \text{and} \qquad a^k b,
+    \end{align*}
+    and therefore it produces the same last output letter for both of them. This is a contradiction, since the function outputs $b$ for the first input string and $a$ for the second one.
+}
 
 
     \exer{\label{exer:flip-flop-from-sequential-composition} Show that every flip-flop machine can be obtained as a sequential composition of two-state flip-flop machines.}{

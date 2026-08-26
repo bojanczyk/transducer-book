@@ -9,7 +9,7 @@ source = "rational-functions.tex"
 \setcounter{section}{1}
 \setcounter{ourexamplecounter}{8}
 \renewcommand{\exer}[2]{}
-% source stamp rational-functions.tex:77de05e2
+% source stamp rational-functions.tex:ce5ac376
 \input{../../../rational-functions.tex}
 {{< /latex >}}
 
@@ -18,6 +18,124 @@ source = "rational-functions.tex"
 <div class="exercise" id="exercise-1">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
 \setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{0}
+\begin{exercise}
+\label{exer:examples-of-rational-fun}
+Represent the following functions as rational functions, and as bimachines: (a) if the input length is even, output it, otherwise output the empty string; (b) swap the first and last letters; (c) identity before last $\#$, after that every letter replaced by $\#$.
+\end{exercise}
+{{< /latex >}}
+<details class="solution">
+<summary>Show solution</summary>
+<div class="solution-body">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}
+\noindent\textbf{Solution.}\quad (a) As a rational function, we use two copies of the automaton which tracks the parity of the number of input letters that have been read so far. In the first copy, every transition copies its input letter to the output, and the accepting states are those with even parity; in the second copy, every transition has empty output, and the accepting states are those with odd parity. Putting the two copies side by side gives an unambiguous automaton, since the parity of the input length decides which copy is used. As a bimachine, we use the parity automaton for both the prefix and the suffix automata, except that the suffix automaton also stores the first letter of the suffix. The parity of the input length is the sum of the two parities, and hence it is known in every gap. The output in a gap is the first letter of the suffix if the total parity is even, and the empty string otherwise.
+
+    (b) As a rational function, this was already done in \cref{sec:rational-relations}, using a union of six automata. That union is unambiguous, since the six cases are determined by the input string.  (That solution was for a binary alphabet, but a similar construction works in general.) As a bimachine, we use a prefix automaton which stores the first letter of the prefix, and a suffix automaton which stores the first and the last letter of the suffix, as well as the length of the suffix up to the threshold two. The output in a gap is defined by the following cases: the empty string, if the suffix is empty; the last letter of the suffix, if the prefix is empty; the first letter of the prefix, if the suffix has exactly one letter; and the first letter of the suffix in the remaining cases. The three letters that are used here are, respectively, the last letter of the input string, its first letter, and the letter in the position that follows the gap.
+
+    (c) We use the convention that if the input string has no $\#$, then all of its letters are replaced by $\#$; the other convention, in which the input string is returned unchanged, is handled in the same way. For an unambiguous automaton, the automaton guesses which $\#$ is the last one: up to and including this letter, the input is copied to the output; after it, the automaton outputs $\#$ for every input letter, and rejects if it sees another $\#$. This automaton is unambiguous, since the guess is verified. The bimachine is even simpler, and it does not need the prefix automaton at all. The observation is that a position is copied to the output if and only if the suffix which begins in this position contains a $\#$. Therefore, it is enough that the suffix automaton stores the first letter of the suffix, together with the information about whether the suffix contains $\#$. The output in a gap is: the empty string, if the suffix is empty; the first letter of the suffix, if the suffix contains $\#$; and $\#$ otherwise.
+{{< /latex >}}
+</div>
+</details>
+</div>
+<div class="exercise" id="exercise-2">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{1}
+\begin{exercise}
+\label{exer:non-rational}
+Prove that the following functions are not rational, over an alphabet with at least two letters: (a) first half of the input string, rounded up; and (b) the duplicate function $w \mapsto ww$.
+\end{exercise}
+{{< /latex >}}
+<details class="solution">
+<summary>Show solution</summary>
+<div class="solution-body">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}
+\noindent\textbf{Solution.}\quad (a) This function is not continuous, and hence it is not rational by Theorem~\ref{thm:continuity-rational-relations}. Consider the inverse image of the regular language $a^*$, i.e.~the set of input strings whose first half uses the letter $a$ only. If we intersect this inverse image with the regular language $a^*b^*$, then we get
+    \begin{align*}
+    \setbuild{a^ib^j}{$j \leq i$},
+    \end{align*}
+    which is not regular. Therefore the inverse image is not regular either.
+
+    (b) Here continuity is not violated, since duplication is continuous. Instead, we use the observation after Theorem~\ref{thm:continuity-rational-relations}, which says that rational relations map regular languages to regular languages. The image of the regular language $A^*$ under duplication is
+    \begin{align*}
+    \setbuild{ww}{$w \in A^*$},
+    \end{align*}
+    which is not regular, as long as the alphabet has at least two letters. (For a one-letter alphabet, duplication is the homomorphism which maps $a$ to $aa$, and hence it is rational.)
+{{< /latex >}}
+</div>
+</details>
+</div>
+<div class="exercise" id="exercise-3">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{2}
+\begin{exercise}
+\label{exer:decide-unambiguous} Show that one can decide unambiguity for a given \nfa that recognises a language (not a function or relation).
+\end{exercise}
+{{< /latex >}}
+<details class="solution">
+<summary>Show solution</summary>
+<div class="solution-body">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}
+\noindent\textbf{Solution.}\quad We can assume that the automaton has no transitions with empty input, since these can be eliminated in the usual way. Under this assumption, the automaton is ambiguous if and only if some input string admits two accepting runs which use different transitions in some position. This is tested by a product construction. Consider the automaton whose states are triples
+    \begin{align*}
+    (\text{state}, \text{state}, \text{a bit}),
+    \end{align*}
+    which runs two copies of the original automaton on the same input string, and uses the bit to remember if the two copies have already used different transitions. The bit is $0$ in the initial states, it is set to $1$ as soon as the two copies use different transitions, and it is never reset. The initial states are the pairs of initial states with bit $0$, and the accepting states are the pairs of accepting states with bit $1$. The original automaton is ambiguous if and only if the new automaton accepts some string, which is decided by checking if an accepting state is reachable from an initial state. Since the new automaton is only quadratically bigger than the original one, this algorithm runs in polynomial time.
+{{< /latex >}}
+</div>
+</details>
+</div>
+<div class="exercise" id="exercise-4">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{3}
+\begin{exercise}
+\label{exer:decide-rational-colision} Are the following problems about two rational functions decidable: (a) is there some input string where both outputs are equal? (b) is there some input string where both outputs have the same length?
+\end{exercise}
+{{< /latex >}}
+<details class="solution">
+<summary>Show solution</summary>
+<div class="solution-body">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}
+\noindent\textbf{Solution.}\quad The first problem generalises PCP and is hence undecidable. (Some care is needed with the empty input string, on which two homomorphisms always agree; this is repaired by modifying the two rational functions so that they disagree on the empty input, which is possible because a rational function treats the empty input separately.) The second problem is decidable, since it can be solved using Parikh images: the pairs
+    \begin{align*}
+    (|f(w)|, |g(w)|) \qquad \text{for $w \in A^*$}
+    \end{align*}
+    form the Parikh image of a regular language, namely the language of runs of the product of the two transducers, and hence they form a semilinear set which can be computed. It remains to check if this set contains a pair with two equal coordinates.
+{{< /latex >}}
+</div>
+</details>
+</div>
+<div class="exercise" id="exercise-5">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{4}
+\begin{exercise}
+\label{exer:rational-one-letter-input} Consider a rational function where the input alphabet has only one letter $a$. Show that the graph of the function is a finite union \begin{align*}
+\bigcup_{i \in I}\setbuild{ a^{\alpha_i + \beta_i n} \mapsto x_i y_i^n z_i}{$n \in \Nat$} 
+\end{align*}
+where the coefficients  $\alpha_i,\beta_i$ are natural numbers and strings $x_i,y_i,z_i$ are strings over the output alphabet.
+\end{exercise}
+{{< /latex >}}
+<details class="solution">
+<summary>Show solution</summary>
+<div class="solution-body">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}
+\noindent\textbf{Solution.}\quad Consider a bimachine that computes the function, which exists by Theorem~\ref{thm:bimachines}. Over a one-letter input alphabet, the prefix and suffix automata are deterministic automata with a one-letter alphabet, and therefore their runs are eventually periodic: there is a threshold $\lambda$ and a period $\pi$, which we can choose to be the same for both automata, such that for every $i \geq \lambda$ and for both automata, the state after reading $a^i$ is the same as the state after reading $a^{i+\pi}$.
+
+    The input strings of length smaller than $2\lambda$ contribute finitely many pairs to the graph, and each such pair is of the required form, with the coefficient $\beta_i$ equal to zero. For the remaining input strings, we group them according to the residue of their length modulo $\pi$, i.e.~we consider the input strings
+    \begin{align*}
+    a^{\alpha + \pi m} \qquad \text{for a fixed $\alpha$ and $m \in \Nat$}.
+    \end{align*}
+    The output in a gap is determined by the states of the two automata, and these are determined by the number of letters on the left and on the right of the gap. For the first $\lambda$ gaps, this pair of states does not depend on $m$, and the same is true for the last $\lambda$ gaps. For every other gap, both sides have at least $\lambda$ letters, and hence the pair of states depends only on the number of letters on the left, modulo $\pi$. Therefore, increasing $m$ by one has the following effect on the output: one more group of $\pi$ consecutive gaps appears in the middle, and this group produces the same string as the other such groups. Summing up, the output for the input string $a^{\alpha+\pi m}$ is of the form $x y^m z$, where the strings $x,y,z$ depend only on the residue $\alpha$, which is the required form with $\beta_i = \pi$.
+{{< /latex >}}
+</div>
+</details>
+</div>
+<div class="exercise" id="exercise-6">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{5}
 \begin{exercise}
 \label{exer:function-that-is-not-rational} Show that there is a function
 \begin{align*}
@@ -46,9 +164,9 @@ the composition $f \cdot g$ is rational.
 </div>
 </details>
 </div>
-<div class="exercise" id="exercise-2">
+<div class="exercise" id="exercise-7">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{1}
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{6}
 \begin{exercise}
 \label{exer:some-ideals} 
 Show that the following are ideals: 
@@ -70,9 +188,9 @@ Pre-composing or post-composing with rational functions (or any functions) canno
 </div>
 </details>
 </div>
-<div class="exercise" id="exercise-3">
+<div class="exercise" id="exercise-8">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{2}
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{7}
 \begin{exercise}
 \label{exer:finite-range-ideals} Consider an ideal where all functions have finite range. Show that the ideal is equal to one of the ideals from the first item in \cref{exer:some-ideals}, or to the ideal $\Oo(n^0)$ from the second item.
 \end{exercise}
@@ -87,13 +205,15 @@ Pre-composing or post-composing with rational functions (or any functions) canno
     f(w_1), \ldots, f(w_k).
     \end{align*}
     Every  rational function  $g$ with at most $k$ possible outputs $v_1,\ldots,v_\ell$  can be obtained as follows: first apply $g$ with $v_i$ replaced by $w_i$, then apply $f$, and finally replace $f(w_i)$ with $v_i$.  The first and third steps are rational functions, and therefore $g$ factors through $f$, which means that it is in the ideal.
+
+    It follows that the ideal is determined by the sizes of the ranges that appear in it. If these sizes are bounded, then the ideal is ``range of size at most $k$'', where $k$ is the largest size that appears. Otherwise the ideal contains rational functions with arbitrarily large finite ranges, and hence, by the argument above, it contains every rational function with finite range, i.e.~it is the ideal $\Oo(n^0)$.
 {{< /latex >}}
 </div>
 </details>
 </div>
-<div class="exercise" id="exercise-4">
+<div class="exercise" id="exercise-9">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{3}
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{8}
 \begin{exercise}
 \label{exer:full-ideal} Show that an ideal contains all rational functions if and only if it contains some function whose range is a regular language with super-polynomial growth. (The growth rate of a language is a function that maps an input length $n$ to the number of strings in the language that have length at most $n$.)
 \end{exercise}
@@ -116,14 +236,18 @@ I \ni q_0
 \end{tikzcd}
 \]
 such that the two loops have different output strings of the same length.
-By pre- and post-composing with suitable rational functions, we can ensure that the two horizontal arrows have empty input and output strings, and that each of the two loops reads copies a single letter to the output, with the letters being different for the two loops. In other words, the ideal contains the identity function on the two-letter alphabet $\set{a,b}$. From this we can get the identity function on any alphabet, and therefore all rational functions.
+Write $x$ and $x'$ for the strings on the two horizontal arrows, and $y_a$ and $y_b$ for the strings on the two loops; recall that the latter two are different strings of the same length. For an input string $c_1 \cdots c_n$ over the alphabet $\set{a,b}$, the string
+\begin{align*}
+x \, y_{c_1} \cdots y_{c_n} \, x'
+\end{align*}
+belongs to the range of the function, and different input strings give different strings, since the two loops have the same length. Producing these strings is easy, since this is done by the homomorphism which maps $c$ to $y_c$, followed by adding $x$ in front and $x'$ at the end. What we need, however, is to produce them as \emph{inputs} of the function, and not as outputs. This is where we use the Uniformisation Lemma~\ref{lem:uniformisation}: the inverse relation of the function is rational, and it becomes total once we extend it with a default output for the strings outside the range, which is a regular language. This gives a rational function which chooses, for each string in the range, some input that produces it, and we pre-compose with it. Post-composing with the rational function which removes $x$ and $x'$, and replaces each block $y_a$ or $y_b$ by the corresponding letter, we recover the string $c_1 \cdots c_n$. In other words, the ideal contains the identity function on the two-letter alphabet $\set{a,b}$. From this we can get the identity function on any alphabet, and therefore all rational functions.
 {{< /latex >}}
 </div>
 </details>
 </div>
-<div class="exercise" id="exercise-5">
+<div class="exercise" id="exercise-10">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{4}
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{9}
 \begin{exercise}
 \label{exer:polynomial-ideals} Show that if an ideal contains some function whose range has growth $\Omega(n^k)$, then it contains all functions whose range has growth $\Oo(n^k)$.
 \end{exercise}
@@ -153,7 +277,7 @@ I \ni q_0
 \& q_{k+1} \in F
 \end{tikzcd}
 \]
-such that for every $i \in \set{2,\ldots,k}$, the language $y_{i-1}^* x_i y_i^*$ is not contained in the prefixes of $y_i^*$.  Using the analysis of loops in automata from \cref{exer:polynomial-image-growth-decidable}, we can show that the growth rate of a regular language is $\Omega(n^k)$ if and only if it contains a $k$-pattern. (In particular, containing a $k$-pattern does not depend on the choice of automaton that recognises the language.) Next, using a similar analysis as in the previous exercise, one can show that if the range of some rational in the ideal contains a $k$-pattern, then the ideal contains the function 
+such that for every $i \in \set{2,\ldots,k}$, the language $y_{i-1}^* x_i y_i^*$ is not contained in the prefixes of $y_i^*$.  Using the analysis of loops in automata from \cref{exer:polynomial-image-growth-decidable}, we can show that the growth rate of a regular language is $\Omega(n^k)$ if and only if it contains a $k$-pattern. (In particular, containing a $k$-pattern does not depend on the choice of automaton that recognises the language.) Next, using a similar analysis as in the previous exercise, one can show that if the range of some rational function in the ideal contains a $k$-pattern, then the ideal contains the function 
 \begin{align*}
 \set{a_1,\ldots,a_k}^* \xrightarrow {f_k} \set{a_1,\ldots,a_k}^*
 \end{align*}
@@ -164,11 +288,11 @@ Finally, it remains to show that  if an ideal contains the function $f_k$, then 
 </div>
 </details>
 </div>
-<div class="exercise" id="exercise-6">
+<div class="exercise" id="exercise-11">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{5}
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{10}
 \begin{exercise}
-\label{exer:all-ideals} Show that the ideals from the previous exercise are all the ideals, i.e.~all possible  ideals are: ``range of size at most $k$'', ``range has growth rate $\Oo(n^k)$'', and ``all rational functions'', where $k \in \set{0,1,2,\ldots}$.
+\label{exer:all-ideals} Show that the ideals from the previous exercise are all the ideals, i.e.~all possible  ideals are: ``range of size at most $k$'', ``range has growth rate $\Oo(n^k)$'', ``range has polynomial growth'',  and ``all rational functions'', where $k \in \set{0,1,2,\ldots}$.
 \end{exercise}
 {{< /latex >}}
 <details class="solution">
@@ -176,14 +300,14 @@ Finally, it remains to show that  if an ideal contains the function $f_k$, then 
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
 \setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}
-\noindent\textbf{Solution.}\quad Let us begin by clarifying an edge case in the statement. When $k=0$, then the ideal ``range has size at most $k$'' is the empty ideal (since functions have at least one output), and the ideal ``range has growth rate $\Oo(n^k)$'' is the ideal of functions with finitely many outputs.  Indeed, by \cref{exer:finite-range-ideals}, all ideals with functions of finite range are either of the form ``range of size at most $k$'' or ``range has growth rate $\Oo(n^0)$''. By \cref{exer:full-ideal}, all ideals that contain a function with super-polynomial growth are equal to the ideal of all rational functions. Finally, by \cref{exer:polynomial-ideals}, all ideals that contain a function with polynomial growth $\Omega(n^k)$ are equal to the ideal of functions with growth $\Oo(n^k)$ for some $k$.
+\noindent\textbf{Solution.}\quad Let us begin by clarifying an edge case in the statement. When $k=0$, then the ideal ``range has size at most $k$'' is the empty ideal (since functions have at least one output), and the ideal ``range has growth rate $\Oo(n^k)$'' is the ideal of functions with finitely many outputs.  Indeed, by \cref{exer:finite-range-ideals}, all ideals with functions of finite range are either of the form ``range of size at most $k$'' or ``range has growth rate $\Oo(n^0)$''. By \cref{exer:full-ideal}, all ideals that contain a function with super-polynomial growth are equal to the ideal of all rational functions. Finally, consider an ideal in which every function has a range of polynomial growth, and which contains at least one function with an infinite range. If there is a largest $k$ such that some function in the ideal has range of growth $\Omega(n^k)$, then by \cref{exer:polynomial-ideals} the ideal is exactly the ideal of functions with growth $\Oo(n^k)$. Otherwise the ideal contains, for every $k$, some function of growth $\Omega(n^k)$, and hence, again by \cref{exer:polynomial-ideals}, it is the union of the ideals $\Oo(n^k)$ over all $k$, i.e.~the ideal of functions whose range has polynomial growth.
 {{< /latex >}}
 </div>
 </details>
 </div>
-<div class="exercise" id="exercise-7">
+<div class="exercise" id="exercise-12">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{6}
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{11}
 \begin{exercise}
 \label{exer:decide-same-ideal} Show that it is decidable if two rational functions generate the same ideal (the ideal generated by a function is the last ideal that contains it).
 \end{exercise}
@@ -193,14 +317,14 @@ Finally, it remains to show that  if an ideal contains the function $f_k$, then 
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
 \setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}
-\noindent\textbf{Solution.}\quad By \cref{exer:all-ideals}, it suffices to compute the growth rate of the range of each function, which can be done by looking for patterns in the  the automaton for the range of the function.
+\noindent\textbf{Solution.}\quad By \cref{exer:all-ideals}, the ideal generated by a function is determined by its range: if the range is finite, then the ideal is ``range of size at most $k$'' where $k$ is the size of the range; and otherwise the ideal is determined by the growth rate of the range. (The growth rate alone is not enough, since all functions with a finite range have the same growth rate.) The size of the range, and its growth rate, can both be computed by looking for the patterns from the previous exercises in the automaton for the range of the function.
 {{< /latex >}}
 </div>
 </details>
 </div>
-<div class="exercise" id="exercise-8">
+<div class="exercise" id="exercise-13">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{7}
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{12}
 \begin{exercise}
 \label{exer:surjective-rational-function}Show that if  a rational function $f : A^* \to B^*$ is surjective, then it has a one-sided inverse, i.e.~a rational function $g : B^* \to A^*$ such that $g \cdot f$ is the identity on $B^*$.
 \end{exercise}
@@ -219,9 +343,9 @@ Finally, it remains to show that  if an ideal contains the function $f_k$, then 
 </div>
 </details>
 </div>
-<div class="exercise" id="exercise-9">
+<div class="exercise" id="exercise-14">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{8}
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{13}
 \begin{exercise}
 \label{exer:rational-injectivity-decidable}Show that the following problem is decidable: given a rational function $f$, we want to know if it is injective, i.e.~different input strings are mapped to different output strings.
 \end{exercise}
@@ -231,14 +355,14 @@ Finally, it remains to show that  if an ideal contains the function $f_k$, then 
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
 \setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}
-\noindent\textbf{Solution.}\quad Consider the inverse relation of $f$, which is rational and total. By the previous exercise, it contains a rational function $g$. The function $f$ is injective if and only if $g$ is also a left-sided inverse of $f$, i.e.~if and only if $g \cdot f$ is the identity on $A^*$. By Theorem~\ref{thm:equivalence-rational-functions}, this can be decided.
+\noindent\textbf{Solution.}\quad Consider the inverse relation of $f$, which is rational. It need not be total, since $f$ need not be surjective, but its domain is the range of $f$, which is a regular language, and hence we can make the relation total by adding a default output for the strings outside the range. By the Uniformisation Lemma~\ref{lem:uniformisation}, this relation contains a rational function $g$, which satisfies $f(g(v)) = v$ for every $v$ in the range of $f$. The function $f$ is injective if and only if $g$ inverts it on the other side as well, i.e.~if and only if the composition $f \cdot g$, which first applies $f$ and then $g$, is the identity on $A^*$. Indeed, if $f$ is injective, then $g(f(w))$ has the same image under $f$ as $w$, and hence it must be equal to $w$; conversely, a function which has a left inverse is injective. By Theorem~\ref{thm:equivalence-rational-functions}, it can be decided if $f \cdot g$ is the identity.
 {{< /latex >}}
 </div>
 </details>
 </div>
-<div class="exercise" id="exercise-10">
+<div class="exercise" id="exercise-15">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{9}
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{14}
 \begin{exercise}
 \label{exer:rational-composition-finiteness-undecidable}Show that the following problem is undecidable: given a rational function $f : A^* \to A^*$, we want to know if it generates finitely many functions under composition, i.e.~if the following set is finite:
 \begin{align*}
