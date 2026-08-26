@@ -31,25 +31,25 @@
            familyi={G\bibinitperiod},
            given={Olivier},
            giveni={O\bibinitperiod}}}%
-        {{hash=e41b154c77645dd2e10704d3b641385c}{%
+        {{hash=db564692156cdf5bee9e275afe74f3d5}{%
            family={Muscholl},
            familyi={M\bibinitperiod},
-           given={A.},
+           given={Anca},
            giveni={A\bibinitperiod}}}%
-        {{hash=c4933a3b31ab395262feb6ac49a4c0fe}{%
+        {{hash=456181baabbf06a8e29d0f5d1ecdd235}{%
            family={Puppis},
            familyi={P\bibinitperiod},
-           given={G.},
+           given={Gabriele},
            giveni={G\bibinitperiod}}}%
       }
-      \strng{namehash}{23b4f37e0dbaef38f205c3247ae26796}
-      \strng{fullhash}{23b4f37e0dbaef38f205c3247ae26796}
-      \strng{fullhashraw}{23b4f37e0dbaef38f205c3247ae26796}
-      \strng{bibnamehash}{d312713bf151235713ad6f292388a12f}
-      \strng{authorbibnamehash}{d312713bf151235713ad6f292388a12f}
-      \strng{authornamehash}{23b4f37e0dbaef38f205c3247ae26796}
-      \strng{authorfullhash}{23b4f37e0dbaef38f205c3247ae26796}
-      \strng{authorfullhashraw}{23b4f37e0dbaef38f205c3247ae26796}
+      \strng{namehash}{dc993b7ff788aa29fefcf6ab5b65e430}
+      \strng{fullhash}{dc993b7ff788aa29fefcf6ab5b65e430}
+      \strng{fullhashraw}{dc993b7ff788aa29fefcf6ab5b65e430}
+      \strng{bibnamehash}{dc993b7ff788aa29fefcf6ab5b65e430}
+      \strng{authorbibnamehash}{dc993b7ff788aa29fefcf6ab5b65e430}
+      \strng{authornamehash}{dc993b7ff788aa29fefcf6ab5b65e430}
+      \strng{authorfullhash}{dc993b7ff788aa29fefcf6ab5b65e430}
+      \strng{authorfullhashraw}{dc993b7ff788aa29fefcf6ab5b65e430}
       \field{labelalpha}{Bas+17}
       \field{sortinit}{B}
       \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
@@ -114,9 +114,15 @@
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{CoRR}
-      \field{title}{Polyregular {{Functions}}}
+      \field{title}{Polyregular Functions}
       \field{volume}{abs/1810.08760}
       \field{year}{2018}
+      \verb{urlraw}
+      \verb https://arxiv.org/abs/1810.08760
+      \endverb
+      \verb{url}
+      \verb https://arxiv.org/abs/1810.08760
+      \endverb
     \endentry
     \entry{bojanczyk_automata_2025}{misc}{}{}
       \name{author}{1}{}{%
@@ -140,84 +146,176 @@
       \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{howpublished}{Lecture notes available at \url{mimuw.edu.pl/~bojan/paper/automata-toolbox-book}}
+      \field{howpublished}{Lecture notes}
       \field{title}{An Automata Toolbox}
       \field{year}{2025}
+      \verb{urlraw}
+      \verb https://www.mimuw.edu.pl/~bojan/paper/automata-toolbox-book
+      \endverb
+      \verb{url}
+      \verb https://www.mimuw.edu.pl/~bojan/paper/automata-toolbox-book
+      \endverb
     \endentry
-    \entry{engelfriet2007}{article}{}{}
+    \entry{dubreil1941}{article}{}{}
+      \name{author}{1}{}{%
+        {{hash=2f8888b651b32cec6b7db2f424e2f612}{%
+           family={Dubreil},
+           familyi={D\bibinitperiod},
+           given={Paul},
+           giveni={P\bibinitperiod}}}%
+      }
+      \strng{namehash}{2f8888b651b32cec6b7db2f424e2f612}
+      \strng{fullhash}{2f8888b651b32cec6b7db2f424e2f612}
+      \strng{fullhashraw}{2f8888b651b32cec6b7db2f424e2f612}
+      \strng{bibnamehash}{2f8888b651b32cec6b7db2f424e2f612}
+      \strng{authorbibnamehash}{2f8888b651b32cec6b7db2f424e2f612}
+      \strng{authornamehash}{2f8888b651b32cec6b7db2f424e2f612}
+      \strng{authorfullhash}{2f8888b651b32cec6b7db2f424e2f612}
+      \strng{authorfullhashraw}{2f8888b651b32cec6b7db2f424e2f612}
+      \field{labelalpha}{Dub41}
+      \field{sortinit}{D}
+      \field{sortinithash}{6f385f66841fb5e82009dc833c761848}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Mémoires de l'Académie des Sciences de l'Institut de France}
+      \field{note}{Tome 63 covers 1936--39; the memoir is no.~3 of the volume, with its own pagination}
+      \field{number}{3}
+      \field{title}{Contribution à la théorie des demi-groupes. I}
+      \field{volume}{63}
+      \field{year}{1941}
+      \field{pages}{1\bibrangedash 52}
+      \range{pages}{52}
+      \verb{urlraw}
+      \verb https://gallica.bnf.fr/ark:/12148/bpt6k3278g/f355
+      \endverb
+      \verb{url}
+      \verb https://gallica.bnf.fr/ark:/12148/bpt6k3278g/f355
+      \endverb
+    \endentry
+    \entry{engelfriet2007}{inproceedings}{}{}
       \name{author}{3}{}{%
-        {{hash=f241db2458e9bad65442491391648e58}{%
+        {{hash=017b40b8d219b85da1d78cc417a7342a}{%
            family={Engelfriet},
            familyi={E\bibinitperiod},
-           given={J.},
+           given={Joost},
            giveni={J\bibinitperiod}}}%
-        {{hash=721bf1033df3a99f1e8835027cf2347d}{%
+        {{hash=6fe83c1e41d5d0b1d19de479ec7054e7}{%
            family={Hoogeboom},
            familyi={H\bibinitperiod},
-           given={H.},
-           giveni={H\bibinitperiod}}}%
+           given={Hendrik\bibnamedelima Jan},
+           giveni={H\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
         {{hash=9a66d81c33c57e629b220a379cbff818}{%
            family={Samwel},
            familyi={S\bibinitperiod},
            given={Bart},
            giveni={B\bibinitperiod}}}%
       }
-      \strng{namehash}{801335828794055991729939a0f2d515}
-      \strng{fullhash}{801335828794055991729939a0f2d515}
-      \strng{fullhashraw}{801335828794055991729939a0f2d515}
-      \strng{bibnamehash}{801335828794055991729939a0f2d515}
-      \strng{authorbibnamehash}{801335828794055991729939a0f2d515}
-      \strng{authornamehash}{801335828794055991729939a0f2d515}
-      \strng{authorfullhash}{801335828794055991729939a0f2d515}
-      \strng{authorfullhashraw}{801335828794055991729939a0f2d515}
+      \strng{namehash}{a3d4618a66af7d0071126ab4161c72f3}
+      \strng{fullhash}{a3d4618a66af7d0071126ab4161c72f3}
+      \strng{fullhashraw}{a3d4618a66af7d0071126ab4161c72f3}
+      \strng{bibnamehash}{a3d4618a66af7d0071126ab4161c72f3}
+      \strng{authorbibnamehash}{a3d4618a66af7d0071126ab4161c72f3}
+      \strng{authornamehash}{a3d4618a66af7d0071126ab4161c72f3}
+      \strng{authorfullhash}{a3d4618a66af7d0071126ab4161c72f3}
+      \strng{authorfullhashraw}{a3d4618a66af7d0071126ab4161c72f3}
       \field{labelalpha}{EHS07}
       \field{sortinit}{E}
       \field{sortinithash}{8da8a182d344d5b9047633dfc0cc9131}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{journaltitle}{ACM SIGACT-SIGMOD-SIGART Symposium on Principles of Database Systems}
+      \field{booktitle}{PODS 2007}
       \field{title}{XML transformation by tree-walking transducers with invisible pebbles}
       \field{year}{2007}
     \endentry
-    \entry{engelfriet2002}{article}{}{}
+    \entry{engelfriet2002}{inproceedings}{}{}
       \name{author}{2}{}{%
-        {{hash=f241db2458e9bad65442491391648e58}{%
+        {{hash=017b40b8d219b85da1d78cc417a7342a}{%
            family={Engelfriet},
            familyi={E\bibinitperiod},
-           given={J.},
+           given={Joost},
            giveni={J\bibinitperiod}}}%
-        {{hash=97a74c1e86b0d1ebf3347ab0c1d8de07}{%
+        {{hash=d226901dc57276d0e4de6a04721b0ce9}{%
            family={Maneth},
            familyi={M\bibinitperiod},
-           given={S.},
+           given={Sebastian},
            giveni={S\bibinitperiod}}}%
       }
-      \strng{namehash}{c27d6a1b7ca68e069faa85ee1b4e00c5}
-      \strng{fullhash}{c27d6a1b7ca68e069faa85ee1b4e00c5}
-      \strng{fullhashraw}{c27d6a1b7ca68e069faa85ee1b4e00c5}
-      \strng{bibnamehash}{c27d6a1b7ca68e069faa85ee1b4e00c5}
-      \strng{authorbibnamehash}{c27d6a1b7ca68e069faa85ee1b4e00c5}
-      \strng{authornamehash}{c27d6a1b7ca68e069faa85ee1b4e00c5}
-      \strng{authorfullhash}{c27d6a1b7ca68e069faa85ee1b4e00c5}
-      \strng{authorfullhashraw}{c27d6a1b7ca68e069faa85ee1b4e00c5}
+      \strng{namehash}{f796210ec7404c9230f3c4e169505af6}
+      \strng{fullhash}{f796210ec7404c9230f3c4e169505af6}
+      \strng{fullhashraw}{f796210ec7404c9230f3c4e169505af6}
+      \strng{bibnamehash}{f796210ec7404c9230f3c4e169505af6}
+      \strng{authorbibnamehash}{f796210ec7404c9230f3c4e169505af6}
+      \strng{authornamehash}{f796210ec7404c9230f3c4e169505af6}
+      \strng{authorfullhash}{f796210ec7404c9230f3c4e169505af6}
+      \strng{authorfullhashraw}{f796210ec7404c9230f3c4e169505af6}
       \field{labelalpha}{EM02}
       \field{sortinit}{E}
       \field{sortinithash}{8da8a182d344d5b9047633dfc0cc9131}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{journaltitle}{International Symposium on Mathematical Foundations of Computer Science}
+      \field{booktitle}{Mathematical Foundations of Computer Science 2002}
       \field{title}{Two-Way Finite State Transducers with Nested Pebbles}
       \field{year}{2002}
+      \verb{urlraw}
+      \verb https://dblp.org/rec/conf/mfcs/EngelfrietM02
+      \endverb
+      \verb{url}
+      \verb https://dblp.org/rec/conf/mfcs/EngelfrietM02
+      \endverb
+    \endentry
+    \entry{elgotMezei1965}{article}{}{}
+      \name{author}{2}{}{%
+        {{hash=6a6000b3cdcf6b6664024322708cd337}{%
+           family={Elgot},
+           familyi={E\bibinitperiod},
+           given={C.\bibnamedelimi C.},
+           giveni={C\bibinitperiod\bibinitdelim C\bibinitperiod}}}%
+        {{hash=de3a59173e67e9bf3cbc37b2d5413748}{%
+           family={Mezei},
+           familyi={M\bibinitperiod},
+           given={J.\bibnamedelimi E.},
+           giveni={J\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
+      }
+      \strng{namehash}{e417e43c21297b0ca305d090ceec0543}
+      \strng{fullhash}{e417e43c21297b0ca305d090ceec0543}
+      \strng{fullhashraw}{e417e43c21297b0ca305d090ceec0543}
+      \strng{bibnamehash}{e417e43c21297b0ca305d090ceec0543}
+      \strng{authorbibnamehash}{e417e43c21297b0ca305d090ceec0543}
+      \strng{authornamehash}{e417e43c21297b0ca305d090ceec0543}
+      \strng{authorfullhash}{e417e43c21297b0ca305d090ceec0543}
+      \strng{authorfullhashraw}{e417e43c21297b0ca305d090ceec0543}
+      \field{labelalpha}{EM65}
+      \field{sortinit}{E}
+      \field{sortinithash}{8da8a182d344d5b9047633dfc0cc9131}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{IBM Journal of Research and Development}
+      \field{month}{1}
+      \field{number}{1}
+      \field{title}{On relations defined by generalized finite automata}
+      \field{volume}{9}
+      \field{year}{1965}
+      \field{pages}{47\bibrangedash 68}
+      \range{pages}{22}
+      \verb{doi}
+      \verb 10.1147/rd.91.0047
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.1147/rd.91.0047
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1147/rd.91.0047
+      \endverb
     \endentry
     \entry{hopcroftUllman1967}{inproceedings}{}{}
       \name{author}{2}{}{%
         {{hash=140e0fd7181081abf57c5e4adc4ff21a}{%
-           family={{Hopcroft}},
+           family={Hopcroft},
            familyi={H\bibinitperiod},
            given={J.\bibnamedelimi E.},
            giveni={J\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
         {{hash=c2a6f3f5770dc36d6e168640a2cd5991}{%
-           family={{Ullman}},
+           family={Ullman},
            familyi={U\bibinitperiod},
            given={J.\bibnamedelimi D.},
            giveni={J\bibinitperiod\bibinitdelim D\bibinitperiod}}}%
@@ -236,37 +334,80 @@
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{booktitle}{8th Annual Symposium on Switching and Automata Theory (SWAT 1967)}
-      \field{month}{10}
       \field{title}{An approach to a unified theory of automata}
       \field{year}{1967}
       \field{pages}{140\bibrangedash 147}
       \range{pages}{8}
+      \verb{urlraw}
+      \verb https://dblp.org/rec/conf/swat/HopcroftU67
+      \endverb
+      \verb{url}
+      \verb https://dblp.org/rec/conf/swat/HopcroftU67
+      \endverb
     \endentry
     \entry{ibarra1971}{article}{}{}
       \name{author}{1}{}{%
-        {{hash=b466bb9befd20ffd90d333dd40efb2b7}{%
+        {{hash=bb2f923d64ef2edc0ac6f38b26a2f4c0}{%
            family={Ibarra},
            familyi={I\bibinitperiod},
-           given={O.},
-           giveni={O\bibinitperiod}}}%
+           given={Oscar\bibnamedelima H.},
+           giveni={O\bibinitperiod\bibinitdelim H\bibinitperiod}}}%
       }
-      \strng{namehash}{b466bb9befd20ffd90d333dd40efb2b7}
-      \strng{fullhash}{b466bb9befd20ffd90d333dd40efb2b7}
-      \strng{fullhashraw}{b466bb9befd20ffd90d333dd40efb2b7}
-      \strng{bibnamehash}{b466bb9befd20ffd90d333dd40efb2b7}
-      \strng{authorbibnamehash}{b466bb9befd20ffd90d333dd40efb2b7}
-      \strng{authornamehash}{b466bb9befd20ffd90d333dd40efb2b7}
-      \strng{authorfullhash}{b466bb9befd20ffd90d333dd40efb2b7}
-      \strng{authorfullhashraw}{b466bb9befd20ffd90d333dd40efb2b7}
+      \strng{namehash}{bb2f923d64ef2edc0ac6f38b26a2f4c0}
+      \strng{fullhash}{bb2f923d64ef2edc0ac6f38b26a2f4c0}
+      \strng{fullhashraw}{bb2f923d64ef2edc0ac6f38b26a2f4c0}
+      \strng{bibnamehash}{bb2f923d64ef2edc0ac6f38b26a2f4c0}
+      \strng{authorbibnamehash}{bb2f923d64ef2edc0ac6f38b26a2f4c0}
+      \strng{authornamehash}{bb2f923d64ef2edc0ac6f38b26a2f4c0}
+      \strng{authorfullhash}{bb2f923d64ef2edc0ac6f38b26a2f4c0}
+      \strng{authorfullhashraw}{bb2f923d64ef2edc0ac6f38b26a2f4c0}
       \field{labelalpha}{Iba71}
       \field{sortinit}{I}
       \field{sortinithash}{8d291c51ee89b6cd86bf5379f0b151d8}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{abstract}{Several classes of multihead and auxiliary stack automata are introduced and are used to characterize some tape and time complexity classes of Turing machines.}
-      \field{journaltitle}{Journal of computer and system sciences (Print)}
+      \field{journaltitle}{Journal of Computer and System Sciences}
       \field{title}{Characterizations of Some Tape and Time Complexity Classes of Turing Machines in Terms of Multihead and Auxiliary Stack Automata}
       \field{year}{1971}
+    \endentry
+    \entry{kleene1951}{report}{}{}
+      \name{author}{1}{}{%
+        {{hash=a8ca9bca77a4b96b2595d31020d200bc}{%
+           family={Kleene},
+           familyi={K\bibinitperiod},
+           given={S.\bibnamedelimi C.},
+           giveni={S\bibinitperiod\bibinitdelim C\bibinitperiod}}}%
+      }
+      \list{institution}{1}{%
+        {The RAND Corporation}%
+      }
+      \list{location}{1}{%
+        {Santa Monica, CA}%
+      }
+      \strng{namehash}{a8ca9bca77a4b96b2595d31020d200bc}
+      \strng{fullhash}{a8ca9bca77a4b96b2595d31020d200bc}
+      \strng{fullhashraw}{a8ca9bca77a4b96b2595d31020d200bc}
+      \strng{bibnamehash}{a8ca9bca77a4b96b2595d31020d200bc}
+      \strng{authorbibnamehash}{a8ca9bca77a4b96b2595d31020d200bc}
+      \strng{authornamehash}{a8ca9bca77a4b96b2595d31020d200bc}
+      \strng{authorfullhash}{a8ca9bca77a4b96b2595d31020d200bc}
+      \strng{authorfullhashraw}{a8ca9bca77a4b96b2595d31020d200bc}
+      \field{labelalpha}{Kle51}
+      \field{sortinit}{K}
+      \field{sortinithash}{c02bf6bff1c488450c352b40f5d853ab}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{Published in revised form in \emph{Automata Studies}, edited by C. E. Shannon and J. McCarthy, Annals of Mathematics Studies 34, Princeton University Press, 1956, pp. 3--41}
+      \field{number}{RM-704}
+      \field{title}{Representation of Events in Nerve Nets and Finite Automata}
+      \field{type}{Research Memorandum}
+      \field{year}{1951}
+      \verb{urlraw}
+      \verb https://www.rand.org/pubs/research_memoranda/RM704.html
+      \endverb
+      \verb{url}
+      \verb https://www.rand.org/pubs/research_memoranda/RM704.html
+      \endverb
     \endentry
     \entry{lewenstein1996}{article}{}{}
       \name{author}{2}{}{%
@@ -275,20 +416,20 @@
            familyi={L\bibinitperiod},
            given={Noa},
            giveni={N\bibinitperiod}}}%
-        {{hash=3a0c6cd1a068443f5a8e146af40d5c3f}{%
+        {{hash=46196213284d2a2c17bf628fdb36db60}{%
            family={Harel},
            familyi={H\bibinitperiod},
-           given={D.},
+           given={David},
            giveni={D\bibinitperiod}}}%
       }
-      \strng{namehash}{57e1c356e1198ce2c40b16ec4d29ed76}
-      \strng{fullhash}{57e1c356e1198ce2c40b16ec4d29ed76}
-      \strng{fullhashraw}{57e1c356e1198ce2c40b16ec4d29ed76}
-      \strng{bibnamehash}{57e1c356e1198ce2c40b16ec4d29ed76}
-      \strng{authorbibnamehash}{57e1c356e1198ce2c40b16ec4d29ed76}
-      \strng{authornamehash}{57e1c356e1198ce2c40b16ec4d29ed76}
-      \strng{authorfullhash}{57e1c356e1198ce2c40b16ec4d29ed76}
-      \strng{authorfullhashraw}{57e1c356e1198ce2c40b16ec4d29ed76}
+      \strng{namehash}{82168021e30ebe1ce3eb141532372d1b}
+      \strng{fullhash}{82168021e30ebe1ce3eb141532372d1b}
+      \strng{fullhashraw}{82168021e30ebe1ce3eb141532372d1b}
+      \strng{bibnamehash}{82168021e30ebe1ce3eb141532372d1b}
+      \strng{authorbibnamehash}{82168021e30ebe1ce3eb141532372d1b}
+      \strng{authornamehash}{82168021e30ebe1ce3eb141532372d1b}
+      \strng{authorfullhash}{82168021e30ebe1ce3eb141532372d1b}
+      \strng{authorfullhashraw}{82168021e30ebe1ce3eb141532372d1b}
       \field{labelalpha}{LH96}
       \field{sortinit}{L}
       \field{sortinithash}{7c47d417cecb1f4bd38d1825c427a61a}
@@ -297,6 +438,12 @@
       \field{journaltitle}{Theoretical Computer Science}
       \field{title}{Complexity Results for Two-Way and Multi-Pebble Automata and their Logics}
       \field{year}{1996}
+      \verb{urlraw}
+      \verb https://dblp.org/rec/journals/tcs/LewensteinH96
+      \endverb
+      \verb{url}
+      \verb https://dblp.org/rec/journals/tcs/LewensteinH96
+      \endverb
     \endentry
     \entry{200problems}{book}{}{}
       \name{author}{3}{}{%
@@ -347,28 +494,66 @@
            familyi={S\bibinitperiod},
            given={Dan},
            giveni={D\bibinitperiod}}}%
-        {{hash=36d774e495d2544227b0bbc3f1d0914a}{%
+        {{hash=4ab1591fa0309ed9fd313fde6c441ae0}{%
            family={Vianu},
            familyi={V\bibinitperiod},
-           given={V.},
+           given={Victor},
            giveni={V\bibinitperiod}}}%
       }
-      \strng{namehash}{fb4910560302fb4b194d8b0406159153}
-      \strng{fullhash}{fb4910560302fb4b194d8b0406159153}
-      \strng{fullhashraw}{fb4910560302fb4b194d8b0406159153}
-      \strng{bibnamehash}{fb4910560302fb4b194d8b0406159153}
-      \strng{authorbibnamehash}{fb4910560302fb4b194d8b0406159153}
-      \strng{authornamehash}{fb4910560302fb4b194d8b0406159153}
-      \strng{authorfullhash}{fb4910560302fb4b194d8b0406159153}
-      \strng{authorfullhashraw}{fb4910560302fb4b194d8b0406159153}
+      \strng{namehash}{1bb8ce3d6d1b29249f3adebc3d88a1e1}
+      \strng{fullhash}{1bb8ce3d6d1b29249f3adebc3d88a1e1}
+      \strng{fullhashraw}{1bb8ce3d6d1b29249f3adebc3d88a1e1}
+      \strng{bibnamehash}{1bb8ce3d6d1b29249f3adebc3d88a1e1}
+      \strng{authorbibnamehash}{1bb8ce3d6d1b29249f3adebc3d88a1e1}
+      \strng{authornamehash}{1bb8ce3d6d1b29249f3adebc3d88a1e1}
+      \strng{authorfullhash}{1bb8ce3d6d1b29249f3adebc3d88a1e1}
+      \strng{authorfullhashraw}{1bb8ce3d6d1b29249f3adebc3d88a1e1}
       \field{labelalpha}{MSV03}
       \field{sortinit}{M}
       \field{sortinithash}{4625c616857f13d17ce56f7d4f97d451}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{journaltitle}{Journal of computer and system sciences (Print)}
+      \field{journaltitle}{Journal of Computer and System Sciences}
       \field{title}{Typechecking for XML transformers}
       \field{year}{2003}
+      \verb{urlraw}
+      \verb https://dblp.org/rec/journals/jcss/MiloSV03
+      \endverb
+      \verb{url}
+      \verb https://dblp.org/rec/journals/jcss/MiloSV03
+      \endverb
+    \endentry
+    \entry{pin2025}{misc}{}{}
+      \name{author}{1}{}{%
+        {{hash=a82e7dbce3953e8d8e09f1cdd82ebc26}{%
+           family={Pin},
+           familyi={P\bibinitperiod},
+           given={Jean-Éric},
+           giveni={J\bibinithyphendelim É\bibinitperiod}}}%
+      }
+      \strng{namehash}{a82e7dbce3953e8d8e09f1cdd82ebc26}
+      \strng{fullhash}{a82e7dbce3953e8d8e09f1cdd82ebc26}
+      \strng{fullhashraw}{a82e7dbce3953e8d8e09f1cdd82ebc26}
+      \strng{bibnamehash}{a82e7dbce3953e8d8e09f1cdd82ebc26}
+      \strng{authorbibnamehash}{a82e7dbce3953e8d8e09f1cdd82ebc26}
+      \strng{authornamehash}{a82e7dbce3953e8d8e09f1cdd82ebc26}
+      \strng{authorfullhash}{a82e7dbce3953e8d8e09f1cdd82ebc26}
+      \strng{authorfullhashraw}{a82e7dbce3953e8d8e09f1cdd82ebc26}
+      \field{labelalpha}{Pin25}
+      \field{sortinit}{P}
+      \field{sortinithash}{ff3bcf24f47321b42cb156c2cc8a8422}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{MPRI lecture notes}
+      \field{note}{Version of 24 March 2025; profinite methods are Chapter~X, \emph{Profinite words}, pp.~175--188. Living document, so the version date matters when citing}
+      \field{title}{Mathematical Foundations of Automata Theory}
+      \field{year}{2025}
+      \verb{urlraw}
+      \verb https://www.irif.fr/~jep/PDF/MPRI/MPRI.pdf
+      \endverb
+      \verb{url}
+      \verb https://www.irif.fr/~jep/PDF/MPRI/MPRI.pdf
+      \endverb
     \endentry
     \entry{RabinScott59}{article}{}{}
       \name{author}{2}{}{%
@@ -396,17 +581,105 @@
       \field{sortinithash}{5e1c39a9d46ffb6bebd8f801023a9486}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{journaltitle}{IBM J. Res. Develop.}
+      \field{journaltitle}{IBM Journal of Research and Development}
+      \field{number}{2}
       \field{title}{Finite automata and their decision problems}
       \field{volume}{3}
       \field{year}{1959}
       \field{pages}{114\bibrangedash 125}
       \range{pages}{12}
+      \verb{doi}
+      \verb 10.1147/rd.32.0114
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.1147/rd.32.0114
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1147/rd.32.0114
+      \endverb
+    \endentry
+    \entry{schutzenberger1956}{article}{}{}
+      \name{author}{1}{}{%
+        {{hash=9a93f0fb7ed13a053b2721eb918fc363}{%
+           family={Schützenberger},
+           familyi={S\bibinitperiod},
+           given={M.\bibnamedelimi P.},
+           giveni={M\bibinitperiod\bibinitdelim P\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Secrétariat mathématique}%
+      }
+      \strng{namehash}{9a93f0fb7ed13a053b2721eb918fc363}
+      \strng{fullhash}{9a93f0fb7ed13a053b2721eb918fc363}
+      \strng{fullhashraw}{9a93f0fb7ed13a053b2721eb918fc363}
+      \strng{bibnamehash}{9a93f0fb7ed13a053b2721eb918fc363}
+      \strng{authorbibnamehash}{9a93f0fb7ed13a053b2721eb918fc363}
+      \strng{authornamehash}{9a93f0fb7ed13a053b2721eb918fc363}
+      \strng{authorfullhash}{9a93f0fb7ed13a053b2721eb918fc363}
+      \strng{authorfullhashraw}{9a93f0fb7ed13a053b2721eb918fc363}
+      \field{extraname}{1}
+      \field{labelalpha}{Sch56}
+      \field{sortinit}{S}
+      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Séminaire Dubreil. Algèbre et théorie des nombres}
+      \field{note}{Séminaire 1955--1956, exposé no.~15}
+      \field{title}{Une théorie algébrique du codage}
+      \field{volume}{9}
+      \field{year}{1956}
+      \field{pages}{1\bibrangedash 24}
+      \range{pages}{24}
+      \verb{urlraw}
+      \verb https://www.numdam.org/item/SD_1955-1956__9__A10_0/
+      \endverb
+      \verb{url}
+      \verb https://www.numdam.org/item/SD_1955-1956__9__A10_0/
+      \endverb
+    \endentry
+    \entry{schutzenberger1961}{article}{}{}
+      \name{author}{1}{}{%
+        {{hash=9a93f0fb7ed13a053b2721eb918fc363}{%
+           family={Schützenberger},
+           familyi={S\bibinitperiod},
+           given={M.\bibnamedelimi P.},
+           giveni={M\bibinitperiod\bibinitdelim P\bibinitperiod}}}%
+      }
+      \strng{namehash}{9a93f0fb7ed13a053b2721eb918fc363}
+      \strng{fullhash}{9a93f0fb7ed13a053b2721eb918fc363}
+      \strng{fullhashraw}{9a93f0fb7ed13a053b2721eb918fc363}
+      \strng{bibnamehash}{9a93f0fb7ed13a053b2721eb918fc363}
+      \strng{authorbibnamehash}{9a93f0fb7ed13a053b2721eb918fc363}
+      \strng{authornamehash}{9a93f0fb7ed13a053b2721eb918fc363}
+      \strng{authorfullhash}{9a93f0fb7ed13a053b2721eb918fc363}
+      \strng{authorfullhashraw}{9a93f0fb7ed13a053b2721eb918fc363}
+      \field{extraname}{2}
+      \field{labelalpha}{Sch61}
+      \field{sortinit}{S}
+      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Information and Control}
+      \field{number}{2-3}
+      \field{title}{A remark on finite transducers}
+      \field{volume}{4}
+      \field{year}{1961}
+      \field{pages}{185\bibrangedash 196}
+      \range{pages}{12}
+      \verb{doi}
+      \verb 10.1016/S0019-9958(61)80006-5
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.1016/S0019-9958(61)80006-5
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1016/S0019-9958(61)80006-5
+      \endverb
     \endentry
     \entry{shepherdson1959reduction}{article}{}{}
       \name{author}{1}{}{%
         {{hash=546780c8f08c1d68258a74bd9d991732}{%
-           family={{Shepherdson}},
+           family={Shepherdson},
            familyi={S\bibinitperiod},
            given={J.\bibnamedelimi C.},
            giveni={J\bibinitperiod\bibinitdelim C\bibinitperiod}}}%
@@ -432,6 +705,15 @@
       \field{year}{1959}
       \field{pages}{198\bibrangedash 200}
       \range{pages}{3}
+      \verb{doi}
+      \verb 10.1147/rd.32.0198
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.1147/rd.32.0198
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1147/rd.32.0198
+      \endverb
     \endentry
   \enddatalist
 \endrefsection

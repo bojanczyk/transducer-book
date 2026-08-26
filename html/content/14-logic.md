@@ -9,7 +9,7 @@ source = "logic.tex"
 \setcounter{section}{3}
 \setcounter{ourexamplecounter}{23}
 \renewcommand{\exer}[2]{}
-% source stamp logic.tex:0a038f06
+% source stamp logic.tex:703f64d4
 \input{../../../logic.tex}
 {{< /latex >}}
 
@@ -17,7 +17,7 @@ source = "logic.tex"
 <div class="exercises">
 <div class="exercise" id="exercise-1">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-\setcounter{mypart}{3}\setcounter{section}{4}\setcounter{exercise}{0}
+\setcounter{mypart}{3}\setcounter{section}{4}\setcounter{theorem}{16}\setcounter{exercise}{0}
 \begin{exercise}
 Show that a function $f : A^* \to B^*$ is computed by a Mealy machine if and only if it is definable by an \mso relabelling with the following additional restrictions imposed on Definition~\ref{def:mso-relabeling}:
 \begin{enumerate}
@@ -27,6 +27,21 @@ Show that a function $f : A^* \to B^*$ is computed by a Mealy machine if and onl
 \end{enumerate}
 \end{exercise}
 {{< /latex >}}
+<details class="solution">
+<summary>Show solution</summary>
+<div class="solution-body">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{3}\setcounter{section}{4}\setcounter{theorem}{16}
+\noindent\textbf{Solution.}\quad Consider first a function computed by a Mealy machine. As the set of formulas we take one formula $\varphi_t(x)$ for each transition $t$, which says that transition $t$ is used in position $x$; this can be written in \mso as in Claim~\ref{claim:transition-formula}. Since the machine is deterministic, exactly one of these formulas is true in each position, as required in the definition of an \mso relabelling. The three additional restrictions are satisfied: a Mealy machine maps the empty string to the empty string; the output map, which sends $\varphi_t$ to the output letter of the transition $t$, produces one-letter strings; and the formulas depend only on the past, because the transition used in a position is determined by the prefix up to and including this position.
+
+    Consider now an \mso relabelling which satisfies the three restrictions. Because of the third restriction, each formula $\varphi \in \Phi$ is determined by the language
+    \begin{align*}
+    L_\varphi \quad \eqdef \quad \setbuild{w \in A^*}{$w$ is nonempty and $w \models \varphi(x)$ for the last position $x$ of $w$},
+    \end{align*}
+    in the sense that $\varphi$ is true in a position of an input string if and only if the prefix up to and including this position belongs to $L_\varphi$. This language is definable in \mso, and hence it is regular by Theorem~\ref{thm:mso-logic-languages}. The Mealy machine for the relabelling is the product of deterministic automata for the languages $L_\varphi$, with $\varphi$ ranging over $\Phi$. The state of this product after reading a prefix of the input string tells us which formulas are true in the last position of this prefix; by the uniqueness requirement in the definition of an \mso relabelling, exactly one formula is true, and by the second restriction, it is mapped to a single output letter. Therefore, each transition of the product can be labelled by the output letter that corresponds to its target state, and the resulting Mealy machine computes the same function as the relabelling; for the empty input string, both produce the empty string thanks to the first restriction.
+{{< /latex >}}
+</div>
+</details>
 </div>
 </div>
 <!-- end exercises -->

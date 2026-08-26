@@ -9,7 +9,7 @@ source = "rational-functions.tex"
 \setcounter{section}{1}
 \setcounter{ourexamplecounter}{8}
 \renewcommand{\exer}[2]{}
-% source stamp rational-functions.tex:a69e94de
+% source stamp rational-functions.tex:d5666852
 \input{../../../rational-functions.tex}
 {{< /latex >}}
 
@@ -17,23 +17,55 @@ source = "rational-functions.tex"
 <div class="exercises">
 <div class="exercise" id="exercise-1">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{exercise}{0}
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{0}
 \begin{exercise}
 Show that rational relations are not closed under intersection.
 \end{exercise}
 {{< /latex >}}
+<details class="solution">
+<summary>Show solution</summary>
+<div class="solution-body">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}
+\noindent\textbf{Solution.}\quad Consider the two relations
+    \begin{align*}
+    R = \setbuild{(a^n, b^n c^m)}{$n,m \geq 0$}
+    \qquad \text{and} \qquad
+    S = \setbuild{(a^n, b^m c^n)}{$n,m \geq 0$}.
+    \end{align*}
+    Both are rational: the automaton for $R$ first outputs one letter $b$ for each input letter, and then, without consuming any input, outputs any number of letters $c$; the automaton for $S$ does the same with the two phases swapped. Their intersection is
+    \begin{align*}
+    \setbuild{(a^n,b^nc^n)}{$n \geq 0$},
+    \end{align*}
+    which is not rational. Indeed, the image of the regular language $a^*$ under this relation is $\setbuild{b^nc^n}{$n \geq 0$}$, which is not regular, while rational relations map regular languages to regular languages, as observed after Theorem~\ref{thm:continuity-rational-relations}.
+{{< /latex >}}
+</div>
+</details>
 </div>
 <div class="exercise" id="exercise-2">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{exercise}{1}
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{1}
 \begin{exercise}
 Show that it is undecidable if two rational relations have nonempty intersection
 \end{exercise}
 {{< /latex >}}
+<details class="solution">
+<summary>Show solution</summary>
+<div class="solution-body">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}
+\noindent\textbf{Solution.}\quad We reduce from the Post Correspondence Problem, as in the proof of Theorem~\ref{thm:undecidable-equivalence-rational-relations}, except that this time we do not need to complement the homomorphisms. Consider two homomorphisms $g,h : A^* \to B^*$, and view each of them as a relation, e.g.
+    \begin{align*}
+    \setbuild{(w,g(w))}{$w \in A^*$ is nonempty}.
+    \end{align*}
+    This relation is rational: the automaton has an initial and a final state, and for each input letter $a$ it has a transition with input $a$ and output $g(a)$, which goes from the initial to the final state, and also from the final state to itself. (The two states are used only to rule out the empty input string.) The intersection of the two relations obtained this way is nonempty if and only if the two homomorphisms agree on some nonempty input string, which is exactly the Post Correspondence Problem. Since the two relations used in the reduction are functions, the problem remains undecidable for rational functions.
+{{< /latex >}}
+</div>
+</details>
 </div>
 <div class="exercise" id="exercise-3">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{exercise}{2}
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{2}
 \begin{exercise}
 Show that there is a function
 \begin{align*}
@@ -46,10 +78,25 @@ g : B^* \to \myunderbrace{1^*}{words over a one-letter alphabet},
 the composition $f \cdot g$ is rational.
 \end{exercise}
 {{< /latex >}}
+<details class="solution">
+<summary>Show solution</summary>
+<div class="solution-body">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}
+\noindent\textbf{Solution.}\quad Take $f$ to be the string reversal function, which is not rational by Example~\ref{ex:string-reversal-not-rational}. Let
+    \begin{align*}
+    g : B^* \to 1^*
+    \end{align*}
+    be a rational function, and consider a bimachine that computes it, which exists by Theorem~\ref{thm:bimachines}. The output of a bimachine is the concatenation, from left to right, of the pieces that are produced in the gaps of the input string. Over a one-letter alphabet, concatenation is commutative, and therefore the output depends only on which pieces are produced, and not on the order in which they are produced.
+
+    This is what makes reversal harmless. Reversing the input string is a bijection on gaps, which swaps the prefix with the suffix. Therefore, the composition of reversal with $g$ is computed by the bimachine that is obtained from the one for $g$ by swapping the prefix and suffix automata, and swapping the two arguments of the output function. This new bimachine produces the same pieces as the original one, but in the opposite order, which is invisible over a one-letter alphabet.
+{{< /latex >}}
+</div>
+</details>
 </div>
 <div class="exercise" id="exercise-4">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{exercise}{3}
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{3}
 \begin{exercise}
 Consider two rational functions $f$ and $g$, possibly with different input and output alphabets. We say that $f$ factors through $g$ if one can decompose $f$ as 
 \begin{align*}
@@ -61,52 +108,57 @@ for some rational functions $g_1$ and $g_2$. Show an algorithm that decides this
 </div>
 <div class="exercise" id="exercise-5">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{exercise}{4}
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{4}
 \begin{exercise}
 A set $I$ of rational functions is called an ideal if
 \begin{align*}
 I  = \text{Rational} \cdot I \cdot \text{Rational},
 \end{align*}
-i.e.~functions that factor through the ideal must stay in the ideal. Show that there are finitely many ideals.
+i.e.~functions that factor through the ideal must stay in the ideal. Show that there are countably many ideals.
 \end{exercise}
 {{< /latex >}}
 </div>
 <div class="exercise" id="exercise-6">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{exercise}{5}
-\begin{exercise}
-Consider a rational relation $R \subseteq A^* \times B^*$, such that for every input string there is at least one output. Show that there is a rational function $f : A^* \to B^*$ such that $w R f(w)$ holds for every input string.
-\end{exercise}
-{{< /latex >}}
-</div>
-<div class="exercise" id="exercise-7">
-{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{exercise}{6}
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{5}
 \begin{exercise}
 Show that if  a rational function $f : A^* \to B^*$ is surjective, then it has a one-sided inverse, i.e.~a rational function $g : B^* \to A^*$ such that $g \cdot f$ is the identity on $B^*$.
-\end{exercise}
-{{< /latex >}}
-</div>
-<div class="exercise" id="exercise-8">
-{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{exercise}{7}
-\begin{exercise}
-Show that the following problem is undecidable: given a rational function $f$, we want to know if it is injective, i.e.~different input strings are mapped to different output strings.
 \end{exercise}
 {{< /latex >}}
 <details class="solution">
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-\setcounter{mypart}{2}\setcounter{section}{2}
-\noindent\textbf{Solution.}\quad A reduction from the Post Correspondence Problem.
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}
+\noindent\textbf{Solution.}\quad Rational relations are symmetric with respect to input and output: swapping the input and output labels on the transitions of a nondeterministic automaton with output gives an automaton for the inverse relation. Therefore, the inverse relation
+    \begin{align*}
+    \setbuild{(v,w) \in B^* \times A^*}{$f(w) = v$}
+    \end{align*}
+    is rational, and it is total, because $f$ is surjective. By the previous exercise, this relation contains a rational function $g : B^* \to A^*$. By the definition of the inverse relation, we have $f(g(v)) = v$ for every $v \in B^*$, which is the same as saying that $g \cdot f$ is the identity on $B^*$.
 {{< /latex >}}
 </div>
 </details>
 </div>
-<div class="exercise" id="exercise-9">
+<div class="exercise" id="exercise-7">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{exercise}{8}
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{6}
+\begin{exercise}
+Show that the following problem is decidable: given a rational function $f$, we want to know if it is injective, i.e.~different input strings are mapped to different output strings.
+\end{exercise}
+{{< /latex >}}
+<details class="solution">
+<summary>Show solution</summary>
+<div class="solution-body">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}
+\noindent\textbf{Solution.}\quad Consider the inverse relation of $f$, which is rational and total. By the previous exercise, it contains a rational function $g$. The function $f$ is injective if and only if $g$ is also a left-sided inverse of $f$, i.e.~if and only if $g \cdot f$ is the identity on $A^*$. By Theorem~\ref{thm:equivalence-rational-functions}, this can be decided.
+{{< /latex >}}
+</div>
+</details>
+</div>
+<div class="exercise" id="exercise-8">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{7}
 \begin{exercise}
 Show that the following problem is undecidable: given a rational function $f : A^* \to A^*$, we want to know if it generates finitely many functions under composition, i.e.~if the following set is finite:
 \begin{align*}
@@ -118,55 +170,8 @@ Show that the following problem is undecidable: given a rational function $f : A
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-\setcounter{mypart}{2}\setcounter{section}{2}
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}
 \noindent\textbf{Solution.}\quad The rational function can represent the next-step operation in a Turing machine. For such a function, the problem in the exercise is the same as deciding if the Turing machine makes a constant number of steps for every configuration, which is undecidable.
-{{< /latex >}}
-</div>
-</details>
-</div>
-<div class="exercise" id="exercise-10">
-{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{exercise}{9}
-\begin{exercise}
-Show that the following two conditions are equivalent for a rational relation: 
-\begin{enumerate}
-    \item for every input string, all output strings have the same length as the input;
-    \item it is computed by an \nfa with output, in which for every transition, the length of the input and output strings are the same.
-\end{enumerate}
-Hint: for two states $p$ and $q$ in an \nfa with output, consider the set 
-   \begin{align*}
-   \Delta_{pq} = \setbuild{ (|w|-|v|)}{there is a run  $p \xrightarrow{v / w}  q$ }.
-   \end{align*}
-\end{exercise}
-{{< /latex >}}
-<details class="solution">
-<summary>Show solution</summary>
-<div class="solution-body">
-{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-\setcounter{mypart}{2}\setcounter{section}{2}
-\noindent\textbf{Solution.}\quad \issue{In the solution below (currently not printed): the new transition should be $(p,u) \xrightarrow{v/w} (q,u')$ whenever $p \xrightarrow{v/w'} q$ and $u w' = w u'$. The printed condition $uv = w'u'$ concatenates the input $v$ with output strings and never determines $w$. One must also normalise the $\delta_q$ so that they are non-negative, and the sign is wrong in ``the left-hand side is equal to $\delta_{pq}$'': $|u|-|u'| = \delta_p - \delta_q$.}
-   We only prove the non-trivial implication from 1 to 2. Consider an \nfa with output that computes the relation. Consider the set $\Delta_{pq}$ from the hint. 
-   This set cannot contain two different numbers, since otherwise we would get a violation of condition 1. Therefore, this set is just a single number (possibly undefined if there is no run from $p$ to $q$), which we denote by $\delta_{pq}$. We have the following transitivity law
-   \begin{align*}
-   \delta_{pq} = \delta_{pr} + \delta_{rq},
-   \end{align*}
-   which holds whenever the two numbers on the right-hand side are defined.  This implies that for every state $q$ we can assign a number $\delta_q$ such that 
-   \begin{align*}
-   \delta_{pq} = \delta_q - \delta_p.
-   \end{align*}
-   We would like to improve the \nfa with output so that the numbers $\delta_q$ are all zero. For this, we define a new automaton in which the states are pairs $(q, u)$, such that $q$ is a state of the original automaton and $u$ is a string of length $\delta_q$. The general idea is that $u$ is a piece of the output string that was produced before, awaiting some transition.  Transitions are defined by 
-   \begin{align*}
-    (p, u) \xrightarrow {v/w} (q, u')
-   \end{align*}
-   whenever the original automaton had a transition of the form 
-    \begin{align*}
-    p \xrightarrow {v/w'} q
-   \end{align*}
-   such that $u v = w' u'$. This implies that 
-   \begin{align*}
-   |u| - |u'| = |w'| - |v|.
-   \end{align*}
-   The left-hand side is equal to $\delta_{pq}$ because of the lengths of the strings $u$ and $u'$, and the right-hand side is equal to $|w|-|v|+ \delta_{pq}$, and thus $|w|=|v|$, as desired. Finally, one can check that the new automaton computes the same relation.
 {{< /latex >}}
 </div>
 </details>

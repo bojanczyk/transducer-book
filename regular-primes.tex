@@ -103,7 +103,7 @@ The second condition can also  be checked by an automaton thanks to continuity o
 \end{proof}
 
 In the above proof, we showed that regular functions can be post-composed with weighted automata over the field of rationals, and the proof also extends to any commutative semiring. We conjecture that the converse also holds, thus giving a characterisation in the same spirit as Theorem~\ref{thm:characterisation-rational-functions-weighted-automata}.
-\begin{conjecture}
+\begin{conjecture}\label{conj:regular-via-weighted-automata}
     A string-to-string function $f : A^* \to B^*$ is regular if and only if it is closed under post-composition with weighted automata over all commutative semirings $\semiring$, i.e.
     \begin{align*}
     B^* \xrightarrow g \semiring \text{ is a weighted automaton} \qquad \implies \qquad A^* \xrightarrow{f \cdot g} \semiring \text{ is a weighted automaton}.
@@ -112,7 +112,7 @@ In the above proof, we showed that regular functions can be post-composed with w
 Note that continuity, in the sense of Definition~\ref{def:continuity}, is a special case of the post-composition closure in the above conjecture, when one considers weighted automata over the Boolean semiring. It is also possible that the conjecture holds already for a fixed semiring, such as the field of rationals.
 \exerciseheader 
 
-\exer{In  Definition~\ref{def:regular-functions}, we use map reverse and map duplicate over arbitrary alphabets of the form $A + 1$. Show that the definition remains the same if we only consider $A$ with two letters.   }{
+\exer{\label{exer:two-letter-alphabet-suffices}In  Definition~\ref{def:regular-functions}, we use map reverse and map duplicate over arbitrary alphabets of the form $A + 1$. Show that the definition remains the same if we only consider $A$ with two letters.   }{
     One inclusion is immediate, since a two-letter alphabet is a special case. For the converse inclusion, we show how map reverse and map duplicate for an arbitrary alphabet $A$ can be simulated using their two-letter counterparts, together with rational functions.
 
     Fix an injective encoding of the letters of $A$ as bit strings of a common length

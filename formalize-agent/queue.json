@@ -1,240 +1,97 @@
 [
   {
-    "id": "B-effectivity-conditional",
-    "title": "Part B: relativise the four remaining decidability results to explicit computability hypotheses",
-    "results": [
-      "B.3.3",
-      "B.3.4",
-      "B.3.7",
-      "B.4.2"
-    ],
-    "lean_names": [
-      "weighted_equivalence_decidable",
-      "rationalFun_equivalence_decidable",
-      "weighted_zeroness_decidable",
-      "rationalFun_isMealy_decidable"
-    ],
-    "prompt": "The four results B.3.3, B.3.4, B.3.7 and B.4.2 are the last open statements of Part B, and as `THEOREMS.md` explains they are blocked not on mathematics but on effectivity: Mathlib's `Primrec`/`Computable` API has no arithmetic on the integers or the rationals, so a decision procedure that manipulates rational weights cannot currently be built.\n\nDo not develop that API. Instead, turn each of these four results into a conditional theorem, following exactly the precedent already set in this project by Theorem B.1.6, which is stated as\n\n    theorem rationalRel_equivalence_undecidable (hPCP : ¬ ComputablePred PCP.Solvable) : ...\n\nConcretely:\n\n1. Isolate the missing effectivity as a small number of named hypotheses, stated as explicit `Prop`s with docstrings -- for instance the computability of evaluating a coded weighted automaton over ℚ, and an effective form of the Schützenberger bound whose mathematical content is already proved in `PartB/WeightedZero.lean` (`weighted_zero_of_short`, `weighted_eq_of_short`). Give each hypothesis a name and a docstring saying precisely what it asserts and why it is not currently derivable inside Mathlib. Put them in one place, for instance a new file `PartB/Effective.lean`.\n2. Prove B.3.3, B.3.4, B.3.7 and B.4.2 from those hypotheses, with everything else fully proved. The point of the exercise is that the whole mathematical content -- the bound, the reductions, B.3.4 from B.3.3, the synchronised product needed for prefix preservation in B.4.2 -- is discharged for real, and the only thing taken on assumption is the arithmetic-computability API.\n3. Keep the unconditional statements in the files as commented-out originals, with a note explaining the relationship, so that they can be reinstated when Mathlib gains the missing API.\n4. Use as few and as weak hypotheses as you reasonably can, and make sure they are consistent -- ideally justify informally in the docstring why each one is true, i.e. why the procedure in question really is computable in the ordinary mathematical sense.\n\nRecord in `THEOREMS.md` that these four are proved conditionally, naming the hypothesis each one uses. Section B.3 of the book is in `../weighted.tex` and Section B.4 in `../rational-functions.tex`.",
-    "depends_on": {}
+    "id": "exercises-intro",
+    "title": "Exercises: the introduction",
+    "results": [],
+    "lean_names": [],
+    "prompt": "The exercises of the book are written as `\\exer{statement}{solution}` (see `\\newcommand{\\exer}` in `macros.sty`). The second argument is the author's own solution, and almost every exercise now has one: read it as the intended proof, not as a hint. The printed edition does not typeset solutions, so they have never been checked by anything.\n\nFormalise the exercises of the introduction: `intro.tex`, 11 exercises, all with solutions.\n\n* Put them in a new `RequestProject/Exercises/Intro.lean`, one section per chapter, in the order the book states them.\n* State each exercise faithfully. Some are not mathematical statements at all -- \"give an example of...\", \"is the generated subgroup necessarily finite?\" -- and for those, either formalise the concrete claim the author's solution actually establishes, or leave the exercise out and say which and why in your summary. Do not invent a statement to have something to prove.\n* An exercise is not a numbered result of the main text, so it does not belong in the `THEOREMS.md` tables. Record them in a new `EXERCISES.md`, in the same style: the exercise, the Lean name, the status.\n* Only some exercises carry a `\\label` in the sources. Use it where there is one. Where there is not, give the declaration a descriptive Lean name and record in `EXERCISES.md` which chapter file the exercise is in and its position within that chapter, and list in your closing summary every exercise you could not refer to by label -- the author can then add them.\n* Add the aliases to `RequestProject/Labels.lean` only for the exercises that do have a label, keeping that file's generated format and its `assert_no_sorry` convention.\n\nDo not touch the numbered results of the main text; if formalising an exercise needs a lemma that is really a result of the book, say so rather than restating it.",
+    "depends_on": {},
+    "max_continues": 4
   },
   {
-    "id": "C2-composition",
-    "title": "Part C: composition of two-way transducers (C.2.5) and two-way ⊆ regular (C.2.8)",
-    "results": [
-      "C.2.5",
-      "C.2.8"
-    ],
-    "lean_names": [
-      "twoWay_comp",
-      "twoWay_isRegular"
-    ],
-    "prompt": "Prove Theorem C.2.5 (`Transducers.twoWay_comp`, two-way transducers are closed under composition) and then Corollary C.2.8 (`Transducers.twoWay_isRegular`, every two-way transducer computes a regular function).\n\nThe book's proof of C.2.5 goes through the configuration graph and the crossing-sequence / behaviour analysis of the composed machine; Lemmas C.2.3 and C.2.4 are the internal steps and are deliberately not formalised as numbered results, so you are free to organise the internal argument in whatever way is most convenient in Lean -- what matters is the numbered statement. Shepherdson's Theorem is already available in `PartC/TwoDFA.lean` and was used for C.2.2, and `PartC/TwoWayHom.lean`, `TwoWayBlock.lean`, `TwoWayErase.lean`, `TwoWayPrecomp.lean`, `TwoWayRat.lean` already contain the machinery built for Lemma C.2.6 and Corollary C.2.7 -- reuse it.\n\nSection C.2 of the book is in `../2dfa.tex`. Do C.2.5 first; if budget runs short, finish C.2.5 cleanly and leave C.2.8 for the next task rather than leaving both half done.",
-    "depends_on": {
-      "C.2.2": "twoWay_continuous",
-      "C.2.6": "twoWay_precomp_mealy",
-      "C.2.7": "twoWay_precomp_rational"
-    }
+    "id": "exercises-partA",
+    "title": "Exercises: Part A (Mealy machines)",
+    "results": [],
+    "lean_names": [],
+    "prompt": "The exercises of the book are written as `\\exer{statement}{solution}` (see `\\newcommand{\\exer}` in `macros.sty`). The second argument is the author's own solution, and almost every exercise now has one: read it as the intended proof, not as a hint. The printed edition does not typeset solutions, so they have never been checked by anything.\n\nFormalise the exercises of Part A: `mealy.tex` (7) and `krohn-rhodes.tex` (5), all with solutions.\n\n* Put them in a new `RequestProject/Exercises/PartA.lean`, one section per chapter, in the order the book states them.\n* State each exercise faithfully. Some are not mathematical statements at all -- \"give an example of...\", \"is the generated subgroup necessarily finite?\" -- and for those, either formalise the concrete claim the author's solution actually establishes, or leave the exercise out and say which and why in your summary. Do not invent a statement to have something to prove.\n* An exercise is not a numbered result of the main text, so it does not belong in the `THEOREMS.md` tables. Record them in a new `EXERCISES.md`, in the same style: the exercise, the Lean name, the status.\n* Only some exercises carry a `\\label` in the sources. Use it where there is one. Where there is not, give the declaration a descriptive Lean name and record in `EXERCISES.md` which chapter file the exercise is in and its position within that chapter, and list in your closing summary every exercise you could not refer to by label -- the author can then add them.\n* Add the aliases to `RequestProject/Labels.lean` only for the exercises that do have a label, keeping that file's generated format and its `assert_no_sorry` convention.\n\nDo not touch the numbered results of the main text; if formalising an exercise needs a lemma that is really a result of the book, say so rather than restating it.",
+    "depends_on": {},
+    "max_continues": 4
   },
   {
-    "id": "C2-regular-equivalence",
-    "title": "Part C: two-way = regular (C.2.9), closure properties (C.2.10), disjoint sums (C.2.11)",
-    "results": [
-      "C.2.9",
-      "C.2.10",
-      "C.2.11"
-    ],
-    "lean_names": [
-      "twoWay_iff_regular",
-      "regular_closure_properties",
-      "sum_of_regular"
-    ],
-    "prompt": "Prove Theorem C.2.9 (`Transducers.twoWay_iff_regular`), i.e. that the two-way transducers compute exactly the regular functions, together with Lemma C.2.10 (`Transducers.regular_closure_properties`) and Claim C.2.11 (`Transducers.sum_of_regular`), which the book uses for the direction from regular functions to two-way transducers.\n\nOne inclusion is Corollary C.2.8, which should already be available. For the converse the book simulates each of the prime regular functions by a two-way transducer and then uses closure under composition (C.2.5); C.2.10 and C.2.11 are the closure statements that make this work, so it is usually best to prove them first and then assemble C.2.9. Section C.2 of the book is in `../2dfa.tex`.",
-    "depends_on": {
-      "C.2.5": "twoWay_comp",
-      "C.2.8": "twoWay_isRegular"
-    }
-  },
-  {
-    "id": "C3-sst",
-    "title": "Part C: streaming string transducers compute exactly the regular functions (C.3.2)",
-    "results": [
-      "C.3.2"
-    ],
-    "lean_names": [
-      "sst_iff_regular"
-    ],
-    "prompt": "Prove Theorem C.3.2 (`Transducers.sst_iff_regular`): the streaming string transducers compute exactly the regular functions. The definitions `Transducers.SST` and `Transducers.IsSST` are already in the project.\n\nThis is a large result and it is the only numbered statement in this task, so take the room to build the infrastructure properly: the substitution/register semantics of an sst, the copyless restriction as the book states it, the simulation of an sst by a two-way transducer (or by the regular function primes, whichever route the book takes), and the converse simulation. Theorem C.2.9 should already be available and is usually the most convenient bridge in both directions. Section C.3 of the book is in `../sst.tex`. If you run out of budget, leave the development building and say exactly which direction of the equivalence is still missing.",
-    "depends_on": {
-      "C.2.9": "twoWay_iff_regular"
-    }
-  },
-  {
-    "id": "C4-buchi",
-    "title": "Part C: mso = regular languages (C.4.1), free variables (C.4.2), annotated relabellings (C.4.6)",
-    "results": [
-      "C.4.1",
-      "C.4.2",
-      "C.4.6"
-    ],
-    "lean_names": [
-      "regular_iff_msoDefinable",
-      "mso_annotated_regular",
-      "msoRelabelling_annotation_regular"
-    ],
-    "prompt": "Prove Theorem C.4.1 (`Transducers.regular_iff_msoDefinable`, the Büchi-Elgot-Trakhtenbrot theorem: a language of finite strings is regular iff it is mso definable), Lemma C.4.2 (`Transducers.mso_annotated_regular`, the version with free variables, where valuations are encoded by annotating the letters) and Claim C.4.6 (`Transducers.msoRelabelling_annotation_regular`).\n\nC.4.1 is the foundation of the whole of Section C.4, so build it carefully and in a reusable way: the translation of a formula into an automaton by induction on the syntax (with C.4.2 as the induction-friendly statement over annotated alphabets, since that is what makes the quantifier cases go through), and the converse translation of an automaton into a formula that guesses the run as a second-order valuation. The mso syntax and semantics are already defined in `PartC/MSO.lean`, and `PartC/KTypes.lean` has the k-type machinery from Lemma C.4.15. Mathlib's `Language.IsRegular` and its automata are the intended target on the regular side. Section C.4 of the book is in `../logic.tex`.",
-    "depends_on": {
-      "C.4.15": "tp_properties"
-    }
-  },
-  {
-    "id": "C4-relabelling",
-    "title": "Part C: rational = mso relabelling (C.4.4), formulas via rational functions (C.4.10)",
-    "results": [
-      "C.4.4",
-      "C.4.10"
-    ],
-    "lean_names": [
-      "rational_iff_msoRelabelling",
-      "mso_formulas_via_rational"
-    ],
-    "prompt": "Prove Theorem C.4.4 (`Transducers.rational_iff_msoRelabelling`: the mso relabellings are exactly the rational functions that are length preserving, in the sense the book states) and Lemma C.4.10 (`Transducers.mso_formulas_via_rational`).\n\nClaim C.4.5 is the internal step of C.4.4 and is deliberately not formalised as a numbered result, so organise the internal argument however suits Lean best. Theorem C.4.1 and Lemma C.4.2 should already be available from the previous task, as should the Part B theory of rational functions and bimachines (`PartB/Bimachine.lean`, `PartB/RatBimach.lean`, and Theorem B.2.3). Section C.4 of the book is in `../logic.tex`.",
-    "depends_on": {
-      "C.4.1": "regular_iff_msoDefinable",
-      "C.4.2": "mso_annotated_regular",
-      "B.2.3": "rational_iff_unambiguous_iff_bimachine"
-    }
-  },
-  {
-    "id": "C4-transduction",
-    "title": "Part C: mso transductions = regular functions (C.4.8)",
-    "results": [
-      "C.4.8"
-    ],
-    "lean_names": [
-      "msoTransduction_iff_regular"
-    ],
-    "prompt": "Prove Theorem C.4.8 (`Transducers.msoTransduction_iff_regular`): the mso transductions compute exactly the regular functions. Lemma C.4.9, the normalisation of the type τ inside this proof, is deliberately not formalised as a numbered result, so you may organise it as you like.\n\nThis is the main theorem of Section C.4 and the only numbered result in this task. The intended route uses Theorem C.4.1 / Lemma C.4.2 for the mso side and Theorem C.2.9 or Theorem C.3.2 for the regular side; both should already be available. Section C.4 of the book is in `../logic.tex`.",
-    "depends_on": {
-      "C.4.1": "regular_iff_msoDefinable",
-      "C.4.2": "mso_annotated_regular",
-      "C.2.9": "twoWay_iff_regular",
-      "C.3.2": "sst_iff_regular"
-    }
-  },
-  {
-    "id": "C4-first-order",
-    "title": "Part C: first-order = aperiodic (C.4.11), types and formulas (C.4.13)",
-    "results": [
-      "C.4.11",
-      "C.4.13"
-    ],
-    "lean_names": [
-      "foDefinable_iff_aperiodic_dfa",
-      "tp_eq_iff_fo_equiv"
-    ],
-    "prompt": "Prove Theorem C.4.11 (`Transducers.foDefinable_iff_aperiodic_dfa`: a language is first-order definable iff it is recognised by an aperiodic automaton) and Lemma C.4.13 (`Transducers.tp_eq_iff_fo_equiv`: two strings have the same k-type iff they satisfy the same first-order sentences of quantifier rank k). Claim C.4.14 is an internal step and is deliberately not formalised.\n\nLemma C.4.15 (`Transducers.tp_properties`) is already proved in `PartC/KTypes.lean` and is the main tool: the composition and finiteness properties of k-types. C.4.13 is usually proved first, by an Ehrenfeucht-Fraïssé style induction, and then C.4.11 follows the book's argument in both directions, with the aperiodicity notions from Part A (`Transducers.Aperiodic`, `Transducers.aperiodic_iff_pumping`, `Transducers.aperiodic_iff_transStabilises`) available for reuse. Section C.4 of the book is in `../logic.tex`.",
-    "depends_on": {
-      "C.4.15": "tp_properties"
-    }
-  },
-  {
-    "id": "C4-fo-transductions",
-    "title": "Part C: first-order relabellings (C.4.16); C.4.17 withdrawn by the author",
-    "results": [
-      "C.4.16"
-    ],
-    "lean_names": [
-      "foRelabelling_iff_aperiodicBimachine"
-    ],
-    "prompt": "NOTE: Theorem C.4.17 has been withdrawn from this formalisation by the author -- the book does not prove it. Ignore every mention of it below and do not reinstate it.\n\nProve Theorem C.4.16 (`Transducers.foRelabelling_iff_aperiodicBimachine`: the first-order relabellings are exactly the functions computed by aperiodic bimachines) and Theorem C.4.17 (`Transducers.foTransduction_iff_prime_composition`: the first-order transductions are exactly the compositions of the relevant primes).\n\nThese are the aperiodic counterparts of C.4.4 and C.4.8, and the book's proofs follow those two with aperiodicity added throughout, using C.4.11 and C.4.13 as the first-order analogue of C.4.1; all of those should already be available, as should the bimachine theory in `PartB/Bimachine.lean` and `PartB/BimachPrime.lean`. This closes Section C.4. Section C.4 of the book is in `../logic.tex`.",
-    "depends_on": {
-      "C.4.11": "foDefinable_iff_aperiodic_dfa",
-      "C.4.13": "tp_eq_iff_fo_equiv",
-      "C.4.4": "rational_iff_msoRelabelling",
-      "C.4.8": "msoTransduction_iff_regular"
-    }
-  },
-  {
-    "id": "C2-snake-step",
-    "title": "Part C: the snake lemma induction step, the last gap in Theorem C.2.9",
-    "results": [
-      "C.2.9",
-      "C.3.2",
-      "C.4.8",
-      "snake lemma step"
-    ],
-    "lean_names": [
-      "twoWay_iff_regular",
-      "sst_iff_regular",
-      "msoTransduction_iff_regular",
-      "boundedWidth_isRegular_step"
-    ],
-    "prompt": "Prove `Transducers.boundedWidth_isRegular_step`, the induction step of the book's snake lemma, in `RequestProject/PartC/SnakeReg.lean`:\n\n    def SnakeReg (k : Nat) : Prop :=\n      forall (A B Q : Type), Finite A -> Finite B -> Finite Q ->\n        forall M : TwoWay A B Q, IsRegularFun (TwoWay.widthOut M k)\n\n    theorem boundedWidth_isRegular_step (k : Nat) (ih : SnakeReg (k + 1)) : SnakeReg (k + 2)\n\nThis is the single remaining `sorry` of Section C.2 and it is the last gap in Theorem C.2.9 (two-way transducers compute exactly the regular functions). It is the highest-value statement left in the project: `Transducers.twoWay_iff_regular`, `Transducers.sst_iff_regular` (Theorem C.3.2) and `Transducers.msoTransduction_iff_regular` (Theorem C.4.8) are all formalised in both directions already and all three currently depend on `sorryAx` through this one step, and nothing else. Closing it turns all three into results proved outright, so it is the only thing this task is for: do not open any other numbered result.\n\nAlmost all of the surrounding development is finished and sorry-free, so reuse it rather than rebuilding it. The section *What is missing in Theorem C.2.9* in `THEOREMS.md` describes the state in detail; in outline:\n\n* The reduction of `Transducers.isRegularFun_of_isTwoWay` to the snake lemma is done (`SnakeReg.lean`), as is the bound on the width of a halting run (`SnakeWidth.lean`, `TwoWay.widthLe_card`, by pigeonhole).\n* Both base cases are proved in full in `SnakeBase.lean` (`TwoWay.widthOut_zero_isRegular`, `TwoWay.widthOut_one_isRegular`, the latter through `TwoWay.passDFA`, `TwoWay.PassLang` and the bimachine `TwoWay.passBim`).\n* The combinatorics of the width induction that the book's proof rests on -- record-breaking columns, the loop and progress parts, and the splitting of a run of width k into pieces of width k-1 with the matching factorisation of the output -- is proved in full in `SnakeWalk.lean`, `SnakeRec.lean` and `SnakeLoop.lean`, and the confinement of those pieces to two consecutive blocks in `SnakeConfine.lean`.\n* \"Reversing the snake\" is `SnakeMirror.lean`. Identifying a piece with the whole run of a window transducer, which is what lets the induction hypothesis apply to it, is in `SnakeLocal.lean`, `SnakePiece.lean` and `SnakePieceRev.lean`.\n* The gluing of the pieces (stages 1-3 of the book's proof) is the neighbouring-block map combinator `Transducers.RegPair.isRegularFun_pairMap` in `RegPair.lean`, on top of the bilateral rewritings of `RatBi.lean`.\n* The order in time of the visits of a run to a cut is available as a rational annotation (`TwoWayOrder.lean`, `TwoWayAnnotOrd.lean`).\n\nWhat `THEOREMS.md` records as still missing is the book's stage 1 -- the rational function that marks the record-breaking columns -- together with the identification of the individual pieces inside a block. Start by checking that assessment against the sources yourself, since it was written before the most recent work on the section, and say in your summary whether you found it accurate.\n\nNote that the induction hypothesis is quantified over all two-way transducers over all finite input alphabets and state sets, which is how the book quantifies over all snake graphs of a given width; use that generality when you apply it to the pieces.\n\nA previous task in this run attempted C.2.9 together with Lemma C.2.10 and Claim C.2.11 and ran out of budget with this step unproved, so treat it as hard and give it the whole task. If, after a serious attempt, some genuinely separate sub-lemma is all that is left, isolate it as a named statement with a clear docstring rather than leaving an unexplained `sorry`, and say exactly what it is in your summary. Section C.2 of the book is in `../2dfa.tex`.",
-    "depends_on": {
-      "C.2.8": "regularFun_isTwoWay"
-    },
-    "max_continues": 6,
-    "max_reattempts": 2
+    "id": "exercises-partBC",
+    "title": "Exercises: Parts B and C",
+    "results": [],
+    "lean_names": [],
+    "prompt": "The exercises of the book are written as `\\exer{statement}{solution}` (see `\\newcommand{\\exer}` in `macros.sty`). The second argument is the author's own solution, and almost every exercise now has one: read it as the intended proof, not as a hint. The printed edition does not typeset solutions, so they have never been checked by anything.\n\nFormalise the exercises of Parts B and C: `rational-relations.tex` (1), `rational-functions.tex` (9), `regular-primes.tex` (1) and `logic.tex` (1).\n\n* Put them in a new `RequestProject/Exercises/PartBC.lean`, one section per chapter, in the order the book states them.\n* State each exercise faithfully. Some are not mathematical statements at all -- \"give an example of...\", \"is the generated subgroup necessarily finite?\" -- and for those, either formalise the concrete claim the author's solution actually establishes, or leave the exercise out and say which and why in your summary. Do not invent a statement to have something to prove.\n* An exercise is not a numbered result of the main text, so it does not belong in the `THEOREMS.md` tables. Record them in a new `EXERCISES.md`, in the same style: the exercise, the Lean name, the status.\n* Only some exercises carry a `\\label` in the sources. Use it where there is one. Where there is not, give the declaration a descriptive Lean name and record in `EXERCISES.md` which chapter file the exercise is in and its position within that chapter, and list in your closing summary every exercise you could not refer to by label -- the author can then add them.\n* Add the aliases to `RequestProject/Labels.lean` only for the exercises that do have a label, keeping that file's generated format and its `assert_no_sorry` convention.\n\nDo not touch the numbered results of the main text; if formalising an exercise needs a lemma that is really a result of the book, say so rather than restating it.",
+    "depends_on": {},
+    "max_continues": 4
   },
   {
     "id": "audit-C",
-    "title": "Audit: verify everything claimed for Parts A, B and C",
+    "title": "Audit: verify everything claimed for Parts A, B and C, and the exercises",
     "results": [],
     "lean_names": [],
-    "prompt": "This is an audit task, not a new-mathematics task. Do not start proving any new numbered result.\n\nGo through every numbered result of Parts A, B and C that `THEOREMS.md` records as proved, and verify the claim mechanically:\n\n1. `lake build` from scratch and report the result.\n2. For each such result, run `#print axioms` on its Lean name and check that the only axioms are `propext`, `Classical.choice`, `Quot.sound` -- with the exception of the results that are deliberately conditional (B.1.6 and the four effectivity results of Section B.3/B.4), for which you should instead confirm that the hypothesis appears as an explicit argument of the theorem and report what it is.\n3. Check that no numbered result has been silently weakened relative to the book: for each one, compare the Lean statement with the statement in the LaTeX sources (`../krohn-rhodes.tex`, `../rational-functions.tex`, `../weighted.tex`, `../2dfa.tex`, `../sst.tex`, `../logic.tex`, `../myhill-nerode.tex`) and flag every divergence you find, including the ones that are already documented.\n4. Check that `THEOREMS.md` is accurate: every result marked proved really is, every result marked open really is, and the file list matches what is on disk.\n\nThen correct `THEOREMS.md` wherever it is wrong, and report in your summary: the list of results whose status you had to change, and every divergence between a Lean statement and the book that you found. Do not fix the divergences in this task -- just report them, precisely.\n\nTwo corrections to `THEOREMS.md` have been made by hand and must be preserved; check both against the sources and keep whichever form is true.\n\n* **Lemma C.2.12 is formalised.** Its index row used to read `| Lemmas C.2.3, C.2.4, C.2.12 | not formalised ... |`, which was written before the snake work and went stale. C.2.12 is the book's snake lemma -- the output of a snake graph is a regular function -- and it is `Transducers.boundedWidth_isRegular` in `SnakeReg.lean`, stated for the run of a two-way transducer rather than for an alphabet of snake letters. `#print axioms` on it reports only `propext`, `Classical.choice`, `Quot.sound`. It now has its own row; C.2.3 and C.2.4 remain genuinely not formalised.\n* **Definition B.1.3 is not formalised and was not recorded anywhere.** It is the definition of the rational and the recognisable subsets of a monoid. Nothing depends on it -- the book refers to it once, in the remark about the name \"Kleene Theorem\" -- so leaving it unformalised is a reasonable choice, but the index should say so rather than pass over it in silence. Add a row for it.\n\nMore generally: an index row that says a result is not formalised is exactly the kind of claim that rots, because it is written once and never revisited. Check every such row against the sources, not against the row's own history.\n\n**Replace the book's numbers with its `\\label` names.** Every place this formalisation names a result of the book by number -- the `**Theorem C.4.1.**` at the head of a docstring, the first column of every table in `THEOREMS.md`, and any mention in prose -- should name it by its LaTeX label instead. The reason is that numbers are not stable: inserting one result renumbers every later one, and a docstring that says `C.4.1` then quietly refers to something else, with nothing to catch it. Labels do not move.\n\nKeep the wording otherwise as it is: `**Theorem `thm:mso-logic-languages`.**` where it used to say `**Theorem C.4.1.**`.\n\nYou cannot read all of these out of your own copy of the book, which is older than the author's and is missing 28 labels, so here is the correspondence for every result that is formalised. It is generated from the author's current `main.aux`, and it is authoritative -- prefer it to anything in your sources.\n\n| Result, as the book currently numbers it | LaTeX label | primary Lean declaration |\n| --- | --- | --- |\n| Definition .0.1 | `def:continuity` | `Continuous` |\n| Definition A.1.1 | `def:mealy-machine` | `Mealy` |\n| Theorem A.1.2 | `thm:equivalence-decidable-mealy` | `mealy_equiv_iff_bounded` |\n| Theorem A.1.3 | `thm:composition-mealy` | `mealy_comp` |\n| Theorem A.1.4 | `thm:continuity-mealy` | `mealy_continuous` |\n| Definition A.2.1 | `def:prime-mealy-machines` | `Reversible` |\n| Theorem A.2.2 | `thm:krohn-rhodes` | `krohn_rhodes` |\n| Definition A.2.3 | `def:map-lifting` | `mapLift` |\n| Lemma A.2.4 | `lem:map-lifting-decomposition-mealy` | `mapLift_prime_decomposition` |\n| Lemma A.2.5 | `lem:Mealy-map-lifting` | `stateTransTransducer_prime_decomposition` |\n| Lemma A.2.6 | `lem:reversible-composition` | `reversible_comp` |\n| Definition A.2.7 | `def:aperiodic-mealy` | `Aperiodic` |\n| Theorem A.2.8 | `thm:aperiodic-mealy` | `aperiodic_iff_flipflop_composition` |\n| Claim A.2.9 | `claim:aperiodic-pumping` | `aperiodic_iff_pumping` |\n| Lemma A.2.10 | `lemma:derivatives` | `myhill_nerode_mealy` |\n| Lemma A.2.11 | `lem:aperiodicity-minimal-machine` | `aperiodic_iff_transStabilises` |\n| Definition B.1.1 | `def:nfa-with-output` | `NFAO` |\n| Definition B.1.2 | `def:rational-relation` | `IsRationalRel` |\n| Theorem B.1.4 | `thm:composition-rational-relations` | `rationalRel_comp` |\n| Theorem B.1.5 | `thm:continuity-rational-relations` | `rationalRel_continuous` |\n| Theorem B.1.6 | `thm:undecidable-equivalence-rational-relations` | `rationalRel_equivalence_undecidable` |\n| Claim B.1.7 | `claim:homomorphism-complement-rational` | `hom_complement_rational` |\n| Definition B.2.1 | `def:rational-function` | `IsRationalFun` |\n| Definition B.2.2 | `def:bimachine` | `Bimachine` |\n| Theorem B.2.3 | `thm:bimachines` | `rational_iff_unambiguous_iff_bimachine` |\n| Lemma B.2.4 | `lemma:eliminate-epsilon-transitions` | `epsilon_elimination` |\n| Lemma B.2.5 | `lem:uniformisation` | `uniformisation` |\n| Theorem B.2.6 | `thm:rational-primes` | `rational_iff_prime_composition` |\n| Theorem B.2.7 | `thm:rational-is-mealy-characterisation` | `rational_isMealy_iff` |\n| Definition B.3.1 | `def:semiring` | `Semiring` |\n| Definition B.3.2 | `def:weighted-automaton` | `wEval` |\n| Theorem B.3.3 | `thm:equivalence-weighted-automata` | `weighted_equivalence_decidable` |\n| Theorem B.3.4 | `thm:equivalence-rational-functions` | `rationalFun_equivalence_decidable` |\n| Lemma B.3.5 | `lem:closure-weighted-automata-precomposition` | `weighted_precomp_rational` |\n| Theorem B.3.6 | `thm:characterisation-rational-functions-weighted-automata` | `rational_iff_weighted_precomp` |\n| Theorem B.3.7 | `thm:zeroness-weighted-automata` | `weighted_zeroness_decidable` |\n| Theorem B.4.1 | `thm:mealy-machine-independent` | `isMealy_iff` |\n| Theorem B.4.2 | `thm:decide-if-mealy` | `rationalFun_isMealy_decidable` |\n| Lemma B.4.3 | `lem:decide-if-length-preserving` | `rationalFun_lengthPreserving_decidable` |\n| Claim B.4.4 | `claim:typing-length-preserving` | `lengthPreserving_iff_typing` |\n| Lemma B.4.5 | `lem:characterisation-length-preserving` | `lengthPreserving_rational_normal_form` |\n| Theorem B.4.6 | `thm:sequential-function-independent` | `isSequential_iff` |\n| Definition B.4.7 | `def:left-distance` | `leftDist` |\n| Theorem B.4.8 | `thm:subsequential-functions` | `isSubsequential_iff` |\n| Claim B.4.9 | `claim:bounded-extensions` | `delay_bound` |\n| Claim B.4.10 | `claim:computing-branching-part` | `key_drop` |\n| Claim B.4.11 | `claim:offsets-are-regular` | `incr_congr` |\n| Claim B.4.12 | `claim:eliminating-negative-letters` | `exists_deletion_bound` |\n| Theorem B.4.13 | `thm:machine-independent-rational-functions` | `isRationalFun_iff` |\n| Definition C.0.14 | `def:regular-functions` | `IsRegularFun` |\n| Theorem C.1.1 | `thm:regular-functions-are-continuous-and-closed-under-composition` | `regular_continuous` |\n| Lemma C.1.2 | `lem:reversal-duplication-continuous` | `reverse_duplicate_continuous` |\n| Lemma C.1.3 | `lem:map-lifting-continuous` | `mapLift_continuous` |\n| Theorem C.1.4 | `thm:decidable-equivalence-regular` | `regular_equivalence_decidable` |\n| Definition C.2.1 | `def:two-way-transducer` | `TwoWay` |\n| Theorem C.2.2 | `thm:continuity-2dfas` | `twoWay_continuous` |\n| Theorem C.2.5 | `thm:composition-of-two-way-transducers` | `twoWay_comp` |\n| Lemma C.2.6 | `lem:2dfa-precomposition-with-mealy` | `twoWay_precomp_mealy` |\n| Corollary C.2.7 | `cor:2dfa-closure-under-composition` | `twoWay_precomp_rational` |\n| Corollary C.2.8 | `cor:2dfa-computes-all-regular-functions` | `regularFun_isTwoWay` |\n| Theorem C.2.9 | `thm:2dfa-decomposition-into-primes` | `twoWay_iff_regular` |\n| Lemma C.2.10 | `lem:regular-closure-properties` | `regular_closure_properties` |\n| Claim C.2.11 | `claim:conditional` | `sum_of_regular` |\n| Lemma C.2.12 | `lem:output-of-snake-graph-is-regular` | `Transducers.boundedWidth_isRegular` |\n| Definition C.3.1 | `def:sst` | `SST` |\n| Theorem C.3.2 | `theorem:sst-two-way-equivalence` | `sst_iff_regular` |\n| Theorem C.4.1 | `thm:mso-logic-languages` | `regular_iff_msoDefinable` |\n| Lemma C.4.2 | `lem:mso-free-variables` | `mso_annotated_regular` |\n| Definition C.4.3 | `def:mso-relabeling` | `MSORelabelling` |\n| Theorem C.4.4 | `thm:logic-rational-functions` | `rational_iff_msoRelabelling` |\n| Claim C.4.5 | `claim:transition-formula` | `exists_form` |\n| Claim C.4.6 | `claim:mso-annotation-regular` | `msoRelabelling_annotation_regular` |\n| Definition C.4.7 | `def:mso-transduction` | `MSOTransduction` |\n| Theorem C.4.8 | `thm:logic-regular-functions` | `msoTransduction_iff_regular` |\n| Lemma C.4.9 | `lem:logic-reduction-to-type-n` | `exists_norm` |\n| Lemma C.4.10 | `lem:logic-precomputation` | `mso_formulas_via_rational` |\n| Theorem C.4.11 | `thm:logic-aperiodic` | `foDefinable_iff_aperiodic_dfa` |\n| Definition C.4.12 | `def:k-types` | `tp` |\n| Lemma C.4.13 | `lem:k-types-fo-equivalence` | `tp_eq_iff_fo_equiv` |\n| Claim C.4.14 | `claim:fo-composition-quantifier-rank` | `sat_iff_of_kEquiv` |\n| Lemma C.4.15 | `lem:k-types-properties` | `tp_properties` |\n| Theorem C.4.16 | `thm:fo-rational-functions` | `foRelabelling_iff_aperiodicBimachine` |\n| Theorem D.1.1 | `thm:for-transducers-are-polyregular` | `polyregular_iff_forTransducer` |\n| Definition D.1.2 | `def:prenex-normal-form-for-transducers` | `PrenexForm` |\n| Lemma D.1.3 | `lemma:prenex-normal-form` | `forTransducer_prenex` |\n| Lemma D.1.4 | `lem:for-closed-under-composition` | `forTransducer_comp` |\n| Theorem D.2.1 | `thm:pebble-are-continuous` | `pebble_continuous` |\n| Theorem D.2.4 | `thm:pebble-are-for` | `pebble_iff_forTransducer` |\n\nIf you meet a formalised result that is not in this table, leave its number alone and list it in your summary.",
+    "prompt": "This is an audit task, not a new-mathematics task. Do not start proving any new numbered result.\n\nGo through every numbered result of Parts A, B and C that `THEOREMS.md` records as proved, and verify the claim mechanically:\n\n1. `lake build` from scratch and report the result.\n2. For each such result, run `#print axioms` on its Lean name and check that the only axioms are `propext`, `Classical.choice`, `Quot.sound` -- with the exception of the results that are deliberately conditional (B.1.6 and the four effectivity results of Section B.3/B.4), for which you should instead confirm that the hypothesis appears as an explicit argument of the theorem and report what it is.\n3. Check that no numbered result has been silently weakened relative to the book: for each one, compare the Lean statement with the statement in the LaTeX sources (`../krohn-rhodes.tex`, `../rational-functions.tex`, `../weighted.tex`, `../2dfa.tex`, `../sst.tex`, `../logic.tex`, `../myhill-nerode.tex`) and flag every divergence you find, including the ones that are already documented.\n4. Check that `THEOREMS.md` is accurate: every result marked proved really is, every result marked open really is, and the file list matches what is on disk.\n\nThen correct `THEOREMS.md` wherever it is wrong, and report in your summary: the list of results whose status you had to change, and every divergence between a Lean statement and the book that you found. Do not fix the divergences in this task -- just report them, precisely.\n\nTwo corrections to `THEOREMS.md` have been made by hand and must be preserved; check both against the sources and keep whichever form is true.\n\n* **Lemma `lem:output-of-snake-graph-is-regular` is formalised** (the book numbers it C.2.12). It is recorded as unformalised in three places now -- the index table of `THEOREMS.md`, the accounting list at the end of `RequestProject/Labels.lean`, and `LABELS.md` -- so fix all three, and give it an alias with `assert_no_sorry` like any other proved result. Its index row used to read `| Lemmas C.2.3, C.2.4, C.2.12 | not formalised ... |`, which was written before the snake work and went stale. C.2.12 is the book's snake lemma -- the output of a snake graph is a regular function -- and it is `Transducers.boundedWidth_isRegular` in `SnakeReg.lean`, stated for the run of a two-way transducer rather than for an alphabet of snake letters. `#print axioms` on it reports only `propext`, `Classical.choice`, `Quot.sound`. It now has its own row; C.2.3 and C.2.4 remain genuinely not formalised.\n* **Definition B.1.3 is not formalised and was not recorded anywhere.** It is the definition of the rational and the recognisable subsets of a monoid. Nothing depends on it -- the book refers to it once, in the remark about the name \"Kleene Theorem\" -- so leaving it unformalised is a reasonable choice, but the index should say so rather than pass over it in silence. Add a row for it.\n\nMore generally: an index row that says a result is not formalised is exactly the kind of claim that rots, because it is written once and never revisited. Check every such row against the sources, not against the row's own history.\n\n**Replace the book's numbers with its `\\label` names.** Every place this formalisation names a result of the book by number -- the `**Theorem C.4.1.**` at the head of a docstring, the first column of every table in `THEOREMS.md`, and any mention in prose -- should name it by its LaTeX label instead. The reason is that numbers are not stable: inserting one result renumbers every later one, and a docstring that says `C.4.1` then quietly refers to something else, with nothing to catch it. Labels do not move.\n\nKeep the wording otherwise as it is: `**Theorem `thm:mso-logic-languages`.**` where it used to say `**Theorem C.4.1.**`.\n\nYou cannot read all of these out of your own copy of the book, which is older than the author's and is missing 28 labels, so here is the correspondence for every result that is formalised. It is generated from the author's current `main.aux`, and it is authoritative -- prefer it to anything in your sources.\n\n| Result, as the book currently numbers it | LaTeX label | primary Lean declaration |\n| --- | --- | --- |\n| Definition .0.1 | `def:continuity` | `Continuous` |\n| Definition A.1.1 | `def:mealy-machine` | `Mealy` |\n| Theorem A.1.2 | `thm:equivalence-decidable-mealy` | `mealy_equiv_iff_bounded` |\n| Theorem A.1.3 | `thm:composition-mealy` | `mealy_comp` |\n| Theorem A.1.4 | `thm:continuity-mealy` | `mealy_continuous` |\n| Definition A.2.1 | `def:prime-mealy-machines` | `Reversible` |\n| Theorem A.2.2 | `thm:krohn-rhodes` | `krohn_rhodes` |\n| Definition A.2.3 | `def:map-lifting` | `mapLift` |\n| Lemma A.2.4 | `lem:map-lifting-decomposition-mealy` | `mapLift_prime_decomposition` |\n| Lemma A.2.5 | `lem:Mealy-map-lifting` | `stateTransTransducer_prime_decomposition` |\n| Lemma A.2.6 | `lem:reversible-composition` | `reversible_comp` |\n| Definition A.2.7 | `def:aperiodic-mealy` | `Aperiodic` |\n| Theorem A.2.8 | `thm:aperiodic-mealy` | `aperiodic_iff_flipflop_composition` |\n| Claim A.2.9 | `claim:aperiodic-pumping` | `aperiodic_iff_pumping` |\n| Lemma A.2.10 | `lemma:derivatives` | `myhill_nerode_mealy` |\n| Lemma A.2.11 | `lem:aperiodicity-minimal-machine` | `aperiodic_iff_transStabilises` |\n| Definition B.1.1 | `def:nfa-with-output` | `NFAO` |\n| Definition B.1.2 | `def:rational-relation` | `IsRationalRel` |\n| Theorem B.1.4 | `thm:composition-rational-relations` | `rationalRel_comp` |\n| Theorem B.1.5 | `thm:continuity-rational-relations` | `rationalRel_continuous` |\n| Theorem B.1.6 | `thm:undecidable-equivalence-rational-relations` | `rationalRel_equivalence_undecidable` |\n| Claim B.1.7 | `claim:homomorphism-complement-rational` | `hom_complement_rational` |\n| Definition B.2.1 | `def:rational-function` | `IsRationalFun` |\n| Definition B.2.2 | `def:bimachine` | `Bimachine` |\n| Theorem B.2.3 | `thm:bimachines` | `rational_iff_unambiguous_iff_bimachine` |\n| Lemma B.2.4 | `lemma:eliminate-epsilon-transitions` | `epsilon_elimination` |\n| Lemma B.2.5 | `lem:uniformisation` | `uniformisation` |\n| Theorem B.2.6 | `thm:rational-primes` | `rational_iff_prime_composition` |\n| Theorem B.2.7 | `thm:rational-is-mealy-characterisation` | `rational_isMealy_iff` |\n| Definition B.3.1 | `def:semiring` | `Semiring` |\n| Definition B.3.2 | `def:weighted-automaton` | `wEval` |\n| Theorem B.3.3 | `thm:equivalence-weighted-automata` | `weighted_equivalence_decidable` |\n| Theorem B.3.4 | `thm:equivalence-rational-functions` | `rationalFun_equivalence_decidable` |\n| Lemma B.3.5 | `lem:closure-weighted-automata-precomposition` | `weighted_precomp_rational` |\n| Theorem B.3.6 | `thm:characterisation-rational-functions-weighted-automata` | `rational_iff_weighted_precomp` |\n| Theorem B.3.7 | `thm:zeroness-weighted-automata` | `weighted_zeroness_decidable` |\n| Theorem B.4.1 | `thm:mealy-machine-independent` | `isMealy_iff` |\n| Theorem B.4.2 | `thm:decide-if-mealy` | `rationalFun_isMealy_decidable` |\n| Lemma B.4.3 | `lem:decide-if-length-preserving` | `rationalFun_lengthPreserving_decidable` |\n| Claim B.4.4 | `claim:typing-length-preserving` | `lengthPreserving_iff_typing` |\n| Lemma B.4.5 | `lem:characterisation-length-preserving` | `lengthPreserving_rational_normal_form` |\n| Theorem B.4.6 | `thm:sequential-function-independent` | `isSequential_iff` |\n| Definition B.4.7 | `def:left-distance` | `leftDist` |\n| Theorem B.4.8 | `thm:subsequential-functions` | `isSubsequential_iff` |\n| Claim B.4.9 | `claim:bounded-extensions` | `delay_bound` |\n| Claim B.4.10 | `claim:computing-branching-part` | `key_drop` |\n| Claim B.4.11 | `claim:offsets-are-regular` | `incr_congr` |\n| Claim B.4.12 | `claim:eliminating-negative-letters` | `exists_deletion_bound` |\n| Theorem B.4.13 | `thm:machine-independent-rational-functions` | `isRationalFun_iff` |\n| Definition C.0.14 | `def:regular-functions` | `IsRegularFun` |\n| Theorem C.1.1 | `thm:regular-functions-are-continuous-and-closed-under-composition` | `regular_continuous` |\n| Lemma C.1.2 | `lem:reversal-duplication-continuous` | `reverse_duplicate_continuous` |\n| Lemma C.1.3 | `lem:map-lifting-continuous` | `mapLift_continuous` |\n| Theorem C.1.4 | `thm:decidable-equivalence-regular` | `regular_equivalence_decidable` |\n| Definition C.2.1 | `def:two-way-transducer` | `TwoWay` |\n| Theorem C.2.2 | `thm:continuity-2dfas` | `twoWay_continuous` |\n| Theorem C.2.5 | `thm:composition-of-two-way-transducers` | `twoWay_comp` |\n| Lemma C.2.6 | `lem:2dfa-precomposition-with-mealy` | `twoWay_precomp_mealy` |\n| Corollary C.2.7 | `cor:2dfa-closure-under-composition` | `twoWay_precomp_rational` |\n| Corollary C.2.8 | `cor:2dfa-computes-all-regular-functions` | `regularFun_isTwoWay` |\n| Theorem C.2.9 | `thm:2dfa-decomposition-into-primes` | `twoWay_iff_regular` |\n| Lemma C.2.10 | `lem:regular-closure-properties` | `regular_closure_properties` |\n| Claim C.2.11 | `claim:conditional` | `sum_of_regular` |\n| Lemma C.2.12 | `lem:output-of-snake-graph-is-regular` | `Transducers.boundedWidth_isRegular` |\n| Definition C.3.1 | `def:sst` | `SST` |\n| Theorem C.3.2 | `theorem:sst-two-way-equivalence` | `sst_iff_regular` |\n| Theorem C.4.1 | `thm:mso-logic-languages` | `regular_iff_msoDefinable` |\n| Lemma C.4.2 | `lem:mso-free-variables` | `mso_annotated_regular` |\n| Definition C.4.3 | `def:mso-relabeling` | `MSORelabelling` |\n| Theorem C.4.4 | `thm:logic-rational-functions` | `rational_iff_msoRelabelling` |\n| Claim C.4.5 | `claim:transition-formula` | `exists_form` |\n| Claim C.4.6 | `claim:mso-annotation-regular` | `msoRelabelling_annotation_regular` |\n| Definition C.4.7 | `def:mso-transduction` | `MSOTransduction` |\n| Theorem C.4.8 | `thm:logic-regular-functions` | `msoTransduction_iff_regular` |\n| Lemma C.4.9 | `lem:logic-reduction-to-type-n` | `exists_norm` |\n| Lemma C.4.10 | `lem:logic-precomputation` | `mso_formulas_via_rational` |\n| Theorem C.4.11 | `thm:logic-aperiodic` | `foDefinable_iff_aperiodic_dfa` |\n| Definition C.4.12 | `def:k-types` | `tp` |\n| Lemma C.4.13 | `lem:k-types-fo-equivalence` | `tp_eq_iff_fo_equiv` |\n| Claim C.4.14 | `claim:fo-composition-quantifier-rank` | `sat_iff_of_kEquiv` |\n| Lemma C.4.15 | `lem:k-types-properties` | `tp_properties` |\n| Theorem C.4.16 | `thm:fo-rational-functions` | `foRelabelling_iff_aperiodicBimachine` |\n| Theorem D.1.1 | `thm:for-transducers-are-polyregular` | `polyregular_iff_forTransducer` |\n| Definition D.1.2 | `def:prenex-normal-form-for-transducers` | `PrenexForm` |\n| Lemma D.1.3 | `lemma:prenex-normal-form` | `forTransducer_prenex` |\n| Lemma D.1.4 | `lem:for-closed-under-composition` | `forTransducer_comp` |\n| Theorem D.2.1 | `thm:pebble-are-continuous` | `pebble_continuous` |\n| Theorem D.2.4 | `thm:pebble-are-for` | `pebble_iff_forTransducer` |\n\nIf you meet a formalised result that is not in this table, leave its number alone and list it in your summary.\n\n**Labels that were guessed, and their real names.** The rename to labels was done against a copy of the book older than the author's, so where a result's `\\label` was missing you wrote a placeholder `nolabel:...`. That was the right thing to do rather than inventing a plausible name, but the labels do exist; here they are. Replace each one everywhere it occurs -- docstrings, `Labels.lean`, `LABELS.md`, `THEOREMS.md`, prose -- and keep the alias names in `Labels.lean` in step.\n\n| what the sources say now | the book's actual label |\n| --- | --- |\n| `item:fo-types-more-information` | `lem:k-types-properties` |\n| `nolabel:claim-aperiodic-pumping` | `claim:aperiodic-pumping` |\n| `nolabel:claim-complement-of-homomorphism` | `claim:homomorphism-complement-rational` |\n| `nolabel:claim-fo-type-of-a-tuple` | `claim:fo-composition-quantifier-rank` |\n| `nolabel:claim-formula-annotation-regular` | `claim:mso-annotation-regular` |\n| `nolabel:cor-two-way-implies-regular` | `cor:2dfa-computes-all-regular-functions` |\n| `nolabel:def-fo-types` | `def:k-types` |\n| `nolabel:def-left-distance` | `def:left-distance` |\n| `nolabel:def-nfa-with-output` | `def:nfa-with-output` |\n| `nolabel:def-prime-mealy-machines` | `def:prime-mealy-machines` |\n| `nolabel:def-rational-function` | `def:rational-function` |\n| `nolabel:def-semiring` | `def:semiring` |\n| `nolabel:def-two-way-transducer` | `def:two-way-transducer` |\n| `nolabel:def-weighted-automaton` | `def:weighted-automaton` |\n| `nolabel:lem-fo-types-characterisation` | `lem:k-types-fo-equivalence` |\n| `nolabel:lem-mso-to-automaton` | `lem:mso-free-variables` |\n| `nolabel:lem-reverse-and-duplicate-continuous` | `lem:reversal-duplication-continuous` |\n| `nolabel:thm-krohn-rhodes` | `thm:krohn-rhodes` |\n| `nolabel:thm-mealy-among-rational-functions` | `thm:rational-is-mealy-characterisation` |\n\nOne placeholder is correct and must stay: `nolabel:thm-fo-transduction-into-primes`. Theorem C.4.17 -- the one withdrawn at the author's request -- has no `\\label`, so there is nothing for it to be.\n\nThe conjecture had no label when you renamed, and now does: the author has given it `conj:regular-via-weighted-automata`. It is the first `conj:` label in the book, so expect the prefix.\n\nOne of these is not a missing label but a wrong one: `item:fo-types-more-information` is the label of an `\\item` *inside* the statement of the lemma, not the label of the lemma, which is `lem:k-types-properties`. When a result has no label of its own, do not reach for the nearest label in the surrounding text -- that is how a reference comes to point at an enumerate item. Say it has none.\n\n`Labels.lean` is a good piece of work and should stay: an alias per label with `assert_no_sorry` makes the compiler check both the correspondence and the status, which is exactly the sort of claim that otherwise rots. Keep it generated from the tables rather than edited by hand.\n\nThe exercises formalised by the three targets before this one are part of what you are auditing: check `EXERCISES.md` the same way you check `THEOREMS.md`, and confirm that every exercise it calls proved is free of `sorryAx`.\n\n`README.md`, `LABELS.md` and `THEOREMS.md` all refer to `tools/gen_labels.py`, `tools/tex_numbering.py` and `tools/relabel.py`, but there is no `tools/` directory anywhere in the sources. So `Labels.lean` cannot be regenerated as documented, and the last agent to touch it had to edit it by hand. Either write those scripts or stop the documentation promising them; say which you did.",
     "depends_on": {}
   },
   {
-    "id": "D-pebble-and-lemmas",
-    "title": "Part D: pebble continuity (D.2.1), prenex normal form (D.1.3), composition (D.1.4)",
+    "id": "D1-tools",
+    "title": "Part D: prenex form and composition of for-transducers",
     "results": [
-      "D.2.1",
       "D.1.3",
       "D.1.4"
     ],
     "lean_names": [
-      "pebble_continuous",
       "forTransducer_prenex",
       "forTransducer_comp"
     ],
-    "prompt": "Prove Theorem D.2.1 (`Transducers.pebble_continuous`, continuity of pebble transducers), Lemma D.1.3 (`Transducers.forTransducer_prenex`, every for-transducer has an equivalent one in prenex form) and Lemma D.1.4 (`Transducers.forTransducer_comp`, closure of the for-transducers under composition).\n\nThe syntax and semantics of for-programs (`Transducers.ForProg`, `Transducers.IsForTransducer`, `Transducers.ForProg.PrenexForm`) and of pebble transducers (`Transducers.Pebble`, `Transducers.IsPebbleTransducer`) are already defined, and `PartD/MarkedSquare.lean` has the continuity machinery used for Theorem D.0.19 -- D.2.1 should be able to reuse a good deal of it. Lemmas D.2.2, D.2.5 and Claims D.2.3, D.2.6, D.2.7 are internal steps and are deliberately not formalised. Section D.1 of the book is in `../polyregular-for.tex` and Section D.2 in `../polyregular-pebble.tex`.",
-    "depends_on": {
-      "D.0.19": "polyregular_continuous"
-    }
+    "prompt": "Prove Lemma `lemma:prenex-normal-form` (`Transducers.forTransducer_prenex`: every for-transducer has an equivalent one in prenex form) and Lemma `lem:for-closed-under-composition` (`Transducers.forTransducer_comp`: the for-transducers are closed under composition).\n\nThese two are the tools the rest of Section D.1 is built from, which is why they come first and alone. Section D.1 of the book is in `../polyregular-for.tex`.\n\nPart D is where the least Lean exists: `RequestProject/PartD/` has only `Statements.lean` and `MarkedSquare.lean`. The definitions are all there and should be reused rather than rebuilt -- `ForProg`, `ForTest`, `Holds`, `forLoopRun`, `LoopFree`, `nestLoops`, `OutputsAtMostOne`, `PrenexForm`, `IsForTransducer`, and for the pebble side `Pebble`, `PebbleView`, `viewOf`, `PebbleAction`, `IsPebbleTransducer`. What is missing is the proofs.\n\nUnlike the earlier Part D targets, the whole of Parts A, B and C is now proved and available: in particular Theorem `thm:two-way-transducers-are-regular-functions` and Theorem `thm:sst-are-regular` are no longer blocked, so the regular-function theory is usable in full.",
+    "depends_on": {},
+    "max_continues": 6
   },
   {
-    "id": "D-equivalences",
-    "title": "Part D: polyregular = for-transducers (D.1.1), pebble = for-transducers (D.2.4)",
+    "id": "D1-equivalence",
+    "title": "Part D: polyregular = for-transducers",
     "results": [
-      "D.1.1",
+      "D.1.1"
+    ],
+    "lean_names": [
+      "polyregular_iff_forTransducer"
+    ],
+    "prompt": "Prove Theorem `thm:for-transducers-are-polyregular` (`Transducers.polyregular_iff_forTransducer`): the polyregular functions are exactly the functions computed by for-transducers.\n\nThe two lemmas of the previous target, prenex form and closure under composition, should be available and are the main tools, together with marked squaring (`PartD/MarkedSquare.lean`) and the regular-function theory of Part C.\n\nPart D is where the least Lean exists: `RequestProject/PartD/` has only `Statements.lean` and `MarkedSquare.lean`. The definitions are all there and should be reused rather than rebuilt -- `ForProg`, `ForTest`, `Holds`, `forLoopRun`, `LoopFree`, `nestLoops`, `OutputsAtMostOne`, `PrenexForm`, `IsForTransducer`, and for the pebble side `Pebble`, `PebbleView`, `viewOf`, `PebbleAction`, `IsPebbleTransducer`. What is missing is the proofs.\n\nUnlike the earlier Part D targets, the whole of Parts A, B and C is now proved and available: in particular Theorem `thm:two-way-transducers-are-regular-functions` and Theorem `thm:sst-are-regular` are no longer blocked, so the regular-function theory is usable in full.",
+    "depends_on": {
+      "D.1.3": "forTransducer_prenex",
+      "D.1.4": "forTransducer_comp"
+    },
+    "max_continues": 6
+  },
+  {
+    "id": "D2-continuity",
+    "title": "Part D: continuity of pebble transducers",
+    "results": [
+      "D.2.1"
+    ],
+    "lean_names": [
+      "pebble_continuous"
+    ],
+    "prompt": "Prove Theorem `thm:pebble-are-continuous` (`Transducers.pebble_continuous`): pebble transducers compute continuous functions.\n\nIt stands on its own -- it does not need the equivalence of Section D.1 -- which is why it is a target of its own and can be attempted independently of the D.1 work. Section D.2 of the book is in `../polyregular-pebble.tex`; `PartD/MarkedSquare.lean` has the continuity machinery used for Theorem `thm:polyregular-functions-are-continuous`.\n\nPart D is where the least Lean exists: `RequestProject/PartD/` has only `Statements.lean` and `MarkedSquare.lean`. The definitions are all there and should be reused rather than rebuilt -- `ForProg`, `ForTest`, `Holds`, `forLoopRun`, `LoopFree`, `nestLoops`, `OutputsAtMostOne`, `PrenexForm`, `IsForTransducer`, and for the pebble side `Pebble`, `PebbleView`, `viewOf`, `PebbleAction`, `IsPebbleTransducer`. What is missing is the proofs.\n\nUnlike the earlier Part D targets, the whole of Parts A, B and C is now proved and available: in particular Theorem `thm:two-way-transducers-are-regular-functions` and Theorem `thm:sst-are-regular` are no longer blocked, so the regular-function theory is usable in full.",
+    "depends_on": {},
+    "max_continues": 6
+  },
+  {
+    "id": "D2-pebble-equivalence",
+    "title": "Part D: pebble transducers = for-transducers",
+    "results": [
       "D.2.4"
     ],
     "lean_names": [
-      "polyregular_iff_forTransducer",
       "pebble_iff_forTransducer"
     ],
-    "prompt": "Prove Theorem D.1.1 (`Transducers.polyregular_iff_forTransducer`: the polyregular functions are exactly the ones computed by for-transducers) and Theorem D.2.4 (`Transducers.pebble_iff_forTransducer`: the pebble transducers are equivalent to the for-transducers). These are the last two open numbered results of the book.\n\nLemmas D.1.3 and D.1.4 should already be available from the previous task and are the main tools for D.1.1, together with the regular-function theory of Part C (Theorem C.2.9, Theorem C.3.2) and marked squaring (`PartD/MarkedSquare.lean`). Lemmas D.2.2, D.2.5 and Claims D.2.3, D.2.6, D.2.7 are the internal steps of D.2.4 and are deliberately not formalised as numbered results. Section D.1 of the book is in `../polyregular-for.tex` and Section D.2 in `../polyregular-pebble.tex`. Do D.1.1 first.",
+    "prompt": "Prove Theorem `thm:pebble-are-for` (`Transducers.pebble_iff_forTransducer`): the pebble transducers are equivalent to the for-transducers. This is the last open numbered result of the book.\n\nThe book proves it through the reachability analysis of a pebble automaton: Lemma `lem:reachability-pebble-automaton`, Claim `claim:reachability-basic-run`, Lemma `lem:children-of-configuration-in-pebble-run` and Claims `claim:from-configuration-to-child-configuration-graph` and `claim:from-child-configuration-graph-to-children` are its internal steps, deliberately not formalised as numbered results, so organise them however suits Lean. Theorem `thm:for-transducers-are-polyregular` should be available.\n\nPart D is where the least Lean exists: `RequestProject/PartD/` has only `Statements.lean` and `MarkedSquare.lean`. The definitions are all there and should be reused rather than rebuilt -- `ForProg`, `ForTest`, `Holds`, `forLoopRun`, `LoopFree`, `nestLoops`, `OutputsAtMostOne`, `PrenexForm`, `IsForTransducer`, and for the pebble side `Pebble`, `PebbleView`, `viewOf`, `PebbleAction`, `IsPebbleTransducer`. What is missing is the proofs.\n\nUnlike the earlier Part D targets, the whole of Parts A, B and C is now proved and available: in particular Theorem `thm:two-way-transducers-are-regular-functions` and Theorem `thm:sst-are-regular` are no longer blocked, so the regular-function theory is usable in full.",
     "depends_on": {
-      "D.1.3": "forTransducer_prenex",
-      "D.1.4": "forTransducer_comp",
-      "C.2.9": "twoWay_iff_regular",
-      "C.3.2": "sst_iff_regular"
-    }
-  },
-  {
-    "id": "C1-decidability",
-    "title": "Part C: decidable equivalence of regular functions (C.1.4)",
-    "results": [
-      "C.1.4"
-    ],
-    "lean_names": [
-      "regular_equivalence_decidable"
-    ],
-    "prompt": "Prove Theorem C.1.4 (`Transducers.regular_equivalence_decidable`): equivalence of regular functions is decidable.\n\nBy now Theorems C.2.9 and C.3.2 should be available, so the mathematical content -- reducing equivalence to a checkable criterion on machines -- should be within reach. This statement has the same effectivity difficulty as the decidability results of Part B: if, and only if, you hit the same obstacle (Mathlib's `Computable`/`Primrec` API lacking the arithmetic you need), then relativise the statement to an explicit computability hypothesis in the style of `PartB/Effective.lean`, reusing those hypotheses if they apply, rather than developing the missing API. If it can be proved outright, prove it outright -- prefer that.\n\nSection C.1 of the book is in `../2dfa.tex` and the surrounding chapter files.",
-    "depends_on": {
-      "C.2.9": "twoWay_iff_regular",
-      "C.3.2": "sst_iff_regular"
-    }
+      "D.1.1": "polyregular_iff_forTransducer"
+    },
+    "max_continues": 6
   },
   {
     "id": "audit-final",

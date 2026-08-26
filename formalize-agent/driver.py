@@ -8,8 +8,14 @@ machine and exits.  Turning the laptop off merely delays the next tick.
 One tick does at most one of:
 
   * nothing, because a task is still running server-side;
-  * harvest a finished task (download, sync into the Lean directory, commit);
-  * submit the next target from the queue.
+  * integrate a finished run (download, merge into the Lean directory, commit);
+  * submit the next target, which creates a project for it.
+
+The local repository is the authoritative copy. Each run gets a project of its
+own, created from the working tree as it then stands, so the agent always reads
+the current book and the current Lean; and because the project has a known base
+commit, what comes back is merged rather than written over. Work done here while
+a run is in flight therefore survives it.
 
 Run `driver.py status` for a human-readable view.
 """
@@ -182,9 +188,14 @@ def run_async(coro):
     return asyncio.run(coro)
 
 
-def get_project(cfg: dict):
+def project_by_id(pid: str):
     from aristotlelib.project import Project
-    return run_async(Project.from_id(cfg["project_id"]))
+    return run_async(Project.from_id(pid))
+
+
+def get_project(cfg: dict):
+    """The project named in config.json — only the older, shared one now."""
+    return project_by_id(cfg["project_id"])
 
 
 def get_task(task_id: str):
@@ -506,21 +517,6 @@ def locate_lean_project(root: Path, subdir: str) -> Path | None:
     return None
 
 
-def note_tex_divergence(cfg: dict, archive_root: Path) -> list[str]:
-    """Report book sources that Aristotle changed. We never sync these back."""
-    book = lean_dir(cfg).parent
-    changed = []
-    for tex in archive_root.glob("*.tex"):
-        local = book / tex.name
-        if local.exists():
-            try:
-                if local.read_bytes() != tex.read_bytes():
-                    changed.append(tex.name)
-            except OSError:
-                pass
-    return changed
-
-
 def git(ld: Path, *args: str, **kw) -> subprocess.CompletedProcess:
     return subprocess.run(["git", "-C", str(ld), *args],
                           capture_output=True, text=True, **kw)
@@ -561,6 +557,78 @@ def commit(ld: Path, message: str) -> bool:
         log(f"git commit failed: {r.stderr.strip()[:300]}")
         return False
     return True
+
+
+def stage_workspace(cfg: dict) -> Path:
+    """A copy of the workspace to hand to Aristotle: the book and the Lean sources.
+
+    Everything Aristotle should read, and nothing it should not. `.lake` is the
+    Mathlib build — some gigabytes, and rebuilt on the other side anyway — and
+    `.git` is our history, not theirs. The book's sources go up too, and that is
+    the point of creating a project per run: under the old arrangement the
+    project kept whatever copy of the book it was made with, which drifted from
+    the author's within days and had the agent inventing labels for results
+    whose real ones it could not see.
+    """
+    ld = lean_dir(cfg)
+    book = ld.parent
+    stage = Path(tempfile.mkdtemp(prefix="aristotle-stage-"))
+    for pat in ("*.tex", "*.sty", "*.bib", "main.aux", "main.bbl"):
+        for f in book.glob(pat):
+            if f.is_file():
+                shutil.copy2(f, stage / f.name)
+    subprocess.run(["rsync", "-a", "--exclude", ".lake/", "--exclude", ".git/",
+                    str(ld), f"{stage}/"], check=True, capture_output=True)
+    return stage
+
+
+def new_project(cfg: dict, prompt: str):
+    """Create a project from the current workspace and return it."""
+    from aristotlelib.project import Project
+    stage = stage_workspace(cfg)
+    try:
+        return run_async(Project.create_from_directory(prompt, stage))
+    finally:
+        shutil.rmtree(stage, ignore_errors=True)
+
+
+def integrate(cfg: dict, st: dict, src: Path, base: str, branch: str,
+              message: str) -> str:
+    """Merge a returned tree into the local one. Returns 'merged', 'conflict'…
+
+    The local repository is the authoritative copy, so a result is merged into
+    it rather than written over it. Because the project was created *from* a
+    commit, what comes back is a descendant of a known base — so this is an
+    ordinary three-way merge, and an edit made here while the task was running
+    survives it. Under the old arrangement the same step was `rsync --delete`,
+    which silently discarded local work; every correction made here had to be
+    repeated inside a prompt to survive the next harvest.
+    """
+    ld = lean_dir(cfg)
+    if git(ld, "status", "--porcelain").stdout.strip():
+        commit(ld, "local edits, committed before integrating a run\n\n"
+                   "Made in the working tree while a task was running.")
+    work = Path(tempfile.mkdtemp(prefix="aristotle-merge-"))
+    tree = work / "t"
+    try:
+        r = git(ld, "worktree", "add", "--detach", str(tree), base)
+        if r.returncode:
+            log(f"worktree failed: {r.stderr.strip()[:200]}")
+            return "error"
+        git(tree, "checkout", "-b", branch)
+        subprocess.run(["rsync", "-a", "--delete", "--exclude", ".lake/",
+                        "--exclude", ".git", "--exclude", ".gitignore",
+                        f"{src}/", f"{tree}/"], check=True, capture_output=True)
+        if not commit(tree, message):
+            return "empty"          # the run changed nothing
+        m = git(ld, "merge", "--no-edit", branch)
+        if m.returncode:
+            git(ld, "merge", "--abort")
+            return "conflict"
+        return "merged"
+    finally:
+        git(ld, "worktree", "remove", "--force", str(tree))
+        shutil.rmtree(work, ignore_errors=True)
 
 
 def harvest(cfg: dict, st: dict, project, task, target: dict | None) -> None:
@@ -605,53 +673,67 @@ def harvest(cfg: dict, st: dict, project, task, target: dict | None) -> None:
             log(f"harvest aborted: archive looks truncated ({n_lean} lean files)")
             return
 
-        changed_tex = note_tex_divergence(cfg, src.parent)
-        if changed_tex:
-            log(f"note: Aristotle's copy of the book differs from yours in {', '.join(changed_tex)} "
-                f"(not synced back — inspect by hand if you care)")
-
         ensure_git(ld)
-        before = sorry_count(ld) if ld.exists() else None
-        ld.mkdir(parents=True, exist_ok=True)
-        # excluded paths are also protected from --delete, which is what keeps
-        # the local .lake and our .gitignore alive
-        r = subprocess.run(
-            ["rsync", "-a", "--delete", "--exclude", ".lake/", "--exclude", ".git/",
-             "--exclude", ".gitignore", f"{src}/", f"{ld}/"],
-            capture_output=True, text=True)
-        if r.returncode:
-            log(f"rsync failed: {r.stderr.strip()[:300]}")
-            return
         ensure_gitignore(ld)
-        after = sorry_count(ld)
-        log(f"synced {n_lean} lean files; sorries {before} -> {after}")
+        before = sorry_count(ld)
 
-    if target and target.get("title"):
-        head = target["title"]
-    elif task.description:
-        head = task.description.strip().splitlines()[0]
-    else:  # summaries start with a markdown heading, which makes a poor subject
-        head = next((l.strip(" #*") for l in summary.splitlines() if l.strip(" #*")),
-                    "(no summary)")
-    head = head[:72]
-    msg = (f"{tid}: {head}\n\n"
-           f"Aristotle task {task.agent_task_id} ({label}).\n\n"
-           f"{summary.strip()}\n\n"
-           f"Co-authored-by: Aristotle (Harmonic) <aristotle-harmonic@harmonic.fun>\n")
-    if cfg.get("commit", True) and commit(ld, msg):
-        log(f"committed harvest of {task.agent_task_id}")
+        if target and target.get("title"):
+            head = target["title"]
+        elif task.description:
+            head = task.description.strip().splitlines()[0]
+        else:  # summaries open with a markdown heading, a poor subject line
+            head = next((l.strip(" #*") for l in summary.splitlines()
+                         if l.strip(" #*")), "(no summary)")
+        msg = (f"{tid}: {head[:72]}\n\n"
+               f"Aristotle task {task.agent_task_id} ({label}).\n\n"
+               f"{summary.strip()}\n\n"
+               f"Co-authored-by: Aristotle (Harmonic) <aristotle-harmonic@harmonic.fun>\n")
+
+        base = (st.get("current") or {}).get("base") or "HEAD"
+        outcome = integrate(cfg, st, src, base,
+                            f"aristotle/{task.agent_task_id[:8]}", msg)
+        if outcome == "conflict":
+            review(cfg, st, f"{tid} conflicts with local work",
+                   f"The run started from {base[:8]} and its result does not merge "
+                   f"cleanly into what the repository holds now — the same files "
+                   f"were changed on both sides. Nothing has been lost: the run is "
+                   f"on branch `aristotle/{task.agent_task_id[:8]}`.\n\n"
+                   f"    git -C {ld} merge aristotle/{task.agent_task_id[:8]}")
+            st["paused"] = True
+            st["pause_reason"] = f"{tid} needs a merge by hand"
+            log("merge conflict — paused")
+            return
+        if outcome == "merged":
+            log(f"merged {n_lean} lean files from {task.agent_task_id[:8]}; "
+                f"sorries {before} -> {sorry_count(ld)}")
+        else:
+            log(f"integration: {outcome}")
 
 
 # --------------------------------------------------------------------------
 # submitting
 # --------------------------------------------------------------------------
 
-def submit(cfg: dict, st: dict, project, target: dict, kind: str, extra: str = "") -> bool:
-    prompt = (build_preamble(target, lean_dir(cfg))
+def submit(cfg: dict, st: dict, target: dict, kind: str, extra: str = "") -> bool:
+    """Start a run: a project of its own, made from the repository as it stands.
+
+    One project per run rather than one for the whole series. It costs a few
+    seconds and about four megabytes, and it buys two things: the agent always
+    reads the author's current book and current Lean, and what comes back has a
+    known base commit, so it can be merged rather than written over.
+    """
+    ld = lean_dir(cfg)
+    prompt = (build_preamble(target, ld)
               + (extra or target["prompt"])
               + cfg.get("standing_instructions", ""))
+    base = git(ld, "rev-parse", "HEAD").stdout.strip()
+    if not base:
+        log(f"submit refused for {target['id']}: {ld} is not a git repository")
+        return False
     try:
-        task = run_async(project.ask(prompt))
+        project = new_project(cfg, prompt)
+        tasks, _ = run_async(project.get_tasks(limit=1))
+        task = tasks[0]
     except Exception as e:
         log(f"submit failed for {target['id']}: {e!r}")
         return False
@@ -661,10 +743,18 @@ def submit(cfg: dict, st: dict, project, target: dict, kind: str, extra: str = "
     rec["status"] = "running"
     rec["attempts"] += 1
     rec["task_ids"].append(task.agent_task_id)
+    # on the target as well as in `current`: `current` holds only the run in
+    # flight, so if it is cleared or overwritten the project the run lives in
+    # would otherwise be unrecoverable from here
+    rec.setdefault("runs", []).append(
+        {"task_id": task.agent_task_id, "project_id": str(project.object_id),
+         "base": base, "kind": kind, "at": ts()})
     rec["started_at"] = rec["started_at"] or ts()
     st["current"] = {"target_id": target["id"], "task_id": task.agent_task_id,
+                     "project_id": str(project.object_id), "base": base,
                      "submitted_at": ts(), "kind": kind}
-    log(f"submitted [{kind}] {target['id']} -> task {task.agent_task_id}")
+    log(f"submitted [{kind}] {target['id']} -> task {task.agent_task_id} "
+        f"in a new project, from {base[:8]}")
     return True
 
 
@@ -693,7 +783,6 @@ def tick(cfg: dict, q: list, st: dict) -> None:
         return
 
     ensure_api_key()
-    project = get_project(cfg)
     cur = st.get("current")
 
     # ---- 1. a task of ours is outstanding -------------------------------
@@ -722,7 +811,12 @@ def tick(cfg: dict, q: list, st: dict) -> None:
 
         # terminal — harvest whatever was produced, then decide
         log(f"{cur['target_id']} finished with {state}")
-        harvest(cfg, st, project, task, target)
+        try:
+            run_project = project_by_id(cur.get("project_id") or cfg["project_id"])
+        except Exception as e:
+            log(f"could not reach the run's project: {e!r} — will retry next tick")
+            return
+        harvest(cfg, st, run_project, task, target)
         rec = st["targets"][cur["target_id"]] if target else None
 
         if state in TERMINAL_STOP:
@@ -745,7 +839,7 @@ def tick(cfg: dict, q: list, st: dict) -> None:
                          f"contain `sorry`: {left}.\n\nPlease finish them now. The original "
                          f"instructions were:\n\n{target['prompt']}")
                 st["current"] = None
-                if submit(cfg, st, project, target, "reattempt", extra):
+                if submit(cfg, st, target, "reattempt", extra):
                     return
             summary = task.output_summary or ""
             if target["id"].startswith("audit"):
@@ -770,7 +864,7 @@ def tick(cfg: dict, q: list, st: dict) -> None:
                          f"picking up from the state of the repository and your own last "
                          f"summary.\n\nThe task was:\n\n{target['prompt']}")
                 st["current"] = None
-                if submit(cfg, st, project, target, "continue", extra):
+                if submit(cfg, st, target, "continue", extra):
                     return
             still = open_results(lean_dir(cfg), target.get("lean_names", []))
             review(cfg, st, f"{target['id']} ran out of budget",
@@ -788,7 +882,7 @@ def tick(cfg: dict, q: list, st: dict) -> None:
         elif state in TERMINAL_BAD and target:
             if rec["attempts"] <= cfg.get("max_retries_on_failure", 2):
                 st["current"] = None
-                if submit(cfg, st, project, target, "retry"):
+                if submit(cfg, st, target, "retry"):
                     return
             finish_target(st, target["id"], "failed", "server-side failure")
             review(cfg, st, f"{target['id']} failed on the server",
@@ -809,20 +903,11 @@ def tick(cfg: dict, q: list, st: dict) -> None:
         log("auto_start_next is off — not submitting")
         return
 
-    # do not clobber a task someone started by hand
-    if status_name(project) != "IDLE":
-        try:
-            tasks, _ = run_async(project.get_tasks(limit=1))
-        except Exception:
-            tasks = []
-        if tasks and status_name(tasks[0]) in RUNNING:
-            t = tasks[0]
-            st["current"] = {"target_id": "external", "task_id": t.agent_task_id,
-                             "submitted_at": ts(), "kind": "adopted"}
-            log(f"adopted an externally started task {t.agent_task_id}; waiting for it")
-            return
-        log("project is not idle — waiting")
-        return
+    # A run started by hand now lives in a project of its own, so there is
+    # nothing here to collide with and nothing to adopt: this driver's runs and
+    # yours no longer share a queue. Bring one of yours in with
+    #     driver.py integrate <project-id>
+    # which merges it the same way, against the commit it was created from.
 
     nxt = next_pending(st, q)
     if nxt is None:
@@ -832,7 +917,7 @@ def tick(cfg: dict, q: list, st: dict) -> None:
         notify(cfg, "Formalisation run finished",
                f"{done}/{len(q)} targets done. See driver.py status.")
         return
-    submit(cfg, st, project, nxt, "initial")
+    submit(cfg, st, nxt, "initial")
 
 
 # --------------------------------------------------------------------------
@@ -911,6 +996,31 @@ def cmd_sync(args) -> None:
     save_json(STATE_PATH, st)
 
 
+def cmd_integrate(args) -> None:
+    """Merge a project's result into the local repository.
+
+    For runs started by hand: point it at the project and, if the project was
+    not made from the current HEAD, at the commit it *was* made from, so the
+    merge has the right base.
+    """
+    cfg, q = config(), queue()
+    st = load_state(q)
+    ensure_api_key()
+    project = project_by_id(args.project)
+    tasks, _ = run_async(project.get_tasks(limit=1))
+    if not tasks:
+        sys.exit("that project has no tasks")
+    task = tasks[0]
+    state = status_name(task)
+    if state in RUNNING:
+        sys.exit(f"that task is still {state} — wait for it to finish")
+    ld = lean_dir(cfg)
+    base = args.base or git(ld, "rev-parse", "HEAD").stdout.strip()
+    log(f"integrating {args.project[:8]} ({state}) onto {base[:8]}")
+    harvest(cfg, st, project, task, None)
+    save_json(STATE_PATH, st)
+
+
 def cmd_pause(args) -> None:
     q = queue()
     st = load_state(q)
@@ -976,6 +1086,10 @@ def main() -> None:
     sub.add_parser("tick", help="one step of the state machine (what launchd runs)").set_defaults(f=cmd_tick)
     sub.add_parser("status", help="human-readable progress").set_defaults(f=cmd_status)
     sub.add_parser("sync", help="download the server state without submitting").set_defaults(f=cmd_sync)
+    ip = sub.add_parser("integrate", help="merge a hand-started project's result")
+    ip.add_argument("project")
+    ip.add_argument("--base", help="commit the project was created from (default: HEAD)")
+    ip.set_defaults(f=cmd_integrate)
     pp = sub.add_parser("pause", help="stop submitting new tasks")
     pp.add_argument("reason", nargs="?")
     pp.set_defaults(f=cmd_pause)

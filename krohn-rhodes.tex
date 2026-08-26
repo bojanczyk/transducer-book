@@ -281,7 +281,7 @@ Consider a function $f$ that is computed by a Mealy machine and is aperiodic. By
 
 \exerciseheader
 
-    \exer{ Show that every flip-flop machine can be obtained as a sequential composition of two-state flip-flop machines.}{
+    \exer{\label{exer:flip-flop-from-sequential-composition} Show that every flip-flop machine can be obtained as a sequential composition of two-state flip-flop machines.}{
     In a flip-flop machine, the state after reading an input string is determined by the last letter which has a constant state transformation: the state is the value of that constant, or the initial state if there is no such letter. In particular, the state can be tracked one bit at a time.
 
     Fix an injective encoding of the states as bit vectors
@@ -293,18 +293,18 @@ Consider a function $f$ that is computed by a Mealy machine and is aperiodic. By
     After all $k$ machines have been applied, each position is labelled by its original letter together with the state of the original machine before this position. This pair determines the output letter of the original machine, and therefore the construction is finished by a letter-to-letter homomorphism, i.e.~a Mealy machine with one state. (Such a machine can also be seen as a two-state flip-flop machine in which every letter has the identity state transformation, so that the second state is never visited.)
 }
 
-    \exer{ Show that the delay function from Example~\ref{ex:delay} is not  a composition of reversible Mealy machines. }{
+    \exer{\label{exer:delay-not-flip-flop-composition} Show that the delay function from Example~\ref{ex:delay} is not  a composition of reversible Mealy machines. }{
     By Lemma~\ref{lem:reversible-composition}, a composition of reversible Mealy machines is again a reversible Mealy machine, and therefore it is enough to show that the delay function is not computed by a single reversible machine. Suppose that it is, and let $a$ be some input letter. The state transformation of $a$ is a permutation of a finite set, and hence it has finite order, i.e.~there is some $k \geq 1$ such that reading $a^k$ leads from the initial state back to the initial state. Consequently, the machine is in the initial state just before reading the last letter of both input strings
     \begin{align*}
     a \qquad \text{and} \qquad a^k a,
     \end{align*}
     and therefore it produces the same last output letter for both of them. This is not what the delay function does: its last output letter is the undefined letter for the first input string, and the letter $a$ for the second one.
 }
-    \exer{ Show that the function from Example~\ref{ex:alternating-a-b} is not  a composition of flip-flop Mealy machines.}{
+    \exer{\label{exer:alternating-not-flip-flop-composition} Show that the function from Example~\ref{ex:alternating-a-b} is not  a composition of flip-flop Mealy machines.}{
     By Theorem~\ref{thm:aperiodic-mealy}, the compositions of flip-flop machines are exactly the aperiodic functions, and hence it is enough to observe that this function is not aperiodic. Take $u$ and $w$ to be empty and $v = a$ in Definition~\ref{def:aperiodic-mealy}. The last letter of the output for the input string $a^n$ is $a$ or $b$, depending on the parity of $n$, and hence it does not stabilise for large $n$. This is the same argument as the one for the parity function in Example~\ref{ex:size-threshold-3}.
 }
 
-        \exer{ Is every invertible Mealy machine, as defined in Exercise~\ref{exer:invertible}, necessarily reversible? The other way round?}{
+        \exer{\label{exer:invertible-mealy-is-reversible} Is every invertible Mealy machine, as defined in Exercise~\ref{exer:invertible}, necessarily reversible? The other way round?}{
     Neither implication holds. The reason is that the two notions constrain different parts of the transition function: invertibility is about the output letters, while reversibility is about the target states.
 
     For a machine that is invertible but not reversible, consider the machine over the alphabet $\set{a,b}$ which stores the previous input letter in its state, and whose output is: the current input letter, if the previous letter was $a$ or there was no previous letter; and the current input letter with $a$ and $b$ swapped otherwise. Every state transformation is a constant, and hence this is a flip-flop machine, which is not reversible, since a constant transformation on a state space with more than one state is not a permutation. It is invertible, because in each state the two outgoing transitions have different output letters, which is the criterion from the solution to Exercise~\ref{exer:invertible}.

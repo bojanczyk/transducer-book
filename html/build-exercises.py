@@ -75,20 +75,33 @@ def brace_arg(text, scan, i):
     return None, i                          # unbalanced; caller reports it
 
 
+# theorem, lemma, claim … all share one counter (macros.sty aliases them to
+# `theorem`), so counting the environments counts the numbers they consume
+RESULT_ENV = re.compile(r"\\begin\{(?:theorem|lemma|claim|corollary|definition"
+                        r"|fact|proposition|conjecture|subclaim)\}")
+
+
+def count_results(tex):
+    return len(RESULT_ENV.findall(blank_comments(tex)))
+
+
 def exercises_in(path):
-    """[(statement, solution)] for one chapter, in source order."""
+    r"""([(statement, solution)], the chapter with the \exer calls cut out)."""
     text = path.read_text(errors="ignore")
     scan = blank_comments(text)
-    out = []
+    out, body, cut = [], [], 0
     for m in re.finditer(r"\\exer\s*(?=\{)", scan):
         stmt, i = brace_arg(text, scan, m.end())
         if stmt is None:
             sys.exit(f"{path.name}: unbalanced braces in \\exer near offset {m.start()}")
         while i < len(scan) and scan[i].isspace():
             i += 1
-        sol, _ = brace_arg(text, scan, i)
+        sol, j = brace_arg(text, scan, i)
         out.append((stmt.strip(), (sol or "").strip()))
-    return out
+        body.append(text[cut:m.start()])
+        cut = j
+    body.append(text[cut:])
+    return out, "".join(body)
 
 
 def read_page(md):
@@ -106,7 +119,7 @@ def read_page(md):
             "counters": counters}
 
 
-def render(page, chapter, items):
+def render(page, chapter, items, body):
     """The generated exercise section for one page."""
     # the chapter's own \section commands have run by the time the exercises
     # appear, so the section counter has moved on from the page's opening value
@@ -116,17 +129,29 @@ def render(page, chapter, items):
     preamble = (f"\\setcounter{{mypart}}{{{part}}}"
                 f"\\setcounter{{section}}{{{section}}}")
 
+    # A result stated inside an exercise or a solution shares the book's one
+    # theorem counter, and each block is compiled on its own — so without this
+    # the first claim in a solution comes out as ".0.1", colliding with the
+    # chapter's own Definition .0.1. The printed edition never shows it (\exer
+    # discards its solution), so there is no number to match: the honest thing
+    # is to carry on from where the chapter body left off.
+    running = count_results(body)
+
     lines = [BEGIN, '<div class="exercises">']
     for n, (stmt, sol) in enumerate(items, 1):
         lines += [f'<div class="exercise" id="exercise-{n}">', page["open"],
-                  f"{preamble}\\setcounter{{exercise}}{{{n - 1}}}",
+                  f"{preamble}\\setcounter{{theorem}}{{{running}}}"
+                  f"\\setcounter{{exercise}}{{{n - 1}}}",
                   "\\begin{exercise}", stmt, "\\end{exercise}", "{{< /latex >}}"]
+        running += count_results(stmt)
         if sol:
             lines += ['<details class="solution">',
                       "<summary>Show solution</summary>",
-                      '<div class="solution-body">', page["open"], preamble,
+                      '<div class="solution-body">', page["open"],
+                      preamble + f"\\setcounter{{theorem}}{{{running}}}",
                       "\\noindent\\textbf{Solution.}\\quad " + sol,
                       "{{< /latex >}}", "</div>", "</details>"]
+            running += count_results(sol)
         lines.append("</div>")
     lines += ["</div>", END]
     return "\n".join(lines) + "\n"
@@ -166,10 +191,10 @@ def main():
             print(f"  {md.name}: source {page['source']} not found", file=sys.stderr)
             drifted += 1
             continue
-        items = exercises_in(chapter)
+        items, body = exercises_in(chapter)
         if not items:
             continue
-        block = render(page, chapter, items)
+        block = render(page, chapter, items, body)
         want = rewrite(page, block)
         total += len(items)
         solved += sum(1 for _, s in items if s)

@@ -55,7 +55,7 @@ SOURCES = ROOT / "data" / "lean_sources.json"
 # \newaliascnt keeps those names distinct even though the counters are shared,
 # so the anchor prefix is what tells a Lemma from a Theorem.
 KINDS = ["theorem", "lemma", "claim", "corollary", "definition",
-         "fact", "proposition", "example", "exercise"]
+         "fact", "proposition", "conjecture", "subclaim", "example", "exercise"]
 NUMBER = re.compile(r"[A-D]?\.\d+\.\d+")
 
 # Which results are deliberately not formalised is read from THEOREMS.md's own
@@ -85,14 +85,22 @@ def brace_groups(s, i):
 
 
 def read_book():
-    """(kind, number) -> {label, number, page, anchor}, from the PDF build."""
+    """label -> {kind, number, page, anchor}, from the PDF build.
+
+    Keyed on the label, not on the number. The number is what the book prints,
+    but it moves the moment a result is inserted earlier, and everything keyed
+    on it then points at the wrong theorem with nothing to catch it. The label
+    is chosen by the author and does not move; the number is recoverable from
+    it here, and not the other way round.
+    """
     if not AUX.exists():
         sys.exit(f"{AUX} not found — run latexmk on ../main.tex first")
     aux = AUX.read_text(errors="ignore")
     book = {}
     for m in re.finditer(r"\\newlabel\{([^}]+)\}\{", aux):
         label = m.group(1)
-        if label.endswith("@cref"):
+        # hyperref writes targets of its own alongside the authored labels
+        if label.endswith("@cref") or label.startswith("autoref-"):
             continue
         outer = brace_groups(aux, m.end() - 1)
         if not outer:
@@ -106,12 +114,8 @@ def read_book():
         kind = anchor.split(".")[0].lower()
         if kind not in KINDS:
             continue
-        # hyperref invents targets of its own (`autoref-1`); an authored label is
-        # the one to key on, and a generated one must not shadow it
-        prev = book.get((kind, number))
-        if prev is None or (":" in label and ":" not in prev["label"]):
-            book[(kind, number)] = {"label": label, "number": number,
-                                    "page": page, "anchor": anchor, "kind": kind}
+        book[label] = {"label": label, "number": number,
+                       "page": page, "anchor": anchor, "kind": kind}
     return book
 
 
@@ -202,6 +206,42 @@ def span_of(name, decl_line, starts, lines, rel, doc_before):
             "decl_line": decl_line, "end": end}
 
 
+LABELS = LEAN / "RequestProject" / "Labels.lean"
+
+
+def read_labels():
+    """label -> [(declaration, proved_claim)], from the project's own registry.
+
+    `Labels.lean` declares, for every formalised result, an alias whose Lean
+    name *is* the book's label, and follows it with `assert_no_sorry` or
+    `assert_uses_sorry`. Both are elaborators, so the correspondence and the
+    status are checked by the compiler on every build — which makes this a far
+    better source than reading docstrings, where nothing checks that the name in
+    the prose is the name below it. Several declarations for one result are
+    written `label#2`, `label#3`.
+    """
+    if not LABELS.exists():
+        return {}
+    out, text = {}, LABELS.read_text(errors="ignore")
+    # The file also accounts for the results it does *not* alias, one per line
+    # with the reason. A conjecture is not a gap in the formalisation, and nor
+    # is a step the book only uses inside a proof; taking the list from here
+    # beats inferring it from prose elsewhere.
+    excused = {}
+    for m in re.finditer(r"^\* `([^`]+)` \((\w+)\) -- ([^;]+)", text, re.M):
+        excused[m.group(1)] = m.group(3).strip()
+    out["__excused__"] = excused
+    for m in re.finditer(r"^alias «([^»]+)» := ([A-Za-z_][\w'.]*)", text, re.M):
+        tag, decl = m.group(1), m.group(2)
+        label = tag.split("#")[0]
+        after = text[m.end():m.end() + 200]
+        claim = ("proved" if "assert_no_sorry" in after.split("alias")[0]
+                 else "open" if "assert_uses_sorry" in after.split("alias")[0]
+                 else None)
+        out.setdefault(label, []).append((decl, claim))
+    return out
+
+
 def read_lean():
     """(kind, number) -> [{name, file, line, end}], from docstrings, and all bodies.
 
@@ -248,7 +288,7 @@ def read_lean():
             locations.setdefault(name, span_of(name, at, starts, lines, rel, doc_before))
         # docstrings carrying a book number, and the declaration they precede
         for start, end, doc in doc_comments(txt):
-            hit = re.search(rf"\*\*({DOC_KIND})\s+({NUMBER.pattern})", doc)
+            hit = re.search(rf"\*\*({DOC_KIND})\s+`([a-z]+:[a-z0-9-]+)`", doc)
             if not hit:
                 continue
             d = DECL.search(txt[end:end + 400])
@@ -263,7 +303,7 @@ def read_lean():
             end = (after[0] - 1) if after else len(lines)
             while end > decl_line and not lines[end - 1].strip():
                 end -= 1                      # don't trail off into blank lines
-            key = (hit.group(1).lower(), hit.group(2))
+            key = hit.group(2)          # the label; kind comes from the book
             entry = {"name": d.group(1), "file": rel, "line": doc_line,
                      "decl_line": decl_line, "end": end}
             if entry not in hits.setdefault(key, []):
@@ -341,35 +381,32 @@ CELL_TOKEN = re.compile(
 
 
 def parse_results_cell(cell, book):
-    """The results a row is about: 'Claims B.4.9–B.4.12', 'Lemma D.2.2, Claim D.2.3'…
+    """The labels a row is about.
 
-    A kind carries forward to the numbers that follow it, which is how the file
-    writes a list; a range is expanded against the numbers the book actually
-    has, so nothing is invented.
+    A row names one result, a comma-separated list of them, or a range written
+    `` `first` to `last` ``. A range is expanded through the book's own ordering
+    — the numbers in `main.aux` — so nothing is invented and the endpoints stay
+    the author's.
     """
-    out, kind = [], None
-    for m in CELL_TOKEN.finditer(cell):
-        if m.group(1):
-            word = m.group(1).lower()
-            kind = "corollary" if word == "corollaries" else word
-        elif m.group(2) and kind:
-            lo, hi = number_key(m.group(2)), number_key(m.group(3))
-            out += sorted((k for k in book
-                           if k[0] == kind and lo <= number_key(k[1]) <= hi),
-                          key=lambda k: number_key(k[1]))
-        elif m.group(4) and kind:
-            out.append((kind, m.group(4)))
-    return out
+    labels = re.findall(r"`([a-z]+:[a-z0-9-]+)`", cell)
+    labels = [l for l in labels if l in book]
+    if re.search(r"`\s+to\s+`", cell) and len(labels) == 2:
+        lo, hi = (number_key(book[l]["number"]) for l in labels)
+        kind = book[labels[0]]["kind"]
+        span = [l for l, b in book.items()
+                if b["kind"] == kind and lo <= number_key(b["number"]) <= hi]
+        return sorted(span, key=lambda l: number_key(book[l]["number"]))
+    return labels
 
 
 def read_theorems_md(book):
-    """(kind, number) -> {names, status, internal, not_formalised}.
+    """label -> {names, status, internal, not_formalised}.
 
-    Most rows are about a single result, but some cover several at once, and
-    those are the ones that say what happened to the book's internal steps —
-    Claims B.4.9–B.4.12, for instance, are not numbered results in Lean but do
-    have proofs there, as named steps inside the proof of Theorem B.4.8. Read
-    literally, such a row links four claims to four declarations, in order.
+    Most rows are about a single result. Some cover several at once, and those
+    are the ones that record what happened to the book's internal steps — the
+    claims inside the proof of Theorem B.4.8, say, which are not numbered
+    results in Lean but do have proofs there under names of their own. Read
+    literally, such a row links n results to n declarations, in order.
     """
     if not THEOREMS.exists():
         return {}
@@ -381,11 +418,13 @@ def read_theorems_md(book):
         if len(cells) < 2:
             continue
         results = parse_results_cell(cells[0], book)
+        if not results:
+            continue
+        names = lean_names_in(cells[1])
+        absent = "not formalised" in cells[1].lower()
         if len(results) > 1:
-            names = lean_names_in(cells[1])
-            absent = "not formalised" in cells[1].lower()
-            # Only pair them up when the row names exactly one declaration per
-            # result; anything else is prose we should not read as a mapping.
+            # pair them up only when the row names exactly one declaration per
+            # result; anything else is prose, not a mapping
             paired = len(names) == len(results)
             for i, key in enumerate(results):
                 out[key] = {"names": [names[i]] if paired else [],
@@ -393,16 +432,12 @@ def read_theorems_md(book):
                             "internal": paired and absent,
                             "not_formalised": absent and not paired}
             continue
-        hit = re.match(rf"\**({DOC_KIND})\**\s+({NUMBER.pattern})", cells[0])
-        if not hit:
-            continue
-        names = lean_names_in(cells[1])
         if not names:
             continue
         status = cells[2] if len(cells) > 2 else ""
-        out[(hit.group(1).lower(), hit.group(2))] = {
+        out[results[0]] = {
             "names": names, "status": re.sub(r"\s+", " ", status).strip(" —-"),
-            "internal": False, "not_formalised": False}
+            "internal": False, "not_formalised": absent}
     return out
 
 
@@ -413,12 +448,32 @@ def build():
     lean, bodies, sources, locations = read_lean()
     witness = sorry_witnesses(bodies)
     md = read_theorems_md(book)
+    registry = read_labels()
 
     entries, by_decl = {}, {}
-    for key, b in sorted(book.items()):
-        kind, number = key
+    for key, b in sorted(book.items(), key=lambda kv: number_key(kv[1]["number"])):
+        kind, number = b["kind"], b["number"]
         decls = []
+        # The registry first: `Labels.lean` is the one correspondence the
+        # compiler checks, so prefer it to the docstrings, which nothing checks.
+        for name, claim in registry.get(key, []):
+            st, w = state_of(name, bodies, witness)
+            loc = locations.get(name) or locations.get(name.split(".")[-1]) or \
+                  next((v for k2, v in locations.items()
+                        if k2.split(".")[-1] == name.split(".")[-1]), None)
+            d = {"name": name, "state": st, **(loc or {"file": None, "line": None}),
+                 **({"rests_on": w} if w else {})}
+            # the registry asserts a status at compile time; if our own reading of
+            # the sources disagrees, say so rather than quietly pick one
+            if claim == "proved" and st in ("open", "blocked"):
+                d["disagrees"] = f"Labels.lean asserts no sorry, sources say {st}"
+            elif claim == "open" and st == "proved":
+                d["disagrees"] = "Labels.lean asserts a sorry, sources say proved"
+            decls.append(d)
+        seen_reg = {d["name"].split(".")[-1] for d in decls}
         for d in lean.get(key, []):
+            if d["name"].split(".")[-1] in seen_reg:
+                continue
             st, w = state_of(d["name"], bodies, witness)
             decls.append({**d, "state": st, **({"rests_on": w} if w else {})})
         # names THEOREMS.md lists that no docstring pointed at
@@ -451,9 +506,12 @@ def build():
              "page": b["page"], "anchor": b["anchor"], "lean": decls}
         if key in md:
             e["theorems_md_status"] = md[key]["status"]
-        if md.get(key, {}).get("not_formalised") or kind == "exercise":
+        excuse = registry.get("__excused__", {}).get(key)
+        if excuse or md.get(key, {}).get("not_formalised") or kind == "exercise":
             e["not_formalised"] = True
-        entries[b["label"]] = e
+            if excuse:
+                e["not_formalised_because"] = excuse
+        entries[key] = e          # key *is* the label
         for d in decls:
             by_decl.setdefault(d["name"], {"label": b["label"], "kind": kind,
                                            "number": number})
@@ -492,17 +550,17 @@ def report(book, lean, md, entries):
     booknums = set(book)
     orphan_doc = sorted(set(lean) - booknums)
     if orphan_doc:
-        print(f"\nnumbered in a Lean docstring but no \\label in the book "
+        print(f"\ncited by a Lean docstring but not a \\label of the book "
               f"({len(orphan_doc)}):")
         for k in orphan_doc:
-            print(f"   {k[0]:11s} {k[1]:8s}  -> {lean[k][0]['name']}")
+            print(f"   {k:44s} -> {lean[k][0]['name']}")
         problems += len(orphan_doc)
 
     orphan_md = sorted(set(md) - booknums - set(lean))
     if orphan_md:
-        print(f"\nin THEOREMS.md but no \\label in the book ({len(orphan_md)}):")
+        print(f"\nin THEOREMS.md but not a \\label of the book ({len(orphan_md)}):")
         for k in orphan_md:
-            print(f"   {k[0]:11s} {k[1]:8s}  -> {md[k]['names'][0]}")
+            print(f"   {k:44s} -> {md[k]['names'][0]}")
         problems += len(orphan_md)
 
     disagree = []
@@ -514,8 +572,8 @@ def report(book, lean, md, entries):
     if disagree:
         print(f"\ndocstring and THEOREMS.md name different declarations "
               f"({len(disagree)}):")
-        for (kind, num), a, b in disagree:
-            print(f"   {kind:11s} {num:8s}  docstring={a}  THEOREMS.md={b}")
+        for lab, a, b in disagree:
+            print(f"   {lab:44s} docstring={a}  THEOREMS.md={b}")
         problems += len(disagree)
 
     return problems

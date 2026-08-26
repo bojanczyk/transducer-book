@@ -9,7 +9,7 @@ source = "krohn-rhodes.tex"
 \setcounter{section}{1}
 \setcounter{ourexamplecounter}{4}
 \renewcommand{\exer}[2]{}
-% source stamp krohn-rhodes.tex:83211b43
+% source stamp krohn-rhodes.tex:88138105
 \input{../../../krohn-rhodes.tex}
 {{< /latex >}}
 
@@ -17,43 +17,114 @@ source = "krohn-rhodes.tex"
 <div class="exercises">
 <div class="exercise" id="exercise-1">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-\setcounter{mypart}{1}\setcounter{section}{2}\setcounter{exercise}{0}
+\setcounter{mypart}{1}\setcounter{section}{2}\setcounter{theorem}{11}\setcounter{exercise}{0}
 \begin{exercise}
 Show that every flip-flop machine can be obtained as a sequential composition of two-state flip-flop machines.
 \end{exercise}
 {{< /latex >}}
+<details class="solution">
+<summary>Show solution</summary>
+<div class="solution-body">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{1}\setcounter{section}{2}\setcounter{theorem}{11}
+\noindent\textbf{Solution.}\quad In a flip-flop machine, the state after reading an input string is determined by the last letter which has a constant state transformation: the state is the value of that constant, or the initial state if there is no such letter. In particular, the state can be tracked one bit at a time.
+
+    Fix an injective encoding of the states as bit vectors
+    \begin{align*}
+    \text{enc} : Q \to \set{0,1}^k \qquad \text{where $k$ is logarithmic in the number of states,}
+    \end{align*}
+    and consider a composition of $k$ machines, where the $j$-th machine copies its input to the output, extending each position with one extra bit, namely the $j$-th bit of the encoding of the state that the original machine had \emph{before} reading this position. The $j$-th machine stores this bit in its state, and hence it has two states. It is a flip-flop machine, since a letter whose state transformation is the identity leaves the bit unchanged, while a letter whose state transformation is a constant sets the bit to the corresponding bit of that constant.
+
+    After all $k$ machines have been applied, each position is labelled by its original letter together with the state of the original machine before this position. This pair determines the output letter of the original machine, and therefore the construction is finished by a letter-to-letter homomorphism, i.e.~a Mealy machine with one state. (Such a machine can also be seen as a two-state flip-flop machine in which every letter has the identity state transformation, so that the second state is never visited.)
+{{< /latex >}}
+</div>
+</details>
 </div>
 <div class="exercise" id="exercise-2">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-\setcounter{mypart}{1}\setcounter{section}{2}\setcounter{exercise}{1}
+\setcounter{mypart}{1}\setcounter{section}{2}\setcounter{theorem}{11}\setcounter{exercise}{1}
 \begin{exercise}
 Show that the delay function from Example~\ref{ex:delay} is not  a composition of reversible Mealy machines.
 \end{exercise}
 {{< /latex >}}
+<details class="solution">
+<summary>Show solution</summary>
+<div class="solution-body">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{1}\setcounter{section}{2}\setcounter{theorem}{11}
+\noindent\textbf{Solution.}\quad By Lemma~\ref{lem:reversible-composition}, a composition of reversible Mealy machines is again a reversible Mealy machine, and therefore it is enough to show that the delay function is not computed by a single reversible machine. Suppose that it is, and let $a$ be some input letter. The state transformation of $a$ is a permutation of a finite set, and hence it has finite order, i.e.~there is some $k \geq 1$ such that reading $a^k$ leads from the initial state back to the initial state. Consequently, the machine is in the initial state just before reading the last letter of both input strings
+    \begin{align*}
+    a \qquad \text{and} \qquad a^k a,
+    \end{align*}
+    and therefore it produces the same last output letter for both of them. This is not what the delay function does: its last output letter is the undefined letter for the first input string, and the letter $a$ for the second one.
+{{< /latex >}}
+</div>
+</details>
 </div>
 <div class="exercise" id="exercise-3">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-\setcounter{mypart}{1}\setcounter{section}{2}\setcounter{exercise}{2}
+\setcounter{mypart}{1}\setcounter{section}{2}\setcounter{theorem}{11}\setcounter{exercise}{2}
 \begin{exercise}
 Show that the function from Example~\ref{ex:alternating-a-b} is not  a composition of flip-flop Mealy machines.
 \end{exercise}
 {{< /latex >}}
+<details class="solution">
+<summary>Show solution</summary>
+<div class="solution-body">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{1}\setcounter{section}{2}\setcounter{theorem}{11}
+\noindent\textbf{Solution.}\quad By Theorem~\ref{thm:aperiodic-mealy}, the compositions of flip-flop machines are exactly the aperiodic functions, and hence it is enough to observe that this function is not aperiodic. Take $u$ and $w$ to be empty and $v = a$ in Definition~\ref{def:aperiodic-mealy}. The last letter of the output for the input string $a^n$ is $a$ or $b$, depending on the parity of $n$, and hence it does not stabilise for large $n$. This is the same argument as the one for the parity function in Example~\ref{ex:size-threshold-3}.
+{{< /latex >}}
+</div>
+</details>
 </div>
 <div class="exercise" id="exercise-4">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-\setcounter{mypart}{1}\setcounter{section}{2}\setcounter{exercise}{3}
+\setcounter{mypart}{1}\setcounter{section}{2}\setcounter{theorem}{11}\setcounter{exercise}{3}
 \begin{exercise}
 Is every invertible Mealy machine, as defined in Exercise~\ref{exer:invertible}, necessarily reversible? The other way round?
 \end{exercise}
 {{< /latex >}}
+<details class="solution">
+<summary>Show solution</summary>
+<div class="solution-body">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{1}\setcounter{section}{2}\setcounter{theorem}{11}
+\noindent\textbf{Solution.}\quad Neither implication holds. The reason is that the two notions constrain different parts of the transition function: invertibility is about the output letters, while reversibility is about the target states.
+
+    For a machine that is invertible but not reversible, consider the machine over the alphabet $\set{a,b}$ which stores the previous input letter in its state, and whose output is: the current input letter, if the previous letter was $a$ or there was no previous letter; and the current input letter with $a$ and $b$ swapped otherwise. Every state transformation is a constant, and hence this is a flip-flop machine, which is not reversible, since a constant transformation on a state space with more than one state is not a permutation. It is invertible, because in each state the two outgoing transitions have different output letters, which is the criterion from the solution to Exercise~\ref{exer:invertible}.
+
+    For a machine that is reversible but not invertible, consider the machine with one state which sends every input letter to the same output letter. Its only state transformation is the identity, and hence it is reversible, but the function that it computes is not injective, and therefore it has no inverse.
+{{< /latex >}}
+</div>
+</details>
 </div>
 <div class="exercise" id="exercise-5">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-\setcounter{mypart}{1}\setcounter{section}{2}\setcounter{exercise}{4}
+\setcounter{mypart}{1}\setcounter{section}{2}\setcounter{theorem}{11}\setcounter{exercise}{4}
 \begin{exercise}
 \label{ex:map-lifting-continuous} Show that if $f : A^* \to B^*$ is continuous, then the same is true for its map lifting.
 \end{exercise}
 {{< /latex >}}
+<details class="solution">
+<summary>Show solution</summary>
+<div class="solution-body">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{1}\setcounter{section}{2}\setcounter{theorem}{11}
+\noindent\textbf{Solution.}\quad Let $\Bb$ be an automaton which recognises a regular language over the output alphabet of the map lifting; we want to show that the inverse image of this language is regular. Consider an input string
+    \begin{align*}
+    w_1 \# \cdots \# w_n.
+    \end{align*}
+    Its image under the map lifting is accepted by $\Bb$ if and only if there are states $p_1,q_1$, $\ldots$, $p_n,q_n$ of $\Bb$ such that:
+    \begin{enumerate}
+        \item $p_1$ is initial and $q_n$ is accepting;
+        \item for every $i$, the automaton can go from $p_i$ to $q_i$ while reading $f(w_i)$;
+        \item for every $i<n$, the automaton can go from $q_i$ to $p_{i+1}$ while reading the separator.
+    \end{enumerate}
+    An automaton over the input alphabet can guess these states and check the three conditions. The first and third conditions speak about individual positions, and hence they are easily checked. The second condition is an inverse image, under $f$, of the language recognised by $\Bb$ with initial state $p_i$ and accepting state $q_i$; this inverse image is regular thanks to the continuity assumption on $f$. The same argument is used later in the book, see Lemma~\ref{lem:map-lifting-continuous}.
+{{< /latex >}}
+</div>
+</details>
 </div>
 </div>
 <!-- end exercises -->

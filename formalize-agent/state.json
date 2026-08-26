@@ -12,10 +12,14 @@
     "C4-first-order",
     "C4-fo-transductions",
     "C2-snake-step",
+    "exercises-intro",
+    "exercises-partA",
+    "exercises-partBC",
     "audit-C",
-    "D-pebble-and-lemmas",
-    "D-equivalences",
-    "C1-decidability",
+    "D1-tools",
+    "D1-equivalence",
+    "D2-continuity",
+    "D2-pebble-equivalence",
     "audit-final"
   ],
   "targets": {
@@ -61,7 +65,7 @@
       ],
       "started_at": "2026-08-22 01:31:44Z",
       "finished_at": "2026-08-22 18:52:49Z",
-      "note": "budget exhausted after 3 continuations; C.2.10 and C.2.11 proved, C.2.9 left resting on boundedWidth_isRegular_step -> handed to target C2-snake-step",
+      "note": "budget exhausted at the time; C.2.9 was later finished by C2-snake-step and all three of its results are proved outright",
       "sorries_at_start": 20
     },
     "C3-sst": {
@@ -160,34 +164,34 @@
       "note": null
     },
     "D-pebble-and-lemmas": {
-      "status": "pending",
+      "status": "skipped",
       "attempts": 0,
       "continues": 0,
       "reattempts": 0,
       "task_ids": [],
       "started_at": null,
       "finished_at": null,
-      "note": null
+      "note": "superseded by the D1-/D2- targets, which order Part D by dependency"
     },
     "D-equivalences": {
-      "status": "pending",
+      "status": "skipped",
       "attempts": 0,
       "continues": 0,
       "reattempts": 0,
       "task_ids": [],
       "started_at": null,
       "finished_at": null,
-      "note": null
+      "note": "superseded by the D1-/D2- targets, which order Part D by dependency"
     },
     "C1-decidability": {
-      "status": "pending",
+      "status": "done",
       "attempts": 0,
       "continues": 0,
       "reattempts": 0,
       "task_ids": [],
       "started_at": null,
-      "finished_at": null,
-      "note": null
+      "finished_at": "2026-08-25 05:13:01Z",
+      "note": "proved outside the queue: `regular_equivalence_decidable` from the two effectivity hypotheses of `PartC/EffectiveReg.lean`, the way Part B's decidability results are; verified by #print axioms"
     },
     "audit-final": {
       "status": "pending",
@@ -216,18 +220,114 @@
       "finished_at": "2026-08-25 03:41:55Z",
       "note": null,
       "sorries_at_start": 8
+    },
+    "exercises-intro": {
+      "status": "running",
+      "attempts": 1,
+      "continues": 0,
+      "reattempts": 0,
+      "task_ids": [
+        "3917d314-cccd-4cb7-91db-c64b9a2e53d0"
+      ],
+      "started_at": "2026-08-26 01:41:06Z",
+      "finished_at": null,
+      "note": null,
+      "sorries_at_start": 5,
+      "runs": [
+        {
+          "task_id": "3917d314-cccd-4cb7-91db-c64b9a2e53d0",
+          "project_id": "c3bc6fc6",
+          "base": "b0a312d0",
+          "note": "tracking cleared by hand in error; integrate with driver.py integrate c3bc6fc6 --base b0a312d0"
+        }
+      ]
+    },
+    "exercises-partA": {
+      "status": "running",
+      "attempts": 2,
+      "continues": 1,
+      "reattempts": 0,
+      "task_ids": [
+        "6afc3ec8-4ccb-42c5-b8e6-a4d6b4d46306",
+        "fd9fa871-c814-4fb3-8cc9-62b2580aa974"
+      ],
+      "started_at": "2026-08-26 01:41:24Z",
+      "finished_at": null,
+      "note": null,
+      "sorries_at_start": 5,
+      "runs": [
+        {
+          "task_id": "fd9fa871-c814-4fb3-8cc9-62b2580aa974",
+          "project_id": "0ef0aef3-818e-456d-b8f6-fda359c4ba65",
+          "base": "f0c656d637a5703ac4e1e347dd727b2c00c5ecdd",
+          "kind": "continue",
+          "at": "2026-08-26 03:53:54Z"
+        }
+      ]
+    },
+    "exercises-partBC": {
+      "status": "pending",
+      "attempts": 0,
+      "continues": 0,
+      "reattempts": 0,
+      "task_ids": [],
+      "started_at": null,
+      "finished_at": null,
+      "note": null
+    },
+    "D1-tools": {
+      "status": "pending",
+      "attempts": 0,
+      "continues": 0,
+      "reattempts": 0,
+      "task_ids": [],
+      "started_at": null,
+      "finished_at": null,
+      "note": null
+    },
+    "D1-equivalence": {
+      "status": "pending",
+      "attempts": 0,
+      "continues": 0,
+      "reattempts": 0,
+      "task_ids": [],
+      "started_at": null,
+      "finished_at": null,
+      "note": null
+    },
+    "D2-continuity": {
+      "status": "pending",
+      "attempts": 0,
+      "continues": 0,
+      "reattempts": 0,
+      "task_ids": [],
+      "started_at": null,
+      "finished_at": null,
+      "note": null
+    },
+    "D2-pebble-equivalence": {
+      "status": "pending",
+      "attempts": 0,
+      "continues": 0,
+      "reattempts": 0,
+      "task_ids": [],
+      "started_at": null,
+      "finished_at": null,
+      "note": null
     }
   },
   "current": {
-    "target_id": "external",
-    "task_id": "2a952f59-ce5d-4611-8538-8582d36f8bbe",
-    "submitted_at": "2026-08-25 03:41:57Z",
-    "kind": "adopted"
+    "target_id": "exercises-partA",
+    "task_id": "fd9fa871-c814-4fb3-8cc9-62b2580aa974",
+    "project_id": "0ef0aef3-818e-456d-b8f6-fda359c4ba65",
+    "base": "f0c656d637a5703ac4e1e347dd727b2c00c5ecdd",
+    "submitted_at": "2026-08-26 03:53:54Z",
+    "kind": "continue"
   },
-  "paused": true,
-  "pause_reason": "paused by hand",
+  "paused": false,
+  "pause_reason": null,
   "finished_at": null,
-  "ticks": 225,
-  "last_tick": "2026-08-25 04:57:10Z",
+  "ticks": 236,
+  "last_tick": "2026-08-26 04:08:55Z",
   "review_pending": 0
 }

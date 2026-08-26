@@ -9,7 +9,7 @@ source = "rational-relations.tex"
 \setcounter{section}{0}
 \setcounter{ourexamplecounter}{6}
 \renewcommand{\exer}[2]{}
-% source stamp rational-relations.tex:17ea882f
+% source stamp rational-relations.tex:ec83e78c
 \input{../../../rational-relations.tex}
 {{< /latex >}}
 
@@ -17,7 +17,7 @@ source = "rational-relations.tex"
 <div class="exercises">
 <div class="exercise" id="exercise-1">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-\setcounter{mypart}{2}\setcounter{section}{1}\setcounter{exercise}{0}
+\setcounter{mypart}{2}\setcounter{section}{1}\setcounter{theorem}{7}\setcounter{exercise}{0}
 \begin{exercise}
 \label{ex:recognisable-relations}Show that the recognisable subsets of $A^* \times B^*$ are exactly the unions of finitely many products of regular languages, i.e.~unions of the form 
 \begin{align*}
@@ -26,6 +26,35 @@ K_1 \times L_1 \cup \cdots \cup K_n \times L_n
 where each $K_i$ is a regular language over the input alphabet and each $L_i$ is a regular language over the output alphabet.
 \end{exercise}
 {{< /latex >}}
+<details class="solution">
+<summary>Show solution</summary>
+<div class="solution-body">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{2}\setcounter{section}{1}\setcounter{theorem}{7}
+\noindent\textbf{Solution.}\quad We use the standard reformulation of recognisability: a subset of a monoid is recognisable if and only if it is the inverse image $h^{-1}(F)$ of some subset $F$, under some monoid homomorphism $h$ into a finite monoid. (Given a congruence of finite index, take the quotient monoid; conversely, the equivalence which identifies elements with the same image under $h$ is a congruence of finite index.)
+
+    Consider first a product $K \times L$ of regular languages, which are recognised by monoid homomorphisms
+    \begin{align*}
+    A^* \xrightarrow g M \qquad \text{and} \qquad B^* \xrightarrow k N.
+    \end{align*}
+    This product is recognised by the homomorphism into $M \times N$ which maps a pair $(w,v)$ to $(g(w),k(v))$. For a finite union of such products, we take the product of the corresponding monoids, thus obtaining a single homomorphism which recognises all of the products at the same time, and hence also their union, since the recognisable subsets for a fixed homomorphism are closed under Boolean operations.
+
+    For the converse implication, consider a recognisable relation $R = h^{-1}(F)$, for some homomorphism $h$ into a finite monoid $M$. The point is that the two coordinates are independent, because every pair factors as
+    \begin{align*}
+    (w,v) = (w,\varepsilon) \cdot (\varepsilon,v).
+    \end{align*}
+    Applying $h$ to this factorisation, we get $h(w,v) = g(w) \cdot k(v)$, where
+    \begin{align*}
+    g(w) \eqdef h(w,\varepsilon) \qquad \text{and} \qquad k(v) \eqdef h(\varepsilon,v)
+    \end{align*}
+    are monoid homomorphisms from $A^*$ and $B^*$ into $M$, and hence they recognise regular languages. It follows that
+    \begin{align*}
+    R = \bigcup g^{-1}(m) \times k^{-1}(n),
+    \end{align*}
+    where the union ranges over the finitely many pairs $(m,n) \in M \times M$ whose product $mn$ belongs to $F$. This is a finite union of products of regular languages, as required.
+{{< /latex >}}
+</div>
+</details>
 </div>
 </div>
 <!-- end exercises -->

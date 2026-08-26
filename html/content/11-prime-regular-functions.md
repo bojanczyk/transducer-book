@@ -9,7 +9,7 @@ source = "regular-primes.tex"
 \setcounter{section}{0}
 \setcounter{ourexamplecounter}{18}
 \renewcommand{\exer}[2]{}
-% source stamp regular-primes.tex:4c794da4
+% source stamp regular-primes.tex:88ca1637
 \input{../../../regular-primes.tex}
 {{< /latex >}}
 
@@ -17,11 +17,34 @@ source = "regular-primes.tex"
 <div class="exercises">
 <div class="exercise" id="exercise-1">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-\setcounter{mypart}{3}\setcounter{section}{1}\setcounter{exercise}{0}
+\setcounter{mypart}{3}\setcounter{section}{1}\setcounter{theorem}{5}\setcounter{exercise}{0}
 \begin{exercise}
 In  Definition~\ref{def:regular-functions}, we use map reverse and map duplicate over arbitrary alphabets of the form $A + 1$. Show that the definition remains the same if we only consider $A$ with two letters.
 \end{exercise}
 {{< /latex >}}
+<details class="solution">
+<summary>Show solution</summary>
+<div class="solution-body">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{3}\setcounter{section}{1}\setcounter{theorem}{5}
+\noindent\textbf{Solution.}\quad One inclusion is immediate, since a two-letter alphabet is a special case. For the converse inclusion, we show how map reverse and map duplicate for an arbitrary alphabet $A$ can be simulated using their two-letter counterparts, together with rational functions.
+
+    Fix an injective encoding of the letters of $A$ as bit strings of a common length
+    \begin{align*}
+    \text{code} : A \to \set{0,1}^k,
+    \end{align*}
+    and extend it to a homomorphism on $(A+1)^*$, by mapping the separator to itself. This homomorphism is rational. Decoding is rational as well: a transducer reads the input in blocks of $k$ letters, restarting at each separator, and outputs one letter of $A$ per complete block. (A rational function must be total, so we also need to say what the decoder does on badly formatted inputs; this is irrelevant, so we can say that an incomplete last block is ignored.)
+
+    For map duplicate, we have the decomposition
+    \begin{align*}
+    \text{map duplicate over $A$} \quad = \quad \text{code} \ \cdot \ \text{map duplicate over $\set{0,1}$} \ \cdot \ \text{decode},
+    \end{align*}
+    because duplicating the encoding of a string is the same as encoding its duplication.
+
+    For map reverse, the same decomposition almost works, the problem being that reversing an encoded string reverses not only the order of the blocks, but also the bits inside each block. The second effect is undone before it happens: instead of the homomorphism above, we use the homomorphism which maps each letter to the reverse of its code. With this modification, reversing the encoded string yields the encoding of the reversed string, and the decomposition works as for map duplicate.
+{{< /latex >}}
+</div>
+</details>
 </div>
 </div>
 <!-- end exercises -->
