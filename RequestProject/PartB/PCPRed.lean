@@ -15,7 +15,7 @@ instance.  The reduction produces the two relations
 * `R₂ = A* × B*`,
 
 which are equal exactly when the instance has no solution.  The relation `R₁` is rational because
-the complement of a homomorphism is rational (Claim `claim:homomorphism-complement-rational`); the
+the complement of a homomorphism is rational (Claim `nolabel:claim-complement-of-homomorphism`); the
 automaton is written out explicitly here, since the reduction has to be a computable function on
 codes. -/
 import RequestProject.PartB.Codes

@@ -18,7 +18,7 @@ result is proved outright or still depends on `sorry`.  So the names and the
 statuses in the tables below cannot go stale without breaking the build.
 
 All the results of **Part A** are proved, including the Krohn-Rhodes Theorem
-`thm:krohn-rhodes`, Lemma `lem:Mealy-map-lifting` and both implications of Theorem
+`nolabel:thm-krohn-rhodes`, Lemma `lem:Mealy-map-lifting` and both implications of Theorem
 `thm:aperiodic-mealy`.  All the results of **Part B** are proved as well; five of them
 (`thm:undecidable-equivalence-rational-relations`, `thm:equivalence-weighted-automata`,
 `thm:equivalence-rational-functions`, `thm:zeroness-weighted-automata` and `thm:decide-if-mealy`)
@@ -80,11 +80,11 @@ RequestProject/
 | `PartB/WeightedStatements.lean` | Sections *Rational relations and weighted automata* to *Machine independent characterisations*: weighted automata, machine independent characterisations |
 | `PartC/ContAux.lean` | continuity: closure under composition, letter-to-letter maps, reversal, duplication, and the map lifting (Lemma `lem:map-lifting-continuous`) |
 | `PartC/TwoDFA.lean` | deterministic two-way automata and Shepherdson's Theorem (their languages are regular) |
-| `PartC/TwoWayCont.lean` | two-way transducers (Definition `def:two-way-transducer`) and their continuity (Theorem `thm:continuity-2dfas`) |
+| `PartC/TwoWayCont.lean` | two-way transducers (Definition `nolabel:def-two-way-transducer`) and their continuity (Theorem `thm:continuity-2dfas`) |
 | `PartC/TwoWayPrecomp.lean` | pre-composition of a two-way transducer with a Mealy machine (Lemma `lem:2dfa-precomposition-with-mealy`), via the Krohn-Rhodes Theorem: the reversible case, the flip-flop case, and pre-composition with reversal |
 | `PartC/TwoWayHom.lean`, `PartC/TwoWayBlock.lean`, `PartC/TwoWayErase.lean`, `PartC/TwoWayRat.lean` | pre-composition of a two-way transducer with a homomorphism and with an arbitrary rational function (Corollary `cor:2dfa-closure-under-composition`) |
 | `PartC/TwoWayRun.lean`, `PartC/TwoWayVisit.lean`, `PartC/TwoWayAnnot.lean`, `PartC/TwoWayAnnotBim.lean`, `PartC/TwoWayCompAux.lean`, `PartC/TwoWayCompPred.lean`, `PartC/TwoWayComp.lean`, `PartC/TwoWayCompFinal.lean` | the composition of two two-way transducers (Theorem `thm:composition-of-two-way-transducers`) |
-| `PartC/TwoWaySweep.lean`, `PartC/TwoWayRegular.lean` | explicit two-way transducers for the identity, for post-composition with a letter-to-letter map, and for map reverse and map duplicate; every regular function is computed by a two-way transducer (corrected Corollary `cor:2dfa-computes-all-regular-functions`) |
+| `PartC/TwoWaySweep.lean`, `PartC/TwoWayRegular.lean` | explicit two-way transducers for the identity, for post-composition with a letter-to-letter map, and for map reverse and map duplicate; every regular function is computed by a two-way transducer (corrected Corollary `nolabel:cor-two-way-implies-regular`) |
 | `PartC/RegularDef.lean` | the prime regular functions and the regular functions (Definition `def:regular-functions`), moved here unchanged from `PartC/Statements.lean`, together with their elementary closure properties |
 | `PartC/RegCodeSan.lean` | codes of two-way transducers (`TwoWayCode`, `twoWayCodeAut`, `twoWayCodeRel`, `TwoWayCodeTotal`, moved here unchanged from `PartC/Statements.lean`), and the fact that a coded transducer is blind to the letters that do not occur in its table: renaming them does not change the computed relation (`Transducers.RegDec.twoWayCodeRel_map`), which is what makes the equivalence test of Theorem `thm:decidable-equivalence-regular` a finite check |
 | `PartC/RegCodeBound.lean` | the existence of the equivalence bound of Theorem `thm:decidable-equivalence-regular` for two codes (`Transducers.exists_twoWayCode_bound`): the transducer of a code read over the finite alphabets and the finite state set that occur in it, the step-by-step correspondence between its runs and those of the coded transducer, the determinism of two-way transducers (`TwoWay.computes_unique`), and the application of `Transducers.regularFun_eq_of_short` |
@@ -125,21 +125,21 @@ RequestProject/
 | `PartC/SSTDef.lean` | Definition `def:sst`: the copyless restriction (`Transducers.Copyless`), streaming string transducers (`Transducers.SST`) and their semantics (`SST.subst`, `SST.runConfig`, `SST.eval`, `Transducers.IsSST`), moved here unchanged from `Statements.lean` so that the constructions of Theorem `theorem:sst-two-way-equivalence` can precede it |
 | `PartC/SSTBasic.lean` | the elementary API of an sst: substitution of register contents, the workable form `Transducers.copyless_iff` of the copyless restriction, the list `Transducers.regsOf` of register occurrences, and the *simulation lemma* `SST.eval_of_sim` by which every construction below is verified |
 | `PartC/SSTComp.lean` | the easy cases of the closure of sst's under post-composition with a prime regular function: the identity sst, homomorphisms, the separator function and the case distinction on a regular language |
-| `PartC/SSTMealyRev.lean`, `PartC/SSTMealyFF.lean`, `PartC/SSTMealy.lean` | post-composition of an sst with a Mealy machine, hence with an arbitrary rational function: since the naive construction is not copyless, the machine is decomposed by Krohn–Rhodes (Theorem `thm:krohn-rhodes`) into reversible and flip-flop machines, treated in the first two files, and `SSTMealy.lean` assembles them |
+| `PartC/SSTMealyRev.lean`, `PartC/SSTMealyFF.lean`, `PartC/SSTMealy.lean` | post-composition of an sst with a Mealy machine, hence with an arbitrary rational function: since the naive construction is not copyless, the machine is decomposed by Krohn–Rhodes (Theorem `nolabel:thm-krohn-rhodes`) into reversible and flip-flop machines, treated in the first two files, and `SSTMealy.lean` assembles them |
 | `PartC/SSTMapRev.lean`, `PartC/SSTMapDup.lean` | post-composition of an sst with map reverse and with map duplicate, the two remaining prime regular functions: the register contents are kept as tuples indexed by the position of the separators inside them, and copylessness is proved by counting register occurrences |
 | `PartC/SSTRegular.lean` | the "regular to sst" half of Theorem `theorem:sst-two-way-equivalence` (`Transducers.isSST_of_isRegularFun`): sst's are closed under post-composition with every prime, hence with every regular function, and applying this to the identity sst gives the statement |
 | `PartC/SSTNorm.lean` | *normalised* sst's (`Transducers.NSST`: the register update depends only on the letter read, the state only on the last letter, and no register occurs twice in a final output string) and the reduction of an arbitrary sst to one (`Transducers.exists_nsst_of_sst`): the input letters are annotated by a Mealy machine with the state of the sst before them, and `K + 1` copies of every register are kept so that the occurrences in a final output string can be given pairwise distinct copies |
 | `PartC/SSTWalk.lean` | the two-way transducer that traverses the register flow tree of a normalised sst (`Transducers.isTwoWay_of_nsst`): it expands the final output string depth-first, moving left to expand the value of a register and right when an expansion is finished, and the copyless restriction is what makes the place at which the expansion has to be resumed a function of the register and of the letter at the position returned to (`NSSTWalk.findReg_eq`, `NSSTWalk.scan`, `NSSTWalk.top`) |
 | `PartC/SSTTwoWay.lean` | the "sst to regular" half of Theorem `theorem:sst-two-way-equivalence`, through Theorem `thm:2dfa-decomposition-into-primes` (`Transducers.isTwoWay_of_isSST`): the annotation of `SSTNorm.lean` is rational and two-way transducers are closed under pre-composition with rational functions (Corollary `cor:2dfa-closure-under-composition`) |
-| `PartC/KTypes.lean` | `k`-types of strings (Definition `def:k-types`) and their properties (Lemma `lem:k-types-properties`) |
+| `PartC/KTypes.lean` | `k`-types of strings (Definition `nolabel:def-fo-types`) and their properties (Lemma `item:fo-types-more-information`) |
 | `PartC/Statements.lean` | Sections *The prime regular functions* to *Streaming string transducers*: regular functions, two-way transducers, streaming string transducers |
 | `PartC/MSODef.lean` | the definitions of Section *Logic*: monadic second-order logic over strings, mso relabellings, mso transductions and the first-order fragment (moved unchanged out of `MSO.lean`, which imports this file) |
 | `PartC/MSOSyntax.lean` | elementary syntax and semantics of mso formulas: satisfaction depends only on the free variables (`MSO.sat_congr`), bounds on the variables of a formula, finite conjunctions and disjunctions, universal quantification and implication as abbreviations, and the existential closure of a list of variables |
 | `PartC/RegAut.lean` | a toolkit of regular languages used by the translation of formulas into automata: languages defined by a `foldl` and by an nfa, Boolean operations, finite intersections, images and inverse images of letter-to-letter maps, the scanning languages, and the language of strings with exactly one marked position |
-| `PartC/MSOAnnot.lean` | Lemma `lem:mso-free-variables`: the language `AnnLang` of valid annotated strings satisfying a formula, its regularity by induction on the syntax of the formula, and its identification with the language in the statement of the lemma |
-| `PartC/MSOBuchi.lean` | Theorem `thm:mso-logic-languages`: the language of a sentence is regular (from Lemma `lem:mso-free-variables`), and the formula that guesses the run of a dfa as one second-order variable per state |
-| `PartC/MSORelab.lean` | Claim `claim:mso-annotation-regular`: the strings over `Γ × 2` with one marked position at which a formula holds form a regular language, and the language of the claim is the intersection, over the finitely many indices, of the complements of the projections of those languages |
-| `PartC/MarkStr.lean` | doubly marked strings: the alphabet `Mark2 A = A × 2 × 2`, the marking `markAt2 w x y` of two positions of a string and its decomposition into prefix, marked infix and suffix, and the regular language `markedSat2 φ` of doubly marked strings satisfying a formula (from Lemma `lem:mso-free-variables`) |
+| `PartC/MSOAnnot.lean` | Lemma `nolabel:lem-mso-to-automaton`: the language `AnnLang` of valid annotated strings satisfying a formula, its regularity by induction on the syntax of the formula, and its identification with the language in the statement of the lemma |
+| `PartC/MSOBuchi.lean` | Theorem `thm:mso-logic-languages`: the language of a sentence is regular (from Lemma `nolabel:lem-mso-to-automaton`), and the formula that guesses the run of a dfa as one second-order variable per state |
+| `PartC/MSORelab.lean` | Claim `nolabel:claim-formula-annotation-regular`: the strings over `Γ × 2` with one marked position at which a formula holds form a regular language, and the language of the claim is the intersection, over the finitely many indices, of the complements of the projections of those languages |
+| `PartC/MarkStr.lean` | doubly marked strings: the alphabet `Mark2 A = A × 2 × 2`, the marking `markAt2 w x y` of two positions of a string and its decomposition into prefix, marked infix and suffix, and the regular language `markedSat2 φ` of doubly marked strings satisfying a formula (from Lemma `nolabel:lem-mso-to-automaton`) |
 | `PartC/MarkLogic.lean` | the converse translation: from an automaton over `Mark2 A` back to an mso formula with one free variable (`exists_form_of_regular`), by a syntactic translation of the formula given by Theorem `thm:mso-logic-languages` for the language of marked strings |
 | `PartC/MarkBimach.lean` | the bimachine that precomputes, in every position of the input, the state of each automaton of a finite family on the unmarked prefix and its state transformation on the unmarked suffix; the function `markFun` it computes, its rationality (from Theorem `thm:bimachines`) and, in the letter-to-letter case, its length preservation |
 | `PartC/MarkDelay.lean` | the delayed automaton reading letters that carry states and state transformations: it keeps the last letter read pending, since whether a position is the last one is known only when the string ends |
@@ -159,9 +159,9 @@ RequestProject/
 | `PartC/TwoWayMSO.lean` | Theorem `thm:logic-regular-functions`, from two-way transducers to mso transductions: the mso transduction whose elements are the pairs (configuration, index of a produced letter), with all its formulas obtained from `RunMark.lean` through Theorem `thm:mso-logic-languages` |
 | `PartC/FORel.lean` | relativisation of a first-order formula to the positions strictly below, at most, or strictly above a variable (`MSO.relLt`, `relLe`, `relGt`), the strict order `MSO.ltVar` and the fact that a first-order sentence does not see its valuations (`MSO.sat_sentence_congr`) |
 | `PartC/FOSeg.lean` | factors of a string between two bounds (`MSO.segP`), their splitting, and the transfer of a splitting along an equality of `(k+1)`-types (`Transducers.exists_split_of_tp_succ_eq`) |
-| `PartC/FOComp.lean` | Claim `claim:fo-composition-quantifier-rank` (an internal step, not a numbered result): the compositionality of first-order logic — if two strings have the same `k`-type then a marked position on one side can be matched on the other so that all formulas of quantifier rank `k` are preserved (`Transducers.KEquiv`, `sat_iff_of_kEquiv`, `sat_iff_of_tp_eq`) |
+| `PartC/FOComp.lean` | Claim `nolabel:claim-fo-type-of-a-tuple` (an internal step, not a numbered result): the compositionality of first-order logic — if two strings have the same `k`-type then a marked position on one side can be matched on the other so that all formulas of quantifier rank `k` are preserved (`Transducers.KEquiv`, `sat_iff_of_kEquiv`, `sat_iff_of_tp_eq`) |
 | `PartC/FORename.lean` | the effect of renaming and of shifting the variables of a formula on being first-order, on the quantifier rank and on the free variables, and finite conjunctions and disjunctions of first-order formulas |
-| `PartC/FOHintikka.lean` | the second half of Lemma `lem:k-types-fo-equivalence`: a first-order sentence of quantifier rank at most `k` separating two strings of different `k`-type (`Transducers.exists_fo_sentence_of_tp_ne`, `tp_eq_of_fo_equiv`) |
+| `PartC/FOHintikka.lean` | the second half of Lemma `nolabel:lem-fo-types-characterisation`: a first-order sentence of quantifier rank at most `k` separating two strings of different `k`-type (`Transducers.exists_fo_sentence_of_tp_ne`, `tp_eq_of_fo_equiv`) |
 | `PartC/FOTypeDFA.lean` | the easy direction of Theorem `thm:logic-aperiodic`: the (aperiodic, finite) automaton of `k`-types and the aperiodic dfa recognising a first-order definable language (`Transducers.tpDFA`, `aperiodic_dfa_of_foDefinable`) |
 | `PartC/FOSubstRel.lean` | substitution of a sentence for a label test in a first-order formula, relativised to the positions at most a variable (`MSO.substRel`), used for the composition of first-order definable Mealy machines |
 | `PartC/FOFlipFlop.lean` | flip-flop machines: the letter-indexed reset target (`Mealy.resetTo`) and the description of the state reached after a prefix as the target of the last resetting letter (`Mealy.trans_take_eq_iff`) |
@@ -179,7 +179,7 @@ RequestProject/
 | `PartC/FOTransDup.lean` | map duplicate is a first-order transduction (`Transducers.isFOTransduction_mapDuplicate`): the elements are pairs `(copy, position)` ordered by `Transducers.dupOrd`, which puts the first copy of a block before its second copy |
 | `PartC/FOPrimeFam.lean` | the family `Transducers.FORegularFam` of prime first-order regular functions (first-order rational functions, map reverse, map duplicate) |
 | `PartC/FOTransPrimeComp.lean` | every composition of the primes of `FORegularFam` is a first-order transduction (`Transducers.isFOTransduction_of_compClosure`), by induction on `CompClosure` from the four files above |
-| `PartC/MSO.lean` | Section *Logic*: the numbered results that are **proved** — Theorem `thm:mso-logic-languages`, Lemma `lem:mso-free-variables`, Theorem `thm:logic-rational-functions`, Claim `claim:mso-annotation-regular`, Theorem `thm:logic-regular-functions`, Lemma `lem:logic-precomputation`, Theorem `thm:logic-aperiodic`, Lemma `lem:k-types-fo-equivalence`, Lemma `lem:k-types-properties` and Theorem `thm:fo-rational-functions` (this file contains no `sorry`) |
+| `PartC/MSO.lean` | Section *Logic*: the numbered results that are **proved** — Theorem `thm:mso-logic-languages`, Lemma `nolabel:lem-mso-to-automaton`, Theorem `thm:logic-rational-functions`, Claim `nolabel:claim-formula-annotation-regular`, Theorem `thm:logic-regular-functions`, Lemma `lem:logic-precomputation`, Theorem `thm:logic-aperiodic`, Lemma `nolabel:lem-fo-types-characterisation`, Lemma `item:fo-types-more-information` and Theorem `thm:fo-rational-functions` (this file contains no `sorry`) |
 | `PartC/MSOOpen.lean` | Section *Logic*: pointer comments only. It used to hold the results of Section *Logic* that were not yet proved; the last one, Theorem `nolabel:thm-fo-transduction-into-primes`, has been **removed from the formalised theorems at the user's request** and is kept there only as a comment, so the file now declares nothing and Section *Logic* has no `sorry` left |
 | `PartD/MarkedSquare.lean` | marked squaring and its continuity |
 | `PartD/Statements.lean` | Part D: polyregular functions, for-transducers, pebble transducers |
@@ -222,15 +222,15 @@ RequestProject/
 | Theorem `thm:equivalence-decidable-mealy` (decidable equivalence) | `Transducers.mealy_equiv_iff_bounded` | proved |
 | Theorem `thm:composition-mealy` (composition) | `Transducers.mealy_comp` | proved |
 | Theorem `thm:continuity-mealy` (continuity) | `Transducers.mealy_continuous` | proved |
-| Definition `def:prime-mealy-machines` (prime Mealy machines) | `Transducers.Mealy.Reversible`, `Transducers.Mealy.FlipFlop`, `Transducers.PrimeMealyFam` | — |
-| Theorem `thm:krohn-rhodes` (Krohn–Rhodes) | `Transducers.krohn_rhodes` | proved |
+| Definition `nolabel:def-prime-mealy-machines` (prime Mealy machines) | `Transducers.Mealy.Reversible`, `Transducers.Mealy.FlipFlop`, `Transducers.PrimeMealyFam` | — |
+| Theorem `nolabel:thm-krohn-rhodes` (Krohn–Rhodes) | `Transducers.krohn_rhodes` | proved |
 | Definition `def:map-lifting` (map lifting) | `Transducers.mapLift` | — |
 | Lemma `lem:map-lifting-decomposition-mealy` (map lifting of a decomposition) | `Transducers.mapLift_prime_decomposition` | proved (in `MapLift.lean`) |
 | Lemma `lem:Mealy-map-lifting` (state transformation transducer) | `Transducers.stateTransTransducer_prime_decomposition` | proved (in `StateTrans.lean`): induction basis `stateTransTransducer_prime_of_reversible`, induction step by the tripartite decomposition into `a`-blocks (`krStages_eq`, `krStages_compClosure`) |
 | Lemma `lem:reversible-composition` (reversible machines compose) | `Transducers.reversible_comp` | proved |
 | Definition `def:aperiodic-mealy` (aperiodic) | `Transducers.Aperiodic` | — |
 | Theorem `thm:aperiodic-mealy` (aperiodic = flip-flops) | `Transducers.aperiodic_iff_flipflop_composition` | proved ("⇐" by `flipflop_composition_aperiodic`, "⇒" by `krohn_rhodes_flipFlop`, which runs the construction of `StateTrans.lean` inside the class of flip-flops, using that only realisable state transformations occur, see `StateTransAperiodic.lean`) |
-| Claim `claim:aperiodic-pumping` (pumping form of aperiodicity) | `Transducers.aperiodic_iff_pumping` | proved |
+| Claim `nolabel:claim-aperiodic-pumping` (pumping form of aperiodicity) | `Transducers.aperiodic_iff_pumping` | proved |
 | Lemma `lemma:derivatives` (Myhill–Nerode) | `Transducers.myhill_nerode_mealy` | proved |
 | Lemma `lem:aperiodicity-minimal-machine` (condition (*)) | `Transducers.aperiodic_iff_transStabilises` | proved |
 
@@ -259,22 +259,21 @@ transformations of the prefixes of the input).
 
 | Book | Lean | Status |
 | --- | --- | --- |
-| Definition `def:nfa-with-output` (nfa with output) | `Transducers.NFAO` (via `Transducers.LabAut`) | — |
+| Definition `nolabel:def-nfa-with-output` (nfa with output) | `Transducers.NFAO` (via `Transducers.LabAut`) | — |
 | Definition `def:rational-relation` (rational relation) | `Transducers.IsRationalRel` | — |
-| Definition `def:rational-recognisable-subsets` (rational and recognisable subsets of a monoid) | `Transducers.IsRecognisableSubset`, `Transducers.IsRationalSubset` | — (the definition of the paragraph *Why the name rational?*; a congruence of finite index is Mathlib's `Con M` with `Finite c.Quotient`, and the rational subsets are an inductive predicate whose constructors are the finite sets, union, product and the Kleene star `⋃ₙ Lⁿ`) |
 | Theorem `thm:composition-rational-relations` (composition) | `Transducers.rationalRel_comp` | proved (product automaton in `RatComp.lean`, on the atomic normal form of `Atomize.lean`) |
 | Theorem `thm:continuity-rational-relations` (continuity) | `Transducers.rationalRel_continuous` | proved (ε-automaton running a dfa on the output, `RatCont.lean`) |
 | Theorem `thm:undecidable-equivalence-rational-relations` (undecidable equivalence) | `Transducers.rationalRel_equivalence_undecidable` | proved from an explicit hypothesis that the Post correspondence problem is undecidable (reduction in `PCPRed.lean`) |
-| Claim `claim:homomorphism-complement-rational` (complement of a homomorphism) | `Transducers.hom_complement_rational` | proved (explicit four-state automaton, `HomComplement.lean`) |
-| Definition `def:rational-function` (rational function) | `Transducers.IsRationalFun` | — |
+| Claim `nolabel:claim-complement-of-homomorphism` (complement of a homomorphism) | `Transducers.hom_complement_rational` | proved (explicit four-state automaton, `HomComplement.lean`) |
+| Definition `nolabel:def-rational-function` (rational function) | `Transducers.IsRationalFun` | — |
 | Definition `def:bimachine` (bimachine) | `Transducers.Bimachine`, `Transducers.IsBimachine` | — |
 | Theorem `thm:bimachines` (rational = unambiguous = bimachine) | `Transducers.rational_iff_unambiguous_iff_bimachine` | proved (unambiguity by the least accepting run, `Unambig.lean` and `Uniform.lean`; bimachine → rational in `Bimachine.lean`, rational → bimachine in `RatBimach.lean`) |
 | Lemma `lemma:eliminate-epsilon-transitions` (elimination of ε-transitions) | `Transducers.epsilon_elimination` | proved (`EpsElim.lean`, using the regularity of the outputs on a fixed input, `OutLang.lean`) |
 | Lemma `lem:uniformisation` (uniformisation) | `Transducers.uniformisation` | proved (`Uniform.lean`, from the ε-free normal form of Lemma `lemma:eliminate-epsilon-transitions` and the unambiguisation of `Unambig.lean`) |
 | Theorem `thm:rational-primes` (decomposition into primes) | `Transducers.rational_iff_prime_composition` | proved (`PrimeRat.lean` and `BimachPrime.lean`, from Theorem `thm:bimachines` and the Krohn–Rhodes Theorem) |
-| Theorem `thm:rational-is-mealy-characterisation` (Mealy machines inside rational functions) | `Transducers.rational_isMealy_iff` | proved (from Theorem `thm:mealy-machine-independent` and Theorem `thm:continuity-rational-relations`) |
-| Definition `def:semiring` (semiring) | Mathlib's `Semiring` | — |
-| Definition `def:weighted-automaton` (weighted automaton) | `Transducers.LabAut.wEval`, `Transducers.IsWeighted` | — |
+| Theorem `nolabel:thm-mealy-among-rational-functions` (Mealy machines inside rational functions) | `Transducers.rational_isMealy_iff` | proved (from Theorem `thm:mealy-machine-independent` and Theorem `thm:continuity-rational-relations`) |
+| Definition `nolabel:def-semiring` (semiring) | Mathlib's `Semiring` | — |
+| Definition `nolabel:def-weighted-automaton` (weighted automaton) | `Transducers.LabAut.wEval`, `Transducers.IsWeighted` | — |
 | Theorem `thm:equivalence-weighted-automata` (equivalence over ℚ) | `Transducers.weighted_equivalence_decidable` | proved from the effectivity hypothesis `EffectiveWeightedEvalEq` (`WeightedDec.lean`) |
 | Theorem `thm:equivalence-rational-functions` (equivalence of rational functions) | `Transducers.rationalFun_equivalence_decidable` | proved from `EffectiveWeightedEvalEq` (reduction to `thm:equivalence-weighted-automata` in `RatEqDec.lean`) |
 | Lemma `lem:closure-weighted-automata-precomposition` (pre-composition) | `Transducers.weighted_precomp_rational` | proved (`WeightedNF.lean`, `WeightedLinRep.lean` and `WeightedPrecomp.lean`) |
@@ -286,7 +285,7 @@ transformations of the prefixes of the input).
 | Claim `claim:typing-length-preserving` (typings) | `Transducers.lengthPreserving_iff_typing` | proved (`Typing.lean`) |
 | Lemma `lem:characterisation-length-preserving` (length-preserving normal form) | `Transducers.lengthPreserving_rational_normal_form` | proved (`LenNormalForm.lean`) |
 | Theorem `thm:sequential-function-independent` (sequential functions) | `Transducers.isSequential_iff` | proved (`SeqChar.lean`); the statement of the book needs the extra condition `f [] = []` |
-| Definition `def:left-distance` (left distance) | `Transducers.leftDist` | — |
+| Definition `nolabel:def-left-distance` (left distance) | `Transducers.leftDist` | — |
 | Theorem `thm:subsequential-functions` (subsequential functions) | `Transducers.isSubsequential_iff` | proved (`SubseqDef.lean`, `SubseqAlpha.lean`, `SubseqState.lean`, `SubseqBound.lean`, `SubseqChar.lean`) |
 | Claims `claim:bounded-extensions` to `claim:eliminating-negative-letters` | not formalised as numbered results; they appear as the internal steps `delay_bound`, `key_drop`, `incr_congr` and `exists_deletion_bound` of the proof of Theorem `thm:subsequential-functions` | — |
 | Theorem `thm:machine-independent-rational-functions` (rational functions) | `Transducers.isRationalFun_iff` | proved (`RatIndex.lean`, `SubseqRat.lean`, `RatAnnot.lean`) |
@@ -294,7 +293,7 @@ transformations of the prefixes of the input).
 Supporting files for Part B: `Atomize.lean` (every nfa with output is equivalent to one whose
 transitions read and write at most one letter), `RatComp.lean` (Theorem
 `thm:composition-rational-relations`), `RatCont.lean` (Theorem `thm:continuity-rational-relations`),
-`HomComplement.lean` (Claim `claim:homomorphism-complement-rational`), `MealyChar.lean` (Theorem
+`HomComplement.lean` (Claim `nolabel:claim-complement-of-homomorphism`), `MealyChar.lean` (Theorem
 `thm:mealy-machine-independent`), `Typing.lean` (Claim `claim:typing-length-preserving`),
 `LenNormalForm.lean` (Lemma `lem:characterisation-length-preserving`: the type
 `τ q = |output| − |input|` of a state and the automaton whose states carry the output that is
@@ -304,18 +303,10 @@ Myhill–Nerode classes of the length-modulo and suffix languages), `RegularAux.
 the auxiliary languages), `OutLang.lean` (for a fixed input, the set of outputs is a regular
 language over the output alphabet) and `EpsElim.lean` (Lemma `lemma:eliminate-epsilon-transitions`).
 
-Definition `def:rational-recognisable-subsets` (the paragraph *Why the name rational?*) is stated in
-`RationalStatements.lean` itself, since nothing else uses it, together with sanity checks on
-the formalised definitions: `Transducers.iUnion_pow_eq_submonoidClosure` (the Kleene star of a
-subset is the submonoid that it generates), `Transducers.isRecognisableSubset_iff_exists_hom` (a
-subset is recognisable exactly when it is the preimage of a subset of a finite monoid under a
-homomorphism) and `Transducers.isRecognisableSubset_of_finite` together with
-`Transducers.isRationalSubset_of_finite` (in a finite monoid every subset is both).
-
 The files added for Theorem `thm:subsequential-functions` are:
 
 * `Lcp.lean` — the longest common prefix `lcp2` of two strings and its relation
-  to the left distance of Definition `def:left-distance`.
+  to the left distance of Definition `nolabel:def-left-distance`.
 * `SubseqDef.lean` — subsequential transducers, the bounded variation property,
   and the easy implication (a subsequential function is continuous and has
   bounded variation).
@@ -518,36 +509,36 @@ The proofs are organised as follows.
 | --- | --- | --- |
 | Definition `def:regular-functions` (regular functions) | `Transducers.IsRegularFun`, `Transducers.RegularFam` | — |
 | Theorem `thm:regular-functions-are-continuous-and-closed-under-composition` (continuity, composition) | `Transducers.regular_continuous`, `Transducers.regular_comp` | proved (continuity by induction on the decomposition into primes, `ContAux.lean`) |
-| Lemma `lem:reversal-duplication-continuous` (reversal, duplication) | `Transducers.reverse_duplicate_continuous` | proved (`ContAux.lean`) |
+| Lemma `nolabel:lem-reverse-and-duplicate-continuous` (reversal, duplication) | `Transducers.reverse_duplicate_continuous` | proved (`ContAux.lean`) |
 | Lemma `lem:map-lifting-continuous` (map lifting) | `Transducers.mapLift_continuous` | proved (Myhill–Nerode, `ContAux.lean`) |
 | Theorem `thm:decidable-equivalence-regular` (decidable equivalence) | `Transducers.regular_equivalence_decidable`; the book's proof: `Transducers.isWeighted_comp_regular`, `Transducers.isWeighted_comp_mapReverse`, `Transducers.isWeighted_comp_mapDuplicate`, `Transducers.exists_injective_weighted`, `Transducers.regularFun_eq_iff_weighted_eq`, `Transducers.regularFun_eq_iff_weighted_zero`, `Transducers.regularFun_eq_of_short`, `Transducers.exists_twoWayCode_bound` | the mathematical content of the book's proof is **proved** (`WeightedLin.lean`, `WeightedMapLift.lean`, `WeightedRegClosure.lean`): the reduction to zeroness of weighted automata over `ℚ` through the prime decomposition, with the constructions for map reverse (transposition of the matrices of a linear representation, where commutativity of the semiring is used) and map duplicate (Kronecker squares), the injective encoding of output strings by rationals, and the resulting bound reducing equivalence to a finite check. The decidability statement on *codes*, `Transducers.regular_equivalence_decidable`, is **proved from two explicit effectivity hypotheses** (`EffectiveTwoWayEvalEq` and `EffectiveTwoWayBound` of `PartC/EffectiveReg.lean`, `PartC/RegEqDec.lean`), exactly as Theorems `thm:equivalence-weighted-automata` and `thm:zeroness-weighted-automata` are: what those hypotheses isolate is the missing `Primrec`/`Computable` arithmetic on `ℤ` and `ℚ`. The *existence* of the equivalence bound, the mathematical content of the second hypothesis, is proved (`Transducers.exists_twoWayCode_bound`, `PartC/RegCodeBound.lean`) |
-| Definition `def:two-way-transducer` (two-way transducer) | `Transducers.TwoWay`, `Transducers.IsTwoWay` | — |
+| Definition `nolabel:def-two-way-transducer` (two-way transducer) | `Transducers.TwoWay`, `Transducers.IsTwoWay` | — |
 | Theorem `thm:continuity-2dfas` (continuity) | `Transducers.twoWay_continuous` | proved (`TwoWayCont.lean`, from Shepherdson's Theorem in `TwoDFA.lean`) |
 | Lemmas `lem:compute-configuration-graph`, `lem:check-if-output-string-of-configuration-graph-belongs-to-L`, `lem:output-of-snake-graph-is-regular` | not formalised (configuration-graph encodings used inside proofs) | — |
 | Theorem `thm:composition-of-two-way-transducers` (composition) | `Transducers.twoWay_comp` | proved (`TwoWayRun.lean`, `TwoWayVisit.lean`, `TwoWayAnnot.lean`, `TwoWayAnnotBim.lean`, `TwoWayCompAux.lean`, `TwoWayCompPred.lean`, `TwoWayComp.lean`, `TwoWayCompFinal.lean`) |
 | Lemma `lem:2dfa-precomposition-with-mealy` (pre-composition with Mealy machines) | `Transducers.twoWay_precomp_mealy` | proved |
 | Corollary `cor:2dfa-closure-under-composition` (pre-composition with rational functions) | `Transducers.twoWay_precomp_rational` | proved (`TwoWayHom.lean`, `TwoWayBlock.lean`, `TwoWayErase.lean` and `TwoWayRat.lean`, from Theorem `thm:rational-primes` and Lemma `lem:2dfa-precomposition-with-mealy`) |
-| Corollary `cor:2dfa-computes-all-regular-functions` (regular ⊆ two-way) | `Transducers.regularFun_isTwoWay`, `Transducers.isTwoWay_of_isRegularFun` | proved (`TwoWaySweep.lean`, `TwoWayRegular.lean`, from Corollary `cor:2dfa-closure-under-composition` and Theorem `thm:composition-of-two-way-transducers`); the direction printed in the book is a typo — see *A typo in Corollary `cor:2dfa-computes-all-regular-functions`* below |
-| Theorem `thm:2dfa-decomposition-into-primes` (two-way = regular) | `Transducers.twoWay_iff_regular`, `Transducers.twoWay_isRegular` | **both implications are proved**: the right-to-left one is Corollary `cor:2dfa-computes-all-regular-functions` above, and the left-to-right one, `Transducers.twoWay_isRegular` (two-way ⊆ regular, the inclusion printed in Corollary `cor:2dfa-computes-all-regular-functions`), is reduced to the snake lemma `Transducers.boundedWidth_isRegular` of `SnakeReg.lean`, whose base cases `k ≤ 1` are in `SnakeBase.lean`, whose combinatorial content is in `SnakeWalk.lean`, `SnakeRec.lean` and `SnakeLoop.lean`, and whose induction step `Transducers.boundedWidth_isRegular_step` is proved through the checking automaton of stage 1 (`SnakeStage1.lean`, `SnakeChk*.lean`); the whole theorem depends only on `propext`, `Classical.choice`, `Quot.sound` — see *How Theorem `thm:2dfa-decomposition-into-primes` is proved* below |
+| Corollary `nolabel:cor-two-way-implies-regular` (regular ⊆ two-way) | `Transducers.regularFun_isTwoWay`, `Transducers.isTwoWay_of_isRegularFun` | proved (`TwoWaySweep.lean`, `TwoWayRegular.lean`, from Corollary `cor:2dfa-closure-under-composition` and Theorem `thm:composition-of-two-way-transducers`); the direction printed in the book is a typo — see *A typo in Corollary `nolabel:cor-two-way-implies-regular`* below |
+| Theorem `thm:2dfa-decomposition-into-primes` (two-way = regular) | `Transducers.twoWay_iff_regular`, `Transducers.twoWay_isRegular` | **both implications are proved**: the right-to-left one is Corollary `nolabel:cor-two-way-implies-regular` above, and the left-to-right one, `Transducers.twoWay_isRegular` (two-way ⊆ regular, the inclusion printed in Corollary `nolabel:cor-two-way-implies-regular`), is reduced to the snake lemma `Transducers.boundedWidth_isRegular` of `SnakeReg.lean`, whose base cases `k ≤ 1` are in `SnakeBase.lean`, whose combinatorial content is in `SnakeWalk.lean`, `SnakeRec.lean` and `SnakeLoop.lean`, and whose induction step `Transducers.boundedWidth_isRegular_step` is proved through the checking automaton of stage 1 (`SnakeStage1.lean`, `SnakeChk*.lean`); the whole theorem depends only on `propext`, `Classical.choice`, `Quot.sound` — see *How Theorem `thm:2dfa-decomposition-into-primes` is proved* below |
 | Lemma `lem:regular-closure-properties` (closure properties) | `Transducers.regular_closure_properties` | **proved** (`MapLiftAux.lean`, `MapLiftRat.lean`, `MapLiftPrime.lean`, `RegMapLift.lean`, `RatSeq.lean`, `RegClosure.lean`) |
 | Claim `claim:conditional` (disjoint sums) | `Transducers.sum_of_regular` | **proved** (`SumShape.lean`, `SumPrime.lean`, `SumReg.lean`, `RegSum.lean`), in the corrected form — the claim as printed is false on the empty input, see *An error in Claim `claim:conditional`* below |
 | Definition `def:sst` (sst) | `Transducers.SST`, `Transducers.IsSST` | — |
 | Theorem `theorem:sst-two-way-equivalence` (sst = regular) | `Transducers.sst_iff_regular` | both implications are **proved** (`SSTComp.lean`, `SSTMealyRev.lean`, `SSTMealyFF.lean`, `SSTMealy.lean`, `SSTMapRev.lean`, `SSTMapDup.lean`, `SSTRegular.lean` for `regular ⊆ sst`; `SSTNorm.lean`, `SSTWalk.lean`, `SSTTwoWay.lean` for `sst ⊆ two-way`), and since Theorem `thm:2dfa-decomposition-into-primes` is now proved the statement depends only on `propext`, `Classical.choice`, `Quot.sound` — see *The proof of Theorem `theorem:sst-two-way-equivalence`* below |
 | Theorem `thm:mso-logic-languages` (mso = regular languages) | `Transducers.regular_iff_msoDefinable` | **proved** (`MSO.lean`, from `MSOSyntax.lean`, `RegAut.lean`, `MSOAnnot.lean`, `MSOBuchi.lean`) |
-| Lemma `lem:mso-free-variables` (formulas with free variables) | `Transducers.mso_annotated_regular` | **proved** (`RegAut.lean`, `MSOSyntax.lean`, `MSOAnnot.lean`) |
+| Lemma `nolabel:lem-mso-to-automaton` (formulas with free variables) | `Transducers.mso_annotated_regular` | **proved** (`RegAut.lean`, `MSOSyntax.lean`, `MSOAnnot.lean`) |
 | Definition `def:mso-relabeling` (mso relabelling) | `Transducers.MSORelabelling`, `Transducers.IsMSORelabelling` | — |
 | Theorem `thm:logic-rational-functions` (rational = mso relabelling) | `Transducers.rational_iff_msoRelabelling` | **proved** (`MSO.lean`, from `MSORatRelab.lean`, `MarkStr.lean`, `MarkLogic.lean`, `MarkBimach.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`) |
 | Claim `claim:transition-formula` | not formalised as a numbered result; it is the internal step of Theorem `thm:logic-rational-functions` and appears as `Transducers.RatRelab.exists_form` in `MSORatRelab.lean`, stated for the index of a bimachine | — |
-| Claim `claim:mso-annotation-regular` (annotated relabellings) | `Transducers.msoRelabelling_annotation_regular` | **proved** (`MSORelab.lean`, from Lemma `lem:mso-free-variables`) |
+| Claim `nolabel:claim-formula-annotation-regular` (annotated relabellings) | `Transducers.msoRelabelling_annotation_regular` | **proved** (`MSORelab.lean`, from Lemma `nolabel:lem-mso-to-automaton`) |
 | Definition `def:mso-transduction` (mso transduction) | `Transducers.MSOTransduction`, `Transducers.IsMSOTransduction` | — |
 | Theorem `thm:logic-regular-functions` (mso transductions = regular) | `Transducers.msoTransduction_iff_regular` | both implications are **proved** (`MSO.lean`, from `MSOReg.lean`, `MSOWalkData.lean`, `WalkAut.lean`, `MSOWalkForms.lean`, `MSONorm.lean`, `SortedEnum.lean` for `mso ⊆ regular`; `TwoWayMSO.lean`, `RunProbe.lean`, `RunMark.lean`, `RunElts.lean`, `MarkLogic2.lean` for `regular ⊆ mso`), and since Theorem `thm:2dfa-decomposition-into-primes` is now proved the statement depends only on `propext`, `Classical.choice`, `Quot.sound` — see *The proof of Theorem `thm:logic-regular-functions`* below |
 | Lemma `lem:logic-reduction-to-type-n` | not formalised as a numbered result; it is the normalisation of the type τ inside the proof of Theorem `thm:logic-regular-functions` and appears as `Transducers.MSOTransduction.exists_norm` in `MSONorm.lean` | — |
 | Lemma `lem:logic-precomputation` (formulas via rational functions) | `Transducers.mso_formulas_via_rational` | **proved** (`MSO.lean`, from `MSOPrecomp.lean`, `MarkStr.lean`, `MarkBimach.lean`, `MarkDelay.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`) |
 | Theorem `thm:logic-aperiodic` (first-order = aperiodic) | `Transducers.foDefinable_iff_aperiodic_dfa` | **proved** (`MSO.lean`, from `FOTypeDFA.lean` and `FOMealy.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`) |
-| Definition `def:k-types` (k-types) | `Transducers.tp` | — |
-| Lemma `lem:k-types-fo-equivalence` (types and formulas) | `Transducers.tp_eq_iff_fo_equiv` | **proved** (`MSO.lean`, from `FOComp.lean` and `FOHintikka.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`) |
-| Claim `claim:fo-composition-quantifier-rank` | internal step of the proof of Lemma `lem:k-types-fo-equivalence`; not a numbered result, but formalised as `Transducers.sat_iff_of_kEquiv` (`FOComp.lean`) | — |
-| Lemma `lem:k-types-properties` (properties of types) | `Transducers.tp_properties` | proved (`KTypes.lean`) |
+| Definition `nolabel:def-fo-types` (k-types) | `Transducers.tp` | — |
+| Lemma `nolabel:lem-fo-types-characterisation` (types and formulas) | `Transducers.tp_eq_iff_fo_equiv` | **proved** (`MSO.lean`, from `FOComp.lean` and `FOHintikka.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`) |
+| Claim `nolabel:claim-fo-type-of-a-tuple` | internal step of the proof of Lemma `nolabel:lem-fo-types-characterisation`; not a numbered result, but formalised as `Transducers.sat_iff_of_kEquiv` (`FOComp.lean`) | — |
+| Lemma `item:fo-types-more-information` (properties of types) | `Transducers.tp_properties` | proved (`KTypes.lean`) |
 | Theorem `thm:fo-rational-functions` (first-order relabellings) | `Transducers.foRelabelling_iff_aperiodicBimachine` | **proved** (`MSO.lean`, from `FORelabBimach.lean` for `first-order relabelling ⊆ aperiodic bimachine` and `FOBimachRelab.lean` for the converse, on top of `FORev.lean` and `FOPos.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`) |
 | Theorem `nolabel:thm-fo-transduction-into-primes` (first-order transductions) | **removed from the formalised theorems at the user's request** (its statement is kept, commented out, in `MSOOpen.lean`) | not formalised as a theorem any more. What remains is the inclusion `compositions of primes ⊆ first-order transductions`, **proved** as `Transducers.isFOTransduction_of_compClosure` (`FOTransPrimeComp.lean`, on top of the closure under composition of `FOTransComp.lean` and the three primes of `FORelabTrans.lean`, `FOTransRev.lean` and `FOTransDup.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`) — see *Theorem `nolabel:thm-fo-transduction-into-primes`: what was removed and what remains* below |
 
@@ -558,7 +549,7 @@ automata and Shepherdson's Theorem: their languages are regular, proved with the
 Myhill–Nerode theorem and the profile of a prefix), `TwoWayCont.lean` (the
 definitions of two-way transducers, and the two-way automaton obtained by
 running a deterministic automaton on the output) and `KTypes.lean` (`k`-types
-and Lemma `lem:k-types-properties`).
+and Lemma `item:fo-types-more-information`).
 
 The files added for Corollary `cor:2dfa-closure-under-composition` are:
 
@@ -656,7 +647,7 @@ Everything else is proved:
 * `RegEqDec.lean` — the decision procedure, assembled as in
   `PartB/WeightedDec.lean`, and its computability.
 
-#### A typo in Corollary `cor:2dfa-computes-all-regular-functions`
+#### A typo in Corollary `nolabel:cor-two-way-implies-regular`
 
 The corollary is printed as "if a function is computed by a two-way transducer, then it is regular",
 but its proof — "two-way transducers can compute all rational functions by Corollary
@@ -672,7 +663,7 @@ The printed direction is therefore a typo.  `PartC/Statements.lean` records the 
 in a comment at that place in the file, explaining the typo and pointing out that this inclusion is
 exactly the left-to-right implication of Theorem `thm:2dfa-decomposition-into-primes`, where it is
 stated as `Transducers.twoWay_isRegular` and where it is proved; it is not duplicated as a separate
-statement.  Corollary `cor:2dfa-computes-all-regular-functions` itself is formalised in the direction
+statement.  Corollary `nolabel:cor-two-way-implies-regular` itself is formalised in the direction
 that its proof establishes, as `Transducers.regularFun_isTwoWay`, and it is proved in full.  Its
 ingredients are:
 
@@ -726,7 +717,7 @@ afterwards), `SumReg.lean` the induction on the composition tree, and
 #### How Theorem `thm:2dfa-decomposition-into-primes` is proved
 
 Theorem `thm:2dfa-decomposition-into-primes` is **proved**, in both directions.  The right-to-left
-implication is Corollary `cor:2dfa-computes-all-regular-functions`.  The left-to-right implication,
+implication is Corollary `nolabel:cor-two-way-implies-regular`.  The left-to-right implication,
 `Transducers.twoWay_isRegular`, follows the book: it decomposes a two-way transducer as
 
 ```
@@ -986,7 +977,7 @@ The implication `regular ⊆ sst` is `Transducers.isSST_of_isRegularFun`
 post-composition with each prime regular function, so, since a regular function
 is a composition of primes, with every regular function; applying this to the
 identity sst gives the statement.  The case of a rational function is reduced,
-as in the book, to Krohn–Rhodes (Theorem `thm:krohn-rhodes`), because the naive product
+as in the book, to Krohn–Rhodes (Theorem `nolabel:thm-krohn-rhodes`), because the naive product
 construction is not copyless: keeping a register `X_q` for the image of the
 content of `X` read from the state `q` breaks copylessness at a concatenation
 `X ↦ Y Z`, since the state reached after the content of `Y` need not depend
@@ -1085,7 +1076,7 @@ and depends only on `propext`, `Classical.choice`, `Quot.sound`.
 Theorem `thm:fo-rational-functions` is the first-order counterpart of Theorem
 `thm:logic-rational-functions`, and it is proved outright, following the book's proof of Theorem
 `thm:logic-rational-functions` with aperiodicity added throughout and with Theorem
-`thm:logic-aperiodic` and Lemma `lem:k-types-fo-equivalence` in place of Theorem
+`thm:logic-aperiodic` and Lemma `nolabel:lem-fo-types-characterisation` in place of Theorem
 `thm:mso-logic-languages`.
 
 From a first-order relabelling to an aperiodic bimachine
@@ -1093,9 +1084,9 @@ From a first-order relabelling to an aperiodic bimachine
 quantifier rank of the finitely many formulas of the relabelling.  The prefix automaton of the
 bimachine computes the `k`-type of the prefix read so far and the suffix automaton the `k`-type of
 the suffix; both transition functions are aperiodic, because `k`-types are (Lemma
-`lem:k-types-properties`, `Transducers.transAperiodic_tpStep`).  By the compositionality of
+`item:fo-types-more-information`, `Transducers.transAperiodic_tpStep`).  By the compositionality of
 first-order logic at a position (`Transducers.sat_const_iff_of_tp_split`, `FOPos.lean`, an
-application of Claim `claim:fo-composition-quantifier-rank`), whether a formula of the relabelling holds
+application of Claim `nolabel:claim-fo-type-of-a-tuple`), whether a formula of the relabelling holds
 at a position depends only on the `k`-type of the prefix, the letter and the `k`-type of the suffix;
 so the index chosen at a position, hence the output block, is a function of the bimachine's two
 states, which is exactly the output function of a bimachine.  The one place where the two notions
@@ -1211,9 +1202,9 @@ right-to-left automaton showing that it is continuous).
 
 All statements compile.  Part A is proved in full.  **Part B is now proved in full**: eighteen of
 its numbered results are proved outright (`thm:composition-rational-relations`,
-`thm:continuity-rational-relations`, `claim:homomorphism-complement-rational`, `thm:bimachines`,
+`thm:continuity-rational-relations`, `nolabel:claim-complement-of-homomorphism`, `thm:bimachines`,
 `lemma:eliminate-epsilon-transitions`, `lem:uniformisation`, `thm:rational-primes`,
-`thm:rational-is-mealy-characterisation`, `lem:closure-weighted-automata-precomposition`,
+`nolabel:thm-mealy-among-rational-functions`, `lem:closure-weighted-automata-precomposition`,
 `thm:characterisation-rational-functions-weighted-automata`, `thm:mealy-machine-independent`,
 `lem:decide-if-length-preserving`, `claim:typing-length-preserving`,
 `lem:characterisation-length-preserving`, `thm:sequential-function-independent`,
@@ -1231,44 +1222,44 @@ used to be a second hypothesis, is proved in `PartB/WeightedBound.lean`.  No fil
 a `sorry`, and every numbered result of Part B depends only on `propext`, `Classical.choice`,
 `Quot.sound`. In Part C, Theorem
 `thm:regular-functions-are-continuous-and-closed-under-composition`, **Theorem
-`thm:decidable-equivalence-regular`**, Lemmas `lem:reversal-duplication-continuous` and
+`thm:decidable-equivalence-regular`**, Lemmas `nolabel:lem-reverse-and-duplicate-continuous` and
 `lem:map-lifting-continuous`, Theorem `thm:continuity-2dfas`, **Theorem
 `thm:composition-of-two-way-transducers`**, Lemma `lem:2dfa-precomposition-with-mealy`, **Corollary
-`cor:2dfa-closure-under-composition`**, **Corollary `cor:2dfa-computes-all-regular-functions`**,
+`cor:2dfa-closure-under-composition`**, **Corollary `nolabel:cor-two-way-implies-regular`**,
 **Theorem `thm:2dfa-decomposition-into-primes`**, **Lemma `lem:regular-closure-properties`**,
 **Claim `claim:conditional`**, **Theorem `theorem:sst-two-way-equivalence`**, **Theorem
 `thm:logic-regular-functions`**, **Theorem `thm:mso-logic-languages`**, **Lemma
-`lem:mso-free-variables`**, **Theorem `thm:logic-rational-functions`**, **Claim
-`claim:mso-annotation-regular`**, **Lemma `lem:logic-precomputation`**, **Theorem
-`thm:logic-aperiodic`**, **Lemma `lem:k-types-fo-equivalence`**, **Theorem
-`thm:fo-rational-functions`** and Lemma `lem:k-types-properties` are proved; Theorem
+`nolabel:lem-mso-to-automaton`**, **Theorem `thm:logic-rational-functions`**, **Claim
+`nolabel:claim-formula-annotation-regular`**, **Lemma `lem:logic-precomputation`**, **Theorem
+`thm:logic-aperiodic`**, **Lemma `nolabel:lem-fo-types-characterisation`**, **Theorem
+`thm:fo-rational-functions`** and Lemma `item:fo-types-more-information` are proved; Theorem
 `thm:decidable-equivalence-regular` is proved from the two effectivity hypotheses of
 `PartC/EffectiveReg.lean` — see the subsection *The conditional result of Part C* above —
 and everything else it needs, including the existence of its equivalence bound, is proved.  Theorem
-`thm:mso-logic-languages` (Büchi-Elgot-Trakhtenbrot), Lemma `lem:mso-free-variables`, Theorem
+`thm:mso-logic-languages` (Büchi-Elgot-Trakhtenbrot), Lemma `nolabel:lem-mso-to-automaton`, Theorem
 `thm:logic-rational-functions` (rational functions are exactly the mso relabellings), Claim
-`claim:mso-annotation-regular`, Lemma `lem:logic-precomputation` (the precomputation of
+`nolabel:claim-formula-annotation-regular`, Lemma `lem:logic-precomputation` (the precomputation of
 a finite family of formulas by a letter-to-letter rational function), Theorem `thm:logic-aperiodic`
 (a language is first-order definable if and only if it is recognised by an aperiodic dfa), Lemma
-`lem:k-types-fo-equivalence` (two strings have the same `k`-type if and only if they
+`nolabel:lem-fo-types-characterisation` (two strings have the same `k`-type if and only if they
 satisfy the same first-order sentences of quantifier rank at most `k`) and Theorem
 `thm:fo-rational-functions` (the first-order relabellings are exactly the functions computed by
 aperiodic bimachines) are proved outright: no file they use contains a `sorry`, and each of them
 depends only on `propext`, `Classical.choice`, `Quot.sound` (checked again on a clean build of the
 whole project, `lake build` with no errors, and with `#print axioms`; Lemma
-`lem:k-types-properties` needs only `propext` and `Quot.sound`).  Both directions of Theorem
+`item:fo-types-more-information` needs only `propext` and `Quot.sound`).  Both directions of Theorem
 `thm:logic-rational-functions`, and Lemma `lem:logic-precomputation`, go through bimachines (Theorem
 `thm:bimachines`) and through the doubly marked alphabet `Mark2 A = A × 2 × 2`, for which Lemma
-`lem:mso-free-variables` gives the regular language `markedSat2 φ` of the marked strings
+`nolabel:lem-mso-to-automaton` gives the regular language `markedSat2 φ` of the marked strings
 satisfying a formula; Claim `claim:transition-formula` of the book is the internal step of Theorem
 `thm:logic-rational-functions` and is formalised, as `Transducers.RatRelab.exists_form`, for the
 index of a bimachine rather than for the transitions of an unambiguous transducer.  So that the
 state of the section is visible file by file, the numbered results of Section *Logic* that are still
 open have been moved, unchanged, from `PartC/MSO.lean` to `PartC/MSOOpen.lean`, which
 `PartC/MSO.lean` imports: `PartC/MSO.lean` now contains exactly the ten proved results of Section
-*Logic* (`thm:mso-logic-languages`, `lem:mso-free-variables`, `thm:logic-rational-functions`,
-`claim:mso-annotation-regular`, `thm:logic-regular-functions`, `lem:logic-precomputation`,
-`thm:logic-aperiodic`, `lem:k-types-fo-equivalence`, `lem:k-types-properties`,
+*Logic* (`thm:mso-logic-languages`, `nolabel:lem-mso-to-automaton`, `thm:logic-rational-functions`,
+`nolabel:claim-formula-annotation-regular`, `thm:logic-regular-functions`, `lem:logic-precomputation`,
+`thm:logic-aperiodic`, `nolabel:lem-fo-types-characterisation`, `item:fo-types-more-information`,
 `thm:fo-rational-functions`) and no `sorry`,
 while every name of Section *Logic* is still available from `RequestProject.PartC.MSO` as before;
 `PartC/MSOOpen.lean` now declares nothing at all.  Of **Theorem
@@ -1283,10 +1274,10 @@ combinatorics of `BlockPos.lean`, `BlockForm.lean` and the tools of `ITransBuild
 converse inclusion, which was the only `sorry` of Section *Logic*, has been removed along with the
 theorem; the book gives no proof of it either -- see *Theorem
 `nolabel:thm-fo-transduction-into-primes`: what was removed and what remains* above. Lemma
-`lem:k-types-fo-equivalence` is proved by the Ehrenfeucht-Fraïssé argument of the book:
-the compositionality of first-order logic (Claim `claim:fo-composition-quantifier-rank`, `FOComp.lean`)
+`nolabel:lem-fo-types-characterisation` is proved by the Ehrenfeucht-Fraïssé argument of the book:
+the compositionality of first-order logic (Claim `nolabel:claim-fo-type-of-a-tuple`, `FOComp.lean`)
 gives one direction, and Hintikka sentences of quantifier rank `k`, built by induction from the
-finitely many `k`-types (`FOHintikka.lean`, using Lemma `lem:k-types-properties`), give the
+finitely many `k`-types (`FOHintikka.lean`, using Lemma `item:fo-types-more-information`), give the
 other.  For Theorem `thm:logic-aperiodic`, the easy direction runs the finite aperiodic automaton of
 `k`-types (`FOTypeDFA.lean`), and the hard one follows the book through the aperiodic Krohn-Rhodes
 Theorem `thm:aperiodic-mealy`: the Mealy machine of the dfa has the transition function of the dfa,
@@ -1315,7 +1306,7 @@ proof of Theorem `theorem:sst-two-way-equivalence`* above. In Part D, Theorem
 **Theorem `thm:2dfa-decomposition-into-primes`** (two-way transducers compute exactly the regular
 functions) is now **proved outright**, in both directions, and Section *Two-way transducers*
 contains no `sorry`. The right-to-left implication is Corollary
-`cor:2dfa-computes-all-regular-functions`; the left-to-right one, isolated as
+`nolabel:cor-two-way-implies-regular`; the left-to-right one, isolated as
 `Transducers.twoWay_isRegular`, is reduced, sorry-free, to the book's snake lemma
 `Transducers.boundedWidth_isRegular` (`SnakeReg.lean`), which is proved by induction on the width
 `k`: the base cases `k = 0` and `k = 1` (`Transducers.TwoWay.widthOut_zero_isRegular`,
@@ -1346,13 +1337,13 @@ language into the rational marking function.  `Transducers.twoWay_iff_regular`,
 corrected form: the statement as printed is false on the empty input, see *An error in Claim
 `claim:conditional`* above.
 
-Corollary `cor:2dfa-computes-all-regular-functions` is printed in the book as the inclusion `two-way ⊆
+Corollary `nolabel:cor-two-way-implies-regular` is printed in the book as the inclusion `two-way ⊆
 regular`, which is a typo: its proof establishes `regular ⊆ two-way`, and the printed inclusion is
 the hard half of Theorem `thm:2dfa-decomposition-into-primes`.  The corollary is therefore
 formalised as `Transducers.regularFun_isTwoWay` (`regular ⊆ two-way`) and proved in full, while the
 printed inclusion is `Transducers.twoWay_isRegular`, the left-to-right implication of
 `Transducers.twoWay_iff_regular`, which is now proved as well.  See *A typo in Corollary
-`cor:2dfa-computes-all-regular-functions`* above.
+`nolabel:cor-two-way-implies-regular`* above.
 
 `#print axioms` on `Transducers.twoWay_comp`, `Transducers.regularFun_isTwoWay`,
 `Transducers.isTwoWay_of_isRegularFun`,

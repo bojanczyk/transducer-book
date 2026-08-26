@@ -1,8 +1,8 @@
 /-
 The prime regular functions are computed by two-way transducers (the content of
-the proof of Corollary `cor:2dfa-computes-all-regular-functions` of *Transducers*, M. Bojańczyk).
+the proof of Corollary `nolabel:cor-two-way-implies-regular` of *Transducers*, M. Bojańczyk).
 
-The book's proof of Corollary `cor:2dfa-computes-all-regular-functions` reads: "Two-way transducers can
+The book's proof of Corollary `nolabel:cor-two-way-implies-regular` reads: "Two-way transducers can
 compute all rational functions by Corollary `cor:2dfa-closure-under-composition`, and they can
 compute map reverse and map duplicate by Example
 `lem:check-if-output-string-of-configuration-graph-belongs-to-L`.  Finally, they are closed under

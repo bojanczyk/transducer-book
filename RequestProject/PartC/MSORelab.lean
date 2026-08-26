@@ -1,16 +1,16 @@
-/- Claim `claim:mso-annotation-regular` of *Transducers* (M. Bojańczyk): for an mso
+/- Claim `nolabel:claim-formula-annotation-regular` of *Transducers* (M. Bojańczyk): for an mso
 relabelling, the set of strings over the alphabet `A × Φ` in which every position is labelled by a
 formula that holds in that position is a regular language.
 
-The construction is a corollary of Lemma `lem:mso-free-variables`
+The construction is a corollary of Lemma `nolabel:lem-mso-to-automaton`
 (`RequestProject/PartC/MSOAnnot.lean`).  For a fixed formula `φ` the set of
 strings over `Γ × 2` in which exactly one position is marked and in which `φ`
 holds at the marked position is regular (`isRegular_markedSat`): it is the
 inverse image, under a letter-to-letter map, of the language of annotated
-strings of Lemma `lem:mso-free-variables`, all first-order variables being sent to the marked
+strings of Lemma `nolabel:lem-mso-to-automaton`, all first-order variables being sent to the marked
 position and all second-order variables to the empty set.
 
-The complement of the language of Claim `claim:mso-annotation-regular` is, for a fixed
+The complement of the language of Claim `nolabel:claim-formula-annotation-regular` is, for a fixed
 index `x`, the projection of that language (for the formula `¬ φ_x`), intersected with the condition
 that the marked position carries the index `x`; the language of the claim is then the intersection
 over the finitely many indices `x`. -/
@@ -119,7 +119,7 @@ lemma isRegular_markedSat (lett : Γ → A) (φ : MSO A) : (MarkedSat lett φ).I
 
 end Marked
 
-/-! ## Claim `claim:mso-annotation-regular` -/
+/-! ## Claim `nolabel:claim-formula-annotation-regular` -/
 
 section Relabelling
 
@@ -190,7 +190,7 @@ lemma isRegular_bad (R : MSORelabelling A B) (x : R.Idx) : (Bad R x).IsRegular :
   exact isRegular_image Prod.fst (isRegular_badSrc R x)
 
 open scoped Classical in
-/-- **Claim `claim:mso-annotation-regular`.**  For an mso relabelling, the language of
+/-- **Claim `nolabel:claim-formula-annotation-regular`.**  For an mso relabelling, the language of
 strings over the alphabet `A × Φ` in which every position is labelled by a formula that holds in
 that position is regular. -/
 theorem msoRelabelling_annotation_regular_aux {A B : Type} [Finite A]

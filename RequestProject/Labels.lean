@@ -75,21 +75,21 @@ assert_no_sorry «thm:composition-mealy»
 alias «thm:continuity-mealy» := Transducers.mealy_continuous
 assert_no_sorry «thm:continuity-mealy»
 
-/-- **Definition `def:prime-mealy-machines`** (prime Mealy machines): `Transducers.Mealy.Reversible`. -/
-alias «def:prime-mealy-machines» := Transducers.Mealy.Reversible
-assert_no_sorry «def:prime-mealy-machines»
+/-- **Definition `nolabel:def-prime-mealy-machines`** (prime Mealy machines): `Transducers.Mealy.Reversible`. -/
+alias «nolabel:def-prime-mealy-machines» := Transducers.Mealy.Reversible
+assert_no_sorry «nolabel:def-prime-mealy-machines»
 
-/-- **Definition `def:prime-mealy-machines`** (prime Mealy machines): `Transducers.Mealy.FlipFlop`. -/
-alias «def:prime-mealy-machines#2» := Transducers.Mealy.FlipFlop
-assert_no_sorry «def:prime-mealy-machines#2»
+/-- **Definition `nolabel:def-prime-mealy-machines`** (prime Mealy machines): `Transducers.Mealy.FlipFlop`. -/
+alias «nolabel:def-prime-mealy-machines#2» := Transducers.Mealy.FlipFlop
+assert_no_sorry «nolabel:def-prime-mealy-machines#2»
 
-/-- **Definition `def:prime-mealy-machines`** (prime Mealy machines): `Transducers.PrimeMealyFam`. -/
-alias «def:prime-mealy-machines#3» := Transducers.PrimeMealyFam
-assert_no_sorry «def:prime-mealy-machines#3»
+/-- **Definition `nolabel:def-prime-mealy-machines`** (prime Mealy machines): `Transducers.PrimeMealyFam`. -/
+alias «nolabel:def-prime-mealy-machines#3» := Transducers.PrimeMealyFam
+assert_no_sorry «nolabel:def-prime-mealy-machines#3»
 
-/-- **Theorem `thm:krohn-rhodes`** (Krohn–Rhodes): `Transducers.krohn_rhodes`. -/
-alias «thm:krohn-rhodes» := Transducers.krohn_rhodes
-assert_no_sorry «thm:krohn-rhodes»
+/-- **Theorem `nolabel:thm-krohn-rhodes`** (Krohn–Rhodes): `Transducers.krohn_rhodes`. -/
+alias «nolabel:thm-krohn-rhodes» := Transducers.krohn_rhodes
+assert_no_sorry «nolabel:thm-krohn-rhodes»
 
 /-- **Definition `def:map-lifting`** (map lifting): `Transducers.mapLift`. -/
 alias «def:map-lifting» := Transducers.mapLift
@@ -115,9 +115,9 @@ assert_no_sorry «def:aperiodic-mealy»
 alias «thm:aperiodic-mealy» := Transducers.aperiodic_iff_flipflop_composition
 assert_no_sorry «thm:aperiodic-mealy»
 
-/-- **Claim `claim:aperiodic-pumping`** (pumping form of aperiodicity): `Transducers.aperiodic_iff_pumping`. -/
-alias «claim:aperiodic-pumping» := Transducers.aperiodic_iff_pumping
-assert_no_sorry «claim:aperiodic-pumping»
+/-- **Claim `nolabel:claim-aperiodic-pumping`** (pumping form of aperiodicity): `Transducers.aperiodic_iff_pumping`. -/
+alias «nolabel:claim-aperiodic-pumping» := Transducers.aperiodic_iff_pumping
+assert_no_sorry «nolabel:claim-aperiodic-pumping»
 
 /-- **Lemma `lemma:derivatives`** (Myhill–Nerode): `Transducers.myhill_nerode_mealy`. -/
 alias «lemma:derivatives» := Transducers.myhill_nerode_mealy
@@ -127,25 +127,17 @@ assert_no_sorry «lemma:derivatives»
 alias «lem:aperiodicity-minimal-machine» := Transducers.aperiodic_iff_transStabilises
 assert_no_sorry «lem:aperiodicity-minimal-machine»
 
-/-- **Definition `def:nfa-with-output`** (nfa with output): `Transducers.NFAO`. -/
-alias «def:nfa-with-output» := Transducers.NFAO
-assert_no_sorry «def:nfa-with-output»
+/-- **Definition `nolabel:def-nfa-with-output`** (nfa with output): `Transducers.NFAO`. -/
+alias «nolabel:def-nfa-with-output» := Transducers.NFAO
+assert_no_sorry «nolabel:def-nfa-with-output»
 
-/-- **Definition `def:nfa-with-output`** (nfa with output): `Transducers.LabAut`. -/
-alias «def:nfa-with-output#2» := Transducers.LabAut
-assert_no_sorry «def:nfa-with-output#2»
+/-- **Definition `nolabel:def-nfa-with-output`** (nfa with output): `Transducers.LabAut`. -/
+alias «nolabel:def-nfa-with-output#2» := Transducers.LabAut
+assert_no_sorry «nolabel:def-nfa-with-output#2»
 
 /-- **Definition `def:rational-relation`** (rational relation): `Transducers.IsRationalRel`. -/
 alias «def:rational-relation» := Transducers.IsRationalRel
 assert_no_sorry «def:rational-relation»
-
-/-- **Definition `def:rational-recognisable-subsets`** (rational and recognisable subsets of a monoid): `Transducers.IsRecognisableSubset`. -/
-alias «def:rational-recognisable-subsets» := Transducers.IsRecognisableSubset
-assert_no_sorry «def:rational-recognisable-subsets»
-
-/-- **Definition `def:rational-recognisable-subsets`** (rational and recognisable subsets of a monoid): `Transducers.IsRationalSubset`. -/
-alias «def:rational-recognisable-subsets#2» := Transducers.IsRationalSubset
-assert_no_sorry «def:rational-recognisable-subsets#2»
 
 /-- **Theorem `thm:composition-rational-relations`** (composition): `Transducers.rationalRel_comp`. -/
 alias «thm:composition-rational-relations» := Transducers.rationalRel_comp
@@ -159,13 +151,13 @@ assert_no_sorry «thm:continuity-rational-relations»
 alias «thm:undecidable-equivalence-rational-relations» := Transducers.rationalRel_equivalence_undecidable
 assert_no_sorry «thm:undecidable-equivalence-rational-relations»
 
-/-- **Claim `claim:homomorphism-complement-rational`** (complement of a homomorphism): `Transducers.hom_complement_rational`. -/
-alias «claim:homomorphism-complement-rational» := Transducers.hom_complement_rational
-assert_no_sorry «claim:homomorphism-complement-rational»
+/-- **Claim `nolabel:claim-complement-of-homomorphism`** (complement of a homomorphism): `Transducers.hom_complement_rational`. -/
+alias «nolabel:claim-complement-of-homomorphism» := Transducers.hom_complement_rational
+assert_no_sorry «nolabel:claim-complement-of-homomorphism»
 
-/-- **Definition `def:rational-function`** (rational function): `Transducers.IsRationalFun`. -/
-alias «def:rational-function» := Transducers.IsRationalFun
-assert_no_sorry «def:rational-function»
+/-- **Definition `nolabel:def-rational-function`** (rational function): `Transducers.IsRationalFun`. -/
+alias «nolabel:def-rational-function» := Transducers.IsRationalFun
+assert_no_sorry «nolabel:def-rational-function»
 
 /-- **Definition `def:bimachine`** (bimachine): `Transducers.Bimachine`. -/
 alias «def:bimachine» := Transducers.Bimachine
@@ -191,21 +183,21 @@ assert_no_sorry «lem:uniformisation»
 alias «thm:rational-primes» := Transducers.rational_iff_prime_composition
 assert_no_sorry «thm:rational-primes»
 
-/-- **Theorem `thm:rational-is-mealy-characterisation`** (Mealy machines inside rational functions): `Transducers.rational_isMealy_iff`. -/
-alias «thm:rational-is-mealy-characterisation» := Transducers.rational_isMealy_iff
-assert_no_sorry «thm:rational-is-mealy-characterisation»
+/-- **Theorem `nolabel:thm-mealy-among-rational-functions`** (Mealy machines inside rational functions): `Transducers.rational_isMealy_iff`. -/
+alias «nolabel:thm-mealy-among-rational-functions» := Transducers.rational_isMealy_iff
+assert_no_sorry «nolabel:thm-mealy-among-rational-functions»
 
-/-- **Definition `def:semiring`** (semiring): `Semiring`.  Not a numbered result of its own here: Mathlib's `Semiring`. -/
-alias «def:semiring» := Semiring
-assert_no_sorry «def:semiring»
+/-- **Definition `nolabel:def-semiring`** (semiring): `Semiring`.  Not a numbered result of its own here: Mathlib's `Semiring`. -/
+alias «nolabel:def-semiring» := Semiring
+assert_no_sorry «nolabel:def-semiring»
 
-/-- **Definition `def:weighted-automaton`** (weighted automaton): `Transducers.LabAut.wEval`. -/
-alias «def:weighted-automaton» := Transducers.LabAut.wEval
-assert_no_sorry «def:weighted-automaton»
+/-- **Definition `nolabel:def-weighted-automaton`** (weighted automaton): `Transducers.LabAut.wEval`. -/
+alias «nolabel:def-weighted-automaton» := Transducers.LabAut.wEval
+assert_no_sorry «nolabel:def-weighted-automaton»
 
-/-- **Definition `def:weighted-automaton`** (weighted automaton): `Transducers.IsWeighted`. -/
-alias «def:weighted-automaton#2» := Transducers.IsWeighted
-assert_no_sorry «def:weighted-automaton#2»
+/-- **Definition `nolabel:def-weighted-automaton`** (weighted automaton): `Transducers.IsWeighted`. -/
+alias «nolabel:def-weighted-automaton#2» := Transducers.IsWeighted
+assert_no_sorry «nolabel:def-weighted-automaton#2»
 
 /-- **Theorem `thm:equivalence-weighted-automata`** (equivalence over ℚ): `Transducers.weighted_equivalence_decidable`. -/
 alias «thm:equivalence-weighted-automata» := Transducers.weighted_equivalence_decidable
@@ -251,9 +243,9 @@ assert_no_sorry «lem:characterisation-length-preserving»
 alias «thm:sequential-function-independent» := Transducers.isSequential_iff
 assert_no_sorry «thm:sequential-function-independent»
 
-/-- **Definition `def:left-distance`** (left distance): `Transducers.leftDist`. -/
-alias «def:left-distance» := Transducers.leftDist
-assert_no_sorry «def:left-distance»
+/-- **Definition `nolabel:def-left-distance`** (left distance): `Transducers.leftDist`. -/
+alias «nolabel:def-left-distance» := Transducers.leftDist
+assert_no_sorry «nolabel:def-left-distance»
 
 /-- **Theorem `thm:subsequential-functions`** (subsequential functions): `Transducers.isSubsequential_iff`. -/
 alias «thm:subsequential-functions» := Transducers.isSubsequential_iff
@@ -279,9 +271,9 @@ assert_no_sorry «thm:regular-functions-are-continuous-and-closed-under-composit
 alias «thm:regular-functions-are-continuous-and-closed-under-composition#2» := Transducers.regular_comp
 assert_no_sorry «thm:regular-functions-are-continuous-and-closed-under-composition#2»
 
-/-- **Lemma `lem:reversal-duplication-continuous`** (reversal, duplication): `Transducers.reverse_duplicate_continuous`. -/
-alias «lem:reversal-duplication-continuous» := Transducers.reverse_duplicate_continuous
-assert_no_sorry «lem:reversal-duplication-continuous»
+/-- **Lemma `nolabel:lem-reverse-and-duplicate-continuous`** (reversal, duplication): `Transducers.reverse_duplicate_continuous`. -/
+alias «nolabel:lem-reverse-and-duplicate-continuous» := Transducers.reverse_duplicate_continuous
+assert_no_sorry «nolabel:lem-reverse-and-duplicate-continuous»
 
 /-- **Lemma `lem:map-lifting-continuous`** (map lifting): `Transducers.mapLift_continuous`. -/
 alias «lem:map-lifting-continuous» := Transducers.mapLift_continuous
@@ -291,13 +283,13 @@ assert_no_sorry «lem:map-lifting-continuous»
 alias «thm:decidable-equivalence-regular» := Transducers.regular_equivalence_decidable
 assert_no_sorry «thm:decidable-equivalence-regular»
 
-/-- **Definition `def:two-way-transducer`** (two-way transducer): `Transducers.TwoWay`. -/
-alias «def:two-way-transducer» := Transducers.TwoWay
-assert_no_sorry «def:two-way-transducer»
+/-- **Definition `nolabel:def-two-way-transducer`** (two-way transducer): `Transducers.TwoWay`. -/
+alias «nolabel:def-two-way-transducer» := Transducers.TwoWay
+assert_no_sorry «nolabel:def-two-way-transducer»
 
-/-- **Definition `def:two-way-transducer`** (two-way transducer): `Transducers.IsTwoWay`. -/
-alias «def:two-way-transducer#2» := Transducers.IsTwoWay
-assert_no_sorry «def:two-way-transducer#2»
+/-- **Definition `nolabel:def-two-way-transducer`** (two-way transducer): `Transducers.IsTwoWay`. -/
+alias «nolabel:def-two-way-transducer#2» := Transducers.IsTwoWay
+assert_no_sorry «nolabel:def-two-way-transducer#2»
 
 /-- **Theorem `thm:continuity-2dfas`** (continuity): `Transducers.twoWay_continuous`. -/
 alias «thm:continuity-2dfas» := Transducers.twoWay_continuous
@@ -315,13 +307,13 @@ assert_no_sorry «lem:2dfa-precomposition-with-mealy»
 alias «cor:2dfa-closure-under-composition» := Transducers.twoWay_precomp_rational
 assert_no_sorry «cor:2dfa-closure-under-composition»
 
-/-- **Corollary `cor:2dfa-computes-all-regular-functions`** (regular ⊆ two-way): `Transducers.regularFun_isTwoWay`. -/
-alias «cor:2dfa-computes-all-regular-functions» := Transducers.regularFun_isTwoWay
-assert_no_sorry «cor:2dfa-computes-all-regular-functions»
+/-- **Corollary `nolabel:cor-two-way-implies-regular`** (regular ⊆ two-way): `Transducers.regularFun_isTwoWay`. -/
+alias «nolabel:cor-two-way-implies-regular» := Transducers.regularFun_isTwoWay
+assert_no_sorry «nolabel:cor-two-way-implies-regular»
 
-/-- **Corollary `cor:2dfa-computes-all-regular-functions`** (regular ⊆ two-way): `Transducers.isTwoWay_of_isRegularFun`. -/
-alias «cor:2dfa-computes-all-regular-functions#2» := Transducers.isTwoWay_of_isRegularFun
-assert_no_sorry «cor:2dfa-computes-all-regular-functions#2»
+/-- **Corollary `nolabel:cor-two-way-implies-regular`** (regular ⊆ two-way): `Transducers.isTwoWay_of_isRegularFun`. -/
+alias «nolabel:cor-two-way-implies-regular#2» := Transducers.isTwoWay_of_isRegularFun
+assert_no_sorry «nolabel:cor-two-way-implies-regular#2»
 
 /-- **Theorem `thm:2dfa-decomposition-into-primes`** (two-way = regular): `Transducers.twoWay_iff_regular`. -/
 alias «thm:2dfa-decomposition-into-primes» := Transducers.twoWay_iff_regular
@@ -355,9 +347,9 @@ assert_no_sorry «theorem:sst-two-way-equivalence»
 alias «thm:mso-logic-languages» := Transducers.regular_iff_msoDefinable
 assert_no_sorry «thm:mso-logic-languages»
 
-/-- **Lemma `lem:mso-free-variables`** (formulas with free variables): `Transducers.mso_annotated_regular`. -/
-alias «lem:mso-free-variables» := Transducers.mso_annotated_regular
-assert_no_sorry «lem:mso-free-variables»
+/-- **Lemma `nolabel:lem-mso-to-automaton`** (formulas with free variables): `Transducers.mso_annotated_regular`. -/
+alias «nolabel:lem-mso-to-automaton» := Transducers.mso_annotated_regular
+assert_no_sorry «nolabel:lem-mso-to-automaton»
 
 /-- **Definition `def:mso-relabeling`** (mso relabelling): `Transducers.MSORelabelling`. -/
 alias «def:mso-relabeling» := Transducers.MSORelabelling
@@ -375,9 +367,9 @@ assert_no_sorry «thm:logic-rational-functions»
 alias «claim:transition-formula» := Transducers.RatRelab.exists_form
 assert_no_sorry «claim:transition-formula»
 
-/-- **Claim `claim:mso-annotation-regular`** (annotated relabellings): `Transducers.msoRelabelling_annotation_regular`. -/
-alias «claim:mso-annotation-regular» := Transducers.msoRelabelling_annotation_regular
-assert_no_sorry «claim:mso-annotation-regular»
+/-- **Claim `nolabel:claim-formula-annotation-regular`** (annotated relabellings): `Transducers.msoRelabelling_annotation_regular`. -/
+alias «nolabel:claim-formula-annotation-regular» := Transducers.msoRelabelling_annotation_regular
+assert_no_sorry «nolabel:claim-formula-annotation-regular»
 
 /-- **Definition `def:mso-transduction`** (mso transduction): `Transducers.MSOTransduction`. -/
 alias «def:mso-transduction» := Transducers.MSOTransduction
@@ -403,21 +395,21 @@ assert_no_sorry «lem:logic-precomputation»
 alias «thm:logic-aperiodic» := Transducers.foDefinable_iff_aperiodic_dfa
 assert_no_sorry «thm:logic-aperiodic»
 
-/-- **Definition `def:k-types`** (k-types): `Transducers.tp`. -/
-alias «def:k-types» := Transducers.tp
-assert_no_sorry «def:k-types»
+/-- **Definition `nolabel:def-fo-types`** (k-types): `Transducers.tp`. -/
+alias «nolabel:def-fo-types» := Transducers.tp
+assert_no_sorry «nolabel:def-fo-types»
 
-/-- **Lemma `lem:k-types-fo-equivalence`** (types and formulas): `Transducers.tp_eq_iff_fo_equiv`. -/
-alias «lem:k-types-fo-equivalence» := Transducers.tp_eq_iff_fo_equiv
-assert_no_sorry «lem:k-types-fo-equivalence»
+/-- **Lemma `nolabel:lem-fo-types-characterisation`** (types and formulas): `Transducers.tp_eq_iff_fo_equiv`. -/
+alias «nolabel:lem-fo-types-characterisation» := Transducers.tp_eq_iff_fo_equiv
+assert_no_sorry «nolabel:lem-fo-types-characterisation»
 
-/-- **Claim `claim:fo-composition-quantifier-rank`** (the type of a tuple): `Transducers.sat_iff_of_kEquiv`.  Not a numbered result of its own here: an internal step of Lemma `lem:k-types-fo-equivalence`. -/
-alias «claim:fo-composition-quantifier-rank» := Transducers.sat_iff_of_kEquiv
-assert_no_sorry «claim:fo-composition-quantifier-rank»
+/-- **Claim `nolabel:claim-fo-type-of-a-tuple`** (the type of a tuple): `Transducers.sat_iff_of_kEquiv`.  Not a numbered result of its own here: an internal step of Lemma `nolabel:lem-fo-types-characterisation`. -/
+alias «nolabel:claim-fo-type-of-a-tuple» := Transducers.sat_iff_of_kEquiv
+assert_no_sorry «nolabel:claim-fo-type-of-a-tuple»
 
-/-- **Lemma `lem:k-types-properties`** (properties of types): `Transducers.tp_properties`. -/
-alias «lem:k-types-properties» := Transducers.tp_properties
-assert_no_sorry «lem:k-types-properties»
+/-- **Lemma `item:fo-types-more-information`** (properties of types): `Transducers.tp_properties`. -/
+alias «item:fo-types-more-information» := Transducers.tp_properties
+assert_no_sorry «item:fo-types-more-information»
 
 /-- **Theorem `thm:fo-rational-functions`** (first-order relabellings): `Transducers.foRelabelling_iff_aperiodicBimachine`. -/
 alias «thm:fo-rational-functions» := Transducers.foRelabelling_iff_aperiodicBimachine
@@ -463,11 +455,12 @@ assert_uses_sorry «thm:pebble-are-for»
 The theorem-like environments of the book that are not aliased
 above, so that this file accounts for all of them:
 
+* `def:rational-recognisable-subsets` (definition) -- not formalised (rational and recognisable subsets of a monoid, which the later sections do not use);
 * `claim:bounded-extensions` (claim) -- not formalised (internal step of Theorem `thm:subsequential-functions`);
 * `claim:computing-branching-part` (claim) -- not formalised (internal step of Theorem `thm:subsequential-functions`);
 * `claim:offsets-are-regular` (claim) -- not formalised (internal step of Theorem `thm:subsequential-functions`);
 * `claim:eliminating-negative-letters` (claim) -- not formalised (internal step of Theorem `thm:subsequential-functions`);
-* `conj:regular-via-weighted-automata` (conjecture) -- a conjecture of the book, not a result to formalise;
+* `nolabel:conj-regular-via-weighted-automata` (conjecture) -- a conjecture of the book, not a result to formalise;
 * `lem:compute-configuration-graph` (lemma) -- not formalised (the string encoding of the configuration graph, used only inside proofs of Part C);
 * `lem:check-if-output-string-of-configuration-graph-belongs-to-L` (lemma) -- not formalised (the string encoding of the configuration graph, used only inside proofs of Part C);
 * `lem:output-of-snake-graph-is-regular` (lemma) -- not formalised (the string encoding of the configuration graph, used only inside proofs of Part C);

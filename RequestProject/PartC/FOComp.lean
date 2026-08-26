@@ -1,5 +1,5 @@
-/- Claim `claim:fo-composition-quantifier-rank`: compositionality of first-order logic over strings,
-which is the left-to-right implication of Lemma `lem:k-types-fo-equivalence` in
+/- Claim `nolabel:claim-fo-type-of-a-tuple`: compositionality of first-order logic over strings,
+which is the left-to-right implication of Lemma `nolabel:lem-fo-types-characterisation` in
 *Transducers* (M. Bojańczyk).
 
 The book's claim reads: whether a first-order formula `φ(x₁, …, xₙ)` of
@@ -32,7 +32,7 @@ private lemma eq_of_mem_some {i j : ℕ} (h : j ∈ (some i : Option ℕ)) : j =
   (Option.mem_some_iff.mp h).symm
 
 /-- Concatenation of two factors around a common letter is compatible with
-`k`-types (Lemma `lem:k-types-properties`, congruence). -/
+`k`-types (Lemma `item:fo-types-more-information`, congruence). -/
 lemma tp_congr_cons (k : ℕ) {x₁ x₂ y₁ y₂ : List A} (a : A)
     (h1 : tp k x₁ = tp k x₂) (h2 : tp k y₁ = tp k y₂) :
     tp k (x₁ ++ a :: y₁) = tp k (x₂ ++ a :: y₂) :=
@@ -79,7 +79,7 @@ lemma mono (H : KEquiv k V w fo v go) (hW : W ⊆ V) : KEquiv k W w fo v go wher
   seg := fun b c hb hc hord =>
     H.seg b c (fun i hi => hW (hb i hi)) (fun j hj => hW (hc j hj)) hord
 
-/-- Level `k + 1` implies level `k` (refinement, Lemma `lem:k-types-properties`). -/
+/-- Level `k + 1` implies level `k` (refinement, Lemma `item:fo-types-more-information`). -/
 lemma refine (H : KEquiv (k + 1) V w fo v go) : KEquiv k V w fo v go where
   lt_w := H.lt_w
   lt_v := H.lt_v
@@ -186,7 +186,7 @@ lemma kEquiv_insert {k : ℕ} {V : Finset ℕ} {w v : List A} {fo go : ℕ → �
         have hle := hbc i hi j hj
         rwa [hfoV i (hbV i hi), hfoV j (hcV j hj)] at hle
 
-/-- The quantifier step of Claim `claim:fo-composition-quantifier-rank`: a new marked position of `w`
+/-- The quantifier step of Claim `nolabel:claim-fo-type-of-a-tuple`: a new marked position of `w`
 can be matched by a marked position of `v`, at the cost of decreasing the level by one. -/
 theorem exists_mark {k : ℕ} {V : Finset ℕ} {w v : List A} {fo go : ℕ → ℕ}
     (H : KEquiv (k + 1) V w fo v go) {x : ℕ} (hx : x ∉ V) {p : ℕ} (hp : p < w.length) :
@@ -473,7 +473,7 @@ theorem exists_mark {k : ℕ} {V : Finset ℕ} {w v : List A} {fo go : ℕ → �
             simpa using tp_refine k _ _ hseg
     exact ⟨q, hqv, kEquiv_insert H hx hp hqv hlab hord hleft hright⟩
 
-/-- **Claim `claim:fo-composition-quantifier-rank`.**  Whether a first-order formula of quantifier rank
+/-- **Claim `nolabel:claim-fo-type-of-a-tuple`.**  Whether a first-order formula of quantifier rank
 at most `k` holds in a string with marked positions depends only on the level-`k` information about
 the marked positions. -/
 theorem sat_iff_of_kEquiv : ∀ (φ : MSO A) {k : ℕ} {V : Finset ℕ} {w v : List A}
@@ -529,7 +529,7 @@ theorem sat_iff_of_kEquiv : ∀ (φ : MSO A) {k : ℕ} {V : Finset ℕ} {w v : L
 
 /-- Strings with the same `k`-type satisfy the same first-order sentences of
 quantifier rank at most `k`.  This is the left-to-right implication of
-Lemma `lem:k-types-fo-equivalence`. -/
+Lemma `nolabel:lem-fo-types-characterisation`. -/
 theorem sat_iff_of_tp_eq {k : ℕ} {w v : List A} (h : tp k w = tp k v) (φ : MSO A)
     (hfo : φ.IsFO) (hq : φ.qrank ≤ k) (hfree : φ.freeFO = ∅)
     (fo go : ℕ → ℕ) (so so' : ℕ → Set ℕ) : MSO.Sat w fo so φ ↔ MSO.Sat v go so' φ := by

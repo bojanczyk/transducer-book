@@ -1,5 +1,5 @@
 /-
-The right-to-left implication of Lemma `lem:k-types-fo-equivalence` of *Transducers*
+The right-to-left implication of Lemma `nolabel:lem-fo-types-characterisation` of *Transducers*
 (M. Bojańczyk): strings that satisfy the same first-order sentences of
 quantifier rank at most `k` have the same `k`-type.
 

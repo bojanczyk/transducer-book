@@ -3,7 +3,7 @@ Explicit two-way transducers for the identity, for post-composition with a
 letter-to-letter map, and for the *block sweeping* functions.
 
 This file provides the constructions that are missing for the corrected form of Corollary
-`cor:2dfa-computes-all-regular-functions` of *Transducers* (M. Bojańczyk): the prime regular functions
+`nolabel:cor-two-way-implies-regular` of *Transducers* (M. Bojańczyk): the prime regular functions
 `map reverse` and `map duplicate` are computed by two-way transducers.
 
 Both of them are instances of one construction: on each block of the input

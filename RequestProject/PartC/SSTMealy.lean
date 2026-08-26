@@ -8,7 +8,7 @@ the sst and every state `q` of the Mealy machine, a register `X_q` holding the
 Mealy image of the content of `X` read from the state `q` -- is *not* copyless:
 simulating a concatenation `X ↦ Y Z` needs `Z_{q'}` where `q'` is the state
 reached after the content of `Y`, and the map `q ↦ q'` need not be injective.
-The book therefore uses the Krohn-Rhodes decomposition (Theorem `thm:krohn-rhodes`, already
+The book therefore uses the Krohn-Rhodes decomposition (Theorem `nolabel:thm-krohn-rhodes`, already
 available in this development through `PrimeMealyFam`) and does the construction
 for the two kinds of prime Mealy machines:
 

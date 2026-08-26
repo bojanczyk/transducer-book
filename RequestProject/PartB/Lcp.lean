@@ -1,5 +1,5 @@
 /-
-Longest common prefixes of strings and the left distance (Definition `def:left-distance`).
+Longest common prefixes of strings and the left distance (Definition `nolabel:def-left-distance`).
 
 These notions are the combinatorial core of the machine independent characterisation of
 subsequential functions (Theorem `thm:subsequential-functions`): the transducer that we construct

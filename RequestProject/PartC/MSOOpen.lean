@@ -15,13 +15,13 @@ still available to anything importing `RequestProject.PartC.MSO`.
 
 Theorem `thm:logic-rational-functions`, Lemma `lem:logic-precomputation`, Theorem
 `thm:logic-regular-functions`, Theorem `thm:logic-aperiodic` and Lemma
-`lem:k-types-fo-equivalence` used to be stated here as well; they are now proved, and
+`nolabel:lem-fo-types-characterisation` used to be stated here as well; they are now proved, and
 their statements have moved back to `RequestProject/PartC/MSO.lean`.
 
 Not formalised as numbered results: Claim `claim:transition-formula`, Lemma
-`lem:logic-reduction-to-type-n` and Claim `claim:fo-composition-quantifier-rank`, which are internal
+`lem:logic-reduction-to-type-n` and Claim `nolabel:claim-fo-type-of-a-tuple`, which are internal
 steps of the proofs of Theorems `thm:logic-rational-functions`, `thm:logic-regular-functions` and
-Lemma `lem:k-types-fo-equivalence`. -/
+Lemma `nolabel:lem-fo-types-characterisation`. -/
 import RequestProject.PartC.FOTransPrimeComp
 
 namespace Transducers
@@ -45,9 +45,9 @@ and `RequestProject/PartC/TwoWayMSO.lean` (the converse). -/
 /-! ## The first-order fragment -/
 
 /-! Theorem `thm:logic-aperiodic` (`foDefinable_iff_aperiodic_dfa`) and Lemma
-`lem:k-types-fo-equivalence` (`tp_eq_iff_fo_equiv`) are now proved; they live in
+`nolabel:lem-fo-types-characterisation` (`tp_eq_iff_fo_equiv`) are now proved; they live in
 `RequestProject/PartC/MSO.lean`, with their proofs in `RequestProject/PartC/FOComp.lean` and
-`RequestProject/PartC/FOHintikka.lean` (Lemma `lem:k-types-fo-equivalence`) and in
+`RequestProject/PartC/FOHintikka.lean` (Lemma `nolabel:lem-fo-types-characterisation`) and in
 `RequestProject/PartC/FOTypeDFA.lean` and `RequestProject/PartC/FOMealy.lean` (Theorem
 `thm:logic-aperiodic`). -/
 

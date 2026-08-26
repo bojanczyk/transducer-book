@@ -14,7 +14,7 @@ A bimachine is decomposed into four steps:
    bimachine at the corresponding gap.
 
 The two Mealy machines are compositions of prime Mealy machines by the
-Krohn-Rhodes Theorem (Theorem `thm:krohn-rhodes`), and reversal turns a decomposition of a
+Krohn-Rhodes Theorem (Theorem `nolabel:thm-krohn-rhodes`), and reversal turns a decomposition of a
 Mealy machine into a decomposition of its right-to-left variant.
 -/
 import RequestProject.PartA.Statements

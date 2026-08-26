@@ -52,7 +52,7 @@ lemma continuous_map {A B : Type} (h : A → B) : Continuous (fun w : List A => 
   simp only [DFA.mem_accepts, DFA.eval, mapDFA_evalFrom]
   rfl
 
-/-! ## Reversal and duplication (Lemma `lem:reversal-duplication-continuous`) -/
+/-! ## Reversal and duplication (Lemma `nolabel:lem-reverse-and-duplicate-continuous`) -/
 
 /-- String reversal is continuous. -/
 lemma continuous_reverse {A : Type} : Continuous (List.reverse : List A → List A) := by
