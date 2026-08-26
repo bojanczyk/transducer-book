@@ -1334,7 +1334,7 @@ among the primes.
 | For-transducers (Section *For-transducers*) | `Transducers.ForProg`, `Transducers.IsForTransducer` | — |
 | Theorem `thm:for-transducers-are-polyregular` (polyregular = for-transducers) | `Transducers.polyregular_iff_forTransducer` | statement only |
 | Definition `def:prenex-normal-form-for-transducers` (prenex form) | `Transducers.ForProg.PrenexForm` | — |
-| Lemma `lemma:prenex-normal-form` (prenex normal form) | `Transducers.forTransducer_prenex` | statement only |
+| Lemma `lemma:prenex-normal-form` (prenex normal form) | `Transducers.forTransducer_prenex` | proved (`ForPrenexTop.lean`) |
 | Lemma `lem:for-closed-under-composition` (composition) | `Transducers.forTransducer_comp` | statement only |
 | Pebble transducers (Section *Pebble transducers*) | `Transducers.Pebble`, `Transducers.IsPebbleTransducer` | — |
 | Theorem `thm:pebble-are-continuous` (continuity) | `Transducers.pebble_continuous` | statement only |

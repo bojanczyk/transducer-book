@@ -480,7 +480,7 @@ assert_no_sorry «def:prenex-normal-form-for-transducers»
 
 /-- **Lemma `lemma:prenex-normal-form`** (prenex normal form): `Transducers.forTransducer_prenex`. -/
 alias «lemma:prenex-normal-form» := Transducers.forTransducer_prenex
-assert_uses_sorry «lemma:prenex-normal-form»
+assert_no_sorry «lemma:prenex-normal-form»
 
 /-- **Lemma `lem:for-closed-under-composition`** (composition): `Transducers.forTransducer_comp`. -/
 alias «lem:for-closed-under-composition» := Transducers.forTransducer_comp
