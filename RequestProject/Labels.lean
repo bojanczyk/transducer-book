@@ -617,6 +617,10 @@ assert_no_sorry «exer:rational-relations-intersection-undecidable»
 alias «exer:rational-output-size» := Transducers.Exercises.rationalRel_finiteOutputs_iff_affine
 assert_no_sorry «exer:rational-output-size»
 
+/-- **Exercise `ex:recognisable-relations`** (the recognisable subsets of `A* x B*` are the finite unions of products of regular languages): `Transducers.Exercises.isRecognisableRel_iff_finite_union`. -/
+alias «ex:recognisable-relations» := Transducers.Exercises.isRecognisableRel_iff_finite_union
+assert_no_sorry «ex:recognisable-relations»
+
 /-- **Exercise `exer:examples-of-rational-fun`** (item (a), the input if its length is even): `Transducers.Exercises.isBimachine_isRationalFun_evenLength`. -/
 alias «exer:examples-of-rational-fun» := Transducers.Exercises.isBimachine_isRationalFun_evenLength
 assert_no_sorry «exer:examples-of-rational-fun»
@@ -642,6 +646,10 @@ assert_no_sorry «exer:non-rational#2»
 /-- **Exercise `exer:decide-rational-colision`** (item (a), the collision problem for two rational functions is undecidable): `Transducers.Exercises.rationalFun_collision_undecidable`. -/
 alias «exer:decide-rational-colision» := Transducers.Exercises.rationalFun_collision_undecidable
 assert_no_sorry «exer:decide-rational-colision»
+
+/-- **Exercise `exer:rational-one-letter-input`** (the graph of a rational function over a one-letter input alphabet): `Transducers.Exercises.rationalFun_unary_graph`. -/
+alias «exer:rational-one-letter-input» := Transducers.Exercises.rationalFun_unary_graph
+assert_no_sorry «exer:rational-one-letter-input»
 
 /-- **Exercise `exer:function-that-is-not-rational`** (not rational, yet rational after every rational function into a one-letter alphabet): `Transducers.Exercises.exists_not_isRationalFun_unary_compositions_rational`. -/
 alias «exer:function-that-is-not-rational» :=

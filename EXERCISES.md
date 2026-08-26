@@ -29,15 +29,17 @@ RequestProject/
     PartBC.lean                 -- the exercises of Parts B and C
     PartBCAux.lean              -- the auxiliary facts their solutions take for granted
     PartBCPCP.lean              -- the reduction from the Post correspondence problem
+    PartBCUnary.lean            -- bimachines over a one-letter input alphabet
 ```
 
 | File | Contents |
 | --- | --- |
 | `Exercises/Intro.lean` | the eleven exercises of the introduction: continuity of reversal, duplication, squaring, the factorial function and factorial powers; continuity for functions with finitely many output values and the necessity of that assumption; the middle letter function; the distance given by the number of states needed to separate two strings, the discreteness of the induced topology, and the identification of continuity with uniform continuity |
 | `Exercises/IntroAux.lean` | the elementary facts about dfas and regular languages that those solutions take for granted: transporting a dfa to the state set `Fin n`, complementing a dfa, shifting its acceptance condition by a suffix, finiteness of the set of dfas over a finite alphabet, regularity of singletons, of subsingletons and of finite unions, the run of a dfa on a power `wⁿ`, and the eventual stabilisation of the iterates of a self-map of a finite set |
-| `Exercises/PartBC.lean` | the exercises of Parts B and C that are formalised: five exercises on rational relations (the domain and the range, the inputs with at most one output, closure under intersection, the undecidability of a nonempty intersection, the size of the outputs), five on rational functions (the three examples as bimachines, the two functions that are not rational, the function that becomes rational after every rational function into a one-letter alphabet, two families of ideals, the one-sided inverse of a surjective rational function), the exercise on two-letter alphabets for the prime regular functions, and the exercise on Mealy machines as restricted mso relabellings |
+| `Exercises/PartBC.lean` | the exercises of Parts B and C that are formalised: six exercises on rational relations (the domain and the range, the inputs with at most one output, closure under intersection, the undecidability of a nonempty intersection, the size of the outputs, the recognisable subsets of `A* x B*`), eight on rational functions (the three examples as bimachines, the two functions that are not rational, the undecidability of the collision problem, the graph of a rational function over a one-letter input alphabet, the function that becomes rational after every rational function into a one-letter alphabet, two families of ideals, the ideals whose functions all have finite range, the one-sided inverse of a surjective rational function), the exercise on two-letter alphabets for the prime regular functions, and the exercise on Mealy machines as restricted mso relabellings |
 | `Exercises/PartBCPCP.lean` | the reduction from the Post correspondence problem that the solution to `exer:rational-relations-intersection-undecidable` asks for: the two-state automaton computing the graph of a homomorphism on nonempty inputs, its code, the relation it describes, and the computability of the reduction |
-| `Exercises/PartBCAux.lean` | the auxiliary facts those solutions take for granted: the symmetry of rational relations in input and output (so that the inverse of a rational relation is rational), the small regular languages given by explicit dfas that guess-and-check is applied to, the non-regularity, by the pumping lemma, of the languages the counterexamples produce (`bⁿcⁿ`, the balanced strings, `aⁱbʲ` with `j ≤ i`, and the squares `uu`), bounds on the length of the output of a run, the dfa that marks the position where a Mealy machine outputs a given letter, and the encoding of an arbitrary finite alphabet by blocks over a two-letter one |
+| `Exercises/PartBCAux.lean` | the auxiliary facts those solutions take for granted: the symmetry of rational relations in input and output (so that the inverse of a rational relation is rational), the small regular languages given by explicit dfas that guess-and-check is applied to, the non-regularity, by the pumping lemma, of the languages the counterexamples produce (`bⁿcⁿ`, the balanced strings, `aⁱbʲ` with `j ≤ i`, and the squares `uu`), bounds on the length of the output of a run, the dfa that marks the position where a Mealy machine outputs a given letter, the encoding of an arbitrary finite alphabet by blocks over a two-letter one, and the two directions of the identification of the regular languages with the languages recognised by a homomorphism into a finite monoid |
+| `Exercises/PartBCUnary.lean` | bimachines over a one-letter input alphabet, used by the solution to `exer:rational-one-letter-input`: the eventual periodicity of the runs of the prefix and of the suffix automaton, the output of the bimachine as the concatenation of the pieces of its gaps, and the resulting form `x yᵏ z` of the output on the inputs of a fixed length modulo the period |
 
 The file `Exercises/PartA.lean`, which holds the exercises of Part A, is
 built but is not imported by `RequestProject/Exercises.lean`, and its
@@ -114,7 +116,7 @@ all eleven are aliased in `RequestProject/Labels.lean`.
 | Exercise `exer:rational-relations-not-closed-under-intersection` (rational relations are not closed under intersection) | `exists_rationalRel_inter_not_rationalRel` | proved |
 | Exercise `exer:rational-relations-intersection-undecidable` (nonemptiness of the intersection is undecidable) | `rationalRel_intersection_undecidable` | proved from the undecidability of the Post correspondence problem |
 | Exercise `exer:rational-output-size` (finitely many outputs ⟺ affine bound on the output length) | `rationalRel_finiteOutputs_iff_affine` | proved |
-| Exercise `ex:recognisable-relations` (the recognisable subsets of `A* × B*`) | — | not formalised |
+| Exercise `ex:recognisable-relations` (the recognisable subsets of `A* × B*`) | `IsRecognisableRel`, `isRecognisableRel_iff_finite_union` | proved |
 
 ### Rational functions (`rational-functions.tex`)
 
@@ -124,7 +126,7 @@ all eleven are aliased in `RequestProject/Labels.lean`.
 | Exercise `exer:non-rational` (the first half of the input, and duplication, are not rational) | `not_isRationalFun_firstHalf`, `not_isRationalFun_duplicate` | proved |
 | Exercise `exer:decide-unambiguous` (unambiguity of an nfa is decidable) | — | not formalised |
 | Exercise `exer:decide-rational-colision` (equal outputs, outputs of equal length) | `rationalFun_collision_undecidable` (item (a) only) | proved from an explicit hypothesis |
-| Exercise `exer:rational-one-letter-input` (rational functions on a one-letter input alphabet) | — | not formalised |
+| Exercise `exer:rational-one-letter-input` (rational functions on a one-letter input alphabet) | `rationalFun_unary_graph` | proved |
 | Exercise `exer:function-that-is-not-rational` (not rational, yet rational after every rational function into `1*`) | `exists_not_isRationalFun_unary_compositions_rational` | proved from the hypothesis that reversal is not rational |
 | Exercise `exer:some-ideals` (two families of ideals of rational functions) | `IsIdeal`, `isIdeal_rangeAtMost`, `isIdeal_outputsPoly` | proved |
 | Exercise `exer:finite-range-ideals` (the ideals whose functions have finite range) | `ideal_mem_of_ncard_le`, `finite_range_ideal_classification` | proved |
@@ -315,6 +317,20 @@ named after the labels.
   output in which every transition of an accepting run reads exactly one letter
   (and a run on the empty input is a single transition), which gives the affine
   bound directly.
+* **`ex:recognisable-relations`.**  `IsRecognisableRel` is the book's Definition
+  `def:rational-recognisable-subsets` specialised to the monoid `A* × B*`; the
+  general notion, for an arbitrary monoid, is still not formalised, and this
+  exercise is the only place that needs it.  Recognisability is taken in the
+  form the author's solution uses -- the inverse image of a subset of a finite
+  monoid under a monoid homomorphism -- and a homomorphism out of a free monoid
+  is given by a plain function together with the two equations it satisfies, so
+  that no monoid instance has to be put on `List A × List B`.  The finite union
+  is indexed by `Fin n`.  Both directions are the author's; the identification
+  of the regular languages with the languages recognised by a homomorphism into
+  a finite monoid, which the solution recalls as standard, is proved in
+  `Exercises/PartBCAux.lean` (`isRegular_of_wordHom` and
+  `exists_wordHom_of_isRegular`, the latter through the transition monoid of a
+  dfa).
 * **`exer:examples-of-rational-fun`.**  Each of the three functions is shown to
   be computed by the bimachine of the author's solution and, by Theorem
   `thm:bimachines`, to be rational; the two claims are the two halves of a
@@ -332,6 +348,16 @@ named after the labels.
   the two functions have to be made to differ on the empty input.  Item (b),
   the decidable one, is not formalised: it goes through the semilinearity of
   Parikh images of regular languages, which the project does not have.
+* **`exer:rational-one-letter-input`.**  The one-letter input alphabet is
+  `Unit`, to which any one-letter alphabet is isomorphic; the graph is stated as
+  a set of pairs and the finite union is indexed by `Fin n`; the repetition
+  `yᵏ` is `(List.replicate k y).flatten`, since strings are lists.  The output
+  alphabet is assumed finite, as everywhere in the book, because Theorem
+  `thm:bimachines` is used.  The proof is the author's, through a bimachine and
+  the eventual periodicity of its two automata over a one-letter alphabet; the
+  analysis of the gaps is in `Exercises/PartBCUnary.lean`
+  (`Unary.eval_replicate_period`), and the inputs shorter than
+  `2 * lam + per` are the members of the union with `β = 0`.
 * **`exer:function-that-is-not-rational`.**  That string reversal is not
   rational is Example `ex:string-reversal-not-rational` of the main text, which
   is not part of this formalisation (examples are not numbered results here);
@@ -389,19 +415,15 @@ make.
   `exer:rational-composition-finiteness-undecidable`.  In this project such a
   statement is about *codes* of automata (`Transducers.RelCode`) and about
   `ComputablePred`, and the corresponding reductions are not carried out.
-* Statements resting on theory that the project does not have: the recognisable
-  subsets of a monoid for `ex:recognisable-relations` (Definition
-  `def:rational-recognisable-subsets` of the book, which is not formalised),
-  the eventual periodicity analysis of a bimachine over a one-letter input
-  alphabet for `exer:rational-one-letter-input`, and the growth rates of
-  regular languages, together with the pattern analysis that Exercise
+* Statements resting on theory that the project does not have: the growth rates
+  of regular languages, together with the pattern analysis that Exercise
   `exer:polynomial-image-growth-decidable` of Part A asks for, for the series
   of exercises on ideals that follows `exer:finite-range-ideals`:
   `exer:full-ideal`, `exer:polynomial-ideals`, `exer:all-ideals`.
 
 ## Status
 
-All eleven exercises of the introduction, and the fourteen formalised exercises
+All eleven exercises of the introduction, and the sixteen formalised exercises
 of Parts B and C, are proved: there is no `sorry` in `Exercises/`, and each of
 the declarations above depends only on `propext`, `Classical.choice`,
 `Quot.sound` (checked with `#print axioms`, and by the `assert_no_sorry` that

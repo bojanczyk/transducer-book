@@ -14,6 +14,7 @@ docstring says otherwise.  The auxiliary facts that the solutions take for grant
 -/
 import RequestProject.Exercises.PartBCAux
 import RequestProject.Exercises.PartBCPCP
+import RequestProject.Exercises.PartBCUnary
 
 namespace Transducers
 namespace Exercises
@@ -309,6 +310,114 @@ theorem rationalRel_finiteOutputs_iff_affine {A B : Type} [Finite A] [Finite B]
       omega
   · rintro ⟨c, d, hbd⟩ w
     exact (finite_lists_length_le (c * w.length + d)).subset (fun v hv => hbd w v hv)
+
+/-! ### Exercise `ex:recognisable-relations` -/
+
+/-- **Definition of a recognisable subset of `A* × B*`.**  This is the book's Definition
+`def:rational-recognisable-subsets` specialised to the monoid `A* × B*`, whose product is
+concatenation in each coordinate; the general notion, for an arbitrary monoid, is not part of this
+formalisation, and the exercise is the only place that needs it.
+
+As in the author's solution, recognisability is used in the form "inverse image of a subset of a
+finite monoid under a monoid homomorphism" (the solution recalls that this is equivalent to the
+definition by a congruence of finite index).  A homomorphism out of `A* × B*` is given here by a
+plain function together with the two equations it satisfies, so that no monoid instance has to be
+put on `List A × List B`. -/
+def IsRecognisableRel {A B : Type} (R : Set (List A × List B)) : Prop :=
+  ∃ (M : Type) (_ : Monoid M) (_ : Fintype M) (h : List A × List B → M) (F : Set M),
+    h ([], []) = 1 ∧
+    (∀ w w' : List A, ∀ v v' : List B, h (w ++ w', v ++ v') = h (w, v) * h (w', v')) ∧
+    R = {p | h p ∈ F}
+
+/-- **Exercise `ex:recognisable-relations`.**  The recognisable subsets of `A* × B*` are exactly
+the unions of finitely many products `K × L` of a regular language over the input alphabet with a
+regular language over the output alphabet.  The finite union is indexed by `Fin n`.
+
+Both directions are the author's.  For a finite union, each `K i` is recognised by a homomorphism
+`gA i` into a finite monoid and each `L i` by a homomorphism `gB i`
+(`Transducers.Exercises.exists_wordHom_of_isRegular`), and the product of all the monoids
+`(MA i) × (MB i)` recognises the union in one go.  Conversely, if `h` recognises `R`, then every
+pair factors as `(w, v) = (w, ε) · (ε, v)`, so `h (w, v) = g w * k v` for the two homomorphisms
+`g w = h (w, ε)` and `k v = h (ε, v)`; hence `R` is the union, over the pairs `(m, n)` of the
+finite monoid whose product lies in the accepting set, of the products `g⁻¹(m) × k⁻¹(n)`, and
+these are regular because inverse images under a homomorphism into a finite monoid are
+(`Transducers.Exercises.isRegular_of_wordHom`).  The union is indexed here by all pairs `(m, n)`,
+the sets belonging to a pair whose product is not accepting being empty. -/
+theorem isRecognisableRel_iff_finite_union {A B : Type} (R : Set (List A × List B)) :
+    IsRecognisableRel R ↔
+      ∃ (n : ℕ) (K : Fin n → Language A) (L : Fin n → Language B),
+        (∀ i, (K i).IsRegular) ∧ (∀ i, (L i).IsRegular) ∧
+        R = {p | ∃ i, p.1 ∈ K i ∧ p.2 ∈ L i} := by
+  constructor
+  · rintro ⟨M, _, _, h, F, hnil, happ, rfl⟩
+    classical
+    set g : List A → M := fun w => h (w, []) with hgdef
+    set k : List B → M := fun v => h ([], v) with hkdef
+    have hg : IsWordHom g := by
+      refine ⟨hnil, fun u u' => ?_⟩
+      have := happ u u' [] []
+      simpa [hgdef] using this
+    have hk : IsWordHom k := by
+      refine ⟨hnil, fun u u' => ?_⟩
+      have := happ [] [] u u'
+      simpa [hkdef] using this
+    have hsplit : ∀ p : List A × List B, h p = g p.1 * k p.2 := by
+      rintro ⟨w, v⟩
+      have := happ w [] [] v
+      simpa [hgdef, hkdef] using this
+    set e : Fin (Fintype.card (M × M)) ≃ M × M := (Fintype.equivFin (M × M)).symm with hedef
+    refine ⟨Fintype.card (M × M),
+      fun i => {w | g w = (e i).1 ∧ (e i).1 * (e i).2 ∈ F},
+      fun i => {v | k v = (e i).2}, ?_, ?_, ?_⟩
+    · intro i
+      show Language.IsRegular {w | g w = (e i).1 ∧ (e i).1 * (e i).2 ∈ F}
+      by_cases hF : (e i).1 * (e i).2 ∈ F
+      · have : {w | g w = (e i).1 ∧ (e i).1 * (e i).2 ∈ F} = {w | g w ∈ ({(e i).1} : Set M)} := by
+          ext w; simp [hF]
+        rw [this]; exact isRegular_of_wordHom hg _
+      · have : {w | g w = (e i).1 ∧ (e i).1 * (e i).2 ∈ F} = {w | g w ∈ (∅ : Set M)} := by
+          ext w; simp [hF]
+        rw [this]; exact isRegular_of_wordHom hg _
+    · intro i
+      show Language.IsRegular {v | k v = (e i).2}
+      exact isRegular_of_wordHom hk {(e i).2}
+    · ext p
+      simp only [Set.mem_setOf_eq, hsplit p]
+      constructor
+      · intro hp
+        refine ⟨e.symm (g p.1, k p.2), ⟨?_, ?_⟩, ?_⟩
+        · show g p.1 = (e (e.symm (g p.1, k p.2))).1
+          simp
+        · show (e (e.symm (g p.1, k p.2))).1 * (e (e.symm (g p.1, k p.2))).2 ∈ F
+          simpa using hp
+        · show k p.2 = (e (e.symm (g p.1, k p.2))).2
+          simp
+      · rintro ⟨i, ⟨h1, h2⟩, h3⟩
+        rw [h1, h3]; exact h2
+  · rintro ⟨n, K, L, hK, hL, rfl⟩
+    classical
+    have hK' : ∀ i, ∃ (M : Type) (_ : Monoid M) (_ : Fintype M) (h : List A → M) (F : Set M),
+        IsWordHom h ∧ K i = {w | h w ∈ F} := fun i => exists_wordHom_of_isRegular (hK i)
+    have hL' : ∀ i, ∃ (M : Type) (_ : Monoid M) (_ : Fintype M) (h : List B → M) (F : Set M),
+        IsWordHom h ∧ L i = {w | h w ∈ F} := fun i => exists_wordHom_of_isRegular (hL i)
+    choose MA instA finA gA FA homA eqA using hK'
+    choose MB instB finB gB FB homB eqB using hL'
+    refine ⟨∀ i, MA i × MB i, inferInstance, inferInstance,
+      fun p i => (gA i p.1, gB i p.2), {m | ∃ i, (m i).1 ∈ FA i ∧ (m i).2 ∈ FB i}, ?_, ?_, ?_⟩
+    · funext i
+      exact Prod.ext ((homA i).1) ((homB i).1)
+    · intro w w' v v'
+      funext i
+      exact Prod.ext ((homA i).2 w w') ((homB i).2 v v')
+    · ext p
+      simp only [Set.mem_setOf_eq]
+      constructor
+      · rintro ⟨i, h1, h2⟩
+        rw [eqA i] at h1
+        rw [eqB i] at h2
+        exact ⟨i, h1, h2⟩
+      · rintro ⟨i, h1, h2⟩
+        exact ⟨i, by rw [eqA i]; exact h1, by rw [eqB i]; exact h2⟩
 
 /-! ## Rational functions (`rational-functions.tex`) -/
 
@@ -621,6 +730,59 @@ theorem rationalFun_collision_undecidable (hPCP : ¬ ComputablePred PCP.Solvable
     ¬ DecidableUnderPromise (fun p : RelCode × RelCode => CodeFunctional p.1 ∧ CodeFunctional p.2)
       (fun p => ∃ w v, codeRel p.1 w v ∧ codeRel p.2 w v) :=
   collision_undecidable_aux hPCP
+
+/-! ### Exercise `exer:rational-one-letter-input` -/
+
+open Unary in
+/-- **Exercise `exer:rational-one-letter-input`.**  The graph of a rational function whose input
+alphabet has one letter is a finite union of sets of the form
+
+  `{ (aᵅ⁺ᵝᵏ, x yᵏ z) | k ∈ ℕ }`,
+
+with natural coefficients `α`, `β` and strings `x`, `y`, `z` over the output alphabet.
+
+The one-letter input alphabet is `Unit`; any one-letter alphabet is isomorphic to it.  The finite
+union is indexed by `Fin n`, the input `aⁿ` is `List.replicate n ()`, and the repetition `yᵏ` is
+`(List.replicate k y).flatten`, since strings are lists here.  The output alphabet is assumed
+finite, as everywhere in the book, because Theorem `thm:bimachines` is used.
+
+The proof is the author's.  A bimachine computing the function exists by Theorem `thm:bimachines`
+(`Transducers.isBimachine_of_rationalFun`).  Over a one-letter alphabet its prefix and suffix
+automata are deterministic automata with one letter, so their runs are eventually periodic with a
+common threshold `lam` and period `per`; the pieces of the first `lam` gaps and of the last `lam`
+gaps then depend only on the length modulo `per`, and each further period of length `per` inserts
+one more group of `per` gaps in the middle, producing the same string as the other such groups.
+This is `Transducers.Exercises.Unary.eval_replicate_period`, in
+`RequestProject/Exercises/PartBCUnary.lean`; the inputs shorter than `2 * lam + per` are the
+finitely many members of the union that have `β = 0`. -/
+theorem rationalFun_unary_graph {B : Type} [Finite B] {f : List Unit → List B}
+    (hf : IsRationalFun f) :
+    ∃ (n : ℕ) (al be : Fin n → ℕ) (x y z : Fin n → List B),
+      {p : List Unit × List B | f p.1 = p.2} =
+        {p | ∃ (i : Fin n) (k : ℕ),
+          p.1 = List.replicate (al i + be i * k) () ∧
+          p.2 = x i ++ (List.replicate k (y i)).flatten ++ z i} := by
+  obtain ⟨P, S, hP, hS, M, hM⟩ := isBimachine_of_rationalFun hf
+  obtain ⟨lam, per, hper, hp, hs⟩ := exists_periodicity M
+  have key : ∀ i k : ℕ, f (List.replicate (i + coefB lam per i * k) ()) =
+      wordX M lam per i ++ (List.replicate k (wordY M lam per i)).flatten ++ wordZ M lam per i := by
+    intro i k
+    rw [← hM]
+    exact eval_eq_wordX hp hs i k
+  refine ⟨2 * lam + per + per, fun i => i.val, fun i => coefB lam per i.val,
+    fun i => wordX M lam per i.val, fun i => wordY M lam per i.val,
+    fun i => wordZ M lam per i.val, ?_⟩
+  ext p
+  simp only [Set.mem_setOf_eq]
+  constructor
+  · intro hfp
+    obtain ⟨i, hi, k, hik⟩ := exists_index lam per hper p.1.length
+    have hp1 : p.1 = List.replicate (i + coefB lam per i * k) () := by
+      rw [hik]; exact eq_replicate_unit p.1
+    exact ⟨⟨i, hi⟩, k, hp1, by rw [← hfp, hp1]; exact key i k⟩
+  · rintro ⟨i, k, h1, h2⟩
+    rw [h1, h2]
+    exact key i.val k
 
 /-! ### Exercise `exer:function-that-is-not-rational` -/
 

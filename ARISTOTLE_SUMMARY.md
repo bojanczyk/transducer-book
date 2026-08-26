@@ -1,3 +1,35 @@
+# Summary of changes for the exercises of Parts B and C (continuation)
+
+Continuing the formalisation of the exercises of Parts B and C, the one exercise of
+`rational-relations.tex` that had been left out, Exercise `ex:recognisable-relations`, is now
+formalised and proved in `RequestProject/Exercises/PartBC.lean`, at its place in the chapter (it is
+the last exercise of that chapter).
+
+* `Transducers.Exercises.IsRecognisableRel` renders the book's Definition
+  `def:rational-recognisable-subsets` for the monoid `A* x B*` only -- the general notion, for an
+  arbitrary monoid, is still not part of this formalisation -- in the form the author's solution
+  uses: the inverse image of a subset of a finite monoid under a monoid homomorphism.
+* `Transducers.Exercises.isRecognisableRel_iff_finite_union` is the exercise: a subset of
+  `A* x B*` is recognisable if and only if it is a union of finitely many products of a regular
+  language over the input alphabet with a regular language over the output alphabet.
+
+Exercise `exer:rational-one-letter-input` is formalised and proved as well, at its place in
+`rational-functions.tex`, as `Transducers.Exercises.rationalFun_unary_graph`: the graph of a
+rational function whose input alphabet has one letter is a finite union of sets
+`{ (a^(α+βk), x yᵏ z) | k ∈ ℕ }`.  The proof is the author's: a bimachine computing the function
+exists by Theorem `thm:bimachines`, the runs of its prefix and suffix automata over a one-letter
+alphabet are eventually periodic, and each further period inserts one more group of gaps in the
+middle, producing the same piece of output as the other such groups.  The analysis of the gaps is
+in the new file `RequestProject/Exercises/PartBCUnary.lean`.
+
+The identification of the regular languages with the languages recognised by a homomorphism into a
+finite monoid, which the solution recalls as standard, is proved in
+`RequestProject/Exercises/PartBCAux.lean` (`isRegular_of_wordHom` for one direction, and
+`exists_wordHom_of_isRegular`, through the transition monoid of a dfa, for the other).  The alias
+for the label is in `RequestProject/Labels.lean`, followed by `assert_no_sorry`, and `EXERCISES.md`
+records the exercise as proved.  No numbered result of the main text was touched; the whole project
+builds and the new theorem depends only on `propext`, `Classical.choice`, `Quot.sound`.
+
 # Summary of changes for the exercises of Part A
 
 The twelve exercises of Part A of the book — the seven of `mealy.tex` and the five of

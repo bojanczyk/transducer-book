@@ -754,5 +754,73 @@ lemma isRationalFun_finsetCases {D A : Type} [Finite D] [Finite A] [DecidableEq 
           · rw [if_neg hs, if_neg (by simp [hu, hs])]
       exact heq ▸ hite
 
+/-! ## Languages recognised by a homomorphism into a finite monoid
+
+The solution to Exercise `ex:recognisable-relations` uses the standard reformulation of
+recognisability, which the author recalls in the solution itself: a language is regular exactly
+when it is the inverse image of a subset of a finite monoid under a monoid homomorphism.  Both
+directions are proved here, since the project does not have the syntactic monoid of a language.
+
+A homomorphism out of a free monoid is described by a plain function together with the two
+equations it satisfies, so that no monoid instance has to be put on `List A`. -/
+
+/-- `h` is a monoid homomorphism from the free monoid `A*` into the monoid `M`. -/
+def IsWordHom {A M : Type} [Monoid M] (h : List A → M) : Prop :=
+  h [] = 1 ∧ ∀ u v, h (u ++ v) = h u * h v
+
+/-- The deterministic automaton whose states are the elements of `M`, which multiplies the current
+state by the value of `h` on the letter it reads.  Its accepting states are `F`, so it recognises
+the inverse image of `F` under `h`. -/
+def homDFA {A M : Type} [Monoid M] (h : List A → M) (F : Set M) : DFA A M where
+  step m a := m * h [a]
+  start := 1
+  accept := F
+
+lemma homDFA_evalFrom {A M : Type} [Monoid M] {h : List A → M} (hh : IsWordHom h) (F : Set M)
+    (m : M) (w : List A) : (homDFA h F).evalFrom m w = m * h w := by
+  induction w generalizing m with
+  | nil => simp [homDFA, DFA.evalFrom, hh.1]
+  | cons a w ih =>
+      rw [DFA.evalFrom_cons, ih]
+      show m * h [a] * h w = _
+      rw [mul_assoc, ← hh.2 [a] w]
+      rfl
+
+/-- The inverse image of a subset of a finite monoid under a homomorphism is a regular language. -/
+lemma isRegular_of_wordHom {A M : Type} [Monoid M] [Fintype M] {h : List A → M}
+    (hh : IsWordHom h) (F : Set M) : Language.IsRegular {w | h w ∈ F} := by
+  refine ⟨M, inferInstance, homDFA h F, ?_⟩
+  ext w
+  show (homDFA h F).evalFrom (homDFA h F).start w ∈ (homDFA h F).accept ↔ h w ∈ F
+  rw [homDFA_evalFrom hh F]
+  show 1 * h w ∈ F ↔ h w ∈ F
+  rw [one_mul]
+
+/-- Conversely, every regular language is the inverse image of a subset of a finite monoid under a
+homomorphism: the monoid is the transition monoid of a deterministic automaton recognising it,
+that is, the opposite of the monoid of maps from states to states, since reading a string
+transforms states from the left. -/
+lemma exists_wordHom_of_isRegular {A : Type} {L : Language A} (hL : L.IsRegular) :
+    ∃ (M : Type) (_ : Monoid M) (_ : Fintype M) (h : List A → M) (F : Set M),
+      IsWordHom h ∧ L = {w | h w ∈ F} := by
+  obtain ⟨σ, _, D, rfl⟩ := hL
+  classical
+  letI : Fintype (Function.End σ) := show Fintype (σ → σ) from inferInstance
+  letI : Fintype (Function.End σ)ᵐᵒᵖ := Fintype.ofEquiv _ MulOpposite.opEquiv
+  refine ⟨(Function.End σ)ᵐᵒᵖ, inferInstance, inferInstance,
+    fun w => MulOpposite.op (fun q => D.evalFrom q w), {x | MulOpposite.unop x D.start ∈ D.accept},
+    ⟨?_, ?_⟩, ?_⟩
+  · apply MulOpposite.unop_injective
+    funext q
+    simp [DFA.evalFrom]
+    rfl
+  · intro u v
+    apply MulOpposite.unop_injective
+    funext q
+    show D.evalFrom q (u ++ v) = _
+    rw [DFA.evalFrom_of_append]
+    rfl
+  · rfl
+
 end Exercises
 end Transducers
