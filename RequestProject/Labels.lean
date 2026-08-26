@@ -588,6 +588,91 @@ alias «exer:continuous-iff-uniformly-continuous» :=
   Transducers.Exercises.continuous_iff_uniformContinuous
 assert_no_sorry «exer:continuous-iff-uniformly-continuous»
 
+/-- **Exercise `exer:regular-languages-for-rational-relations`** (the domain of a rational relation): `Transducers.Exercises.rationalRel_domain_isRegular`. -/
+alias «exer:regular-languages-for-rational-relations» :=
+  Transducers.Exercises.rationalRel_domain_isRegular
+assert_no_sorry «exer:regular-languages-for-rational-relations»
+
+/-- **Exercise `exer:regular-languages-for-rational-relations`** (the range of a rational relation): `Transducers.Exercises.rationalRel_range_isRegular`. -/
+alias «exer:regular-languages-for-rational-relations#2» :=
+  Transducers.Exercises.rationalRel_range_isRegular
+assert_no_sorry «exer:regular-languages-for-rational-relations#2»
+
+/-- **Exercise `exer:non-regular-languages-for-rational-relations`** (the inputs with at most one output need not form a regular language): `Transducers.Exercises.exists_rationalRel_atMostOneOutput_not_isRegular`. -/
+alias «exer:non-regular-languages-for-rational-relations» :=
+  Transducers.Exercises.exists_rationalRel_atMostOneOutput_not_isRegular
+assert_no_sorry «exer:non-regular-languages-for-rational-relations»
+
+/-- **Exercise `exer:rational-relations-not-closed-under-intersection`** (rational relations are not closed under intersection): `Transducers.Exercises.exists_rationalRel_inter_not_rationalRel`. -/
+alias «exer:rational-relations-not-closed-under-intersection» :=
+  Transducers.Exercises.exists_rationalRel_inter_not_rationalRel
+assert_no_sorry «exer:rational-relations-not-closed-under-intersection»
+
+/-- **Exercise `exer:rational-relations-intersection-undecidable`** (nonemptiness of the intersection is undecidable): `Transducers.Exercises.rationalRel_intersection_undecidable`. -/
+alias «exer:rational-relations-intersection-undecidable» :=
+  Transducers.Exercises.rationalRel_intersection_undecidable
+assert_no_sorry «exer:rational-relations-intersection-undecidable»
+
+/-- **Exercise `exer:rational-output-size`** (finitely many outputs = affine bound on the output length): `Transducers.Exercises.rationalRel_finiteOutputs_iff_affine`. -/
+alias «exer:rational-output-size» := Transducers.Exercises.rationalRel_finiteOutputs_iff_affine
+assert_no_sorry «exer:rational-output-size»
+
+/-- **Exercise `exer:examples-of-rational-fun`** (item (a), the input if its length is even): `Transducers.Exercises.isBimachine_isRationalFun_evenLength`. -/
+alias «exer:examples-of-rational-fun» := Transducers.Exercises.isBimachine_isRationalFun_evenLength
+assert_no_sorry «exer:examples-of-rational-fun»
+
+/-- **Exercise `exer:examples-of-rational-fun`** (item (b), swap the first and the last letter): `Transducers.Exercises.isBimachine_isRationalFun_swapFirstLast`. -/
+alias «exer:examples-of-rational-fun#2» :=
+  Transducers.Exercises.isBimachine_isRationalFun_swapFirstLast
+assert_no_sorry «exer:examples-of-rational-fun#2»
+
+/-- **Exercise `exer:examples-of-rational-fun`** (item (c), the last `#` and what follows it): `Transducers.Exercises.isBimachine_isRationalFun_upToLastHash`. -/
+alias «exer:examples-of-rational-fun#3» :=
+  Transducers.Exercises.isBimachine_isRationalFun_upToLastHash
+assert_no_sorry «exer:examples-of-rational-fun#3»
+
+/-- **Exercise `exer:non-rational`** (item (a), the first half of the input): `Transducers.Exercises.not_isRationalFun_firstHalf`. -/
+alias «exer:non-rational» := Transducers.Exercises.not_isRationalFun_firstHalf
+assert_no_sorry «exer:non-rational»
+
+/-- **Exercise `exer:non-rational`** (item (b), duplication): `Transducers.Exercises.not_isRationalFun_duplicate`. -/
+alias «exer:non-rational#2» := Transducers.Exercises.not_isRationalFun_duplicate
+assert_no_sorry «exer:non-rational#2»
+
+/-- **Exercise `exer:decide-rational-colision`** (item (a), the collision problem for two rational functions is undecidable): `Transducers.Exercises.rationalFun_collision_undecidable`. -/
+alias «exer:decide-rational-colision» := Transducers.Exercises.rationalFun_collision_undecidable
+assert_no_sorry «exer:decide-rational-colision»
+
+/-- **Exercise `exer:function-that-is-not-rational`** (not rational, yet rational after every rational function into a one-letter alphabet): `Transducers.Exercises.exists_not_isRationalFun_unary_compositions_rational`. -/
+alias «exer:function-that-is-not-rational» :=
+  Transducers.Exercises.exists_not_isRationalFun_unary_compositions_rational
+assert_no_sorry «exer:function-that-is-not-rational»
+
+/-- **Exercise `exer:some-ideals`** (first item, the functions with a range of size at most `k`): `Transducers.Exercises.isIdeal_rangeAtMost`. -/
+alias «exer:some-ideals» := Transducers.Exercises.isIdeal_rangeAtMost
+assert_no_sorry «exer:some-ideals»
+
+/-- **Exercise `exer:some-ideals`** (second item, the functions with `O(n^k)` outputs): `Transducers.Exercises.isIdeal_outputsPoly`. -/
+alias «exer:some-ideals#2» := Transducers.Exercises.isIdeal_outputsPoly
+assert_no_sorry «exer:some-ideals#2»
+
+/-- **Exercise `exer:finite-range-ideals`** (an ideal of functions with finite range is `RangeAtMost k` or `OutputsPoly 0`): `Transducers.Exercises.finite_range_ideal_classification`. -/
+alias «exer:finite-range-ideals» := Transducers.Exercises.finite_range_ideal_classification
+assert_no_sorry «exer:finite-range-ideals»
+
+/-- **Exercise `exer:surjective-rational-function`** (a surjective rational function has a rational one-sided inverse): `Transducers.Exercises.exists_rationalFun_leftInverse`. -/
+alias «exer:surjective-rational-function» := Transducers.Exercises.exists_rationalFun_leftInverse
+assert_no_sorry «exer:surjective-rational-function»
+
+/-- **Exercise `exer:two-letter-alphabet-suffices`** (a two-letter alphabet suffices for the prime regular functions): `Transducers.Exercises.isRegularFun_iff_compClosure2`. -/
+alias «exer:two-letter-alphabet-suffices» := Transducers.Exercises.isRegularFun_iff_compClosure2
+assert_no_sorry «exer:two-letter-alphabet-suffices»
+
+/-- **Exercise `exer:mealy-as-restricted-mso-relabelling`** (Mealy machines are the restricted mso relabellings): `Transducers.Exercises.isMealy_iff_restrictedRelabelling`. -/
+alias «exer:mealy-as-restricted-mso-relabelling» :=
+  Transducers.Exercises.isMealy_iff_restrictedRelabelling
+assert_no_sorry «exer:mealy-as-restricted-mso-relabelling»
+
 /-
 The theorem-like environments of the book that are not aliased
 above, so that this file accounts for all of them:

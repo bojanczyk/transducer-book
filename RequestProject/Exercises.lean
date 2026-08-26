@@ -7,6 +7,9 @@ the parts of the book and are indexed in `EXERCISES.md` rather than in
 auxiliary facts that the solutions take for granted live next to them in the
 corresponding `*Aux.lean` file.
 -/
-import RequestProject.Exercises.IntroAux
 import RequestProject.Exercises.Intro
+import RequestProject.Exercises.IntroAux
 import RequestProject.Exercises.PartA
+import RequestProject.Exercises.PartBC
+import RequestProject.Exercises.PartBCAux
+import RequestProject.Exercises.PartBCPCP
