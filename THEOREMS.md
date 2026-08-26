@@ -11,6 +11,9 @@ carry no label are given a placeholder tag with the prefix `nolabel:`, and
 sections, which carry no labels either, are referred to by their titles.  See
 `LABELS.md` for the convention and for the dictionary of labels.
 
+The *exercises* of the book are not numbered results of the main text, so they
+are not listed here; they are listed in `EXERCISES.md`, in the same style.
+
 The correspondence between the labels and the Lean declarations is itself
 checked by Lean, in `RequestProject/Labels.lean`: every formalised result gets
 an alias whose Lean name is its label, and an assertion that records whether the
@@ -44,6 +47,7 @@ RequestProject/
   PartB.lean    PartB/         -- Part B: rational relations and functions
   PartC.lean    PartC/         -- Part C: regular functions
   PartD.lean    PartD/         -- Part D: polyregular functions
+  Exercises.lean Exercises/    -- the exercises of the book (indexed in `EXERCISES.md`)
   Labels.lean                  -- the results of the book indexed by their LaTeX labels
   Main.lean                    -- global options used by the project
 ```
@@ -53,6 +57,7 @@ RequestProject/
 | `Common/Basic.lean` | continuity, prefix/length preservation, aperiodicity, map lifting, left distance, closure under composition |
 | `Common/Aux.lean` | auxiliary lemmas on lists and on iterating a function on a finite set |
 | `Common/RegularAux.lean` | regularity of the auxiliary languages used in Part B |
+| `Exercises/Intro.lean`, `Exercises/IntroAux.lean` | the exercises of the introduction and the auxiliary facts their solutions take for granted — see `EXERCISES.md` |
 | `PartA/MealyBasic.lean` | Mealy machines: definitions, runs, state transformations, products, the associated dfa |
 | `PartA/PrimeClosure.lean` | closure properties of compositions of prime Mealy machines (pairing the output with the input) |
 | `PartA/MapLift.lean` | the map lifting: its description position by position, and Lemma `lem:map-lifting-decomposition-mealy` |
@@ -1386,3 +1391,12 @@ printed inclusion is `Transducers.twoWay_isRegular`, the left-to-right implicati
 `Transducers.sst_iff_regular` and
 `Transducers.msoTransduction_iff_regular`
 reports only `propext`, `Classical.choice`, `Quot.sound`.
+
+No numbered result of the main text was changed by the formalisation of the
+exercises of the introduction (`Exercises/Intro.lean`, indexed in
+`EXERCISES.md`): the two of them that coincide with halves of Lemma
+`nolabel:lem-reverse-and-duplicate-continuous` are deduced from that lemma
+rather than reproved, and nothing outside `RequestProject/Exercises/`,
+`RequestProject/Exercises.lean`, `RequestProject.lean` and
+`RequestProject/Labels.lean` (which gained the eleven exercise aliases) was
+touched.
