@@ -22,3 +22,8 @@ import RequestProject.Exercises.TwoDFALoop
 import RequestProject.Exercises.SSTAux
 import RequestProject.Exercises.SST
 import RequestProject.Exercises.SSTPoly
+import RequestProject.Exercises.LogicEx
+import RequestProject.Exercises.Compression
+import RequestProject.Exercises.TwoNFT
+import RequestProject.Exercises.TwoNFT2
+import RequestProject.Exercises.ForFO

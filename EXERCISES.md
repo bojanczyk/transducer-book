@@ -38,6 +38,11 @@ RequestProject/
     SSTAux.lean                 -- the auxiliary facts of the sst exercises
     SST.lean                    -- the exercises of sst.tex
     SSTPoly.lean                -- copyful ssts and polynomial automata
+    LogicEx.lean                -- second-order logic (logic.tex)
+    Compression.lean            -- grammar compression (polyregular-intro.tex)
+    TwoNFT.lean                 -- the two nondeterministic two-way models, first half
+    TwoNFT2.lean                -- the two nondeterministic two-way models, second half
+    ForFO.lean                  -- first-order logic into for-transducers (polyregular-for.tex)
 ```
 
 | File | Contents |
@@ -55,6 +60,11 @@ RequestProject/
 | `Exercises/SSTAux.lean` | the auxiliary facts the sst exercises take for granted |
 | `Exercises/SST.lean` | the exercises of `sst.tex`: sorting by an sst, the continuity of the functions of copyful ssts, the exponential bound on their output length and its attainment, the failure of closure under composition, and the two polynomial automata (single and doubly exponential) |
 | `Exercises/SSTPoly.lean` | the reduction of equivalence of copyful ssts to equivalence of polynomial automata |
+| `Exercises/LogicEx.lean` | the exercise of `logic.tex` on second-order logic: the fragment `SO` of second-order logic used by the solution (first-order logic with variables for binary relations on positions), its satisfaction relation and its languages, and a sentence of `SO` whose language `{falseⁿ trueⁿ}` is not regular |
+| `Exercises/Compression.lean` | grammar compression in binary (straight-line programme) form, and the exercise of `polyregular-intro.tex` on marked squaring: the set of distances between consecutive marked letters, the bound on it by the number of rules of a compression, and the resulting exponential gap between a compression of `a^(2ⁿ)` and any compression of its marked square |
+| `Exercises/TwoNFT.lean` | the first half of the exercise of `2dfa.tex` on the two nondeterministic two-way models: the two models `IsTwoNFT₁` and `IsTwoNFT₂`, the finiteness of the set of outputs of the second one, and a relation of the first one with infinitely many outputs on one input |
+| `Exercises/TwoNFT2.lean` | the second half of that exercise: the relation `{(aⁿ, v v)}` is in the second model (through the two-way transducer for the map lifting of duplication) and not in the first (the cut-and-paste argument, with the cut lemma `TwoWayN.reachesN_cut` that replaces the solution's cut after exactly `n` output letters) |
+| `Exercises/ForFO.lean` | the exercise of `polyregular-for.tex` on simulating first-order logic: the translation `trans` of a formula into a for-transducer program that stores the truth value of every subformula in a Boolean variable, its correctness `trans_spec`, and the linear bound `10·|φ|+5` on the size of the resulting program |
 | `Exercises/PartBCUnary.lean` | bimachines over a one-letter input alphabet, used by the solution to `exer:rational-one-letter-input`: the eventual periodicity of the runs of the prefix and of the suffix automaton, the output of the bimachine as the concatenation of the pieces of its gaps, and the resulting form `x yᵏ z` of the output on the inputs of a fixed length modulo the period |
 
 The file `Exercises/PartA.lean` holds the twelve exercises of Part A.  An
@@ -126,6 +136,8 @@ all eleven are aliased in `RequestProject/Labels.lean`.
 | Exercise `exer:alternating-not-flip-flop-composition` (the alternating function is not a composition of flip-flops) | `Transducers.alternating_not_flipflop_composition` (with `Transducers.alternating`) | proved |
 | Exercise `exer:invertible-mealy-is-reversible` (invertible and reversible are incomparable) | `Transducers.invertible_reversible_independent` (with `Transducers.swapPrev`, `Transducers.constOut`) | proved |
 | Exercise `ex:map-lifting-continuous` (the map lifting of a continuous function is continuous) | `Transducers.mapLift_continuous_of_continuous` | proved (an instance of Lemma `lem:map-lifting-continuous` of the main text, `Transducers.mapLift_continuous`) |
+| Exercise `exer:simple-decomposition-example` (the first-letter function as a composition of flip-flops) | `Transducers.firstConst_flipflop_decomposition` | proved |
+| Exercise `exer:simple-decomposition-example-2` (the first-letter function is not a composition of reversible Mealy machines) | `Transducers.firstConst_not_reversible_composition` | proved |
 
 ### Rational relations (`rational-relations.tex`)
 
@@ -163,15 +175,75 @@ all eleven are aliased in `RequestProject/Labels.lean`.
 | Book | Lean | Status |
 | --- | --- | --- |
 | Exercise `exer:two-letter-alphabet-suffices` (a two-letter alphabet suffices for map reverse and map duplicate) | `RegularFam2`, `isRegularFun_iff_compClosure2` | proved |
+| Exercise `exer:not-semiring-continuous` (a regular function that is not obtained by precomposing a weighted function) | `exists_isRegularFun_not_weighted_precomp` | proved |
+
+### Machine independent characterisations (`myhill-nerode.tex`)
+
+| Book | Lean | Status |
+| --- | --- | --- |
+| Exercise `exer:minimal-sequential` (minimal sequential transducers are unique up to isomorphism) | `minimal_sequential_unique` (with `residOf`, `canonSeq`, `MinimalFor`, `SeqIso`) | proved |
+| Exercise `exer:minimal-subsequential` (minimal subsequential transducers are not unique) | `minimal_subsequential_not_unique` | proved |
+| Exercise `exer:non-minimal-bimachine` (minimal bimachines are not unique) | `minimal_bimachine_not_unique` | proved |
+| Exercise `exer:minimal-bimachine-lexicographic` (the lexicographically least minimal bimachine) | — | not formalised |
+| Exercise `exer:non-minimal-automaton` (a rational function with two non-isomorphic minimal unambiguous transducers) | — | not formalised |
+
+### Regular functions, introduction (`regular-intro.tex`)
+
+| Book | Lean | Status |
+| --- | --- | --- |
+| Exercise `exer:regular-compression` (regular functions are compatible with compression) | — | not formalised |
+
+### Two-way transducers (`2dfa.tex`)
+
+| Book | Lean | Status |
+| --- | --- | --- |
+| Exercise `exer:2dfa-unary-output` (over a unary output alphabet, regular = rational) | — | not formalised |
+| Exercise `exer:2dfa-boolean` (two-way deterministic languages are closed under Boolean combinations) | `isTwoDFALang_boolean` | proved |
+| Exercise `exer:2dfa-complexity` (the shortest accepted string can be exponential in the number of states) | — | not formalised (the book's construction does not prove the claim; see below) |
+| Exercise `exer:2dfa-loop-elimination` (the inputs on which a two-way transducer terminates form a regular language) | `halts_isRegular` | proved |
+| Exercise `exer:2dfa-loop-elimination-sipser` (a polynomial-size two-way automaton for it) | — | not formalised |
+| Exercise `exer:regular-outpus-of-exactly-linear-size` (a regular function of unbounded output size has exactly linear output size) | — | not formalised |
+| Exercise `exer:2nft` (the two nondeterministic two-way models are incomparable) | `exists_isTwoNFT₁_not_isTwoNFT₂`, `exists_isTwoNFT₂_not_isTwoNFT₁` (with `TwoWayN`, `IsTwoNFT₁`, `IsTwoNFT₂`, `dupRel`) | proved |
+| Exercise `exer:2nft-uniformise` (both nondeterministic models can be uniformised) | — | not formalised |
+
+### Streaming string transducers (`sst.tex`)
+
+| Book | Lean | Status |
+| --- | --- | --- |
+| Exercise `exer:sst-sorting` (sorting the letters of a string is computed by an sst) | `isSST_sort` | proved |
+| Exercise `exer:sst-copyful-sst` (copyful ssts compute continuous functions) | `continuous_of_isCopyfulSST` | proved |
+| Exercise `exer:sst-copyful-sst-output-size` (the output of a copyful sst is at most exponential, and this is attained) | `CopyfulSST.output_length_exp_bound`, `exists_isCopyfulSST_exponential` | proved |
+| Exercise `exer:sst-copyful-sst-no-composition` (copyful ssts are not closed under composition) | `exists_isCopyfulSST_comp_not_isCopyfulSST` | proved |
+| Exercise `exer:sst-polynomial-automaton` (a polynomial automaton computing `2^n`) | `isPolyAut_two_pow` | proved |
+| Exercise `exer:sst-polynomial-automaton-doubly-exponential` (a polynomial automaton computing `2^{2^n}`) | `isPolyAut_two_pow_two_pow` | proved |
+| Exercise `exer:copyful-sst-decidable` (equivalence of copyful ssts reduces to equivalence of polynomial automata) | `copyfulSST_equivalence_reduces_to_polyAut` | proved |
 
 ### Logic (`logic.tex`)
 
 | Book | Lean | Status |
 | --- | --- | --- |
 | Exercise `exer:mealy-as-restricted-mso-relabelling` (Mealy machines are the restricted mso relabellings) | `RestrictedRelabelling`, `isMealy_iff_restrictedRelabelling` | proved |
+| Exercise `exer:fo-non-elementary` (first-order sentences of non-elementary succinctness) | — | not formalised |
+| Exercise `exer:so-logic` (second-order logic defines a non-regular language) | `exists_SO_lang_not_isRegular` (with `SO`, `SO.Sat`, `SO.lang`) | proved |
+| Exercise `exer:fo-suc` (first-order logic with successor only is strictly weaker) | — | not formalised |
 
-Every exercise of these four chapters carries a `\label` in the sources, so
-every formalised one is aliased in `RequestProject/Labels.lean`.
+### Polyregular functions, introduction (`polyregular-intro.tex`)
+
+| Book | Lean | Status |
+| --- | --- | --- |
+| Exercise `exer:polyregular-marked-squaring-compression` (marked squaring is not compatible with compression) | `markedSquare_not_compatible_with_compression` (with `Rule`, `slpVal`, `Generates`) | proved |
+| Exercise `exer:polyregular-unmarked-squaring` (unmarked squaring gives a strictly smaller class) | — | not formalised |
+
+### For-transducers (`polyregular-for.tex`)
+
+| Book | Lean | Status |
+| --- | --- | --- |
+| Exercise `exer:for-transducers-simulate-fo` (a first-order sentence is computed by a for-transducer of linear size) | `exists_forProg_of_isFO` (with `trans`, `fsize`, `progSize`, `foProg`) | proved |
+| Exercise `exer:for-transducer-continuity-nonelementary` (the preimage nfa can be non-elementary) | — | not formalised |
+| Exercise `exer:forward-for-transducer` (forward for-transducers = marked squaring and rational functions) | — | not formalised |
+
+Every exercise of these chapters carries a `\label` in the sources, so every
+formalised one is aliased in `RequestProject/Labels.lean`.
 
 ## Notes on the statements
 
@@ -470,3 +542,142 @@ Each of the thirty-nine has an alias in `RequestProject/Labels.lean` carrying
 `assert_no_sorry`, and none of the seven has one, which is what makes this
 index self-checking; `#print axioms` on all thirty-nine reports only `propext`,
 `Classical.choice`, `Quot.sound`.
+
+## Notes on the statements (the exercises of `logic.tex`, `polyregular-intro.tex`, `2dfa.tex` and `polyregular-for.tex`)
+
+* **`exer:so-logic`.**  The exercise asks for a language that is definable in
+  second-order logic and is not regular.  The book does not fix a syntax for
+  second-order logic, so `Transducers.Exercises.SO` fixes the one the solution
+  uses: first-order logic over strings extended with variables for *binary*
+  relations on positions, which may be quantified over and tested for
+  membership.  The language is the author's, `{falseⁿ trueⁿ}`; the sentence says
+  that there is a relation which is a bijection between the positions labelled
+  `false` and the positions labelled `true` and which is monotone, and its
+  non-regularity is the pumping argument already in `Exercises/PartBCAux.lean`.
+* **`exer:polyregular-marked-squaring-compression`.**  Polynomial time is not
+  part of this formalisation, so what is proved is the stronger, purely
+  combinatorial statement that the solution establishes: the input `a^(2ⁿ)` has
+  a compression with `n+1` rules and *every* compression of its marked square
+  has at least `2ⁿ-1` rules, so no algorithm at all can compute one in
+  polynomial time.  A grammar generating a single string is taken in binary
+  (straight-line programme) form, which is the form the solution argues about.
+* **`exer:2nft`.**  Both halves are proved.  The second model is formalised with
+  the correction the solution itself makes: the guessed labelling has to satisfy
+  a regular condition, so that the model can produce no output at all.  For the
+  first half the relation is the author's `bounce`, which on a nonempty input
+  produces every string over a one-letter output alphabet.  For the second half
+  the relation is the author's `{(aⁿ, v v) : |v| = n}`; the membership in the
+  second model reuses the two-way transducer for the map lifting of duplication
+  of `PartC/TwoWayRegular.lean`.  One point that the solution passes over had to
+  be dealt with: a single transition may produce several output letters, so a
+  run cannot be cut after *exactly* `n` output letters.  It is cut instead at the
+  first moment when at least `n` letters have been produced, and the pigeonhole
+  is applied to the configuration together with the at most `K` extra letters,
+  where `K` is the length of the longest output of a transition; the splicing
+  then goes through unchanged.
+* **`exer:for-transducers-simulate-fo`.**  The outputs `yes` and `no` are `true`
+  and `false` over the output alphabet `Bool`.  The size of a program is the
+  number of nodes of its syntax tree (`progSize`) and the size of a formula is
+  the number of nodes of its syntax tree (`fsize`); the bound proved is
+  `10·fsize φ + 5`, which is linear, as the solution says.  The translation is
+  the author's: each quantifier becomes a for loop, the truth value of each
+  subformula is kept in a Boolean variable, and the epilogue outputs `yes` or
+  `no`.  The satisfaction of the sentence is stated with the default valuation
+  of the variables, on which it does not depend.
+
+## A divergence: `exer:2dfa-complexity`
+
+The exercise asks for a deterministic two-way automaton whose shortest accepted
+string is *exponential* in the number of states, and the solution proposes to
+check divisibility of the input length by each of the primes `p₁, …, pₙ`, using
+about `p₁ + ⋯ + pₙ` states, so that the shortest accepted string has length
+`p₁ ⋯ pₙ`.  That construction does not prove the claim.  For *distinct* primes
+`p₁ < ⋯ < pₙ` — and repeated primes contribute nothing — the number of states is
+`s = Θ(pₙ² / log pₙ)` while `log (p₁ ⋯ pₙ) = Θ(pₙ)`, so the shortest accepted
+string has length `exp(Θ(√(s log s)))`.  That is superpolynomial in the number of
+states, but it is not exponential in it.
+
+The statement of the exercise is nevertheless true, by constructions that the
+book does not give, so nothing here is claimed to be a counterexample: what is
+recorded is that the argument of the solution establishes a superpolynomial and
+not an exponential lower bound.  The exercise is therefore left out rather than
+formalised with the book's proof.
+
+## Exercises that are not formalised (continued)
+
+Besides the seven exercises of *Rational functions* already listed above, the
+following are not formalised, and each is left out rather than replaced by a
+statement the book does not make.
+
+* Statements about polynomial time or about the number of states of a
+  construction, which this project does not model: `exer:rational-compression`,
+  `exer:regular-compression`, `exer:polyregular-unmarked-squaring` (which rests
+  on the two previous ones), `exer:2dfa-loop-elimination-sipser`,
+  `exer:2dfa-complexity` (see the divergence above), and
+  `exer:for-transducer-continuity-nonelementary` (which rests on
+  `exer:fo-non-elementary`).
+* Statements resting on theory that the project does not have:
+  `exer:rational-outpus-of-exactly-linear-size` and
+  `exer:rational-outpus-of-exactly-linear-size-rational-number` (the maximum
+  cycle mean of a weighted graph), `exer:regular-outpus-of-exactly-linear-size`
+  (which reduces to them through `exer:2dfa-unary-output`), `exer:fo-suc`
+  (Ehrenfeucht–Fraïssé games) and `exer:fo-non-elementary`.
+* Statements whose solution goes through the string encoding of the
+  configuration graph of a two-way transducer, which the project deliberately
+  does not formalise (Lemma `lem:compute-configuration-graph`, see
+  `RequestProject/Labels.lean`): `exer:2dfa-unary-output` and
+  `exer:2nft-uniformise`.
+* Two exercises of `myhill-nerode.tex` whose solutions are long case analyses
+  over arbitrary machines: `exer:minimal-bimachine-lexicographic` (a
+  Myhill–Nerode theory for bimachines) and `exer:non-minimal-automaton` (the
+  example is easy, but the claim that three states are necessary is a case
+  analysis over all two-state unambiguous transducers with arbitrary output
+  strings on the transitions, which the solution itself only sketches).
+* `exer:factoring-through-a-rational-function`, whose solution is empty in the
+  sources, and the unlabelled exercise at `rational-functions.tex` line 440,
+  whose statement and solution are both commented out in the sources.  (Its
+  content — that a rational relation all of whose outputs have the length of the
+  input is computed by an nfa with output whose transitions are
+  length-preserving — is Lemma `lem:characterisation-length-preserving` of the
+  main text, which is formalised in `RequestProject/PartB/LenNormalForm.lean`.)
+* `exer:forward-for-transducer`, the last exercise of the book, which asks for
+  the functions computed by *forward* for-transducers — those all of whose loops
+  run first-to-last — to be exactly the composition closure of marked squaring
+  and the *rational* functions.  Loop directions are modelled in this project
+  (`Transducers.ForProg.loop` carries a `Bool`), but the solution asks for both
+  inclusions of Theorem `thm:for-transducers-are-polyregular` to be replayed
+  with the direction of every loop tracked, and this project's proof of that
+  theorem does not have the shape the solution refines.  In particular the
+  right-to-left inclusion goes through the enumeration of the tuples of
+  positions followed by a *scan* which is shown regular because it is computed
+  by a streaming string transducer (`Transducers.PolyEnum.scan_enum` and
+  `isRegularFun_scanFun` in `RequestProject/PartD/PolyFor.lean`), whereas the
+  exercise needs that scan to be *rational* in the forward case; and the
+  left-to-right inclusion needs a forward bimachine program — the program of
+  `RequestProject/PartD/ForPrimes.lean` runs the suffix automaton in a backward
+  inner loop (`MProg.loop false`) — together with the fact that the composition
+  construction of Lemma `lem:for-closed-under-composition` multiplies the
+  directions.  Each of these is a development of the size of the theorem it
+  refines, so the exercise is left out rather than stated in a weaker form that
+  the book does not make.
+
+## Status (current)
+
+This section supersedes the counts of the two `## Status` sections above, which
+were written when fewer chapters had been done.
+
+Counted by rows of the index, **fifty-eight** exercises are formalised and
+**twenty-five** are not; the book has eighty-three exercises, eighty-two of them
+with a solution.  Every formalised exercise carries a `\label` in the sources
+and has an alias in `RequestProject/Labels.lean` followed by `assert_no_sorry`,
+and none of the unformalised ones has an alias, which is what makes this index
+self-checking.  There is no `sorry` anywhere in `RequestProject/Exercises/`, and
+`#print axioms` on each of the fifty-eight reports only `propext`,
+`Classical.choice`, `Quot.sound`.
+
+Three statements carry an explicit hypothesis rather than being proved outright:
+`exer:function-that-is-not-rational` (the non-rationality of string reversal, an
+*example* of the main text and not a numbered result),
+`exer:rational-relations-intersection-undecidable` and item (a) of
+`exer:decide-rational-colision` (the undecidability of the Post correspondence
+problem, exactly as the numbered undecidability results of the book do).

@@ -791,6 +791,27 @@ alias «exer:copyful-sst-decidable» :=
   Transducers.Exercises.copyfulSST_equivalence_reduces_to_polyAut
 assert_no_sorry «exer:copyful-sst-decidable»
 
+/-- **Exercise `exer:so-logic`** (second-order logic can define non-regular languages): `Transducers.Exercises.exists_SO_lang_not_isRegular`. -/
+alias «exer:so-logic» := Transducers.Exercises.exists_SO_lang_not_isRegular
+assert_no_sorry «exer:so-logic»
+
+/-- **Exercise `exer:polyregular-marked-squaring-compression`** (marked squaring is not compatible with compression): `Transducers.Exercises.markedSquare_not_compatible_with_compression`. -/
+alias «exer:polyregular-marked-squaring-compression» :=
+  Transducers.Exercises.markedSquare_not_compatible_with_compression
+assert_no_sorry «exer:polyregular-marked-squaring-compression»
+
+/-- **Exercise `exer:2nft`** (first half: the first nondeterministic model of a two-way transducer is not contained in the second): `Transducers.Exercises.exists_isTwoNFT₁_not_isTwoNFT₂`. -/
+alias «exer:2nft» := Transducers.Exercises.exists_isTwoNFT₁_not_isTwoNFT₂
+assert_no_sorry «exer:2nft»
+
+/-- **Exercise `exer:2nft`** (second half: the second nondeterministic model of a two-way transducer is not contained in the first): `Transducers.Exercises.exists_isTwoNFT₂_not_isTwoNFT₁`. -/
+alias «exer:2nft#2» := Transducers.Exercises.exists_isTwoNFT₂_not_isTwoNFT₁
+assert_no_sorry «exer:2nft#2»
+
+/-- **Exercise `exer:for-transducers-simulate-fo`** (a first-order sentence is computed by a for-transducer of linear size): `Transducers.Exercises.exists_forProg_of_isFO`. -/
+alias «exer:for-transducers-simulate-fo» := Transducers.Exercises.exists_forProg_of_isFO
+assert_no_sorry «exer:for-transducers-simulate-fo»
+
 /-
 The theorem-like environments of the book that are not aliased
 above, so that this file accounts for all of them:

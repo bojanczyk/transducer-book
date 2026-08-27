@@ -266,3 +266,45 @@ added is:
 `lake build` succeeds with no errors (8321 jobs), and `#print axioms` on
 `Transducers.pebble_iff_forTransducer`, on `Transducers.isPolyregular_of_isPebbleTransducer` and
 on `Transducers.PebSq.sim_computes` reports only `propext`, `Classical.choice`, `Quot.sound`.
+
+## The remaining exercises of the book
+
+This pass closed the gap between the `\exer` entries of the sources and the
+index of `EXERCISES.md`.  No numbered result of the main text was touched: the
+only files changed outside `RequestProject/Exercises/` are
+`RequestProject/Exercises.lean`, `RequestProject/Labels.lean`, `EXERCISES.md`
+and `THEOREMS.md`.
+
+Newly formalised:
+
+* `exer:so-logic` (`Exercises/LogicEx.lean`) -- a language definable in
+  second-order logic and not regular, for the syntax the solution uses.
+* `exer:polyregular-marked-squaring-compression` (`Exercises/Compression.lean`)
+  -- the purely combinatorial statement the solution establishes: `a^(2^n)` has
+  a compression with `n+1` rules and every compression of its marked square has
+  at least `2^n - 1` rules.
+* `exer:2nft`, both halves (`Exercises/TwoNFT.lean`, `Exercises/TwoNFT2.lean`)
+  -- the two nondeterministic two-way models are incomparable
+  (`Transducers.Exercises.exists_isTwoNFT₁_not_isTwoNFT₂` and
+  `Transducers.Exercises.exists_isTwoNFT₂_not_isTwoNFT₁`).
+* `exer:for-transducers-simulate-fo` (`Exercises/ForFO.lean`) -- every
+  first-order sentence is decided by a for-transducer of size linear in the
+  size of the sentence (`Transducers.Exercises.exists_forProg_of_isFO`).
+
+Fifty-eight of the book's eighty-three exercises are now formalised.  The
+twenty-five that are not are listed in `EXERCISES.md`, each with the reason;
+they are the ones about running time or the number of states of a construction,
+the ones resting on theory the project does not have (the maximum cycle mean of
+a weighted graph, Ehrenfeucht-Fraisse games, the growth rates of regular
+languages), the ones going through the string encoding of the configuration
+graph of a two-way transducer, `exer:factoring-through-a-rational-function`
+(whose solution is empty in the sources) and the exercise at
+`rational-functions.tex` line 440 (commented out in the sources).
+`EXERCISES.md` also records a divergence in the solution to
+`exer:2dfa-complexity`: the prime-divisibility construction it proposes gives a
+superpolynomial, not an exponential, lower bound on the length of the shortest
+accepted string in terms of the number of states.
+
+`lake build` succeeds with no errors, there is no `sorry` in
+`RequestProject/Exercises/`, and `#print axioms` on each new declaration
+reports only `propext`, `Classical.choice`, `Quot.sound`.

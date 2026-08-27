@@ -1728,3 +1728,39 @@ Lean files, and this section records what that check found.
   column of `LABELS.md` against the book's `main.aux`; `tools/relabel.py`
   finds, and with `--fix` rewrites, any reference to a result of the book by
   number.  All three report no problem.
+
+### The exercises added since the last audit
+
+This section is appended by the pass that closed the remaining gap between the
+`\exer` entries of the sources and the index of `EXERCISES.md`.  **No numbered
+result of the main text was touched by it**: the only files it changed outside
+`RequestProject/Exercises/` are `RequestProject/Exercises.lean` (imports),
+`RequestProject/Labels.lean` (one alias and one `assert_no_sorry` per new
+exercise) and `EXERCISES.md`.
+
+The exercise files of the project are now
+
+```
+RequestProject/Exercises/
+  Intro.lean          IntroAux.lean
+  PartA.lean          KrohnRhodes.lean
+  PartBC.lean         PartBCAux.lean      PartBCPCP.lean   PartBCUnary.lean
+  MyhillNerode.lean   RegularPrimes.lean
+  TwoDFAEx.lean       TwoDFALoop.lean     TwoNFT.lean      TwoNFT2.lean
+  SST.lean            SSTAux.lean         SSTPoly.lean
+  LogicEx.lean        Compression.lean    ForFO.lean
+```
+
+(the exact list is the import list of `RequestProject/Exercises.lean`), and the
+two files added last are
+
+| file | contents |
+| --- | --- |
+| `Exercises/ForFO.lean` | Exercise `exer:for-transducers-simulate-fo`: the translation of a first-order sentence into a for-transducer that outputs `yes` or `no`, with the linear bound `10·fsize φ + 5` on the size of the program (`Transducers.Exercises.exists_forProg_of_isFO`) |
+| `Exercises/TwoNFT2.lean` | the second half of Exercise `exer:2nft`: the relation `{(aⁿ, v v) : |v| = n}` is computed by the second nondeterministic two-way model and not by the first (`Transducers.Exercises.exists_isTwoNFT₂_not_isTwoNFT₁`) |
+
+`#print axioms` on every declaration named above, and on every alias of
+`RequestProject/Labels.lean`, reports only `propext`, `Classical.choice`,
+`Quot.sound`; there is no `sorry` in `RequestProject/Exercises/`.  Fifty-eight
+of the book's eighty-three exercises are formalised; the twenty-five that are
+not are listed, with the reason for each, in `EXERCISES.md`.
