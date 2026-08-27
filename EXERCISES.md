@@ -30,6 +30,14 @@ RequestProject/
     PartBCAux.lean              -- the auxiliary facts their solutions take for granted
     PartBCPCP.lean              -- the reduction from the Post correspondence problem
     PartBCUnary.lean            -- bimachines over a one-letter input alphabet
+    KrohnRhodes.lean            -- further exercises of krohn-rhodes.tex
+    MyhillNerode.lean           -- the exercises of myhill-nerode.tex
+    RegularPrimes.lean          -- further exercises of regular-primes.tex
+    TwoDFAEx.lean               -- the exercises of 2dfa.tex
+    TwoDFALoop.lean             -- loop elimination for two-way transducers
+    SSTAux.lean                 -- the auxiliary facts of the sst exercises
+    SST.lean                    -- the exercises of sst.tex
+    SSTPoly.lean                -- copyful ssts and polynomial automata
 ```
 
 | File | Contents |
@@ -39,6 +47,14 @@ RequestProject/
 | `Exercises/PartBC.lean` | the exercises of Parts B and C that are formalised: six exercises on rational relations (the domain and the range, the inputs with at most one output, closure under intersection, the undecidability of a nonempty intersection, the size of the outputs, the recognisable subsets of `A* x B*`), eight on rational functions (the three examples as bimachines, the two functions that are not rational, the undecidability of the collision problem, the graph of a rational function over a one-letter input alphabet, the function that becomes rational after every rational function into a one-letter alphabet, two families of ideals, the ideals whose functions all have finite range, the one-sided inverse of a surjective rational function), the exercise on two-letter alphabets for the prime regular functions, and the exercise on Mealy machines as restricted mso relabellings |
 | `Exercises/PartBCPCP.lean` | the reduction from the Post correspondence problem that the solution to `exer:rational-relations-intersection-undecidable` asks for: the two-state automaton computing the graph of a homomorphism on nonempty inputs, its code, the relation it describes, and the computability of the reduction |
 | `Exercises/PartBCAux.lean` | the auxiliary facts those solutions take for granted: the symmetry of rational relations in input and output (so that the inverse of a rational relation is rational), the small regular languages given by explicit dfas that guess-and-check is applied to, the non-regularity, by the pumping lemma, of the languages the counterexamples produce (`bⁿcⁿ`, the balanced strings, `aⁱbʲ` with `j ≤ i`, and the squares `uu`), bounds on the length of the output of a run, the dfa that marks the position where a Mealy machine outputs a given letter, the encoding of an arbitrary finite alphabet by blocks over a two-letter one, and the two directions of the identification of the regular languages with the languages recognised by a homomorphism into a finite monoid |
+| `Exercises/KrohnRhodes.lean` | the two exercises of `krohn-rhodes.tex` on the first-letter function: its decomposition as a flip-flop followed by a letter-to-letter map, and the fact that it is not a composition of reversible machines |
+| `Exercises/MyhillNerode.lean` | the exercises of `myhill-nerode.tex` that are formalised: the uniqueness of the minimal sequential transducer, the failure of uniqueness for subsequential transducers, and the failure of uniqueness for bimachines |
+| `Exercises/RegularPrimes.lean` | the exercise of `regular-primes.tex` on the semiring of weighted functions: a regular function that is not obtained by precomposing a weighted function |
+| `Exercises/TwoDFAEx.lean` | the exercise of `2dfa.tex` on Boolean combinations: the languages of deterministic two-way automata are closed under complement, union and intersection |
+| `Exercises/TwoDFALoop.lean` | loop elimination: the set of inputs on which a deterministic two-way transducer terminates is a regular language |
+| `Exercises/SSTAux.lean` | the auxiliary facts the sst exercises take for granted |
+| `Exercises/SST.lean` | the exercises of `sst.tex`: sorting by an sst, the continuity of the functions of copyful ssts, the exponential bound on their output length and its attainment, the failure of closure under composition, and the two polynomial automata (single and doubly exponential) |
+| `Exercises/SSTPoly.lean` | the reduction of equivalence of copyful ssts to equivalence of polynomial automata |
 | `Exercises/PartBCUnary.lean` | bimachines over a one-letter input alphabet, used by the solution to `exer:rational-one-letter-input`: the eventual periodicity of the runs of the prefix and of the suffix automaton, the output of the bimachine as the concatenation of the pieces of its gaps, and the resulting form `x yᵏ z` of the output on the inputs of a fixed length modulo the period |
 
 The file `Exercises/PartA.lean` holds the twelve exercises of Part A.  An

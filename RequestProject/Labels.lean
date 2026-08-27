@@ -722,6 +722,75 @@ alias «exer:mealy-as-restricted-mso-relabelling» :=
   Transducers.Exercises.isMealy_iff_restrictedRelabelling
 assert_no_sorry «exer:mealy-as-restricted-mso-relabelling»
 
+/-- **Exercise `exer:simple-decomposition-example`** (the first-letter function as a composition of flip-flops): `Transducers.firstConst_flipflop_decomposition`. -/
+alias «exer:simple-decomposition-example» := Transducers.firstConst_flipflop_decomposition
+assert_no_sorry «exer:simple-decomposition-example»
+
+/-- **Exercise `exer:simple-decomposition-example-2`** (the first-letter function is not a composition of reversible Mealy machines): `Transducers.firstConst_not_reversible_composition`. -/
+alias «exer:simple-decomposition-example-2» := Transducers.firstConst_not_reversible_composition
+assert_no_sorry «exer:simple-decomposition-example-2»
+
+/-- **Exercise `exer:minimal-sequential`** (minimal sequential transducers are unique up to isomorphism): `Transducers.Exercises.minimal_sequential_unique`. -/
+alias «exer:minimal-sequential» := Transducers.Exercises.minimal_sequential_unique
+assert_no_sorry «exer:minimal-sequential»
+
+/-- **Exercise `exer:minimal-subsequential`** (minimal subsequential transducers are not unique up to isomorphism): `Transducers.Exercises.minimal_subsequential_not_unique`. -/
+alias «exer:minimal-subsequential» := Transducers.Exercises.minimal_subsequential_not_unique
+assert_no_sorry «exer:minimal-subsequential»
+
+/-- **Exercise `exer:non-minimal-bimachine`** (minimal bimachines are not unique up to isomorphism): `Transducers.Exercises.minimal_bimachine_not_unique`. -/
+alias «exer:non-minimal-bimachine» := Transducers.Exercises.minimal_bimachine_not_unique
+assert_no_sorry «exer:non-minimal-bimachine»
+
+/-- **Exercise `exer:not-semiring-continuous`** (a regular function whose precomposition does not preserve the weighted-automaton functions): `Transducers.Exercises.exists_isRegularFun_not_weighted_precomp`. -/
+alias «exer:not-semiring-continuous» :=
+  Transducers.Exercises.exists_isRegularFun_not_weighted_precomp
+assert_no_sorry «exer:not-semiring-continuous»
+
+/-- **Exercise `exer:2dfa-boolean`** (the languages of deterministic two-way automata are closed under complement, union and intersection): `Transducers.Exercises.isTwoDFALang_boolean`. -/
+alias «exer:2dfa-boolean» := Transducers.Exercises.isTwoDFALang_boolean
+assert_no_sorry «exer:2dfa-boolean»
+
+/-- **Exercise `exer:2dfa-loop-elimination`** (the set of inputs on which a deterministic two-way transducer terminates is a regular language): `Transducers.Exercises.halts_isRegular`. -/
+alias «exer:2dfa-loop-elimination» := Transducers.Exercises.halts_isRegular
+assert_no_sorry «exer:2dfa-loop-elimination»
+
+/-- **Exercise `exer:sst-sorting`** (sorting the letters of a string is computed by an sst): `Transducers.Exercises.isSST_sort`. -/
+alias «exer:sst-sorting» := Transducers.Exercises.isSST_sort
+assert_no_sorry «exer:sst-sorting»
+
+/-- **Exercise `exer:sst-copyful-sst`** (copyful ssts compute continuous functions): `Transducers.Exercises.continuous_of_isCopyfulSST`. -/
+alias «exer:sst-copyful-sst» := Transducers.Exercises.continuous_of_isCopyfulSST
+assert_no_sorry «exer:sst-copyful-sst»
+
+/-- **Exercise `exer:sst-copyful-sst-output-size`** (the output of a copyful sst has at most exponential length, and this is attained): `Transducers.Exercises.CopyfulSST.output_length_exp_bound` and `Transducers.Exercises.exists_isCopyfulSST_exponential`. -/
+alias «exer:sst-copyful-sst-output-size» :=
+  Transducers.Exercises.CopyfulSST.output_length_exp_bound
+assert_no_sorry «exer:sst-copyful-sst-output-size»
+
+/-- **Exercise `exer:sst-copyful-sst-output-size`** (second item, an exponential example): `Transducers.Exercises.exists_isCopyfulSST_exponential`. -/
+alias «exer:sst-copyful-sst-output-size#2» := Transducers.Exercises.exists_isCopyfulSST_exponential
+assert_no_sorry «exer:sst-copyful-sst-output-size#2»
+
+/-- **Exercise `exer:sst-copyful-sst-no-composition`** (the copyful sst functions are not closed under composition): `Transducers.Exercises.exists_isCopyfulSST_comp_not_isCopyfulSST`. -/
+alias «exer:sst-copyful-sst-no-composition» :=
+  Transducers.Exercises.exists_isCopyfulSST_comp_not_isCopyfulSST
+assert_no_sorry «exer:sst-copyful-sst-no-composition»
+
+/-- **Exercise `exer:sst-polynomial-automaton`** (a polynomial automaton computing `2^n`): `Transducers.Exercises.isPolyAut_two_pow`. -/
+alias «exer:sst-polynomial-automaton» := Transducers.Exercises.isPolyAut_two_pow
+assert_no_sorry «exer:sst-polynomial-automaton»
+
+/-- **Exercise `exer:sst-polynomial-automaton-doubly-exponential`** (a polynomial automaton computing `2^{2^n}`): `Transducers.Exercises.isPolyAut_two_pow_two_pow`. -/
+alias «exer:sst-polynomial-automaton-doubly-exponential» :=
+  Transducers.Exercises.isPolyAut_two_pow_two_pow
+assert_no_sorry «exer:sst-polynomial-automaton-doubly-exponential»
+
+/-- **Exercise `exer:copyful-sst-decidable`** (equivalence of copyful ssts reduces to equivalence of polynomial automata): `Transducers.Exercises.copyfulSST_equivalence_reduces_to_polyAut`. -/
+alias «exer:copyful-sst-decidable» :=
+  Transducers.Exercises.copyfulSST_equivalence_reduces_to_polyAut
+assert_no_sorry «exer:copyful-sst-decidable»
+
 /-
 The theorem-like environments of the book that are not aliased
 above, so that this file accounts for all of them:

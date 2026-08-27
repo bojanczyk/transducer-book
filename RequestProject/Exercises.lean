@@ -14,3 +14,11 @@ import RequestProject.Exercises.PartBC
 import RequestProject.Exercises.PartBCAux
 import RequestProject.Exercises.PartBCPCP
 import RequestProject.Exercises.PartBCUnary
+import RequestProject.Exercises.KrohnRhodes
+import RequestProject.Exercises.MyhillNerode
+import RequestProject.Exercises.RegularPrimes
+import RequestProject.Exercises.TwoDFAEx
+import RequestProject.Exercises.TwoDFALoop
+import RequestProject.Exercises.SSTAux
+import RequestProject.Exercises.SST
+import RequestProject.Exercises.SSTPoly
