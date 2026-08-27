@@ -3,10 +3,11 @@ Part D: Polyregular functions
   from *Transducers* (M. Bojańczyk, June 25, 2026).
 
 This file contains the definitions of Part D and the statements of its
-theorems and lemmas.  Theorem `thm:polyregular-functions-are-continuous`, Lemma
-`lemma:prenex-normal-form` and Lemma `lem:for-closed-under-composition` are proved; the three
-remaining results (`thm:for-transducers-are-polyregular`, `thm:pebble-are-continuous` and
-`thm:pebble-are-for`) are statements only, with their proofs left as `sorry`.
+theorems and lemmas.  Theorem `thm:polyregular-functions-are-continuous`, Theorem
+`thm:for-transducers-are-polyregular`, Lemma `lemma:prenex-normal-form` and Lemma
+`lem:for-closed-under-composition` are proved; the two remaining results
+(`thm:pebble-are-continuous` and `thm:pebble-are-for`) are statements only, with their proofs
+left as `sorry`.
 
 Not formalised here: Lemma `lem:reachability-pebble-automaton`, Claim
 `claim:reachability-basic-run`, Lemma `lem:children-of-configuration-in-pebble-run` and Claims
@@ -18,6 +19,7 @@ encoding used only inside those proofs. -/
 import RequestProject.PartC.MSO
 import RequestProject.PartD.PolyDef
 import RequestProject.PartD.ForCompTop
+import RequestProject.PartD.PolyFor
 
 namespace Transducers
 
@@ -63,8 +65,9 @@ the statements below. -/
 /-- **Theorem `thm:for-transducers-are-polyregular`.**  A string-to-string function is polyregular
 if and only if it is computed by a for-transducer. -/
 theorem polyregular_iff_forTransducer {A B : Type} [Finite A] [Finite B]
-    (f : List A → List B) : IsPolyregular f ↔ IsForTransducer f := by
-  sorry
+    (f : List A → List B) : IsPolyregular f ↔ IsForTransducer f :=
+  ⟨fun hf => isForTransducer_of_isPolyregular hf ‹Finite A› ‹Finite B›,
+    PolyEnum.isPolyregular_of_isForTransducer⟩
 
 /-- **Lemma `lemma:prenex-normal-form`.**  Every for-transducer is equivalent to one in prenex
 form. -/

@@ -208,6 +208,17 @@ RequestProject/
 | `PartD/ForFree.lean` | the free position variables of a program, and the transformation making a program closed (every free position variable bound by a loop that runs at the first position only) |
 | `PartD/ForCompDef.lean`, `PartD/ForComp.lean` | the translation of the outer for-transducer over the tuples of the inner one, and its correctness (`Transducers.tr_spec`) |
 | `PartD/ForCompTop.lean` | the assembly of Lemma `lem:for-closed-under-composition`: the length flags, the continuation-passing simulation on the inputs of length at most one, and the composed program |
+| `PartD/PolyDef.lean` | Definition `def:polyregular-functions` and the elementary closure properties of the polyregular functions (moved here, unchanged, from `PartD/Statements.lean`, so that the constructions of the proof of Theorem `thm:for-transducers-are-polyregular` can be developed before the statements) |
+| `PartD/ForMachine.lean` | a small machine language over a finite set of states, compiled into for-programs |
+| `PartD/ForMapRev.lean` | map reverse and map duplicate are computed by for-transducers |
+| `PartD/ForPrimes.lean` | each prime polyregular function -- rational functions, map reverse, map duplicate, marked squaring -- is computed by a for-transducer |
+| `PartD/ForPolyreg.lean` | the left-to-right inclusion of Theorem `thm:for-transducers-are-polyregular`: every polyregular function is computed by a for-transducer (`Transducers.isForTransducer_of_isPolyregular`) |
+| `PartD/PolyEnum.lean` | the enumeration `Transducers.PolyEnum.enum` of the tuples of positions visited by a nest of for-loops, one annotated copy of the input per tuple |
+| `PartD/PolyStep.lean`, `PartD/PolyStepTop.lean` | the streaming string transducer that adds one innermost loop to the enumeration, and its correctness |
+| `PartD/PolyEnumPoly.lean` | the enumeration is polyregular (`Transducers.PolyEnum.isPolyregular_enum`): marked squaring followed by the one-step transducer, iterated over the loops of the nest |
+| `PartD/PolyScanAux.lean` | the ingredients of the scan of the enumeration: a loop-free program only sees the order of its position variables and the letters under them (`Transducers.ForProg.exec_congr_view`), and the finite information kept about one annotated copy |
+| `PartD/PolyScan.lean` | the streaming string transducer that scans the enumeration, running the body of the nest once per copy and the epilogue at the end, and its correctness (`Transducers.PolyEnum.scan_enum`) |
+| `PartD/PolyFor.lean` | the right-to-left inclusion of Theorem `thm:for-transducers-are-polyregular`: a for-transducer in prenex form is the enumeration followed by the scan, so every for-transducer computes a polyregular function (`Transducers.PolyEnum.isPolyregular_of_isForTransducer`) |
 | `PartD/Statements.lean` | Part D: polyregular functions, for-transducers, pebble transducers |
 | `Labels.lean` | the label-indexed view of the formalisation: for every result of the book that is formalised, an alias in the namespace `Transducers.Book` whose Lean name is the LaTeX label of the result, followed by `assert_no_sorry` or `assert_uses_sorry` according to its status in the tables below.  Kept in step with those tables by `tools/gen_labels.py --check`; see `LABELS.md` |
 
@@ -1341,7 +1352,7 @@ among the primes.
 | Definition `def:polyregular-functions` (polyregular functions) | `Transducers.IsPolyregular`, `Transducers.markedSquare` | — |
 | Theorem `thm:polyregular-functions-are-continuous` (continuity) | `Transducers.polyregular_continuous` | proved (continuity of marked squaring, `MarkedSquare.lean`) |
 | For-transducers (Section *For-transducers*) | `Transducers.ForProg`, `Transducers.IsForTransducer` | — |
-| Theorem `thm:for-transducers-are-polyregular` (polyregular = for-transducers) | `Transducers.polyregular_iff_forTransducer` | statement only |
+| Theorem `thm:for-transducers-are-polyregular` (polyregular = for-transducers) | `Transducers.polyregular_iff_forTransducer` | proved (`ForPolyreg.lean` and `PolyFor.lean`) |
 | Definition `def:prenex-normal-form-for-transducers` (prenex form) | `Transducers.ForProg.PrenexForm` | — |
 | Lemma `lemma:prenex-normal-form` (prenex normal form) | `Transducers.forTransducer_prenex` | proved (`ForPrenexTop.lean`) |
 | Lemma `lem:for-closed-under-composition` (composition) | `Transducers.forTransducer_comp` | proved (`ForCompTop.lean`) |
@@ -1463,9 +1474,15 @@ proof of Theorem `theorem:sst-two-way-equivalence`* above. In Part D, Theorem
 for-transducer is equivalent to one in prenex form) and **Lemma
 `lem:for-closed-under-composition`** (the functions computed by for-transducers are closed under
 composition) are proved outright, each depending only on `propext`, `Classical.choice`,
-`Quot.sound`; the three remaining results of Part D
-(`thm:for-transducers-are-polyregular`, `thm:pebble-are-continuous`, `thm:pebble-are-for`) are
-statements only (`sorry`).  Examples of the book are not included; the exercises are not numbered results either,
+`Quot.sound`; **Theorem `thm:for-transducers-are-polyregular`** (a function is polyregular if and
+only if it is computed by a for-transducer) is now proved outright as well, in both directions --
+`polyregular ⊆ for` is `Transducers.isForTransducer_of_isPolyregular` (`ForPolyreg.lean`) and
+`for ⊆ polyregular` is `Transducers.PolyEnum.isPolyregular_of_isForTransducer` (`PolyFor.lean`),
+which factors a program in prenex form as the polyregular enumeration of the tuples of positions
+visited by its nest of loops followed by a regular scan of that enumeration -- and
+`Transducers.polyregular_iff_forTransducer` depends only on `propext`, `Classical.choice`,
+`Quot.sound`.  The two remaining results of Part D (`thm:pebble-are-continuous`,
+`thm:pebble-are-for`) are statements only (`sorry`).  Examples of the book are not included; the exercises are not numbered results either,
 and are formalised separately, in `RequestProject/Exercises/` and indexed in `EXERCISES.md` — all
 twelve exercises of Part A (`mealy.tex` and `krohn-rhodes.tex`) are formalised and proved there.
 
@@ -1569,18 +1586,19 @@ Lean files, and this section records what that check found.
 * `lake build` from scratch succeeds, with no errors.  The only warnings are
   style warnings of the Lean linter and the `declaration uses sorry` of
   `PartD/Statements.lean`, which are the statements of Part D that are still
-  open — five of them when this audit was made, three of them now that Lemma
-  `lemma:prenex-normal-form` and Lemma `lem:for-closed-under-composition` are
-  proved.
+  open — five of them when this audit was made, two of them now that Lemma
+  `lemma:prenex-normal-form`, Lemma `lem:for-closed-under-composition` and
+  Theorem `thm:for-transducers-are-polyregular` are proved.
 * `#print axioms` was run on every alias of `RequestProject/Labels.lean` — 157
   of them, one per label of the book that this formalisation covers — and on
   every Lean name named in a row of this file and of `EXERCISES.md`.  Exactly
   five depended on `sorryAx` when this audit was made:
   `thm:for-transducers-are-polyregular`, `lemma:prenex-normal-form`,
   `lem:for-closed-under-composition`, `thm:pebble-are-continuous` and
-  `thm:pebble-are-for`.  Two of those five, `lemma:prenex-normal-form` and
-  `lem:for-closed-under-composition`, have since been proved and now carry
-  `assert_no_sorry`; the other three still carry `assert_uses_sorry` in
+  `thm:pebble-are-for`.  Three of those five, `lemma:prenex-normal-form`,
+  `lem:for-closed-under-composition` and
+  `thm:for-transducers-are-polyregular`, have since been proved and now carry
+  `assert_no_sorry`; the other two still carry `assert_uses_sorry` in
   `Labels.lean` and are marked open here.  Every other
   result depends only on `propext`, `Classical.choice`, `Quot.sound`.
 * The six results that are proved from an explicit hypothesis carry it as the

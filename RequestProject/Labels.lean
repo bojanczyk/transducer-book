@@ -472,7 +472,7 @@ assert_no_sorry «thm:polyregular-functions-are-continuous»
 
 /-- **Theorem `thm:for-transducers-are-polyregular`** (polyregular = for-transducers): `Transducers.polyregular_iff_forTransducer`. -/
 alias «thm:for-transducers-are-polyregular» := Transducers.polyregular_iff_forTransducer
-assert_uses_sorry «thm:for-transducers-are-polyregular»
+assert_no_sorry «thm:for-transducers-are-polyregular»
 
 /-- **Definition `def:prenex-normal-form-for-transducers`** (prenex form): `Transducers.ForProg.PrenexForm`. -/
 alias «def:prenex-normal-form-for-transducers» := Transducers.ForProg.PrenexForm
