@@ -16,7 +16,7 @@ Theorems `thm:pebble-are-continuous` and `thm:pebble-are-for`. They speak about 
 representation of configurations and configuration graphs of pebble transducers, an auxiliary
 encoding used only inside those proofs. -/
 import RequestProject.PartC.MSO
-import RequestProject.PartD.MarkedSquare
+import RequestProject.PartD.PolyDef
 import RequestProject.PartD.ForCompTop
 
 namespace Transducers
@@ -27,18 +27,10 @@ namespace Transducers
 `RequestProject/PartD/MarkedSquare.lean`, together with the proof that it is continuous, which is
 the main step in the proof of Theorem `thm:polyregular-functions-are-continuous` below. -/
 
-/-- The family of prime polyregular functions: regular functions and marked
-squaring. -/
-def PolyregularFam : ∀ (A B : Type), (List A → List B) → Prop := fun A B f =>
-  IsRegularFun f ∨
-  (∃ (A₀ : Type) (e : A ≃ A₀) (e' : B ≃ A₀ ⊕ A₀),
-      ∀ w, f w = (markedSquare A₀ (w.map e)).map e'.symm)
-
-/-- **Definition `def:polyregular-functions` (Polyregular functions).**  A string-to-string function
-is polyregular if it is a finite composition of regular functions and marked
-squaring. -/
-def IsPolyregular {A B : Type} (f : List A → List B) : Prop :=
-  CompClosure PolyregularFam A B f
+/-! The family of prime polyregular functions (`Transducers.PolyregularFam`) and Definition
+`def:polyregular-functions` itself (`Transducers.IsPolyregular`) are defined, unchanged, in
+`RequestProject/PartD/PolyDef.lean`, so that the constructions proving Theorem
+`thm:for-transducers-are-polyregular` can be developed before the statements below. -/
 
 /-- **Theorem `thm:polyregular-functions-are-continuous`.**  Polyregular functions are continuous. -/
 theorem polyregular_continuous {A B : Type} [Finite A] [Finite B] {f : List A → List B}
