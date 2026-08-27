@@ -204,11 +204,11 @@ theorem trFor_ok (zv lv : ℕ) : ∀ (P : ForProg A B) (k : ℕ) (L : List (Bool
         · exact Or.inr (Or.inl rfl)
         · exact Or.inr (Or.inr (Or.inl rfl))
         · have := hL₁ j h; exact Or.inr (Or.inr (Or.inr ⟨by omega, by omega⟩))
-        · simp only [hc₀, ForProg.posVars, List.append_nil, List.mem_append,
-            List.not_mem_nil, or_false] at h
+        · simp only [hc₀, ForProg.posVars, List.append_nil, 
+            ] at h
           exact Or.inl (by simp [ForProg.posVars, h])
         · simp only [hc₁, ForProg.posVars, ForTest.posVars, List.nil_append, List.append_nil,
-            List.mem_append, List.not_mem_nil, or_false] at h
+            ] at h
           rcases h₁.posOk j h with h' | h' | h' | h'
           · exact Or.inl (by simp [ForProg.posVars, h'])
           · exact Or.inr (Or.inl h')
@@ -231,14 +231,14 @@ theorem trFor_ok (zv lv : ℕ) : ∀ (P : ForProg A B) (k : ℕ) (L : List (Bool
               (ForProg.outputsAtMostOne_ite _ _ _ h₁.out1 ForProg.outputsAtMostOne_skip))
             (ForProg.outputsAtMostOne_ite _ _ _ h₂.out1 ForProg.outputsAtMostOne_skip) }
       · intro y hy
-        simp only [mergeLoops, List.map_cons, List.map_append, List.map_nil, List.nil_append,
+        simp only [mergeLoops, List.map_cons, List.map_append, List.nil_append,
           List.cons_append, List.mem_cons, List.mem_append] at hy
         rcases hy with h | h | hy | hy
         · omega
         · omega
         · have := hL₁ y hy; omega
         · have := hL₂ y hy; omega
-      · simp only [mergeLoops, List.map_cons, List.map_append, List.map_nil, List.nil_append,
+      · simp only [mergeLoops, List.map_cons, List.map_append, List.nil_append,
           List.cons_append]
         refine List.nodup_cons.mpr ⟨?_, List.nodup_cons.mpr ⟨?_, ?_⟩⟩
         · simp only [List.mem_cons, List.mem_append]
@@ -263,7 +263,7 @@ theorem trFor_ok (zv lv : ℕ) : ∀ (P : ForProg A B) (k : ℕ) (L : List (Bool
         · exact Or.inr (Or.inr (Or.inr ⟨by omega, by omega⟩))
         · exact Or.inr (Or.inl rfl)
         · exact Or.inr (Or.inr (Or.inl rfl))
-        · simp only [mergeLoops, List.map_cons, List.map_append, List.map_nil, List.nil_append,
+        · simp only [mergeLoops, List.map_cons, List.nil_append,
             List.mem_cons] at h
           rcases h with rfl | h
           · exact Or.inr (Or.inr (Or.inr ⟨by omega, by omega⟩))
@@ -271,7 +271,7 @@ theorem trFor_ok (zv lv : ℕ) : ∀ (P : ForProg A B) (k : ℕ) (L : List (Bool
         · have := hL₂ i h; exact Or.inr (Or.inr (Or.inr ⟨by omega, by omega⟩))
         · exact hinnerPos i h
         · simp only [hc₂, ForProg.posVars, ForTest.posVars, List.nil_append, List.append_nil,
-            List.mem_append, List.not_mem_nil, or_false] at h
+            ] at h
           rcases h₂.posOk i h with h' | h' | h' | h'
           · exact Or.inl (by simp [ForProg.posVars, h'])
           · exact Or.inr (Or.inl h')
@@ -292,7 +292,7 @@ theorem trFor_ok (zv lv : ℕ) : ∀ (P : ForProg A B) (k : ℕ) (L : List (Bool
           · exact Or.inr ⟨by omega, by omega⟩
         exfalso
         rw [boolVars_mergeBody, boolVars_mergeBody] at hi
-        simp only [hc₀, hc₁, hc₂, ForProg.boolVars, ForTest.boolVars, List.nil_append,
+        simp only [hc₀, hc₁, hc₂, ForProg.boolVars, ForTest.boolVars, 
           List.append_nil, List.mem_append, List.mem_cons, List.not_mem_nil, or_false] at hi
         tauto
   | loop d x P ih =>
@@ -600,18 +600,18 @@ theorem trFor_spec (zv lv k₀ : ℕ) (hzv : zv < k₀) (hlv : lv < k₀) (w : L
       -- freshness of the three nests that are merged
       have hf₀ : FreshNest k₀ (k + 3) (k + 3) ([] : List (Bool × ℕ)) b₀ := by
         refine ⟨by simp, by simp, fun i hi => ?_⟩
-        simp only [hb₀, ForProg.posVars, List.append_nil, List.mem_append, List.not_mem_nil,
-          or_false] at hi
+        simp only [hb₀, ForProg.posVars, List.append_nil, 
+          ] at hi
         exact Or.inl (htpos i hi)
       have hf₁ : FreshNest k₀ (k + 3) k₁ L₁ c₁ := by
         refine ⟨o₁.loopRange, o₁.nodup, fun i hi => ?_⟩
         simp only [hc₁, ForProg.posVars, ForTest.posVars, List.nil_append, List.append_nil,
-          List.mem_append, List.not_mem_nil, or_false] at hi
+          ] at hi
         exact (o₁.toFresh (a := k₀) hzv hlv hPpos (by omega)).posOk i hi
       have hf₂ : FreshNest k₀ k₁ k₂ L₂ c₂ := by
         refine ⟨o₂.loopRange, o₂.nodup, fun i hi => ?_⟩
         simp only [hc₂, ForProg.posVars, ForTest.posVars, List.nil_append, List.append_nil,
-          List.mem_append, List.not_mem_nil, or_false] at hi
+          ] at hi
         exact (o₂.toFresh (a := k₀) hzv hlv hQpos (by omega)).posOk i hi
       have hfM : FreshNest k₀ (k + 2) k₁ (mergeLoops (k + 2) [] L₁)
           (mergeBody zv lv (k + 2) [] L₁ b₀ c₁) :=

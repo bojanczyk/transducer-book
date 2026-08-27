@@ -378,14 +378,14 @@ lemma sem_revCopies (x : ℕ) (hx : x < w.length) (pos : ℕ → ℕ) (hpos : po
           obtain ⟨c, hc⟩ := ih (false, false)
           refine ⟨c, ?_⟩
           rw [hc]
-          simp [hq]
+          simp
       | true =>
           obtain ⟨c₀, hc₀⟩ := runList_revStep_on w x w.length hx le_rfl
           rw [hc₀]
           obtain ⟨c, hc⟩ := ih (true, c₀)
           refine ⟨c, ?_⟩
           rw [hc]
-          simp [hq, revRep, List.map_append]
+          simp [revRep, List.map_append]
 
 lemma sem_epiCopies (pos : ℕ → ℕ) :
     ∀ (m : ℕ) (q : Bool × Bool), ∃ c : Bool,
@@ -441,10 +441,10 @@ lemma outer_flatten (m : ℕ) : ∀ w : List (Option A),
       | none =>
           have htake : (v ++ [none]).take v.length = v := by simp
           rw [initBlks_append_none, splitSep_eq_initBlks v, List.map_append, List.flatten_append]
-          simp [revOutAt, hlast, isSepAt, htake]
+          simp [revOutAt, isSepAt, htake]
       | some b =>
           rw [initBlks_append_some]
-          simp [revOutAt, hlast, isSepAt]
+          simp [revOutAt, isSepAt]
 
 lemma sem_revProg (m : ℕ) (pos : ℕ → ℕ) (q : Bool × Bool) :
     (MProg.sem w (revProg A m) pos q).2 = mapLift (revRep A m) w := by

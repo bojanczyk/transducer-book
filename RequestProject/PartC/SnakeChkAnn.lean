@@ -218,7 +218,7 @@ lemma wb_letAt {j r : ℕ} (hj : j < w.length) (hr : r < 2 * K + 1) (s : Bool) :
       = decide (d.AA (d.pidx s j) r ≤ j ∧ j < d.BB (d.pidx s j) r) := by
   rw [wb, flL_letAt d hj hr, flR_letAt d hj hr]
   by_cases h1 : d.AA (d.pidx s j) r ≤ j <;> by_cases h2 : d.BB (d.pidx s j) r ≤ j <;>
-    simp [h1, h2] <;> omega
+    simp [h1, h2]; omega
 
 lemma startfl_letAt {j r : ℕ} (hj : j < w.length) (hr : r < 2 * K + 1) (s : Bool) :
     startfl (d.letAt stp ini j hj) s r

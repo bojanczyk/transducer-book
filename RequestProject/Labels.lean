@@ -11,9 +11,15 @@ has the stated form.  The results themselves keep their descriptive Lean names;
 nothing here is used in a proof.
 
 Each alias is followed by a report of whether the result is proved outright:
-`assert_no_sorry` fails if the declaration depends on `sorryAx`, and the
-statements that are formalised but not yet proved carry `assert_uses_sorry`
-instead.  So the status recorded in `THEOREMS.md` is checked here too.
+`assert_no_sorry` fails if the declaration depends on `sorryAx`, or on any axiom
+other than `propext`, `Classical.choice` and `Quot.sound`, and the statements
+that are formalised but not yet proved carry `assert_uses_sorry` instead.  So
+the status recorded in `THEOREMS.md` is checked here too, and so is the claim
+made there that `#print axioms` on every formalised result of the book reports
+only the three standard axioms.  At present every alias carries
+`assert_no_sorry`: nothing that is formalised is left unproved.  The results
+that are proved from an explicit hypothesis take that hypothesis as an argument
+of the theorem, not as an axiom, so they pass this check as well.
 
 Where a result of the book is formalised by several declarations, the first one
 carries the label and the others carry the label followed by `#2`, `#3`, ....
@@ -32,12 +38,17 @@ import RequestProject.Exercises
 namespace Transducers.Book
 
 open Lean Elab Command in
-/-- `assert_no_sorry foo` fails unless `foo` is proved without `sorry`. -/
+/-- `assert_no_sorry foo` fails unless `foo` is proved without `sorry` and uses
+no axiom beyond `propext`, `Classical.choice` and `Quot.sound`. -/
 elab "assert_no_sorry " id:ident : command => do
   let n ← liftCoreM <| realizeGlobalConstNoOverload id
   let axs ← liftCoreM <| Lean.collectAxioms n
   if axs.contains ``sorryAx then
     throwError "{n} depends on sorryAx"
+  let extra := axs.filter fun a =>
+    a != ``propext && a != ``Classical.choice && a != ``Quot.sound
+  unless extra.isEmpty do
+    throwError "{n} depends on {extra.toList}, beyond propext, Classical.choice, Quot.sound"
 
 open Lean Elab Command in
 /-- `assert_uses_sorry foo` fails unless `foo` still depends on `sorry`.  It

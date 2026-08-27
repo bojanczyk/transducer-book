@@ -106,20 +106,20 @@ lemma suffixDFA_evalFrom_eq [DecidableEq B] (u : List B) (v : List B) :
         -- (s ++ [a]).drop 1 = s.drop 1 ++ [a] when s ≠ [], and [] when s = []
         rcases s with _ | ⟨b, s'⟩
         · -- s = []
-          simp_all [List.append_nil]
+          simp_all
           rw [← h2]
           -- Need: drop w.length w = drop (w.length + 1) (a :: w)
           -- Both sides are [] since w.length >= w.length and w.length + 1 > w.length + 1 (false)
           -- Actually drop (w.length + 1) (a :: w) = drop w.length w = []
           induction w with
           | nil => simp
-          | cons x xs ih => simp [ih]
+          | cons x xs ih => simp
         · -- s = b :: s'
-          simp_all [List.drop_cons, List.append_assoc]
+          simp_all [List.append_assoc]
           rw [← h2]
           -- Goal: drop w.length (s' ++ [a] ++ w) = drop (w.length + 1) (b :: (s' ++ [a] ++ w))
           -- RHS = (b :: _).drop (w.length + 1) = _.drop w.length by List.drop_cons
-          simp [List.drop_cons]
+          simp
           omega
   exact aux [] (by simp)
 

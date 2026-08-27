@@ -140,7 +140,7 @@ lemma relFrom_iff (q : Q) (w : List A) (v : List B) :
           · rw [hu, hw']
             simpa [strTrans] using hy
           · rw [hu, hw', hx, hv']
-            simp [Sequential.run]
+            simp
     exact (key h).1 q rfl
   · rintro ⟨u, hu, rfl⟩
     have h1 := relFrom_run T q w

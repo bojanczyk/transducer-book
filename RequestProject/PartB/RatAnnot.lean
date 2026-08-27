@@ -146,7 +146,7 @@ lemma isRegular_map_fst {K : Language A} (hK : K.IsRegular) :
       simp only [List.map_cons, DFA.evalFrom, List.foldl_cons] at *
       exact ih (D.step q p.1)
   ext u
-  simp only [DFA.mem_accepts, DFA.eval, Set.mem_setOf_eq]
+  simp only [DFA.mem_accepts, DFA.eval]
   rw [key u]
   rfl
 
@@ -212,7 +212,7 @@ lemma consDFA_eval_some (p : Cls f) (u : List (A × Cls f)) :
       constructor
       · intro h
         exfalso
-        rcases h with h | h <;> simp [consDFA] at h
+        rcases h with h | h <;> simp at h
       · rintro ⟨hpc, hq, hcons⟩
         refine absurd ?_ hp
         simp only [List.map_cons] at hpc

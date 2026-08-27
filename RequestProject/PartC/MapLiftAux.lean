@@ -128,7 +128,7 @@ lemma mapLift_letterMap (h : A → B) (w : List (Option A)) :
   calc mapLift (fun l : List A => l.map h) w
       = (mapLift (id : List A → List A) w).map (Option.map h) := by
         rw [mapLift, mapLift, map_intercalate]
-        congr 1 <;> simp [List.map_map, Function.comp_def]
+        congr 1; simp [List.map_map, Function.comp_def]
     _ = w.map (Option.map h) := by rw [h1]
 
 end Transducers

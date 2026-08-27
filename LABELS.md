@@ -152,8 +152,8 @@ generator working from the tables alone would delete them.
 | C.4.15 | lemma | `lem:k-types-properties` | `logic.tex` |
 | C.4.16 | theorem | `thm:fo-rational-functions` | `logic.tex` |
 | (unnumbered) | paragraph | `nolabel:thm-fo-transduction-into-primes` | `logic.tex` |
-| D.0.17 | definition | `def:polyregular-functions` | `polyregular-intro.tex` |
-| D.0.18 | theorem | `thm:polyregular-functions-are-continuous` | `polyregular-intro.tex` |
+| D.0.18 | definition | `def:polyregular-functions` | `polyregular-intro.tex` |
+| D.0.19 | theorem | `thm:polyregular-functions-are-continuous` | `polyregular-intro.tex` |
 | D.1.1 | theorem | `thm:for-transducers-are-polyregular` | `polyregular-for.tex` |
 | D.1.2 | definition | `def:prenex-normal-form-for-transducers` | `polyregular-for.tex` |
 | D.1.3 | lemma | `lemma:prenex-normal-form` | `polyregular-for.tex` |

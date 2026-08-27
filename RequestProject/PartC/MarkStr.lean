@@ -129,7 +129,7 @@ lemma markAt2_split (w : List A) (x y : ℕ) (hxy : x ≤ y) (hy : y < w.length)
     rw [unmark2_eq_markGen _ 0]
     refine markGen_congr (fun j hj => ?_)
     rw [hulen] at hj
-    simp <;> omega
+    simp; omega
   have p2 : markGen (fun a i => (a, decide (i = x), decide (i = y)))
       ((w.drop x).take (y - x + 1)) (0 + (w.take x).length)
       = midMark ((w.drop x).take (y - x + 1)) := by
@@ -149,7 +149,7 @@ lemma markAt2_split (w : List A) (x y : ℕ) (hxy : x ≤ y) (hy : y < w.length)
     rw [unmark2_eq_markGen _ (0 + (w.take x).length + ((w.drop x).take (y - x + 1)).length)]
     refine markGen_congr (fun j hj => ?_)
     rw [hulen, hvlen]
-    simp <;> omega
+    simp; omega
   rw [← htdrop, hdef]
   conv_lhs => rw [hwsplit]
   rw [markGen_append, markGen_append, p1, p2, p3, List.append_assoc]

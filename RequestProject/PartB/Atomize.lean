@@ -199,7 +199,7 @@ lemma chain_aux (t : Tr M) (j : ℕ) : ∀ i : Fin (len M t), len M t - (i : ℕ
           by_cases hk_in : (k : ℕ) < (inp M t).length
           · -- k < inp.length, so outp.length = 0
             have houtp_zero : (outp M t).length = 0 := by omega
-            simp [hk_in, houtp_zero]
+            simp [hk_in]
             -- k = inp.length - 1, so inp.drop k = [inp[k]]
             have hk_last : (k : ℕ) + 1 = (inp M t).length := by omega
             have hne : inp M t ≠ [] := by intro h; simp [h] at hk_last
@@ -222,7 +222,7 @@ lemma chain_aux (t : Tr M) (j : ℕ) : ∀ i : Fin (len M t), len M t - (i : ℕ
             exact hget _ hne
           · -- k ≥ inp.length, so drop k = []
             push_neg at hk_in
-            simp [stepIn, hk_in, List.drop_eq_nil_iff.mpr hk_in]
+            simp [hk_in, List.drop_eq_nil_iff.mpr hk_in]
         have hout : stepOut M t k = (outp M t).drop ((k : ℕ) - (inp M t).length) := by
           simp [stepOut]
           by_cases hk_in : (k : ℕ) < (inp M t).length
@@ -238,7 +238,6 @@ lemma chain_aux (t : Tr M) (j : ℕ) : ∀ i : Fin (len M t), len M t - (i : ℕ
               intro h
               simp [h] at hk_sub hk_eq hL
               omega
-            congr 1
             have hget : ∀ (as : List B) (has : as ≠ []), as[as.length - 1]'(by
               have := List.length_pos_of_ne_nil has
               omega) = as.getLast has := by
@@ -252,7 +251,7 @@ lemma chain_aux (t : Tr M) (j : ℕ) : ∀ i : Fin (len M t), len M t - (i : ℕ
                   simp only [List.length_cons, Nat.add_sub_cancel]
                   exact ih (by simp)
             simp only [hk_sub, hk_in, not_lt.mpr]
-            simp [dif_neg]
+            simp
             rw [List.drop_length_sub_one hne]
             congr 1
             exact hget _ hne
@@ -282,7 +281,7 @@ lemma chain_aux (t : Tr M) (j : ℕ) : ∀ i : Fin (len M t), len M t - (i : ℕ
           by_cases hk_in : (k : ℕ) < (inp M t).length
           · simp [hk_in]
           · have hk'_out : (k' : ℕ) ≥ (inp M t).length := by simp [k']; omega
-            simp [hk_in, hk'_out]
+            simp [hk_in]
             omega
         have hout : stepOut M t k ++ (outp M t).drop ((k' : ℕ) - (inp M t).length) = 
                     (outp M t).drop ((k : ℕ) - (inp M t).length) := by
@@ -297,7 +296,7 @@ lemma chain_aux (t : Tr M) (j : ℕ) : ∀ i : Fin (len M t), len M t - (i : ℕ
             -- Need: [outp[k - inp.length]] :: drop (k+1 - inp.length) outp = drop (k - inp.length) outp
             have h1 : (k : ℕ) + 1 - (inp M t).length = (k : ℕ) - (inp M t).length + 1 := by omega
             rw [h1]
-            simp [List.drop_succ_cons]
+            simp
         have hmem' : (Sum.inr ⟨t, k⟩, stepIn M t k, stepOut M t k, Sum.inr ⟨t, k'⟩) ∈ (atom M).δ := by
           rw [← hnext]; exact hmem
         obtain ⟨ts, hpath, hinput, houtput⟩ := NFAO.relFrom_step hmem' hreach

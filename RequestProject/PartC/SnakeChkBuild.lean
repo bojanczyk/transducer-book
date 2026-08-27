@@ -74,7 +74,7 @@ theorem exists_mem_chkLang_of_chainData [Finite A] [Finite B] [Finite Q] [Inhabi
         · rw [if_neg ?_]
           · exact d.adjSame_letAt hj hlt hsame
           · rw [sb_letAt, hsame]
-            simp only [ne_eq, decide_eq_true_eq]
+            simp only [decide_eq_true_eq]
             have := d.Y_blkOf_le j
             omega
         · rw [if_pos ?_]

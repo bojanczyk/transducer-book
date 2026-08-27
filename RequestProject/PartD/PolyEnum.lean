@@ -120,7 +120,7 @@ lemma blockFrom_drop (t : List ℕ) : ∀ (i m : ℕ) (w : List A),
       intro w
       cases w with
       | nil => simp
-      | cons a w => simp [ih, Nat.add_assoc, Nat.add_comm, Nat.add_left_comm]
+      | cons a w => simp [ih, Nat.add_comm, Nat.add_left_comm]
 
 @[simp] lemma blockAt_nil (w : List A) : blockAt (A := A) k w [] = blockFrom k [] 0 w := rfl
 
@@ -134,7 +134,7 @@ lemma annOf_append_singleton {t : List ℕ} (ht : t.length = k) (p i : ℕ) :
   rcases Nat.lt_or_ge (j : ℕ) k with hj | hj
   · have hj' : (j : ℕ) < t.length := by omega
     rw [show j = (Fin.castSucc ⟨(j : ℕ), hj⟩) from Fin.ext (by simp), Fin.snoc_castSucc]
-    simp only [annOf, Fin.coe_castSucc]
+    simp only [annOf, Fin.val_castSucc]
     simp only [List.getD_append t [p] 0 (j : ℕ) hj']
   · have hj' : (j : ℕ) = k := by omega
     rw [show j = (Fin.last k) from Fin.ext (by simpa using hj')]

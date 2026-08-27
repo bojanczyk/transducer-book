@@ -664,13 +664,16 @@ statement the book does not make.
   example is easy, but the claim that three states are necessary is a case
   analysis over all two-state unambiguous transducers with arbitrary output
   strings on the transitions, which the solution itself only sketches).
-* `exer:factoring-through-a-rational-function`, whose solution is empty in the
-  sources, and the unlabelled exercise at `rational-functions.tex` line 440,
-  whose statement and solution are both commented out in the sources.  (Its
-  content — that a rational relation all of whose outputs have the length of the
-  input is computed by an nfa with output whose transitions are
-  length-preserving — is Lemma `lem:characterisation-length-preserving` of the
-  main text, which is formalised in `RequestProject/PartB/LenNormalForm.lean`.)
+* The two exercises of `rational-functions.tex` that are commented out in the
+  sources and so are not exercises of the book: the one at line 311 (when one
+  rational function factors through another), whose statement is commented out
+  and whose solution is empty, and the unlabelled one at line 440, whose
+  statement and solution are both commented out.  Neither carries a number in
+  `main.aux`, so neither is named here by a label.  (The content of the second —
+  that a rational relation all of whose outputs have the length of the input is
+  computed by an nfa with output whose transitions are length-preserving — is
+  Lemma `lem:characterisation-length-preserving` of the main text, which is
+  formalised in `RequestProject/PartB/LenNormalForm.lean`.)
 * `exer:forward-for-transducer`, the last exercise of the book, which asks for
   the functions computed by *forward* for-transducers — those all of whose loops
   run first-to-last — to be exactly the composition closure of marked squaring

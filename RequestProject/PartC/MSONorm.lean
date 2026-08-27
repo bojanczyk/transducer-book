@@ -85,14 +85,14 @@ def isFirstF (A : Type) : MSO A := MSO.not (MSO.exFO 1 (MSO.not (MSO.le 0 1)))
 lemma sat_isFirstF (w : List A) (fo : ℕ → ℕ) (so : ℕ → Set ℕ) (hw : 0 < w.length) :
     MSO.Sat w fo so (isFirstF A) ↔ fo 0 = 0 := by
   simp only [isFirstF, MSO.Sat, not_exists, not_and, not_not, Function.update_of_ne,
-    Nat.zero_ne_one, ne_eq, one_ne_zero, not_false_eq_true]
+    Nat.zero_ne_one, ne_eq, not_false_eq_true]
   constructor
   · intro h
     have := h 0 hw
-    simp only [Function.update_self, Function.update_of_ne (by omega : (0:ℕ) ≠ 1)] at this
+    simp only [Function.update_self] at this
     omega
   · intro h p hp
-    simp only [Function.update_self, Function.update_of_ne (by omega : (0:ℕ) ≠ 1), h]
+    simp only [Function.update_self, h]
     exact Nat.zero_le _
 
 /-- The tags of the normalised transduction: the copies of the positions and

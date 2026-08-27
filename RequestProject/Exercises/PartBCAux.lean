@@ -59,7 +59,7 @@ lemma isRegular_forall_mem {A : Type} (P : A → Prop) [DecidablePred P] :
         rw [List.foldl_cons, ih]
         by_cases h : P a <;> simp [h]
   ext u
-  simp only [DFA.mem_accepts, DFA.eval, DFA.evalFrom, Set.mem_setOf_eq, Set.mem_singleton_iff]
+  simp only [DFA.mem_accepts, DFA.eval, DFA.evalFrom, Set.mem_singleton_iff]
   rw [key u true]
   simp only [Bool.true_and, decide_eq_true_eq]
   exact Iff.rfl

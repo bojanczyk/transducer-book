@@ -86,7 +86,7 @@ lemma holds_stTestAux (w : List A) (pos : ℕ → ℕ) (bv : ℕ → Bool) (q : 
       have h2 : ForTest.Holds w pos bv
           (if E.bits q k then ForTest.boolVar (A := A) k
             else ForTest.not (ForTest.boolVar k)) ↔ bv k = E.bits q k := by
-        cases hb : E.bits q k <;> simp [hb, ForTest.Holds]
+        cases hb : E.bits q k <;> simp [ForTest.Holds]
       have hsplit : ForTest.Holds w pos bv (E.stTestAux (A := A) q (k + 1))
           ↔ (ForTest.Holds w pos bv (E.stTestAux (A := A) q k) ∧
               ForTest.Holds w pos bv (if E.bits q k then ForTest.boolVar (A := A) k

@@ -120,8 +120,7 @@ theorem lengthPreserving_iff_typing_aux {A B Q : Type} (M : NFAO A B Q)
       have hlen : (f (LabAut.inputOf (ts p))).length = (LabAut.inputOf (ts p)).length := hlength _
       rw [h_accept.symm] at hlen
       simp [Typing.defect, hlen]
-  · intro ⟨τ, hτ_path, hτ_final⟩
-    intro w
+  · intro ⟨τ, hτ_path, hτ_final⟩ w
     -- By hM, M.rel w (f w) holds
     have hrel : M.rel w (f w) := (hM w (f w)).mpr rfl
     -- Parse the rel relation to get an accepting run

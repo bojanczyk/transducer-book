@@ -36,11 +36,7 @@ lemma isPath_of_relFrom (hM : ∀ t ∈ M.δ, t.2.1.length ≤ 1) {q q' : Q} {w 
       M.relFrom q w v q' →
       ∃ (xs : List (Option A)), xs.reduceOption = w ∧
         (preNFA M D).IsPath (q, p) (q', D.evalFrom p v) xs := by
-    intro q
-    intro q'
-    intro w
-    intro v
-    intro p
+    intro q q' w v p
     let motive := fun (src : Q) (wIn : List A) (vOutIn : List B) =>
         ∀ (pf : σ), ∃ (xs : List (Option A)), xs.reduceOption = wIn ∧
           (preNFA M D).IsPath (src, pf) (q', D.evalFrom pf vOutIn) xs
@@ -51,7 +47,7 @@ lemma isPath_of_relFrom (hM : ∀ t ∈ M.δ, t.2.1.length ≤ 1) {q q' : Q} {w 
     · -- hnil: src = q', w = [], v = []
       intro pf
       use []
-      simp [εNFA.IsPath]
+      simp
     · -- hcons
       intro q q'' u x w v ht htail ih
       have h_len := hM (q, u, x, q'') ht

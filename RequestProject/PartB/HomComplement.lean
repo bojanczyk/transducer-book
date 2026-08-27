@@ -268,7 +268,7 @@ lemma aut_sound_aux {p : Fin 4} (hp : p ≠ 0) {s : Fin 4} {w : List A} {v : Lis
   have hstep : ∀ (q q' : Fin 4) (u : List A) (x : List B) (w : List A) (v : List B),
       (q, u, x, q') ∈ (aut φ).δ → (aut φ).relFrom q' w v p → inv φ q' w v → inv φ q (u ++ w) (x ++ v) := by
     intro q q' u x w v ht _ hi
-    simp only [delta, Set.mem_union, Set.mem_setOf_eq] at ht
+    simp only [] at ht
     induction ht with
     | inl h => induction h with
       | inl h => induction h with
@@ -283,8 +283,8 @@ lemma aut_sound_aux {p : Fin 4} (hp : p ≠ 0) {s : Fin 4} {w : List A} {v : Lis
                   intro heq
                   have hx : x = (φ a ++ (List.map φ w).flatten).take (φ a).length := by
                     rw [← heq]
-                    simp [List.take_append_of_le_length, hlen]
-                  simp [List.take_append_of_le_length] at hx
+                    simp [hlen]
+                  simp at hx
                   exact hne hx
               | inr h =>
                 obtain ⟨a, x, hlen, rfl, rfl, rfl⟩ := h

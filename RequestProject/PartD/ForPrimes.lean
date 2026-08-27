@@ -112,13 +112,13 @@ lemma sem_msProg (A : Type) (w : List A) (pos : ℕ → ℕ) :
   refine List.map_congr_left ?_
   intro i _
   rw [runList_snd_unit]
-  simp only [loopRange_true, MProg.sem_act2, Function.update_self,
+  simp only [MProg.sem_act2, Function.update_self,
     Function.update_of_ne (show (1 : ℕ) ≠ 2 by decide)]
   rw [← flatten_mark w i]
   congr 1
   refine List.map_congr_left ?_
   intro j _
-  simp [Function.update_of_ne (show (1 : ℕ) ≠ 2 by decide)]
+  simp
 
 /-- **Marked squaring is computed by a for-transducer.** -/
 theorem isForTransducer_markedSquare (A : Type) [Finite A] :
@@ -172,7 +172,7 @@ lemma runList_back_suffix {A S B : Type} (step : S → A → S) (w : List A) (x 
       have hlen : (w.take n).length = n := by
         simp [Nat.min_eq_left (le_of_lt hnw)]
       have hsucc : w.take (n + 1) = w.take n ++ [w[n]] := by
-        rw [List.take_succ, List.getElem?_eq_getElem hnw]; rfl
+        rw [List.take_add_one, List.getElem?_eq_getElem hnw]; rfl
       rw [List.range_succ, List.reverse_append]
       simp only [List.reverse_cons, List.reverse_nil, List.nil_append, List.singleton_append]
       rw [runList_cons, ih (by omega)]
@@ -209,7 +209,7 @@ lemma runList_range_scan {A P B : Type} (step : P → A → P) (g : P → ℕ �
       intro hn p
       have hnw : n < w.length := by omega
       have hsucc : w.take (n + 1) = w.take n ++ [w[n]] := by
-        rw [List.take_succ, List.getElem?_eq_getElem hnw]; rfl
+        rw [List.take_add_one, List.getElem?_eq_getElem hnw]; rfl
       rw [List.range_succ, runList_append, ih (by omega)]
       simp only [runList_cons, runList_nil, List.getElem?_eq_getElem hnw, Option.elim_some,
         List.map_append, List.map_cons, List.map_nil, List.flatten_append, List.flatten_cons,

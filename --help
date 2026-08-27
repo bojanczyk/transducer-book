@@ -1,0 +1,1380 @@
+
+
+===== [0] intro line 100 label=exer:reverse-continuous =====
+STATEMENT:
+ \label{exer:reverse-continuous} Show continuity for the reversal function $a_1 \cdots a_n \mapsto a_n \cdots a_1$. 
+SOLUTION:
+ Given a deterministic automaton for the output language, we can construct a nondeterministic automaton for the inverse image, by reversing the arrows in the automaton, and swapping the initial and accepting states.
+    
+    Here is an alternative solution, which uses monoids instead of automata, and which will extend more easily to the subsequent exercises. It is well known that a language $L \subseteq A^*$ is regular if and only if there is some finite monoid $M$ and a monoid homomorphism 
+    \begin{align*}
+    A^* 
+    \xrightarrow h
+    M
+    \end{align*}
+    such that the language $L$ is an inverse image $h^{-1}(F)$ for some accepting set $F \subseteq M$. Under this characterisation, reversal is straightforward: we simply consider a monoid with the reverse operation, and the corresponding homomorphism, with the same accepting set.
+    
+
+
+===== [1] intro line 111 label=exer:duplication-continuous =====
+STATEMENT:
+\label{exer:duplication-continuous} Show continuity for  the duplication\footnote{We use the name duplication for the function because the output length is double the input length. This clashes with the notation $ww = w^2$ which seems to suggest squaring. The reason for the clash is that string concatenation is traditionally written in  multiplicative notation, while additive notation is used for string lengths. For us, the more important one will be string length. This notation clash would be resolved by additve notation for strings, which is done for example in Haskell, where the concatenation operator is called \texttt{++}.  Nevertheless, we stay with the standard multiplicative notation for string concatenation.
+} function $w \mapsto ww$.
+SOLUTION:
+
+    We use the monoid approach that was discussed in the solution to Exercise~\ref{exer:reverse-continuous}. Consider a regular language $L \subseteq A^*$. To see that its inverse image, under duplication, is regular, we use the same monoid homomorphism as for $L$, but we change the accepting set to be the set of elements $m$ such that $mm \in F$. This way, the inverse image of the new accepting set is exactly the inverse image of $L$ under duplication. 
+
+
+===== [2] intro line 114 label=exer:squaring-continuous =====
+STATEMENT:
+\label{exer:squaring-continuous} Show continuity for the squaring\footnote{Similarly to the duplication function, the notation $w^{|w|}$ suggest exponentiation, but we call it squaring because of the output length.} function $w \mapsto w^{|w|}$.
+SOLUTION:
+Suppose that the original language $L$ is recognised by a monoid homomorphism
+    \begin{align*}
+    A^*
+    \xrightarrow h
+    M.
+    \end{align*}
+    The inverse image in the statement of the exercise is the language 
+    \begin{align*}
+    \setbuild{ w \in A^*}{$(h(w))^{|w|}$ belongs to the accepting set of the original language}
+    \end{align*}
+    To recognise this inverse image, we use a deterministic finite automaton where the state space is 
+    \begin{align*}
+     M \times M^M,
+    \end{align*}
+    subject to the following invariant: after reading an input string $w$,  the first coordinate is  the image $h(w)$; and the second coordinate  the function $m \mapsto m^{|w|}$. To maintain the invariant, the  state is updated as follows: 
+    \begin{align*}
+    (m, \varphi) \xmapsto a (m \cdot h(a), \lambda n \mapsto \varphi(n) \cdot n).
+    \end{align*}
+    The accepting set is
+    \begin{align*}
+    \setbuild{ (m,\varphi)}{$\varphi(m)$ belongs to the original accepting set}.
+    \end{align*}
+    
+
+
+===== [3] intro line 138 label=exer:factorial-continuous =====
+STATEMENT:
+\label{exer:factorial-continuous} Show continuity for the factorial function $w \mapsto w^{|w|!}$.
+SOLUTION:
+
+We use a similar construction as in the monoid solution to the previous exercise.  Let $h$ and $g$ be as in that solution. We define a deterministic finite automaton for the inverse image, where the  state space is 
+\begin{align*}
+M \times M^M \times M^M.
+\end{align*}
+The first two coordinates are updated as in the previous exercise, while the third coordinate is updated so that it stores the function $m \mapsto m^{|w|!}$. This is implemented by taking the previous value of the third component, and multiplying it coordinatewise with the new value of the second coordinate.  The accepting set is defined similarly to the previous exercise, using the third coordinate instead of the second one.
+       
+
+
+===== [4] intro line 146 label=exer:factorial-power-continuous =====
+STATEMENT:
+\label{exer:factorial-power-continuous}Let $g : \Nat \to \Nat$ be any non-decreasing function, possiby non-computable.  Show that the function $
+w  \mapsto w^{g(|w|)!}
+$
+is continuous.
+SOLUTION:
+
+    The main observation is the following claim, which says that factorial powers in a monoid must necessarily stabilise.  
+    \begin{claim}
+        For every finite monoid $M$  and every $m \in M$, the following sequence of monoid elements is eventually constant:
+        \begin{align*}
+        m^{1!}, m^{2!}, m^{3!}, \ldots
+        \end{align*}
+    \end{claim}
+    Let us write $m^{!} \in M$ for the stable value of the sequence in the above claim. By the above claim, if we take a monoid homomorphism $h$ into a monoid $M$ and we replace the accepting set $F$ by 
+    \begin{align*}
+    \setbuild{ m \in M}{$m^{!} \in F$},
+    \end{align*}
+    then the new regular language will agree with the inverse image of the original language up to a finite number of exceptions. Since regular languages are closed under finite differences, the inverse image will be regular, and the function is continuous.
+
+
+
+===== [5] intro line 165 label=ex:continuity-for-finite-images =====
+STATEMENT:
+\label{ex:continuity-for-finite-images}Consider a string-to-string function  with finitely many output values. Show that this function is continuous if and only if the inverse image of each output value is regular.
+SOLUTION:
+
+    The ``only if'' direction is immediate from the definition of continuity, since the inverse image of a singleton set is the inverse image of a regular language. For the ``if'' direction, we use the fact that every regular language can be expressed as a finite union of singleton sets, and that regular languages are closed under finite unions. Therefore, if the inverse image of each output value is regular, then the inverse image of any regular language will also be regular.
+
+
+
+===== [6] intro line 169 label=exer:finite-images-assumption-necessary =====
+STATEMENT:
+\label{exer:finite-images-assumption-necessary}Show that the assumption on finitely many output values in \cref{ex:continuity-for-finite-images} is necessary.
+SOLUTION:
+ Otherwise, every injective string-to-string function would be continuous, since images of singletons would also be singletons and hence regular. Clearly not all injective functions are continuous, since every function can be made injective by adding a copy of the input string to the output, after some  separator symbol.
+
+
+
+===== [7] intro line 171 label=exer:middle-letter-not-continuous =====
+STATEMENT:
+\label{exer:middle-letter-not-continuous}Consider a function which has an empty output for inputs of even length, and otherwise outputs the (one-letter string consisting of) the letter in the middle of the input string. Show that this function is not continuous when the alphabet has at least two letters.
+SOLUTION:
+For a letter $a$ in the alphabet, the inverse image of the regular language $\set{a}$ is the set of strings of odd length whose middle letter is $a$. This language is not regular, since it is not recognised by any finite automaton, which can be proved using the pumping lemma. 
+
+
+===== [8] intro line 175 label=ex:distance =====
+STATEMENT:
+ \label{ex:distance}For words over an alphabet $A$, define the distance  between two  strings $w,w'$ to be zero if they are equal, and otherwise to be
+       \begin{align*}
+         \frac{1}{\text{minimal number of states in a \textsc{dfa} that accepts $w$ but not $w'$}}.
+       \end{align*}
+       Show that this is indeed a distance. 
+SOLUTION:
+ The distance is symmetric and zero if and only if the two strings are equal. The only thing to check is the triangle inequality. We will show a stronger inequality, where $\max$ is used instead of $+$ (which is called an ultrametric):
+       \begin{align*}
+       d(w_1,w_3)  \leq \max (d(w_1,w_2), d(w_2,w_3)).
+       \end{align*}
+       By unfolding the reciprocals in the definition, this is the same as 
+       \begin{align*}
+       s(w_1,w_3) \geq \min (s(w_1,w_2), s(w_2,w_3)),
+       \end{align*}
+       where $s$ is the minimal number of states in a \dfa that distinguishes two words. To see why the inequality holds, we observe that if a \dfa  distinguishes $w_1$ from $w_3$, then the same \dfa must also distinguish $w_1$ from $w_2$ or $w_2$ from $w_3$. Observe that this proof does not use any properties of automata, and we would also get a metric if used any class of distinguishers, such as Turing machines or pushdown automata.
+       
+
+
+===== [9] intro line 189 label=exer:all-functions-continuous-for-metric =====
+STATEMENT:
+\label{exer:all-functions-continuous-for-metric} Show that all string-to-string functions are continuous with respect to the distance from \cref{ex:distance}.
+SOLUTION:
+
+        Continuity means that for every input string $w \in A^*$ and every $\varepsilon > 0$, there is some $\delta > 0$ such that for all input strings at distance at most $\delta$ from $w$, the output is at distance at most $\epsilon$ from $w$. This is true, because there is a \dfa whose language is the singleton $\set{w}$, and the distance from $w$ to any other string is at least $\delta = 1/n$, where $n$ is the number of states in the \dfa. All input strings at distance $< \delta$ will be mapped to exactly $f(w)$, because $w$ is the only such string.  
+
+        Here is a topological description of the  same argument. As we explained above, for sufficiently small $\delta$, the $\delta$-neighbourhood of $w$ is just the singleton $\set{w}$. This means that all singletons are open sets, and therefore all sets are open. Hence the topology is discrete, and all functions are continuous
+        \footnote{It is worth pointing out that the issues go away if we consider a completion of the space, i.e.~we extend $A^*$ to include limits of Cauchy sequences. The resulting topological space is called the space of \emph{profinite strings}, and it is compact. For more information, see \cite[Chapter X]{pin2025}.}.
+       
+
+
+===== [10] intro line 195 label=exer:continuous-iff-uniformly-continuous =====
+STATEMENT:
+\label{exer:continuous-iff-uniformly-continuous} Show that the continuous functions, in the sense of Definition~\ref{def:continuity}, are exactly the uniformly continuous functions with respect to the above metric. 
+SOLUTION:
+
+        Uniform continuity means that for every $\varepsilon > 0$, there is some $\delta > 0$ such that for all input strings $w,w'$ at distance at most $\delta$, the outputs are at distance at most $\epsilon$. This means that for every $n \in \Nat$ (think of $1/\varepsilon$) there is some $m\in \Nat$  (think of $1/\delta$) such that if input strings cannot be distinguished by automata with at most $m$ states, then the corresponding output strings cannot be distinguished by automata with at most $n$ states.  This is the same as continuity in the sense of Definition~\ref{def:continuity}, because there are finitely many automata with a given number of states (and a given alphabet).
+       
+
+
+===== [11] mealy line 125 label=exer:letter-to-letter-not-mealy =====
+STATEMENT:
+\label{exer:letter-to-letter-not-mealy}Give an example of a function that is continuous, letter-to-letter (i.e.~input length is the same as output length), and is not computed by a "Mealy machine".
+SOLUTION:
+The reverse function from \cref{exer:reverse-continuous}.
+
+
+
+===== [12] mealy line 128 label=exer:composition-needs-many-states =====
+STATEMENT:
+\label{exer:composition-needs-many-states}   Show that a composition of $n$ "Mealy machines", each one with at most $n$ states, might require a number of states that is exponential in $n$.
+SOLUTION:
+
+    Consider the first $\ell$  prime numbers $p_1 < \cdots< p_\ell$ and a composition 
+    \begin{align*}
+    (2^0)^* \xrightarrow {f_1} (2^1)^* \xrightarrow {f_2} (2^2)^* \xrightarrow {f_3} \cdots \xrightarrow {f_\ell} (2^\ell)^*
+    \end{align*}
+    in which the $i$-th machine copies the input string and extends each position with one bit that says if the position is divisible by $p_i$. The $i$-th machine has $p_i$ states. For the composition, the shortest input string that produces a letter with all bits equal to 1 has length $p_1 \cdots p_\ell$, which is exponential in $\ell$ and $p_\ell$. 
+    
+
+
+===== [13] mealy line 137 label=exer:invertible =====
+STATEMENT:
+\label{exer:invertible} We say that a "Mealy machine"
+    \begin{align*}
+    f : A^* \to A^*
+    \end{align*}
+    is \emph{invertible} if there is some "Mealy machine"
+    \begin{align*}
+    f^{-1} : A^* \to A^*
+    \end{align*}
+    such that the composition $f \cdot f^{-1}$ is the identity function. Show that one can decide if a given "Mealy machine" is invertible.
+SOLUTION:
+
+    We assume that all states in the Mealy machine are reachable. The criterion is (*): for every state $q$, the following function must be a bijection:
+    \begin{align*}
+    a \in A \mapsto \text{output letter of the transition with source $q$ and input letter $a$}.
+    \end{align*}
+    Clearly if the Mealy machine is invertible, then (*) must hold, since a violation of (*) results in two input strings giving the same output string. Let us now prove the converse implication: if (*) holds then the machine is invertible. To do this, we can reconstruct the input string from the output string in a step by step manner, by keeping track of the current state. The new machine has the same states as the original one. Finally, it is easy to see that (*) can be checked in polynomial time.
+    
+
+
+===== [14] mealy line 153 label=exer:invertible-mealy-group =====
+STATEMENT:
+\label{exer:invertible-mealy-group} Consider the group of invertible "Mealy machines" of type $A^* \to A^*$, with the group operation being composition. If we take a finite set of generators, is the generated subgroup necessarily finite?
+SOLUTION:
+
+    No. Even a stronger result is true: if we take a single invertible "Mealy machine", the group generated by  it (i.e.~the group of powers of the machine) is infinite. Consider a Mealy machine over a binary alphabet, which inputs a binary string of length $n$, thinks of it as a number in $\set{0,\ldots,2^n}$ encoded in binary,  and outputs the binary representation of the result of adding $1$ modulo $2^n$. This machine is invertible, and the group generated by it is infinite. 
+    
+
+
+===== [15] mealy line 159 label=exer:polynomial-image-growth-decidable =====
+STATEMENT:
+\label{exer:polynomial-image-growth-decidable}Give an algorithm which inputs a "Mealy machine" $f : A^* \to B^*$ and decides if the following is bounded by a polynomial in $n$:
+    \begin{align*}
+    n \in \Nat \quad \mapsto \quad |\setbuild{f(w)}{$w \in A^*$ has length at most $n$}|.
+     \end{align*}
+
+SOLUTION:
+
+    The set of possible outputs of a "Mealy machine" is a regular language, which can be computed. (The corresponding automaton guesses the input string.) Therefore, the exercise reduces to checking if a given regular language has polynomial growth. This is a classical result, which can be proved by looking at the strongly connected components of the automaton. The neccessary and sufficient criterion for exponential growth is that: (*) there are two cycles around the same state which have different input strings of the same length. If one can find two such cycles, then the language has exponential growth. Let us prove the converse implication. Let us now prove that if (*) fails, then the growth is polynomial. Consider the strongly connected components of the automaton, and let us look at the directed acyclic graph of these components. If (*) fails, then every path in this directed acyclic graph has at most one cycle, which means that the number of paths of length $n$ is polynomial in $n$.
+
+
+
+===== [16] mealy line 168 label=exer:regular-complete-mealy =====
+STATEMENT:
+\label{exer:regular-complete-mealy} We say that a regular language $L \subseteq A^*$ is \emph{regular-complete under Mealy reductions} if for every regular language $K \subseteq B^*$, there exists a "Mealy machine" $f : B^* \to A^*$ such that 
+\begin{align*}
+w \in K \quad \text{iff} \quad  f(w) \in L \qquad \text{for every nonempty $w \in B^*$.}
+\end{align*}
+(We use nonempty strings because a "Mealy machine" cannot change the empty string.) Show that there is a language $L$ with this property. 
+SOLUTION:
+ The language is
+\begin{align*}
+\setbuild{ w \in \set{a,b}^*}{the last letter of $w$ is $a$}.
+\end{align*}
+The reduction outputs $a$ as the last letter if the input string belongs to $K$, and $b$ otherwise.
+
+
+
+===== [17] mealy line 179 label=exer:regular-complete-mealy-2 =====
+STATEMENT:
+\label{exer:regular-complete-mealy-2} Give an algorithm, which checks if a given regular language is regular-complete under Mealy reductions. The algorithm can even be made polynomial, assuming that the input regular language is given by a deterministic automaton.
+SOLUTION:
+ Consider the regular language $L$ from the solution to Exercise~\ref{exer:regular-complete-mealy}. A language $K$ is regular-complete under Mealy reductions if and only if there is a reduction, as in the definition of completeness, from $L$ to $K$.  This in turn is easily seen to be equivalent to the following criterion: in the minimal automaton for $K$ (in fact, in any deterministic automaton for $K$), there is a subset of states $P$ with the following property: 
+    \begin{itemize}
+        \item[(*)]  $P$ contains the initial state and  for every state $q \in P$, there are input letters $a$ and $b$ such that $qa, qb \in P$ but only one of them is accepting.
+    \end{itemize}
+
+It remains to show that the above criterion can be decided in polynomial time. To do this, we use a game, played between two players, who are called Prover and Refuter.  The game plays as follows:
+\begin{enumerate}
+    \item Start in the initial state of the Mealy machine.
+    \item Player Prover chooses two letters $a$ and $b$, such that exactly one of the states $qa$ and $qb$ is accepting. If there are no such letters, then Refuter wins.
+    \item Player Refuter chooses a letter $\sigma \in \set{a,b}$ and the state is updated to $q\sigma$. The game continues from step 2.
+\end{enumerate}
+The game is a special case of a safety game, and hence the winner can be decided in polynomial time using a fixpoint procedure. The set of states $q$ from which Prover has a winning strategy is exactly the set $P$ that we are looking for.
+
+
+
+===== [18] krohn-rhodes line 284 label=exer:simple-decomposition-example =====
+STATEMENT:
+\label{exer:simple-decomposition-example}
+    Consider the function which replaces all letters in the input string by the first input letter, as in 
+    \begin{align*}
+    a_1 \cdots a_n \mapsto a_1^n.
+    \end{align*}
+    Decompose this function into flip-flops.
+    
+SOLUTION:
+
+    The natural machine for this function is not a flip-flop. Its states are $A+1$, and they store the first input letter, with the extra state used before the first letter has been read. The state transformation of a letter $a$ maps the extra state to $a$ and leaves all other states unchanged, which is neither the identity nor a constant. The remedy is to first find out which position is the first one, using a separate machine.
+
+    In the first machine, the states are $\set{0,1}$, the initial state is $0$, and every letter has the constant state transformation with value $1$. The output is the state before the transition, and therefore the first position is labelled with $0$, while all remaining positions are labelled with $1$. This machine is a flip-flop and, as usual, we assume that it also copies the input letter to its output.
+
+    In the second machine, the states are $A+1$ as in the natural machine described above, but this time the state transformation of a letter depends on the label that was added by the first machine: a letter labelled $0$, i.e.~a first letter $a$, has the constant state transformation with value $a$, while a letter labelled $1$ has the identity state transformation. This machine is a flip-flop as well, and if its output is the state after the transition, then this output is the first letter of the input string in every position, as required.
+
+
+
+===== [19] krohn-rhodes line 299 label=exer:simple-decomposition-example-2 =====
+STATEMENT:
+\label{exer:simple-decomposition-example-2}
+    Show that the function from the previous example cannot be decomposed into reversible machines only.
+SOLUTION:
+
+    We use the same argument as for the delay function. We assume that the input alphabet has at least two letters, since otherwise the function is the identity, which is reversible. By Lemma~\ref{lem:reversible-composition}, a composition of reversible machines is again a reversible machine, and therefore it is enough to rule out a single reversible machine. Suppose that some reversible machine computes the function, and let $a$ and $b$ be two different input letters. The state transformation of $a$ is a permutation of a finite set, and hence it has finite order, i.e.~there is some $k \geq 1$ such that reading $a^k$ leads from the initial state back to the initial state. Consequently, the machine is in the initial state just before reading the last letter of both input strings
+    \begin{align*}
+    b \qquad \text{and} \qquad a^k b,
+    \end{align*}
+    and therefore it produces the same last output letter for both of them. This is a contradiction, since the function outputs $b$ for the first input string and $a$ for the second one.
+
+
+
+===== [20] krohn-rhodes line 309 label=exer:flip-flop-from-sequential-composition =====
+STATEMENT:
+\label{exer:flip-flop-from-sequential-composition} Show that every flip-flop machine can be obtained as a sequential composition of two-state flip-flop machines.
+SOLUTION:
+
+    In a flip-flop machine, the state after reading an input string is determined by the last letter which has a constant state transformation: the state is the value of that constant, or the initial state if there is no such letter. In particular, the state can be tracked one bit at a time.
+
+    Fix an injective encoding of the states as bit vectors
+    \begin{align*}
+    \text{enc} : Q \to \set{0,1}^k \qquad \text{where $k$ is logarithmic in the number of states,}
+    \end{align*}
+    and consider a composition of $k$ machines, where the $j$-th machine copies its input to the output, extending each position with one extra bit, namely the $j$-th bit of the encoding of the state that the original machine had \emph{before} reading this position. The $j$-th machine stores this bit in its state, and hence it has two states. It is a flip-flop machine, since a letter whose state transformation is the identity leaves the bit unchanged, while a letter whose state transformation is a constant sets the bit to the corresponding bit of that constant.
+
+    After all $k$ machines have been applied, each position is labelled by its original letter together with the state of the original machine before this position. This pair determines the output letter of the original machine, and therefore the construction is finished by a letter-to-letter homomorphism, i.e.~a Mealy machine with one state. (Such a machine can also be seen as a two-state flip-flop machine in which every letter has the identity state transformation, so that the second state is never visited.)
+
+
+
+===== [21] krohn-rhodes line 321 label=exer:delay-not-flip-flop-composition =====
+STATEMENT:
+\label{exer:delay-not-flip-flop-composition} Show that the delay function from Example~\ref{ex:delay} is not  a composition of reversible Mealy machines. 
+SOLUTION:
+
+    By Lemma~\ref{lem:reversible-composition}, a composition of reversible Mealy machines is again a reversible Mealy machine, and therefore it is enough to show that the delay function is not computed by a single reversible machine. Suppose that it is, and let $a$ be some input letter. The state transformation of $a$ is a permutation of a finite set, and hence it has finite order, i.e.~there is some $k \geq 1$ such that reading $a^k$ leads from the initial state back to the initial state. Consequently, the machine is in the initial state just before reading the last letter of both input strings
+    \begin{align*}
+    a \qquad \text{and} \qquad a^k a,
+    \end{align*}
+    and therefore it produces the same last output letter for both of them. This is not what the delay function does: its last output letter is the undefined letter for the first input string, and the letter $a$ for the second one.
+
+
+
+===== [22] krohn-rhodes line 328 label=exer:alternating-not-flip-flop-composition =====
+STATEMENT:
+\label{exer:alternating-not-flip-flop-composition} Show that the function from Example~\ref{ex:alternating-a-b} is not  a composition of flip-flop Mealy machines.
+SOLUTION:
+
+    By Theorem~\ref{thm:aperiodic-mealy}, the compositions of flip-flop machines are exactly the aperiodic functions, and hence it is enough to observe that this function is not aperiodic. Take $u$ and $w$ to be empty and $v = a$ in Definition~\ref{def:aperiodic-mealy}. The last letter of the output for the input string $a^n$ is $a$ or $b$, depending on the parity of $n$, and hence it does not stabilise for large $n$. This is the same argument as the one for the parity function in Example~\ref{ex:size-threshold-3}.
+
+
+
+===== [23] krohn-rhodes line 332 label=exer:invertible-mealy-is-reversible =====
+STATEMENT:
+\label{exer:invertible-mealy-is-reversible} Is every invertible Mealy machine, as defined in Exercise~\ref{exer:invertible}, necessarily reversible? The other way round?
+SOLUTION:
+
+    Neither implication holds. The reason is that the two notions constrain different parts of the transition function: invertibility is about the output letters, while reversibility is about the target states.
+
+    For a machine that is invertible but not reversible, consider the machine over the alphabet $\set{a,b}$ which stores the previous input letter in its state, and whose output is: the current input letter, if the previous letter was $a$ or there was no previous letter; and the current input letter with $a$ and $b$ swapped otherwise. Every state transformation is a constant, and hence this is a flip-flop machine, which is not reversible, since a constant transformation on a state space with more than one state is not a permutation. It is invertible, because in each state the two outgoing transitions have different output letters, which is the criterion from the solution to Exercise~\ref{exer:invertible}.
+
+    For a machine that is reversible but not invertible, consider the machine with one state which sends every input letter to the same output letter. Its only state transformation is the identity, and hence it is reversible, but the function that it computes is not injective, and therefore it has no inverse.
+
+
+
+===== [24] krohn-rhodes line 340 label=ex:map-lifting-continuous =====
+STATEMENT:
+\label{ex:map-lifting-continuous} Show that if $f : A^* \to B^*$ is continuous, then the same is true for its map lifting.
+SOLUTION:
+
+    Let $\Bb$ be an automaton which recognises a regular language over the output alphabet of the map lifting; we want to show that the inverse image of this language is regular. Consider an input string
+    \begin{align*}
+    w_1 \# \cdots \# w_n.
+    \end{align*}
+    Its image under the map lifting is accepted by $\Bb$ if and only if there are states $p_1,q_1$, $\ldots$, $p_n,q_n$ of $\Bb$ such that:
+    \begin{enumerate}
+        \item $p_1$ is initial and $q_n$ is accepting;
+        \item for every $i$, the automaton can go from $p_i$ to $q_i$ while reading $f(w_i)$;
+        \item for every $i<n$, the automaton can go from $q_i$ to $p_{i+1}$ while reading the separator.
+    \end{enumerate}
+    An automaton over the input alphabet can guess these states and check the three conditions. The first and third conditions speak about individual positions, and hence they are easily checked. The second condition is an inverse image, under $f$, of the language recognised by $\Bb$ with initial state $p_i$ and accepting state $q_i$; this inverse image is regular thanks to the continuity assumption on $f$. The same argument is used later in the book, see Lemma~\ref{lem:map-lifting-continuous}.
+
+
+
+===== [25] rational-relations line 177 label=exer:regular-languages-for-rational-relations =====
+STATEMENT:
+\label{exer:regular-languages-for-rational-relations}
+Show that for every rational relation $R \subseteq A^* \times B^*$, the following languages are regular:
+\begin{enumerate}
+    \item its domain, i.e.~input strings that produce at least one output;
+    \item its range, i.e.~output strings that arise from at least one input;
+    \item input strings that produce infinitely many outputs.
+\end{enumerate}
+
+SOLUTION:
+
+    For the domain, we use continuity from Theorem~\ref{thm:continuity-rational-relations}: the domain is the inverse image of the regular language $B^*$. A more direct argument is that an automaton for the domain is obtained from the automaton with output by erasing the output part of every transition. The range is handled in the same way, using the symmetry of rational relations with respect to input and output.
+
+    The third language requires an analysis of the runs. Call a state \emph{pumping} if it admits a cycle with empty input and nonempty output. We claim that an input string has infinitely many outputs if and only if it admits an accepting run which visits a pumping state. The right-to-left implication is clear, since the cycle in a pumping state can be repeated any number of times, each repetition making the output longer. For the left-to-right implication, consider an input string with infinitely many outputs, and for each of these outputs choose an accepting run which uses the least number of transitions. Since each transition produces a bounded amount of output, these runs use unboundedly many transitions, while the number of transitions that consume a nonempty input is at most the length of the input string. Therefore, some run uses more consecutive transitions with empty input than there are states, and hence it visits some state twice, with empty input in between. The cycle obtained this way must have nonempty output, since otherwise we could remove it, contradicting the minimal choice of the run.
+
+    Since the pumping states can be computed, the third language is recognised by the automaton which is obtained from the automaton with output by erasing the outputs, and adding to the state a bit which says if a pumping state has already been visited.
+
+
+
+===== [26] rational-relations line 193 label=exer:non-regular-languages-for-rational-relations =====
+STATEMENT:
+\label{exer:non-regular-languages-for-rational-relations}
+Show that for some rational relation $R \subseteq A^* \times B^*$, the set of inputs that produce at most one output is non-regular.  
+
+SOLUTION:
+
+The crucial idea is to  find two rational functions for which the following language is non-regular:
+\begin{align*}
+\setbuild{ w \in A^*}{$f(w) = g(w)$}.
+\end{align*}
+Once we have found them, the relation is simply the union of the two functions, and the set of inputs that produce at most one output is exactly the above language, since an input produces two outputs exactly when the two functions disagree on it. A simple example of such functions is when $f$ keeps only the $a$'s, while $g$ keeps only the $b$'s and replaces them by $a$'s; the two functions agree exactly on the strings that have as many $a$'s as $b$'s. (The two functions must use the same output alphabet, since otherwise they could only agree on the empty string.)
+
+
+
+===== [27] rational-relations line 204 label=exer:rational-relations-not-closed-under-intersection =====
+STATEMENT:
+\label{exer:rational-relations-not-closed-under-intersection} Show that rational relations are not closed under intersection.
+SOLUTION:
+
+    Consider the two relations
+    \begin{align*}
+    R = \setbuild{(a^n, b^n c^m)}{$n,m \geq 0$}
+    \qquad \text{and} \qquad
+    S = \setbuild{(a^n, b^m c^n)}{$n,m \geq 0$}.
+    \end{align*}
+    Both are rational: the automaton for $R$ first outputs one letter $b$ for each input letter, and then, without consuming any input, outputs any number of letters $c$; the automaton for $S$ does the same with the two phases swapped. Their intersection is
+    \begin{align*}
+    \setbuild{(a^n,b^nc^n)}{$n \geq 0$},
+    \end{align*}
+    which is not rational. Indeed, the image of the regular language $a^*$ under this relation is $\setbuild{b^nc^n}{$n \geq 0$}$, which is not regular, while rational relations map regular languages to regular languages, as observed after Theorem~\ref{thm:continuity-rational-relations}.
+
+
+
+===== [28] rational-relations line 218 label=exer:rational-relations-intersection-undecidable =====
+STATEMENT:
+\label{exer:rational-relations-intersection-undecidable} Show that it is undecidable if two rational relations have nonempty intersection
+SOLUTION:
+
+    We reduce from the Post Correspondence Problem, as in the proof of Theorem~\ref{thm:undecidable-equivalence-rational-relations}, except that this time we do not need to complement the homomorphisms. Consider two homomorphisms $g,h : A^* \to B^*$, and view each of them as a relation, e.g.
+    \begin{align*}
+    \setbuild{(w,g(w))}{$w \in A^*$ is nonempty}.
+    \end{align*}
+    This relation is rational: the automaton has an initial and a final state, and for each input letter $a$ it has a transition with input $a$ and output $g(a)$, which goes from the initial to the final state, and also from the final state to itself. (The two states are used only to rule out the empty input string.) The intersection of the two relations obtained this way is nonempty if and only if the two homomorphisms agree on some nonempty input string, which is exactly the Post Correspondence Problem. Since the two relations used in the reduction are functions, the problem remains undecidable for rational functions.
+
+
+
+===== [29] rational-relations line 226 label=exer:rational-output-size =====
+STATEMENT:
+\label{exer:rational-output-size} Show that the following conditions are equivalent for a rational relation:
+\begin{itemize}
+    \item every input string produces at most finitely many outputs;
+    \item output lengths are bounded by an affine function of the input length.
+\end{itemize}
+
+SOLUTION:
+
+    The implication from the second condition to the first one is immediate, since there are finitely many strings of bounded length.
+
+    For the converse implication, we use the analysis of runs from \cref{exer:regular-languages-for-rational-relations}. Assume that every input string has finitely many outputs. As we have seen in that exercise, this means that no accepting run visits a state which admits a cycle with empty input and nonempty output. Consider an accepting run, and shorten it as long as possible by removing cycles with empty input. By the previous sentence, the cycles that are removed this way have empty output, and therefore removing them changes neither the input string nor the output string. In the run that remains, every group of consecutive transitions with empty input is shorter than the number of states, since otherwise some state would repeat and we could shorten the run further. Since the transitions that consume a nonempty input are at most as many as the letters in the input string, it follows that the total number of transitions in the run is at most
+    \begin{align*}
+    (\text{number of states}) \cdot (\text{length of the input string} + 1).
+    \end{align*}
+    Each transition produces a bounded amount of output, and hence the length of the output is bounded by an affine function of the length of the input.
+
+
+
+===== [30] rational-relations line 243 label=ex:recognisable-relations =====
+STATEMENT:
+\label{ex:recognisable-relations}Show that the recognisable subsets of $A^* \times B^*$ are exactly the unions of finitely many products of regular languages, i.e.~unions of the form 
+\begin{align*}
+K_1 \times L_1 \cup \cdots \cup K_n \times L_n 
+\end{align*}
+where each $K_i$ is a regular language over the input alphabet and each $L_i$ is a regular language over the output alphabet.
+SOLUTION:
+
+    We use the standard reformulation of recognisability: a subset of a monoid is recognisable if and only if it is the inverse image $h^{-1}(F)$ of some subset $F$, under some monoid homomorphism $h$ into a finite monoid. (Given a congruence of finite index, take the quotient monoid; conversely, the equivalence which identifies elements with the same image under $h$ is a congruence of finite index.)
+
+    Consider first a product $K \times L$ of regular languages, which are recognised by monoid homomorphisms
+    \begin{align*}
+    A^* \xrightarrow g M \qquad \text{and} \qquad B^* \xrightarrow k N.
+    \end{align*}
+    This product is recognised by the homomorphism into $M \times N$ which maps a pair $(w,v)$ to $(g(w),k(v))$. For a finite union of such products, we take the product of the corresponding monoids, thus obtaining a single homomorphism which recognises all of the products at the same time, and hence also their union, since the recognisable subsets for a fixed homomorphism are closed under Boolean operations.
+
+    For the converse implication, consider a recognisable relation $R = h^{-1}(F)$, for some homomorphism $h$ into a finite monoid $M$. The point is that the two coordinates are independent, because every pair factors as
+    \begin{align*}
+    (w,v) = (w,\varepsilon) \cdot (\varepsilon,v).
+    \end{align*}
+    Applying $h$ to this factorisation, we get $h(w,v) = g(w) \cdot k(v)$, where
+    \begin{align*}
+    g(w) \eqdef h(w,\varepsilon) \qquad \text{and} \qquad k(v) \eqdef h(\varepsilon,v)
+    \end{align*}
+    are monoid homomorphisms from $A^*$ and $B^*$ into $M$, and hence they recognise regular languages. It follows that
+    \begin{align*}
+    R = \bigcup g^{-1}(m) \times k^{-1}(n),
+    \end{align*}
+    where the union ranges over the finitely many pairs $(m,n) \in M \times M$ whose product $mn$ belongs to $F$. This is a finite union of products of regular languages, as required.
+
+
+
+===== [31] rational-functions line 213 label=exer:examples-of-rational-fun =====
+STATEMENT:
+\label{exer:examples-of-rational-fun}
+Represent the following functions as rational functions, and as bimachines: (a) if the input length is even, output it, otherwise output the empty string; (b) swap the first and last letters; (c) identity before last $\#$, after that every letter replaced by $\#$.
+
+SOLUTION:
+
+    (a) As a rational function, we use two copies of the automaton which tracks the parity of the number of input letters that have been read so far. In the first copy, every transition copies its input letter to the output, and the accepting states are those with even parity; in the second copy, every transition has empty output, and the accepting states are those with odd parity. Putting the two copies side by side gives an unambiguous automaton, since the parity of the input length decides which copy is used. As a bimachine, we use the parity automaton for both the prefix and the suffix automata, except that the suffix automaton also stores the first letter of the suffix. The parity of the input length is the sum of the two parities, and hence it is known in every gap. The output in a gap is the first letter of the suffix if the total parity is even, and the empty string otherwise.
+
+    (b) As a rational function, this was already done in \cref{sec:rational-relations}, using a union of six automata. That union is unambiguous, since the six cases are determined by the input string.  (That solution was for a binary alphabet, but a similar construction works in general.) As a bimachine, we use a prefix automaton which stores the first letter of the prefix, and a suffix automaton which stores the first and the last letter of the suffix, as well as the length of the suffix up to the threshold two. The output in a gap is defined by the following cases: the empty string, if the suffix is empty; the last letter of the suffix, if the prefix is empty; the first letter of the prefix, if the suffix has exactly one letter; and the first letter of the suffix in the remaining cases. The three letters that are used here are, respectively, the last letter of the input string, its first letter, and the letter in the position that follows the gap.
+
+    (c) We use the convention that if the input string has no $\#$, then all of its letters are replaced by $\#$; the other convention, in which the input string is returned unchanged, is handled in the same way. For an unambiguous automaton, the automaton guesses which $\#$ is the last one: up to and including this letter, the input is copied to the output; after it, the automaton outputs $\#$ for every input letter, and rejects if it sees another $\#$. This automaton is unambiguous, since the guess is verified. The bimachine is even simpler, and it does not need the prefix automaton at all. The observation is that a position is copied to the output if and only if the suffix which begins in this position contains a $\#$. Therefore, it is enough that the suffix automaton stores the first letter of the suffix, together with the information about whether the suffix contains $\#$. The output in a gap is: the empty string, if the suffix is empty; the first letter of the suffix, if the suffix contains $\#$; and $\#$ otherwise.
+
+
+
+===== [32] rational-functions line 224 label=exer:rational-outpus-of-exactly-linear-size =====
+STATEMENT:
+\label{exer:rational-outpus-of-exactly-linear-size} Show that if a rational function has unbounded output size, then it has exactly linear output size in the following sense: the limit 
+\begin{align*}
+\lim_{n \to \infty} \frac{\text{maximal output length on inputs of length at most $n$}}{n}
+\end{align*}
+is defined and nonzero.
+
+SOLUTION:
+We use nondeterministic transducers, and we assume that every state is reachable from an initial state, and can reach an accepting state. Call the \emph{ratio} of a run the length of its output string divided by the length of its input string. We claim that the limit in the exercise is qual to 
+\begin{align*}
+    \sup_\rho \frac{\text{length of output of $\rho$}}{\text{length of input of $\rho$}},
+\end{align*}
+where $\rho$ ranges over runs that are cycles (same source and target state) with nonempty input. We first observe that the supremum is reached: indeed if we take any cycle which contains nested cycles, then removing the nested cycles can only improve the ratio, unless the nested cycles had better ration. Therefore, nested cycles cannot contribute to the supremum, and thus there are finitely many candidates for the cycle in the supremum, which means that the supremum is actually a maximum. Repeating for every a cycle achieves the maximum gives a lower bound on the limit in the statement of the exercise. This ratio is also an upper bound, since it can be approximated arbitrarily closely by cycles that appear in long runs. (A more formal analysis of the upper bound would look at strongly connected components of states in the automaton).
+
+
+
+===== [33] rational-functions line 236 label=exer:rational-outpus-of-exactly-linear-size-rational-number =====
+STATEMENT:
+\label{exer:rational-outpus-of-exactly-linear-size-rational-number} Show that the limit in the previous exercise is a rational number.
+
+SOLUTION:
+ As we have shown in the solution to the previous exercise, the supremal ratio is attained by a simple cycle.
+
+
+
+===== [34] rational-functions line 241 label=exer:non-rational =====
+STATEMENT:
+\label{exer:non-rational}
+Prove that the following functions are not rational, over an alphabet with at least two letters: (a) first half of the input string, rounded up; and (b) the duplicate function $w \mapsto ww$.
+
+SOLUTION:
+
+    (a) This function is not continuous, and hence it is not rational by Theorem~\ref{thm:continuity-rational-relations}. Consider the inverse image of the regular language $a^*$, i.e.~the set of input strings whose first half uses the letter $a$ only. If we intersect this inverse image with the regular language $a^*b^*$, then we get
+    \begin{align*}
+    \setbuild{a^ib^j}{$j \leq i$},
+    \end{align*}
+    which is not regular. Therefore the inverse image is not regular either.
+
+    (b) Here continuity is not violated, since duplication is continuous. Instead, we use the observation after Theorem~\ref{thm:continuity-rational-relations}, which says that rational relations map regular languages to regular languages. The image of the regular language $A^*$ under duplication is
+    \begin{align*}
+    \setbuild{ww}{$w \in A^*$},
+    \end{align*}
+    which is not regular, as long as the alphabet has at least two letters. (For a one-letter alphabet, duplication is the homomorphism which maps $a$ to $aa$, and hence it is rational.)
+
+
+
+===== [35] rational-functions line 257 label=exer:decide-unambiguous =====
+STATEMENT:
+\label{exer:decide-unambiguous} Show that one can decide unambiguity for a given \nfa that recognises a language (not a function or relation).
+
+SOLUTION:
+
+    We can assume that the automaton has no transitions with empty input, since these can be eliminated in the usual way. Under this assumption, the automaton is ambiguous if and only if some input string admits two accepting runs which use different transitions in some position. This is tested by a product construction. Consider the automaton whose states are triples
+    \begin{align*}
+    (\text{state}, \text{state}, \text{a bit}),
+    \end{align*}
+    which runs two copies of the original automaton on the same input string, and uses the bit to remember if the two copies have already used different transitions. The bit is $0$ in the initial states, it is set to $1$ as soon as the two copies use different transitions, and it is never reset. The initial states are the pairs of initial states with bit $0$, and the accepting states are the pairs of accepting states with bit $1$. The original automaton is ambiguous if and only if the new automaton accepts some string, which is decided by checking if an accepting state is reachable from an initial state. Since the new automaton is only quadratically bigger than the original one, this algorithm runs in polynomial time.
+
+
+
+===== [36] rational-functions line 267 label=exer:decide-rational-colision =====
+STATEMENT:
+\label{exer:decide-rational-colision} Are the following problems about two rational functions decidable: (a) is there some input string where both outputs are equal? (b) is there some input string where both outputs have the same length?
+
+SOLUTION:
+
+    The first problem generalises PCP and is hence undecidable. (Some care is needed with the empty input string, on which two homomorphisms always agree; this is repaired by modifying the two rational functions so that they disagree on the empty input, which is possible because a rational function treats the empty input separately.) The second problem is decidable, since it can be solved using Parikh images: the pairs
+    \begin{align*}
+    (|f(w)|, |g(w)|) \qquad \text{for $w \in A^*$}
+    \end{align*}
+    form the Parikh image of a regular language, namely the language of runs of the product of the two transducers, and hence they form a semilinear set which can be computed. It remains to check if this set contains a pair with two equal coordinates.
+
+
+
+===== [37] rational-functions line 277 label=exer:rational-one-letter-input =====
+STATEMENT:
+\label{exer:rational-one-letter-input} Consider a rational function where the input alphabet has only one letter $a$. Show that the graph of the function is a finite union \begin{align*}
+\bigcup_{i \in I}\setbuild{ a^{\alpha_i + \beta_i n} \mapsto x_i y_i^n z_i}{$n \in \Nat$} 
+\end{align*}
+where the coefficients  $\alpha_i,\beta_i$ are natural numbers and strings $x_i,y_i,z_i$ are strings over the output alphabet.
+
+SOLUTION:
+
+    Consider a bimachine that computes the function, which exists by Theorem~\ref{thm:bimachines}. Over a one-letter input alphabet, the prefix and suffix automata are deterministic automata with a one-letter alphabet, and therefore their runs are eventually periodic: there is a threshold $\lambda$ and a period $\pi$, which we can choose to be the same for both automata, such that for every $i \geq \lambda$ and for both automata, the state after reading $a^i$ is the same as the state after reading $a^{i+\pi}$.
+
+    The input strings of length smaller than $2\lambda$ contribute finitely many pairs to the graph, and each such pair is of the required form, with the coefficient $\beta_i$ equal to zero. For the remaining input strings, we group them according to the residue of their length modulo $\pi$, i.e.~we consider the input strings
+    \begin{align*}
+    a^{\alpha + \pi m} \qquad \text{for a fixed $\alpha$ and $m \in \Nat$}.
+    \end{align*}
+    The output in a gap is determined by the states of the two automata, and these are determined by the number of letters on the left and on the right of the gap. For the first $\lambda$ gaps, this pair of states does not depend on $m$, and the same is true for the last $\lambda$ gaps. For every other gap, both sides have at least $\lambda$ letters, and hence the pair of states depends only on the number of letters on the left, modulo $\pi$. Therefore, increasing $m$ by one has the following effect on the output: one more group of $\pi$ consecutive gaps appears in the middle, and this group produces the same string as the other such groups. Summing up, the output for the input string $a^{\alpha+\pi m}$ is of the form $x y^m z$, where the strings $x,y,z$ depend only on the residue $\alpha$, which is the required form with $\beta_i = \pi$.
+
+
+
+===== [38] rational-functions line 292 label=exer:function-that-is-not-rational =====
+STATEMENT:
+\label{exer:function-that-is-not-rational} Show that there is a function
+\begin{align*}
+f : A^* \to B^*
+\end{align*}
+which is not rational, but has the property that for every rational function
+\begin{align*}
+g : B^* \to \myunderbrace{1^*}{words over a one-letter alphabet},
+\end{align*}
+the composition $f \cdot g$ is rational.
+SOLUTION:
+
+    Take $f$ to be the string reversal function, which is not rational by Example~\ref{ex:string-reversal-not-rational}. Let
+    \begin{align*}
+    g : B^* \to 1^*
+    \end{align*}
+    be a rational function, and consider a bimachine that computes it, which exists by Theorem~\ref{thm:bimachines}. The output of a bimachine is the concatenation, from left to right, of the pieces that are produced in the gaps of the input string. Over a one-letter alphabet, concatenation is commutative, and therefore the output depends only on which pieces are produced, and not on the order in which they are produced.
+
+    This is what makes reversal harmless. Reversing the input string is a bijection on gaps, which swaps the prefix with the suffix. Therefore, the composition of reversal with $g$ is computed by the bimachine that is obtained from the one for $g$ by swapping the prefix and suffix automata, and swapping the two arguments of the output function. This new bimachine produces the same pieces as the original one, but in the opposite order, which is invisible over a one-letter alphabet.
+
+
+
+===== [39] rational-functions line 311 label=exer:factoring-through-a-rational-function =====
+STATEMENT:
+\label{exer:factoring-through-a-rational-function} Consider two rational functions $f$ and $g$, possibly with different input and output alphabets. We say that $f$ factors through $g$ if one can decompose $f$ as 
+% \begin{align*}
+% f = g_1 \cdot g \cdot g_2
+% \end{align*}
+% for some rational functions $g_1$ and $g_2$. Show an algorithm that decides this property, given rational functions $f$ and $g$.
+SOLUTION:
+
+
+
+===== [40] rational-functions line 323 label=exer:some-ideals =====
+STATEMENT:
+\label{exer:some-ideals} 
+Show that the following are ideals: 
+    \begin{itemize}
+        \item functions with range of size at most $k$ for $k \in \set{1,2,3,\ldots}$;
+        \item functions where the number of outputs is  $\Oo(n^k)$, where $n$ is the input length and $k \in \set{0,1,2,\ldots}$ is some fixed constant.
+    \end{itemize}
+
+SOLUTION:
+  Observe that the ideal in the second item for $k=0$ describes the class of rational functions with finitely many outputs.
+
+Pre-composing or post-composing with rational functions (or any functions) cannot increase the size of the range, and therefore the first item describes an ideal.  For the second item, we use a similar argument, but for precomposition we observe that the output size of a rational function is at most linear in the input length, and therefore pre-composing with a rational function cannot increase the degree of the polynomial.
+
+
+===== [41] rational-functions line 334 label=exer:finite-range-ideals =====
+STATEMENT:
+\label{exer:finite-range-ideals} Consider an ideal where all functions have finite range. Show that the ideal is equal to one of the ideals from the first item in \cref{exer:some-ideals}, or to the ideal $\Oo(n^0)$ from the second item. 
+SOLUTION:
+
+    Suppose that the ideal contains a rational function $f$ with distinct outputs
+    \begin{align*}
+    f(w_1), \ldots, f(w_k).
+    \end{align*}
+    Every  rational function  $g$ with at most $k$ possible outputs $v_1,\ldots,v_\ell$  can be obtained as follows: first apply $g$ with $v_i$ replaced by $w_i$, then apply $f$, and finally replace $f(w_i)$ with $v_i$.  The first and third steps are rational functions, and therefore $g$ factors through $f$, which means that it is in the ideal.
+
+    It follows that the ideal is determined by the sizes of the ranges that appear in it. If these sizes are bounded, then the ideal is ``range of size at most $k$'', where $k$ is the largest size that appears. Otherwise the ideal contains rational functions with arbitrarily large finite ranges, and hence, by the argument above, it contains every rational function with finite range, i.e.~it is the ideal $\Oo(n^0)$.
+
+
+
+===== [42] rational-functions line 345 label=exer:full-ideal =====
+STATEMENT:
+\label{exer:full-ideal} Show that an ideal contains all rational functions if and only if it contains some function whose range is a regular language with super-polynomial growth. (The growth rate of a language is a function that maps an input length $n$ to the number of strings in the language that have length at most $n$.) 
+SOLUTION:
+
+    By  the analysis from \cref{exer:polynomial-image-growth-decidable},  a regular language has super-polynomial growth if and only if an automaton recognising it contains a pattern of the form 
+\[
+\begin{tikzcd}[ampersand replacement=\&]
+I \ni q_0
+\arrow[r]
+\& q_1
+\arrow[loop above]
+\arrow[loop below]
+\arrow[r]
+\& q_2 \in F
+\end{tikzcd}
+\]
+such that the two loops have different output strings of the same length.
+Write $x$ and $x'$ for the strings on the two horizontal arrows, and $y_a$ and $y_b$ for the strings on the two loops; recall that the latter two are different strings of the same length. For an input string $c_1 \cdots c_n$ over the alphabet $\set{a,b}$, the string
+\begin{align*}
+x \, y_{c_1} \cdots y_{c_n} \, x'
+\end{align*}
+belongs to the range of the function, and different input strings give different strings, since the two loops have the same length. Producing these strings is easy, since this is done by the homomorphism which maps $c$ to $y_c$, followed by adding $x$ in front and $x'$ at the end. What we need, however, is to produce them as \emph{inputs} of the function, and not as outputs. This is where we use the Uniformisation Lemma~\ref{lem:uniformisation}: the inverse relation of the function is rational, and it becomes total once we extend it with a default output for the strings outside the range, which is a regular language. This gives a rational function which chooses, for each string in the range, some input that produces it, and we pre-compose with it. Post-composing with the rational function which removes $x$ and $x'$, and replaces each block $y_a$ or $y_b$ by the corresponding letter, we recover the string $c_1 \cdots c_n$. In other words, the ideal contains the identity function on the two-letter alphabet $\set{a,b}$. From this we can get the identity function on any alphabet, and therefore all rational functions.
+
+
+
+===== [43] rational-functions line 367 label=exer:polynomial-ideals =====
+STATEMENT:
+\label{exer:polynomial-ideals} Show that if an ideal contains some function whose range has growth $\Omega(n^k)$, then it contains all functions whose range has growth $\Oo(n^k)$. 
+SOLUTION:
+
+    Define a $k$-pattern in an automaton that recognises a language (not a function or relation) to be a sequence of states and runs as in the following diagram:
+\[
+\begin{tikzcd}[ampersand replacement=\&]
+I \ni q_0
+\ar[r,"x_1"']
+\& q_1
+\ar[loop above,"y_1"]
+\ar[r,"x_2"']
+\& q_2
+\ar[loop above,"y_2"]
+\ar[r,"x_3"']
+\& 
+\cdots
+\ar[r,"x_k"']
+\& q_k
+\ar[loop above,"y_k"]
+\ar[r,"x_{k+1}"']
+\& q_{k+1} \in F
+\end{tikzcd}
+\]
+such that for every $i \in \set{2,\ldots,k}$, the language $y_{i-1}^* x_i y_i^*$ is not contained in the prefixes of $y_i^*$.  Using the analysis of loops in automata from \cref{exer:polynomial-image-growth-decidable}, we can show that the growth rate of a regular language is $\Omega(n^k)$ if and only if it contains a $k$-pattern. (In particular, containing a $k$-pattern does not depend on the choice of automaton that recognises the language.) Next, using a similar analysis as in the previous exercise, one can show that if the range of some rational function in the ideal contains a $k$-pattern, then the ideal contains the function 
+\begin{align*}
+\set{a_1,\ldots,a_k}^* \xrightarrow {f_k} \set{a_1,\ldots,a_k}^*
+\end{align*}
+which is the identity on sorted strings (i.e.~strings from $a_1^* a_2^* \cdots a_k^*$) and outputs the empty string otherwise. 
+
+Finally, it remains to show that  if an ideal contains the function $f_k$, then it contains all rational functions whose range has growth $\Oo(n^k)$. This can be proved by analysing the structure of strongly connected components in the automaton that computes a rational function whose range has growth $\Oo(n^k)$.
+
+
+
+===== [44] rational-functions line 398 label=exer:all-ideals =====
+STATEMENT:
+\label{exer:all-ideals} Show that the ideals from the previous exercise are all the ideals, i.e.~all possible  ideals are: ``range of size at most $k$'', ``range has growth rate $\Oo(n^k)$'', ``range has polynomial growth'',  and ``all rational functions'', where $k \in \set{0,1,2,\ldots}$. 
+SOLUTION:
+Let us begin by clarifying an edge case in the statement. When $k=0$, then the ideal ``range has size at most $k$'' is the empty ideal (since functions have at least one output), and the ideal ``range has growth rate $\Oo(n^k)$'' is the ideal of functions with finitely many outputs.  Indeed, by \cref{exer:finite-range-ideals}, all ideals with functions of finite range are either of the form ``range of size at most $k$'' or ``range has growth rate $\Oo(n^0)$''. By \cref{exer:full-ideal}, all ideals that contain a function with super-polynomial growth are equal to the ideal of all rational functions. Finally, consider an ideal in which every function has a range of polynomial growth, and which contains at least one function with an infinite range. If there is a largest $k$ such that some function in the ideal has range of growth $\Omega(n^k)$, then by \cref{exer:polynomial-ideals} the ideal is exactly the ideal of functions with growth $\Oo(n^k)$. Otherwise the ideal contains, for every $k$, some function of growth $\Omega(n^k)$, and hence, again by \cref{exer:polynomial-ideals}, it is the union of the ideals $\Oo(n^k)$ over all $k$, i.e.~the ideal of functions whose range has polynomial growth. 
+
+
+
+===== [45] rational-functions line 402 label=exer:decide-same-ideal =====
+STATEMENT:
+\label{exer:decide-same-ideal} Show that it is decidable if two rational functions generate the same ideal (the ideal generated by a function is the last ideal that contains it). 
+SOLUTION:
+
+    By \cref{exer:all-ideals}, the ideal generated by a function is determined by its range: if the range is finite, then the ideal is ``range of size at most $k$'' where $k$ is the size of the range; and otherwise the ideal is determined by the growth rate of the range. (The growth rate alone is not enough, since all functions with a finite range have the same growth rate.) The size of the range, and its growth rate, can both be computed by looking for the patterns from the previous exercises in the automaton for the range of the function.
+
+
+
+===== [46] rational-functions line 406 label=exer:surjective-rational-function =====
+STATEMENT:
+\label{exer:surjective-rational-function}Show that if  a rational function $f : A^* \to B^*$ is surjective, then it has a one-sided inverse, i.e.~a rational function $g : B^* \to A^*$ such that $g \cdot f$ is the identity on $B^*$.
+
+SOLUTION:
+
+    Rational relations are symmetric with respect to input and output: swapping the input and output labels on the transitions of a nondeterministic automaton with output gives an automaton for the inverse relation. Therefore, the inverse relation
+    \begin{align*}
+    \setbuild{(v,w) \in B^* \times A^*}{$f(w) = v$}
+    \end{align*}
+    is rational, and it is total, because $f$ is surjective. By the Uniformisation Lemma~\ref{lem:uniformisation}, this relation contains a rational function $g : B^* \to A^*$. By the definition of the inverse relation, we have $f(g(v)) = v$ for every $v \in B^*$, which is the same as saying that $g \cdot f$ is the identity on $B^*$.
+
+
+
+===== [47] rational-functions line 415 label=exer:rational-injectivity-decidable =====
+STATEMENT:
+\label{exer:rational-injectivity-decidable}Show that the following problem is decidable: given a rational function $f$, we want to know if it is injective, i.e.~different input strings are mapped to different output strings. 
+SOLUTION:
+ 
+    Consider the inverse relation of $f$, which is rational. It need not be total, since $f$ need not be surjective, but its domain is the range of $f$, which is a regular language, and hence we can make the relation total by adding a default output for the strings outside the range. By the Uniformisation Lemma~\ref{lem:uniformisation}, this relation contains a rational function $g$, which satisfies $f(g(v)) = v$ for every $v$ in the range of $f$. The function $f$ is injective if and only if $g$ inverts it on the other side as well, i.e.~if and only if the composition $f \cdot g$, which first applies $f$ and then $g$, is the identity on $A^*$. Indeed, if $f$ is injective, then $g(f(w))$ has the same image under $f$ as $w$, and hence it must be equal to $w$; conversely, a function which has a left inverse is injective. By Theorem~\ref{thm:equivalence-rational-functions}, it can be decided if $f \cdot g$ is the identity.
+
+
+
+===== [48] rational-functions line 419 label=exer:rational-composition-finiteness-undecidable =====
+STATEMENT:
+\label{exer:rational-composition-finiteness-undecidable}Show that the following problem is undecidable: given a rational function $f : A^* \to A^*$, we want to know if it generates finitely many functions under composition, i.e.~if the following set is finite:
+\begin{align*}
+\setbuild{f^n}{$n \in \set{0,1,2,\ldots}$}.
+\end{align*}
+
+SOLUTION:
+
+Encode a configuration of a Turing machine as a string which contains the contents of the tape, with the current state inserted at the position of the head. For a fixed Turing machine, the function which maps a configuration to the next one is rational: a bimachine copies the input string, except in the two positions next to the state, which it rewrites according to the transition function. (On strings that do not encode a configuration, the function can do anything, say leave the string unchanged.) The $n$-th iterate of this function maps a configuration to the configuration after $n$ steps.
+
+The set in the exercise is finite if and only if $f^n = f^{n+k}$ for some $n$ and some $k \geq 1$, i.e.~if and only if there is a bound $n$ such that the behaviour of the machine on \emph{every} configuration becomes periodic after at most $n$ steps. For a machine which stays in its halting configuration once it has halted, and which never visits the same configuration twice before halting, this says that every configuration halts after at most $n$ steps.
+
+It remains to reduce the halting problem to this property. Given a machine $M$ and an input string $x$, consider the machine which, on a tape of length $m$, simulates $M$ on the input $x$, and which halts as soon as the simulation would need more than $m$ tape cells. We can assume that $M$ never repeats a configuration, by adding a step counter to the tape; in particular, if $M$ does not halt on $x$, then its space grows without bound. If $M$ halts on $x$, then every configuration halts within a number of steps that does not depend on $m$, and the set of iterates is finite. If $M$ does not halt on $x$, then the number of steps before the simulation runs out of space grows with $m$, and hence there is no such bound.
+
+
+
+===== [49] rational-functions line 432 label=exer:rational-compression =====
+STATEMENT:
+\label{exer:rational-compression} Define a \emph{grammar compression} for a string to be a context-free grammar that generates the string and nothing else. We say that a string-to-string function is \emph{compatible with compression} if there  is a polynomial time algorithm which inputs a grammar compression of an input string and outputs a grammar compression of the corresponding output string. Show that rational functions are compatible with compression. 
+SOLUTION:
+ 
+This follows from a stronger result: for a context-free language $L \subseteq A^*$ and a rational relation $R \subseteq A^* \times B^*$, the image
+\begin{align*}
+\setbuild {v \in B^*}{$(w,v) \in R$ for some $w \in L$}
+\end{align*}
+is context-free and can be computed in polynomial time (using grammars as representation of languages and nondeterministic transducers as representation of  relations). The proof is a straightforward product construction. In the special case when the input language is a singleton and the relation is a function, the image is also a singleton. 
+
+
+
+===== [50] rational-functions line 440 label=None =====
+STATEMENT:
+Show that the following two conditions are equivalent for a rational relation: 
+% \begin{enumerate}
+%     \item for every input string, all output strings have the same length as the input;
+%     \item it is computed by an \nfa with output, in which for every transition, the length of the input and output strings are the same.
+% \end{enumerate}
+% Hint: for two states $p$ and $q$ in an \nfa with output, consider the set 
+%    \begin{align*}
+%    \Delta_{pq} = \setbuild{ (|w|-|v|)}{there is a run  $p \xrightarrow{v / w}  q$ }.
+%    \end{align*}
+
+%  
+SOLUTION:
+
+%      \issue{In the solution below (currently not printed): the new transition should be $(p,u) \xrightarrow{v/w} (q,u')$ whenever $p \xrightarrow{v/w'} q$ and $u w' = w u'$. The printed condition $uv = w'u'$ concatenates the input $v$ with output strings and never determines $w$. One must also normalise the $\delta_q$ so that they are non-negative, and the sign is wrong in ``the left-hand side is equal to $\delta_{pq}$'': $|u|-|u'| = \delta_p - \delta_q$.}
+%    We only prove the non-trivial implication from 1 to 2. Consider an \nfa with output that computes the relation. Consider the set $\Delta_{pq}$ from the hint. 
+%    This set cannot contain two different numbers, since otherwise we would get a violation of condition 1. Therefore, this set is just a single number (possibly undefined if there is no run from $p$ to $q$), which we denote by $\delta_{pq}$. We have the following transitivity law
+%    \begin{align*}
+%    \delta_{pq} = \delta_{pr} + \delta_{rq},
+%    \end{align*}
+%    which holds whenever the two numbers on the right-hand side are defined.  This implies that for every state $q$ we can assign a number $\delta_q$ such that 
+%    \begin{align*}
+%    \delta_{pq} = \delta_q - \delta_p.
+%    \end{align*}
+%    We would like to improve the \nfa with output so that the numbers $\delta_q$ are all zero. For this, we define a new automaton in which the states are pairs $(q, u)$, such that $q$ is a state of the original automaton and $u$ is a string of length $\delta_q$. The general idea is that $u$ is a piece of the output string that was produced before, awaiting some transition.  Transitions are defined by 
+%    \begin{align*}
+%     (p, u) \xrightarrow {v/w} (q, u')
+%    \end{align*}
+%    whenever the original automaton had a transition of the form 
+%     \begin{align*}
+%     p \xrightarrow {v/w'} q
+%    \end{align*}
+%    such that $u v = w' u'$. This implies that 
+%    \begin{align*}
+%    |u| - |u'| = |w'| - |v|.
+%    \end{align*}
+%    The left-hand side is equal to $\delta_{pq}$ because of the lengths of the strings $u$ and $u'$, and the right-hand side is equal to $|w|-|v|+ \delta_{pq}$, and thus $|w|=|v|$, as desired. Finally, one can check that the new automaton computes the same relation. 
+%  
+
+
+===== [51] myhill-nerode line 385 label=exer:minimal-sequential =====
+STATEMENT:
+\label{exer:minimal-sequential} We order sequential transducers by the number of states. Show that minimal sequential transducers are unique up to isomorphism.
+\review{New solution.}
+
+SOLUTION:
+
+    This is the Myhill-Nerode theorem for sequential transducers. The key point, which is also what distinguishes this exercise from the following one, is that the output of each transition is already determined by the function. Indeed, a sequential function is prefix preserving, and therefore the transition which reads the $i$-th letter must produce
+    \begin{align*}
+    f(a_1 \cdots a_{i-1})^{-1} \cdot f(a_1 \cdots a_i),
+    \end{align*}
+    i.e.~the contribution of the $i$-th letter, which is the derivative from the proof of \cref{thm:sequential-function-independent}.
+
+    For an input string $u$, define its \emph{residual} to be the function
+    \begin{align*}
+    f_u : A^* \to B^* \qquad f_u(v) \quad \eqdef \quad f(u)^{-1} f(uv),
+    \end{align*}
+    which is well defined thanks to the prefix preserving property. If a sequential transducer computes $f$ and it is in state $q$ after reading $u$, then the residual $f_u$ is determined by $q$, since the outputs produced after reading $u$ depend only on $q$ and on the letters that follow. In particular, the transducer has at least as many states as there are residuals. Also, in a minimal transducer all states are reachable, since otherwise we could remove the unreachable ones.
+
+    Consider now a minimal transducer. By the two observations above, the map which sends a state $q$ to the residual $f_u$, for some $u$ that reaches $q$, is well defined and surjective onto the residuals. It is also injective: if two states had the same residual, then we could merge them, since the outputs of the corresponding transitions would be equal, and the corresponding target states would again have equal residuals; this would give a transducer with fewer states. Therefore the map is a bijection, and by construction it preserves the initial state, the transitions and their outputs. In other words, every minimal transducer is isomorphic to the transducer whose states are the residuals, with the initial state $f_\varepsilon = f$ and transitions
+    \begin{align*}
+    f_u \xrightarrow{\quad a \ / \ f_u(a) \quad} f_{ua}.
+    \end{align*}
+    Since this transducer depends on the function alone, all minimal transducers are isomorphic.
+
+
+
+===== [52] myhill-nerode line 407 label=exer:minimal-subsequential =====
+STATEMENT:
+\label{exer:minimal-subsequential} We order subsequential transducers by the number of states. Show that minimal subsequential transducers are not unique up to isomorphism.
+
+SOLUTION:
+
+    The end-of-input function makes it possible to produce the same output either while reading the input, or at the very end, and the state structure does not resolve this ambiguity. Consider the function over a one-letter input alphabet defined by
+    \begin{align*}
+    \varepsilon \mapsto \varepsilon \qquad \text{and} \qquad a^n \mapsto c \quad \text{for $n \geq 1$}.
+    \end{align*}
+    One state is not enough. Indeed, if the unique state had a transition with output $x$ and end-of-input output $y$, then the output on the input string $a^n$ would be $x^n y$, and this cannot be empty for $n=0$ and equal to $c$ for all $n \geq 1$.
+
+    Two states are enough, and there are two ways of using them. In both transducers, the states are the initial state $q_0$ and a second state $q_1$, the transitions are $q_0 \to q_1$ and $q_1 \to q_1$, the transition $q_1 \to q_1$ has empty output, and the end-of-input function maps $q_0$ to the empty string. The difference is in the remaining two values: in the first transducer, the transition $q_0 \to q_1$ outputs $c$ and the end-of-input function maps $q_1$ to the empty string, while in the second transducer, this transition has empty output and the end-of-input function maps $q_1$ to $c$. Both transducers are minimal, and they are not isomorphic, since an isomorphism would have to match the initial states, and therefore also the two remaining states, but the outputs of the transitions $q_0 \to q_1$ are different.
+
+    As the example suggests, uniqueness is restored if one additionally requires the output to be produced as early as possible.
+
+
+
+===== [53] myhill-nerode line 420 label=exer:non-minimal-bimachine =====
+STATEMENT:
+\label{exer:non-minimal-bimachine} Consider bimachines ordered by the number of states in the suffix automaton.  Show that  minimal bimachines are not unique up to isomorphism.
+
+SOLUTION:
+This is already true for languages, i.e.~for functions of type
+\begin{align*}
+A^* \to \set{0,1},
+\end{align*}
+which produce one output letter that says if the input string belongs to the language. Take the language of strings of even length, over a one-letter input alphabet.
+
+In the first bimachine, the prefix automaton computes the parity of the prefix, and the suffix automaton tests if the suffix is empty. The output is empty in every gap except the last one, which is the one recognised by the suffix automaton, and in the last gap the output is the letter given by the parity in the prefix automaton. This machine has four states in total, two in each automaton. The second bimachine is symmetric: the prefix automaton tests if the prefix is empty, the suffix automaton computes the parity of the suffix, and the output is produced in the first gap. The two machines are not isomorphic, since already their prefix automata are not: in one of them the initial state can be reached again after reading a nonempty string, and in the other one it cannot.
+
+It remains to explain why four states cannot be improved. Since the output is one letter for every input string, exactly one gap produces a nonempty output. Suppose that the suffix automaton has one state. Then the output in a gap depends only on the prefix, i.e.~on the number of letters to the left of the gap, and therefore the gaps that produce a nonempty output form a fixed set of numbers, which does not depend on the input string. If this set has at least two elements, then a sufficiently long input string produces at least two letters of output; and if it has at most one element, then all sufficiently long input strings produce the same output. Both cases are impossible, and hence the suffix automaton has at least two states. The same argument, this time counting the letters to the right of the gap, shows that the prefix automaton has at least two states.
+
+
+
+===== [54] myhill-nerode line 433 label=exer:minimal-bimachine-lexicographic =====
+STATEMENT:
+\label{exer:minimal-bimachine-lexicographic} Consider a different order on bimachines: we  minimise the number of states in the suffix automaton, and we do not care about the prefix automaton. Show that suffix automaton in a minimal machine is unique up to isomorphism.
+
+SOLUTION:
+
+    We follow the proof of \cref{thm:machine-independent-rational-functions}. Throughout, we assume that all states of both automata are reachable, since unreachable states can be removed without changing the function.
+
+    \paragraph*{The suffix automaton.} Let $\sim$ be the equivalence relation from \cref{thm:machine-independent-rational-functions}, which identifies two suffixes $v_1$ and $v_2$ if the outputs $f(wv_1)$ and $f(wv_2)$ are at bounded left distance, for $w$ ranging over all input strings.
+
+    We first observe that the suffix automaton of every bimachine refines $\sim$. Suppose that two suffixes $v_1$ and $v_2$ lead to the same state of the suffix automaton, and consider an input string $wv_i$. In the gaps that are inside $w$, the state of the prefix automaton does not depend on $i$, and neither does the state of the suffix automaton, since it is obtained from the state of $v_i$ by reading the remaining part of $w$ backwards. Therefore the outputs $f(wv_1)$ and $f(wv_2)$ share the pieces produced in these gaps, and they can only differ in the pieces produced in the remaining $|v_i|+1$ gaps. Since each piece has bounded length, this is a bound that does not depend on $w$, and hence $v_1 \sim v_2$. In particular, the suffix automaton has at least as many states as $\sim$ has equivalence classes.
+
+    Conversely, there is a bimachine whose suffix automaton is the automaton of $\sim$-classes.  In the proof of \cref{thm:machine-independent-rational-functions}, the function is decomposed into two steps: a right-to-left automaton which annotates every position with the $\sim$-class of the suffix that follows it, and a subsequential function on the annotated strings. The first step is precisely the automaton of $\sim$-classes, read as a suffix automaton. For the second step, the only thing to check is that the state of the subsequential transducer, after reading an annotated prefix, depends only on the prefix and on the class of the suffix that remains. This is indeed the case, because the earlier annotations can be recovered from the class of the remaining suffix, by prepending the letters of the prefix one by one; recall that $\sim$ is a left congruence. Therefore we can use, as the state of the prefix automaton after reading $u$, the function which maps a class $q$ to the state of the subsequential transducer after reading $u$ annotated according to $q$. This function is updated deterministically from left to right, and together with the class of the suffix it determines the output in the gap.
+
+    Summing up, a bimachine with a minimal suffix automaton has one state per $\sim$-class, and its suffix automaton is the automaton of $\sim$-classes, which is determined by the function alone, and is therefore unique up to isomorphism.
+
+    \paragraph*{The prefix automaton.} In the above discussion we have solved the exercise. Let us now continue and discuss the prefix automaton. Suppose that we refine the order on bimachines: we first minimise the number of states in the suffix automaton, and then we minimise the number of states in the prefix automaton. We will show that a minimal bimachine is unique up to isomorphism, if we make a further assumption: the bimachine is \emph{earliest}, which means that it produces the output as early as possible from left-to-right. 
+
+    From now on the suffix automaton is fixed to be the one above, and we write $[v]$ for the state that it assigns to a suffix $v$. For a prefix $u$ and a state $q$ of the suffix automaton, define
+    \begin{align*}
+    \text{Out}(u,q) \quad \eqdef \quad \text{the longest common prefix of } \setbuild{f(uv)}{$[v]=q$}.
+    \end{align*}
+    In every bimachine, the pieces produced in the gaps inside $u$ depend only on $u$ and $[v]$, and they form a prefix of the output; therefore they form a prefix of $\text{Out}(u,q)$. In other words, $\text{Out}(u,q)$ is the most that a bimachine can produce before it has seen the letters of the suffix, and we call a bimachine \emph{earliest} if it produces exactly this much in every gap. For an earliest bimachine, the output function is determined by the function $f$: the piece produced in the gap that follows a prefix $u = u'a$, when the suffix is in state $q$, must be
+    \begin{align*}
+    \text{Out}(u', a q)^{-1} \cdot \text{Out}(u,q),
+    \end{align*}
+    where $aq$ is the state for the suffixes $av$ with $[v]=q$, and the piece in the first gap must be $\text{Out}(\varepsilon,q)$.
+
+    It remains to choose the states of the prefix automaton, and this is the same Myhill-Nerode construction as in \cref{exer:minimal-sequential}: we identify two prefixes if the pieces described above are the same for them, and for all of their extensions. This is a right congruence, and hence it defines a deterministic automaton, which is determined by $f$ alone; the argument from \cref{exer:minimal-sequential} shows that no earliest bimachine can have fewer states in its prefix automaton, and that one with this many states must be isomorphic to it. 
+
+
+
+===== [55] myhill-nerode line 461 label=exer:non-minimal-automaton =====
+STATEMENT:
+\label{exer:non-minimal-automaton} Give an example of a rational function which has two non-isomorphic unambiguous transducers of minimal size (the size is the number of states).
+
+SOLUTION:
+The parity function from \cref{exer:non-minimal-bimachine} can be used, i.e.~the function which maps $a^n$ to the one-letter string that says if $n$ is even. We first observe that in every transducer for this function, all cycles that appear in accepting runs have empty output: repeating such a cycle would give the unique accepting run of a longer input string, and its output would have more than one letter. Therefore the output letter is produced in a bounded part of the run, which can be at its beginning or at its end, and this is where the two transducers differ.
+
+    In the first transducer, the output is produced at the end. There are two states that track the parity of the number of letters read so far, plus a final state, which is entered by two transitions with empty input, one from each parity state, producing the corresponding output letter. In the second transducer, the output is produced at the beginning. From the initial state there are two transitions with empty input, which guess the parity of the input string and produce the corresponding output letter, and which lead to two states that check whether the guess was correct. Both transducers have three states, and both are unambiguous, since in both of them the accepting run is determined by the parity of the input string. They are not isomorphic, since in the first one the transitions with empty input enter the same state, and in the second one they leave the same state.
+
+    Three states are necessary. The input string $a^0$ needs an accepting run which uses transitions with empty input only, and which produces the letter for even parity; this run cannot use a cycle, since a cycle with empty input would give infinitely many accepting runs. On the other hand, the input string $a^1$ needs an accepting run which produces the letter for odd parity, and hence it cannot use any of the transitions in the run for $a^0$. A short case analysis on the two remaining states, which have to track the parity, shows that these two runs cannot be accommodated.
+
+
+
+===== [56] regular-intro line 32 label=exer:regular-compression =====
+STATEMENT:
+\label{exer:regular-compression} Show that regular functions are compatible with compression, as defined in~\cref{exer:rational-compression}.
+
+SOLUTION:
+
+Functions compatible with compression are clearly closed under composition, and contain all rational functions by \cref{exer:rational-compression}. It remains to show that both map reverse and map duplicate are compatible with compression.  It is easy to see that both reverse and duplicate (without map) are compatible with compression, and thus it remains to show the following claim. 
+\begin{claim}\label{claim:map-compression}
+   Functions compatible with compression are closed under map lifting.
+\end{claim}
+\begin{proof}
+    The idea is that we can always improve a compression in polynomial time so that it is consistent with the separators in the following sense. Apart from the starting nonterminal, there are two kinds of nonterminals, called external and internal. Internal nonterminals generate strings without separators. For an external nonterminal, the rules must be of the form 
+    \begin{align*}
+    X \to \myunderbrace{YZ}{both are external}\qquad \text{or} \qquad  X \to \#\myunderbrace{Y}{internal}
+    \end{align*}
+    The initial nonterminal has a rule of the form $S \to XY$ where $X$ is internal and $Y$ is external. The idea is that the internal nonterminals generate the blocks, and the external nonterminals generate sequences of blocks. 
+
+    One can show without much difficulty that any grammar compression can be transformed into this form in polynomial time. The transformation is done by splitting the rules of the grammar at the separators, and introducing new nonterminals for the parts that are split off. After transforming into the form, we can apply the assumption on the original function to the blocks, which are the nonterminals $Y$ in the rules $X \to \#Y$.
+\end{proof}
+
+
+
+===== [57] regular-primes line 115 label=exer:two-letter-alphabet-suffices =====
+STATEMENT:
+\label{exer:two-letter-alphabet-suffices}In  Definition~\ref{def:regular-functions}, we use map reverse and map duplicate over arbitrary alphabets of the form $A + 1$. Show that the definition remains the same if we only consider $A$ with two letters.   
+SOLUTION:
+
+    One inclusion is immediate, since a two-letter alphabet is a special case. For the converse inclusion, we show how map reverse and map duplicate for an arbitrary alphabet $A$ can be simulated using their two-letter counterparts, together with rational functions.
+
+    Fix an injective encoding of the letters of $A$ as bit strings of a common length
+    \begin{align*}
+    \text{code} : A \to \set{0,1}^k,
+    \end{align*}
+    and extend it to a homomorphism on $(A+1)^*$, by mapping the separator to itself. This homomorphism is rational. Decoding is rational as well: a transducer reads the input in blocks of $k$ letters, restarting at each separator, and outputs one letter of $A$ per complete block. (A rational function must be total, so we also need to say what the decoder does on badly formatted inputs; this is irrelevant, so we can say that an incomplete last block is ignored.)
+
+    For map duplicate, we have the decomposition
+    \begin{align*}
+    \text{map duplicate over $A$} \quad = \quad \text{code} \ \cdot \ \text{map duplicate over $\set{0,1}$} \ \cdot \ \text{decode},
+    \end{align*}
+    because duplicating the encoding of a string is the same as encoding its duplication.
+
+    For map reverse, the same decomposition almost works, the problem being that reversing an encoded string reverses not only the order of the blocks, but also the bits inside each block. The second effect is undone before it happens: instead of the homomorphism above, we use the homomorphism which maps each letter to the reverse of its code. With this modification, reversing the encoded string yields the encoding of the reversed string, and the decomposition works as for map duplicate.
+
+
+
+===== [58] regular-primes line 136 label=exer:not-semiring-continuous =====
+STATEMENT:
+\label{exer:not-semiring-continuous} Show that weighted automata over arbitrary semirings are not closed under pre-composition with regular functions.
+
+SOLUTION:
+
+By \cref{thm:characterisation-rational-functions-weighted-automata}, a function is rational if and only if weighted automata are closed under pre-composition with it. Therefore, it is enough to show that there exists a regular function which is not rational. The string reverse function is regular, but not rational as we have shown in Example \ref{ex:string-reversal-not-rational}.
+
+
+
+===== [59] 2dfa line 340 label=exer:2dfa-unary-output =====
+STATEMENT:
+\label{exer:2dfa-unary-output} Show that if the output alphabet is unary (one letter), then regular functions are exactly the same as rational functions.
+
+SOLUTION:
+
+One inclusion is immediate, since rational functions are regular. For the other one, consider a two-way transducer, and recall from \cref{lem:compute-configuration-graph} that the function which maps an input string to the string representation of its reachable configuration graph is rational. In that representation, each input position carries one slice of the graph, and the slice determines the output strings of the transitions that are performed while the head is in that position; there are boundedly many of them, since the reachable configuration graph is a path that crosses each position at most once per state.
+
+Therefore, we can post-compose the rational function above with the letter-to-letter homomorphism which maps a slice to the concatenation of the output strings of its edges. This is again a rational function, and it produces the same letters as the two-way transducer, but ordered by input position rather than by the order in which the transducer produces them. Since the output alphabet has one letter, the two orders give the same string.
+
+
+
+===== [60] 2dfa line 347 label=exer:2dfa-boolean =====
+STATEMENT:
+\label{exer:2dfa-boolean} Consider  languages (not functions) recognised by two-way deterministic automata. Show that this class is closed under Boolean combinations: union, intersection and complement. Furthermore, all constructions are polynomial in the automaton size.
+
+SOLUTION:
+
+As discussed in this book, a two-way automaton must eventually output ``yes'' or ``no''. This makes complementation trivial: just swap the outputs, without changing the number of states. For intersection: first run the first automaton, and if it outputs ``yes'', then return the head to the beginning of the input and run the second automaton, returning its output; otherwise output ``no''. Returning to the beginning of the input costs one extra state, which walks left until it falls off the input, and hence the number of states is the sum of the two, plus a constant. For union, the construction is the same, except that the second automaton is run when the first one outputs ``no''. (Alternatively, union is obtained from intersection and complementation, again without leaving the polynomial regime.)
+
+
+
+===== [61] 2dfa line 352 label=exer:2dfa-complexity =====
+STATEMENT:
+\label{exer:2dfa-complexity} Consider  languages (not functions) recognised by two-way deterministic automata. Show that the shortest accepted string might be exponential in the automaton size.
+
+SOLUTION:
+
+In \cref{exer:2dfa-boolean}, we showed that intersection can be achieved with a number of states that is the sum of the two automata. Therefore, one can write a deterministic two-way automaton which checks if the input length is divisible by each of the prime numbers $p_1,\ldots,p_n$, so that the number of states is proportional to the sum of the prime numbers. Checking divisibility by $p_i$ needs $p_i$ states in a single left-to-right pass. The shortest accepted string has length
+\begin{align*}
+p_1 \cdots p_n,
+\end{align*}
+which is exponential in $p_1 + \cdots + p_n$, and hence exponential in the number of states.
+
+
+
+===== [62] 2dfa line 361 label=exer:2dfa-loop-elimination =====
+STATEMENT:
+\label{exer:2dfa-loop-elimination} Consider a deterministic two-way transducer which is not required to terminate, i.e.~on some inputs it can loop forever. Show that the set of input strings where it terminates is a regular language.
+
+SOLUTION:
+
+We use the representation  of the configuration graph from the proof of \cref{thm:continuity-2dfas}: an input string is described by the string over the alphabet $C$ in which each position carries the corresponding column of the configuration graph. As observed in the proof of \cref{lem:compute-configuration-graph}, the strings over $C$ that arise this way form a regular language, and the function which maps an input string to the representation of its configuration graph is rational.
+
+The transducer terminates on an input string if and only if the graph of that string admits a path from the initial configuration to the halting vertex. This is a regular property of the (string representation of the) graph: a nondeterministic automaton reads the columns from left to right, and guesses the path through them, remembering only the states in which the path crosses the current position, and whether the halting vertex has already been reached. Since rational functions are continuous, the inverse image of this regular language is a regular language of input strings.
+
+
+
+===== [63] 2dfa line 368 label=exer:2dfa-loop-elimination-sipser =====
+STATEMENT:
+\label{exer:2dfa-loop-elimination-sipser} Improve the solution to the previous exercise, so that the regular language is polynomial, in terms of a deterministic two-way automaton that recognises it. (Hint: use a depth-first search on the run graph, but with a special trick.)
+
+SOLUTION:
+
+Without loss of generality we assume that the transducer halts in a fixed configuration, where the head is at the left end of the input string and the state is a fixed final state.
+    Consider the configuration graph of the two-way transducer on some input string. This is a directed graph, in which every vertex has out-degree one or zero by determinism. We want to check if the unique initial configuration can reach the unique final configuration. If we look at the configurations that can reach the unique final configuration, then the corresponding part of the graph is a tree, since it does not contain cycles. This part of the graph can be explored by depth-first search, starting in the unique final configuration. If the search finds the initial configuration, one should accept, otherwise one should reject.
+
+    The trick is that this depth-first search is performed by a two-way automaton whose number of states is polynomial. The current vertex of the search is a configuration, and hence it is stored for free: its position is the position of the head, and its state is remembered in the state of the searching automaton. To move down in the tree, the automaton needs to enumerate the children of the current vertex, i.e.~the configurations which lead to it in one step; these are determined by a state and a direction, and hence there are boundedly many of them, and each one is at distance one from the current position. To move up in the tree, the automaton applies the transition function of the transducer, which is deterministic, and therefore it does not need a stack: the parent is computed from the child. The only extra information that has to be remembered is which child of the current vertex has been explored last, which is again bounded. Summing up, the state space of the searching automaton is the state space of the transducer times a bounded amount of bookkeeping.
+
+
+
+===== [64] 2dfa line 377 label=exer:regular-outpus-of-exactly-linear-size =====
+STATEMENT:
+\label{exer:regular-outpus-of-exactly-linear-size} Show that if a regular function has unbounded output size, then it has exactly linear output size in the following sense: the limit 
+\begin{align*}
+\lim_{n \to \infty} \frac{\text{maximal output length on inputs of length at most $n$}}{n}
+\end{align*}
+is defined, nonzero, and a rational number.  
+
+SOLUTION:
+The size of the output and regularity are not affected  once all letters in the output are replaced by a single letter $a$. Thus, the problem reduces to the case of unary output, in which case regular functions coincide with rational functions by \cref{exer:2dfa-unary-output}, and the exercise was solved for rational functions in \cref{exer:rational-outpus-of-exactly-linear-size}.
+
+
+
+===== [65] 2dfa line 385 label=exer:2nft =====
+STATEMENT:
+\label{exer:2nft} One can imagine two nondeterministic variants of a two-way transducer, in which more than one output string can be generated: 
+\begin{enumerate}
+    \item for a given configuration, there are several possible transitions, and the transition is chosen nondeterministically; or
+    \item the input string from $A^*$ is nondeterministically labelled by some auxilliary alphabet $C$, giving a new input string in $(A \times C)^*$, and then a deterministic two-way transducer is applied to this new input string.
+\end{enumerate}
+Show that these models are incomparable in expressive power.
+
+SOLUTION:
+
+The first model is not contained in the second one, since the first model can have infinitely many output strings for a given input string, while the second one cannot. There is another rather silly reason why the second model is weaker, which is that the second model has to produce at least one output. However, this can be seen as mistake in the formalisation of the second model, which is rectified as follows: once the new input string is guessed, there is a regular language that describes which guesses are valid, and the transducer is only applied to valid guesses. This way, the second model can produce no output for a given input string, if all guesses are invalid.
+
+
+Let us now show that the second model is not contained in the first one. The feature that is present in the second model but not in the first model is that the guess made for an input position persists after repeated visits. To see this consider the relation
+\begin{align*}
+\setbuild{(w, vv)}{$|v| = |w|$},
+\end{align*}
+where the input alphabet is $\set{a}$  and the output alphabet is $\set{a,b}$. In other words, given an input $a^n$, the transducer guesses some string in $v \in \set{a,b}^n$ and writes it twice. This can be easily achieved by the second model.
+
+To see why it cannot be computed by the first model, consider a transducer of the first kind, and an input string $a^n$ where $n$ is large enough that $2^n$ is bigger than the number of configurations, which is the number of states times $n+1$. For each $v \in \set{a,b}^n$ there is an accepting run which outputs $vv$; consider the configuration in which this run has produced exactly the first half of its output, i.e.~exactly $n$ output letters. There are $2^n$ strings $v$ and only linearly many configurations, and therefore two different strings $v_1 \neq v_2$ give the same configuration $c$. But then we can cut and paste: follow the run for $v_1$ up to $c$, and then continue with the second half of the run for $v_2$. This is again an accepting run, and its output is $v_1 v_2$, which does not belong to the relation.
+
+
+
+===== [66] 2dfa line 406 label=exer:2nft-uniformise =====
+STATEMENT:
+\label{exer:2nft-uniformise} 
+Consider the two models from the previous exercise. Show that both can be uniformised by deterministic two-way transducers: i.e.~if a binary relations is recognised by one of the two nondeterministic models and it is total (each input has at least one output), then it contains a function recognised by a deterministic two-way transducer. In particular, if  a relation that is computed by one of the two models, and it is a function, then it is computed by a deterministic two-way transducer.
+
+SOLUTION:
+
+We begin with the first model. As in the proof of \cref{thm:continuity-2dfas}, a run of the transducer on an input string is presented by slicing its configuration graph, i.e.~by a string over the alphabet $C$ in which each input position carries the part of the run that crosses it. The pairs
+\begin{align*}
+(\text{input string},\ \text{slicing of an accepting run on it})
+\end{align*}
+form a rational relation, since being a slicing of an accepting run is a regular property, checked slice by slice as in \cref{lem:compute-configuration-graph}. If the relation computed by the transducer is total, then this rational relation is total as well, and hence, by \cref{lem:uniformisation}, it contains a rational function, which chooses one accepting run for each input string. Once the run has been chosen, its output is produced by a letter-to-letter homomorphism, as in \cref{exer:2dfa-unary-output}, except that this time the letters have to be produced in the order of the run and not in the order of the input positions; this is done by a two-way transducer which follows the chosen run. Since regular functions are closed under composition, and a rational function followed by a two-way transducer is regular, we get a deterministic two-way transducer, as required.
+
+For the second model, the argument is similar, and simpler. The pairs
+\begin{align*}
+(\text{input string},\ \text{a valid labelling of it by the auxiliary alphabet})
+\end{align*}
+form a rational relation, indeed a letter-to-letter one, because the valid labellings form a regular language. If the relation is total, then \cref{lem:uniformisation} gives a rational function which chooses one valid labelling for each input string, and the deterministic two-way transducer of the model is then applied to the result.
+
+
+
+===== [67] sst line 272 label=exer:sst-sorting =====
+STATEMENT:
+\label{exer:sst-sorting} Write an \sst over alphabet $\set{a,b}$ that sorts the input string, i.e.~it outputs all the $a$'s first, followed by all the $b$'s.
+
+SOLUTION:
+
+We use one state and two registers $X$ and $Y$, which store the letters $a$ and the letters $b$ that have been seen so far. The transitions are
+\begin{align*}
+q \xrightarrow{a \mid
+\begin{smallmatrix} X \\ Y \end{smallmatrix} \mapsto
+\begin{smallmatrix} Xa \\ Y \end{smallmatrix}} q
+\qquad \qquad
+q \xrightarrow{b \mid
+\begin{smallmatrix} X \\ Y \end{smallmatrix} \mapsto
+\begin{smallmatrix} X \\ Yb \end{smallmatrix}} q,
+\end{align*}
+and the final output function is $XY$. Both updates are copyless, since each register name is used once. After reading an input string, the register $X$ stores as many letters $a$ as the input has, and likewise for $Y$ and $b$, and therefore the output is the sorted input string.
+
+
+
+===== [68] sst line 287 label=exer:sst-copyful-sst =====
+STATEMENT:
+\label{exer:sst-copyful-sst} Consider copyful \sst's, i.e.~ones where the copyless restriction is lifted. Show that they are continuous.
+SOLUTION:
+ 
+Consider a composition 
+\[
+\begin{tikzcd}
+A^* \xrightarrow {\text{copyful \sst}} B^* \xrightarrow{\text{regular language}} \Bool
+\end{tikzcd}
+\]
+For the regular language, we use a monoid homomorphism. We can now simulate the composition by modifying the  copyful \sst so that instead of storing a string in a register, one stores only  the corresponding element in the monoid. After this simulation, we get a deterministic finite automaton, thus witnessing regularity of the composition.
+ 
+
+
+===== [69] sst line 298 label=exer:sst-copyful-sst-output-size =====
+STATEMENT:
+\label{exer:sst-copyful-sst-output-size} Show that copyful \sst's can have exponential size outputs, but not doubly exponential.
+
+SOLUTION:
+
+For the upper bound, observe that for each input letter, the combined length of the strings in the registers can be at most multiplied by some fixed constant $c \in \set{1,2,\ldots}$, namely the maximal number of times that a register name is used in an update. Hence the output size is $\Oo(c^n)$, which is exponential and not doubly exponential.
+
+The upper bound is attained. Consider the copyful \sst with one register $X$, which starts empty, and the transitions
+\begin{align*}
+X \mapsto XXa,
+\end{align*}
+with the final output function $X$. After reading $n$ letters, the register stores a string of length $2^n - 1$, and hence the function $a^n \mapsto a^{2^n-1}$ is computed by a copyful \sst.
+
+
+
+===== [70] sst line 309 label=exer:sst-copyful-sst-no-composition =====
+STATEMENT:
+\label{exer:sst-copyful-sst-no-composition} Show that copyful \sst's are not closed under composition.
+SOLUTION:
+
+By the previous exercise, the function $a^n \mapsto a^{2^n-1}$ is computed by a copyful \sst. The composition of this function with itself is
+\begin{align*}
+a^n \mapsto a^{2^{2^n-1}-1},
+\end{align*}
+which has doubly exponential output size, and hence it is not computed by a copyful \sst, again by the previous exercise.
+
+
+
+===== [71] sst line 317 label=exer:sst-polynomial-automaton =====
+STATEMENT:
+\label{exer:sst-polynomial-automaton} A polynomial automaton is an automaton with registers, like an \sst, but the registers hold rational numbers instead of strings. The updates need not be copyless, and they can use both addition and multiplication. A polynomial function computes a string-to-rational-number function. Show that $a^n \mapsto 2^n$ can be computed by a polynomial automaton. 
+SOLUTION:
+ There is one register, which starts with $1$ and is doubled in each step. 
+
+
+===== [72] sst line 319 label=exer:sst-polynomial-automaton-doubly-exponential =====
+STATEMENT:
+\label{exer:sst-polynomial-automaton-doubly-exponential}  Show that $a^n \mapsto 2^{2^n}$ can be computed by a polynomial automaton. 
+SOLUTION:
+ There is one register, which starts with $2$ and is squared in each step. 
+
+
+===== [73] sst line 322 label=exer:copyful-sst-decidable =====
+STATEMENT:
+\label{exer:copyful-sst-decidable} Assume that equivalence is decidable for polynomial automata\footnote{This assumption is true by \cite[Corollary 1]{benedikt2017}. }. Show that equivalence is decidable for copyful \sst's.
+SOLUTION:
+
+
+Essentially speaking, a polynomial automaton can simulate a copyful \sst by replacing its output with a number that represents it injectively.  Here are the details.
+Assume without loss of generality that the output alphabet is $\set{0,1}$. For a string over the output alphabet, we will be interested in two numbers: 
+\begin{align*}
+\alpha(w) = \text{number represented by $w$ in binary} \qquad \beta(w) = 2^{|w|}.
+\end{align*}
+For a copyful \sst, we replace each string register with two number registers that store the above two numbers. We can simulate concatenation polynomially as follows: 
+\begin{align*}
+\alpha(w_1 \cdot w_2) = \alpha(w_1) \cdot \beta(w_2) + \alpha(w_2) \qquad \beta(w_1 \cdot w_2) = \beta(w_1) \cdot \beta(w_2).
+\end{align*}
+Hence, the values of $\alpha$ and $\beta$ on the output string can be computed by a polynomial automaton. Finally, the output string can be replaced by 
+\begin{align*}
+\alpha(w) + 2 \cdot \beta(w),
+\end{align*}
+which is an injective function. Thus the problem of equivalence of copyful \sst's is reduced to the problem of equivalence of polynomial automata.
+
+
+
+===== [74] logic line 195 label=exer:mealy-as-restricted-mso-relabelling =====
+STATEMENT:
+\label{exer:mealy-as-restricted-mso-relabelling}Show that a function $f : A^* \to B^*$ is computed by a Mealy machine if and only if it is definable by an \mso relabelling with the following additional restrictions imposed on Definition~\ref{def:mso-relabeling}:
+\begin{enumerate}
+    \item the string for empty input in item~\ref{item:mso-relabeling-empty-input} is empty;
+    \item the output map in item~\ref{item:mso-relabeling-output-map} maps each formula to a one-letter string;
+    \item the formulas in item~\ref{item:mso-relabeling-formulas} depend only on the past, which means that  $w \models \varphi(x)$ depends only on the prefix of $w$ up to and including position $x$.
+\end{enumerate}
+
+SOLUTION:
+
+    Consider first a function computed by a Mealy machine. As the set of formulas we take one formula $\varphi_t(x)$ for each transition $t$, which says that transition $t$ is used in position $x$; this can be written in \mso as in Claim~\ref{claim:transition-formula}. Since the machine is deterministic, exactly one of these formulas is true in each position, as required in the definition of an \mso relabelling. The three additional restrictions are satisfied: a Mealy machine maps the empty string to the empty string; the output map, which sends $\varphi_t$ to the output letter of the transition $t$, produces one-letter strings; and the formulas depend only on the past, because the transition used in a position is determined by the prefix up to and including this position.
+
+    Consider now an \mso relabelling which satisfies the three restrictions. Because of the third restriction, each formula $\varphi \in \Phi$ is determined by the language
+    \begin{align*}
+    L_\varphi \quad \eqdef \quad \setbuild{w \in A^*}{$w$ is nonempty and $w \models \varphi(x)$ for the last position $x$ of $w$},
+    \end{align*}
+    in the sense that $\varphi$ is true in a position of an input string if and only if the prefix up to and including this position belongs to $L_\varphi$. This language is definable in \mso, and hence it is regular by Theorem~\ref{thm:mso-logic-languages}. The Mealy machine for the relabelling is the product of deterministic automata for the languages $L_\varphi$, with $\varphi$ ranging over $\Phi$. The state of this product after reading a prefix of the input string tells us which formulas are true in the last position of this prefix; by the uniqueness requirement in the definition of an \mso relabelling, exactly one formula is true, and by the second restriction, it is mapped to a single output letter. Therefore, each transition of the product can be labelled by the output letter that corresponds to its target state, and the resulting Mealy machine computes the same function as the relabelling; for the empty input string, both produce the empty string thanks to the first restriction.
+
+
+
+===== [75] logic line 624 label=exer:fo-non-elementary =====
+STATEMENT:
+\label{exer:fo-non-elementary}
+Consider first-order formulas that define languages. Show that for every $n \in \set{1,2,\ldots}$ there is a first-order formula of size polynomial in $n$ such that the corresponding language contains exactly one string which has length  at least
+\begin{align*}
+\exp(n) = 
+\begin{cases}
+    1 & \text{if } n = 1 \\
+    2^{\exp(n-1)} & \text{if } n > 1.
+\end{cases}
+\end{align*}
+SOLUTION:
+
+By induction on  $n \in \set{0,1,\ldots}$ define the \emph{strings of order $n$} as follows. If $n=0$ then there is only one such string and it is empty. Consider now $n>0$ and let 
+    \begin{align*}
+    w_1,\ldots,w_\ell
+    \end{align*}
+    be the strings of order $n-1$, listed in lexicographic order.  The new alphabet is obtained by extending the previous alphabet with two fresh letters $0$ and $1$. A string  string of order $n$ is defined to be any string of the form 
+    \begin{align*}
+    a_1 w_1 a_2 w_2 \cdots a_\ell w_\ell  \qquad \text{where $a_1,\ldots,a_\ell \in \set{0,1}$}.
+    \end{align*}
+    At each increment $n$, the number of strings of order $n$ increases exponentially. We will now show that the first string of order $n$ can be defined by a first-order formula that is polynomial in $n$, thus completing the exercise. To prove this, we show a stronger claim which is amenable to induction. 
+    \begin{claim}
+        There is a first-order formula 
+        \begin{align*}
+            \varphi_n(x_1,x_2,y_1,y_2)
+        \end{align*}
+        of size polynomial in $n$ which holds if and only if
+        \begin{itemize}
+            \item $x_1 < x_2$ and the corresponding infix is a string of order $n$; and 
+            \item $y_1 < y_2$ and the corresponding infix is a string of order $n$; and
+            \item the  above two infixes  are consecutive in the lexicographic order on strings of order $n$.
+        \end{itemize}
+    \end{claim}
+    \begin{proof}
+        The induction step uses $\varphi_{n-1}$ to identify, inside two infixes of order $n$, the pairs of sub-infixes of order $n-1$ that carry the same index $i$: these are the pairs that can be reached from the first sub-infixes by applying the ``consecutive'' relation of order $n-1$ the same number of times. Being consecutive in the lexicographic order on strings of order $n$ then says that the bit sequences $a_1 \cdots a_\ell$ of the two infixes are consecutive binary numbers, i.e.~there is an index where the first has $0$ and the second has $1$, before it the bits agree, and after it the first has only $1$s and the second only $0$s. All of this is first-order, once the sub-infixes of order $n-1$ can be compared.
+
+        The only delicate point is the size. A naive translation uses $\varphi_{n-1}$ a constant number $c > 1$ of times, which would give formulas of size exponential in $n$. This is avoided by the standard trick of quantifying over the arguments: instead of writing several copies of $\varphi_{n-1}$ with different arguments, one writes a single copy applied to universally quantified arguments,
+        \begin{align*}
+        \forall u_1 u_2 v_1 v_2 \ \big( \ & \text{the arguments are one of the finitely many tuples we care about} \\
+        & \Rightarrow \ \varphi_{n-1}(u_1,u_2,v_1,v_2) \ \big),
+        \end{align*}
+        so that the size of $\varphi_n$ is the size of $\varphi_{n-1}$ plus a constant. The details are left to the reader.
+    \end{proof}
+
+
+
+===== [76] logic line 667 label=exer:so-logic =====
+STATEMENT:
+\label{exer:so-logic}
+In \mso, set quantification is restricted to sets of positions. In full second-order logic, we can quantify over sets of pairs, or sets of triples, etc. Show that second-order logic can define non-regular languages.
+
+SOLUTION:
+
+Consider the language $\setbuild{a^nb^n}{$n \geq 0$}$, which is not regular. It is defined by a formula of second-order logic which says that: (a) every position labelled $a$ is before every position labelled $b$; and (b) there is a binary relation $R$ on positions which is the graph of a bijection between the $a$-positions and the $b$-positions. The first condition is first-order. The second one uses a quantifier over a set of pairs of positions, and says that every pair in $R$ consists of an $a$-position and a $b$-position, that every $a$-position appears in exactly one pair, and that every $b$-position appears in exactly one pair; all of this is first-order, once the relation $R$ is available. Such a bijection exists if and only if the two sets have the same size, and hence the formula defines the language above.
+
+
+
+===== [77] logic line 675 label=exer:fo-suc =====
+STATEMENT:
+\label{exer:fo-suc}
+    Consider the variant of first-order logic on strings in which the only available predicate is the successor relation, i.e.~the order relation is not available. Show that this logic is strictly weaker than first-order logic with order.
+
+SOLUTION:
+
+The separating language is
+\begin{align*}
+\setbuild{w \in \set{a,b,c}^*}{$w$ has exactly one letter $b$ and exactly one letter $c$, \\ and the $b$ comes before the $c$}.
+\end{align*}
+With the order relation, this is defined by saying that there are positions $x < y$ labelled $b$ and $c$ respectively, and no other position is labelled $b$ or $c$. 
+
+To prove that it cannot be defined with the successor relation only, we use an Ehrenfeucht-Fra\"iss\'e argument. Fix a number $k$ of rounds, and consider the two strings
+\begin{align*}
+a^m b a^m c a^m \qquad \text{and} \qquad a^m c a^m b a^m,
+\end{align*}
+where $m$ is much bigger than $2^k$. The first one belongs to the language and the second one does not. In the game with the successor relation only, the duplicator wins in $k$ rounds: the invariant is that after $i$ rounds, the chosen positions are matched in such a way that two positions are at the same distance in both strings whenever that distance is at most $2^{k-i}$, and are far apart in both strings otherwise. This invariant can be maintained, because the only difference between the two strings is the order of the letters $b$ and $c$, which are at distance more than $2^k$ from each other. Since the duplicator wins, no formula of quantifier rank $k$ with successor only can distinguish the two strings, and hence no such formula defines the language.
+
+
+
+===== [78] polyregular-intro line 66 label=exer:polyregular-marked-squaring-compression =====
+STATEMENT:
+\label{exer:polyregular-marked-squaring-compression} Show that marked squaring is not   compatible with compression, as defined in~\cref{exer:rational-compression}.
+
+SOLUTION:
+
+Suppose that the input to marked squaring is the string $a^N$ with $N = 2^n$, which has a grammar compression of size linear in $n$, obtained by repeated doubling. We will show that the output of marked squaring has no grammar compression of size subexponential in $n$. The crucial observation is that the distances between consecutive underlined letters in the output take exponentially many values, while a grammar can only produce a linear number of such distances.
+
+Indeed, the output of marked squaring on $a^N$ is the concatenation of the strings $\underline a^i a^{N-i}$, with $i$ ranging from $1$ to $N$. Between the last underlined letter of the $i$-th block and the first underlined letter of the next block there are exactly $N-i$ letters that are not underlined, and hence the distances between consecutive underlined letters take all the values $1,\ldots,N-1$. It remains to prove the following claim, in which $b$ plays the role of the underlined letter.
+\begin{claim}
+    Consider a grammar compression of a string $w \in \set{a,b}^*$. Then 
+    \begin{align*}
+    \setbuild{ i \in \set{0,1,\ldots}}{$w$ contains an infix of the form $b a^i b$}
+    \end{align*}
+    has size at most linear in the size of the grammar compression of $w$.
+\end{claim}
+\begin{proof}
+    Each rule in the grammar can add at most one new value of $i$. Indeed, consider a rule $X \to YZ$. Every infix of the form $ba^ib$ in the string generated by $X$ is either an infix of the string generated by $Y$, or of the string generated by $Z$, or it crosses the boundary between them. In the last case, its first letter is the last $b$ of the string generated by $Y$, and its last letter is the first $b$ of the string generated by $Z$, and therefore there is at most one such infix.
+\end{proof}
+
+
+
+===== [79] polyregular-intro line 83 label=exer:polyregular-unmarked-squaring =====
+STATEMENT:
+\label{exer:polyregular-unmarked-squaring} Suppose that we replace marked squaring with the (unmarked) squaring operation from \cref{exer:squaring-continuous}. Show that the resulting class of functions  is a strict subset of the polyregular functions.
+SOLUTION:
+
+(Unmarked) squaring is compatible with compression. Indeed, given a grammar compression of $w$, the length $|w|$ is computed in polynomial time, as a number with polynomially many bits, and a grammar for $w^{|w|}$ is obtained by adding $\Oo(\log |w|)$ rules that double the string, together with a bounded number of extra rules for the remaining copies, according to the binary representation of $|w|$. Therefore the resulting class of functions would be compatible with compression, while polyregular functions are not, by \cref{exer:polyregular-marked-squaring-compression}. The result would continue to hold if we added map lifting to the closure properties, while still keeping the squaring operation unmarked. This is because map lifting preserves compatibility with compression, as we have shown in the solution to \cref{exer:regular-compression}.
+
+
+
+===== [80] polyregular-for line 270 label=exer:for-transducers-simulate-fo =====
+STATEMENT:
+\label{exer:for-transducers-simulate-fo}  Consider a first-order formula that defines a language. 
+Show that the same language, viewed as a string-to-string function with outputs ``yes'' and ``no'', can be computed by a for-transducer whose source code is polynomial in the size of the formula.
+
+SOLUTION:
+The translation replaces quantifiers by for loops, and the truth values of subformulas by Boolean variables. For a subformula $\exists x\, \psi$, we use a Boolean variable which is set to false, and then a loop over all positions $x$, which sets the variable to true whenever the translation of $\psi$ evaluates to true; a universal quantifier is treated dually. The atomic formulas -- the order and equality tests on positions, and the tests on labels -- are available directly in the syntax of for-transducers, and the Boolean connectives are available in the conditions. Finally, after the outermost loop, the epilogue outputs ``yes'' or ``no'', depending on the Boolean variable for the whole formula.
+
+The size is polynomial, and in fact linear: each quantifier of the formula contributes one loop and one Boolean variable, and each atomic subformula contributes one test. Note that this uses the fact that the loops of a for-transducer can be nested arbitrarily, and that Boolean variables can be reset inside a loop, so that the inner quantifiers are re-evaluated for every valuation of the outer ones.
+
+
+
+===== [81] polyregular-for line 278 label=exer:for-transducer-continuity-nonelementary =====
+STATEMENT:
+\label{exer:for-transducer-continuity-nonelementary} Show that there is no algorithm that runs in elementary time and solves the following computational version of  continuity of  for-transducers:
+\begin{itemize}
+  \item \textbf{Input.} Source code of a for-transducer $f$ and an \nfa over its output alphabet;
+  \item \textbf{Output.} \nfa for its preimage.
+\end{itemize}
+
+SOLUTION:
+
+Already the size of the output \nfa can be non-elementary, and hence no algorithm can produce it in elementary time. Indeed, consider a first-order sentence $\varphi$ as in \cref{exer:fo-non-elementary}, of size polynomial in $n$, whose language contains exactly one string, of length at least $\exp(n)$. By \cref{exer:for-transducers-simulate-fo}, there is a for-transducer $f_\varphi$, of size polynomial in $\varphi$, which outputs ``yes'' or ``no'' according to $\varphi$. Apply the hypothetical algorithm to $f_\varphi$ and to the one-state \nfa which accepts the language $\set{\text{yes}}$. The answer is an \nfa for the language of $\varphi$. An \nfa whose language contains a string of length $\ell$ and no longer string must have more than $\ell$ states, since otherwise the accepting run would repeat a state and could be pumped. Therefore the answer has at least $\exp(n)$ states, which is not elementary in the size of the input.
+
+
+
+===== [82] polyregular-for line 287 label=exer:forward-for-transducer =====
+STATEMENT:
+\label{exer:forward-for-transducer} A \emph{forward for-transducer} is a for-transducer in which all loops are of the first-to-last kind. Show that the functions computed by forward for-transducers are exactly the composition closure of marked squaring and rational (not regular) functions.
+
+SOLUTION:
+
+Both inclusions follow the proof of \cref{thm:for-transducers-are-polyregular}, with an eye on the direction of the loops.
+
+\paragraph*{From forward for-transducers to compositions.} Consider the proof of \cref{thm:for-transducers-are-polyregular}, which translates a for-transducer into a composition of marked squaring and rational functions. In the first phase, the valuations of the position variables are enumerated, using one application of marked squaring per variable, followed by a rational function which filters out the ill-formatted blocks. The only place where a function beyond the rational ones is used is the reverse variant of marked squaring, which is needed for a variable whose loop is of the last-to-first kind, and which is implemented using string reversal. If all loops are forward, this never happens, and the first phase is a composition of marked squarings and rational functions. The second phase is a rational function, as is the epilogue, and hence the whole for-transducer is a composition of marked squarings and rational functions.
+
+\paragraph*{From compositions to forward for-transducers.} For the converse inclusion, we need three things. First, marked squaring is computed by a forward for-transducer, as we have seen in Example~\ref{ex:marked-squaring-for-transducer}. 
+
+Second, every rational function is computed by a forward for-transducer. By \cref{thm:bimachines}, a rational function is computed by a bimachine, and, as observed after the definition of bimachines, we may assume that the suffix automaton is run on the suffix in the forward direction, since the only role of the suffix automaton is to split the suffixes into finitely many regular languages. The forward for-transducer then has an outer forward loop over the positions $x$, which maintains the state of the prefix automaton in Boolean variables. Inside this loop, and before producing any output, an inner forward loop over the positions $y$ computes the state of the suffix automaton on the suffix that starts after $x$: the Boolean variables for this state are reset at the beginning of the inner loop, and are updated only for those $y$ that satisfy $x < y$. Once both states are known, the body outputs the corresponding string. The gap after the last position is handled by the epilogue.
+
+Third, forward for-transducers are closed under composition. This is the construction of \cref{lem:for-closed-under-composition}: each loop of the second transducer is replaced by a group of loops, one for each loop of the first transducer, and the direction of a new loop is the product of the directions of the two loops that it comes from. If both transducers are forward, then all these products are forward.
+

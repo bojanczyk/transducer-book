@@ -276,7 +276,7 @@ lemma good_right {pre : List ℕ} {p : ℕ} {x : Fin (S.k + 1)} (hx : (x : ℕ) 
   have hxj : (j = x) = ((j : ℕ) = pre.length) := by rw [eq_iff_iff, Fin.ext_iff, hx]
   refine bool_ext ?_
   by_cases hi : (i : ℕ) = pre.length <;> by_cases hj : (j : ℕ) = pre.length <;>
-    simp [fixOrd_some, coin_viewOf, posOf_snoc, hxi, hxj, hi, hj, hx] <;> omega
+    simp [fixOrd_some, coin_viewOf, posOf_snoc, hxi, hxj, hi, hj, hx]; omega
 
 lemma good_left {pre : List ℕ} {p : ℕ} {x : Fin (S.k + 1)} (hx : (x : ℕ) = pre.length)
     (hp : 0 < p) :
@@ -300,7 +300,7 @@ lemma good_pop {pre : List ℕ} {p : ℕ} {x : Fin (S.k + 1)} (hx : (x : ℕ) = 
   have hxj : (j = x) = ((j : ℕ) = pre.length) := by rw [eq_iff_iff, Fin.ext_iff, hx]
   refine bool_ext ?_
   by_cases hi : (i : ℕ) = pre.length <;> by_cases hj : (j : ℕ) = pre.length <;>
-    simp [popFix, ordTrue, coin_viewOf, hk, hz, posOf_snoc, hxi, hxj, hi, hj, hx] <;> omega
+    simp [popFix, ordTrue, coin_viewOf, hk, hz, posOf_snoc, hxi, hxj, hi, hj]
 
 /-! ## One step of the machine -/
 

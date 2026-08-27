@@ -197,7 +197,7 @@ def negDirs (L : List (Bool × ℕ)) : List (Bool × ℕ) := L.map (fun a => (!a
     (negDirs L).map Prod.snd = L.map Prod.snd := by
   induction L with
   | nil => rfl
-  | cons a L ih => obtain ⟨d, x⟩ := a; simpa [negDirs] using ih
+  | cons a L ih => obtain ⟨d, x⟩ := a; simp [negDirs]
 
 lemma loopRange_not (d : Bool) (n : ℕ) : loopRange (!d) n = (loopRange d n).reverse := by
   cases d <;> simp [loopRange]

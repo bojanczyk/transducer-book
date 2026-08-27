@@ -36,7 +36,7 @@ lemma lastDFA_accepts {B : Type} (b : B) : (lastDFA b).accepts = lastLang b := b
   funext w
   simp [lastLang, DFA.accepts, DFA.acceptsFrom, lastDFA]
   unfold DFA.evalFrom
-  simp only [Set.mem_setOf_eq]
+  simp only []
   have h : ∀ (s : Option B) (w : List B), List.foldl (fun _ c => some c) s w = w.getLast?.orElse (fun _ => s) := by
     intro s w
     induction w generalizing s with

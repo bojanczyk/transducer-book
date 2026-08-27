@@ -268,13 +268,14 @@ def PrefixDetermined {A B : Type} (f : List A → List B) : Prop :=
 /-- The derivative of a string-to-string function: `f⁽ʷ⁾` is the output that `f`
 produces *after* having read `w`, that is `f⁽ʷ⁾ (v) = drop |w| (f (w v))`.
 
-The book writes `f⁽ʷ⁾ (v) = f (w v)`, without removing the part of the output
-that was produced while reading `w`.  With that reading, Lemma `lemma:derivatives` below
-would be false: the identity function on `A*` is computed by a Mealy machine,
-yet the functions `v ↦ w v` are pairwise different for different `w`, so there
-would be infinitely many derivatives.  Dropping the first `|w|` output letters
-is the reading that makes the Myhill-Nerode statement correct, and it is the one
-used in the book's proof, where the derivative is said to be determined by the
+This is the definition of the book, which reads "`v ↦ f (w v)` with the first
+`|w|` letters of the output removed".  An earlier edition wrote
+`f⁽ʷ⁾ (v) = f (w v)`, without removing the part of the output that was produced
+while reading `w`, and with that reading Lemma `lemma:derivatives` below would be
+false: the identity function on `A*` is computed by a Mealy machine, yet the
+functions `v ↦ w v` are pairwise different for different `w`, so there would be
+infinitely many derivatives.  Dropping the first `|w|` output letters is also
+what the book's proof uses, where the derivative is said to be determined by the
 state of the machine after reading `w`. -/
 def deriv {A B : Type} (f : List A → List B) (w : List A) : List A → List B :=
   fun v => (f (w ++ v)).drop w.length

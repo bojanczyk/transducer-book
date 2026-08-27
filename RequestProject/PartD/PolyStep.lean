@@ -420,7 +420,7 @@ def blocksOf (k : ℕ) (w : List A) (ts : List (List ℕ)) : List (Ann A k) :=
 
 lemma dropsL_blocksOf (w : List A) (ts : List (List ℕ)) : DropsL d (blocksOf k w ts) := by
   induction ts with
-  | nil => simpa [blocksOf] using DropsL.nil d
+  | nil => simp [blocksOf]
   | cons t ts ih =>
       have : blocksOf k w (t :: ts) = (blockAt k w t ++ [Ann.sep]) ++ blocksOf k w ts := by
         simp [blocksOf]
@@ -429,7 +429,7 @@ lemma dropsL_blocksOf (w : List A) (ts : List (List ℕ)) : DropsL d (blocksOf k
 
 lemma dropsR_blocksOf (w : List A) (ts : List (List ℕ)) : DropsR d (blocksOf k w ts) := by
   induction ts with
-  | nil => simpa [blocksOf] using DropsR.nil d
+  | nil => simp [blocksOf]
   | cons t ts ih =>
       have : blocksOf k w (t :: ts) = (blockAt k w t ++ [Ann.sep]) ++ blocksOf k w ts := by
         simp [blocksOf]

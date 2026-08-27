@@ -152,7 +152,7 @@ noncomputable def atZeroF (φ : MSO A) : MSO A :=
 
 lemma isFO_atZeroF {φ : MSO A} (h : φ.IsFO) : (atZeroF φ).IsFO := by
   refine ⟨⟨isFO_firstF 0, isFO_atvF 0 h⟩, ⟨isFO_emptyF, ?_⟩⟩
-  by_cases hc : Sat ([] : List A) (fun _ => 0) (fun _ => ∅) φ <;> simp [atZeroF, hc]
+  by_cases hc : Sat ([] : List A) (fun _ => 0) (fun _ => ∅) φ <;> simp [hc]
 
 lemma sat_atZeroF (w : List A) {φ : MSO A} (hfo : φ.IsFO) (fo : ℕ → ℕ) (so : ℕ → Set ℕ) :
     Sat w fo so (atZeroF φ) ↔ Sat w (fun _ => 0) (fun _ => ∅) φ := by

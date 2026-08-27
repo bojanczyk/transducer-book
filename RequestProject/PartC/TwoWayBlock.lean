@@ -179,7 +179,7 @@ lemma blockAut_step (hlen : ∀ a, (φ a).length = L)
       obtain ⟨rfl, rfl⟩ := hs
       refine ⟨Cfg.halt, TwoWay.reaches_one (TwoWay.stepCfg_halt_eq _ ?_), Or.inl ⟨rfl, rfl⟩⟩
       refine blockAut_halt ?_
-      simp only [List.head?_nil, List.head?_cons]
+      simp only [List.head?_nil]
       rw [← hLl, ← hRr]
       exact hstep
     · cases dir with
@@ -205,7 +205,7 @@ lemma blockAut_step (hlen : ∀ a, (φ a).length = L)
               · have h0 : (blockAut N φ L hL).step (u'' ++ [z]).getLast? (p, j, false)
                     (([] : List A)).head? = Sum.inr ((p', ⟨L - 1, by omega⟩, false), o₁, false) := by
                   refine blockAut_left_move ?_ (by omega)
-                  simp only [List.head?_nil, List.head?_cons]
+                  simp only [List.head?_nil]
                   rw [← hLl, ← hRr]
                   exact hstep
                 have h1 := TwoWay.stepCfg_left_some (M := blockAut N φ L hL) hzlast h0
@@ -255,7 +255,7 @@ lemma blockAut_step (hlen : ∀ a, (φ a).length = L)
       obtain ⟨rfl, rfl⟩ := hs
       refine ⟨Cfg.halt, TwoWay.reaches_one (TwoWay.stepCfg_halt_eq _ ?_), Or.inl ⟨rfl, rfl⟩⟩
       refine blockAut_halt ?_
-      simp only [List.head?_nil, List.head?_cons]
+      simp only [List.head?_cons]
       rw [← hLl, ← hRr]
       exact hstep
     · cases dir with
@@ -273,7 +273,7 @@ lemma blockAut_step (hlen : ∀ a, (φ a).length = L)
             refine ⟨Cfg.conf u (p', ⟨(j : ℕ) + 1, hlt'⟩, false) (a :: v'), ?_, ?_⟩
             · refine blockAut_bounce_run ?_
               refine blockAut_right_stay ?_ hlt'
-              simp only [List.head?_nil, List.head?_cons]
+              simp only [List.head?_cons]
               rw [← hLl, ← hRr]
               exact hstep
             · refine Or.inr ⟨u, p', ⟨(j : ℕ) + 1, hlt'⟩, Or.inr
@@ -291,7 +291,7 @@ lemma blockAut_step (hlen : ∀ a, (φ a).length = L)
             refine ⟨Cfg.conf (u ++ [a]) (p', ⟨0, hL⟩, false) v', ?_, ?_⟩
             · refine TwoWay.reaches_one (TwoWay.stepCfg_right_cons _ ?_)
               refine blockAut_right_move ?_ hlt'
-              simp only [List.head?_nil, List.head?_cons]
+              simp only [List.head?_cons]
               rw [← hLl, ← hRr]
               exact hstep
             · have hhom : homOf φ (u ++ [a]) = homOf φ u ++ s ++ [b] := by
@@ -333,7 +333,7 @@ lemma blockAut_step (hlen : ∀ a, (φ a).length = L)
                 · have h0 : (blockAut N φ L hL).step (u'' ++ [z]).getLast? (p, j, false)
                     ((a :: v')).head? = Sum.inr ((p', ⟨L - 1, by omega⟩, false), o₁, false) := by
                     refine blockAut_left_move ?_ (by omega)
-                    simp only [List.head?_nil, List.head?_cons]
+                    simp only [List.head?_cons]
                     rw [← hLl, ← hRr]
                     exact hstep
                   have h1 := TwoWay.stepCfg_left_some (M := blockAut N φ L hL) hzlast h0
@@ -361,7 +361,7 @@ lemma blockAut_step (hlen : ∀ a, (φ a).length = L)
             refine ⟨Cfg.conf u (p', ⟨(j : ℕ) - 1, by omega⟩, false) (a :: v'), ?_, ?_⟩
             · refine blockAut_bounce_run ?_
               refine blockAut_left_stay ?_ hjpos
-              simp only [List.head?_nil, List.head?_cons]
+              simp only [List.head?_cons]
               rw [← hLl, ← hRr]
               exact hstep
             · refine Or.inr ⟨u, p', ⟨(j : ℕ) - 1, by omega⟩, Or.inr
