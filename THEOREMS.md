@@ -219,6 +219,15 @@ RequestProject/
 | `PartD/PolyScanAux.lean` | the ingredients of the scan of the enumeration: a loop-free program only sees the order of its position variables and the letters under them (`Transducers.ForProg.exec_congr_view`), and the finite information kept about one annotated copy |
 | `PartD/PolyScan.lean` | the streaming string transducer that scans the enumeration, running the body of the nest once per copy and the epilogue at the end, and its correctness (`Transducers.PolyEnum.scan_enum`) |
 | `PartD/PolyFor.lean` | the right-to-left inclusion of Theorem `thm:for-transducers-are-polyregular`: a for-transducer in prenex form is the enumeration followed by the scan, so every for-transducer computes a polyregular function (`Transducers.PolyEnum.isPolyregular_of_isForTransducer`) |
+| `PartD/PebbleDef.lean` | the syntax and the semantics of the pebble transducers, moved out of `PartD/Statements.lean` unchanged (`Transducers.PebbleView`, `Transducers.viewOf`, `Transducers.PebbleAction`, `Transducers.Pebble`, `Transducers.Pebble.Computes`, `Transducers.IsPebbleTransducer`) |
+| `PartD/PebbleAut.lean` | pebble *automata*: the variant of pebble transducers that returns an answer instead of a string, their one-step function `Transducers.PebbleAut.next`, the answer of a run, and the resolution `Transducers.resolve` of a sequence of stationary steps |
+| `PartD/PebbleProd.lean` | the product of a pebble transducer with a deterministic automaton for the target language (`Transducers.prodAut`), which turns Theorem `thm:pebble-are-continuous` into a statement about pebble automata |
+| `PartD/PebbleSub.lean` | the sub-machine of a pebble automaton: what happens above the bottom pebble is a run of a `k`-pebble automaton `Transducers.subAut` over the input with the bottom gap marked (`Transducers.markSplit`) |
+| `PartD/PebbleAnn.lean` | the *gap data* of a pebble automaton (`Transducers.gapVal`) and the fact that annotating every gap of the input with it is continuous, by a bimachine (`Transducers.exists_annotation`) |
+| `PartD/PebbleBisim.lean` | a big-step bisimulation principle for two deterministic systems (`Transducers.bisim_acc_iff`) |
+| `PartD/PebbleOne.lean` | one-pebble automata recognise regular languages (`Transducers.OnePebble.onePebble_isRegular`), by collapsing their two levels into a deterministic two-way automaton and applying Shepherdson's Theorem |
+| `PartD/PebbleLev1.lean` | pebble automata recognise regular languages (`Transducers.pebbleAut_answers_isRegular`), by induction on the number of pebbles: a `(k+1)`-pebble automaton is simulated by a one-pebble automaton over the annotated alphabet |
+| `PartD/PebbleReg.lean` | Theorem `thm:pebble-are-continuous`: pebble transducers compute continuous functions (`Transducers.continuous_of_isPebbleTransducer`) |
 | `PartD/Statements.lean` | Part D: polyregular functions, for-transducers, pebble transducers |
 | `Labels.lean` | the label-indexed view of the formalisation: for every result of the book that is formalised, an alias in the namespace `Transducers.Book` whose Lean name is the LaTeX label of the result, followed by `assert_no_sorry` or `assert_uses_sorry` according to its status in the tables below.  Kept in step with those tables by `tools/gen_labels.py --check`; see `LABELS.md` |
 
@@ -1357,16 +1366,24 @@ among the primes.
 | Lemma `lemma:prenex-normal-form` (prenex normal form) | `Transducers.forTransducer_prenex` | proved (`ForPrenexTop.lean`) |
 | Lemma `lem:for-closed-under-composition` (composition) | `Transducers.forTransducer_comp` | proved (`ForCompTop.lean`) |
 | Pebble transducers (Section *Pebble transducers*) | `Transducers.Pebble`, `Transducers.IsPebbleTransducer` | — |
-| Theorem `thm:pebble-are-continuous` (continuity) | `Transducers.pebble_continuous` | statement only |
+| Theorem `thm:pebble-are-continuous` (continuity) | `Transducers.pebble_continuous` | proved (`PebbleReg.lean`, on top of `PebbleAut.lean`, `PebbleProd.lean`, `PebbleSub.lean`, `PebbleAnn.lean`, `PebbleBisim.lean`, `PebbleOne.lean`, `PebbleLev1.lean`) |
 | Lemma `lem:reachability-pebble-automaton`, Claim `claim:reachability-basic-run`, Lemma `lem:children-of-configuration-in-pebble-run`, Claims `claim:from-configuration-to-child-configuration-graph`, `claim:from-child-configuration-graph-to-children` | not formalised (configuration encodings used inside proofs) | — |
 | Theorem `thm:pebble-are-for` (pebble = for-transducers) | `Transducers.pebble_iff_forTransducer` | statement only |
 
 Supporting files for Part D: `MarkedSquare.lean` (marked squaring and the
-right-to-left automaton showing that it is continuous) and the thirteen
+right-to-left automaton showing that it is continuous), the thirteen
 `For*.lean` files listed in the table of files above, which carry the syntax and
 the semantics of the for-transducers, the prenex form of Lemma
 `lemma:prenex-normal-form`, and the composition of two for-transducers of Lemma
-`lem:for-closed-under-composition`.
+`lem:for-closed-under-composition`, the five `Poly*.lean` files that carry the
+right-to-left inclusion of Theorem `thm:for-transducers-are-polyregular`, and
+the nine `Pebble*.lean` files that carry Theorem `thm:pebble-are-continuous`.
+
+`#print axioms Transducers.pebble_continuous` reports only `propext`,
+`Classical.choice`, `Quot.sound`, and so do
+`Transducers.continuous_of_isPebbleTransducer`,
+`Transducers.pebbleAut_answers_isRegular` and
+`Transducers.OnePebble.onePebble_isRegular`.
 
 ## Status
 
@@ -1481,8 +1498,17 @@ only if it is computed by a for-transducer) is now proved outright as well, in b
 which factors a program in prenex form as the polyregular enumeration of the tuples of positions
 visited by its nest of loops followed by a regular scan of that enumeration -- and
 `Transducers.polyregular_iff_forTransducer` depends only on `propext`, `Classical.choice`,
-`Quot.sound`.  The two remaining results of Part D (`thm:pebble-are-continuous`,
-`thm:pebble-are-for`) are statements only (`sorry`).  Examples of the book are not included; the exercises are not numbered results either,
+`Quot.sound`.  **Theorem `thm:pebble-are-continuous`** (pebble transducers compute continuous
+functions) is now proved outright as well, and depends only on `propext`, `Classical.choice`,
+`Quot.sound`: running a deterministic automaton for the target language on the output of the
+transducer turns it into a pebble *automaton* (`PebbleProd.lean`), and pebble automata recognise
+regular languages (`Transducers.pebbleAut_answers_isRegular`, `PebbleLev1.lean`) by induction on
+the number of pebbles -- a `(k+1)`-pebble automaton is simulated by a one-pebble automaton over
+the input annotated at every gap with the outcome of the run above a bottom pebble placed there
+(`PebbleSub.lean`, `PebbleAnn.lean`), that annotation is continuous because it is computed by a
+bimachine, and one-pebble automata are regular through a deterministic two-way automaton and
+Shepherdson's Theorem (`PebbleOne.lean`).  The one remaining result of Part D
+(`thm:pebble-are-for`) is a statement only (`sorry`).  Examples of the book are not included; the exercises are not numbered results either,
 and are formalised separately, in `RequestProject/Exercises/` and indexed in `EXERCISES.md` — all
 twelve exercises of Part A (`mealy.tex` and `krohn-rhodes.tex`) are formalised and proved there.
 
@@ -1586,20 +1612,21 @@ Lean files, and this section records what that check found.
 * `lake build` from scratch succeeds, with no errors.  The only warnings are
   style warnings of the Lean linter and the `declaration uses sorry` of
   `PartD/Statements.lean`, which are the statements of Part D that are still
-  open — five of them when this audit was made, two of them now that Lemma
-  `lemma:prenex-normal-form`, Lemma `lem:for-closed-under-composition` and
-  Theorem `thm:for-transducers-are-polyregular` are proved.
+  open — five of them when this audit was made, one of them now that Lemma
+  `lemma:prenex-normal-form`, Lemma `lem:for-closed-under-composition`,
+  Theorem `thm:for-transducers-are-polyregular` and Theorem
+  `thm:pebble-are-continuous` are proved.
 * `#print axioms` was run on every alias of `RequestProject/Labels.lean` — 157
   of them, one per label of the book that this formalisation covers — and on
   every Lean name named in a row of this file and of `EXERCISES.md`.  Exactly
   five depended on `sorryAx` when this audit was made:
   `thm:for-transducers-are-polyregular`, `lemma:prenex-normal-form`,
   `lem:for-closed-under-composition`, `thm:pebble-are-continuous` and
-  `thm:pebble-are-for`.  Three of those five, `lemma:prenex-normal-form`,
-  `lem:for-closed-under-composition` and
-  `thm:for-transducers-are-polyregular`, have since been proved and now carry
-  `assert_no_sorry`; the other two still carry `assert_uses_sorry` in
-  `Labels.lean` and are marked open here.  Every other
+  `thm:pebble-are-for`.  Four of those five, `lemma:prenex-normal-form`,
+  `lem:for-closed-under-composition`, `thm:for-transducers-are-polyregular`
+  and `thm:pebble-are-continuous`, have since been proved and now carry
+  `assert_no_sorry`; only `thm:pebble-are-for` still carries
+  `assert_uses_sorry` in `Labels.lean` and is marked open here.  Every other
   result depends only on `propext`, `Classical.choice`, `Quot.sound`.
 * The six results that are proved from an explicit hypothesis carry it as the
   first explicit argument of the theorem, which was confirmed by `#check`:

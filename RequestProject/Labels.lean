@@ -488,7 +488,7 @@ assert_no_sorry «lem:for-closed-under-composition»
 
 /-- **Theorem `thm:pebble-are-continuous`** (continuity): `Transducers.pebble_continuous`. -/
 alias «thm:pebble-are-continuous» := Transducers.pebble_continuous
-assert_uses_sorry «thm:pebble-are-continuous»
+assert_no_sorry «thm:pebble-are-continuous»
 
 /-- **Theorem `thm:pebble-are-for`** (pebble = for-transducers): `Transducers.pebble_iff_forTransducer`. -/
 alias «thm:pebble-are-for» := Transducers.pebble_iff_forTransducer
