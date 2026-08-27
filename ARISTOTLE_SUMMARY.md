@@ -225,3 +225,44 @@ for-transducer is translated over those tuples (`Transducers.tr`, whose correctn
 
 `lake build` succeeds with no errors, and `#print axioms` on `Transducers.forTransducer_prenex` and
 on `Transducers.forTransducer_comp` reports only `propext`, `Classical.choice`, `Quot.sound`.
+# Summary of changes for Theorem `thm:pebble-are-for` (Part D)
+
+Theorem `thm:pebble-are-for` (`Transducers.pebble_iff_forTransducer`) -- pebble transducers and
+for-transducers compute the same string-to-string functions -- is now proved.  It was the last
+numbered result of the book left open, so `RequestProject/PartD/Statements.lean` no longer
+contains a `sorry`, no file of the project does, and every alias of `RequestProject/Labels.lean`
+carries `assert_no_sorry`.
+
+From a for-transducer to a pebble transducer, the program is put in prenex form and the nest of
+loops is run with one pebble per loop; that direction was already in the project
+(`Transducers.PebFor.isPebbleTransducer_of_isForTransducer`).  The other direction is proved by
+showing that a pebble transducer computes a polyregular function
+(`Transducers.isPolyregular_of_isPebbleTransducer`), which is a for-transducer by Theorem
+`thm:for-transducers-are-polyregular`.  The book obtains it from the reachability analysis of a
+pebble automaton (Lemma `lem:reachability-pebble-automaton` and the claims inside its proof, which
+are internal steps and are not formalised); here it is proved by induction on the number of
+pebbles, which uses the same idea -- the run above the bottom pebble is a run of a machine with
+one pebble fewer -- but keeps it inside the vocabulary of pebble transducers.  What this run
+added is:
+
+* `RequestProject/PartD/TwoWayTotal.lean` and `RequestProject/PartD/PebbleTwoWay.lean` -- the base
+  case: a one-pebble transducer is a two-way transducer, so it computes a regular function on the
+  inputs on which it halts (`Transducers.PebOne.exists_regularFun_of_pebble_one`).
+* `RequestProject/PartD/SqPad.lean` -- the padded input (a blank on each side), its letters and
+  its polyregularity, and the coordinates of the marked square of a string.
+* `RequestProject/PartD/PebbleSquareIdx.lean`, `PebbleSquareDef.lean`, `PebbleSquareRun.lean`,
+  `PebbleSquareSim.lean` -- the induction step: a `(k+2)`-pebble transducer on `w` is simulated by
+  a `(k+1)`-pebble transducer on the marked square of the padded input
+  (`Transducers.PebSq.sim_computes`).  A stack `[p_1, ..., p_l]` is encoded inside the block
+  `p_1` of the square, so the bottom pebble is remembered by the block and one pebble is saved;
+  the two letters adjacent to it are kept in the state, and the auxiliary phases of the
+  simulating machine walk its topmost pebble to the gap that the encoding requires, using three
+  tests that a pebble transducer can perform on the square (is the gap the marked one of its
+  block, is it the start of a block, does it carry a lower pebble).
+* `RequestProject/PartD/PebblePoly.lean` -- the induction itself, and the conclusion that a
+  pebble transducer computes a polyregular function, marked squaring and padding being
+  polyregular.
+
+`lake build` succeeds with no errors (8321 jobs), and `#print axioms` on
+`Transducers.pebble_iff_forTransducer`, on `Transducers.isPolyregular_of_isPebbleTransducer` and
+on `Transducers.PebSq.sim_computes` reports only `propext`, `Classical.choice`, `Quot.sound`.

@@ -492,7 +492,7 @@ assert_no_sorry «thm:pebble-are-continuous»
 
 /-- **Theorem `thm:pebble-are-for`** (pebble = for-transducers): `Transducers.pebble_iff_forTransducer`. -/
 alias «thm:pebble-are-for» := Transducers.pebble_iff_forTransducer
-assert_uses_sorry «thm:pebble-are-for»
+assert_no_sorry «thm:pebble-are-for»
 
 /-! ## Exercises
 

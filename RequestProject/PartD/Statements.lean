@@ -3,10 +3,10 @@ Part D: Polyregular functions
   from *Transducers* (M. Bojańczyk, June 25, 2026).
 
 This file contains the definitions of Part D and the statements of its
-theorems and lemmas.  Theorem `thm:polyregular-functions-are-continuous`, Theorem
-`thm:for-transducers-are-polyregular`, Lemma `lemma:prenex-normal-form`, Lemma
-`lem:for-closed-under-composition` and Theorem `thm:pebble-are-continuous` are proved; the one
-remaining result (`thm:pebble-are-for`) is a statement only, with its proof left as `sorry`.
+theorems and lemmas.  All of them are proved: Theorem
+`thm:polyregular-functions-are-continuous`, Theorem `thm:for-transducers-are-polyregular`, Lemma
+`lemma:prenex-normal-form`, Lemma `lem:for-closed-under-composition`, Theorem
+`thm:pebble-are-continuous` and Theorem `thm:pebble-are-for`.
 
 Not formalised here: Lemma `lem:reachability-pebble-automaton`, Claim
 `claim:reachability-basic-run`, Lemma `lem:children-of-configuration-in-pebble-run` and Claims
@@ -14,12 +14,16 @@ Not formalised here: Lemma `lem:reachability-pebble-automaton`, Claim
 `claim:from-child-configuration-graph-to-children`, which are internal steps of the proofs of
 Theorems `thm:pebble-are-continuous` and `thm:pebble-are-for`. They speak about the string
 representation of configurations and configuration graphs of pebble transducers, an auxiliary
-encoding used only inside those proofs. -/
+encoding used only inside those proofs.  The step of `thm:pebble-are-for` for which the book uses
+them -- that a pebble transducer computes a polyregular function -- is proved instead by the
+induction on the number of pebbles of `RequestProject/PartD/PebblePoly.lean`. -/
 import RequestProject.PartC.MSO
 import RequestProject.PartD.PolyDef
 import RequestProject.PartD.ForCompTop
 import RequestProject.PartD.PolyFor
 import RequestProject.PartD.PebbleReg
+import RequestProject.PartD.PebblePoly
+import RequestProject.PartD.PebbleForTop
 
 namespace Transducers
 
@@ -102,7 +106,8 @@ theorem pebble_continuous {A B : Type} [Finite A] [Finite B] {f : List A → Lis
 /-- **Theorem `thm:pebble-are-for`.**  Pebble transducers and for-transducers compute the same
 string-to-string functions. -/
 theorem pebble_iff_forTransducer {A B : Type} [Finite A] [Finite B] (f : List A → List B) :
-    IsPebbleTransducer f ↔ IsForTransducer f := by
-  sorry
+    IsPebbleTransducer f ↔ IsForTransducer f :=
+  ⟨fun h => (polyregular_iff_forTransducer f).mp (isPolyregular_of_isPebbleTransducer h),
+    PebFor.isPebbleTransducer_of_isForTransducer⟩
 
 end Transducers
