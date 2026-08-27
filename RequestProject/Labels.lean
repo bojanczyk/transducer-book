@@ -684,6 +684,14 @@ assert_no_sorry «exer:non-rational»
 alias «exer:non-rational#2» := Transducers.Exercises.not_isRationalFun_duplicate
 assert_no_sorry «exer:non-rational#2»
 
+/-- **Exercise `exer:decide-unambiguous`** (unambiguity of an nfa is decidable): `Transducers.Exercises.ambiguous_iff_reach`, the criterion of the solution. -/
+alias «exer:decide-unambiguous» := Transducers.Exercises.ambiguous_iff_reach
+assert_no_sorry «exer:decide-unambiguous»
+
+/-- **Exercise `exer:decide-unambiguous`** (unambiguity of an nfa is decidable): `Transducers.Exercises.decidableUnambiguousNFA`. -/
+alias «exer:decide-unambiguous#2» := Transducers.Exercises.decidableUnambiguousNFA
+assert_no_sorry «exer:decide-unambiguous#2»
+
 /-- **Exercise `exer:decide-rational-colision`** (item (a), the collision problem for two rational functions is undecidable): `Transducers.Exercises.rationalFun_collision_undecidable`. -/
 alias «exer:decide-rational-colision» := Transducers.Exercises.rationalFun_collision_undecidable
 assert_no_sorry «exer:decide-rational-colision»

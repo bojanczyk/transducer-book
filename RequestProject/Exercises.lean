@@ -14,6 +14,8 @@ import RequestProject.Exercises.PartBC
 import RequestProject.Exercises.PartBCAux
 import RequestProject.Exercises.PartBCPCP
 import RequestProject.Exercises.PartBCUnary
+import RequestProject.Exercises.NFAUnambig
+import RequestProject.Exercises.RatInjective
 import RequestProject.Exercises.KrohnRhodes
 import RequestProject.Exercises.MyhillNerode
 import RequestProject.Exercises.RegularPrimes

@@ -1764,3 +1764,26 @@ two files added last are
 `Quot.sound`; there is no `sorry` in `RequestProject/Exercises/`.  Fifty-eight
 of the book's eighty-three exercises are formalised; the twenty-five that are
 not are listed, with the reason for each, in `EXERCISES.md`.
+
+## The exercises added after that (`exer:decide-unambiguous`)
+
+This run continued the formalisation of the exercises, and again **no numbered result of the
+main text was touched**: the only files it changed outside `RequestProject/Exercises/` are
+`RequestProject/Exercises.lean` (two imports), `RequestProject/Labels.lean` (the two aliases of
+`exer:decide-unambiguous`) and `EXERCISES.md`.
+
+Every `\exer` of the book's sources whose solution is non-empty was re-extracted and compared
+with the index of `EXERCISES.md`; the book has eighty-three exercises, eighty-two of them with a
+solution, and every one of them already had a row in that index.  What this run added is one
+more formalised exercise and one half of another:
+
+| file | contents |
+| --- | --- |
+| `Exercises/NFAUnambig.lean` | Exercise `exer:decide-unambiguous`: runs of an nfa (Mathlib's `NFA`, whose transitions read one letter, which is the ε-free form the solution reduces to), the identification of its language with the inputs that have an accepting run (`Transducers.Exercises.mem_accepts_iff_exists_accRun`), the product automaton of the solution, the criterion for ambiguity (`Transducers.Exercises.ambiguous_iff_reach`) and the resulting decision procedure (`Transducers.Exercises.decidableUnambiguousNFA`), together with the auxiliary fact that reachability in a finite graph is decidable |
+| `Exercises/RatInjective.lean` | the first step of the solution to `exer:rational-injectivity-decidable`: a rational function is injective exactly when it has a rational left inverse (`Transducers.Exercises.rationalFun_injective_iff_exists_inverse`), and the auxiliary closure of the rational relations under union (`Transducers.Exercises.isRationalRel_union`), proved by the disjoint union of two nfas with output.  The decision procedure itself is not formalised — it needs a *code* for the left inverse, which the project's uniformisation does not provide — so the exercise stays listed as not formalised in `EXERCISES.md` |
+
+`#print axioms` on every declaration named above, and on the two new aliases of
+`RequestProject/Labels.lean`, reports only `propext`, `Classical.choice`, `Quot.sound`; there is
+still no `sorry` in `RequestProject/Exercises/`.  Fifty-nine of the book's eighty-three exercises
+are now formalised; the twenty-four that are not are listed, with the reason for each, in
+`EXERCISES.md`.  `lake build` succeeds with no errors.

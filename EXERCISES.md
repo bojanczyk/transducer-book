@@ -30,6 +30,8 @@ RequestProject/
     PartBCAux.lean              -- the auxiliary facts their solutions take for granted
     PartBCPCP.lean              -- the reduction from the Post correspondence problem
     PartBCUnary.lean            -- bimachines over a one-letter input alphabet
+    NFAUnambig.lean             -- unambiguity of an nfa is decidable
+    RatInjective.lean           -- injectivity of a rational function
     KrohnRhodes.lean            -- further exercises of krohn-rhodes.tex
     MyhillNerode.lean           -- the exercises of myhill-nerode.tex
     RegularPrimes.lean          -- further exercises of regular-primes.tex
@@ -66,6 +68,8 @@ RequestProject/
 | `Exercises/TwoNFT2.lean` | the second half of that exercise: the relation `{(aⁿ, v v)}` is in the second model (through the two-way transducer for the map lifting of duplication) and not in the first (the cut-and-paste argument, with the cut lemma `TwoWayN.reachesN_cut` that replaces the solution's cut after exactly `n` output letters) |
 | `Exercises/ForFO.lean` | the exercise of `polyregular-for.tex` on simulating first-order logic: the translation `trans` of a formula into a for-transducer program that stores the truth value of every subformula in a Boolean variable, its correctness `trans_spec`, and the linear bound `10·|φ|+5` on the size of the resulting program |
 | `Exercises/PartBCUnary.lean` | bimachines over a one-letter input alphabet, used by the solution to `exer:rational-one-letter-input`: the eventual periodicity of the runs of the prefix and of the suffix automaton, the output of the bimachine as the concatenation of the pieces of its gaps, and the resulting form `x yᵏ z` of the output on the inputs of a fixed length modulo the period |
+| `Exercises/NFAUnambig.lean` | unambiguity of an nfa, for Exercise `exer:decide-unambiguous`: runs of an nfa and the fact that its language is the set of inputs with an accepting run, the product automaton of the solution, the criterion for ambiguity, the decision procedure, and the auxiliary fact that reachability in a finite graph is decidable |
+| `Exercises/RatInjective.lean` | the first step of the solution to `exer:rational-injectivity-decidable`: a rational function is injective exactly when it has a rational left inverse, together with the auxiliary facts it needs — the closure of the rational relations under union, by the disjoint union of two nfas with output, and the rationality of the relation that maps every string of a regular language to the empty string |
 
 The file `Exercises/PartA.lean` holds the twelve exercises of Part A.  An
 earlier note here said that it was built but could not be imported together
@@ -156,7 +160,7 @@ all eleven are aliased in `RequestProject/Labels.lean`.
 | --- | --- | --- |
 | Exercise `exer:examples-of-rational-fun` (three functions as bimachines and as rational functions) | `isBimachine_isRationalFun_evenLength`, `isBimachine_isRationalFun_swapFirstLast`, `isBimachine_isRationalFun_upToLastHash` | proved |
 | Exercise `exer:non-rational` (the first half of the input, and duplication, are not rational) | `not_isRationalFun_firstHalf`, `not_isRationalFun_duplicate` | proved |
-| Exercise `exer:decide-unambiguous` (unambiguity of an nfa is decidable) | — | not formalised |
+| Exercise `exer:decide-unambiguous` (unambiguity of an nfa is decidable) | `ambiguous_iff_reach`, `decidableUnambiguousNFA` (with `RunFrom`, `AccRun`, `Ambiguous`, `UnambiguousNFA`, `prodStep`) | proved |
 | Exercise `exer:decide-rational-colision` (equal outputs, outputs of equal length) | `rationalFun_collision_undecidable` (item (a) only) | proved from an explicit hypothesis |
 | Exercise `exer:rational-one-letter-input` (rational functions on a one-letter input alphabet) | `rationalFun_unary_graph` | proved |
 | Exercise `exer:function-that-is-not-rational` (not rational, yet rational after every rational function into `1*`) | `exists_not_isRationalFun_unary_compositions_rational` | proved from the hypothesis that reversal is not rational |
@@ -167,7 +171,7 @@ all eleven are aliased in `RequestProject/Labels.lean`.
 | Exercise `exer:all-ideals` (the classification of the ideals) | — | not formalised |
 | Exercise `exer:decide-same-ideal` (equality of the generated ideals is decidable) | — | not formalised |
 | Exercise `exer:surjective-rational-function` (a surjective rational function has a rational one-sided inverse) | `exists_rationalFun_leftInverse` | proved |
-| Exercise `exer:rational-injectivity-decidable` (injectivity is decidable) | — | not formalised |
+| Exercise `exer:rational-injectivity-decidable` (injectivity is decidable) | `rationalFun_injective_iff_exists_inverse`, `exists_rationalFun_inverse_of_injective` (the criterion of the solution only) | the decision procedure is not formalised (see below) |
 | Exercise `exer:rational-composition-finiteness-undecidable` (finiteness of the iterates is undecidable) | — | not formalised |
 
 ### Regular functions (`regular-primes.tex`)
@@ -503,12 +507,24 @@ and each is left out rather than replaced by a statement the book does not
 make.
 
 * Decidability and undecidability of problems about rational relations and
-  functions: `exer:decide-unambiguous`, item (b) of
+  functions: item (b) of
   `exer:decide-rational-colision`, `exer:decide-same-ideal`,
   `exer:rational-injectivity-decidable`,
   `exer:rational-composition-finiteness-undecidable`.  In this project such a
   statement is about *codes* of automata (`Transducers.RelCode`) and about
-  `ComputablePred`, and the corresponding reductions are not carried out.
+  `ComputablePred`, and the corresponding reductions are not carried out.  Of
+  `exer:rational-injectivity-decidable` the *first* step of the solution, which
+  is a mathematical statement, is nevertheless proved, in
+  `Exercises/RatInjective.lean`: a rational function is injective exactly when
+  it has a rational left inverse, obtained as the solution obtains it, by
+  uniformising the inverse relation made total with a default output outside
+  the range.  What is missing is the second step, the decision procedure:
+  it applies Theorem `thm:equivalence-rational-functions` to the left inverse
+  composed with the function, and that theorem is stated here for *codes* of
+  automata, whereas the Uniformisation Lemma is available in this project only
+  in the form `Transducers.exists_rationalFun_of_total_rel`, which asserts that
+  a rational function exists and not that a code for one can be computed.  The
+  exercise is therefore still counted as not formalised.
 * Statements resting on theory that the project does not have: the growth rates
   of regular languages, together with the pattern analysis that Exercise
   `exer:polynomial-image-growth-decidable` of Part A asks for, for the series
@@ -584,6 +600,21 @@ index self-checking; `#print axioms` on all thirty-nine reports only `propext`,
   subformula is kept in a Boolean variable, and the epilogue outputs `yes` or
   `no`.  The satisfaction of the sentence is stated with the default valuation
   of the variables, on which it does not depend.
+
+* **`exer:decide-unambiguous`.**  The exercise asks for a decision procedure, so,
+  as for the two decidability exercises of Part A, both the criterion of the
+  solution and the resulting `Decidable` instance are stated.  The automaton is
+  Mathlib's `NFA`, whose transitions read exactly one letter, which is the
+  ε-free form that the solution reduces to in its first sentence; a run is the
+  list of the states it visits, and `mem_accepts_iff_exists_accRun` checks
+  against Mathlib's semantics of an nfa that the language of the automaton is
+  the set of inputs that have an accepting run.  Two accepting runs on the same
+  input use different transitions somewhere exactly when they are distinct
+  lists, since a transition is determined by its source, its letter and its
+  target, so ambiguity is stated as the existence of two distinct accepting
+  runs.  The polynomial running time claimed by the solution is not formalised:
+  the project has no model of running time, and reachability in the product
+  automaton is decided here by saturating the set of reachable states.
 
 ## A divergence: `exer:2dfa-complexity`
 
@@ -666,13 +697,13 @@ statement the book does not make.
 This section supersedes the counts of the two `## Status` sections above, which
 were written when fewer chapters had been done.
 
-Counted by rows of the index, **fifty-eight** exercises are formalised and
-**twenty-five** are not; the book has eighty-three exercises, eighty-two of them
+Counted by rows of the index, **fifty-nine** exercises are formalised and
+**twenty-four** are not; the book has eighty-three exercises, eighty-two of them
 with a solution.  Every formalised exercise carries a `\label` in the sources
 and has an alias in `RequestProject/Labels.lean` followed by `assert_no_sorry`,
 and none of the unformalised ones has an alias, which is what makes this index
 self-checking.  There is no `sorry` anywhere in `RequestProject/Exercises/`, and
-`#print axioms` on each of the fifty-eight reports only `propext`,
+`#print axioms` on each of the fifty-nine reports only `propext`,
 `Classical.choice`, `Quot.sound`.
 
 Three statements carry an explicit hypothesis rather than being proved outright:
