@@ -263,3 +263,77 @@ This completes the proof that \sst's are closed under post-composition with the 
 \end{itemize}
 Having proved that \sst's are closed under post-composition with all regular functions, we conclude that \sst's contain all regular functions, and this completes the proof of Theorem~\ref{theorem:sst-two-way-equivalence}.
 \end{proof}
+
+
+
+% exercises about rational functions
+\exerciseheader
+
+\exer{\label{exer:sst-sorting} Write an \sst over alphabet $\set{a,b}$ that sorts the input string, i.e.~it outputs all the $a$'s first, followed by all the $b$'s.
+}{
+We use one state and two registers $X$ and $Y$, which store the letters $a$ and the letters $b$ that have been seen so far. The transitions are
+\begin{align*}
+q \xrightarrow{a \mid
+\begin{smallmatrix} X \\ Y \end{smallmatrix} \mapsto
+\begin{smallmatrix} Xa \\ Y \end{smallmatrix}} q
+\qquad \qquad
+q \xrightarrow{b \mid
+\begin{smallmatrix} X \\ Y \end{smallmatrix} \mapsto
+\begin{smallmatrix} X \\ Yb \end{smallmatrix}} q,
+\end{align*}
+and the final output function is $XY$. Both updates are copyless, since each register name is used once. After reading an input string, the register $X$ stores as many letters $a$ as the input has, and likewise for $Y$ and $b$, and therefore the output is the sorted input string.
+}
+
+\exer{\label{exer:sst-copyful-sst} Consider copyful \sst's, i.e.~ones where the copyless restriction is lifted. Show that they are continuous.} { 
+Consider a composition 
+\[
+\begin{tikzcd}
+A^* \xrightarrow {\text{copyful \sst}} B^* \xrightarrow{\text{regular language}} \Bool
+\end{tikzcd}
+\]
+For the regular language, we use a monoid homomorphism. We can now simulate the composition by modifying the  copyful \sst so that instead of storing a string in a register, one stores only  the corresponding element in the monoid. After this simulation, we get a deterministic finite automaton, thus witnessing regularity of the composition.
+ }
+
+
+ \exer{\label{exer:sst-copyful-sst-output-size} Show that copyful \sst's can have exponential size outputs, but not doubly exponential.
+}  {
+For the upper bound, observe that for each input letter, the combined length of the strings in the registers can be at most multiplied by some fixed constant $c \in \set{1,2,\ldots}$, namely the maximal number of times that a register name is used in an update. Hence the output size is $\Oo(c^n)$, which is exponential and not doubly exponential.
+
+The upper bound is attained. Consider the copyful \sst with one register $X$, which starts empty, and the transitions
+\begin{align*}
+X \mapsto XXa,
+\end{align*}
+with the final output function $X$. After reading $n$ letters, the register stores a string of length $2^n - 1$, and hence the function $a^n \mapsto a^{2^n-1}$ is computed by a copyful \sst.
+}
+
+  \exer{\label{exer:sst-copyful-sst-no-composition} Show that copyful \sst's are not closed under composition.} {
+By the previous exercise, the function $a^n \mapsto a^{2^n-1}$ is computed by a copyful \sst. The composition of this function with itself is
+\begin{align*}
+a^n \mapsto a^{2^{2^n-1}-1},
+\end{align*}
+which has doubly exponential output size, and hence it is not computed by a copyful \sst, again by the previous exercise.
+}
+
+  \exer{\label{exer:sst-polynomial-automaton} A polynomial automaton is an automaton with registers, like an \sst, but the registers hold rational numbers instead of strings. The updates need not be copyless, and they can use both addition and multiplication. A polynomial function computes a string-to-rational-number function. Show that $a^n \mapsto 2^n$ can be computed by a polynomial automaton. } { There is one register, which starts with $1$ and is doubled in each step. }
+
+    \exer{\label{exer:sst-polynomial-automaton-doubly-exponential}  Show that $a^n \mapsto 2^{2^n}$ can be computed by a polynomial automaton. } { There is one register, which starts with $2$ and is squared in each step. }
+
+
+\exer{\label{exer:copyful-sst-decidable} Assume that equivalence is decidable for polynomial automata\footnote{This assumption is true by \cite[Corollary 1]{benedikt2017}. }. Show that equivalence is decidable for copyful \sst's.} 
+{
+
+Essentially speaking, a polynomial automaton can simulate a copyful \sst by replacing its output with a number that represents it injectively.  Here are the details.
+Assume without loss of generality that the output alphabet is $\set{0,1}$. For a string over the output alphabet, we will be interested in two numbers: 
+\begin{align*}
+\alpha(w) = \text{number represented by $w$ in binary} \qquad \beta(w) = 2^{|w|}.
+\end{align*}
+For a copyful \sst, we replace each string register with two number registers that store the above two numbers. We can simulate concatenation polynomially as follows: 
+\begin{align*}
+\alpha(w_1 \cdot w_2) = \alpha(w_1) \cdot \beta(w_2) + \alpha(w_2) \qquad \beta(w_1 \cdot w_2) = \beta(w_1) \cdot \beta(w_2).
+\end{align*}
+Hence, the values of $\alpha$ and $\beta$ on the output string can be computed by a polynomial automaton. Finally, the output string can be replaced by 
+\begin{align*}
+\alpha(w) + 2 \cdot \beta(w),
+\end{align*}
+which is an injective function. Thus the problem of equivalence of copyful \sst's is reduced to the problem of equivalence of polynomial automata.
+}

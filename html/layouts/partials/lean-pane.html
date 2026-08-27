@@ -32,8 +32,13 @@
                B.3.1 is Mathlib's Semiring) is still formalised, and saying so is
                better than saying nothing. */}}
           {{ $keep := $entry.lean }}
+          {{/* "at" is hyperref's own anchor for the result — definition.91,
+               exercise.106 — whose number comes from one counter that hyperref
+               steps for every anchor in turn, and so says where in the book the
+               result stands. That is what the list below is ordered by. */}}
           {{ $labels = merge $labels (dict $label (dict
                "kind" $entry.kind "number" $entry.number "lean" $keep
+               "at" (or $entry.anchor "")
                "why" (or $entry.theorems_md_status ""))) }}
           {{ range $keep }}
             {{ $f := .file }}
@@ -295,10 +300,23 @@
   // ---- the index -----------------------------------------------------------
   // Not what the column opens on any more: it is what the λ button lands on,
   // and what "All results" comes back to.
+  // Reading order, not numerical order. The two are not the same: exercises are
+  // counted on their own, so Exercise B.1.1 sorts between Definition B.1.1 and
+  // Definition B.1.2 while it is in fact printed at the end of the section,
+  // after everything else — which is where a reader looking down this list
+  // expects to find it. hyperref's anchor counter is stepped once per anchor as
+  // the document is typeset, so the number in "exercise.106" answers exactly
+  // the question "and then what comes next".
+  function order(e) {
+    var n = parseInt(String(e.at || '').split('.').pop(), 10);
+    return isFinite(n) ? n : Infinity;      // no anchor to go by: last
+  }
+
   var indexHTML = null;
   function buildIndex() {
     var keys = Object.keys(DATA.labels).sort(function (a, b) {
-      return DATA.labels[a].number.localeCompare(DATA.labels[b].number, undefined,
+      return order(DATA.labels[a]) - order(DATA.labels[b]) ||
+             DATA.labels[a].number.localeCompare(DATA.labels[b].number, undefined,
                                                  { numeric: true });
     });
     var done = keys.filter(function (k) { return formalised(DATA.labels[k]); }).length;

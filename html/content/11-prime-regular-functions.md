@@ -9,7 +9,7 @@ source = "regular-primes.tex"
 \setcounter{section}{0}
 \setcounter{ourexamplecounter}{18}
 \renewcommand{\exer}[2]{}
-% source stamp regular-primes.tex:b9f041e4
+% source stamp regular-primes.tex:571444c1
 \input{../../../regular-primes.tex}
 {{< /latex >}}
 
@@ -42,6 +42,23 @@ source = "regular-primes.tex"
     because duplicating the encoding of a string is the same as encoding its duplication.
 
     For map reverse, the same decomposition almost works, the problem being that reversing an encoded string reverses not only the order of the blocks, but also the bits inside each block. The second effect is undone before it happens: instead of the homomorphism above, we use the homomorphism which maps each letter to the reverse of its code. With this modification, reversing the encoded string yields the encoding of the reversed string, and the decomposition works as for map duplicate.
+{{< /latex >}}
+</div>
+</details>
+</div>
+<div class="exercise" id="exercise-2">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{3}\setcounter{section}{1}\setcounter{theorem}{5}\setcounter{exercise}{1}
+\begin{exercise}
+\label{exer:not-semiring-continuous} Show that weighted automata over arbitrary semirings are not closed under pre-composition with regular functions.
+\end{exercise}
+{{< /latex >}}
+<details class="solution">
+<summary>Show solution</summary>
+<div class="solution-body">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{3}\setcounter{section}{1}\setcounter{theorem}{5}
+\noindent\textbf{Solution.}\quad By \cref{thm:characterisation-rational-functions-weighted-automata}, a function if rational if and only if weighted automata are closed under pre-composition with it. Therefore, it is enough to show that there exists a regular function which is not rational. The string reverse function is regular, but not rational as we have shown in Example \ref{ex:string-reversal-not-rational}.
 {{< /latex >}}
 </div>
 </details>

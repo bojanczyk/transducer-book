@@ -154,14 +154,34 @@
       "sorries_at_start": 9
     },
     "audit-C": {
-      "status": "pending",
-      "attempts": 0,
-      "continues": 0,
+      "status": "done",
+      "attempts": 2,
+      "continues": 1,
       "reattempts": 0,
-      "task_ids": [],
-      "started_at": null,
-      "finished_at": null,
-      "note": null
+      "task_ids": [
+        "cb190d55-449e-4b71-b193-4c4cc2481368",
+        "f580b0a3-0222-4c02-b75d-7f6a54903b92"
+      ],
+      "started_at": "2026-08-26 14:24:09Z",
+      "finished_at": "2026-08-26 16:55:17Z",
+      "note": null,
+      "sorries_at_start": 5,
+      "runs": [
+        {
+          "task_id": "cb190d55-449e-4b71-b193-4c4cc2481368",
+          "project_id": "2b3b376a-7985-4fb2-884f-c5ec48d88682",
+          "base": "dccf60062317caa267a6bd1ebf5a530dd44888f3",
+          "kind": "initial",
+          "at": "2026-08-26 14:24:09Z"
+        },
+        {
+          "task_id": "f580b0a3-0222-4c02-b75d-7f6a54903b92",
+          "project_id": "50b0e4c6-c981-488a-aa92-6481f901d681",
+          "base": "46a103a53df067079606013fc5e6d19e38fd1125",
+          "kind": "continue",
+          "at": "2026-08-26 15:39:50Z"
+        }
+      ]
     },
     "D-pebble-and-lemmas": {
       "status": "skipped",
@@ -222,7 +242,7 @@
       "sorries_at_start": 8
     },
     "exercises-intro": {
-      "status": "running",
+      "status": "done",
       "attempts": 1,
       "continues": 0,
       "reattempts": 0,
@@ -230,8 +250,8 @@
         "3917d314-cccd-4cb7-91db-c64b9a2e53d0"
       ],
       "started_at": "2026-08-26 01:41:06Z",
-      "finished_at": null,
-      "note": null,
+      "finished_at": "2026-08-26 04:17:14Z",
+      "note": "integrated by hand (driver.py integrate) after its tracking was cleared in error",
       "sorries_at_start": 5,
       "runs": [
         {
@@ -266,15 +286,16 @@
       ]
     },
     "exercises-partBC": {
-      "status": "running",
-      "attempts": 1,
-      "continues": 0,
+      "status": "done",
+      "attempts": 2,
+      "continues": 1,
       "reattempts": 0,
       "task_ids": [
-        "b4fce171-fb9c-463a-96c4-4ad8762ada46"
+        "b4fce171-fb9c-463a-96c4-4ad8762ada46",
+        "c921add0-2f43-48db-9b2f-a1d366ca147d"
       ],
       "started_at": "2026-08-26 05:24:20Z",
-      "finished_at": null,
+      "finished_at": "2026-08-26 14:24:01Z",
       "note": null,
       "sorries_at_start": 5,
       "runs": [
@@ -284,62 +305,133 @@
           "base": "a361636cb0478ef2cf17ca337b553e399c9ca738",
           "kind": "initial",
           "at": "2026-08-26 05:24:20Z"
+        },
+        {
+          "task_id": "c921add0-2f43-48db-9b2f-a1d366ca147d",
+          "project_id": "ed87f09d-7c74-4361-bf8c-469fcbef1511",
+          "base": "41b327e2a60027d60405bd3ad63da44fe2e6236c",
+          "kind": "continue",
+          "at": "2026-08-26 12:48:12Z"
         }
       ]
     },
     "D1-tools": {
-      "status": "pending",
-      "attempts": 0,
-      "continues": 0,
+      "status": "done",
+      "attempts": 2,
+      "continues": 1,
       "reattempts": 0,
-      "task_ids": [],
-      "started_at": null,
-      "finished_at": null,
-      "note": null
+      "task_ids": [
+        "8aae7726-ca93-4e01-9db7-db5d8101db2e",
+        "8ab5b5d3-5625-43b6-a619-c29c69375b05"
+      ],
+      "started_at": "2026-08-26 16:55:28Z",
+      "finished_at": "2026-08-26 20:56:54Z",
+      "note": null,
+      "sorries_at_start": 5,
+      "runs": [
+        {
+          "task_id": "8aae7726-ca93-4e01-9db7-db5d8101db2e",
+          "project_id": "e98b34b9-b87f-4505-af46-2e4652e3b86c",
+          "base": "e56fbc74438b48ded520c184428d16d8c4cb3bb2",
+          "kind": "initial",
+          "at": "2026-08-26 16:55:28Z"
+        },
+        {
+          "task_id": "8ab5b5d3-5625-43b6-a619-c29c69375b05",
+          "project_id": "c7bd3ad8-5088-40e0-964f-dcaf37b5946f",
+          "base": "28c70d2d819cda0fca0df8e5cd09dbc13cfbbeff",
+          "kind": "continue",
+          "at": "2026-08-26 19:56:31Z"
+        }
+      ]
     },
     "D1-equivalence": {
-      "status": "pending",
-      "attempts": 0,
-      "continues": 0,
+      "status": "done",
+      "attempts": 2,
+      "continues": 1,
       "reattempts": 0,
-      "task_ids": [],
-      "started_at": null,
-      "finished_at": null,
-      "note": null
+      "task_ids": [
+        "1ffece1e-b8c9-4ab0-b9a5-2b612163f36e",
+        "12102cae-6e8f-4bef-a173-958527717bd8"
+      ],
+      "started_at": "2026-08-26 20:57:07Z",
+      "finished_at": "2026-08-27 04:34:29Z",
+      "note": "finished by a hand-started continuation in project 0d3b0529, integrated by hand; D.1.1 is proved and the build is clean",
+      "sorries_at_start": 3,
+      "runs": [
+        {
+          "task_id": "1ffece1e-b8c9-4ab0-b9a5-2b612163f36e",
+          "project_id": "0d3b0529-0767-43b4-9b90-b6106984e8fe",
+          "base": "d8d7c2c911b52709e1543f59c3a79fc2ab5dea4b",
+          "kind": "initial",
+          "at": "2026-08-26 20:57:07Z"
+        },
+        {
+          "task_id": "12102cae-6e8f-4bef-a173-958527717bd8",
+          "project_id": "bd6e3ed9-4b44-4ee4-8a66-87c9b0df0c97",
+          "base": "c3e819271f1811a4acb0266f44da2eb7a6108a2c",
+          "kind": "continue",
+          "at": "2026-08-27 01:59:30Z"
+        }
+      ]
     },
     "D2-continuity": {
-      "status": "pending",
-      "attempts": 0,
+      "status": "done",
+      "attempts": 1,
       "continues": 0,
       "reattempts": 0,
-      "task_ids": [],
-      "started_at": null,
-      "finished_at": null,
-      "note": null
+      "task_ids": [
+        "3c90dba6-58a1-49ca-9ae7-177024e21ec3"
+      ],
+      "started_at": "2026-08-27 04:49:11Z",
+      "finished_at": "2026-08-27 07:48:35Z",
+      "note": null,
+      "sorries_at_start": 2,
+      "runs": [
+        {
+          "task_id": "3c90dba6-58a1-49ca-9ae7-177024e21ec3",
+          "project_id": "38b3b69f-e5f2-410d-9571-dd803ce01308",
+          "base": "4ea09f20e75344fd140e7c1942e7287e610599c6",
+          "kind": "initial",
+          "at": "2026-08-27 04:49:11Z"
+        }
+      ]
     },
     "D2-pebble-equivalence": {
-      "status": "pending",
-      "attempts": 0,
+      "status": "running",
+      "attempts": 1,
       "continues": 0,
       "reattempts": 0,
-      "task_ids": [],
-      "started_at": null,
+      "task_ids": [
+        "1595c0b4-e400-455f-b5b4-c218552a0f9e"
+      ],
+      "started_at": "2026-08-27 07:48:58Z",
       "finished_at": null,
-      "note": null
+      "note": null,
+      "sorries_at_start": 1,
+      "runs": [
+        {
+          "task_id": "1595c0b4-e400-455f-b5b4-c218552a0f9e",
+          "project_id": "884c5c42-1bd5-47f2-a7a3-f4e3612a1a3c",
+          "base": "189f141bafb2dd1765d67b04a85d88992cf58935",
+          "kind": "initial",
+          "at": "2026-08-27 07:48:58Z"
+        }
+      ]
     }
   },
   "current": {
-    "target_id": "exercises-partBC",
-    "task_id": "b4fce171-fb9c-463a-96c4-4ad8762ada46",
-    "project_id": "4043e24a-402a-43cf-b381-816b35adb0e7",
-    "base": "a361636cb0478ef2cf17ca337b553e399c9ca738",
-    "submitted_at": "2026-08-26 05:24:20Z",
+    "target_id": "D2-pebble-equivalence",
+    "task_id": "1595c0b4-e400-455f-b5b4-c218552a0f9e",
+    "project_id": "884c5c42-1bd5-47f2-a7a3-f4e3612a1a3c",
+    "base": "189f141bafb2dd1765d67b04a85d88992cf58935",
+    "submitted_at": "2026-08-27 07:48:58Z",
     "kind": "initial"
   },
-  "paused": true,
-  "pause_reason": "exercises-partA needs a merge by hand",
+  "paused": false,
+  "pause_reason": null,
   "finished_at": null,
-  "ticks": 244,
-  "last_tick": "2026-08-26 06:09:21Z",
-  "review_pending": 1
+  "ticks": 352,
+  "last_tick": "2026-08-27 09:34:11Z",
+  "review_pending": 3
 }

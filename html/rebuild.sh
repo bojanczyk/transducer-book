@@ -236,4 +236,14 @@ fi
 # --cleanDestinationDir: hugo leaves whatever it wrote last time in place, so a
 # renamed chapter or a font that fell out of use would sit in dist/ and be
 # uploaded for ever. What is published should be what this build produced.
-exec hugo --source "$SITE" --minify --cleanDestinationDir "${HUGO_ARGS[@]+"${HUGO_ARGS[@]}"}"
+status=0
+hugo --source "$SITE" --minify --cleanDestinationDir "${HUGO_ARGS[@]+"${HUGO_ARGS[@]}"}" || status=$?
+
+# reflowtex provisions some fonts by copying them out of the TeX installation,
+# inheriting whatever mode they have there — which for seven of them is 600.
+# Locally that is invisible, since the owner can read them; published, the web
+# server cannot, and the book renders with every ligature as an empty box while
+# the text around it looks perfectly fine. Cheap to prevent, very confusing to
+# meet for the first time on a live site.
+chmod -R a+rX "$SITE/dist" "$SITE/static/fonts" 2>/dev/null || true
+exit $status

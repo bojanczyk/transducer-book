@@ -378,3 +378,91 @@ where $q_i$ is the equivalence class of the suffix $a_{i+1} \cdots a_n$. This fu
 We can easily choose the string $w$ so that the reversals differ in one of the first $|w_1|+1$ letters, which is a constant when $w_1$ and $w_2$ are fixed. Since the string $w$ can be made arbitrarily long, this will give unbounded distance.
 \end{myexample}
 
+
+% exercises about rational functions
+\exerciseheader
+
+\exer{\label{exer:minimal-sequential} We order sequential transducers by the number of states. Show that minimal sequential transducers are unique up to isomorphism.
+\review{New solution.}
+} {
+    This is the Myhill-Nerode theorem for sequential transducers. The key point, which is also what distinguishes this exercise from the following one, is that the output of each transition is already determined by the function. Indeed, a sequential function is prefix preserving, and therefore the transition which reads the $i$-th letter must produce
+    \begin{align*}
+    f(a_1 \cdots a_{i-1})^{-1} \cdot f(a_1 \cdots a_i),
+    \end{align*}
+    i.e.~the contribution of the $i$-th letter, which is the derivative from the proof of \cref{thm:sequential-function-independent}.
+
+    For an input string $u$, define its \emph{residual} to be the function
+    \begin{align*}
+    f_u : A^* \to B^* \qquad f_u(v) \quad \eqdef \quad f(u)^{-1} f(uv),
+    \end{align*}
+    which is well defined thanks to the prefix preserving property. If a sequential transducer computes $f$ and it is in state $q$ after reading $u$, then the residual $f_u$ is determined by $q$, since the outputs produced after reading $u$ depend only on $q$ and on the letters that follow. In particular, the transducer has at least as many states as there are residuals. Also, in a minimal transducer all states are reachable, since otherwise we could remove the unreachable ones.
+
+    Consider now a minimal transducer. By the two observations above, the map which sends a state $q$ to the residual $f_u$, for some $u$ that reaches $q$, is well defined and surjective onto the residuals. It is also injective: if two states had the same residual, then we could merge them, since the outputs of the corresponding transitions would be equal, and the corresponding target states would again have equal residuals; this would give a transducer with fewer states. Therefore the map is a bijection, and by construction it preserves the initial state, the transitions and their outputs. In other words, every minimal transducer is isomorphic to the transducer whose states are the residuals, with the initial state $f_\varepsilon = f$ and transitions
+    \begin{align*}
+    f_u \xrightarrow{\quad a \ / \ f_u(a) \quad} f_{ua}.
+    \end{align*}
+    Since this transducer depends on the function alone, all minimal transducers are isomorphic.
+}
+
+\exer{\label{exer:minimal-subsequential} We order subsequential transducers by the number of states. Show that minimal subsequential transducers are not unique up to isomorphism.
+} {
+    The end-of-input function makes it possible to produce the same output either while reading the input, or at the very end, and the state structure does not resolve this ambiguity. Consider the function over a one-letter input alphabet defined by
+    \begin{align*}
+    \varepsilon \mapsto \varepsilon \qquad \text{and} \qquad a^n \mapsto c \quad \text{for $n \geq 1$}.
+    \end{align*}
+    One state is not enough. Indeed, if the unique state had a transition with output $x$ and end-of-input output $y$, then the output on the input string $a^n$ would be $x^n y$, and this cannot be empty for $n=0$ and equal to $c$ for all $n \geq 1$.
+
+    Two states are enough, and there are two ways of using them. In both transducers, the states are the initial state $q_0$ and a second state $q_1$, the transitions are $q_0 \to q_1$ and $q_1 \to q_1$, the transition $q_1 \to q_1$ has empty output, and the end-of-input function maps $q_0$ to the empty string. The difference is in the remaining two values: in the first transducer, the transition $q_0 \to q_1$ outputs $c$ and the end-of-input function maps $q_1$ to the empty string, while in the second transducer, this transition has empty output and the end-of-input function maps $q_1$ to $c$. Both transducers are minimal, and they are not isomorphic, since an isomorphism would have to match the initial states, and therefore also the two remaining states, but the outputs of the transitions $q_0 \to q_1$ are different.
+
+    As the example suggests, uniqueness is restored if one additionally requires the output to be produced as early as possible.
+}
+
+\exer{\label{exer:non-minimal-bimachine} Consider bimachines ordered by the number of states in the suffix automaton.  Show that  minimal bimachines are not unique up to isomorphism.
+} 
+{This is already true for languages, i.e.~for functions of type
+\begin{align*}
+A^* \to \set{0,1},
+\end{align*}
+which produce one output letter that says if the input string belongs to the language. Take the language of strings of even length, over a one-letter input alphabet.
+
+In the first bimachine, the prefix automaton computes the parity of the prefix, and the suffix automaton tests if the suffix is empty. The output is empty in every gap except the last one, which is the one recognised by the suffix automaton, and in the last gap the output is the letter given by the parity in the prefix automaton. This machine has four states in total, two in each automaton. The second bimachine is symmetric: the prefix automaton tests if the prefix is empty, the suffix automaton computes the parity of the suffix, and the output is produced in the first gap. The two machines are not isomorphic, since already their prefix automata are not: in one of them the initial state can be reached again after reading a nonempty string, and in the other one it cannot.
+
+It remains to explain why four states cannot be improved. Since the output is one letter for every input string, exactly one gap produces a nonempty output. Suppose that the suffix automaton has one state. Then the output in a gap depends only on the prefix, i.e.~on the number of letters to the left of the gap, and therefore the gaps that produce a nonempty output form a fixed set of numbers, which does not depend on the input string. If this set has at least two elements, then a sufficiently long input string produces at least two letters of output; and if it has at most one element, then all sufficiently long input strings produce the same output. Both cases are impossible, and hence the suffix automaton has at least two states. The same argument, this time counting the letters to the right of the gap, shows that the prefix automaton has at least two states.
+}
+
+\exer{\label{exer:minimal-bimachine-lexicographic} Consider a different order on bimachines: we  minimise the number of states in the suffix automaton, and we do not care about the prefix automaton. Show that suffix automaton in a minimal machine is unique up to isomorphism.
+}
+{
+    We follow the proof of \cref{thm:machine-independent-rational-functions}. Throughout, we assume that all states of both automata are reachable, since unreachable states can be removed without changing the function.
+
+    \paragraph*{The suffix automaton.} Let $\sim$ be the equivalence relation from \cref{thm:machine-independent-rational-functions}, which identifies two suffixes $v_1$ and $v_2$ if the outputs $f(wv_1)$ and $f(wv_2)$ are at bounded left distance, for $w$ ranging over all input strings.
+
+    We first observe that the suffix automaton of every bimachine refines $\sim$. Suppose that two suffixes $v_1$ and $v_2$ lead to the same state of the suffix automaton, and consider an input string $wv_i$. In the gaps that are inside $w$, the state of the prefix automaton does not depend on $i$, and neither does the state of the suffix automaton, since it is obtained from the state of $v_i$ by reading the remaining part of $w$ backwards. Therefore the outputs $f(wv_1)$ and $f(wv_2)$ share the pieces produced in these gaps, and they can only differ in the pieces produced in the remaining $|v_i|+1$ gaps. Since each piece has bounded length, this is a bound that does not depend on $w$, and hence $v_1 \sim v_2$. In particular, the suffix automaton has at least as many states as $\sim$ has equivalence classes.
+
+    Conversely, there is a bimachine whose suffix automaton is the automaton of $\sim$-classes.  In the proof of \cref{thm:machine-independent-rational-functions}, the function is decomposed into two steps: a right-to-left automaton which annotates every position with the $\sim$-class of the suffix that follows it, and a subsequential function on the annotated strings. The first step is precisely the automaton of $\sim$-classes, read as a suffix automaton. For the second step, the only thing to check is that the state of the subsequential transducer, after reading an annotated prefix, depends only on the prefix and on the class of the suffix that remains. This is indeed the case, because the earlier annotations can be recovered from the class of the remaining suffix, by prepending the letters of the prefix one by one; recall that $\sim$ is a left congruence. Therefore we can use, as the state of the prefix automaton after reading $u$, the function which maps a class $q$ to the state of the subsequential transducer after reading $u$ annotated according to $q$. This function is updated deterministically from left to right, and together with the class of the suffix it determines the output in the gap.
+
+    Summing up, a bimachine with a minimal suffix automaton has one state per $\sim$-class, and its suffix automaton is the automaton of $\sim$-classes, which is determined by the function alone, and is therefore unique up to isomorphism.
+
+    \paragraph*{The prefix automaton.} In the above discussion we have solved the exercise. Let us now continue and discuss the prefix automaton. Suppose that we refine the order on bimachines: we first minimise the number of states in the suffix automaton, and then we minimise the number of states in the prefix automaton. We will show that a minimal bimachine is unique up to isomorphism, if we make a further assumption: the bimachine is \emph{earliest}, which means that it produces the output as early as possible from left-to-right. 
+
+    From now on the suffix automaton is fixed to be the one above, and we write $[v]$ for the state that it assigns to a suffix $v$. For a prefix $u$ and a state $q$ of the suffix automaton, define
+    \begin{align*}
+    \text{Out}(u,q) \quad \eqdef \quad \text{the longest common prefix of } \setbuild{f(uv)}{$[v]=q$}.
+    \end{align*}
+    In every bimachine, the pieces produced in the gaps inside $u$ depend only on $u$ and $[v]$, and they form a prefix of the output; therefore they form a prefix of $\text{Out}(u,q)$. In other words, $\text{Out}(u,q)$ is the most that a bimachine can produce before it has seen the letters of the suffix, and we call a bimachine \emph{earliest} if it produces exactly this much in every gap. For an earliest bimachine, the output function is determined by the function $f$: the piece produced in the gap that follows a prefix $u = u'a$, when the suffix is in state $q$, must be
+    \begin{align*}
+    \text{Out}(u', a q)^{-1} \cdot \text{Out}(u,q),
+    \end{align*}
+    where $aq$ is the state for the suffixes $av$ with $[v]=q$, and the piece in the first gap must be $\text{Out}(\varepsilon,q)$.
+
+    It remains to choose the states of the prefix automaton, and this is the same Myhill-Nerode construction as in \cref{exer:minimal-sequential}: we identify two prefixes if the pieces described above are the same for them, and for all of their extensions. This is a right congruence, and hence it defines a deterministic automaton, which is determined by $f$ alone; the argument from \cref{exer:minimal-sequential} shows that no earliest bimachine can have fewer states in its prefix automaton, and that one with this many states must be isomorphic to it. 
+}
+
+\exer{\label{exer:non-minimal-automaton} Give an example of a rational function which has two non-isomorphic unambiguous transducers of minimal size (the size is the number of states).
+}
+{The parity function from \cref{exer:non-minimal-bimachine} can be used, i.e.~the function which maps $a^n$ to the one-letter string that says if $n$ is even. We first observe that in every transducer for this function, all cycles that appear in accepting runs have empty output: repeating such a cycle would give the unique accepting run of a longer input string, and its output would have more than one letter. Therefore the output letter is produced in a bounded part of the run, which can be at its beginning or at its end, and this is where the two transducers differ.
+
+    In the first transducer, the output is produced at the end. There are two states that track the parity of the number of letters read so far, plus a final state, which is entered by two transitions with empty input, one from each parity state, producing the corresponding output letter. In the second transducer, the output is produced at the beginning. From the initial state there are two transitions with empty input, which guess the parity of the input string and produce the corresponding output letter, and which lead to two states that check whether the guess was correct. Both transducers have three states, and both are unambiguous, since in both of them the accepting run is determined by the parity of the input string. They are not isomorphic, since in the first one the transitions with empty input enter the same state, and in the second one they leave the same state.
+
+    Three states are necessary. The input string $a^0$ needs an accepting run which uses transitions with empty input only, and which produces the letter for even parity; this run cannot use a cycle, since a cycle with empty input would give infinitely many accepting runs. On the other hand, the input string $a^1$ needs an accepting run which produces the letter for odd parity, and hence it cannot use any of the transitions in the run for $a^0$. A short case analysis on the two remaining states, which have to track the parity, shows that these two runs cannot be accommodated.
+}

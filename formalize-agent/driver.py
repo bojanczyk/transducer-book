@@ -592,6 +592,46 @@ def new_project(cfg: dict, prompt: str):
         shutil.rmtree(stage, ignore_errors=True)
 
 
+# Files every run rewrites in full because they index the whole project: an
+# import list, a status table. Two runs that each add their own section collide
+# on them every single time, and the collision is never interesting — both
+# sections belong. Anything outside this list that conflicts is a real
+# disagreement about the same content and stops the run for a human.
+AGGREGATE_FILES = ("EXERCISES.md", "RequestProject/Exercises.lean")
+
+
+def resolve_aggregates(tree: Path) -> bool:
+    """Union-resolve conflicts in the index files. False if any others remain."""
+    out = git(tree, "diff", "--diff-filter=U", "--name-only").stdout.split()
+    if not out or any(f not in AGGREGATE_FILES for f in out):
+        return False
+    for name in out:
+        f = tree / name
+        text = f.read_text(errors="ignore")
+        # keep both sides of every region, then drop what that duplicates
+        text = re.sub(r"<<<<<<< [^\n]*\n(.*?)=======\n(.*?)>>>>>>> [^\n]*\n",
+                      lambda m: (m.group(1) if m.group(1).strip() == m.group(2).strip()
+                                 else m.group(1).rstrip("\n") + "\n" + m.group(2)),
+                      text, flags=re.S)
+        lines, seen, skip, keep = text.splitlines(), set(), False, []
+        for line in lines:
+            if line.startswith("import "):
+                if line in seen:
+                    continue
+                seen.add(line)
+            elif line.startswith("### "):
+                skip = line in seen
+                seen.add(line)
+            elif line.startswith("## "):
+                skip = False
+            if not skip:
+                keep.append(line)
+        f.write_text("\n".join(keep).rstrip() + "\n")
+        git(tree, "add", name)
+    log(f"union-resolved {', '.join(out)}")
+    return True
+
+
 def integrate(cfg: dict, st: dict, src: Path, base: str, branch: str,
               message: str) -> str:
     """Merge a returned tree into the local one. Returns 'merged', 'conflict'…
@@ -623,6 +663,10 @@ def integrate(cfg: dict, st: dict, src: Path, base: str, branch: str,
             return "empty"          # the run changed nothing
         m = git(ld, "merge", "--no-edit", branch)
         if m.returncode:
+            if resolve_aggregates(ld):
+                c = git(ld, "commit", "--no-edit")
+                if not c.returncode:
+                    return "merged"
             git(ld, "merge", "--abort")
             return "conflict"
         return "merged"
@@ -632,8 +676,13 @@ def integrate(cfg: dict, st: dict, src: Path, base: str, branch: str,
 
 
 def harvest(cfg: dict, st: dict, project, task, target: dict | None,
-            base: str | None = None) -> None:
-    """Download the current project files and sync them into the Lean directory."""
+            base: str | None = None) -> bool:
+    """Download a run's files and merge them in. False if it could not be done.
+
+    A false return means the tick must stop: the result is not in the tree, so
+    finishing the target or starting the next one would record work that is not
+    there and leave the run stranded on its branch.
+    """
     ld = lean_dir(cfg)
     tid = target["id"] if target else "external"
     label = status_name(task)
@@ -651,7 +700,7 @@ def harvest(cfg: dict, st: dict, project, task, target: dict | None,
             run_async(project.get_files(str(arc)))
         except Exception as e:
             log(f"download failed: {e!r}")
-            return
+            return False
         ex = Path(td) / "x"
         ex.mkdir()
         try:
@@ -663,16 +712,16 @@ def harvest(cfg: dict, st: dict, project, task, target: dict | None,
                     t.extractall(ex)
         except Exception as e:
             log(f"extract failed: {e!r}")
-            return
+            return False
 
         src = locate_lean_project(ex, cfg.get("archive_subdir", "transducer-lean"))
         if src is None:
             log("harvest aborted: no Lean project found in the archive")
-            return
+            return False
         n_lean = len([p for p in src.rglob("*.lean") if ".lake" not in p.parts])
         if n_lean < 20:
             log(f"harvest aborted: archive looks truncated ({n_lean} lean files)")
-            return
+            return False
 
         ensure_git(ld)
         ensure_gitignore(ld)
@@ -703,12 +752,13 @@ def harvest(cfg: dict, st: dict, project, task, target: dict | None,
             st["paused"] = True
             st["pause_reason"] = f"{tid} needs a merge by hand"
             log("merge conflict — paused")
-            return
+            return False
         if outcome == "merged":
             log(f"merged {n_lean} lean files from {task.agent_task_id[:8]}; "
                 f"sorries {before} -> {sorry_count(ld)}")
         else:
             log(f"integration: {outcome}")
+    return True
 
 
 # --------------------------------------------------------------------------
@@ -812,22 +862,53 @@ def tick(cfg: dict, q: list, st: dict) -> None:
 
         # terminal — harvest whatever was produced, then decide
         log(f"{cur['target_id']} finished with {state}")
+        # No falling back to the project named in config.json. A run of ours
+        # always records the project it created; an entry without one is a
+        # leftover from the old shared-project design, and integrating that
+        # project would merge its whole file state — which is how commit
+        # b0a312d silently reverted a week of label corrections.
+        pid = cur.get("project_id")
+        if not pid:
+            review(cfg, st, f"{cur['target_id']} has no project recorded",
+                   "This entry predates the per-run projects, so there is no way to "
+                   "tell what it was working from. Integrating the shared project "
+                   "instead would merge its entire file state over yours. Clear it "
+                   "with `driver.py skip` or integrate by hand if you know the "
+                   "project:\n\n    driver.py integrate <project-id> --base <commit>")
+            st["current"] = None
+            log("current has no project id — cleared, nothing integrated")
+            return
         try:
-            run_project = project_by_id(cur.get("project_id") or cfg["project_id"])
+            run_project = project_by_id(pid)
         except Exception as e:
             log(f"could not reach the run's project: {e!r} — will retry next tick")
             return
-        harvest(cfg, st, run_project, task, target)
+        if not harvest(cfg, st, run_project, task, target):
+            return          # nothing was integrated; do not act as though it was
         rec = st["targets"][cur["target_id"]] if target else None
 
         if state in TERMINAL_STOP:
-            st["paused"] = True
-            st["pause_reason"] = f"task {cur['task_id']} was canceled by hand"
+            # Cancelling used to pause the whole run, on the theory that if you
+            # cancelled something you wanted to take over. In practice you
+            # cancel this driver's run *because* you have started your own, and
+            # pausing then strands both: this one waits, and yours is never
+            # integrated because it lives in a project of its own. So note it
+            # and carry on to the next target instead.
+            tid = cur["target_id"]
+            if target:
+                finish_target(st, tid, "partial", "canceled by hand")
             st["current"] = None
-            log("task was canceled — pausing so the driver does not fight you. "
-                "Resume with: driver.py resume")
-            notify(cfg, "Formalisation paused", "A task was canceled by hand.")
-            return
+            review(cfg, st, f"{tid} was canceled",
+                   f"Task {cur['task_id']} was canceled, so nothing was integrated for "
+                   f"{tid} and the run has moved on to the next target.\n\n"
+                   f"If you cancelled it because you were doing the work yourself, that "
+                   f"run is in a project of its own and this driver cannot see it. "
+                   f"Bring it in with:\n\n"
+                   f"    driver.py integrate <project-id> --base <commit>\n\n"
+                   f"and then `driver.py requeue {tid}` if more is still wanted from it.")
+            notify(cfg, "Formalisation: a task was canceled",
+                   f"{tid} — moved on; integrate your own run by hand if there is one")
+            log(f"{tid} was canceled — noted, moving on")
 
         if state in TERMINAL_OK and target:
             still = open_results(lean_dir(cfg), target.get("lean_names", []))
@@ -1110,7 +1191,7 @@ def main() -> None:
         try:
             fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
         except BlockingIOError:
-            print("another driver invocation is running; exiting")
+            print("a tick is already in progress (the scheduled one, most likely); exiting. This says nothing about whether a task is running on Aristotle — see `driver.py status` for that.")
             return
         args.f(args)
 

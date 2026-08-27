@@ -101,6 +101,11 @@ BibTeX entries for everything listed here live in the book's bibliography, [../b
   DOI: https://doi.org/10.1007/11753728_9  
   PDF: [BealLombardySakarovitch2006_Conjugacy_and_Equivalence_of_Weighted_Automata_and_Functional_Transducers.pdf](pdfs/BealLombardySakarovitch2006_Conjugacy_and_Equivalence_of_Weighted_Automata_and_Functional_Transducers.pdf)
 
+- **Michael Benedikt, Timothy Duff, Aditya Sharad, and James Worrell (2017), _Polynomial Automata: Zeroness and Applications_.**  
+  The paper that introduces polynomial automata, as a generalisation of weighted automata over a field, and settles the complexity of the Zeroness Problem for them: non-primitive recursive in general, primitive recursive for a subclass. Relevant to the weighted-automata chapter.  
+  DOI: https://doi.org/10.1109/LICS.2017.8005101  
+  PDF: [Benedikt2017_Polynomial_Automata_Zeroness_and_Applications.pdf](pdfs/Benedikt2017_Polynomial_Automata_Zeroness_and_Applications.pdf) (author copy, Oxford Research Archive)
+
 ## Part C — Regular functions
 
 - **Michael O. Rabin and Dana Scott (1959), _Finite Automata and Their Decision Problems_.**  
@@ -200,6 +205,7 @@ BibTeX entries for everything listed here live in the book's bibliography, [../b
 
 The PDFs currently stored here are:
 
+- [pdfs/Benedikt2017_Polynomial_Automata_Zeroness_and_Applications.pdf](pdfs/Benedikt2017_Polynomial_Automata_Zeroness_and_Applications.pdf)
 - [pdfs/Pin2025_Mathematical_Foundations_of_Automata_Theory.pdf](pdfs/Pin2025_Mathematical_Foundations_of_Automata_Theory.pdf)
 - [pdfs/Eilenberg1974_Automata_Languages_and_Machines_Volume_A.pdf](pdfs/Eilenberg1974_Automata_Languages_and_Machines_Volume_A.pdf)
 - [pdfs/Dubreil1941_Contribution_a_la_theorie_des_demi-groupes.pdf](pdfs/Dubreil1941_Contribution_a_la_theorie_des_demi-groupes.pdf)

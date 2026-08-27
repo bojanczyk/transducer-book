@@ -9,7 +9,7 @@ source = "rational-functions.tex"
 \setcounter{section}{1}
 \setcounter{ourexamplecounter}{8}
 \renewcommand{\exer}[2]{}
-% source stamp rational-functions.tex:ce5ac376
+% source stamp rational-functions.tex:4a4e3e16
 \input{../../../rational-functions.tex}
 {{< /latex >}}
 
@@ -41,6 +41,49 @@ Represent the following functions as rational functions, and as bimachines: (a) 
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
 \setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{1}
 \begin{exercise}
+\label{exer:rational-outpus-of-exactly-linear-size} Show that if a rational function has unbounded output size, then it has exactly linear output size in the following sense: the limit 
+\begin{align*}
+\lim_{n \to \infty} \frac{\text{maximal output length on inputs of length at most $n$}}{n}
+\end{align*}
+is defined and nonzero.
+\end{exercise}
+{{< /latex >}}
+<details class="solution">
+<summary>Show solution</summary>
+<div class="solution-body">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}
+\noindent\textbf{Solution.}\quad We use nondeterministic transducers. 
+The limit is supremum of 
+\begin{align*}
+ \frac{\text{length of output string in $\rho$}}{\text{length of input string in $\rho$}},
+\end{align*}
+where $\rho$ ranges over all cycles, i.e.~runs with the same source and target state. (We assume that all states can are reachable and co-reachable). The supremum is finite because each transition produces a bounded length output, and it is nonzero because the function has unbounded output size, and hence some cycle that produces a nonempty output.
+{{< /latex >}}
+</div>
+</details>
+</div>
+<div class="exercise" id="exercise-3">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{2}
+\begin{exercise}
+\label{exer:rational-outpus-of-exactly-linear-size-rational-number} Show that the limit in the previous exercise is a rational number.
+\end{exercise}
+{{< /latex >}}
+<details class="solution">
+<summary>Show solution</summary>
+<div class="solution-body">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}
+\noindent\textbf{Solution.}\quad Consider the supremum in the solution to the previous exercise. By a pumping argument, this supremum is achieved by a simple cycle, i.e.~a cycle that does not visit any state twice except the source and target. Since there are finitely many simple cycles, the supremum is a maximum over a finite set of rational numbers, and hence it is a rational number.
+{{< /latex >}}
+</div>
+</details>
+</div>
+<div class="exercise" id="exercise-4">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{3}
+\begin{exercise}
 \label{exer:non-rational}
 Prove that the following functions are not rational, over an alphabet with at least two letters: (a) first half of the input string, rounded up; and (b) the duplicate function $w \mapsto ww$.
 \end{exercise}
@@ -65,9 +108,9 @@ Prove that the following functions are not rational, over an alphabet with at le
 </div>
 </details>
 </div>
-<div class="exercise" id="exercise-3">
+<div class="exercise" id="exercise-5">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{2}
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{4}
 \begin{exercise}
 \label{exer:decide-unambiguous} Show that one can decide unambiguity for a given \nfa that recognises a language (not a function or relation).
 \end{exercise}
@@ -86,9 +129,9 @@ Prove that the following functions are not rational, over an alphabet with at le
 </div>
 </details>
 </div>
-<div class="exercise" id="exercise-4">
+<div class="exercise" id="exercise-6">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{3}
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{5}
 \begin{exercise}
 \label{exer:decide-rational-colision} Are the following problems about two rational functions decidable: (a) is there some input string where both outputs are equal? (b) is there some input string where both outputs have the same length?
 \end{exercise}
@@ -107,9 +150,9 @@ Prove that the following functions are not rational, over an alphabet with at le
 </div>
 </details>
 </div>
-<div class="exercise" id="exercise-5">
+<div class="exercise" id="exercise-7">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{4}
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{6}
 \begin{exercise}
 \label{exer:rational-one-letter-input} Consider a rational function where the input alphabet has only one letter $a$. Show that the graph of the function is a finite union \begin{align*}
 \bigcup_{i \in I}\setbuild{ a^{\alpha_i + \beta_i n} \mapsto x_i y_i^n z_i}{$n \in \Nat$} 
@@ -133,9 +176,9 @@ where the coefficients  $\alpha_i,\beta_i$ are natural numbers and strings $x_i,
 </div>
 </details>
 </div>
-<div class="exercise" id="exercise-6">
+<div class="exercise" id="exercise-8">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{5}
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{7}
 \begin{exercise}
 \label{exer:function-that-is-not-rational} Show that there is a function
 \begin{align*}
@@ -164,9 +207,9 @@ the composition $f \cdot g$ is rational.
 </div>
 </details>
 </div>
-<div class="exercise" id="exercise-7">
+<div class="exercise" id="exercise-9">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{6}
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{8}
 \begin{exercise}
 \label{exer:some-ideals} 
 Show that the following are ideals: 
@@ -188,9 +231,9 @@ Pre-composing or post-composing with rational functions (or any functions) canno
 </div>
 </details>
 </div>
-<div class="exercise" id="exercise-8">
+<div class="exercise" id="exercise-10">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{7}
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{9}
 \begin{exercise}
 \label{exer:finite-range-ideals} Consider an ideal where all functions have finite range. Show that the ideal is equal to one of the ideals from the first item in \cref{exer:some-ideals}, or to the ideal $\Oo(n^0)$ from the second item.
 \end{exercise}
@@ -211,9 +254,9 @@ Pre-composing or post-composing with rational functions (or any functions) canno
 </div>
 </details>
 </div>
-<div class="exercise" id="exercise-9">
+<div class="exercise" id="exercise-11">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{8}
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{10}
 \begin{exercise}
 \label{exer:full-ideal} Show that an ideal contains all rational functions if and only if it contains some function whose range is a regular language with super-polynomial growth. (The growth rate of a language is a function that maps an input length $n$ to the number of strings in the language that have length at most $n$.)
 \end{exercise}
@@ -245,9 +288,9 @@ belongs to the range of the function, and different input strings give different
 </div>
 </details>
 </div>
-<div class="exercise" id="exercise-10">
+<div class="exercise" id="exercise-12">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{9}
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{11}
 \begin{exercise}
 \label{exer:polynomial-ideals} Show that if an ideal contains some function whose range has growth $\Omega(n^k)$, then it contains all functions whose range has growth $\Oo(n^k)$.
 \end{exercise}
@@ -288,9 +331,9 @@ Finally, it remains to show that  if an ideal contains the function $f_k$, then 
 </div>
 </details>
 </div>
-<div class="exercise" id="exercise-11">
+<div class="exercise" id="exercise-13">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{10}
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{12}
 \begin{exercise}
 \label{exer:all-ideals} Show that the ideals from the previous exercise are all the ideals, i.e.~all possible  ideals are: ``range of size at most $k$'', ``range has growth rate $\Oo(n^k)$'', ``range has polynomial growth'',  and ``all rational functions'', where $k \in \set{0,1,2,\ldots}$.
 \end{exercise}
@@ -305,9 +348,9 @@ Finally, it remains to show that  if an ideal contains the function $f_k$, then 
 </div>
 </details>
 </div>
-<div class="exercise" id="exercise-12">
+<div class="exercise" id="exercise-14">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{11}
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{13}
 \begin{exercise}
 \label{exer:decide-same-ideal} Show that it is decidable if two rational functions generate the same ideal (the ideal generated by a function is the last ideal that contains it).
 \end{exercise}
@@ -322,9 +365,9 @@ Finally, it remains to show that  if an ideal contains the function $f_k$, then 
 </div>
 </details>
 </div>
-<div class="exercise" id="exercise-13">
+<div class="exercise" id="exercise-15">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{12}
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{14}
 \begin{exercise}
 \label{exer:surjective-rational-function}Show that if  a rational function $f : A^* \to B^*$ is surjective, then it has a one-sided inverse, i.e.~a rational function $g : B^* \to A^*$ such that $g \cdot f$ is the identity on $B^*$.
 \end{exercise}
@@ -338,14 +381,14 @@ Finally, it remains to show that  if an ideal contains the function $f_k$, then 
     \begin{align*}
     \setbuild{(v,w) \in B^* \times A^*}{$f(w) = v$}
     \end{align*}
-    is rational, and it is total, because $f$ is surjective. By the previous exercise, this relation contains a rational function $g : B^* \to A^*$. By the definition of the inverse relation, we have $f(g(v)) = v$ for every $v \in B^*$, which is the same as saying that $g \cdot f$ is the identity on $B^*$.
+    is rational, and it is total, because $f$ is surjective. By the Uniformisation Lemma~\ref{lem:uniformisation}, this relation contains a rational function $g : B^* \to A^*$. By the definition of the inverse relation, we have $f(g(v)) = v$ for every $v \in B^*$, which is the same as saying that $g \cdot f$ is the identity on $B^*$.
 {{< /latex >}}
 </div>
 </details>
 </div>
-<div class="exercise" id="exercise-14">
+<div class="exercise" id="exercise-16">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{13}
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{15}
 \begin{exercise}
 \label{exer:rational-injectivity-decidable}Show that the following problem is decidable: given a rational function $f$, we want to know if it is injective, i.e.~different input strings are mapped to different output strings.
 \end{exercise}
@@ -360,9 +403,9 @@ Finally, it remains to show that  if an ideal contains the function $f_k$, then 
 </div>
 </details>
 </div>
-<div class="exercise" id="exercise-15">
+<div class="exercise" id="exercise-17">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{14}
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{16}
 \begin{exercise}
 \label{exer:rational-composition-finiteness-undecidable}Show that the following problem is undecidable: given a rational function $f : A^* \to A^*$, we want to know if it generates finitely many functions under composition, i.e.~if the following set is finite:
 \begin{align*}
@@ -376,6 +419,27 @@ Finally, it remains to show that  if an ideal contains the function $f_k$, then 
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
 \setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}
 \noindent\textbf{Solution.}\quad The rational function can represent the next-step operation in a Turing machine. For such a function, the problem in the exercise is the same as deciding if the Turing machine makes a constant number of steps for every configuration, which is undecidable.
+{{< /latex >}}
+</div>
+</details>
+</div>
+<div class="exercise" id="exercise-18">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{17}
+\begin{exercise}
+\label{exer:rational-compression} Define a \emph{grammar compression} for a string to be a context-free grammar that generates the string and nothing else. We say that a string-to-string function is \emph{compatible with compression} if there  is a polynomial time algorithm which inputs a grammar compression of an input string and outputs a grammar compression of the corresponding output string. Show that rational functions are compatible with compression.
+\end{exercise}
+{{< /latex >}}
+<details class="solution">
+<summary>Show solution</summary>
+<div class="solution-body">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}
+\noindent\textbf{Solution.}\quad This follows from a stronger result: for a context-free language $L \subseteq A^*$ and a rational relation $R \subseteq A^* \times B^*$, the image
+\begin{align*}
+\setbuild {v \in B^*}{$(w,v) \in R$ for some $w \in L$}
+\end{align*}
+is context-free and can be computed in polynomial time (using grammars as representation of languages and nondeterministic transducers as representation of  relations). The proof is a straightforward product construction. In the special case when the input language is a singleton and the relation is a function, the image is also a singleton.
 {{< /latex >}}
 </div>
 </details>

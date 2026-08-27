@@ -133,8 +133,8 @@
 #1
 \end{exercise}
 
-%  \noindent \textbf{Solution.}
-%  #2
+ \noindent \textbf{Solution.}
+ #2
 
 }
 
@@ -359,6 +359,17 @@ $\Box$ \smallskip
   \ifshowissues
     \todo[size=\tiny,color=red!25,bordercolor=red!80!black,linecolor=red!80!black]%
       {\normalfont\raggedright\textbf{Issue:} #1}%
+  \fi}
+
+
+% Solutions written or completed by Claude, awaiting the author's review.
+% \review{...} puts a margin comment; set \showreviewsfalse to hide them all.
+\newif\ifshowreviews
+\showreviewstrue
+\newcommand{\review}[1]{%
+  \ifshowreviews
+    \todo[size=\tiny,color=blue!15,bordercolor=blue!70!black,linecolor=blue!70!black]%
+      {\normalfont\raggedright\textbf{Review:} #1}%
   \fi}
 
 
