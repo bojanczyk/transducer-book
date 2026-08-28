@@ -120,11 +120,14 @@ BibTeX entries for everything listed here live in the book's bibliography, [../b
 
 - **J. E. Hopcroft and J. D. Ullman (1967), _An Approach to a Unified Theory of Automata_.**  
   Early decomposition-style techniques related to crossing-sequence arguments in this part.  
-  Link: https://dblp.org/rec/conf/swat/HopcroftU67
+  DOI: https://doi.org/10.1109/FOCS.1967.4  
+  PDF: [HopcroftUllman1967_An_Approach_to_a_Unified_Theory_of_Automata.pdf](pdfs/HopcroftUllman1967_An_Approach_to_a_Unified_Theory_of_Automata.pdf)
 
 - **Mikołaj Bojańczyk (2025), _An Automata Toolbox_.**  
   Modern lecture-note reference used repeatedly for regular-transducer arguments and proofs.  
-  Link: https://www.mimuw.edu.pl/~bojan/paper/automata-toolbox-book
+  Link: https://www.mimuw.edu.pl/~bojan/paper/automata-toolbox-book  
+  PDF: [Bojanczyk2025_An_Automata_Toolbox.pdf](pdfs/Bojanczyk2025_An_Automata_Toolbox.pdf) (version of 30 December 2025, 293 pp.)  
+  Note: a living document; dated versions are kept alongside it at mimuw.edu.pl/~bojan/papers/.
 
 ### SST and MSO transductions (Part C focus)
 
@@ -157,6 +160,11 @@ BibTeX entries for everything listed here live in the book's bibliography, [../b
   Link: https://doi.org/10.1007/978-3-662-43951-7_10  
   PDF: [Bojanczyk2014_Transducers_with_Origin_Information.pdf](pdfs/Bojanczyk2014_Transducers_with_Origin_Information.pdf)
 
+- **Félix Baschenis, Olivier Gauwin, Anca Muscholl, and Gabriele Puppis (2017), _Untwisting Two-Way Transducers in Elementary Time_.**  
+  Elementary-complexity algorithm for deciding one-way definability of a two-way transducer, and for sweeping transducers; sharpens the Filiot-Reynier-Servais result above.  
+  DOI: https://doi.org/10.1109/LICS.2017.8005138  
+  PDF: [Baschenis2017_Untwisting_Two-Way_Transducers_in_Elementary_Time.pdf](pdfs/Baschenis2017_Untwisting_Two-Way_Transducers_in_Elementary_Time.pdf)
+
 - **Anca Muscholl and Gabriele Puppis (2019), _The Many Facets of String Transducers (Invited Talk)_.**  
   Compact survey of equivalent regular transducer models (two-way, SST, MSO, and related viewpoints).  
   DOI: https://doi.org/10.4230/LIPIcs.STACS.2019.2  
@@ -174,17 +182,29 @@ BibTeX entries for everything listed here live in the book's bibliography, [../b
   DBLP: https://dblp.org/rec/conf/lics/Bojanczyk22  
   PDF: [Bojanczyk2022_Transducers_of_polynomial_growth_preprint.pdf](pdfs/Bojanczyk2022_Transducers_of_polynomial_growth_preprint.pdf) (author preprint)
 
+- **Oscar H. Ibarra (1971), _Characterizations of Some Tape and Time Complexity Classes of Turing Machines in Terms of Multihead and Auxiliary Stack Automata_.**  
+  Multihead automata correspond to logarithmic space; the reference for what pebble transducers would become without the stack discipline.  
+  DOI: https://doi.org/10.1016/S0022-0000(71)80029-6  
+  PDF: [Ibarra1971_Characterizations_of_Some_Tape_and_Time_Complexity_Classes.pdf](pdfs/Ibarra1971_Characterizations_of_Some_Tape_and_Time_Complexity_Classes.pdf)
+
 - **Noa Lewenstein and David Harel (1996), _Complexity Results for Two-Way and Multi-Pebble Automata and their Logics_.**  
   Foundational complexity background for pebble-style models and stack-discipline discussions.  
-  Link: https://dblp.org/rec/journals/tcs/LewensteinH96
+  DOI: https://doi.org/10.1016/S0304-3975(96)00119-3  
+  PDF: [LewensteinHarel1996_Complexity_Results_for_Two-Way_and_Multi-Pebble_Automata.pdf](pdfs/LewensteinHarel1996_Complexity_Results_for_Two-Way_and_Multi-Pebble_Automata.pdf)
 
 - **Tova Milo, Dan Suciu, and Victor Vianu (2003), _Typechecking for XML Transformers_.**  
   Introduces pebble-transducer machinery in the XML-transformation setting.  
-  Link: https://dblp.org/rec/journals/jcss/MiloSV03
+  DOI: https://doi.org/10.1016/S0022-0000(02)00030-2  
+  PDF: [MiloSuciuVianu2003_Typechecking_for_XML_Transformers.pdf](pdfs/MiloSuciuVianu2003_Typechecking_for_XML_Transformers.pdf)
 
 - **Joost Engelfriet and Sebastian Maneth (2002), _Two-Way Finite State Transducers with Nested Pebbles_.**  
   Important bridge between nested-pebble transducers and string/tree transduction formalisms.  
   Link: https://dblp.org/rec/conf/mfcs/EngelfrietM02
+
+- **Joost Engelfriet, Hendrik Jan Hoogeboom, and Bart Samwel (2007), _XML Transformation by Tree-Walking Transducers with Invisible Pebbles_.**  
+  The unbounded-pebble variant, where invisible pebbles lift the constant bound on stack height.  
+  DOI: https://doi.org/10.1145/1265530.1265540  
+  PDF: [EngelfrietHoogeboomSamwel2007_XML_Transformation_by_Tree-Walking_Transducers_with_Invisible_Pebbles.pdf](pdfs/EngelfrietHoogeboomSamwel2007_XML_Transformation_by_Tree-Walking_Transducers_with_Invisible_Pebbles.pdf)
 
 - **Joost Engelfriet (2015), _Two-way pebble transducers for partial functions and their composition_.**  
   Refines the pebble-transducer landscape used in polyregular characterizations.  
@@ -205,6 +225,13 @@ BibTeX entries for everything listed here live in the book's bibliography, [../b
 
 The PDFs currently stored here are:
 
+- [pdfs/Baschenis2017_Untwisting_Two-Way_Transducers_in_Elementary_Time.pdf](pdfs/Baschenis2017_Untwisting_Two-Way_Transducers_in_Elementary_Time.pdf)
+- [pdfs/Bojanczyk2025_An_Automata_Toolbox.pdf](pdfs/Bojanczyk2025_An_Automata_Toolbox.pdf)
+- [pdfs/EngelfrietHoogeboomSamwel2007_XML_Transformation_by_Tree-Walking_Transducers_with_Invisible_Pebbles.pdf](pdfs/EngelfrietHoogeboomSamwel2007_XML_Transformation_by_Tree-Walking_Transducers_with_Invisible_Pebbles.pdf)
+- [pdfs/HopcroftUllman1967_An_Approach_to_a_Unified_Theory_of_Automata.pdf](pdfs/HopcroftUllman1967_An_Approach_to_a_Unified_Theory_of_Automata.pdf)
+- [pdfs/Ibarra1971_Characterizations_of_Some_Tape_and_Time_Complexity_Classes.pdf](pdfs/Ibarra1971_Characterizations_of_Some_Tape_and_Time_Complexity_Classes.pdf)
+- [pdfs/LewensteinHarel1996_Complexity_Results_for_Two-Way_and_Multi-Pebble_Automata.pdf](pdfs/LewensteinHarel1996_Complexity_Results_for_Two-Way_and_Multi-Pebble_Automata.pdf)
+- [pdfs/MiloSuciuVianu2003_Typechecking_for_XML_Transformers.pdf](pdfs/MiloSuciuVianu2003_Typechecking_for_XML_Transformers.pdf)
 - [pdfs/Benedikt2017_Polynomial_Automata_Zeroness_and_Applications.pdf](pdfs/Benedikt2017_Polynomial_Automata_Zeroness_and_Applications.pdf)
 - [pdfs/Pin2025_Mathematical_Foundations_of_Automata_Theory.pdf](pdfs/Pin2025_Mathematical_Foundations_of_Automata_Theory.pdf)
 - [pdfs/Eilenberg1974_Automata_Languages_and_Machines_Volume_A.pdf](pdfs/Eilenberg1974_Automata_Languages_and_Machines_Volume_A.pdf)

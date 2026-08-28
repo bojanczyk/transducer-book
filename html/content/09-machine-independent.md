@@ -8,7 +8,7 @@ source = "myhill-nerode.tex"
 \setcounter{mypart}{2}
 \setcounter{section}{3}
 \setcounter{ourexamplecounter}{14}
-% source stamp myhill-nerode.tex:3b823782
+% source stamp myhill-nerode.tex:6e5f2311
 \renewcommand{\exer}[2]{}
 \input{../../../myhill-nerode.tex}
 {{< /latex >}}
@@ -20,6 +20,7 @@ source = "myhill-nerode.tex"
 \setcounter{mypart}{2}\setcounter{section}{4}\setcounter{theorem}{13}\setcounter{exercise}{0}
 \begin{exercise}
 \label{exer:minimal-sequential} We order sequential transducers by the number of states. Show that minimal sequential transducers are unique up to isomorphism.
+\review{New solution.}
 \end{exercise}
 {{< /latex >}}
 <details class="solution">

@@ -20,6 +20,11 @@
     "D1-equivalence",
     "D2-continuity",
     "D2-pebble-equivalence",
+    "exercises-new",
+    "encoding-config-graph",
+    "encoding-snake-alphabet",
+    "encoding-pebble",
+    "exercises-encoding",
     "audit-final"
   ],
   "targets": {
@@ -215,13 +220,25 @@
     },
     "audit-final": {
       "status": "pending",
-      "attempts": 0,
+      "attempts": 1,
       "continues": 0,
       "reattempts": 0,
-      "task_ids": [],
-      "started_at": null,
+      "task_ids": [
+        "ed4c02b0-54e1-4633-bcd2-442272dcb134"
+      ],
+      "started_at": "2026-08-27 19:55:08Z",
       "finished_at": null,
-      "note": null
+      "note": "requeued: re-audit after the run-graph encoding work",
+      "sorries_at_start": 0,
+      "runs": [
+        {
+          "task_id": "ed4c02b0-54e1-4633-bcd2-442272dcb134",
+          "project_id": "233e0a40-5504-4f94-94b6-8c47e07e06f5",
+          "base": "66ca80801870ec52b2ff89f901e8da854bd0e2d2",
+          "kind": "initial",
+          "at": "2026-08-27 19:55:08Z"
+        }
+      ]
     },
     "C2-snake-step": {
       "status": "done",
@@ -398,15 +415,16 @@
       ]
     },
     "D2-pebble-equivalence": {
-      "status": "running",
-      "attempts": 1,
-      "continues": 0,
+      "status": "done",
+      "attempts": 2,
+      "continues": 1,
       "reattempts": 0,
       "task_ids": [
-        "1595c0b4-e400-455f-b5b4-c218552a0f9e"
+        "1595c0b4-e400-455f-b5b4-c218552a0f9e",
+        "5a0f7522-0f7e-4184-af75-253a8aedc31d"
       ],
       "started_at": "2026-08-27 07:48:58Z",
-      "finished_at": null,
+      "finished_at": "2026-08-27 13:32:33Z",
       "note": null,
       "sorries_at_start": 1,
       "runs": [
@@ -416,22 +434,131 @@
           "base": "189f141bafb2dd1765d67b04a85d88992cf58935",
           "kind": "initial",
           "at": "2026-08-27 07:48:58Z"
+        },
+        {
+          "task_id": "5a0f7522-0f7e-4184-af75-253a8aedc31d",
+          "project_id": "6c103d0e-f53c-4690-aa11-bf56689e307b",
+          "base": "d4f76fd20c4069c5268edb1f4e43fbc622238afe",
+          "kind": "continue",
+          "at": "2026-08-27 10:29:58Z"
         }
       ]
+    },
+    "exercises-new": {
+      "status": "done",
+      "attempts": 3,
+      "continues": 2,
+      "reattempts": 0,
+      "task_ids": [
+        "0bc90646-6aee-4910-90e7-c1142c2149f1",
+        "9d3dfeb8-cdf0-4f90-bcb8-1413af65aa8f",
+        "b5502230-80d8-4ed1-8c81-6e4a88d5ea54"
+      ],
+      "started_at": "2026-08-27 13:32:41Z",
+      "finished_at": "2026-08-27 19:55:00Z",
+      "note": null,
+      "sorries_at_start": 0,
+      "runs": [
+        {
+          "task_id": "0bc90646-6aee-4910-90e7-c1142c2149f1",
+          "project_id": "f65ac772-724e-472d-85b4-dda21884855f",
+          "base": "ff5f70c121368ba1a602e915deac289916b9c2e1",
+          "kind": "initial",
+          "at": "2026-08-27 13:32:41Z"
+        },
+        {
+          "task_id": "9d3dfeb8-cdf0-4f90-bcb8-1413af65aa8f",
+          "project_id": "85b77291-df29-4401-a1ca-6e07dc7f5c0c",
+          "base": "31fd15b9c899911a263cae84954a051318b982b0",
+          "kind": "continue",
+          "at": "2026-08-27 15:38:36Z"
+        },
+        {
+          "task_id": "b5502230-80d8-4ed1-8c81-6e4a88d5ea54",
+          "project_id": "d2e27df8-5f47-4891-b624-626a8fdde5e6",
+          "base": "07462f2605266aa6aa15b8d48de2cea2a6cac5d9",
+          "kind": "continue",
+          "at": "2026-08-27 18:39:37Z"
+        }
+      ]
+    },
+    "encoding-config-graph": {
+      "status": "done",
+      "attempts": 1,
+      "continues": 0,
+      "reattempts": 0,
+      "task_ids": [
+        "4af39846-db40-4a1d-a366-0d0f63a3969b"
+      ],
+      "started_at": "2026-08-27 22:51:53Z",
+      "finished_at": "2026-08-28 00:13:07Z",
+      "note": null,
+      "sorries_at_start": 0,
+      "runs": [
+        {
+          "task_id": "4af39846-db40-4a1d-a366-0d0f63a3969b",
+          "project_id": "4e482a0b-b6ca-43fd-8d9e-4065305bfa5d",
+          "base": "03a8a807ec2a095a8b26561936600441439d63bb",
+          "kind": "initial",
+          "at": "2026-08-27 22:51:53Z"
+        }
+      ]
+    },
+    "encoding-snake-alphabet": {
+      "status": "running",
+      "attempts": 1,
+      "continues": 0,
+      "reattempts": 0,
+      "task_ids": [
+        "50add482-5d95-485c-8754-c93f665a4699"
+      ],
+      "started_at": "2026-08-28 00:13:14Z",
+      "finished_at": null,
+      "note": null,
+      "sorries_at_start": 0,
+      "runs": [
+        {
+          "task_id": "50add482-5d95-485c-8754-c93f665a4699",
+          "project_id": "a24f9914-1536-44a8-be99-398ff373789a",
+          "base": "f6c7d0f4646db56ba56defc0aad1e0009ee064a8",
+          "kind": "initial",
+          "at": "2026-08-28 00:13:14Z"
+        }
+      ]
+    },
+    "encoding-pebble": {
+      "status": "pending",
+      "attempts": 0,
+      "continues": 0,
+      "reattempts": 0,
+      "task_ids": [],
+      "started_at": null,
+      "finished_at": null,
+      "note": null
+    },
+    "exercises-encoding": {
+      "status": "pending",
+      "attempts": 0,
+      "continues": 0,
+      "reattempts": 0,
+      "task_ids": [],
+      "started_at": null,
+      "finished_at": null,
+      "note": null
     }
   },
   "current": {
-    "target_id": "D2-pebble-equivalence",
-    "task_id": "1595c0b4-e400-455f-b5b4-c218552a0f9e",
-    "project_id": "884c5c42-1bd5-47f2-a7a3-f4e3612a1a3c",
-    "base": "189f141bafb2dd1765d67b04a85d88992cf58935",
-    "submitted_at": "2026-08-27 07:48:58Z",
+    "target_id": "encoding-snake-alphabet",
+    "task_id": "50add482-5d95-485c-8754-c93f665a4699",
+    "project_id": "a24f9914-1536-44a8-be99-398ff373789a",
+    "base": "f6c7d0f4646db56ba56defc0aad1e0009ee064a8",
+    "submitted_at": "2026-08-28 00:13:14Z",
     "kind": "initial"
   },
   "paused": false,
   "pause_reason": null,
   "finished_at": null,
-  "ticks": 352,
-  "last_tick": "2026-08-27 09:34:11Z",
-  "review_pending": 3
+  "ticks": 400,
+  "last_tick": "2026-08-28 00:29:25Z",
+  "review_pending": 4
 }

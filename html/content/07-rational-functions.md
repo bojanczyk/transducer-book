@@ -9,7 +9,7 @@ source = "rational-functions.tex"
 \setcounter{section}{1}
 \setcounter{ourexamplecounter}{8}
 \renewcommand{\exer}[2]{}
-% source stamp rational-functions.tex:4a4e3e16
+% source stamp rational-functions.tex:ca9ada31
 \input{../../../rational-functions.tex}
 {{< /latex >}}
 
@@ -53,12 +53,11 @@ is defined and nonzero.
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
 \setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}
-\noindent\textbf{Solution.}\quad We use nondeterministic transducers. 
-The limit is supremum of 
+\noindent\textbf{Solution.}\quad We use nondeterministic transducers, and we assume that every state is reachable from an initial state, and can reach an accepting state. Call the \emph{ratio} of a run the length of its output string divided by the length of its input string. We claim that the limit in the exercise is qual to 
 \begin{align*}
- \frac{\text{length of output string in $\rho$}}{\text{length of input string in $\rho$}},
+    \sup_\rho \frac{\text{length of output of $\rho$}}{\text{length of input of $\rho$}},
 \end{align*}
-where $\rho$ ranges over all cycles, i.e.~runs with the same source and target state. (We assume that all states can are reachable and co-reachable). The supremum is finite because each transition produces a bounded length output, and it is nonzero because the function has unbounded output size, and hence some cycle that produces a nonempty output.
+where $\rho$ ranges over runs that are cycles (same source and target state) with nonempty input. We first observe that the supremum is reached: indeed if we take any cycle which contains nested cycles, then removing the nested cycles can only improve the ratio, unless the nested cycles had better ration. Therefore, nested cycles cannot contribute to the supremum, and thus there are finitely many candidates for the cycle in the supremum, which means that the supremum is actually a maximum. Repeating for every a cycle achieves the maximum gives a lower bound on the limit in the statement of the exercise. This ratio is also an upper bound, since it can be approximated arbitrarily closely by cycles that appear in long runs. (A more formal analysis of the upper bound would look at strongly connected components of states in the automaton).
 {{< /latex >}}
 </div>
 </details>
@@ -75,7 +74,7 @@ where $\rho$ ranges over all cycles, i.e.~runs with the same source and target s
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
 \setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}
-\noindent\textbf{Solution.}\quad Consider the supremum in the solution to the previous exercise. By a pumping argument, this supremum is achieved by a simple cycle, i.e.~a cycle that does not visit any state twice except the source and target. Since there are finitely many simple cycles, the supremum is a maximum over a finite set of rational numbers, and hence it is a rational number.
+\noindent\textbf{Solution.}\quad As we have shown in the solution to the previous exercise, the supremal ratio is attained by a simple cycle.
 {{< /latex >}}
 </div>
 </details>
@@ -418,7 +417,11 @@ Finally, it remains to show that  if an ideal contains the function $f_k$, then 
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
 \setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}
-\noindent\textbf{Solution.}\quad The rational function can represent the next-step operation in a Turing machine. For such a function, the problem in the exercise is the same as deciding if the Turing machine makes a constant number of steps for every configuration, which is undecidable.
+\noindent\textbf{Solution.}\quad Encode a configuration of a Turing machine as a string which contains the contents of the tape, with the current state inserted at the position of the head. For a fixed Turing machine, the function which maps a configuration to the next one is rational: a bimachine copies the input string, except in the two positions next to the state, which it rewrites according to the transition function. (On strings that do not encode a configuration, the function can do anything, say leave the string unchanged.) The $n$-th iterate of this function maps a configuration to the configuration after $n$ steps.
+
+The set in the exercise is finite if and only if $f^n = f^{n+k}$ for some $n$ and some $k \geq 1$, i.e.~if and only if there is a bound $n$ such that the behaviour of the machine on \emph{every} configuration becomes periodic after at most $n$ steps. For a machine which stays in its halting configuration once it has halted, and which never visits the same configuration twice before halting, this says that every configuration halts after at most $n$ steps.
+
+It remains to reduce the halting problem to this property. Given a machine $M$ and an input string $x$, consider the machine which, on a tape of length $m$, simulates $M$ on the input $x$, and which halts as soon as the simulation would need more than $m$ tape cells. We can assume that $M$ never repeats a configuration, by adding a step counter to the tape; in particular, if $M$ does not halt on $x$, then its space grows without bound. If $M$ halts on $x$, then every configuration halts within a number of steps that does not depend on $m$, and the set of iterates is finite. If $M$ does not halt on $x$, then the number of steps before the simulation runs out of space grows with $m$, and hence there is no such bound.
 {{< /latex >}}
 </div>
 </details>

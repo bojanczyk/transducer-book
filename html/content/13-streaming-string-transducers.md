@@ -8,7 +8,7 @@ source = "sst.tex"
 \setcounter{mypart}{3}
 \setcounter{section}{2}
 \setcounter{ourexamplecounter}{19}
-% source stamp sst.tex:1c469e24
+% source stamp sst.tex:5f65549d
 \renewcommand{\exer}[2]{}
 \input{../../../sst.tex}
 {{< /latex >}}
@@ -22,6 +22,25 @@ source = "sst.tex"
 \label{exer:sst-sorting} Write an \sst over alphabet $\set{a,b}$ that sorts the input string, i.e.~it outputs all the $a$'s first, followed by all the $b$'s.
 \end{exercise}
 {{< /latex >}}
+<details class="solution">
+<summary>Show solution</summary>
+<div class="solution-body">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{3}\setcounter{section}{3}\setcounter{theorem}{2}
+\noindent\textbf{Solution.}\quad We use one state and two registers $X$ and $Y$, which store the letters $a$ and the letters $b$ that have been seen so far. The transitions are
+\begin{align*}
+q \xrightarrow{a \mid
+\begin{smallmatrix} X \\ Y \end{smallmatrix} \mapsto
+\begin{smallmatrix} Xa \\ Y \end{smallmatrix}} q
+\qquad \qquad
+q \xrightarrow{b \mid
+\begin{smallmatrix} X \\ Y \end{smallmatrix} \mapsto
+\begin{smallmatrix} X \\ Yb \end{smallmatrix}} q,
+\end{align*}
+and the final output function is $XY$. Both updates are copyless, since each register name is used once. After reading an input string, the register $X$ stores as many letters $a$ as the input has, and likewise for $Y$ and $b$, and therefore the output is the sorted input string.
+{{< /latex >}}
+</div>
+</details>
 </div>
 <div class="exercise" id="exercise-2">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
@@ -58,7 +77,13 @@ For the regular language, we use a monoid homomorphism. We can now simulate the 
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
 \setcounter{mypart}{3}\setcounter{section}{3}\setcounter{theorem}{2}
-\noindent\textbf{Solution.}\quad For each input letter, the lengths of strings in the registers can be at most multiplied by some fixed constant $c \in \set{1,2,\ldots}$. Hence the output size is  $\Oo(c^n)$.
+\noindent\textbf{Solution.}\quad For the upper bound, observe that for each input letter, the combined length of the strings in the registers can be at most multiplied by some fixed constant $c \in \set{1,2,\ldots}$, namely the maximal number of times that a register name is used in an update. Hence the output size is $\Oo(c^n)$, which is exponential and not doubly exponential.
+
+The upper bound is attained. Consider the copyful \sst with one register $X$, which starts empty, and the transitions
+\begin{align*}
+X \mapsto XXa,
+\end{align*}
+with the final output function $X$. After reading $n$ letters, the register stores a string of length $2^n - 1$, and hence the function $a^n \mapsto a^{2^n-1}$ is computed by a copyful \sst.
 {{< /latex >}}
 </div>
 </details>
@@ -75,7 +100,11 @@ For the regular language, we use a monoid homomorphism. We can now simulate the 
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
 \setcounter{mypart}{3}\setcounter{section}{3}\setcounter{theorem}{2}
-\noindent\textbf{Solution.}\quad The function $a^n \mapsto a^{2^n}$ can be computed by a copyful \sst, but the composition of this function with itself has doubly exponential size outputs.
+\noindent\textbf{Solution.}\quad By the previous exercise, the function $a^n \mapsto a^{2^n-1}$ is computed by a copyful \sst. The composition of this function with itself is
+\begin{align*}
+a^n \mapsto a^{2^{2^n-1}-1},
+\end{align*}
+which has doubly exponential output size, and hence it is not computed by a copyful \sst, again by the previous exercise.
 {{< /latex >}}
 </div>
 </details>
@@ -139,7 +168,7 @@ Hence, the values of $\alpha$ and $\beta$ on the output string can be computed b
 \begin{align*}
 \alpha(w) + 2 \cdot \beta(w),
 \end{align*}
-which is an injective function. This the problem of equivalence of copyful \sst's is reduced to the problem of equivalence of polynomial automata.
+which is an injective function. Thus the problem of equivalence of copyful \sst's is reduced to the problem of equivalence of polynomial automata.
 {{< /latex >}}
 </div>
 </details>

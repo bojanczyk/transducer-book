@@ -9,7 +9,7 @@ source = "logic.tex"
 \setcounter{section}{3}
 \setcounter{ourexamplecounter}{23}
 \renewcommand{\exer}[2]{}
-% source stamp logic.tex:adb3eac3
+% source stamp logic.tex:1d4c0cb9
 \input{../../../logic.tex}
 {{< /latex >}}
 
@@ -39,6 +39,107 @@ source = "logic.tex"
     L_\varphi \quad \eqdef \quad \setbuild{w \in A^*}{$w$ is nonempty and $w \models \varphi(x)$ for the last position $x$ of $w$},
     \end{align*}
     in the sense that $\varphi$ is true in a position of an input string if and only if the prefix up to and including this position belongs to $L_\varphi$. This language is definable in \mso, and hence it is regular by Theorem~\ref{thm:mso-logic-languages}. The Mealy machine for the relabelling is the product of deterministic automata for the languages $L_\varphi$, with $\varphi$ ranging over $\Phi$. The state of this product after reading a prefix of the input string tells us which formulas are true in the last position of this prefix; by the uniqueness requirement in the definition of an \mso relabelling, exactly one formula is true, and by the second restriction, it is mapped to a single output letter. Therefore, each transition of the product can be labelled by the output letter that corresponds to its target state, and the resulting Mealy machine computes the same function as the relabelling; for the empty input string, both produce the empty string thanks to the first restriction.
+{{< /latex >}}
+</div>
+</details>
+</div>
+<div class="exercise" id="exercise-2">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{3}\setcounter{section}{4}\setcounter{theorem}{16}\setcounter{exercise}{1}
+\begin{exercise}
+\label{exer:fo-non-elementary}
+Consider first-order formulas that define languages. Show that for every $n \in \set{1,2,\ldots}$ there is a first-order formula of size polynomial in $n$ such that the corresponding language contains exactly one string which has length  at least
+\begin{align*}
+\exp(n) = 
+\begin{cases}
+    1 & \text{if } n = 1 \\
+    2^{\exp(n-1)} & \text{if } n > 1.
+\end{cases}
+\end{align*}
+\end{exercise}
+{{< /latex >}}
+<details class="solution">
+<summary>Show solution</summary>
+<div class="solution-body">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{3}\setcounter{section}{4}\setcounter{theorem}{16}
+\noindent\textbf{Solution.}\quad By induction on  $n \in \set{0,1,\ldots}$ define the \emph{strings of order $n$} as follows. If $n=0$ then there is only one such string and it is empty. Consider now $n>0$ and let 
+    \begin{align*}
+    w_1,\ldots,w_\ell
+    \end{align*}
+    be the strings of order $n-1$, listed in lexicographic order.  The new alphabet is obtained by extending the previous alphabet with two fresh letters $0$ and $1$. A string  string of order $n$ is defined to be any string of the form 
+    \begin{align*}
+    a_1 w_1 a_2 w_2 \cdots a_\ell w_\ell  \qquad \text{where $a_1,\ldots,a_\ell \in \set{0,1}$}.
+    \end{align*}
+    At each increment $n$, the number of strings of order $n$ increases exponentially. We will now show that the first string of order $n$ can be defined by a first-order formula that is polynomial in $n$, thus completing the exercise. To prove this, we show a stronger claim which is amenable to induction. 
+    \begin{claim}
+        There is a first-order formula 
+        \begin{align*}
+            \varphi_n(x_1,x_2,y_1,y_2)
+        \end{align*}
+        of size polynomial in $n$ which holds if and only if
+        \begin{itemize}
+            \item $x_1 < x_2$ and the corresponding infix is a string of order $n$; and 
+            \item $y_1 < y_2$ and the corresponding infix is a string of order $n$; and
+            \item the  above two infixes  are consecutive in the lexicographic order on strings of order $n$.
+        \end{itemize}
+    \end{claim}
+    \begin{proof}
+        The induction step uses $\varphi_{n-1}$ to identify, inside two infixes of order $n$, the pairs of sub-infixes of order $n-1$ that carry the same index $i$: these are the pairs that can be reached from the first sub-infixes by applying the ``consecutive'' relation of order $n-1$ the same number of times. Being consecutive in the lexicographic order on strings of order $n$ then says that the bit sequences $a_1 \cdots a_\ell$ of the two infixes are consecutive binary numbers, i.e.~there is an index where the first has $0$ and the second has $1$, before it the bits agree, and after it the first has only $1$s and the second only $0$s. All of this is first-order, once the sub-infixes of order $n-1$ can be compared.
+
+        The only delicate point is the size. A naive translation uses $\varphi_{n-1}$ a constant number $c > 1$ of times, which would give formulas of size exponential in $n$. This is avoided by the standard trick of quantifying over the arguments: instead of writing several copies of $\varphi_{n-1}$ with different arguments, one writes a single copy applied to universally quantified arguments,
+        \begin{align*}
+        \forall u_1 u_2 v_1 v_2 \ \big( \ & \text{the arguments are one of the finitely many tuples we care about} \\
+        & \Rightarrow \ \varphi_{n-1}(u_1,u_2,v_1,v_2) \ \big),
+        \end{align*}
+        so that the size of $\varphi_n$ is the size of $\varphi_{n-1}$ plus a constant. The details are left to the reader.
+    \end{proof}
+{{< /latex >}}
+</div>
+</details>
+</div>
+<div class="exercise" id="exercise-3">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{3}\setcounter{section}{4}\setcounter{theorem}{17}\setcounter{exercise}{2}
+\begin{exercise}
+\label{exer:so-logic}
+In \mso, set quantification is restricted to sets of positions. In full second-order logic, we can quantify over sets of pairs, or sets of triples, etc. Show that second-order logic can define non-regular languages.
+\end{exercise}
+{{< /latex >}}
+<details class="solution">
+<summary>Show solution</summary>
+<div class="solution-body">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{3}\setcounter{section}{4}\setcounter{theorem}{17}
+\noindent\textbf{Solution.}\quad Consider the language $\setbuild{a^nb^n}{$n \geq 0$}$, which is not regular. It is defined by a formula of second-order logic which says that: (a) every position labelled $a$ is before every position labelled $b$; and (b) there is a binary relation $R$ on positions which is the graph of a bijection between the $a$-positions and the $b$-positions. The first condition is first-order. The second one uses a quantifier over a set of pairs of positions, and says that every pair in $R$ consists of an $a$-position and a $b$-position, that every $a$-position appears in exactly one pair, and that every $b$-position appears in exactly one pair; all of this is first-order, once the relation $R$ is available. Such a bijection exists if and only if the two sets have the same size, and hence the formula defines the language above.
+{{< /latex >}}
+</div>
+</details>
+</div>
+<div class="exercise" id="exercise-4">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{3}\setcounter{section}{4}\setcounter{theorem}{17}\setcounter{exercise}{3}
+\begin{exercise}
+\label{exer:fo-suc}
+    Consider the variant of first-order logic on strings in which the only available predicate is the successor relation, i.e.~the order relation is not available. Show that this logic is strictly weaker than first-order logic with order.
+\end{exercise}
+{{< /latex >}}
+<details class="solution">
+<summary>Show solution</summary>
+<div class="solution-body">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+\setcounter{mypart}{3}\setcounter{section}{4}\setcounter{theorem}{17}
+\noindent\textbf{Solution.}\quad The separating language is
+\begin{align*}
+\setbuild{w \in \set{a,b,c}^*}{$w$ has exactly one letter $b$ and exactly one letter $c$, \\ and the $b$ comes before the $c$}.
+\end{align*}
+With the order relation, this is defined by saying that there are positions $x < y$ labelled $b$ and $c$ respectively, and no other position is labelled $b$ or $c$. 
+
+To prove that it cannot be defined with the successor relation only, we use an Ehrenfeucht-Fra\"iss\'e argument. Fix a number $k$ of rounds, and consider the two strings
+\begin{align*}
+a^m b a^m c a^m \qquad \text{and} \qquad a^m c a^m b a^m,
+\end{align*}
+where $m$ is much bigger than $2^k$. The first one belongs to the language and the second one does not. In the game with the successor relation only, the duplicator wins in $k$ rounds: the invariant is that after $i$ rounds, the chosen positions are matched in such a way that two positions are at the same distance in both strings whenever that distance is at most $2^{k-i}$, and are far apart in both strings otherwise. This invariant can be maintained, because the only difference between the two strings is the order of the letters $b$ and $c$, which are at distance more than $2^k$ from each other. Since the duplicator wins, no formula of quantifier rank $k$ with successor only can distinguish the two strings, and hence no such formula defines the language.
 {{< /latex >}}
 </div>
 </details>

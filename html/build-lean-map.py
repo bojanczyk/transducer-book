@@ -123,9 +123,13 @@ def read_book():
 # the formalisation: Lean sources
 # --------------------------------------------------------------------------
 
+# The name is matched with \w rather than [A-Za-z0-9_], because Lean names are
+# not ASCII: `exists_isTwoNFT₁_not_isTwoNFT₂` was being indexed as
+# `exists_isTwoNFT`, truncated at the subscript, so nothing that referred to it
+# by its real name could be found in the sources at all.
 DECL = re.compile(r"^\s*(?:@\[[^\]]*\]\s*)?(?:private\s+|protected\s+|noncomputable\s+)*"
                   r"(?:theorem|lemma|def|abbrev|instance|structure|inductive|class)\s+"
-                  r"([A-Za-z_][A-Za-z0-9_'.]*)", re.M)
+                  r"([^\W\d][\w'.]*)", re.M)
 DOC_KIND = "|".join(k.capitalize() for k in KINDS)
 
 
@@ -361,10 +365,19 @@ def state_of(name, bodies, witness):
 # the formalisation's own summary: THEOREMS.md
 # --------------------------------------------------------------------------
 
+# What a Lean declaration name can look like: letters, digits, underscores,
+# primes, dotted namespaces. Notably *not* a colon — which is what tells a Lean
+# name from one of the book's own labels. Rows here often mention a label in
+# passing ("the Lean proof of Theorem `thm:pebble-are-for` replaces it"), and
+# reading that as a declaration is how Lemma D.2.2 came to claim it was
+# formalised by something it merely refers to.
+LEAN_NAME = re.compile(r"^[^\W\d][\w'!?]*(\.[\w'!?]+)*$")
+
+
 def lean_names_in(cell):
-    """Backticked declaration names in a cell — file paths are not names."""
+    """Backticked declaration names in a cell — file paths and labels are not."""
     return [n for n in re.findall(r"`([^`]+)`", cell)
-            if not n.endswith(".lean") and "/" not in n]
+            if not n.endswith(".lean") and "/" not in n and LEAN_NAME.match(n)]
 
 
 def number_key(num):
@@ -422,6 +435,9 @@ def read_theorems_md(book):
             continue
         names = lean_names_in(cells[1])
         absent = "not formalised" in cells[1].lower()
+        # "Mathlib's `Semiring`" — the one thing that licenses calling a name we
+        # cannot find in this project *formalised elsewhere* rather than missing.
+        mathlib = "mathlib" in line.lower()
         if len(results) > 1:
             # pair them up only when the row names exactly one declaration per
             # result; anything else is prose, not a mapping
@@ -430,6 +446,7 @@ def read_theorems_md(book):
                 out[key] = {"names": [names[i]] if paired else [],
                             "status": re.sub(r"\s+", " ", cells[1])[:160],
                             "internal": paired and absent,
+                            "mathlib": mathlib,
                             "not_formalised": absent and not paired}
             continue
         if not names:
@@ -437,7 +454,7 @@ def read_theorems_md(book):
         status = cells[2] if len(cells) > 2 else ""
         out[results[0]] = {
             "names": names, "status": re.sub(r"\s+", " ", status).strip(" —-"),
-            "internal": False, "not_formalised": absent}
+            "internal": False, "mathlib": mathlib, "not_formalised": absent}
     return out
 
 
@@ -482,9 +499,6 @@ def build():
             if n.split(".")[-1] in seen:
                 continue
             st, w = state_of(n, bodies, witness)
-            if st == "missing":
-                # not in this project: THEOREMS.md is pointing at Mathlib
-                st, w = "external", None
             loc = locations.get(n) or locations.get(n.split(".")[-1]) or \
                   next((v for k2, v in locations.items()
                         if k2.split(".")[-1] == n.split(".")[-1]), None)
@@ -492,6 +506,21 @@ def build():
                           **(loc or {"file": None, "line": None}),
                           **({"rests_on": w} if w else {}), "from": "THEOREMS.md",
                           **({"internal": True} if md[key].get("internal") else {})})
+        # A name this project does not define is one of two quite different
+        # things, and the difference is not ours to guess: either the result is
+        # formalised elsewhere — Definition B.3.1 is Mathlib's `Semiring`, and
+        # THEOREMS.md says as much — or the name no longer resolves, which is
+        # drift to report rather than a fact to print under the result. Printing
+        # "provided by Mathlib" for the latter states something false about the
+        # formalisation; printing the bare word "missing" for the former says
+        # nothing useful about a result that is, in fact, formalised.
+        mathlib = md.get(key, {}).get("mathlib", False)
+        unresolved = [d["name"] for d in decls if d["state"] == "missing" and not mathlib]
+        for d in decls:
+            if d["state"] == "missing" and mathlib:
+                d["state"] = "external"
+        decls = [d for d in decls if d["state"] != "missing"]
+
         # A result often has several declarations carrying its number: the
         # statement itself plus the two directions of an iff, say. THEOREMS.md
         # names the one it considers canonical, so prefer that; failing that,
@@ -504,6 +533,8 @@ def build():
             decls[0]["primary"] = True
         e = {"kind": kind, "number": number, "label": b["label"],
              "page": b["page"], "anchor": b["anchor"], "lean": decls}
+        if unresolved:
+            e["unresolved"] = unresolved
         if key in md:
             e["theorems_md_status"] = md[key]["status"]
         excuse = registry.get("__excused__", {}).get(key)
@@ -546,6 +577,14 @@ def report(book, lean, md, entries):
         for lab, e in sorted(unlinked, key=lambda r: r[1]["number"]):
             print(f"   {e['kind']:11s} {e['number']:8s}  {lab}")
         problems += len(unlinked)
+
+    stale = [(k, e) for k, e in entries.items() if e.get("unresolved")]
+    if stale:
+        print(f"\nnamed in THEOREMS.md or Labels.lean but not found in the sources "
+              f"({len(stale)}) — renamed upstream, or never there:")
+        for lab, e in sorted(stale, key=lambda r: number_key(r[1]["number"])):
+            print(f"   {e['kind']:11s} {e['number']:8s}  {', '.join(e['unresolved'])}")
+        problems += len(stale)
 
     booknums = set(book)
     orphan_doc = sorted(set(lean) - booknums)

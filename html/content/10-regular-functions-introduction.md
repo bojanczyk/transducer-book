@@ -9,7 +9,7 @@ part = true
 \setcounter{mypart}{3}
 \setcounter{section}{0}
 \setcounter{ourexamplecounter}{17}
-% source stamp regular-intro.tex:39984157
+% source stamp regular-intro.tex:12965b84
 \renewcommand{\exer}[2]{}
 \input{../../../regular-intro.tex}
 {{< /latex >}}
@@ -33,7 +33,13 @@ part = true
    Functions compatible with compression are closed under map lifting.
 \end{claim}
 \begin{proof}
-    The idea is that we can always improve a compression in polynomial time so that it is consistent with the separators,  i.e.~the grammar has two phases: above and below the separators. Once this improvement is done, we can apply the map lifting operation to the grammar, and then apply the function to each block.
+    The idea is that we can always improve a compression in polynomial time so that it is consistent with the separators in the following sense. Apart from the starting nonterminal, there are two kinds of nonterminals, called external and internal. Internal nonterminals generate strings without separators. For an external nonterminal, the rules must be of the form 
+    \begin{align*}
+    X \to \myunderbrace{YZ}{both are external}\qquad \text{or} \qquad  X \to \#\myunderbrace{Y}{internal}
+    \end{align*}
+    The initial nonterminal has a rule of the form $S \to XY$ where $X$ is internal and $Y$ is external. The idea is that the internal nonterminals generate the blocks, and the external nonterminals generate sequences of blocks. 
+
+    One can show without much difficulty that any grammar compression can be transformed into this form in polynomial time. The transformation is done by splitting the rules of the grammar at the separators, and introducing new nonterminals for the parts that are split off. After transforming into the form, we can apply the assumption on the original function to the blocks, which are the nonterminals $Y$ in the rules $X \to \#Y$.
 \end{proof}
 {{< /latex >}}
 </div>

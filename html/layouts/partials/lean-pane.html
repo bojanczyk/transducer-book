@@ -234,6 +234,12 @@
     return e.lean[0];
   }
 
+  // The list has room for a word, not a sentence — but "external" is jargon for
+  // "someone else proved this", and the reader should not have to learn it.
+  function shortState(d) {
+    return d.state === 'external' ? 'Mathlib' : d.state;
+  }
+
   function stateLabel(d) {
     if (d.state === 'blocked') return 'rests on ' + (d.rests_on || 'an open result');
     if (d.state === 'external') return 'provided by Mathlib';
@@ -332,7 +338,8 @@
       if (formalised(e)) {
         var d = pick(e);
         html += '<code>' + esc(d.name) + '</code>' +
-                '<span class="lean-state lean-st-' + d.state + '">' + esc(d.state) + '</span>' +
+                '<span class="lean-state lean-st-' + d.state + '">' +
+                esc(shortState(d)) + '</span>' +
                 (d.internal ? '<span class="lean-state lean-st-internal">internal</span>' : '');
       } else {
         html += '<span class="lean-state lean-st-none">not formalised</span>';

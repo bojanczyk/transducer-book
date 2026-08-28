@@ -8,7 +8,7 @@ source = "2dfa.tex"
 \setcounter{mypart}{3}
 \setcounter{section}{1}
 \setcounter{ourexamplecounter}{18}
-% source stamp 2dfa.tex:fe48d553
+% source stamp 2dfa.tex:7619e1e4
 \renewcommand{\exer}[2]{}
 \input{../../../2dfa.tex}
 {{< /latex >}}
@@ -27,7 +27,9 @@ source = "2dfa.tex"
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
 \setcounter{mypart}{3}\setcounter{section}{2}\setcounter{theorem}{12}
-\noindent\textbf{Solution.}\quad A rational function can be compute the run graph, and then output all of the output letters in it. The order of output is irrelevant, since the output alphabet is unary.
+\noindent\textbf{Solution.}\quad One inclusion is immediate, since rational functions are regular. For the other one, consider a two-way transducer, and recall from \cref{lem:compute-configuration-graph} that the function which maps an input string to the string representation of its reachable configuration graph is rational. In that representation, each input position carries one slice of the graph, and the slice determines the output strings of the transitions that are performed while the head is in that position; there are boundedly many of them, since the reachable configuration graph is a path that crosses each position at most once per state.
+
+Therefore, we can post-compose the rational function above with the letter-to-letter homomorphism which maps a slice to the concatenation of the output strings of its edges. This is again a rational function, and it produces the same letters as the two-way transducer, but ordered by input position rather than by the order in which the transducer produces them. Since the output alphabet has one letter, the two orders give the same string.
 {{< /latex >}}
 </div>
 </details>
@@ -36,7 +38,7 @@ source = "2dfa.tex"
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
 \setcounter{mypart}{3}\setcounter{section}{2}\setcounter{theorem}{12}\setcounter{exercise}{1}
 \begin{exercise}
-\label{exer:2dfa-boolean} Consider  languages (not functions) recognised by two-way deterministic automata. Show that this class is closed under Boolean combinations: union, interesection and compelement. Furhtermore, all constructions are polynomial in the automaton size.
+\label{exer:2dfa-boolean} Consider  languages (not functions) recognised by two-way deterministic automata. Show that this class is closed under Boolean combinations: union, intersection and complement. Furthermore, all constructions are polynomial in the automaton size.
 \end{exercise}
 {{< /latex >}}
 <details class="solution">
@@ -44,7 +46,7 @@ source = "2dfa.tex"
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
 \setcounter{mypart}{3}\setcounter{section}{2}\setcounter{theorem}{12}
-\noindent\textbf{Solution.}\quad As discussed in this book, a two-way automaton must eventually output ``yes'' or ``no''.  This makes complementation trivial: just swap the outputs.  For intresection: first run the first automaton, and if it outputs ``yes'', then return to the beginning of the input and run the second automaton, returning its output. Otherewise, output ``no''.  For union, the construction is similar.
+\noindent\textbf{Solution.}\quad As discussed in this book, a two-way automaton must eventually output ``yes'' or ``no''. This makes complementation trivial: just swap the outputs, without changing the number of states. For intersection: first run the first automaton, and if it outputs ``yes'', then return the head to the beginning of the input and run the second automaton, returning its output; otherwise output ``no''. Returning to the beginning of the input costs one extra state, which walks left until it falls off the input, and hence the number of states is the sum of the two, plus a constant. For union, the construction is the same, except that the second automaton is run when the first one outputs ``no''. (Alternatively, union is obtained from intersection and complementation, again without leaving the polynomial regime.)
 {{< /latex >}}
 </div>
 </details>
@@ -53,7 +55,7 @@ source = "2dfa.tex"
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
 \setcounter{mypart}{3}\setcounter{section}{2}\setcounter{theorem}{12}\setcounter{exercise}{2}
 \begin{exercise}
-\label{exer:2dfa-complexity} Consider  languages (not functions) recognised by two-way deterministic automata. Show that the minimal accepted string might exponential in the automaton size.
+\label{exer:2dfa-complexity} Consider  languages (not functions) recognised by two-way deterministic automata. Show that the shortest accepted string might be exponential in the automaton size.
 \end{exercise}
 {{< /latex >}}
 <details class="solution">
@@ -61,7 +63,11 @@ source = "2dfa.tex"
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
 \setcounter{mypart}{3}\setcounter{section}{2}\setcounter{theorem}{12}
-\noindent\textbf{Solution.}\quad In \cref{exer:2dfa-boolean},  we showed that intersection can be achived in a linear fashion. Therefore, one can write a deterministic two-way automaton which checks if the input length is divisible by prime numbers $p_1,\ldots,p_n$, so that the number of states is proportional to the sum of the prime numbers.
+\noindent\textbf{Solution.}\quad In \cref{exer:2dfa-boolean}, we showed that intersection can be achieved with a number of states that is the sum of the two automata. Therefore, one can write a deterministic two-way automaton which checks if the input length is divisible by each of the prime numbers $p_1,\ldots,p_n$, so that the number of states is proportional to the sum of the prime numbers. Checking divisibility by $p_i$ needs $p_i$ states in a single left-to-right pass. The shortest accepted string has length
+\begin{align*}
+p_1 \cdots p_n,
+\end{align*}
+which is exponential in $p_1 + \cdots + p_n$, and hence exponential in the number of states.
 {{< /latex >}}
 </div>
 </details>
@@ -78,7 +84,9 @@ source = "2dfa.tex"
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
 \setcounter{mypart}{3}\setcounter{section}{2}\setcounter{theorem}{12}
-\noindent\textbf{Solution.}\quad We look at the run graph and check if it contains a loop reachable from the initial state. This is a regular property.
+\noindent\textbf{Solution.}\quad We use the representation  of the configuration graph from the proof of \cref{thm:continuity-2dfas}: an input string is described by the string over the alphabet $C$ in which each position carries the corresponding column of the configuration graph. As observed in the proof of \cref{lem:compute-configuration-graph}, the strings over $C$ that arise this way form a regular language, and the function which maps an input string to the representation of its configuration graph is rational.
+
+The transducer terminates on an input string if and only if the graph of that string admits a path from the initial configuration to the halting vertex. This is a regular property of the (string representation of the) graph: a nondeterministic automaton reads the columns from left to right, and guesses the path through them, remembering only the states in which the path crosses the current position, and whether the halting vertex has already been reached. Since rational functions are continuous, the inverse image of this regular language is a regular language of input strings.
 {{< /latex >}}
 </div>
 </details>
@@ -87,7 +95,7 @@ source = "2dfa.tex"
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
 \setcounter{mypart}{3}\setcounter{section}{2}\setcounter{theorem}{12}\setcounter{exercise}{4}
 \begin{exercise}
-\label{exer:2dfa-loop-elimination-sipser} Improve that solution to the previous exerise, so that the regular language is polynomial, in terms of a deterministic two-way automaton that recognises it. (Hint: use a depth-first search on the run graph, but with a special trick.)
+\label{exer:2dfa-loop-elimination-sipser} Improve the solution to the previous exercise, so that the regular language is polynomial, in terms of a deterministic two-way automaton that recognises it. (Hint: use a depth-first search on the run graph, but with a special trick.)
 \end{exercise}
 {{< /latex >}}
 <details class="solution">
@@ -97,6 +105,8 @@ source = "2dfa.tex"
 \setcounter{mypart}{3}\setcounter{section}{2}\setcounter{theorem}{12}
 \noindent\textbf{Solution.}\quad Without loss of generality we assume that the transducer halts in a fixed configuration, where the head is at the left end of the input string and the state is a fixed final state.
     Consider the configuration graph of the two-way transducer on some input string. This is a directed graph, in which every vertex has out-degree one or zero by determinism. We want to check if the unique initial configuration can reach the unique final configuration. If we look at the configurations that can reach the unique final configuration, then the corresponding part of the graph is a tree, since it does not contain cycles. This part of the graph can be explored by depth-first search, starting in the unique final configuration. If the search finds the initial configuration, one should accept, otherwise one should reject.
+
+    The trick is that this depth-first search is performed by a two-way automaton whose number of states is polynomial. The current vertex of the search is a configuration, and hence it is stored for free: its position is the position of the head, and its state is remembered in the state of the searching automaton. To move down in the tree, the automaton needs to enumerate the children of the current vertex, i.e.~the configurations which lead to it in one step; these are determined by a state and a direction, and hence there are boundedly many of them, and each one is at distance one from the current position. To move up in the tree, the automaton applies the transition function of the transducer, which is deterministic, and therefore it does not need a stack: the parent is computed from the child. The only extra information that has to be remembered is which child of the current vertex has been explored last, which is again bounded. Summing up, the state space of the searching automaton is the state space of the transducer times a bounded amount of bookkeeping.
 {{< /latex >}}
 </div>
 </details>
@@ -146,7 +156,9 @@ Let us now show that the second model is not contained in the first one. The fea
 \begin{align*}
 \setbuild{(w, vv)}{$|v| = |w|$},
 \end{align*}
-where the input alphabet is $\set{a}$  and the output alphabet is $\set{a,b}$. In other words, given an input $a^n$, the transducer guesses some string in $v \in \set{a,b}^n$ and writes it twice. This can be easily achieved by the second model.   To see why it cannot be computed by the first model,    consider a long input string $a^n$, and the configurations that are reachable after outputting exactly $n$ letters (i.e.~half of the output string). The number of such configurations is linear in $n$, while it should be exponential in $n$ in order to track the output that has been produced so far.
+where the input alphabet is $\set{a}$  and the output alphabet is $\set{a,b}$. In other words, given an input $a^n$, the transducer guesses some string in $v \in \set{a,b}^n$ and writes it twice. This can be easily achieved by the second model.
+
+To see why it cannot be computed by the first model, consider a transducer of the first kind, and an input string $a^n$ where $n$ is large enough that $2^n$ is bigger than the number of configurations, which is the number of states times $n+1$. For each $v \in \set{a,b}^n$ there is an accepting run which outputs $vv$; consider the configuration in which this run has produced exactly the first half of its output, i.e.~exactly $n$ output letters. There are $2^n$ strings $v$ and only linearly many configurations, and therefore two different strings $v_1 \neq v_2$ give the same configuration $c$. But then we can cut and paste: follow the run for $v_1$ up to $c$, and then continue with the second half of the run for $v_2$. This is again an accepting run, and its output is $v_1 v_2$, which does not belong to the relation.
 {{< /latex >}}
 </div>
 </details>
@@ -164,9 +176,17 @@ Consider the two models from the previous exercise. Show that both can be unifor
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
 \setcounter{mypart}{3}\setcounter{section}{2}\setcounter{theorem}{12}
-\noindent\textbf{Solution.}\quad We begin with the first model. Consider the configuration graph on the transducer on some input string. A rational relation can be used to output non-looping runs in this graph, and the uniformisation result from \cref{lem:uniformisation} can be applied to obtain compute deterministically a single path for each input string. Once the run has been chosen, the output can be computed by a two-way transducer.
+\noindent\textbf{Solution.}\quad We begin with the first model. As in the proof of \cref{thm:continuity-2dfas}, a run of the transducer on an input string is presented by slicing its configuration graph, i.e.~by a string over the alphabet $C$ in which each input position carries the part of the run that crosses it. The pairs
+\begin{align*}
+(\text{input string},\ \text{slicing of an accepting run on it})
+\end{align*}
+form a rational relation, since being a slicing of an accepting run is a regular property, checked slice by slice as in \cref{lem:compute-configuration-graph}. If the relation computed by the transducer is total, then this rational relation is total as well, and hence, by \cref{lem:uniformisation}, it contains a rational function, which chooses one accepting run for each input string. Once the run has been chosen, its output is produced by a letter-to-letter homomorphism, as in \cref{exer:2dfa-unary-output}, except that this time the letters have to be produced in the order of the run and not in the order of the input positions; this is done by a two-way transducer which follows the chosen run. Since regular functions are closed under composition, and a rational function followed by a two-way transducer is regular, we get a deterministic two-way transducer, as required.
 
-For the second model, the argument is similar. A rational relation chooses some valid guess, and then the uniformisation result from \cref{lem:uniformisation} can be applied to obtain a single valid guess for each input string. Once the guess has been chosen, the output can be computed by a two-way transducer.
+For the second model, the argument is similar, and simpler. The pairs
+\begin{align*}
+(\text{input string},\ \text{a valid labelling of it by the auxiliary alphabet})
+\end{align*}
+form a rational relation, indeed a letter-to-letter one, because the valid labellings form a regular language. If the relation is total, then \cref{lem:uniformisation} gives a rational function which chooses one valid labelling for each input string, and the deterministic two-way transducer of the model is then applied to the result.
 {{< /latex >}}
 </div>
 </details>

@@ -9,7 +9,7 @@ source = "regular-primes.tex"
 \setcounter{section}{0}
 \setcounter{ourexamplecounter}{18}
 \renewcommand{\exer}[2]{}
-% source stamp regular-primes.tex:571444c1
+% source stamp regular-primes.tex:05d3407f
 \input{../../../regular-primes.tex}
 {{< /latex >}}
 
@@ -58,7 +58,7 @@ source = "regular-primes.tex"
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
 \setcounter{mypart}{3}\setcounter{section}{1}\setcounter{theorem}{5}
-\noindent\textbf{Solution.}\quad By \cref{thm:characterisation-rational-functions-weighted-automata}, a function if rational if and only if weighted automata are closed under pre-composition with it. Therefore, it is enough to show that there exists a regular function which is not rational. The string reverse function is regular, but not rational as we have shown in Example \ref{ex:string-reversal-not-rational}.
+\noindent\textbf{Solution.}\quad By \cref{thm:characterisation-rational-functions-weighted-automata}, a function is rational if and only if weighted automata are closed under pre-composition with it. Therefore, it is enough to show that there exists a regular function which is not rational. The string reverse function is regular, but not rational as we have shown in Example \ref{ex:string-reversal-not-rational}.
 {{< /latex >}}
 </div>
 </details>
