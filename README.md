@@ -30,10 +30,15 @@ recording whether it is proved outright.
 of the book is still named by its number; `tools/gen_labels.py --check`
 verifies `RequestProject/Labels.lean` against `LABELS.md`, `THEOREMS.md` and
 `EXERCISES.md`, with `--emit LABEL` printing the boilerplate for a new entry;
-and `tools/decl_files.py --check` verifies the `File` column of the index of
-`THEOREMS.md` against the files that actually declare the named declarations.
-The first three expect the LaTeX sources of the book, and `main.aux` in
-particular, in the parent directory; pass `--book DIR` if they are elsewhere.
+`tools/decl_files.py --check` verifies the `File` column of the index of
+`THEOREMS.md` against the files that actually declare the named declarations;
+and `tools/print_axioms.sh` runs `#print axioms` on every alias of
+`RequestProject/Labels.lean` and reports any that depends on `sorryAx` or on an
+axiom other than `propext`, `Classical.choice`, `Quot.sound`.  The first three
+expect the LaTeX sources of the book, and `main.aux` in particular, in the
+parent directory; pass `--book DIR` if they are elsewhere.  `lake build` is run
+from this directory (`transducer-lean/`), which is the root of the Lean
+package.
 
 Structure of the sources (`RequestProject.lean` imports everything):
 

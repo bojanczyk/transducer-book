@@ -78,7 +78,7 @@ lemma preBlk_append (u v : List (Option A)) :
 lemma sufBlk_append (u v : List (Option A)) :
     sufBlk (u ++ v) = (if hasSep v then [] else sufBlk u) ++ sufBlk v := by
   induction u with
-  | nil => cases h : hasSep v <;> simp [sufBlk, h]
+  | nil => cases hasSep v <;> simp [sufBlk]
   | cons x u ih =>
       cases x with
       | none => simp [sufBlk, ih]
@@ -117,8 +117,8 @@ lemma midB_append (f : List A → List B) (u v : List (Option A)) :
   induction u with
   | nil =>
       cases h : hasSep v with
-      | false => simp [hasSep, midB_eq_nil h, h]
-      | true => simp [hasSep, h]
+      | false => simp [hasSep, midB_eq_nil h]
+      | true => simp [hasSep]
   | cons x u ih =>
       cases x with
       | none =>
@@ -126,15 +126,15 @@ lemma midB_append (f : List A → List B) (u v : List (Option A)) :
           cases hu : hasSep u with
           | false =>
               cases hv : hasSep v with
-              | false => simp [hu, hv, sufBlk]
-              | true => simp [hu, hv, preBlk_append, sufBlk, sufBlk_eq_preBlk hu]
+              | false => simp
+              | true => simp [hu, preBlk_append, sufBlk, sufBlk_eq_preBlk hu]
           | true =>
               cases hv : hasSep v with
-              | false => simp [hu, hv, preBlk_append, sufBlk]
-              | true => simp [hu, hv, preBlk_append, sufBlk]
+              | false => simp [hu, preBlk_append]
+              | true => simp [hu, preBlk_append, sufBlk]
       | some a =>
           simp only [List.cons_append, midB, hasSep, ih, sufBlk]
-          cases hu : hasSep u <;> cases hv : hasSep v <;> simp [hu, hv]
+          cases hu : hasSep u <;> cases hv : hasSep v <;> simp
 
 /-! ## The decomposition of the image -/
 
@@ -216,7 +216,7 @@ lemma restB_eq (f : List A → List B) (u : List (Option A)) :
       | some a =>
           rw [restB_cons_some, ih]
           cases hu : hasSep u with
-          | false => simp [midB, hu, sufBlk, hasSep]
+          | false => simp [midB, hu, hasSep]
           | true => simp [midB, hu, sufBlk, hasSep]
 
 /-- **The decomposition of the image.**  The image of a string under the lifting of `f` is the

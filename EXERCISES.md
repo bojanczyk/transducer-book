@@ -760,3 +760,57 @@ Three statements carry an explicit hypothesis rather than being proved outright:
 `exer:rational-relations-intersection-undecidable` and item (a) of
 `exer:decide-rational-colision` (the undecidability of the Post correspondence
 problem, exactly as the numbered undecidability results of the book do).
+
+## Status (closing audit)
+
+This section is the final recount of the exercises; it supersedes the counts of
+the `## Status` sections above, which were written when fewer chapters had been
+done.  Nothing else in this file is changed by it: the index tables above are
+correct and are what the recount is based on.
+
+**The book has 81 exercises.**  The sources contain 83 `\exer` environments, but
+two of them are commented out and carry no number in `main.aux`, so they are not
+exercises of the book: the one at line 311 of `rational-functions.tex` (whose
+solution is empty as well, so it is the one exercise-shaped environment with no
+written solution) and the unlabelled one at line 440 of the same file.  Both were already
+described under *Exercises that are not formalised (continued)*.  Every one of
+the 81 has a written solution.
+
+**Sixty-five are formalised and proved**, and **sixteen are not**.  Each of the
+65 has an alias in `RequestProject/Labels.lean` followed by `assert_no_sorry`,
+and none of the 16 has an alias, which is what makes this index self-checking.
+There is no `sorry` anywhere in `RequestProject/Exercises/`, and `#print axioms`,
+run in the closing audit on all 196 aliases of `RequestProject/Labels.lean` —
+the 80 that belong to exercises included — reports only `propext`,
+`Classical.choice`, `Quot.sound` for every one of them: no exercise that this
+file calls proved depends on `sorryAx`.
+
+### The sixteen exercises of the book that have a written solution and no formalisation
+
+All sixteen have a solution written out in the book; the reason each is left out
+is given in the two *Exercises that are not formalised* sections above, and is
+summarised here so that the list can be read in one place.
+
+| Exercise | chapter | why it is left out |
+| --- | --- | --- |
+| `exer:rational-outpus-of-exactly-linear-size` | `rational-functions.tex` | the maximum cycle mean of a weighted graph, which the project does not have |
+| `exer:rational-outpus-of-exactly-linear-size-rational-number` | `rational-functions.tex` | same |
+| `exer:regular-outpus-of-exactly-linear-size` | `2dfa.tex` | reduces to the two above through `exer:2dfa-unary-output` |
+| `exer:full-ideal` | `rational-functions.tex` | the growth rates of regular languages, and the pattern analysis of `exer:polynomial-image-growth-decidable` |
+| `exer:polynomial-ideals` | `rational-functions.tex` | same |
+| `exer:all-ideals` | `rational-functions.tex` | same |
+| `exer:decide-same-ideal` | `rational-functions.tex` | same, plus a decision procedure about codes of automata |
+| `exer:rational-injectivity-decidable` | `rational-functions.tex` | the *first* step of the solution is proved (`Exercises/RatInjective.lean`); the decision procedure needs a *computable* form of the Uniformisation Lemma, which the project does not have |
+| `exer:rational-composition-finiteness-undecidable` | `rational-functions.tex` | the undecidability reduction is not carried out for codes of automata |
+| `exer:minimal-bimachine-lexicographic` | `myhill-nerode.tex` | a Myhill–Nerode theory for bimachines, which the project does not have |
+| `exer:non-minimal-automaton` | `myhill-nerode.tex` | the hard half is a case analysis over all two-state unambiguous transducers that the solution itself only sketches |
+| `exer:fo-non-elementary` | `logic.tex` | non-elementary succinctness of first-order sentences |
+| `exer:fo-suc` | `logic.tex` | Ehrenfeucht–Fraïssé games, which the project does not have |
+| `exer:polyregular-unmarked-squaring` | `polyregular-intro.tex` | rests on the polynomial *time* half of the two compression exercises, and running time is not modelled |
+| `exer:for-transducer-continuity-nonelementary` | `polyregular-for.tex` | rests on `exer:fo-non-elementary` |
+| `exer:forward-for-transducer` | `polyregular-for.tex` | asks for both inclusions of Theorem `thm:for-transducers-are-polyregular` to be replayed with the direction of every loop tracked; the project's proof of that theorem does not have the shape the solution refines |
+
+Item (b) of `exer:decide-rational-colision` is left out for the same reason as
+`exer:rational-composition-finiteness-undecidable`; item (a) is proved, from the
+undecidability of the Post correspondence problem, so the exercise itself counts
+among the 65.

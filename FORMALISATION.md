@@ -8,7 +8,9 @@ short; the exhaustive tables are in `THEOREMS.md` (numbered results) and
 `EXERCISES.md` (exercises), and the file-by-file map is in `README.md`.
 
 Everything below was checked on a `lake build` of the whole project from
-scratch, which succeeds with no errors.
+scratch, which succeeds with no errors (8386 jobs).  Its only diagnostics are 47
+Lean linter warnings about unused variables inside auxiliary proofs; they are
+inventoried in `THEOREMS.md`, and none of them touches a statement.
 
 ## 1. How much is done
 
@@ -29,9 +31,12 @@ In Part C every numbered result is proved as well; the one qualification is
 Theorem `thm:decidable-equivalence-regular`, which is conditional in the sense
 of §4.
 
-Of the book's **83 exercises**, **63 are formalised and proved**, in
-`RequestProject/Exercises/`; the remaining 20 are listed with a reason in
-`EXERCISES.md`, and 19 of them have a written solution in the book.
+Of the book's **81 exercises**, **65 are formalised and proved**, in
+`RequestProject/Exercises/`; the remaining 16 are listed with a reason in
+`EXERCISES.md`, and every one of them has a written solution in the book.  (The
+sources contain 83 `\exer` environments, but two of them, in
+`rational-functions.tex`, are commented out and carry no number, so they are not
+exercises of the book.)
 
 ## 2. Conventions
 
@@ -176,12 +181,25 @@ formalisation is meant to establish.
   author's request.  Its easy half survives, proved, as
   `Transducers.isFOTransduction_of_compClosure`.
 
-Of the exercises, 20 are not formalised; `EXERCISES.md` groups them by reason.
+Of the exercises, 16 are not formalised; `EXERCISES.md` groups them by reason.
 The recurring ones are statements about running time (which this project does
-not model) and statements that rest on theory the project does not have
-(maximum cycle mean of a weighted graph, Ehrenfeucht–Fraïssé games).
+not model), decidability statements whose reduction would have to be carried out
+for *codes* of automata, and statements that rest on theory the project does not
+have (the growth rates of regular languages, the maximum cycle mean of a
+weighted graph, Ehrenfeucht–Fraïssé games).  In full, they are
+`exer:rational-outpus-of-exactly-linear-size`,
+`exer:rational-outpus-of-exactly-linear-size-rational-number`,
+`exer:regular-outpus-of-exactly-linear-size`, `exer:full-ideal`,
+`exer:polynomial-ideals`, `exer:all-ideals`, `exer:decide-same-ideal`,
+`exer:rational-injectivity-decidable`,
+`exer:rational-composition-finiteness-undecidable`,
+`exer:minimal-bimachine-lexicographic`, `exer:non-minimal-automaton`,
+`exer:fo-non-elementary`, `exer:fo-suc`, `exer:polyregular-unmarked-squaring`,
+`exer:for-transducer-continuity-nonelementary` and
+`exer:forward-for-transducer`, together with item (b) of the otherwise
+formalised `exer:decide-rational-colision`.
 
-Three of the 63 that *are* formalised diverge from the literal statement of the
+Three of the 65 that *are* formalised diverge from the literal statement of the
 exercise, and each divergence is recorded on the Lean statement and in
 `EXERCISES.md`.  `exer:rational-compression` and `exer:regular-compression` ask
 for a polynomial time algorithm turning a grammar compression of the input into
@@ -215,4 +233,6 @@ The bookkeeping is checked by machine rather than by hand.
   `File` column of the index of `THEOREMS.md` with where the declarations
   actually live.
 * `tools/relabel.py` finds any place where a result is still referred to by
-  number instead of by label.
+  number instead of by label, and `tools/print_axioms.sh` runs `#print axioms`
+  on all 196 aliases and reports any that depends on `sorryAx` or on a
+  non-standard axiom.  Neither finds anything.

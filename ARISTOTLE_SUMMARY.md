@@ -1,3 +1,48 @@
+# Summary of the closing audit of the project
+
+This run proved no new result; it audited the whole project and brought the
+three index files into their final state.
+
+* **`lake build` from scratch** (run from `transducer-lean/`, with an empty
+  `.lake/build`) succeeds: **8386 jobs, no errors**.  The only diagnostics are
+  **47** Lean linter warnings, all inside auxiliary proofs: 30 ×
+  `automatically included section variable(s) unused` and 17 × `unused
+  variable`.  Both would change the signature of a helper lemma if acted on, so
+  they are left in place and are inventoried file by file in the *The warnings
+  of the build* section of `THEOREMS.md`.  The 13 remaining mechanical warnings
+  (unused `simp` arguments in `Exercises/CompressionMapLift.lean`, which had
+  been added after the previous audit) were removed in this run.
+* **`#print axioms` on every formalised result and every formalised exercise.**
+  `tools/print_axioms.sh`, added in this run, runs `#print axioms` on all 196
+  aliases of `RequestProject/Labels.lean` — 116 for the 97 formalised
+  theorem-like environments of the book, 80 for the 65 formalised exercises —
+  and reports that every one of them depends only on `propext`,
+  `Classical.choice`, `Quot.sound`.  No `sorryAx`, and no other axiom.
+* **No `sorry`, no `axiom`.**  `RequestProject/` contains no `sorry`, no
+  `axiom`, no `@[implemented_by]` and no `native_decide`; the only occurrences of
+  the word `sorry` are inside block comments that preserve a statement the
+  project does not make.  The six results proved from an explicit hypothesis
+  take that hypothesis as an ordinary argument of the theorem.
+* **The divergences from the book were re-read against the LaTeX sources.**
+  Every entry of the *Divergences from the book* section of `THEOREMS.md` still
+  matches the current `.tex` files, and no divergence recorded in a Lean
+  docstring is missing from that section.
+* **The exercises were recounted.**  The sources contain 83 `\exer`
+  environments, two of which are commented out and carry no number in
+  `main.aux`, so the book has **81 exercises**, all with a written solution.
+  **65 are formalised and proved** and **16 are not**; the sixteen, each with the
+  reason it is left out, are tabulated in the new `## Status (closing audit)`
+  section of `EXERCISES.md`.  The earlier counts (63 formalised, 20 not) were
+  stale and are marked as superseded.
+* **`THEOREMS.md`, `EXERCISES.md`, `FORMALISATION.md` and `README.md`** were
+  updated accordingly, and all five bookkeeping scripts in `tools/`
+  (`print_axioms.sh`, `gen_labels.py --check`, `tex_numbering.py --check`,
+  `decl_files.py --check`, `relabel.py`) report no problem.
+* Two leftover files were removed from the top of `transducer-lean/`:
+  `Scratch.lean`, a byte-for-byte duplicate of
+  `RequestProject/PartD/ChildGraphOfRun.lean`, and `--help`, a captured tool
+  output.  Neither was part of the Lean library.
+
 # Summary of the run on the five results of Section *Pebble transducers* about configuration encodings
 
 The five results of `polyregular-pebble.tex` that speak about the string representation of
