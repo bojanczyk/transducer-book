@@ -308,3 +308,41 @@ accepted string in terms of the number of states.
 `lake build` succeeds with no errors, there is no `sorry` in
 `RequestProject/Exercises/`, and `#print axioms` on each new declaration
 reports only `propext`, `Classical.choice`, `Quot.sound`.
+
+# Summary of changes for the string representation of the configuration graph (Section C.2)
+
+The book's string encoding of the reachable configuration graph of a two-way
+transducer, which the formalisation had not introduced, is now a real object of
+the project, and the two lemmas the book states about it are proved.
+
+New files, all in `RequestProject/PartC/`:
+
+* `ConfGraph.lean` — the alphabet `C` of the book (`Transducers.CLet`: bipartite
+  graphs on two copies of the state set, edges directed and labelled with output
+  strings, at most one outgoing edge per vertex and it goes to the other copy,
+  plus a special letter for the empty input), the representation
+  `Transducers.TwoWay.enc` of the reachable configuration graph of an input, and
+  the two-way transducer `Transducers.TwoWay.pathTrans` that walks along a
+  represented graph and prints its output string.
+* `ConfGraphRun.lean` — the representation agrees with the run semantics of
+  `TwoWayRun.lean`: `Transducers.TwoWay.computes_enc` and `computes_enc_iff`.
+* `ConfGraphAnnot.lean` — the representation is a letter-to-letter image of the
+  annotation of `TwoWayAnnot.lean`, and the correct annotations form a regular
+  language.
+* `ConfGraphReg.lean` — the book's main observation
+  (`Transducers.twoWay_encLang_isRegular`), Lemma
+  `lem:compute-configuration-graph`
+  (`Transducers.twoWay_isRationalFun_enc`) and Lemma
+  `lem:check-if-output-string-of-configuration-graph-belongs-to-L`
+  (`Transducers.twoWay_encOutputLang_isRegular`, for a transducer that computes
+  a total function, which the statement takes as an explicit hypothesis).
+
+The three results are restated in `PartC/Statements.lean` and aliased in
+`RequestProject/Labels.lean`; `THEOREMS.md`, `FORMALISATION.md` and
+`EXERCISES.md` were updated accordingly.  No existing proof was changed: the
+proof of Theorem `thm:continuity-2dfas` still goes through Shepherdson's
+Theorem, and the two lemmas are proved independently of it.
+
+`lake build` succeeds with no errors, there is no `sorry` in the new files, and
+`#print axioms` on each new numbered result reports only `propext`,
+`Classical.choice`, `Quot.sound`.

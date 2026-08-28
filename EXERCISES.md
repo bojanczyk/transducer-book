@@ -654,10 +654,13 @@ statement the book does not make.
   (which reduces to them through `exer:2dfa-unary-output`), `exer:fo-suc`
   (Ehrenfeucht–Fraïssé games) and `exer:fo-non-elementary`.
 * Statements whose solution goes through the string encoding of the
-  configuration graph of a two-way transducer, which the project deliberately
-  does not formalise (Lemma `lem:compute-configuration-graph`, see
-  `RequestProject/Labels.lean`): `exer:2dfa-unary-output` and
-  `exer:2nft-uniformise`.
+  configuration graph of a two-way transducer: `exer:2dfa-unary-output` and
+  `exer:2nft-uniformise`.  That encoding *is* now formalised (the alphabet
+  `Transducers.CLet` and the representation `Transducers.TwoWay.enc` of
+  `RequestProject/PartC/ConfGraph.lean`, with Lemma
+  `lem:compute-configuration-graph` proved as
+  `Transducers.twoWay_isRationalFun_enc`), but these two exercises have not been
+  formalised on top of it.
 * Two exercises of `myhill-nerode.tex` whose solutions are long case analyses
   over arbitrary machines: `exer:minimal-bimachine-lexicographic` (a
   Myhill–Nerode theory for bimachines) and `exer:non-minimal-automaton` (the

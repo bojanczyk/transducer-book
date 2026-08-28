@@ -8,11 +8,14 @@ the supporting files of `RequestProject/PartC/`; Theorem `thm:decidable-equivale
 proved from the two effectivity hypotheses of `RequestProject/PartC/EffectiveReg.lean`, which it
 takes as explicit arguments.  No file of Part C contains a `sorry`.
 
-Not formalised: Lemmas `lem:compute-configuration-graph` and
-`lem:check-if-output-string-of-configuration-graph-belongs-to-L`, which are internal steps in the
-proofs of Theorems `thm:continuity-2dfas` and `thm:composition-of-two-way-transducers`.  They speak
-about the string representation of the reachable configuration graph of a two-way transducer, an
-auxiliary encoding that is used only inside those proofs.
+Lemmas `lem:compute-configuration-graph` and
+`lem:check-if-output-string-of-configuration-graph-belongs-to-L`, which speak about the string
+representation of the reachable configuration graph of a two-way transducer, are proved in
+`RequestProject/PartC/ConfGraphReg.lean` and restated below.  The proofs of Theorems
+`thm:continuity-2dfas` and `thm:composition-of-two-way-transducers` given here do not go through
+that representation -- they work with the run semantics of `RequestProject/PartC/TwoWayRun.lean`
+directly -- but the representation and the run semantics are proved to agree
+(`Transducers.TwoWay.computes_enc`).
 
 Lemma `lem:output-of-snake-graph-is-regular`, the book's snake lemma, *is* formalised -- as
 `Transducers.boundedWidth_isRegular`, in `RequestProject/PartC/SnakeReg.lean`, for the width-`k`
@@ -21,6 +24,7 @@ the step through which Theorem `thm:2dfa-decomposition-into-primes` is proved. -
 import RequestProject.PartB.WeightedStatements
 import RequestProject.PartC.ContAux
 import RequestProject.PartC.TwoWayCont
+import RequestProject.PartC.ConfGraphReg
 import RequestProject.PartC.TwoWayPrecomp
 import RequestProject.PartC.TwoWayRat
 import RequestProject.PartC.TwoWayCompFinal
@@ -151,6 +155,44 @@ continuous. -/
 theorem twoWay_continuous {A B : Type} [Finite A] [Finite B] {f : List A → List B}
     (hf : IsTwoWay f) : Continuous f :=
   twoWay_continuous_aux hf
+
+/-! ### The string representation of the reachable configuration graph
+
+The book proves Theorem `thm:continuity-2dfas` in two steps, through the string representation of
+the reachable configuration graph of the transducer over the alphabet `C` of the book: the two
+lemmas below.  The alphabet `C` (`Transducers.CLet`), the representation (`TwoWay.enc`) and the
+transducer `TwoWay.pathTrans` that reads the output string off a representation are defined in
+`RequestProject/PartC/ConfGraph.lean`; that the representation describes the same runs as the run
+semantics of `RequestProject/PartC/TwoWayRun.lean` is `TwoWay.computes_enc` and
+`TwoWay.computes_enc_iff`.  The proof of Theorem `thm:continuity-2dfas` above does not go through
+them: it runs a deterministic automaton for the output language inside the transducer and appeals to
+Shepherdson's Theorem. -/
+
+/-- **The main observation** in the proof of Lemma `lem:compute-configuration-graph`: the strings
+over the alphabet `C` that represent a reachable configuration graph of a two-way transducer form a
+regular language. -/
+theorem twoWay_encLang_isRegular {A B Q : Type} [Finite A] [Finite Q] (M : TwoWay A B Q) :
+    Language.IsRegular {u : List (CLet Q (TwoWay.Lab M)) | ∃ w, u = TwoWay.enc M w} :=
+  TwoWay.encLang_isRegular M
+
+/-- **Lemma `lem:compute-configuration-graph`.**  The function which maps an input string to the
+string representation of its reachable configuration graph is rational. -/
+theorem twoWay_isRationalFun_enc {A B Q : Type} [Finite A] [Finite Q] (M : TwoWay A B Q) :
+    IsRationalFun (TwoWay.enc M) :=
+  TwoWay.isRationalFun_enc M
+
+/-- **Lemma `lem:check-if-output-string-of-configuration-graph-belongs-to-L`.**  For a regular
+language `L`, the strings over the alphabet `C` which represent a reachable configuration graph
+whose output string belongs to `L` form a regular language.  The output string of a representation
+is the string printed by the transducer `TwoWay.pathTrans M`, which walks along the represented
+graph; on the representation of the graph of `M` on `w` it is the output of `M` on `w`
+(`TwoWay.computes_enc`).  As in the book, the transducer is assumed to compute a (total)
+function. -/
+theorem twoWay_encOutputLang_isRegular {A B Q : Type} [Finite A] [Finite Q] (M : TwoWay A B Q)
+    {f : List A → List B} (hM : ∀ w, M.Computes w (f w)) {L : Language B} (hL : L.IsRegular) :
+    Language.IsRegular {u : List (CLet Q (TwoWay.Lab M)) |
+      (∃ w, u = TwoWay.enc M w) ∧ ∃ v, (TwoWay.pathTrans M).Computes u v ∧ v ∈ L} :=
+  TwoWay.encOutputLang_isRegular M hM hL
 
 /-! ### Closure under composition -/
 

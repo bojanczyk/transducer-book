@@ -22,13 +22,13 @@ result is proved outright — `assert_no_sorry` fails if the declaration depends
 So the names and the statuses in the tables below cannot go stale without
 breaking the build.
 
-Of the **100 theorem-like environments** of the book, 20 definitions and 70
-results are formalised, and 10 are not; of the 70, **64 are proved outright** and
+Of the **100 theorem-like environments** of the book, 20 definitions and 72
+results are formalised, and 8 are not; of the 72, **66 are proved outright** and
 6 are proved from an explicit hypothesis.  **Parts A, B and D are proved in
 full**, and so is Part C apart from Theorem `thm:decidable-equivalence-regular`,
 which is one of the six.  Nothing that is formalised is left unproved: there is
 no `sorry` and no `axiom` anywhere in the project.  The `## Status` section at
-the end gives the counts part by part, the six hypotheses, the ten environments
+the end gives the counts part by part, the six hypotheses, the eight environments
 that are not formalised, and the warnings that `lake build` still emits.
 
 ## Layout
@@ -91,6 +91,7 @@ RequestProject/
 | `PartC/TwoWayPrecomp.lean` | pre-composition of a two-way transducer with a Mealy machine (Lemma `lem:2dfa-precomposition-with-mealy`), via the Krohn-Rhodes Theorem: the reversible case, the flip-flop case, and pre-composition with reversal |
 | `PartC/TwoWayHom.lean`, `PartC/TwoWayBlock.lean`, `PartC/TwoWayErase.lean`, `PartC/TwoWayRat.lean` | pre-composition of a two-way transducer with a homomorphism and with an arbitrary rational function (Corollary `cor:2dfa-closure-under-composition`) |
 | `PartC/TwoWayRun.lean`, `PartC/TwoWayVisit.lean`, `PartC/TwoWayAnnot.lean`, `PartC/TwoWayAnnotBim.lean`, `PartC/TwoWayCompAux.lean`, `PartC/TwoWayCompPred.lean`, `PartC/TwoWayComp.lean`, `PartC/TwoWayCompFinal.lean` | the composition of two two-way transducers (Theorem `thm:composition-of-two-way-transducers`) |
+| `PartC/ConfGraph.lean`, `PartC/ConfGraphRun.lean`, `PartC/ConfGraphAnnot.lean`, `PartC/ConfGraphReg.lean` | the alphabet `C` and the string representation of the reachable configuration graph of a two-way transducer, its agreement with the run semantics, and the two lemmas of the book about it (Lemmas `lem:compute-configuration-graph` and `lem:check-if-output-string-of-configuration-graph-belongs-to-L`) |
 | `PartC/TwoWaySweep.lean`, `PartC/TwoWayRegular.lean` | explicit two-way transducers for the identity, for post-composition with a letter-to-letter map, and for map reverse and map duplicate; every regular function is computed by a two-way transducer (Corollary `cor:2dfa-computes-all-regular-functions`) |
 | `PartC/RegularDef.lean` | the prime regular functions and the regular functions (Definition `def:regular-functions`), moved here unchanged from `PartC/Statements.lean`, together with their elementary closure properties |
 | `PartC/RegCodeSan.lean` | codes of two-way transducers (`TwoWayCode`, `twoWayCodeAut`, `twoWayCodeRel`, `TwoWayCodeTotal`, moved here unchanged from `PartC/Statements.lean`), and the fact that a coded transducer is blind to the letters that do not occur in its table: renaming them does not change the computed relation (`Transducers.RegDec.twoWayCodeRel_map`), which is what makes the equivalence test of Theorem `thm:decidable-equivalence-regular` a finite check |
@@ -323,8 +324,7 @@ false statements and into the list of statements the book has corrected.
   resulting decision procedure is written down.
 * Definition `def:rational-recognisable-subsets` — not formalised at all; see its row in the
   Part B index.
-* Conjecture `conj:regular-via-weighted-automata`, Lemmas `lem:compute-configuration-graph` and
-  `lem:check-if-output-string-of-configuration-graph-belongs-to-L`, and the five results of
+* Conjecture `conj:regular-via-weighted-automata` and the five results of
   Section *Pebble transducers* listed in the Part D index — not formalised, each
   for the reason given in its row.
 
@@ -339,6 +339,12 @@ false statements and into the list of statements the book has corrected.
   `Transducers.EffectiveTwoWayBound`.  See *The four conditional results of Part B* and
   *The conditional result of Part C* below for what each hypothesis says and why
   it is isolated.
+* Lemma `lem:check-if-output-string-of-configuration-graph-belongs-to-L` takes as an explicit
+  argument the hypothesis that the two-way transducer computes a *total* function,
+  `hM : ∀ w, M.Computes w (f w)`.  The book uses the lemma only for a transducer that
+  computes a function, in the proof of Theorem `thm:continuity-2dfas`; without the
+  hypothesis the transducer may fail to halt on some inputs and the statement is no
+  longer about a function of the input.
 
 *Divergences that the book has since removed.*
 
@@ -710,7 +716,8 @@ The proofs are organised as follows.
 | Conjecture `conj:regular-via-weighted-automata` (regular functions via weighted automata) | — | not formalised: it is an open conjecture of the book, not a result | — |
 | Definition `def:two-way-transducer` (two-way transducer) | `Transducers.TwoWay`, `Transducers.IsTwoWay` | — | `PartC/TwoWayCont.lean` |
 | Theorem `thm:continuity-2dfas` (continuity) | `Transducers.twoWay_continuous` | proved (`TwoWayCont.lean`, from Shepherdson's Theorem in `TwoDFA.lean`) | `PartC/Statements.lean` |
-| Lemmas `lem:compute-configuration-graph`, `lem:check-if-output-string-of-configuration-graph-belongs-to-L` | not formalised (the string encoding of the configuration graph, used only inside the book's proof of Theorem `thm:composition-of-two-way-transducers`) | — | — |
+| Lemma `lem:compute-configuration-graph` (computing the configuration graph) | `Transducers.twoWay_isRationalFun_enc`; the main observation it rests on: `Transducers.twoWay_encLang_isRegular` | **proved** (`ConfGraph.lean`, `ConfGraphRun.lean`, `ConfGraphAnnot.lean`, `ConfGraphReg.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`).  The alphabet `C` of the book is `Transducers.CLet` and the representation is `Transducers.TwoWay.enc` | `PartC/Statements.lean` |
+| Lemma `lem:check-if-output-string-of-configuration-graph-belongs-to-L` (output string of the configuration graph in `L`) | `Transducers.twoWay_encOutputLang_isRegular` | **proved** (`ConfGraphReg.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`), for a transducer that computes a total function, which is taken as an explicit hypothesis — see *Divergences from the book* above.  The output string of a representation is the string printed by the transducer `Transducers.TwoWay.pathTrans`, which walks along the represented graph; on a representation it is the output of the transducer itself (`Transducers.TwoWay.computes_enc`) | `PartC/Statements.lean` |
 | Lemma `lem:output-of-snake-graph-is-regular` (the output of a snake graph is regular) | `Transducers.boundedWidth_isRegular` | **proved** (`SnakeReg.lean`, on top of `SnakeBase.lean`, `SnakeWalk.lean`, `SnakeRec.lean`, `SnakeLoop.lean` and the checking automaton of `SnakeStage1.lean`/`SnakeChk*.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`).  Stated for the width-`k` output function `TwoWay.widthOut` of a two-way transducer rather than for an alphabet of snake letters, and for every `k : ℕ` rather than for `k ∈ {1, …, \|Q\|}` | `PartC/SnakeReg.lean` |
 | Theorem `thm:composition-of-two-way-transducers` (composition) | `Transducers.twoWay_comp` | proved (`TwoWayRun.lean`, `TwoWayVisit.lean`, `TwoWayAnnot.lean`, `TwoWayAnnotBim.lean`, `TwoWayCompAux.lean`, `TwoWayCompPred.lean`, `TwoWayComp.lean`, `TwoWayCompFinal.lean`) | `PartC/Statements.lean` |
 | Lemma `lem:2dfa-precomposition-with-mealy` (pre-composition with Mealy machines) | `Transducers.twoWay_precomp_mealy` | proved | `PartC/Statements.lean` |
@@ -779,8 +786,11 @@ The files added for Theorem `thm:composition-of-two-way-transducers` are:
   property of the input: mark one letter with a state and a side, and the marked
   inputs whose run visits the marked cut in the marked state form a regular
   language, by Shepherdson's Theorem applied to the two-way automaton that
-  accepts as soon as the run reaches the marked cut.  This replaces the analysis
-  of the reachable configuration graph of Lemma `lem:compute-configuration-graph`.
+  accepts as soon as the run reaches the marked cut.  This replaces, inside the
+  proof of Theorem `thm:composition-of-two-way-transducers`, the analysis of the
+  reachable configuration graph of Lemma `lem:compute-configuration-graph`; it is
+  also what the string representation of that graph is built from, in
+  `ConfGraphAnnot.lean`.
 * `TwoWayAnnot.lean`, `TwoWayAnnotBim.lean` — the annotation of every position
   of the input by a window of three letters, the state of the deterministic
   automaton of the previous item after the prefix, and the acceptance function
@@ -801,6 +811,56 @@ The files added for Theorem `thm:composition-of-two-way-transducers` are:
   of the first transducer are padded with a blank letter to a common length, which is harmless
   because two-way transducers are closed under pre-composition with the erasing homomorphism that
   deletes the blanks.
+
+#### The string representation of the reachable configuration graph
+
+The book proves Theorem `thm:continuity-2dfas` through a string representation of
+the reachable configuration graph of a two-way transducer over a finite alphabet
+`C`, and states two lemmas about it, Lemma `lem:compute-configuration-graph` and
+Lemma `lem:check-if-output-string-of-configuration-graph-belongs-to-L`.  Both are
+now formalised, in four files.
+
+* `ConfGraph.lean` — the alphabet and the representation.  A letter of `C` for a
+  non-empty input is `Transducers.Slice Q L`, a bipartite graph on two copies of
+  the state set: a function which assigns to each vertex — a state `q` in the
+  left copy `(false, q)`, standing for the cut to the left of the sliced letter,
+  or in the right copy `(true, q)`, the cut to its right — its unique outgoing
+  edge, which is either absent (`VOut.nil`), or goes to a state of the *other*
+  copy with an output label (`VOut.move`), or leads to the halting vertex
+  (`VOut.halt`).  The labels range over `TwoWay.Lab M`, the finite set of output
+  strings that occur in the transition function, which is the book's reason for
+  `C` being finite.  `Transducers.CLet Q L` adds the book's special letter for
+  the empty input, carrying the output produced when the transducer halts
+  immediately.  `TwoWay.enc M w` is the representation of the reachable
+  configuration graph of `M` on `w`: one letter per input position, in which a
+  vertex not visited by the run gets `VOut.nil`.  `TwoWay.pathTrans M` is the
+  two-way transducer over `C` that walks along a represented graph and prints the
+  labels it meets; this is what "the output string of the configuration graph"
+  means.
+* `ConfGraphRun.lean` — the representation and the run semantics of
+  `TwoWayRun.lean` agree: `TwoWay.computes_enc` says that if `M` outputs `v` on
+  `w` then `pathTrans M` outputs `v` on `enc M w`, and `TwoWay.computes_enc_iff`
+  is the equivalence.  So the two views are interchangeable.
+* `ConfGraphAnnot.lean` — the representation is read off the annotation of
+  `TwoWayAnnot.lean`: `TwoWay.enc_eq_map_annot` writes `enc M w`, for `w ≠ []`,
+  as the image of `annot D w` under a letter-to-letter map, and
+  `TwoWay.validLang_isRegular` says that the correct annotations form a regular
+  language.  This is where the reachability information comes from: which
+  configurations lie on the run is regular in the input by `TwoWayVisit.lean`.
+* `ConfGraphReg.lean` — **the main observation** of the book, that the strings
+  over `C` which represent a reachable configuration graph form a regular
+  language (`Transducers.twoWay_encLang_isRegular`, in the form
+  `TwoWay.encImage_isRegular` for the graphs of the inputs in a regular language),
+  and the two lemmas on top of it.  Lemma `lem:compute-configuration-graph` is
+  the annotation, a rational function, followed by a letter-to-letter map; Lemma
+  `lem:check-if-output-string-of-configuration-graph-belongs-to-L` is the image
+  under the representation of the regular language `{w | f w ∈ L}`, regular by
+  the continuity argument of `TwoWayCont.lean`.
+
+The proof of Theorem `thm:continuity-2dfas` in `Statements.lean` does not go
+through the representation — it runs a deterministic automaton for the output
+language inside the transducer and appeals to Shepherdson's Theorem — so the two
+lemmas are proved independently of it and no earlier proof changed.
 
 #### The conditional result of Part C
 
@@ -1424,17 +1484,21 @@ row in the index above.
 | | Introduction | Part A | Part B | Part C | Part D | total |
 | --- | --- | --- | --- | --- | --- | --- |
 | definitions formalised | 1 | 4 | 7 | 6 | 2 | **20** |
-| results proved outright | 0 | 11 | 21 | 26 | 6 | **64** |
+| results proved outright | 0 | 11 | 21 | 28 | 6 | **66** |
 | results proved from an explicit hypothesis | 0 | 0 | 5 | 1 | 0 | **6** |
-| environments not formalised | 0 | 0 | 1 | 3 | 5 | **10** |
+| environments not formalised | 0 | 0 | 1 | 1 | 5 | **8** |
 
 *Proved outright* means: the proof is complete, no file it depends on contains a
 `sorry`, and `#print axioms` reports only `propext`, `Classical.choice`,
-`Quot.sound`.  **Parts A, B and D are proved in full**, and so is Part C except
+`Quot.sound`.  Lemma
+`lem:check-if-output-string-of-configuration-graph-belongs-to-L` is counted here:
+it is proved outright in that sense, but its statement carries the hypothesis
+that the transducer computes a total function, as listed under *Hypotheses that
+the Lean statement adds* above.  **Parts A, B and D are proved in full**, and so is Part C except
 that Theorem `thm:decidable-equivalence-regular` is conditional in the sense
 below.  The last column of *environments not formalised* counts labels, not rows:
-two rows of the index group several labels each (the two configuration-graph
-lemmas of Part C, and the five configuration-encoding results of Part D).
+one row of the index groups several labels (the five configuration-encoding
+results of Part D).
 
 ### The six results proved from an explicit hypothesis
 
@@ -1463,18 +1527,17 @@ of equivalence of regular functions to a finite check
 (`Transducers.regularFun_eq_of_short`), is proved unconditionally.  See *The four
 conditional results of Part B* and *The conditional result of Part C* above.
 
-### The ten environments that are not formalised
+### The eight environments that are not formalised
 
 None of them is an unfinished proof; each is either not a mathematical result,
-or an internal step about a string encoding that this project deliberately does
-not introduce, and in each case the result it serves *is* proved.
+or an internal step about the configuration encoding of a pebble automaton,
+which this project deliberately does not introduce, and in each case the result
+it serves *is* proved.
 
 | environment | reason |
 | --- | --- |
 | Definition `def:rational-recognisable-subsets` | the rational and recognisable subsets of a monoid; used once in the book, in the remark explaining the name *Kleene theorem*, and by nothing else |
 | Conjecture `conj:regular-via-weighted-automata` | an open conjecture of the book, not a result |
-| Lemma `lem:compute-configuration-graph` | about the string encoding of the configuration graph of a two-way transducer; Theorem `thm:composition-of-two-way-transducers` is proved by composing machines directly |
-| Lemma `lem:check-if-output-string-of-configuration-graph-belongs-to-L` | not formalised: same encoding, same reason |
 | Lemma `lem:reachability-pebble-automaton` | the reachability analysis of a pebble automaton; the Lean proof of Theorem `thm:pebble-are-for` replaces it by an induction on the number of pebbles |
 | Claim `claim:reachability-basic-run` | not formalised: internal step of the same analysis |
 | Lemma `lem:children-of-configuration-in-pebble-run` | not formalised: internal step of the same analysis |

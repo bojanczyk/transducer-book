@@ -18,9 +18,9 @@ corollaries, claims, one conjecture and one unnumbered paragraph.  Of these:
 | | count |
 | --- | --- |
 | definitions formalised | 20 |
-| results proved outright | 64 |
+| results proved outright | 66 |
 | results proved from an explicit, documented hypothesis | 6 |
-| not formalised (see §5) | 10 |
+| not formalised (see §5) | 8 |
 
 "Proved outright" means: the Lean proof is complete, no file it depends on
 contains a `sorry`, and `#print axioms` on it reports only `propext`,
@@ -150,10 +150,10 @@ proved unconditionally in this project.
 
 ## 5. What is not formalised, and why
 
-Ten theorem-like environments of the book have no Lean counterpart.  None of
+Eight theorem-like environments of the book have no Lean counterpart.  None of
 them is a gap in a proof: each is either not a mathematical result, or an
-internal step whose statement is about a string encoding that this project
-deliberately does not introduce.
+internal step whose statement is about the configuration encoding of a pebble
+automaton, which this project deliberately does not introduce.
 
 * **Definition `def:rational-recognisable-subsets`** (rational and recognisable
   subsets of a monoid).  The book uses it once, in the remark explaining the
@@ -161,12 +161,6 @@ deliberately does not introduce.
   of `A* × B*` are formalised, for that monoid, as part of the exercises.
 * **Conjecture `conj:regular-via-weighted-automata`** — an open conjecture, not
   a result.
-* **Lemma `lem:compute-configuration-graph`** and **Lemma
-  `lem:check-if-output-string-of-configuration-graph-belongs-to-L`**.  Both are
-  statements about a *string encoding of the configuration graph* of a two-way
-  transducer.  The Lean proof of Theorem `thm:composition-of-two-way-transducers`
-  composes machines directly instead, so the encoding never has to be defined;
-  the theorem they serve is proved.
 * **Lemma `lem:reachability-pebble-automaton`, Claim
   `claim:reachability-basic-run`, Lemma
   `lem:children-of-configuration-in-pebble-run`, Claim
@@ -188,8 +182,10 @@ Of the exercises, 24 are not formalised; `EXERCISES.md` groups them by reason.
 The recurring ones are statements about running time or about the number of
 states of a construction (which this project does not model), statements that
 rest on theory the project does not have (maximum cycle mean of a weighted
-graph, Ehrenfeucht–Fraïssé games), and the exercises that go through the same
-configuration-graph encoding as the lemmas above.
+graph, Ehrenfeucht–Fraïssé games), and two exercises that go through the string
+representation of the configuration graph of a two-way transducer, which is
+formalised (`RequestProject/PartC/ConfGraph.lean`) but on top of which those two
+exercises have not been solved.
 
 ## 6. Why you can believe the table
 

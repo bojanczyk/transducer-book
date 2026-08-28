@@ -342,6 +342,18 @@ assert_no_sorry «def:two-way-transducer#2»
 alias «thm:continuity-2dfas» := Transducers.twoWay_continuous
 assert_no_sorry «thm:continuity-2dfas»
 
+/-- **Lemma `lem:compute-configuration-graph`** (computing the configuration graph): `Transducers.twoWay_isRationalFun_enc`, the function taking an input string to the string representation of its reachable configuration graph over the alphabet `Transducers.CLet`. -/
+alias «lem:compute-configuration-graph» := Transducers.twoWay_isRationalFun_enc
+assert_no_sorry «lem:compute-configuration-graph»
+
+/-- **Lemma `lem:compute-configuration-graph`** (computing the configuration graph): `Transducers.twoWay_encLang_isRegular`, the main observation of its proof -- the strings that represent a reachable configuration graph form a regular language. -/
+alias «lem:compute-configuration-graph#2» := Transducers.twoWay_encLang_isRegular
+assert_no_sorry «lem:compute-configuration-graph#2»
+
+/-- **Lemma `lem:check-if-output-string-of-configuration-graph-belongs-to-L`** (output string of the configuration graph in `L`): `Transducers.twoWay_encOutputLang_isRegular`, for a transducer that computes a total function, which the statement takes as an explicit hypothesis. -/
+alias «lem:check-if-output-string-of-configuration-graph-belongs-to-L» := Transducers.twoWay_encOutputLang_isRegular
+assert_no_sorry «lem:check-if-output-string-of-configuration-graph-belongs-to-L»
+
 /-- **Theorem `thm:composition-of-two-way-transducers`** (composition): `Transducers.twoWay_comp`. -/
 alias «thm:composition-of-two-way-transducers» := Transducers.twoWay_comp
 assert_no_sorry «thm:composition-of-two-way-transducers»
@@ -837,8 +849,6 @@ above, so that this file accounts for all of them:
 
 * `def:rational-recognisable-subsets` (definition) -- not formalised (rational and recognisable subsets of a monoid, which the later sections do not use);
 * `conj:regular-via-weighted-automata` (conjecture) -- a conjecture of the book, not a result to formalise;
-* `lem:compute-configuration-graph` (lemma) -- not formalised (the string encoding of the configuration graph, used only inside proofs of Part C);
-* `lem:check-if-output-string-of-configuration-graph-belongs-to-L` (lemma) -- not formalised (the string encoding of the configuration graph, used only inside proofs of Part C);
 * `nolabel:thm-fo-transduction-into-primes` (theorem) -- removed from the formalised theorems at the user's request; its statement is kept, commented out, in `PartC/MSOOpen.lean`;
 * `lem:reachability-pebble-automaton` (lemma) -- not formalised (configuration encodings used inside proofs);
 * `claim:reachability-basic-run` (claim) -- not formalised (configuration encodings used inside proofs);
