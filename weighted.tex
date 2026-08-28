@@ -1,9 +1,13 @@
 \section{Rational relations and weighted automata}
 \label{sec:weighted-automata}
 
-In this section, we describe the connections of rational relations (including their functional fragment) with another automaton model, called weighted automata. Using this connection and a certain decidability result for weighted automata, we will show that equivalence of rational functions is decidable. This  connection will also be used in the future, to decide equivalence for a more powerful transducer model, namely the regular functions. 
+In this section, we describe the connections of rational relations (including their functional fragment) with another automaton model, called weighted automata. Using this connection and a certain decidability result for weighted automata, we will show that equivalence of rational functions is decidable~\footnote{
+The equivalence problem for rational functions reduces to the functionality problem for relations (two rational functions are equal if and only if their union is a functional rational relation). The functionality problem was shown decidable in~\cite[Theorem 1]{blattner1977single} using a pumping argument.
+ According to~\cite{schutzenberger_oeuvres_tome08}, the functionality problem is also implicitly solved in~\cite{schutzenberger1976}. None of these arguments use weighted automata. The idea to replace output  strings by  numbers (as in our reduction) has a long history, with one more recent reference being~\cite[p. 21:4]{Seidl2018}.
 
-\subsection{Weighted automata} We begin by defining weighted automata. For the equivalence algorithm, we will be mainly interested in weighted automata that have outputs in a field, but for other results, we will use the more general variant with outputs in an arbitrary semiring. Intuitively speaking, a semiring is like a field, except that we do not require any kind of inverses (both additive and multiplicative), and multiplication can be non-commutative. Here is the formal definition.
+}. This  connection will also be used in the future, to decide equivalence for a more powerful transducer model, namely the regular functions. 
+
+\subsection{Weighted automata} We begin by defining weighted automata\footnote{These were introduced in~\cite[Definition 1]{Schutzenberger1961OnTheDefinition}.}. For the equivalence algorithm, we will be mainly interested in weighted automata that have outputs in a field, but for other results, we will use the more general variant with outputs in an arbitrary semiring. Intuitively speaking, a semiring is like a field, except that we do not require any kind of inverses (both additive and multiplicative), and multiplication can be non-commutative. Here is the formal definition.
 
 \begin{figure}
 \begin{center}
@@ -107,7 +111,7 @@ Finally, consider the following weighted automaton with input alphabet $\set{0,1
 \subsection{Decidable equivalence}
 \label{sec:decidable-equivalence-rational-functions}
 
-In this section, we leverage the connection with weighted automata to decide equivalence of rational functions. To do this, we will use decidability of equivalence for weighted automata over the  field of rationals.
+In this section, we leverage the connection with weighted automata to decide equivalence of rational functions. To do this, we will use decidability of equivalence for weighted automata over the  field of rationals\footnote{Sch\"utzenberger's orginal paper describes minimisation, see~\cite[Section B]{Schutzenberger1961OnTheDefinition}. From minimisation one can deduce an algorithm for zeroness, and from that an algorithm for equivalence. All of that, however, is not see easy to identify in the original paper.}.
 \begin{theorem}\label{thm:equivalence-weighted-automata}
     Given two weighted automata over the field of rationals, it is decidable whether they compute the same function.    
 \end{theorem}

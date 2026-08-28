@@ -23,6 +23,8 @@
 #      counterpart in ../transducer-lean, writing data/lean_map.json.
 #   2c. build-search-index.py --write — turns the book's LaTeX into the text
 #      the sidebar's search box reads, writing static/search-index.js.
+#   2c2. build-bibliography.py --write — bib.bib and main.bbl into the entries
+#      the third column shows when a citation is clicked.
 #   2d. build-source-stamps.py --write — stamps each block with the hash of the
 #      source it \inputs, which is what makes the block cache notice an edit.
 #   3. reflowtex's prebuild.py — compiles each {{< latex >}} block to a node
@@ -196,6 +198,9 @@ fi
 # prose, so it runs on every build like the rest.
 "$PYTHON" "$SITE/build-search-index.py" --write
 
+# ── 2c2. the bibliography the third column shows for a citation ─────────────
+"$PYTHON" "$SITE/build-bibliography.py" --write
+
 # ── 2d. make the blocks depend on the sources they read ─────────────────────
 # Last of the content steps, and it has to be: a block's cache key is the hash
 # of its own text, and ours only \input the chapter — so without this, editing
@@ -227,6 +232,20 @@ if [ -d "$SITE/.reflowtex-build" ]; then
     key="$(basename "$dir")"
     [ -f "$SITE/data/latex_blocks/$key.json" ] || rm -rf "$dir"
   done
+fi
+
+# A one-line fix carried in the reflowtex checkout, not here: the viewer lays a
+# footnote out from a document that omits the block's `links` table, so every
+# reference inside a footnote — two citations in three, in this book — is drawn
+# as plain text. prebuild copies the viewer in fresh on every run, so a `git
+# pull` over there would take the fix with it, and the only symptom would be
+# citations quietly ceasing to be clickable. Hence this check.
+if ! grep -q "links: data.doc.links" "$SITE/static/latex-viewer.js"; then
+  echo >&2
+  echo "warning: the viewer is missing the footnote-links fix, so citations and" >&2
+  echo "         cross-references inside footnotes will not be clickable. See" >&2
+  echo "         README.md, \"Citations\"; the patch is in $REFLOWTEX/src/viewer." >&2
+  echo >&2
 fi
 
 # ── 4. the site ─────────────────────────────────────────────────────────────

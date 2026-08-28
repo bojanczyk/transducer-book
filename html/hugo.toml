@@ -10,3 +10,14 @@ disableKinds = ["taxonomy", "term", "RSS", "sitemap"]
 
 [markup.goldmark.renderer]
   unsafe = true
+
+# The bibliography's PDFs, served from the site without a second copy of 143 MB
+# sitting in static/. Mounting a component replaces its default mount, so the
+# ordinary static/ has to be named again alongside.
+[module]
+  [[module.mounts]]
+    source = "static"
+    target = "static"
+  [[module.mounts]]
+    source = "../literature/pdfs"
+    target = "static/pdfs"

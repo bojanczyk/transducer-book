@@ -463,13 +463,14 @@ If $f$ is this rational function, then there is a one-to-one correspondence betw
 
 
 \subsection{The first-order fragment}
-
+\label{sec:logic-aperiodic}
 \newcommand{\fotype}{\text{tp}}
 
 
-Recall the notion of an aperiodic string-to-string function from Definition~\ref{def:aperiodic-mealy}, and the corresponding condition on state transformations in Lemma~\ref{lem:aperiodicity-minimal-machine}. The latter condition only talks about state transformations, and hence it  can be meaningfully applied to deterministic automata without output:  a \dfa is called \emph{aperiodic} if for every state transformation $\delta$, the sequence $\delta^1, \delta^2, \ldots$ eventually reaches a stable value. The following theorem shows that the characterisation in Theorem~\ref{thm:aperiodic-mealy}, which talked about aperiodic Mealy machines and flip-flops, happens to identify the same class as first-order logic. 
+Recall the notion of an aperiodic string-to-string function from Definition~\ref{def:aperiodic-mealy}, and the corresponding condition on state transformations in Lemma~\ref{lem:aperiodicity-minimal-machine}. The latter condition only talks about state transformations, and hence it  can be meaningfully applied to deterministic automata without output:  a \dfa is called \emph{aperiodic} if for every state transformation $\delta$, the sequence $\delta^1, \delta^2, \ldots$ eventually reaches a stable value. The following theorem shows that the characterisation in Theorem~\ref{thm:aperiodic-mealy}, which talked about aperiodic Mealy machines and flip-flops, happens to identify the same class as first-order logic\footnote{This result was originally a combination of three results: (a) aperiodic \dfa's are the same as aperiodic monoid, which is a straightforward obeservation; (b) aperiodic monoids are the same as star-free expressions, which was proved in~\cite[Main Property]{Schutzenberger1965}; and (c) star-free expressions are the same as first-order logic, which was proved in~\cite[Theorem 10.5]{McNaughtonPapert1971}. Our proof leverages the Krohn-Rhodes Theorem, this option was already noticed in~\cite[Footnote 1]{meyer1969}.}. 
 
-\begin{theorem}\label{thm:logic-aperiodic}
+\begin{theorem}
+    \label{thm:logic-aperiodic}
     A language is definable in first-order logic if and only if it is recognised by an aperiodic \dfa.
 \end{theorem}
 \begin{proof}

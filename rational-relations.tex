@@ -1,7 +1,8 @@
 \section{Rational relations}
 \label{sec:rational-relations}
 
-We  begin with a nondeterministic version of the rational functions, in which the underlying model is an \nfa equipped with an output mechanism. One of the advantages of this model is that it does not treat the input and output differently. 
+We  begin with the rational relations, which are a nondeterministic version of the rational functions, in which the underlying model is an \nfa equipped with an output mechanism\footnote{This model was introduced in~\cite[Definition 15]{RabinScott59} under the name of ``two-tape one-way automata''. To the best of my knowledge, the functional fragment first appears in \cite[Section II]{schutzenberger1961} under the name of ``transductions'', where the corresponding model is the same as what we call a bimachine, see~\cref{def:bimachine}.  Another early reference is 
+\cite{elgotMezei1965}. In this part of the book, we follow the approach of Elgot and Mezei: we first introduce rational relations, and then isolate the functions as a special case. Elgot and Mezei do not use the name  rational, they call them ``recognised by generalised finite automata''. We will comment on the origin of the name ``rational'' later in this part. }. One of the advantages of this model is that it does not treat the input and output differently. 
 
 \begin{definition}[\nfa with output]\label{def:nfa-with-output}
     A \emph{nondeterministic automaton with output} consists of the following ingredients:
@@ -68,7 +69,6 @@ Often the second class is called the \emph{regular expressions}, but the French 
         \begin{align*}
         1 + x + x^2 + \cdots + x^n + \cdots = \frac{1}{1-x}.
         \end{align*}
-        The use of the name rational for regular expressions dates back to Schützenberger \cite{schutzenberger1961}, who was inspired by the analogy with rational functions.
 }.
 In the free monoid $A^*$, the two notions coincide\footnote{
 This is sometimes called the Kleene Theorem, see \cite[Chapter III, Theorem 2.1]{berstel1979}. However, there could be some confusion, since there are three classes of languages involved: (a) defined by regular expressions; (b) recognised by finite automata; and (c) recognised by finite monoids. The two classes in \cref{def:rational-recognisable-subsets} are (a) and (c).    
@@ -133,7 +133,7 @@ Observe that rational relations are symmetric with respect to input and output, 
 
 
 
-\subsection{Undecidable equivalence} The trouble with rational relations is that  nondeterminism makes the equivalence problem undecidable.
+\subsection{Undecidable equivalence} The trouble with rational relations is that  nondeterminism makes the equivalence problem undecidable\footnote{\cite[p.410]{Griffiths1968}}.
 
 
 \begin{theorem}\label{thm:undecidable-equivalence-rational-relations}
@@ -155,7 +155,9 @@ Observe that rational relations are symmetric with respect to input and output, 
 % This issue was flagged, but is not an issue, it follows under (i)
 % \issue{The case analysis misses the possibility that $h(w)$ is a \emph{proper prefix} of $v$: then the correctly applied prefix is all of $w$ and there is no ``next letter $a$''. A third option is needed --- read the whole input correctly and then produce at least one extra output letter.}
 
-    Using the complements from the above claim, we will recast the  Post Correspondence Problem as an instance of universality for rational relations. Consider an instance of the Post Correspondence Problem:
+    Using the complements from the above claim, we will recast the  Post Correspondence Problem as an instance of universality for rational relations. Consider an instance of the Post Correspondence Problem\footnote{This problem was proved undecidable in 
+        \cite[p.264]{Post1946}, where it was  called the ``correspondence problem''. A more modern proof can be found in \cite[Theorem 5.15]{Sipser2012}.
+    }:
     \begin{align*}
     \exists w \in A^* \ h(w) = g(w).
     \end{align*}
@@ -215,7 +217,7 @@ Once we have found them, the relation is simply the union of the two functions, 
     which is not rational. Indeed, the image of the regular language $a^*$ under this relation is $\setbuild{b^nc^n}{$n \geq 0$}$, which is not regular, while rational relations map regular languages to regular languages, as observed after Theorem~\ref{thm:continuity-rational-relations}.
 }
 
-\exer {\label{exer:rational-relations-intersection-undecidable} Show that it is undecidable if two rational relations have nonempty intersection}{
+\exer {\label{exer:rational-relations-intersection-undecidable} Show that it is undecidable if two rational relations have nonempty intersection\footnote{\cite[Theorem 18]{RabinScott59}}.}{
     We reduce from the Post Correspondence Problem, as in the proof of Theorem~\ref{thm:undecidable-equivalence-rational-relations}, except that this time we do not need to complement the homomorphisms. Consider two homomorphisms $g,h : A^* \to B^*$, and view each of them as a relation, e.g.
     \begin{align*}
     \setbuild{(w,g(w))}{$w \in A^*$ is nonempty}.

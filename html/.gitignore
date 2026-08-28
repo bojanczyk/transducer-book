@@ -27,3 +27,4 @@
 
 # The copy of ../main.aux the blocks resolve their references against.
 /.aux-snapshot/
+/static/bibliography.js

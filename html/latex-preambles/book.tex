@@ -1,4 +1,4 @@
-% source stamp shared:188634c0 — maintained by build-source-stamps.py; it is what makes editing ../macros.sty, the pictures or the book's numbering recompile every block
+% source stamp shared:2ed4dbc6 — maintained by build-source-stamps.py; it is what makes editing ../macros.sty, the pictures or the book's numbering recompile every block
 % Each extraction job runs in html/.reflowtex-build/HASH, i.e. always exactly
 % three directories below the book repository root, so ../../../ reaches the
 % book's own LaTeX sources (macros.sty, knowledges.tex, main.aux) wherever the
@@ -60,3 +60,40 @@
   \blx@check@bbl@rerun@mdfivesum
   \csnumgdef{blx@labelnumber@\the\c@refsection}{0}}
 \makeatother
+
+% Citations, clickable. A \cite leaves no link of its own that survives into the
+% web edition: hyperref points it at the bibliography, which an isolated chapter
+% does not contain, and reflowtex drops a reference it cannot resolve. What it
+% does record is a URL written out in full, so each citation label is wrapped in
+% one — through biblatex's own `bibhyperref` format, which is applied once per
+% key, so a multi-key citation gets one link per key rather than one for the lot.
+%
+% The scheme is our own: nothing navigates to `cite:…`, and the page intercepts
+% the click and shows the entry in the third column (layouts/partials/lean-pane
+% .html, showReference). A fragment like `#cite-key` cannot be used instead —
+% hyperref splits an href at the `#` and routes it down its internal-link path,
+% where it is lost.
+\DeclareFieldFormat{bibhyperref}{\href{cite:\thefield{entrykey}}{#1}}
+
+% Inside a footnote, macros.sty makes \cite mean \incite, which prints the names,
+% the title and the year itself rather than a label — and prints them with
+% \printnames and \printfield, which never pass through `bibhyperref` above. Two
+% citations in three are in footnotes, so they would all have stayed dead. This
+% is macros.sty's own definition with the printed run wrapped in the same link;
+% biblatex's punctuation buffer survives the extra group, so the footnote still
+% reads "…Elgot and J. E. Mezei, “On relations defined…”, 1965, and also…".
+%
+% Kept here rather than in macros.sty because it is the web edition's business:
+% the PDF has a bibliography of its own to jump to. If \incite is ever changed
+% over there, change it here too.
+\DeclareCiteCommand{\incite}
+  {\usebibmacro{prenote}}
+  {\href{cite:\thefield{entrykey}}{%
+     \printnames[given-family]{labelname}%
+     \setunit{\addcomma\space}%
+     \printfield[citetitle]{title}%
+     \setunit{\addcomma\space}%
+     \printfield{year}}}
+  {\multicitedelim}
+  {\usebibmacro{postnote}}
+

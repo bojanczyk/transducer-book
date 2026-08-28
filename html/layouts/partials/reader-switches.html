@@ -25,10 +25,16 @@
     <button id="text-toggle" type="button" aria-label="Text options" aria-haspopup="true" aria-controls="lt-panel" aria-expanded="false">
       <span class="lt-tt">T<span>t</span></span>
     </button>
-    {{/* Revealed by lean-pane.html, which is only emitted on pages that have
-         something formalised to show. */}}
-    <button id="lean-toggle" type="button" hidden aria-label="Lean formalisation" aria-controls="lean-pane" aria-expanded="false" onclick="window.__setLean(!document.body.classList.contains('lean-open'))">
-      <span class="lt-lean">&lambda;</span>
+    {{/* The margin: the column where a citation's reference and its PDF open,
+         where a result's Lean proof opens, and where the link to either is
+         given. It was a λ while Lean was all it held; the id stayed behind, so
+         that a saved preference and a shared ?lean=1 keep working.
+
+         Revealed by lean-pane.html, and only on a page that states numbered
+         results — elsewhere the column has no list to offer and is reached by
+         clicking a citation. */}}
+    <button id="lean-toggle" type="button" hidden aria-label="Margin" title="References, links and Lean" aria-controls="lean-pane" aria-expanded="false" onclick="window.__setLean(!document.body.classList.contains('lean-open'))">
+      <span class="lt-lean">&#10081;</span>
     </button>
   </div>
 </div>

@@ -9,7 +9,7 @@ source = "krohn-rhodes.tex"
 \setcounter{section}{1}
 \setcounter{ourexamplecounter}{4}
 \renewcommand{\exer}[2]{}
-% source stamp krohn-rhodes.tex:9e965b18
+% source stamp krohn-rhodes.tex:9b85f443
 \input{../../../krohn-rhodes.tex}
 {{< /latex >}}
 

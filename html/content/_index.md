@@ -6,6 +6,6 @@ title = "Transducers"
 % The landing page is the preface: opening the book without asking for a
 % particular chapter should show what the book says about itself. Same source
 % as the printed preface, one directory up like every chapter's.
-% source stamp preface.tex:1a508bab
+% source stamp preface.tex:81ec37de
 \input{../../../preface.tex}
 {{< /latex >}}

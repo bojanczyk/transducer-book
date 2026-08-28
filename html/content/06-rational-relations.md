@@ -9,7 +9,7 @@ source = "rational-relations.tex"
 \setcounter{section}{0}
 \setcounter{ourexamplecounter}{6}
 \renewcommand{\exer}[2]{}
-% source stamp rational-relations.tex:7c861148
+% source stamp rational-relations.tex:c53b230d
 \input{../../../rational-relations.tex}
 {{< /latex >}}
 
@@ -95,7 +95,7 @@ Once we have found them, the relation is simply the union of the two functions, 
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
 \setcounter{mypart}{2}\setcounter{section}{1}\setcounter{theorem}{7}\setcounter{exercise}{3}
 \begin{exercise}
-\label{exer:rational-relations-intersection-undecidable} Show that it is undecidable if two rational relations have nonempty intersection
+\label{exer:rational-relations-intersection-undecidable} Show that it is undecidable if two rational relations have nonempty intersection\footnote{\cite[Theorem 18]{RabinScott59}}.
 \end{exercise}
 {{< /latex >}}
 <details class="solution">

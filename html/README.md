@@ -193,6 +193,27 @@ shortcodes only expand in content. Three hand-written pieces:
 Adding or renaming a chapter means touching all three, plus `CHAPTERS` in
 `build-references.py` and a new `content/NN-slug.md`. Nothing generates them.
 
+### The margin
+
+The third column is the margin: `layouts/partials/lean-pane.html`, opened by the
+❡ in the pill bottom right. It holds three things, whichever the reader last
+asked for — a numbered result's Lean formalisation, that result's citable
+address, or a reference with its PDF. It was a λ while Lean was all it held.
+
+Two names did not follow the rename. `#lean-pane`, `?lean=1` and the
+`reflowtex-lean` preference key stayed as they were: the second is written into
+every address a reader has shared, and the third into every browser that has
+been here, and renaming either drops it silently for whoever holds one. Only the
+names a reader sees changed.
+
+The column is emitted on every chapter, but the pill offers a button only where
+the chapter states numbered results. A chapter can cite a paper without stating
+one — `mealy-intro.tex` does — and gating the column on `$labels` used to leave
+those citations opening nothing at all. Where there is no list to offer, the
+button is hidden, "All results" does not appear, a saved `lean=1` is not
+honoured, and the column is reached by clicking a citation and left by closing
+it. `HAS_RESULTS` in the script is that condition.
+
 ### Citable links to results
 
 Clicking any numbered result — theorem, lemma, definition, claim, corollary,
@@ -271,6 +292,69 @@ folded solution opens the fold.
 **When the sources change**, `rebuild.sh` regenerates the index like everything
 else. `python3 build-search-index.py` on its own reports what it would write
 and exits non-zero if `static/search-index.js` has fallen behind.
+
+### Citations
+
+A `\cite` in the text is clickable: it opens the reference in the third column,
+with authors, title, where it appeared, a DOI to follow — and, where there is
+one, the paper itself. Three pieces:
+
+- **The link.** A `\cite` leaves nothing the web edition can see — hyperref
+  points it at a bibliography that an isolated chapter does not contain, and
+  reflowtex drops a reference it cannot resolve. What it *does* record is a URL
+  written out in full, so `latex-preambles/book.tex` wraps each citation label
+  in `\href{cite:<key>}{…}` through biblatex's own `bibhyperref` format (once
+  per key, so a multi-key citation gets one link per key). The scheme is ours;
+  nothing navigates to it. A fragment such as `#cite-key` cannot be used
+  instead — hyperref splits an href at the `#` and the link is lost.
+- **The data.** `build-bibliography.py` reads `../bib.bib` for the fields and
+  `../main.bbl` for the label biber gave each entry ("MSV03"), and writes
+  `static/bibliography.js` — a plain script, like the search index, so it works
+  over `file://`.
+- **The click.** `lean-pane.html` intercepts clicks on `cite:` links in the
+  capture phase, on the *document* rather than on `#lt-content`: a citation can
+  be inside a footnote, and the viewer hangs its footnote popover off
+  `document.body`.
+
+#### The paper itself
+
+An entry whose scan is in `../literature/pdfs` shows it under the entry, in a
+frame that fills the rest of the column, with the file's size and a link that
+opens it in a tab beside — a browser that will not put a PDF in a frame leaves
+an empty box, and the link is the way through. The column is narrow for a page
+of a scan, so a **Wider** button in its header takes it to `min(46rem, 45vw)`;
+that is offered for a paper only, stays on while papers are what the column
+shows, and goes when it goes back to holding Lean.
+
+Which file belongs to which entry is written down nowhere, so
+`build-bibliography.py` works it out from the file's name — the folder follows
+one pattern, `BojanczykKieferLhote2019_String-to-String_…`, which names the
+authors, the year and the title. Surnames must line up exactly and from the
+first author on; the year and the title only break ties, which they must,
+because one author writes twice in a year and two files can name one paper. Best
+claim first, each side used once: the alternative, best-file-per-entry, would
+give Eilenberg Volume B the scan of Volume A, there being no scan of B. Files
+left belonging to nothing are reported — a scan no citation reaches is a scan
+nobody will open — and today that is exactly the two duplicates,
+`GinsburgRose1966.pdf` and `Nivat1968.pdf`, which lost to their better-named
+twins.
+
+The folder is not copied into `static/`: `hugo.toml` mounts it at `static/pdfs`,
+which is 143 MB Hugo publishes into `dist/pdfs` and `publish.sh` sends up with
+the rest. Mounting a component replaces its default mount, which is why the
+ordinary `static/` is named again beside it.
+
+Inside a footnote `macros.sty` makes `\cite` mean `\incite`, which prints the
+names, title and year itself and never goes through `bibhyperref`, so the
+preamble redeclares `\incite` with the same link wrapped round its output.
+
+**One patch lives outside this repository.** The viewer lays a footnote out from
+a document that omits the block's `links` table, so references inside footnotes
+were drawn as plain text. The fix is one line in the reflowtex checkout
+(`src/viewer/latex-viewer.js`, `renderFootnote`: pass `links` and `anchors` into
+`noteDoc`). `prebuild.py` copies the viewer in on every build, so a `git pull`
+there silently removes it — `rebuild.sh` therefore checks the copied viewer for
+the fix and warns if it has gone. It is worth sending upstream.
 
 ### Colour theme
 

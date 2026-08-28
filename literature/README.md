@@ -17,6 +17,11 @@ BibTeX entries for everything listed here live in the book's bibliography, [../b
   PDF: [Pin2025_Mathematical_Foundations_of_Automata_Theory.pdf](pdfs/Pin2025_Mathematical_Foundations_of_Automata_Theory.pdf) (version of 24 March 2025, 344 pp.)  
   Note: a living document, so quote the version date when citing. It is also cited in the literature as [Pin22], which is the version of 18 February 2022; Chapter X sits at pp. 175-188 in both.
 
+- **Damian Niwiński and Wojciech Rytter, edited by Filip Murlak (2017), _200 Problems in Formal Languages and Automata Theory_.**  
+  Problem collection used for classical exercises. The book is cited in the text as the Cambridge University Press edition, _200 Problems on Languages, Automata, and Computation_ (2023, DOI [10.1017/9781009072632](https://doi.org/10.1017/9781009072632)); the PDF stored here is the **earlier University of Warsaw 2017 edition**, problems only, without solutions.  
+  PDF: [MurlakNiwinskiRytter2017_200_Problems_in_Formal_Languages_and_Automata_Theory.pdf](pdfs/MurlakNiwinskiRytter2017_200_Problems_in_Formal_Languages_and_Automata_Theory.pdf) (University of Warsaw 2017, 65 pp.)  
+  Warning: problem numbering differs between the two editions. In this 2017 edition, Problem 24 is the one about reversal, Problem 30 is Root/Sqrt/Log/Fibb, and Problem 35 is about counting factors — so the pinpoint `Problems 30 and 35` used in the text follows the 2023 numbering, not this file.
+
 ## Part A — Mealy machines
 
 - **George H. Mealy (1955), _A Method for Synthesizing Sequential Circuits_.**  
@@ -28,6 +33,16 @@ BibTeX entries for everything listed here live in the book's bibliography, [../b
   The classical decomposition theorem behind the book’s Krohn-Rhodes chapter.  
   DOI: https://doi.org/10.1090/S0002-9947-1965-0188316-1  
   PDF: [KrohnRhodes1965_Algebraic_Theory_of_Machines_I.pdf](pdfs/KrohnRhodes1965_Algebraic_Theory_of_Machines_I.pdf)
+
+- **Albert R. Meyer (1969), _A Note on Star-Free Events_.**  
+  Short proof that the star-free languages are exactly the group-free (aperiodic) ones, obtained by appealing to the Krohn-Rhodes decomposition theorem above. Background for the aperiodic Mealy machines of the Krohn-Rhodes chapter.  
+  DOI: https://doi.org/10.1145/321510.321513  
+  PDF: [Meyer1969_A_Note_on_Star-Free_Events.pdf](pdfs/Meyer1969_A_Note_on_Star-Free_Events.pdf)
+
+- **Thomas Wilke (1999), _Classifying Discrete Temporal Properties_.**  
+  Survey of the classification of temporal properties, and of the methods behind it, with the connections to finite automata and to the theory of finite semigroups.  
+  DOI: https://doi.org/10.1007/3-540-49116-3_3  
+  PDF: [Wilke1999_Classifying_Discrete_Temporal_Properties.pdf](pdfs/Wilke1999_Classifying_Discrete_Temporal_Properties.pdf)
 
 - **Samuel Eilenberg (1976), _Automata, Languages, and Machines. Volume B_.**  
   The standard algebraic treatment of machines: wreath products, the Krohn-Rhodes decomposition, and the variety theory relating pseudovarieties of finite monoids to classes of languages. Includes two chapters by Bret Tilson on the depth decomposition theorem and on complexity. Companion to Volume A, listed under Part B below.  
@@ -174,7 +189,9 @@ BibTeX entries for everything listed here live in the book's bibliography, [../b
 
 - **Mikołaj Bojańczyk (2018), _Polyregular Functions_.**  
   Main reference introducing polyregular functions and key equivalent models.  
-  Link: https://arxiv.org/abs/1810.08760
+  Link: https://arxiv.org/abs/1810.08760  
+  DOI: https://doi.org/10.48550/arXiv.1810.08760  
+  PDF: [Bojanczyk2018_Polyregular_Functions.pdf](pdfs/Bojanczyk2018_Polyregular_Functions.pdf) (arXiv v1, 20 Oct 2018, 95 pp.)
 
 - **Mikołaj Bojańczyk (2022), _Transducers of Polynomial Growth_.**  
   LICS paper developing the polynomial-growth perspective for string transductions.  
@@ -199,7 +216,8 @@ BibTeX entries for everything listed here live in the book's bibliography, [../b
 
 - **Joost Engelfriet and Sebastian Maneth (2002), _Two-Way Finite State Transducers with Nested Pebbles_.**  
   Important bridge between nested-pebble transducers and string/tree transduction formalisms.  
-  Link: https://dblp.org/rec/conf/mfcs/EngelfrietM02
+  DOI: https://doi.org/10.1007/3-540-45687-2_19  
+  PDF: [EngelfrietManeth2002_Two-Way_Finite_State_Transducers_with_Nested_Pebbles.pdf](pdfs/EngelfrietManeth2002_Two-Way_Finite_State_Transducers_with_Nested_Pebbles.pdf)
 
 - **Joost Engelfriet, Hendrik Jan Hoogeboom, and Bart Samwel (2007), _XML Transformation by Tree-Walking Transducers with Invisible Pebbles_.**  
   The unbounded-pebble variant, where invisible pebbles lift the constant bound on stack height.  
@@ -225,6 +243,11 @@ BibTeX entries for everything listed here live in the book's bibliography, [../b
 
 The PDFs currently stored here are:
 
+- [pdfs/Meyer1969_A_Note_on_Star-Free_Events.pdf](pdfs/Meyer1969_A_Note_on_Star-Free_Events.pdf)
+- [pdfs/Wilke1999_Classifying_Discrete_Temporal_Properties.pdf](pdfs/Wilke1999_Classifying_Discrete_Temporal_Properties.pdf)
+- [pdfs/Bojanczyk2018_Polyregular_Functions.pdf](pdfs/Bojanczyk2018_Polyregular_Functions.pdf)
+- [pdfs/EngelfrietManeth2002_Two-Way_Finite_State_Transducers_with_Nested_Pebbles.pdf](pdfs/EngelfrietManeth2002_Two-Way_Finite_State_Transducers_with_Nested_Pebbles.pdf)
+- [pdfs/MurlakNiwinskiRytter2017_200_Problems_in_Formal_Languages_and_Automata_Theory.pdf](pdfs/MurlakNiwinskiRytter2017_200_Problems_in_Formal_Languages_and_Automata_Theory.pdf)
 - [pdfs/Baschenis2017_Untwisting_Two-Way_Transducers_in_Elementary_Time.pdf](pdfs/Baschenis2017_Untwisting_Two-Way_Transducers_in_Elementary_Time.pdf)
 - [pdfs/Bojanczyk2025_An_Automata_Toolbox.pdf](pdfs/Bojanczyk2025_An_Automata_Toolbox.pdf)
 - [pdfs/EngelfrietHoogeboomSamwel2007_XML_Transformation_by_Tree-Walking_Transducers_with_Invisible_Pebbles.pdf](pdfs/EngelfrietHoogeboomSamwel2007_XML_Transformation_by_Tree-Walking_Transducers_with_Invisible_Pebbles.pdf)

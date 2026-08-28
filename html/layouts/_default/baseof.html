@@ -233,6 +233,11 @@
            drawer over the text, the same trade the table of contents makes at
            900px. */ -}}
     :root { --lean-width: 30rem; }
+    {{- /* Asked for when the column is holding a scan, which at 30rem is read
+           through a letterbox. A share of the window rather than a fixed width,
+           so the book keeps a readable measure on the screens where this is
+           offered at all (the drawer below 1500px has its own figure). */ -}}
+    body.lean-wide { --lean-width: min(46rem, 45vw); }
     body.lean-open .shell { grid-template-columns: 17rem minmax(0, 1fr) var(--lean-width); width: min(100%, calc(24rem + var(--reading-width) + var(--lean-width))); }
     #lean-pane { position: sticky; top: 1.5rem; align-self: start; display: flex; flex-direction: column; height: calc(100vh - 3rem); border: 1px solid color-mix(in srgb, currentColor 18%, transparent); border-radius: .5rem; background: color-mix(in srgb, currentColor 4%, var(--page-bg)); overflow: hidden; }
     #lean-pane[hidden] { display: none; }
@@ -243,6 +248,14 @@
     #lean-pane-back { margin-left: auto; border: 1px solid color-mix(in srgb, currentColor 22%, transparent); border-radius: .3rem; background: none; color: inherit; cursor: pointer; font: inherit; font-size: .68rem; padding: .15rem .4rem; opacity: .7; }
     #lean-pane-back:hover { opacity: 1; }
     #lean-pane-back[hidden] { display: none; }
+    {{- /* Shown only for a paper, and margin-left:auto only when it is the
+           first of the two, so the pair sits together on the right whether or
+           not "All results" is there beside it. */ -}}
+    #lean-pane-wide { border: 1px solid color-mix(in srgb, currentColor 22%, transparent); border-radius: .3rem; background: none; color: inherit; cursor: pointer; font: inherit; font-size: .68rem; padding: .15rem .4rem; opacity: .7; }
+    #lean-pane-wide:hover { opacity: 1; }
+    #lean-pane-wide[hidden] { display: none; }
+    #lean-pane-wide[aria-pressed="true"] { opacity: 1; background: color-mix(in srgb, currentColor 14%, transparent); }
+    #lean-pane-back[hidden] + #lean-pane-wide { margin-left: auto; }
     #lean-pane-sub { display: flex; flex-wrap: wrap; align-items: center; gap: .45rem; padding: .4rem .75rem; font-size: .7rem; }
     #lean-pane-sub:empty { display: none; }
     #lean-pane-sub code { font-size: .72rem; }
@@ -265,6 +278,28 @@
     .lean-list button { display: flex; flex-wrap: wrap; align-items: baseline; gap: .4rem; width: 100%; padding: .35rem .4rem; border: 0; border-radius: .3rem; background: none; color: inherit; font: inherit; font-size: .74rem; text-align: left; cursor: pointer; }
     .lean-list button:hover { background: color-mix(in srgb, currentColor 9%, transparent); }
     .lean-num { font-weight: 600; }
+    {{- /* The line between what is proved and what is not. Only drawn when the
+           second group exists, so a chapter that is finished shows one plain
+           list and nothing else. */ -}}
+    {{- /* A bibliography entry, shown when a citation is clicked. */ -}}
+    .bib-entry { padding: .7rem .9rem; font-size: .78rem; line-height: 1.5; }
+    .bib-title { font-weight: 600; margin-bottom: .25rem; }
+    .bib-authors { opacity: .8; }
+    .bib-where { opacity: .6; margin-top: .15rem; }
+    .bib-link { display: inline-block; margin-top: .5rem; color: var(--accent); font-size: .72rem; word-break: break-all; }
+    .bib-key { margin-top: .6rem; opacity: .45; font-size: .68rem; }
+    {{- /* A paper turns the body from one scrolling thing into two stacked
+           ones: the entry, at its own height, and the scan filling whatever is
+           left. min-height:0 on the frame for the usual reason — without it a
+           flex item refuses to be shorter than its content, and the frame would
+           push the entry off the top. */ -}}
+    #lean-pane-body.with-pdf { display: flex; flex-direction: column; overflow: hidden; }
+    #lean-pane-body.with-pdf .bib-entry { flex: 0 0 auto; overflow: auto; max-height: 45%; }
+    .bib-pdf { flex: 1 1 auto; min-height: 0; border-top: 1px solid color-mix(in srgb, currentColor 15%, transparent); background: color-mix(in srgb, currentColor 8%, var(--page-bg)); }
+    .bib-pdf iframe { display: block; width: 100%; height: 100%; border: 0; }
+    .bib-pdf-open { color: var(--accent); text-decoration: none; }
+    .bib-pdf-open:hover { text-decoration: underline; }
+    .lean-split { margin: .9rem .4rem .35rem; padding-top: .6rem; border-top: 1px solid color-mix(in srgb, currentColor 15%, transparent); font-size: .64rem; letter-spacing: .04em; text-transform: uppercase; opacity: .55; }
     .lean-list code { opacity: .7; font-size: .7rem; }
     {{- /* Wrapped rather than scrolled sideways: the column is narrow and Lean
            lines are long, and a reader comparing a statement with the book
@@ -315,10 +350,14 @@
     .lean-badge-demo { position: static; cursor: default; opacity: .8; }
     #lean-toggle[hidden] { display: none; }
     #lt-pill #lean-toggle[aria-expanded="true"] { opacity: 1; background: color-mix(in srgb, currentColor 18%, transparent); }
-    .lt-lean { font-weight: 700; font-size: 1rem; }
+    {{- /* ❡ comes from the system's symbol fallback whatever family is asked
+           for, so size is the only handle on it: at the λ's 1rem it reads thin
+           and unlike anything, and at 1.4rem it balances ≡ and Tt beside it. */ -}}
+    .lt-lean { font-size: 1.4rem; line-height: 1; }
     @media (max-width: 1499px) {
       body.lean-open .shell { grid-template-columns: 17rem minmax(0, 1fr); width: min(100%, calc(24rem + var(--reading-width))); }
       #lean-pane { position: fixed; inset: 0 0 0 auto; z-index: 1250; width: min(30rem, 94vw); height: 100dvh; max-height: none; border-radius: 0; border-width: 0 0 0 1px; box-shadow: -.5rem 0 2rem rgb(0 0 0 / .24); }
+      body.lean-wide #lean-pane { width: min(52rem, 98vw); }
       .lean-badge { left: auto; right: 0; top: -1.35rem; }
     }
     @media (max-width: 900px) {
@@ -352,6 +391,9 @@
   {{ partial "lean-pane.html" . }}
 </div>
 {{ partial "reader-switches.html" . }}
+{{/* The bibliography, for the third column's view of a citation. A plain
+     script, not fetched: the built site must work opened off disk. */}}
+<script src="{{ "bibliography.js" | relURL }}?v={{ substr (readFile "static/bibliography.js" | crypto.MD5) 0 8 }}" defer></script>
 {{ partial "reflowtex-viewer.html" . }}
 <script>
   (function () {

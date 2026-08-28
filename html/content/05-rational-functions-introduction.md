@@ -9,6 +9,6 @@ part = true
 \setcounter{mypart}{2}
 \setcounter{section}{0}
 \setcounter{ourexamplecounter}{6}
-% source stamp rational-intro.tex:c7c49b0f
+% source stamp rational-intro.tex:770cca3c
 \input{../../../rational-intro.tex}
 {{< /latex >}}

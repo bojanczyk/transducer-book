@@ -114,3 +114,96 @@ The book has **83 exercises, 82 with a written solution. 59 are formalised**, al
 ## Caveats
 
 Theorem C.4.17 is absent from the sources and from the index, as instructed, and is not counted anywhere as missing. The withdrawn paragraph and the unlabelled exercise at `rational-functions.tex:440` have no `\label` in the copy of the book available here; they are identified by file and line rather than by an invented label.
+
+## 2026-08-28 06:16:20Z — encoding-snake-alphabet was canceled
+
+Task 6983a6d2-566a-4e33-94a0-45b8179f9aa0 was canceled, so nothing was integrated for encoding-snake-alphabet and the run has moved on to the next target.
+
+If you cancelled it because you were doing the work yourself, that run is in a project of its own and this driver cannot see it. Bring it in with:
+
+    driver.py integrate <project-id> --base <commit>
+
+and then `driver.py requeue encoding-snake-alphabet` if more is still wanted from it.
+
+## 2026-08-28 21:30:33Z — audit finished: audit-final
+
+Aristotle's audit report follows. Divergences from the book and status corrections are what to look for.
+
+Closing audit of the formalisation of *Transducers* in `transducer-lean/`. No new numbered result was attempted; the project was rebuilt from scratch, re-verified declaration by declaration, re-checked against the LaTeX sources, and the three index files were brought to their final state.
+
+## 1. `lake build` from scratch
+
+Run from `transducer-lean/` (the root of the Lean package) with an empty `.lake/build`: **succeeds, 8386 jobs, 0 errors**. The only diagnostics are **47** Lean linter warnings, all inside auxiliary proofs, never in the statement of a numbered result:
+
+* **30 × `automatically included section variable(s) unused in theorem …`** — in `PartC/RunElts.lean` (3), `PartC/RunMark.lean` (3), `PartC/SnakeBlock.lean` (3), `PartC/SnakeChkAcc.lean` (1), `PartC/SnakeChkAnn.lean` (8), `PartC/SnakeChkStruct.lean` (6), `PartC/SnakeChkVerify.lean` (4), `PartD/CGSem.lean` (2).
+* **17 × `unused variable …`** — in `PartB/SeqChar.lean` (1), `PartC/SnakeChkBuild.lean` (1), `PartC/SnakeChkCtx.lean` (1), `PartC/SnakeChkReadData.lean` (1), `PartC/SnakeChkStruct.lean` (2), `PartC/SnakeLocal.lean` (1), `PartC/SnakeWinRun.lean` (6), `PartD/ForPrenex.lean` (1), `PartD/PebbleSeq.lean` (2), `Exercises/Compression.lean` (1).
+
+Acting on either kind would change the signature of a helper lemma, so they are left and inventoried in `THEOREMS.md`. The 13 remaining *mechanical* warnings (unused `simp` arguments in `Exercises/CompressionMapLift.lean`, added after the previous audit) were removed in this run.
+
+## 2. `#print axioms` on every formalised numbered result
+
+A new script, `tools/print_axioms.sh`, runs `#print axioms` on all **196** aliases of `RequestProject/Labels.lean` — **116** covering the 97 formalised theorem-like environments of the book, **80** covering the 65 formalised exercises. Result: *every one of the 196 depends only on `propext`, `Classical.choice`, `Quot.sound`*. No `sorryAx`, no other axiom.
+
+Classification of the book's **100 theorem-like environments**:
+
+* **20 definitions formalised** (Introduction 1, A 4, B 7, C 6, D 2).
+* **71 results proved outright** — Part A 11, Part B 21, Part C 28, Part D 11. **Parts A, B and D are proved in full**, and so is Part C apart from the one conditional result below.
+* **6 results proved from an explicit hypothesis**, taken as an ordinary theorem argument (so `#print axioms` still reports only the three standard axioms):
+  * `thm:undecidable-equivalence-rational-relations` — `¬ ComputablePred Transducers.PCP.Solvable` (undecidability of Post correspondence);
+  * `thm:equivalence-weighted-automata`, `thm:equivalence-rational-functions`, `thm:zeroness-weighted-automata`, `thm:decide-if-mealy` — `Transducers.EffectiveWeightedEvalEq`;
+  * `thm:decidable-equivalence-regular` — `Transducers.EffectiveTwoWayEvalEq` and `Transducers.EffectiveTwoWayBound`.
+  These isolate the fact that Mathlib's `Primrec`/`Computable` API has no arithmetic on `ℤ`/`ℚ`; the non-effective mathematics behind them (Schützenberger's bound, `Transducers.regularFun_eq_of_short`) is proved unconditionally.
+* **3 environments not formalised, none of them an unfinished proof**: Definition `def:rational-recognisable-subsets` (used once, in a remark), Conjecture `conj:regular-via-weighted-automata` (an open conjecture, not a result), and `nolabel:thm-fo-transduction-into-primes` (withdrawn by the author; kept only as a comment in `PartC/MSOOpen.lean`, which declares nothing — its easy half survives as `Transducers.isFOTransduction_of_compClosure`). The result the author withdrew is not reinstated and is not counted as missing.
+
+**Nothing formalised is left open.** One *part* of a formalised statement is not formalised: the closing sentence of `thm:aperiodic-mealy`, "moreover, this property can be decided given a Mealy machine that computes `f`".
+
+Every label used above was found in the LaTeX sources; the only tag that is not a `\label` of the book is the placeholder `nolabel:thm-fo-transduction-into-primes`, for the unnumbered paragraph at the end of `logic.tex`, which carries none.
+
+## 3. `sorry` and `axiom`
+
+`RequestProject/` contains **no `sorry`, no `axiom`, no `@[implemented_by]`, no `native_decide`**. `lake build` emits not one `declaration uses 'sorry'`. The token `sorry` occurs ten times, every one inside a block comment preserving a statement the project does not make: six in `PartB/WeightedStatements.lean` (the unconditional forms of the four decidability theorems, the earlier unrelativised `thm:decide-if-mealy`, the earlier edition of `thm:sequential-function-independent`), two in `PartC/Statements.lean` (unconditional `thm:decidable-equivalence-regular`, the printed false form of `claim:conditional`), two in `PartC/MSOOpen.lean` (the withdrawn theorem and its open half). This was checked by a comment-aware scan, not by eye.
+
+## 4. Divergences from the book (re-read against the LaTeX this run)
+
+*Corrected because the printed statement is false*
+* `def:aperiodic-mealy` — the last letter is taken in `Option B`; asking for a real output letter makes aperiodicity unsatisfiable (`u = v = w = ε`).
+* `claim:conditional` — corrected on the empty input; as printed it is false there, with `Transducers.not_sum_of_regular_nil` as counterexample.
+
+*Equivalent or restricted form*
+* `thm:equivalence-decidable-mealy` — the finite check "agree on inputs of length ≤ |Q₁|·|Q₂|" rather than a `Decidable` instance.
+* `thm:decide-if-mealy` — the decided property is relativised to the alphabet of the code (a code reads only finitely many letters).
+* `lem:aperiodicity-minimal-machine` — "some machine computing `f` satisfies (*)" rather than "the minimal machine does"; equivalent, and avoids constructing the minimal machine.
+* `lem:k-types-fo-equivalence` — quantifies over first-order *sentences*; "formulas" has no meaning without a valuation.
+* `lem:output-of-snake-graph-is-regular` — the book's alphabet, but for every `k : ℕ`, not only `k ∈ {1,…,|Q|}` (more general).
+* `claim:transition-formula` — stated for the index of a bimachine rather than for an unambiguous transducer.
+* `lem:reachability-pebble-automaton`, `claim:reachability-basic-run` — the book's mso formula `φ(s,t)` is rendered as a regular language of encodings of configuration pairs (equivalent by `thm:mso-logic-languages`), required correct only on genuine encodings.
+* `lem:children-of-configuration-in-pebble-run`, `claim:from-configuration-to-child-configuration-graph` — carry the hypothesis `st.length < k`, which is the case distinction the book's own proof opens with.
+* `claim:bounded-extensions`, `claim:computing-branching-part`, `claim:offsets-are-regular`, `claim:eliminating-negative-letters` — the four steps are reorganised inside the Lean proof of `thm:subsequential-functions`.
+
+*Added hypothesis*
+* the six conditional results listed in §2, and `lem:check-if-output-string-of-configuration-graph-belongs-to-L`, which assumes the transducer computes a total function (the only way the book uses it).
+
+*Not formalised* — the decidability sentence of `thm:aperiodic-mealy`; `def:rational-recognisable-subsets`; `conj:regular-via-weighted-automata`.
+
+*Divergences the book has since removed* (the Lean statements are now faithful): `cor:2dfa-computes-all-regular-functions` (inclusion once printed backwards), `thm:sequential-function-independent` (missing condition, now item (c)), `lemma:derivatives` (the derivative now removes the first `|w|` output letters).
+
+No divergence recorded in a Lean docstring is missing from that list, and every listed one still matches the current `.tex`.
+
+## 5–6. `THEOREMS.md` and `FORMALISATION.md`
+
+`THEOREMS.md` is the complete final index: every one of the 100 environments has a row giving its LaTeX label, Lean name, status and file; the divergences are collected in one section; the `## Status` section now carries the corrected alias counts (196 = 116 + 80), the exact warning inventory, the exact `sorry`-in-comment inventory, and the recounted exercise figures. `FORMALISATION.md` is the prose companion for a reader of the book (what is done, the conventions, what the book gets wrong or leaves imprecise, the six hypotheses, what is left out and why, and why the tables can be believed); it was updated with the same corrections. `README.md` documents the new script and where `lake build` is run.
+
+All five bookkeeping checks pass: `tools/print_axioms.sh`, `gen_labels.py --check`, `tex_numbering.py --check`, `decl_files.py --check`, `relabel.py`.
+
+## 7. The exercises
+
+`EXERCISES.md` was audited the same way and a new `## Status (closing audit)` section was appended (nothing existing was rewritten). Correction to the earlier counts: the sources contain 83 `\exer` environments, but two of them (line 311 and the unlabelled one at line 440 of `rational-functions.tex`) are **commented out** and carry no number in `main.aux`, so **the book has 81 exercises, all with a written solution**. **65 are formalised and proved** (not 63) and **16 are not** (not 20). Every one of the 65 is free of `sorryAx`: each has an alias with `assert_no_sorry`, and the `#print axioms` sweep covers all 80 exercise aliases.
+
+**Exercises of the book that have a written solution and no formalisation (16)**, with the reason:
+`exer:rational-outpus-of-exactly-linear-size` and `exer:rational-outpus-of-exactly-linear-size-rational-number` (maximum cycle mean of a weighted graph); `exer:regular-outpus-of-exactly-linear-size` (reduces to those two); `exer:full-ideal`, `exer:polynomial-ideals`, `exer:all-ideals`, `exer:decide-same-ideal` (growth rates of regular languages); `exer:rational-injectivity-decidable` (its mathematical first step *is* proved, in `Exercises/RatInjective.lean`; the decision procedure needs a computable form of the Uniformisation Lemma); `exer:rational-composition-finiteness-undecidable` (undecidability reduction not carried out for codes); `exer:minimal-bimachine-lexicographic` and `exer:non-minimal-automaton` (a Myhill–Nerode theory for bimachines; a case analysis the solution only sketches); `exer:fo-non-elementary` and `exer:fo-suc` (non-elementary succinctness; Ehrenfeucht–Fraïssé games); `exer:polyregular-unmarked-squaring` (rests on the polynomial-*time* half of the compression exercises); `exer:for-transducer-continuity-nonelementary` (rests on `exer:fo-non-elementary`); `exer:forward-for-transducer` (needs both inclusions of `thm:for-transducers-are-polyregular` replayed with loop directions tracked). Item (b) of the otherwise formalised `exer:decide-rational-colision` is also left out.
+
+Three of the 65 diverge from the literal exercise, each documented: `exer:rational-compression` and `exer:regular-compression` are proved in their *size* half (running time is not modelled), and `exer:2dfa-complexity` is proved by a construction the book does not give, the author's own construction giving only a superpolynomial bound (it is kept alongside, with the bound it really gives). Three carry an explicit hypothesis: `exer:function-that-is-not-rational`, `exer:rational-relations-intersection-undecidable`, item (a) of `exer:decide-rational-colision`.
+
+## Housekeeping
+
+Two leftover files were removed from the top of `transducer-lean/`: `Scratch.lean`, a byte-for-byte duplicate of `RequestProject/PartD/ChildGraphOfRun.lean`, and `--help`, a captured tool output. Neither was part of the Lean library. The LaTeX sources of the book were not touched.

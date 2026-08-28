@@ -53,14 +53,27 @@
     {{ end }}
   {{ end }}
 
-  {{ if $labels }}
+  {{/* On every chapter, and not only on the ones with something formalised:
+       the column holds references now as well as proofs, and a chapter can
+       perfectly well cite a paper without stating a numbered result of its own
+       — the two introductions do exactly that. Gating this on $labels left
+       their citations opening nothing at all. What $labels still decides is
+       whether the pill offers a button; see the end of the script. */}}
 <script id="lean-data" type="application/json">{{ (dict "labels" $labels "files" $files) | jsonify | safeJS }}</script>
 
-<aside id="lean-pane" aria-label="Lean formalisation" hidden>
+{{/* "lean-pane" throughout, though the column is the margin now and holds more
+     than Lean: the id is written into the reader's saved preference and into
+     the ?lean=1 that a shared address carries, and renaming it would quietly
+     drop both for everyone who has one. The names a reader sees are below. */}}
+<aside id="lean-pane" aria-label="Margin" hidden>
   <header id="lean-pane-head">
-    <div id="lean-pane-title">Lean formalisation</div>
+    <div id="lean-pane-title">Margin</div>
     <button id="lean-pane-back" type="button" hidden>All results</button>
-    <button id="lean-pane-close" type="button" aria-label="Close the Lean column">&times;</button>
+    {{/* Only ever shown for a paper: a page of a scan at this column's width is
+         a page read through a letterbox, and nothing else the column holds
+         wants the extra room badly enough to take it off the book. */}}
+    <button id="lean-pane-wide" type="button" aria-pressed="false" hidden>Wider</button>
+    <button id="lean-pane-close" type="button" aria-label="Close the margin">&times;</button>
   </header>
   {{/* The citable address of whatever is being shown, above the formalisation
        because it is the part a reader is more often after: a link to put in a
@@ -85,10 +98,64 @@
   var title = document.getElementById('lean-pane-title');
   var sub   = document.getElementById('lean-pane-sub');
   var back  = document.getElementById('lean-pane-back');
+  var wide  = document.getElementById('lean-pane-wide');
   var citeBox  = document.getElementById('cite-box');
   var citeLink = document.getElementById('cite-link');
   var citeCopy = document.getElementById('cite-copy');
   var KEY = 'reflowtex-lean';
+
+  // Whether this chapter states any numbered result. Where it states none the
+  // column is still here — a citation has to have somewhere to open — but there
+  // is no list to offer, so the pill shows no button, "All results" does not
+  // appear, and nothing opens the column except clicking a citation.
+  var HAS_RESULTS = Object.keys(DATA.labels).length > 0;
+
+  // Where the site's root is from here, read off the bibliography script's own
+  // src the way search.html reads it off the index's: Hugo has already rewritten
+  // that attribute to "../bibliography.js" on a chapter page and
+  // "./bibliography.js" on the landing page, and asking Hugo for the path from
+  // inside a <script> would give an absolute one and break the site opened
+  // straight off disk. The PDFs are addressed relative to it.
+  //
+  // Looked up on demand and not here: this partial is rendered above that
+  // script tag, so at this point in the document there is nothing yet to read
+  // it off, and the PDFs would all be addressed as if every chapter were the
+  // site root. By the time a citation can be clicked the page is long parsed.
+  var ROOT = null;
+  function root() {
+    if (ROOT === null) {
+      var s = document.querySelector('script[src*="bibliography.js"]');
+      ROOT = s ? s.getAttribute('src')
+                  .replace(/bibliography\.js.*$/, '').replace(/^\.\//, '') : '';
+    }
+    return ROOT;
+  }
+
+  // ---- the width of the column -------------------------------------------
+  // Wide is a property of what is being looked at, not a setting: it is turned
+  // on by hand for a paper and stays on while papers are what the column shows,
+  // and goes away by itself when it goes back to holding Lean. So it is not
+  // remembered across pages — a reader who wanted the book squeezed to a third
+  // of the window would have to keep asking for it, and nobody wants that.
+  function setWide(on) {
+    document.body.classList.toggle('lean-wide', on);
+    wide.setAttribute('aria-pressed', String(on));
+    wide.textContent = on ? 'Narrower' : 'Wider';
+    window.dispatchEvent(new Event('resize'));   // the viewer lays out to a new width
+  }
+  wide.addEventListener('click', function () {
+    setWide(!document.body.classList.contains('lean-wide'));
+  });
+
+  // What every change of view runs through: the extra width and the split
+  // layout a paper asks for belong to that paper and to nothing else the column
+  // shows. showReference calls it and then takes the width back if the entry
+  // has a PDF, so that clicking from one paper to the next does not flap.
+  function narrow() {
+    wide.hidden = true;
+    body.className = '';
+    if (document.body.classList.contains('lean-wide')) setWide(false);
+  }
 
   // ---- the citable address of a result ------------------------------------
   // "theorem-C.4.1", not the LaTeX \label: a citation should say what it points
@@ -127,7 +194,7 @@
   // ---- open / closed ------------------------------------------------------
   // The column is closed until it is asked for. Opening it by clicking a result
   // is a look at that one result, not a change of mind about the layout, so
-  // only the λ button and the close button move the remembered preference —
+  // only the margin button and the close button move the remembered preference —
   // otherwise one click on a theorem would leave every later page opening on a
   // list of declarations nobody asked to see.
   var pref = '0';
@@ -250,6 +317,7 @@
   function show(label) {
     var e = DATA.labels[label];
     if (!e) return;
+    narrow();
     setOpen(true, false);
     back.hidden = false;
     title.textContent = e.kind.charAt(0).toUpperCase() + e.kind.slice(1) + ' ' + printed(e);
@@ -304,7 +372,7 @@
   }
 
   // ---- the index -----------------------------------------------------------
-  // Not what the column opens on any more: it is what the λ button lands on,
+  // Not what the column opens on any more: it is what the margin button lands on,
   // and what "All results" comes back to.
   // Reading order, not numerical order. The two are not the same: exercises are
   // counted on their own, so Exercise B.1.1 sorts between Definition B.1.1 and
@@ -319,6 +387,42 @@
   }
 
   var indexHTML = null;
+
+  // A result is settled if there is a Lean proof of it somewhere: here, or in
+  // Mathlib. Those go above the line. Below it are the ones with no proof to
+  // point at — a `sorry` of their own (open), a `sorry` they rest on (blocked),
+  // or no formalisation at all.
+  function settled(e) {
+    if (!formalised(e)) return false;
+    var st = pick(e).state;
+    return st === 'proved' || st === 'external';
+  }
+
+  // The tag a row carries, if any. Proved here is the ordinary case and says
+  // nothing; everything else — including a proof that lives in Mathlib rather
+  // than in this project — says what it is.
+  function tagOf(e) {
+    if (!formalised(e)) return { text: 'not formalised', cls: 'none' };
+    var d = pick(e);
+    return d.state === 'proved' ? null : { text: shortState(d), cls: d.state };
+  }
+
+  function row(k) {
+    var e = DATA.labels[k];
+    var html = '<li><button type="button" data-label="' + k + '">' +
+               '<span class="lean-num">' + esc(e.kind) + ' ' + esc(printed(e)) + '</span>';
+    if (formalised(e)) {
+      var d = pick(e);
+      html += '<code>' + esc(d.name) + '</code>' +
+              (d.internal ? '<span class="lean-state lean-st-internal">internal</span>' : '');
+    }
+    var tag = tagOf(e);
+    if (tag) {
+      html += '<span class="lean-state lean-st-' + tag.cls + '">' + esc(tag.text) + '</span>';
+    }
+    return html + '</button></li>';
+  }
+
   function buildIndex() {
     var keys = Object.keys(DATA.labels).sort(function (a, b) {
       return order(DATA.labels[a]) - order(DATA.labels[b]) ||
@@ -330,27 +434,30 @@
       (keys.length === 1 ? '' : 's') + ' on this page, ' + done + ' of them ' +
       'formalised. Click one below, or click the result itself in the text \u2014 ' +
       'a formalised one is marked <span class="lean-badge lean-badge-demo">Lean</span>. ' +
-      'Either way you get its link.</p><ol class="lean-list">';
-    keys.forEach(function (k) {
-      var e = DATA.labels[k];
-      html += '<li><button type="button" data-label="' + k + '">' +
-              '<span class="lean-num">' + esc(e.kind) + ' ' + esc(printed(e)) + '</span>';
-      if (formalised(e)) {
-        var d = pick(e);
-        html += '<code>' + esc(d.name) + '</code>' +
-                '<span class="lean-state lean-st-' + d.state + '">' +
-                esc(shortState(d)) + '</span>' +
-                (d.internal ? '<span class="lean-state lean-st-internal">internal</span>' : '');
-      } else {
-        html += '<span class="lean-state lean-st-none">not formalised</span>';
-      }
-      html += '</button></li>';
-    });
-    indexHTML = html + '</ol>';
+      'Either way you get its link.</p>';
+
+    // Two lists, in reading order within each: what has a Lean proof, then —
+    // only if there is any — what has not, each of those saying what is the
+    // matter with it. A chapter that is done all the way through therefore has
+    // no second list and no tags at all, which is the point of the split: a tag
+    // should mean that something is up.
+    var proved = keys.filter(function (k) { return settled(DATA.labels[k]); });
+    var rest = keys.filter(function (k) { return !settled(DATA.labels[k]); });
+
+    if (proved.length) {
+      html += '<ol class="lean-list">' + proved.map(row).join('') + '</ol>';
+    }
+    if (rest.length) {
+      html += '<div class="lean-split">Not proved in Lean</div>' +
+              '<ol class="lean-list">' + rest.map(row).join('') + '</ol>';
+    }
+    indexHTML = html;
   }
+
   buildIndex();
 
   function showIndex() {
+    narrow();
     title.textContent = 'Results on this page';
     sub.innerHTML = '';
     citeBox.hidden = true;          // nothing in particular is being shown
@@ -408,6 +515,70 @@
       fallback();
     }
   });
+
+  // ---- a citation in the text -------------------------------------------
+  // Citations are links the viewer draws (latex-preambles/book.tex wraps each
+  // one in an \href with a `cite:` scheme of our own). Clicking one belongs
+  // here rather than in the browser: the third column shows the entry, and the
+  // reader keeps their place in the chapter.
+  function showReference(key) {
+    var bib = window.__bookBib || {};
+    var e = bib[key];
+    var wasWide = document.body.classList.contains('lean-wide');
+    narrow();
+    setOpen(true, false);
+    back.hidden = !HAS_RESULTS;
+    citeBox.hidden = true;
+    sub.innerHTML = '';
+    shownFile = null;
+    title.textContent = e && e.label ? '[' + e.label + ']' : 'Reference';
+
+    if (!e || e.missing) {
+      // The book cites it, bib.bib does not define it — the printed text shows
+      // the raw key here, and so does the PDF.
+      body.innerHTML = '<p class="lean-hint">No entry for <code>' + esc(key) +
+        '</code> in the bibliography.</p>';
+      return;
+    }
+    var where = [e.where, e.volume, e.pages, e.year].filter(Boolean).join(', ');
+    var link = e.doi ? 'https://doi.org/' + e.doi : (e.url || '');
+    // build-bibliography.py matched this entry to a file in literature/pdfs, and
+    // hugo.toml mounts that folder at the site root — so the paper itself can be
+    // shown here, under the entry, rather than left behind a DOI.
+    var pdf = e.pdf ? root() + e.pdf.split('/').map(encodeURIComponent).join('/') : '';
+    body.className = pdf ? 'with-pdf' : '';
+    body.innerHTML =
+      '<div class="bib-entry">' +
+        (e.title ? '<div class="bib-title">' + esc(e.title) + '</div>' : '') +
+        (e.authors ? '<div class="bib-authors">' + esc(e.authors) + '</div>' : '') +
+        (where ? '<div class="bib-where">' + esc(where) + '</div>' : '') +
+        (link ? '<a class="bib-link" href="' + esc(link) + '" target="_blank" ' +
+                'rel="noopener">' + esc(e.doi ? 'doi.org/' + e.doi : link) + '</a>' : '') +
+        '<div class="bib-key"><code>' + esc(key) + '</code></div>' +
+      '</div>' +
+      // title="" so the frame is not announced as an unnamed document, and a
+      // link beside it above: a browser that will not put a PDF in a frame —
+      // and one asked to over file:// may well refuse — leaves an empty box
+      // here, and the reader still needs a way through to the paper.
+      (pdf ? '<div class="bib-pdf"><iframe src="' + esc(pdf) +
+             '" title="' + esc(e.title || key) + '"></iframe></div>' : '');
+
+    if (pdf) {
+      sub.innerHTML = '<a class="bib-pdf-open" href="' + esc(pdf) +
+        '" target="_blank" rel="noopener">Open the PDF in a new tab</a>' +
+        '<span class="lean-file">' + size(e.pdfbytes) + '</span>';
+      wide.hidden = false;
+      if (wasWide) setWide(true);      // reading on: one paper after another
+    }
+  }
+
+  // A scan of a 1974 volume is forty megabytes, and the reader about to wait
+  // for it over a slow line should be able to see why.
+  function size(bytes) {
+    if (!bytes) return '';
+    return bytes >= 1048576 ? (bytes / 1048576).toFixed(bytes < 10485760 ? 1 : 0) + ' MB'
+                            : Math.round(bytes / 1024) + ' KB';
+  }
 
   // ---- the result in the text, as the click target ------------------------
   // The reader should be able to click the theorem itself, so we have to find
@@ -626,7 +797,19 @@
     scrollToSlug((location.hash || '').replace(/^#/, ''));
   });
 
-  if (content) {
+  // On the document, not on #lt-content: a citation can also be inside a
+  // footnote, and the viewer hangs its footnote popover off document.body,
+  // outside the chapter. Capture phase and stopPropagation so the viewer's own
+  // handler never gets to navigate to `cite:…`.
+  document.addEventListener('click', function (ev) {
+    var a = ev.target.closest && ev.target.closest('[data-link-href^="cite:"]');
+    if (!a) return;
+    ev.preventDefault();
+    ev.stopPropagation();
+    showReference(decodeURIComponent(a.getAttribute('data-link-href').slice(5)));
+  }, true);
+
+  if (content && HAS_RESULTS) {
     content.addEventListener('click', function (ev) {
       // a click that ends a text selection is not a click on the theorem
       if (window.getSelection && String(window.getSelection()).length) return;
@@ -659,11 +842,16 @@
 
   // ---- initial state ------------------------------------------------------
   // Closed unless the reader left it open on purpose. The book is the point;
-  // the formalisation is something to ask for, by clicking a result or the λ.
+  // what stands beside it is something to ask for, by clicking a citation, a
+  // result, or the ❡ in the pill.
   var fromURL = null;
   if (window.__fromQuery) fromURL = window.__fromQuery('lean');
   var saved; try { saved = localStorage.getItem(KEY); } catch (e) {}
   pref = fromURL === '1' || (fromURL === null && saved === '1') ? '1' : '0';
+  // …but a chapter with nothing to list opens closed whatever the reader last
+  // left behind. The alternative is a column that greets them with a list of no
+  // results and no button in the pill to bring it back once shut.
+  if (!HAS_RESULTS) pref = '0';
   // Arriving by citation: the fragment names one result, so go there. And if
   // the column is open anyway, let it be about the result the reader was sent
   // to, rather than about a list they did not ask for.
@@ -685,11 +873,10 @@
   }
   whenReady(function () {
     var toggle = document.getElementById('lean-toggle');
-    if (!toggle) return;
+    if (!toggle || !HAS_RESULTS) return;
     toggle.hidden = false;
     toggle.setAttribute('aria-expanded', window.__leanOpen() === '1' ? 'true' : 'false');
   });
 })();
 </script>
-  {{ end }}
 {{ end }}

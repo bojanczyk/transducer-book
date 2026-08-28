@@ -9,7 +9,7 @@ source = "logic.tex"
 \setcounter{section}{3}
 \setcounter{ourexamplecounter}{23}
 \renewcommand{\exer}[2]{}
-% source stamp logic.tex:1d4c0cb9
+% source stamp logic.tex:da674220
 \input{../../../logic.tex}
 {{< /latex >}}
 
