@@ -201,14 +201,14 @@ all eleven are aliased in `RequestProject/Labels.lean`.
 
 | Book | Lean | Status |
 | --- | --- | --- |
-| Exercise `exer:2dfa-unary-output` (over a unary output alphabet, regular = rational) | — | not formalised |
+| Exercise `exer:2dfa-unary-output` (over a unary output alphabet, regular = rational) | `isRegularFun_iff_isRationalFun_of_unary_output` | proved |
 | Exercise `exer:2dfa-boolean` (two-way deterministic languages are closed under Boolean combinations) | `isTwoDFALang_boolean` | proved |
-| Exercise `exer:2dfa-complexity` (the shortest accepted string can be exponential in the number of states) | — | not formalised (the book's construction does not prove the claim; see below) |
+| Exercise `exer:2dfa-complexity` (the shortest accepted string can be exponential in the number of states) | `divAut`, `divAut_accepts`, `card_divSt`, `divAut_shortest`, `divAut_shortest_le` | not formalised (the book's construction does not prove the claim; the construction itself, and the bound it really gives, are in `Exercises/TwoDFAComplexity.lean`; see below) |
 | Exercise `exer:2dfa-loop-elimination` (the inputs on which a two-way transducer terminates form a regular language) | `halts_isRegular` | proved |
 | Exercise `exer:2dfa-loop-elimination-sipser` (a polynomial-size two-way automaton for it) | — | not formalised |
 | Exercise `exer:regular-outpus-of-exactly-linear-size` (a regular function of unbounded output size has exactly linear output size) | — | not formalised |
 | Exercise `exer:2nft` (the two nondeterministic two-way models are incomparable) | `exists_isTwoNFT₁_not_isTwoNFT₂`, `exists_isTwoNFT₂_not_isTwoNFT₁` (with `TwoWayN`, `IsTwoNFT₁`, `IsTwoNFT₂`, `dupRel`) | proved |
-| Exercise `exer:2nft-uniformise` (both nondeterministic models can be uniformised) | — | not formalised |
+| Exercise `exer:2nft-uniformise` (both nondeterministic models can be uniformised) | `exists_isRegularFun_uniformising_isTwoNFT₁`, `exists_isRegularFun_uniformising_isTwoNFT₂` | proved |
 
 ### Streaming string transducers (`sst.tex`)
 

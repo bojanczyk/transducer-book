@@ -870,6 +870,16 @@ assert_no_sorry «exer:2nft»
 alias «exer:2nft#2» := Transducers.Exercises.exists_isTwoNFT₂_not_isTwoNFT₁
 assert_no_sorry «exer:2nft#2»
 
+/-- **Exercise `exer:2nft-uniformise`** (first model: a total relation computed by a two-way transducer with a nondeterministic transition relation contains the graph of a regular function): `Transducers.Exercises.exists_isRegularFun_uniformising_isTwoNFT₁`. -/
+alias «exer:2nft-uniformise» :=
+  Transducers.Exercises.exists_isRegularFun_uniformising_isTwoNFT₁
+assert_no_sorry «exer:2nft-uniformise»
+
+/-- **Exercise `exer:2nft-uniformise`** (second model: a total relation computed by a deterministic two-way transducer on a nondeterministically labelled input contains the graph of a regular function): `Transducers.Exercises.exists_isRegularFun_uniformising_isTwoNFT₂`. -/
+alias «exer:2nft-uniformise#2» :=
+  Transducers.Exercises.exists_isRegularFun_uniformising_isTwoNFT₂
+assert_no_sorry «exer:2nft-uniformise#2»
+
 /-- **Exercise `exer:for-transducers-simulate-fo`** (a first-order sentence is computed by a for-transducer of linear size): `Transducers.Exercises.exists_forProg_of_isFO`. -/
 alias «exer:for-transducers-simulate-fo» := Transducers.Exercises.exists_forProg_of_isFO
 assert_no_sorry «exer:for-transducers-simulate-fo»
