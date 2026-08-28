@@ -1,3 +1,31 @@
+# Summary of the run on Lemma `lem:output-of-snake-graph-is-regular` (verification pass)
+
+The book's form of Lemma `lem:output-of-snake-graph-is-regular` is in place and complete:
+
+* the book's alphabet `C` of snake letters is `Transducers.SnakeLetter Q B`
+  (`RequestProject/PartC/SnakeAlph.lean`), together with the snake graph a string over it
+  represents, the output of that graph and the width-`k` output function
+  `Transducers.SnakeGraph.snakeOut k`;
+* the lemma itself, in the book's phrasing, is `Transducers.SnakeGraph.snakeOut_isRegular`
+  (`RequestProject/PartC/SnakeAlphReg.lean`); it is derived from
+  `Transducers.boundedWidth_isRegular` (the width-`k` output function of a two-way transducer),
+  which is kept as the general form, and not by repeating the induction on the width;
+* the label `lem:output-of-snake-graph-is-regular` in `RequestProject/Labels.lean` names the
+  book's form, with the general form as `#2`, and `THEOREMS.md` no longer records a divergence
+  in the phrasing -- the only remaining difference from the book is that the Lean statements
+  hold for every `k : ℕ`, not only for `k ∈ {1, …, |Q|}`, which is more general.
+
+This pass re-verified the state of the project: `lake build` succeeds with no errors (8347 jobs),
+the `Snake*` files contain no `sorry`, and `#print axioms` on both
+`Transducers.SnakeGraph.snakeOut_isRegular` and `Transducers.boundedWidth_isRegular` reports only
+`propext`, `Classical.choice`, `Quot.sound`.
+
+As Lean statements the two forms are not literally interchangeable: the book's form is one
+instance of the general one, over the fixed alphabet `SnakeLetter Q B`, so it is the weaker of the
+two.  Mathematically they have the same content, and `THEOREMS.md` explains why (the reachable part
+of a width-`k` run of a two-way transducer is a snake graph of width `k`, encoded letter by
+letter); that converse derivation is not formalised.
+
 # Summary of the audit of the index (Parts A, B and C)
 
 Every numbered result that `THEOREMS.md` records as proved was re-checked mechanically, and the
