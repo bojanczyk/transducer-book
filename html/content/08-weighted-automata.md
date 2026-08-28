@@ -8,6 +8,6 @@ source = "weighted.tex"
 \setcounter{mypart}{2}
 \setcounter{section}{2}
 \setcounter{ourexamplecounter}{8}
-% source stamp weighted.tex:7de39085
+% source stamp weighted.tex:bd9499ac
 \input{../../../weighted.tex}
 {{< /latex >}}
