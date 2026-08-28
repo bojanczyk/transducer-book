@@ -427,5 +427,46 @@ lemma isRegular_eq_nil : Language.IsRegular {u : List Γ | u = []} := by
       rw [this] at hu'
       simp at hu'
 
+/-! ## Conditions on every letter, and finite unions -/
+
+/-- A language defined by a condition on every letter is regular. -/
+lemma isRegular_all (P : Γ → Bool) :
+    Language.IsRegular {u : List Γ | ∀ c ∈ u, P c = true} := by
+  have key : ∀ (u : List Γ) (b : Bool),
+      (u.foldl (fun b c => b && P c) b = true) ↔ (b = true ∧ ∀ c ∈ u, P c = true) := by
+    intro u
+    induction u with
+    | nil => intro b; simp
+    | cons c u ih =>
+        intro b
+        rw [List.foldl_cons, ih]
+        simp only [Bool.and_eq_true, List.mem_cons]
+        constructor
+        · rintro ⟨⟨hb, hc⟩, h⟩
+          exact ⟨hb, by rintro x (rfl | hx); exacts [hc, h x hx]⟩
+        · rintro ⟨hb, h⟩
+          exact ⟨⟨hb, h c (Or.inl rfl)⟩, fun x hx => h x (Or.inr hx)⟩
+  refine isRegular_of_eq (isRegular_foldl (Γ := Γ) (fun b c => b && P c) true {true}) ?_
+  intro u
+  show (∀ c ∈ u, P c = true) ↔ u.foldl (fun b c => b && P c) true ∈ ({true} : Set Bool)
+  rw [Set.mem_singleton_iff, key u true]
+  simp
+
+/-- Regularity of a finite union. -/
+lemma isRegular_exists_finite {ι : Type} [Finite ι] (L : ι → Language Γ)
+    (h : ∀ x, (L x).IsRegular) : Language.IsRegular {u : List Γ | ∃ x, u ∈ L x} := by
+  letI : Fintype ι := Fintype.ofFinite ι
+  have hall := isRegular_forall_list (fun x : ι => {u : List Γ | u ∉ L x})
+    (Finset.univ : Finset ι).toList (fun x _ => isRegular_not (h x))
+  refine isRegular_of_eq (isRegular_not hall) ?_
+  intro u
+  show (∃ x, u ∈ L x) ↔ ¬ (∀ x ∈ (Finset.univ : Finset ι).toList, u ∉ L x)
+  constructor
+  · rintro ⟨x, hx⟩ h
+    exact h x (by simp) hx
+  · intro h
+    by_contra hc
+    exact h fun x _ hx => hc ⟨x, hx⟩
+
 end RegAut
 end Transducers
