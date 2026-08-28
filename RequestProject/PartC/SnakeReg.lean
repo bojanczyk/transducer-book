@@ -164,12 +164,15 @@ open TwoWay in
 /-- **Lemma `lem:output-of-snake-graph-is-regular`** (the snake lemma), for a single two-way
 transducer: the width-`k` output function of `M` is regular.
 
-*Divergence from the book.*  The book states the lemma for an alphabet `C` of *snake letters*,
-as a function `C* → B*` that returns the output of the snake graph a string represents (and `ε`
-when it represents none), for `k ∈ {1, …, |Q|}`.  Here the lemma is stated directly for the run
-of the transducer, as the regularity of `TwoWay.widthOut M k`, and for every `k : ℕ`; that is
-the form in which Theorem `thm:2dfa-decomposition-into-primes` consumes it, and the bound
-`k ≤ |Q|` is not needed. -/
+*This is the general form, not the form of the book.*  The book states the lemma for an alphabet
+`C` of *snake letters*, as a function `C* → B*` that returns the output of the snake graph a string
+represents (and `ε` when it represents none), for `k ∈ {1, …, |Q|}`.  That statement is
+`Transducers.SnakeGraph.snakeOut_isRegular`, in `RequestProject/PartC/SnakeAlphReg.lean`, and it is
+the one the label `lem:output-of-snake-graph-is-regular` names; it is *deduced* from the present
+theorem, by walking the snake with a two-way transducer over `C`.  The form here, the regularity of
+`TwoWay.widthOut M k` for every `k : ℕ`, is the one in which Theorem
+`thm:2dfa-decomposition-into-primes` consumes the lemma, and it is what the induction on the width
+actually proves. -/
 theorem boundedWidth_isRegular {A B Q : Type} [Finite A] [Finite B] [Finite Q]
     (M : TwoWay A B Q) (k : ℕ) : IsRegularFun (widthOut M k) :=
   snakeReg k A B Q ‹_› ‹_› ‹_› M

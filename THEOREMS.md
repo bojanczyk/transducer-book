@@ -1273,12 +1273,19 @@ width.  Two things are needed.
   (`SnakeGraph.snakeOutIs_widthOut`).
 
 The two are combined by the conditional of Lemma
-`lem:regular-closure-properties`.  The two forms of the lemma are equivalent in
-strength: the book's form is proved from the transducer form here, and
-conversely the reachable part of the run of a two-way transducer of width at
-most `k` is a snake graph of width at most `k` over the letters read.
-`SnakeGraph.snakeOut_isRegular` depends only on `propext`, `Classical.choice`
-and `Quot.sound`.
+`lem:regular-closure-properties`.
+
+The two forms have the same content, but only one direction between them is
+formalised: the book's form `SnakeGraph.snakeOut_isRegular` is *derived* from the
+transducer form `boundedWidth_isRegular`, so as Lean statements the book's form
+is the weaker of the two -- it is one instance of the general one, over the fixed
+alphabet `SnakeLetter Q B`.  The converse derivation is not formalised; it holds
+mathematically, because the reachable part of the run of a two-way transducer of
+width at most `k` is a snake graph of width at most `k`, whose slice encoding is
+obtained from the input letter by letter, so `widthOut M k` is the composition of
+a letter-to-letter map with `snakeOut k`.  `SnakeGraph.snakeOut_isRegular` and
+`Transducers.boundedWidth_isRegular` both depend only on `propext`,
+`Classical.choice` and `Quot.sound`.
 
 #### The proof of Theorem `theorem:sst-two-way-equivalence`
 
