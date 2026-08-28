@@ -10,8 +10,9 @@ This file has the second model, the one whose nondeterminism is a labelling of t
 auxiliary alphabet subject to a regular condition.  The solution of the book is followed:
 
 * the pairs `(input string, a valid labelling of it)` form a rational relation, because the valid
-  labellings form a regular language (Lemma `lem:guess-and-check`, here in the form
-  `Transducers.isRationalRel_of_regular_proj`);
+  labellings form a regular language (guess and check, `RequestProject/PartB/GuessCheck.lean`,
+  here in the form `Transducers.isRationalRel_of_regular_proj`; the book states this in prose and
+  the sources of this copy carry no label for it);
 * one further conjunct is added to the regular condition, namely that the deterministic two-way
   transducer of the model *halts* on the labelling -- a regular condition by Exercise
   `exer:2dfa-loop-elimination` (`Transducers.Exercises.halts_isRegular`).  This is what makes the

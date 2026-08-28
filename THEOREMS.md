@@ -260,6 +260,9 @@ RequestProject/
 | `PartD/CGLang.lean`, `PartD/CGAtom.lean`, `PartD/CGSem.lean` | the regular properties of the input and of the current position out of which the child configuration graph of a configuration is assembled, and the rational function that produces it (`Transducers.CGL.isRationalFun_cgOfConf`) |
 | `PartD/CGFor.lean` | Claim `claim:from-configuration-to-child-configuration-graph` and Lemma `lem:children-of-configuration-in-pebble-run` |
 | `PartD/ChildExample.lean` | a one-pebble machine whose initial configuration has exactly one child, so that the hypothesis of the two results above is satisfiable and they are not vacuous (`Transducers.children_of_configuration_in_pebble_run_witness`) |
+| `Exercises/TwoDFAPass.lean`, `Exercises/TwoDFARuler.lean`, `Exercises/TwoDFAExp.lean` | Exercise `exer:2dfa-complexity`: a two-way automaton performing a sequence of one-way passes, the ruler word and the conditions that characterise it, and the automaton with `4·(n+1)` states whose shortest accepted string has length `2^(n+1)-1` |
+| `Exercises/TwoDFASipserDef.lean`, `Exercises/TwoDFASipserRun.lean`, `Exercises/TwoDFASipserTree.lean`, `Exercises/TwoDFASipserExplore.lean`, `Exercises/TwoDFASipserScan.lean`, `Exercises/TwoDFASipserSound.lean`, `Exercises/TwoDFASipser.lean` | Exercise `exer:2dfa-loop-elimination-sipser`: the depth-first search of the tree of accepting configurations, performed by a two-way automaton of quadratic size |
+| `Exercises/CompressionSLP.lean`, `Exercises/CompressionRat.lean`, `Exercises/CompressionMapLift.lean`, `Exercises/CompressionReg.lean` | Exercises `exer:rational-compression` and `exer:regular-compression`: operations on grammar compressions, the rational case through a bimachine, Claim `claim:map-compression`, and the induction over the composition tree |
 | `Labels.lean` | the label-indexed view of the formalisation: for every result of the book that is formalised, an alias in the namespace `Transducers.Book` whose Lean name is the LaTeX label of the result, followed by `assert_no_sorry` or `assert_uses_sorry` according to its status in the tables below.  Kept in step with those tables by `tools/gen_labels.py --check`; see `LABELS.md` |
 
 ## Conventions
@@ -1738,16 +1741,34 @@ unused hypothesis.
 
 The exercises are not numbered results of the main text and are indexed
 separately, in `EXERCISES.md`.  The book has 83 exercises, 82 of them with a
-written solution.  **59 are formalised and proved**, in
+written solution.  **63 are formalised and proved**, in
 `RequestProject/Exercises/`; each has an alias in `RequestProject/Labels.lean`
 with `assert_no_sorry`, so none of them depends on `sorryAx` or on a non-standard
-axiom, and there is no `sorry` in `RequestProject/Exercises/`.  The remaining 24
-are listed in `EXERCISES.md` with a reason for each; 23 of those have a written
-solution in the book and 1 does not.  Three of the 59 carry an explicit
+axiom, and there is no `sorry` in `RequestProject/Exercises/`.  The remaining 20
+are listed in `EXERCISES.md` with a reason for each; 19 of those have a written
+solution in the book and 1 does not.  Three of the 63 carry an explicit
 hypothesis rather than being proved outright, in the same style as the numbered
 results: `exer:function-that-is-not-rational`,
 `exer:rational-relations-intersection-undecidable` and item (a) of
 `exer:decide-rational-colision`.
+
+The four most recently added are `exer:2dfa-complexity`,
+`exer:2dfa-loop-elimination-sipser`, `exer:regular-compression` and
+`exer:rational-compression`.  Three of them diverge from the literal statement
+of the exercise, and the divergence is recorded on the Lean statement and in
+`EXERCISES.md`: the two compression exercises are proved in their *size* half
+only, this project having no model of running time, and `exer:2dfa-complexity`
+is proved by a construction that the book does not give — the author's own
+construction, formalised beside it in `Exercises/TwoDFAComplexity.lean`, gives a
+superpolynomial and not an exponential lower bound on the length of the shortest
+accepted string.  `#print axioms` on the four
+(`Transducers.Exercises.exists_twoDFA_shortest_exponential`,
+`Transducers.Exercises.exists_terminating_twoDFA_halts`,
+`Transducers.Exercises.compatCompression_of_isRegularFun`,
+`Transducers.Exercises.compatCompression_of_isRationalFun`) reports only
+`propext`, `Classical.choice`, `Quot.sound`, and so does
+`Transducers.Exercises.isRegularFun_iff_isRationalFun_of_unary_output`, the
+exercise `exer:2dfa-unary-output`.
 
 ### How this index is kept honest
 

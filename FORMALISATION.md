@@ -29,9 +29,9 @@ In Part C every numbered result is proved as well; the one qualification is
 Theorem `thm:decidable-equivalence-regular`, which is conditional in the sense
 of §4.
 
-Of the book's **83 exercises**, **59 are formalised and proved**, in
-`RequestProject/Exercises/`; the remaining 24 are listed with a reason in
-`EXERCISES.md`, and 23 of them have a written solution in the book.
+Of the book's **83 exercises**, **63 are formalised and proved**, in
+`RequestProject/Exercises/`; the remaining 20 are listed with a reason in
+`EXERCISES.md`, and 19 of them have a written solution in the book.
 
 ## 2. Conventions
 
@@ -176,14 +176,23 @@ formalisation is meant to establish.
   author's request.  Its easy half survives, proved, as
   `Transducers.isFOTransduction_of_compClosure`.
 
-Of the exercises, 24 are not formalised; `EXERCISES.md` groups them by reason.
-The recurring ones are statements about running time or about the number of
-states of a construction (which this project does not model), statements that
-rest on theory the project does not have (maximum cycle mean of a weighted
-graph, Ehrenfeucht–Fraïssé games), and two exercises that go through the string
-representation of the configuration graph of a two-way transducer, which is
-formalised (`RequestProject/PartC/ConfGraph.lean`) but on top of which those two
-exercises have not been solved.
+Of the exercises, 20 are not formalised; `EXERCISES.md` groups them by reason.
+The recurring ones are statements about running time (which this project does
+not model) and statements that rest on theory the project does not have
+(maximum cycle mean of a weighted graph, Ehrenfeucht–Fraïssé games).
+
+Three of the 63 that *are* formalised diverge from the literal statement of the
+exercise, and each divergence is recorded on the Lean statement and in
+`EXERCISES.md`.  `exer:rational-compression` and `exer:regular-compression` ask
+for a polynomial time algorithm turning a grammar compression of the input into
+a grammar compression of the output; what is proved is the size half, that the
+output has a compression polynomially larger than the input's, which is also the
+form in which `exer:polyregular-marked-squaring-compression` is stated.
+`exer:2dfa-complexity` asks for a deterministic two-way automaton whose shortest
+accepted string is exponential in the number of states; that is proved, but by a
+construction that the book does not give, because the author's own construction
+gives only a superpolynomial bound.  The author's construction is kept beside
+it, with the bound it really gives.
 
 ## 6. Why you can believe the table
 

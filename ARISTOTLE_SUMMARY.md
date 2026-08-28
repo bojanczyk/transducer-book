@@ -416,3 +416,58 @@ Theorem, and the two lemmas are proved independently of it.
 `lake build` succeeds with no errors, there is no `sorry` in the new files, and
 `#print axioms` on each new numbered result reports only `propext`,
 `Classical.choice`, `Quot.sound`.
+
+# Summary of the run on the four exercises that the missing encoding had blocked
+
+`EXERCISES.md` listed four exercises as not formalised because of the string
+encoding of the configuration graph, or because of a divergence.  All four are
+now formalised and proved, and `EXERCISES.md`, `THEOREMS.md`,
+`FORMALISATION.md` and `RequestProject/Labels.lean` record them.
+
+* `exer:2dfa-unary-output` -- was already proved when this run started
+  (`Transducers.Exercises.isRegularFun_iff_isRationalFun_of_unary_output`,
+  `Exercises/TwoDFAUnary.lean`), on top of the encoding
+  `Transducers.CLet` / `Transducers.TwoWay.enc` of `PartC/ConfGraph.lean`.  So is
+  `exer:2nft-uniformise`, the other exercise the encoding had blocked.  What this
+  run did for them was to bring the prose of `EXERCISES.md` and
+  `FORMALISATION.md`, which still described them as blocked, into agreement with
+  the index.
+* `exer:2dfa-loop-elimination-sipser`
+  (`Transducers.Exercises.exists_terminating_twoDFA_halts`,
+  `Exercises/TwoDFASipser*.lean`) -- the automaton of the book's solution, a
+  depth-first search of the tree of configurations that reach the accepting one,
+  performed by a two-way automaton with `24 * |Q|^2` states that terminates on
+  every input.
+* `exer:regular-compression`
+  (`Transducers.Exercises.compatCompression_of_isRegularFun`,
+  `Exercises/CompressionReg.lean`), with `exer:rational-compression`
+  (`compatCompression_of_isRationalFun`) which it rests on, and Claim
+  `claim:map-compression` (`CompatCompression.mapLift`,
+  `Exercises/CompressionMapLift.lean`).  Both are proved in their *size* half:
+  the book asks for a polynomial time algorithm producing the compression of the
+  image, and this project has no model of running time, so what is stated is
+  that the image of a string with a compression of `n` rules has a compression
+  of at most `C * n ^ k` rules (`Transducers.Exercises.CompatCompression`),
+  exactly as `exer:polyregular-marked-squaring-compression` already was.
+* `exer:2dfa-complexity`
+  (`Transducers.Exercises.exists_twoDFA_shortest_exponential`,
+  `Exercises/TwoDFAExp.lean`).  The note that the author's construction does not
+  prove the claim still stands, and that construction is kept, with the bound it
+  really gives, in `Exercises/TwoDFAComplexity.lean`.  The claim itself is now
+  proved, by a construction the book does not give: over the alphabet
+  `{0, ..., n}` the ruler word `0 1 0 2 0 1 0 ...`, of length `2^(n+1) - 1`, is
+  the unique word satisfying, for each level `j <= n`, the condition that among
+  the letters at least `j` those equal to `j` and those larger than `j`
+  alternate, beginning and ending with `j`
+  (`Exercises/TwoDFARuler.lean`); each condition is checked by a one-way
+  automaton with three states, and a two-way automaton runs the `n+1` passes one
+  after another with `4 * (n+1)` states in total
+  (`Exercises/TwoDFAPass.lean`), so its shortest -- indeed only -- accepted
+  string has length `2^(n+1) - 1`.  The alphabet grows with `n`; the measure of
+  the exercise is the number of states.
+
+Sixty-three of the book's eighty-three exercises are now formalised and proved,
+and twenty are not.  `lake build` succeeds with no errors, there is no `sorry`
+in `RequestProject/Exercises/`, all four bookkeeping scripts of `tools/` report no
+problem, and `#print axioms` on each of the four results above reports only
+`propext`, `Classical.choice`, `Quot.sound`.

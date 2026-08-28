@@ -787,6 +787,11 @@ assert_no_sorry «exer:simple-decomposition-example»
 alias «exer:simple-decomposition-example-2» := Transducers.firstConst_not_reversible_composition
 assert_no_sorry «exer:simple-decomposition-example-2»
 
+/-- **Exercise `exer:rational-compression`** (rational functions are compatible with compression): `Transducers.Exercises.compatCompression_of_isRationalFun`, the size half of the statement (polynomial time is not modelled). -/
+alias «exer:rational-compression» :=
+  Transducers.Exercises.compatCompression_of_isRationalFun
+assert_no_sorry «exer:rational-compression»
+
 /-- **Exercise `exer:minimal-sequential`** (minimal sequential transducers are unique up to isomorphism): `Transducers.Exercises.minimal_sequential_unique`. -/
 alias «exer:minimal-sequential» := Transducers.Exercises.minimal_sequential_unique
 assert_no_sorry «exer:minimal-sequential»
@@ -804,6 +809,11 @@ alias «exer:not-semiring-continuous» :=
   Transducers.Exercises.exists_isRegularFun_not_weighted_precomp
 assert_no_sorry «exer:not-semiring-continuous»
 
+/-- **Exercise `exer:regular-compression`** (regular functions are compatible with compression): `Transducers.Exercises.compatCompression_of_isRegularFun`, the size half of the statement (polynomial time is not modelled). -/
+alias «exer:regular-compression» :=
+  Transducers.Exercises.compatCompression_of_isRegularFun
+assert_no_sorry «exer:regular-compression»
+
 /-- **Exercise `exer:2dfa-unary-output`** (over a one-letter output alphabet, the regular functions are exactly the rational functions): `Transducers.Exercises.isRegularFun_iff_isRationalFun_of_unary_output`. -/
 alias «exer:2dfa-unary-output» :=
   Transducers.Exercises.isRegularFun_iff_isRationalFun_of_unary_output
@@ -813,9 +823,18 @@ assert_no_sorry «exer:2dfa-unary-output»
 alias «exer:2dfa-boolean» := Transducers.Exercises.isTwoDFALang_boolean
 assert_no_sorry «exer:2dfa-boolean»
 
+/-- **Exercise `exer:2dfa-complexity`** (the shortest accepted string can be exponential in the number of states): `Transducers.Exercises.exists_twoDFA_shortest_exponential`, proved by a construction that the book does not give; the author's own construction is `Transducers.Exercises.divAut`. -/
+alias «exer:2dfa-complexity» := Transducers.Exercises.exists_twoDFA_shortest_exponential
+assert_no_sorry «exer:2dfa-complexity»
+
 /-- **Exercise `exer:2dfa-loop-elimination`** (the set of inputs on which a deterministic two-way transducer terminates is a regular language): `Transducers.Exercises.halts_isRegular`. -/
 alias «exer:2dfa-loop-elimination» := Transducers.Exercises.halts_isRegular
 assert_no_sorry «exer:2dfa-loop-elimination»
+
+/-- **Exercise `exer:2dfa-loop-elimination-sipser`** (a polynomial-size two-way automaton for it): `Transducers.Exercises.exists_terminating_twoDFA_halts`. -/
+alias «exer:2dfa-loop-elimination-sipser» :=
+  Transducers.Exercises.exists_terminating_twoDFA_halts
+assert_no_sorry «exer:2dfa-loop-elimination-sipser»
 
 /-- **Exercise `exer:sst-sorting`** (sorting the letters of a string is computed by an sst): `Transducers.Exercises.isSST_sort`. -/
 alias «exer:sst-sorting» := Transducers.Exercises.isSST_sort
