@@ -20,6 +20,8 @@ import RequestProject.Exercises.KrohnRhodes
 import RequestProject.Exercises.MyhillNerode
 import RequestProject.Exercises.RegularPrimes
 import RequestProject.Exercises.TwoDFAEx
+import RequestProject.Exercises.TwoDFAUnary
+import RequestProject.Exercises.TwoDFAComplexity
 import RequestProject.Exercises.TwoDFALoop
 import RequestProject.Exercises.SSTAux
 import RequestProject.Exercises.SST
@@ -28,4 +30,5 @@ import RequestProject.Exercises.LogicEx
 import RequestProject.Exercises.Compression
 import RequestProject.Exercises.TwoNFT
 import RequestProject.Exercises.TwoNFT2
+import RequestProject.Exercises.TwoNFTUnif
 import RequestProject.Exercises.ForFO

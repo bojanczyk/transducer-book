@@ -804,6 +804,11 @@ alias «exer:not-semiring-continuous» :=
   Transducers.Exercises.exists_isRegularFun_not_weighted_precomp
 assert_no_sorry «exer:not-semiring-continuous»
 
+/-- **Exercise `exer:2dfa-unary-output`** (over a one-letter output alphabet, the regular functions are exactly the rational functions): `Transducers.Exercises.isRegularFun_iff_isRationalFun_of_unary_output`. -/
+alias «exer:2dfa-unary-output» :=
+  Transducers.Exercises.isRegularFun_iff_isRationalFun_of_unary_output
+assert_no_sorry «exer:2dfa-unary-output»
+
 /-- **Exercise `exer:2dfa-boolean`** (the languages of deterministic two-way automata are closed under complement, union and intersection): `Transducers.Exercises.isTwoDFALang_boolean`. -/
 alias «exer:2dfa-boolean» := Transducers.Exercises.isTwoDFALang_boolean
 assert_no_sorry «exer:2dfa-boolean»
