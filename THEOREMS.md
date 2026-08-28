@@ -22,13 +22,13 @@ result is proved outright — `assert_no_sorry` fails if the declaration depends
 So the names and the statuses in the tables below cannot go stale without
 breaking the build.
 
-Of the **100 theorem-like environments** of the book, 20 definitions and 72
-results are formalised, and 8 are not; of the 72, **66 are proved outright** and
+Of the **100 theorem-like environments** of the book, 20 definitions and 77
+results are formalised, and 3 are not; of the 77, **71 are proved outright** and
 6 are proved from an explicit hypothesis.  **Parts A, B and D are proved in
 full**, and so is Part C apart from Theorem `thm:decidable-equivalence-regular`,
 which is one of the six.  Nothing that is formalised is left unproved: there is
 no `sorry` and no `axiom` anywhere in the project.  The `## Status` section at
-the end gives the counts part by part, the six hypotheses, the eight environments
+the end gives the counts part by part, the six hypotheses, the three environments
 that are not formalised, and the warnings that `lake build` still emits.
 
 ## Layout
@@ -247,6 +247,19 @@ RequestProject/
 | `PartD/PebbleSquareSim.lean` | the simulation theorem: the simulating machine produces the same output on the marked square as the simulated one on the input (`Transducers.PebSq.sim_computes`) |
 | `PartD/PebblePoly.lean` | the hard direction of Theorem `thm:pebble-are-for`: by induction on the number of pebbles, a pebble transducer computes a polyregular function (`Transducers.isPolyregular_of_isPebbleTransducer`) |
 | `PartD/Statements.lean` | Part D: polyregular functions, for-transducers, pebble transducers |
+| `PartD/PebEnc.lean` | the string representation of a pair of configurations of a pebble transducer (`Transducers.PebEnc.PairLetter`, `Transducers.PebEnc.pairEnc`) and reachability along runs that never pop below a fixed height (`Transducers.Pebble.RestrReaches`, `Transducers.Pebble.BalancedRun`) |
+| `PartD/PebReachAut.lean`, `PartD/PebReachRun.lean`, `PartD/PebReachSim.lean` | the pebble automaton that reads the string representation of a pair of configurations, rebuilds the source stack bottom-up and simulates the machine, and its correctness (`Transducers.PebReach.reachAut_answers_iff`) |
+| `PartD/PebReach.lean` | Lemma `lem:reachability-pebble-automaton` and Claim `claim:reachability-basic-run` |
+| `PartD/PebStepMach.lean` | one step of a pebble transducer as a reachability question, through the machine `Transducers.Pebble.stepMach` that makes one step and dies |
+| `PartD/ChildGraph.lean` | the alphabet of the string representation of a child configuration graph (`Transducers.CG.CGLetter`), the graph a string over it describes, its local consistency test and the walk along its edges |
+| `PartD/ChildPath.lean` | the string representation `Transducers.CG.cgOfPath` of a child configuration graph built from a list of children, and the proof that it is locally consistent |
+| `PartD/ChildGraphAut.lean`, `PartD/ChildGraphRun.lean` | the two-pebble transducer that walks along the edges of a child configuration graph and copies out a configuration per vertex, and its correctness |
+| `PartD/ChildGraphFor.lean` | Claim `claim:from-child-configuration-graph-to-children` |
+| `PartD/ChildSem.lean`, `PartD/ChildReach.lean` | the children of a configuration of a pebble transducer (`Transducers.CG.FirstChild`, `Transducers.CG.NextChild`, `Transducers.CG.IsChildSeq`) and their description by reachability |
+| `PartD/ChildGraphOfRun.lean` | the string representation `Transducers.CG.cgOfChildren` of the child configuration graph of a configuration, and the fact that it represents the children of that configuration |
+| `PartD/CGLang.lean`, `PartD/CGAtom.lean`, `PartD/CGSem.lean` | the regular properties of the input and of the current position out of which the child configuration graph of a configuration is assembled, and the rational function that produces it (`Transducers.CGL.isRationalFun_cgOfConf`) |
+| `PartD/CGFor.lean` | Claim `claim:from-configuration-to-child-configuration-graph` and Lemma `lem:children-of-configuration-in-pebble-run` |
+| `PartD/ChildExample.lean` | a one-pebble machine whose initial configuration has exactly one child, so that the hypothesis of the two results above is satisfiable and they are not vacuous (`Transducers.children_of_configuration_in_pebble_run_witness`) |
 | `Labels.lean` | the label-indexed view of the formalisation: for every result of the book that is formalised, an alias in the namespace `Transducers.Book` whose Lean name is the LaTeX label of the result, followed by `assert_no_sorry` or `assert_uses_sorry` according to its status in the tables below.  Kept in step with those tables by `tools/gen_labels.py --check`; see `LABELS.md` |
 
 ## Conventions
@@ -321,6 +334,25 @@ false statements and into the list of statements the book has corrected.
   of a two-way transducer.
 * Claim `claim:transition-formula` — stated for the index of a bimachine rather than for an
   unambiguous transducer.
+* Lemma `lem:reachability-pebble-automaton` and Claim `claim:reachability-basic-run` — the book
+  asks for an **mso formula** `φ(s, t)` whose two free variables range over configurations.  The
+  Lean statements instead encode the pair of configurations into the input string, one letter per
+  gap (`Transducers.PebEnc.pairEnc`), and conclude that the set of encodings of reachable pairs is
+  a **regular language**.  The two formulations are interchangeable, because regular languages are
+  exactly the mso-definable ones (Theorem `thm:mso-logic-languages`) and an mso formula with free
+  variables is evaluated on exactly such an annotated string (Lemma `lem:mso-free-variables`); what
+  is not produced is a formula literally of the book's shape.  Since a formula is only ever
+  evaluated on a genuine structure, the language is only required to be correct on genuine
+  encodings: the statements assume that the two stacks are stacks of at most `k` gaps of the input.
+  The statements are also given for pebble *transducers* rather than pebble automata, which is the
+  form Section *Equivalence with for-transducers* uses; the configuration graph is the same.
+* Lemma `lem:children-of-configuration-in-pebble-run` and Claim
+  `claim:from-configuration-to-child-configuration-graph` — the book does not state the hypothesis
+  that the stack of the input configuration has fewer than `k` pebbles, but its proof begins with
+  exactly that case distinction ("If `ℓ = k`, then there is nothing to do"), so the Lean statements
+  carry it.  The configuration and the child configuration graph are strings over the alphabets
+  `Transducers.CG.ConfLetter` and `Transducers.CG.CGLetter`, which carry the information the book
+  describes with one letter per gap of the input.
 * Claims `claim:bounded-extensions`, `claim:computing-branching-part`, `claim:offsets-are-regular`
   and `claim:eliminating-negative-letters` — the Lean proof of Theorem
   `thm:subsequential-functions` reorganises these four steps; see the note after
@@ -336,9 +368,8 @@ false statements and into the list of statements the book has corrected.
   resulting decision procedure is written down.
 * Definition `def:rational-recognisable-subsets` — not formalised at all; see its row in the
   Part B index.
-* Conjecture `conj:regular-via-weighted-automata` and the five results of
-  Section *Pebble transducers* listed in the Part D index — not formalised, each
-  for the reason given in its row.
+* Conjecture `conj:regular-via-weighted-automata` — not formalised; see its row in the
+  Part C index.
 
 *Hypotheses that the Lean statement adds.*
 
@@ -373,6 +404,11 @@ false statements and into the list of statements the book has corrected.
   sources now read "`v ↦ f(wv)` with the first `|w|` letters of the output
   removed", which is the Lean definition `f⁽ʷ⁾(v) = drop |w| (f (w v))`, so the
   statement is now faithful.
+* The five results of Section *Pebble transducers* about the string representation of
+  configurations — an earlier state of this project did not formalise them, because the string
+  representation had not been introduced.  It now is (`PartD/PebEnc.lean`,
+  `PartD/ChildGraph.lean`), and all five are proved; the two entries above record how their Lean
+  statements read.
 * Theorem `nolabel:thm-fo-transduction-into-primes` — this is no longer a numbered environment of
   the book at all: `logic.tex` ends with an unnumbered paragraph that states the
   result and leaves its proof "for a future edition".  It was withdrawn from this
@@ -1512,8 +1548,12 @@ among the primes.
 | Lemma `lem:for-closed-under-composition` (composition) | `Transducers.forTransducer_comp` | proved (`ForCompTop.lean`) | `PartD/Statements.lean` |
 | Pebble transducers (Section *Pebble transducers*) | `Transducers.Pebble`, `Transducers.IsPebbleTransducer` | — | `PartD/PebbleDef.lean` |
 | Theorem `thm:pebble-are-continuous` (continuity) | `Transducers.pebble_continuous` | proved (`PebbleReg.lean`, on top of `PebbleAut.lean`, `PebbleProd.lean`, `PebbleSub.lean`, `PebbleAnn.lean`, `PebbleBisim.lean`, `PebbleOne.lean`, `PebbleLev1.lean`) | `PartD/Statements.lean` |
-| Lemma `lem:reachability-pebble-automaton`, Claim `claim:reachability-basic-run`, Lemma `lem:children-of-configuration-in-pebble-run`, Claims `claim:from-configuration-to-child-configuration-graph`, `claim:from-child-configuration-graph-to-children` | not formalised (configuration encodings used inside proofs) | — | — |
+| Lemma `lem:reachability-pebble-automaton` (reachability of configurations) | `Transducers.reachability_pebble_automaton` | proved (`PebEnc.lean`, `PebReachAut.lean`, `PebReachRun.lean`, `PebReachSim.lean`) | `PartD/PebReach.lean` |
+| Claim `claim:reachability-basic-run` (balanced runs) | `Transducers.reachability_basic_run` | proved (the same files) | `PartD/PebReach.lean` |
 | Theorem `thm:pebble-are-for` (pebble = for-transducers) | `Transducers.pebble_iff_forTransducer` | proved (`PebbleForTop.lean` for `for ⊆ pebble`, `PebblePoly.lean` for `pebble ⊆ polyregular`, then `thm:for-transducers-are-polyregular`) | `PartD/Statements.lean` |
+| Lemma `lem:children-of-configuration-in-pebble-run` (the children of a configuration) | `Transducers.children_of_configuration_in_pebble_run` | proved (composition of the two claims below) | `PartD/CGFor.lean` |
+| Claim `claim:from-configuration-to-child-configuration-graph` (configuration to child configuration graph) | `Transducers.from_configuration_to_child_configuration_graph` | proved (`ChildSem.lean`, `ChildReach.lean`, `CGLang.lean`, `CGAtom.lean`, `CGSem.lean`) | `PartD/CGFor.lean` |
+| Claim `claim:from-child-configuration-graph-to-children` (child configuration graph to children) | `Transducers.from_child_configuration_graph_to_children` | proved (`ChildGraph.lean`, `ChildPath.lean`, `ChildGraphAut.lean`, `ChildGraphRun.lean`) | `PartD/ChildGraphFor.lean` |
 
 Supporting files for Part D: `MarkedSquare.lean` (marked squaring and the
 right-to-left automaton showing that it is continuous), the thirteen
@@ -1529,13 +1569,46 @@ direction, and `TwoWayTotal.lean`, `SqPad.lean`, `PebbleTwoWay.lean`,
 `PebbleSquareIdx.lean`, `PebbleSquareDef.lean`, `PebbleSquareRun.lean`,
 `PebbleSquareSim.lean` and `PebblePoly.lean` for the hard one.
 
+The five results of Section *Pebble transducers* that are about the string
+representation of configurations rest on two further groups of files.  Lemma
+`lem:reachability-pebble-automaton` and Claim `claim:reachability-basic-run` use
+the representation of a pair of configurations (`PebEnc.lean`) and the pebble
+automaton that reads it and simulates the machine (`PebReachAut.lean`,
+`PebReachRun.lean`, `PebReachSim.lean`); `PebStepMach.lean` derives from them
+that a single step is a regular property too.  Claim
+`claim:from-child-configuration-graph-to-children` uses the alphabet of child
+configuration graphs and the walk along their edges (`ChildGraph.lean`,
+`ChildPath.lean`, `ChildGraphAut.lean`, `ChildGraphRun.lean`), and Claim
+`claim:from-configuration-to-child-configuration-graph` uses the children of a
+configuration of a pebble transducer (`ChildSem.lean`, `ChildReach.lean`,
+`ChildGraphOfRun.lean`) and the rational function that produces their graph
+(`CGLang.lean`, `CGAtom.lean`, `CGSem.lean`).  Lemma
+`lem:children-of-configuration-in-pebble-run` is the composition of the two
+claims, as in the book.
+
+These five results are proved *after* Theorem `thm:pebble-are-for`, not before
+it: the Lean proof of the theorem does not go through them.  Claim
+`claim:from-child-configuration-graph-to-children` is obtained from a two-pebble
+transducer through Theorem `thm:pebble-are-for` itself, rather than by the
+book's induction on the width of the graph, and Theorem
+`thm:pebble-are-continuous` is proved from the regularity of the languages of
+pebble automata (`PebbleLev1.lean`), of which Lemma
+`lem:reachability-pebble-automaton` is another consequence.  So the book's route
+and the Lean route reach the same statements by different orders; nothing is
+circular, and each of the five results is proved outright.
+
 `#print axioms Transducers.pebble_continuous` reports only `propext`,
 `Classical.choice`, `Quot.sound`, and so do
 `Transducers.continuous_of_isPebbleTransducer`,
 `Transducers.pebbleAut_answers_isRegular`,
 `Transducers.OnePebble.onePebble_isRegular`,
-`Transducers.pebble_iff_forTransducer` and
-`Transducers.isPolyregular_of_isPebbleTransducer`.
+`Transducers.pebble_iff_forTransducer`,
+`Transducers.isPolyregular_of_isPebbleTransducer`,
+`Transducers.reachability_pebble_automaton`,
+`Transducers.reachability_basic_run`,
+`Transducers.children_of_configuration_in_pebble_run`,
+`Transducers.from_configuration_to_child_configuration_graph` and
+`Transducers.from_child_configuration_graph_to_children`.
 
 ## Status
 
@@ -1553,9 +1626,9 @@ row in the index above.
 | | Introduction | Part A | Part B | Part C | Part D | total |
 | --- | --- | --- | --- | --- | --- | --- |
 | definitions formalised | 1 | 4 | 7 | 6 | 2 | **20** |
-| results proved outright | 0 | 11 | 21 | 28 | 6 | **66** |
+| results proved outright | 0 | 11 | 21 | 28 | 11 | **71** |
 | results proved from an explicit hypothesis | 0 | 0 | 5 | 1 | 0 | **6** |
-| environments not formalised | 0 | 0 | 1 | 1 | 5 | **8** |
+| environments not formalised | 0 | 0 | 1 | 1 | 0 | **3** |
 
 *Proved outright* means: the proof is complete, no file it depends on contains a
 `sorry`, and `#print axioms` reports only `propext`, `Classical.choice`,
@@ -1565,9 +1638,9 @@ it is proved outright in that sense, but its statement carries the hypothesis
 that the transducer computes a total function, as listed under *Hypotheses that
 the Lean statement adds* above.  **Parts A, B and D are proved in full**, and so is Part C except
 that Theorem `thm:decidable-equivalence-regular` is conditional in the sense
-below.  The last column of *environments not formalised* counts labels, not rows:
-one row of the index groups several labels (the five configuration-encoding
-results of Part D).
+below.  Part D now includes the five results of Section *Pebble transducers*
+that are about the string representation of configurations; they used to be the
+only unformalised results of that part.
 
 ### The six results proved from an explicit hypothesis
 
@@ -1596,22 +1669,15 @@ of equivalence of regular functions to a finite check
 (`Transducers.regularFun_eq_of_short`), is proved unconditionally.  See *The four
 conditional results of Part B* and *The conditional result of Part C* above.
 
-### The eight environments that are not formalised
+### The three environments that are not formalised
 
-None of them is an unfinished proof; each is either not a mathematical result,
-or an internal step about the configuration encoding of a pebble automaton,
-which this project deliberately does not introduce, and in each case the result
-it serves *is* proved.
+None of them is an unfinished proof: none of the three is a mathematical result
+that this formalisation is meant to establish.
 
 | environment | reason |
 | --- | --- |
 | Definition `def:rational-recognisable-subsets` | the rational and recognisable subsets of a monoid; used once in the book, in the remark explaining the name *Kleene theorem*, and by nothing else |
 | Conjecture `conj:regular-via-weighted-automata` | an open conjecture of the book, not a result |
-| Lemma `lem:reachability-pebble-automaton` | the reachability analysis of a pebble automaton; the Lean proof of Theorem `thm:pebble-are-for` replaces it by an induction on the number of pebbles |
-| Claim `claim:reachability-basic-run` | not formalised: internal step of the same analysis |
-| Lemma `lem:children-of-configuration-in-pebble-run` | not formalised: internal step of the same analysis |
-| Claim `claim:from-configuration-to-child-configuration-graph` | not formalised: internal step of the same analysis |
-| Claim `claim:from-child-configuration-graph-to-children` | not formalised: internal step of the same analysis |
 | Theorem `nolabel:thm-fo-transduction-into-primes` | withdrawn from this formalisation at the author's request; the book states it without proof.  Its statement is kept, commented out, in `PartC/MSOOpen.lean`, and its easy half is proved as `Transducers.isFOTransduction_of_compClosure` |
 
 One part of a formalised statement is also left out: the final sentence of
@@ -1652,11 +1718,17 @@ no-op tactics and two `intro` chains), the warnings that remain are of two
 kinds, both of which would change the *signature* of an auxiliary lemma if they
 were acted on, and are therefore left alone:
 
-* 28 × `automatically included section variable(s) unused in theorem …` — a
+* 30 × `automatically included section variable(s) unused in theorem …` — a
   section variable that a helper lemma does not use.  Silencing it with `omit …
   in` removes the variable from the lemma's statement.
 * 17 × `unused variable …` — a hypothesis of a helper lemma that its proof does
   not use.  Removing it changes the statement of the helper.
+
+The count of the first kind was 28 before the files of Section *Pebble
+transducers* about the string representation of configurations were added; the
+two new ones are in `PartD/CGSem.lean`.  Those files contributed no warning of
+any other kind: the three unused `simp` arguments and the one unused hypothesis
+they started with were removed.
 
 Both kinds occur only in the internal files of Parts B, C and D and in
 `Exercises/Compression.lean`; no numbered result of the book is stated with an

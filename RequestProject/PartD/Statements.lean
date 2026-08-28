@@ -8,15 +8,21 @@ theorems and lemmas.  All of them are proved: Theorem
 `lemma:prenex-normal-form`, Lemma `lem:for-closed-under-composition`, Theorem
 `thm:pebble-are-continuous` and Theorem `thm:pebble-are-for`.
 
-Not formalised here: Lemma `lem:reachability-pebble-automaton`, Claim
-`claim:reachability-basic-run`, Lemma `lem:children-of-configuration-in-pebble-run` and Claims
-`claim:from-configuration-to-child-configuration-graph`,
-`claim:from-child-configuration-graph-to-children`, which are internal steps of the proofs of
-Theorems `thm:pebble-are-continuous` and `thm:pebble-are-for`. They speak about the string
-representation of configurations and configuration graphs of pebble transducers, an auxiliary
-encoding used only inside those proofs.  The step of `thm:pebble-are-for` for which the book uses
-them -- that a pebble transducer computes a polyregular function -- is proved instead by the
-induction on the number of pebbles of `RequestProject/PartD/PebblePoly.lean`. -/
+The five results of Section *Pebble transducers* that speak about the string representation of
+configurations and of child configuration graphs -- Lemma `lem:reachability-pebble-automaton` and
+Claim `claim:reachability-basic-run` (`RequestProject/PartD/PebReach.lean`), Claim
+`claim:from-child-configuration-graph-to-children` (`RequestProject/PartD/ChildGraphFor.lean`), and
+Claim `claim:from-configuration-to-child-configuration-graph` together with Lemma
+`lem:children-of-configuration-in-pebble-run` (`RequestProject/PartD/CGFor.lean`) -- are proved as
+well, but in files that come *after* this one, because two of them are obtained from Theorem
+`thm:pebble-are-for` and Theorem `thm:for-transducers-are-polyregular`, which are stated here.
+The two headline theorems are therefore not proved through those five results: Theorem
+`thm:pebble-are-continuous` is proved from the regularity of the languages of pebble automata
+(`RequestProject/PartD/PebbleLev1.lean`), of which Lemma `lem:reachability-pebble-automaton` is
+another consequence, and the step of Theorem `thm:pebble-are-for` for which the book uses Lemma
+`lem:children-of-configuration-in-pebble-run` -- that a pebble transducer computes a polyregular
+function -- is proved by the induction on the number of pebbles of
+`RequestProject/PartD/PebblePoly.lean`. -/
 import RequestProject.PartC.MSO
 import RequestProject.PartD.PolyDef
 import RequestProject.PartD.ForCompTop

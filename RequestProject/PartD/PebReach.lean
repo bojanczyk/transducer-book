@@ -74,6 +74,7 @@ lemma reachLangAt_isRegular (M : Pebble A B Q k) (ℓ : ℕ) (q₁ q₂ : Q) :
 lemma reachLang_isRegular (M : Pebble A B Q k) (ℓ : ℕ) : (reachLang M ℓ).IsRegular :=
   RegAut.isRegular_exists_finite _ (fun p => reachLangAt_isRegular M ℓ p.1 p.2)
 
+omit [Finite A] [Finite Q] in
 /-- Membership of a genuine encoding in `PebEnc.reachLang`. -/
 lemma mem_reachLang_iff (M : Pebble A B Q k) (ℓ : ℕ) (q₁ q₂ : Q) (sts stt : List ℕ) (w : List A)
     (hstsb : ∀ p ∈ sts, p ≤ w.length) (hsttb : ∀ p ∈ stt, p ≤ w.length)

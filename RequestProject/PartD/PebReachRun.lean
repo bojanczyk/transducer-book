@@ -478,8 +478,7 @@ lemma stepCfg_inv {q q' : Q} {st st' : List ℕ} {o : List B} (hst : ∀ p ∈ s
               · simp [hlast, hp] at hs
           | false =>
               by_cases hp : 0 < p
-              · simp only [hlast, hp, if_true, Option.some.injEq, Prod.mk.injEq,
-                  PebbleCfg.conf.injEq] at hs
+              · simp only [hlast, hp, if_true] at hs
                 obtain ⟨-, -, rfl⟩ := hs
                 refine ⟨?_, by simp; omega⟩
                 intro x hx

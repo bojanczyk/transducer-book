@@ -1,3 +1,45 @@
+# Summary of the run on the five results of Section *Pebble transducers* about configuration encodings
+
+The five results of `polyregular-pebble.tex` that speak about the string representation of
+configurations are now formalised and proved, and they are part of the index:
+
+* Lemma `lem:reachability-pebble-automaton` -- `Transducers.reachability_pebble_automaton`
+  (`RequestProject/PartD/PebReach.lean`);
+* Claim `claim:reachability-basic-run` -- `Transducers.reachability_basic_run` (same file);
+* Claim `claim:from-child-configuration-graph-to-children` --
+  `Transducers.from_child_configuration_graph_to_children`
+  (`RequestProject/PartD/ChildGraphFor.lean`);
+* Claim `claim:from-configuration-to-child-configuration-graph` --
+  `Transducers.from_configuration_to_child_configuration_graph`
+  (`RequestProject/PartD/CGFor.lean`);
+* Lemma `lem:children-of-configuration-in-pebble-run` --
+  `Transducers.children_of_configuration_in_pebble_run` (same file), the composition of the two
+  claims, as in the book.
+
+The encoding the book describes is a real object in Lean: `Transducers.PebEnc.PairLetter` and
+`Transducers.PebEnc.pairEnc` (the string representation of a pair of configurations, one letter per
+gap of the input), `Transducers.CG.ConfLetter` and `Transducers.CG.confEnc` (a single
+configuration), and `Transducers.CG.CGLetter` with the graph a string over it describes
+(`RequestProject/PartD/ChildGraph.lean`), which is the child configuration graph of the book.
+
+Two divergences are documented on the statements, in `THEOREMS.md` and in `FORMALISATION.md`: the
+book's mso formula `φ(s, t)` is rendered as a regular language of encodings (equivalent by Theorem
+`thm:mso-logic-languages`, and only required to be correct on genuine encodings), and the two
+results about children carry the hypothesis `st.length < k`, which is the case distinction the
+book's own proof begins with.  The Lean route also reaches Claim
+`claim:from-child-configuration-graph-to-children` through Theorem `thm:pebble-are-for` rather than
+by the book's induction on the width of the graph, so the five results are proved after that
+theorem, not before it; nothing is circular, and the two headline theorems keep the proofs they had.
+
+`RequestProject/PartD/ChildExample.lean` exhibits a one-pebble machine whose initial configuration
+has exactly one child, so that the hypothesis the two results about children carry is demonstrably
+satisfiable and they are not vacuously true.
+
+`lake build` succeeds with no errors (8368 jobs), no file of the project contains a `sorry`, and
+`#print axioms` on each of the five reports only `propext`, `Classical.choice`, `Quot.sound`.
+`tools/gen_labels.py --check`, `tools/decl_files.py --check`, `tools/tex_numbering.py --check` and
+`tools/relabel.py` all report no problem.
+
 # Summary of the run on Lemma `lem:output-of-snake-graph-is-regular` (verification pass)
 
 The book's form of Lemma `lem:output-of-snake-graph-is-regular` is in place and complete:

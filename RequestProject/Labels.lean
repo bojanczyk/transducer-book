@@ -519,9 +519,29 @@ assert_no_sorry «lem:for-closed-under-composition»
 alias «thm:pebble-are-continuous» := Transducers.pebble_continuous
 assert_no_sorry «thm:pebble-are-continuous»
 
+/-- **Lemma `lem:reachability-pebble-automaton`** (reachability of configurations): `Transducers.reachability_pebble_automaton`.  The book's mso formula with two free variables of the type of configurations is rendered as a regular language of encodings of pairs of configurations; see the header of `RequestProject/PartD/PebReach.lean`. -/
+alias «lem:reachability-pebble-automaton» := Transducers.reachability_pebble_automaton
+assert_no_sorry «lem:reachability-pebble-automaton»
+
+/-- **Claim `claim:reachability-basic-run`** (balanced runs): `Transducers.reachability_basic_run`. -/
+alias «claim:reachability-basic-run» := Transducers.reachability_basic_run
+assert_no_sorry «claim:reachability-basic-run»
+
 /-- **Theorem `thm:pebble-are-for`** (pebble = for-transducers): `Transducers.pebble_iff_forTransducer`. -/
 alias «thm:pebble-are-for» := Transducers.pebble_iff_forTransducer
 assert_no_sorry «thm:pebble-are-for»
+
+/-- **Lemma `lem:children-of-configuration-in-pebble-run`** (the children of a configuration): `Transducers.children_of_configuration_in_pebble_run`. -/
+alias «lem:children-of-configuration-in-pebble-run» := Transducers.children_of_configuration_in_pebble_run
+assert_no_sorry «lem:children-of-configuration-in-pebble-run»
+
+/-- **Claim `claim:from-configuration-to-child-configuration-graph`** (configuration to child configuration graph): `Transducers.from_configuration_to_child_configuration_graph`. -/
+alias «claim:from-configuration-to-child-configuration-graph» := Transducers.from_configuration_to_child_configuration_graph
+assert_no_sorry «claim:from-configuration-to-child-configuration-graph»
+
+/-- **Claim `claim:from-child-configuration-graph-to-children`** (child configuration graph to children): `Transducers.from_child_configuration_graph_to_children`. -/
+alias «claim:from-child-configuration-graph-to-children» := Transducers.from_child_configuration_graph_to_children
+assert_no_sorry «claim:from-child-configuration-graph-to-children»
 
 /-! ## Exercises
 
@@ -856,11 +876,6 @@ above, so that this file accounts for all of them:
 * `def:rational-recognisable-subsets` (definition) -- not formalised (rational and recognisable subsets of a monoid, which the later sections do not use);
 * `conj:regular-via-weighted-automata` (conjecture) -- a conjecture of the book, not a result to formalise;
 * `nolabel:thm-fo-transduction-into-primes` (theorem) -- removed from the formalised theorems at the user's request; its statement is kept, commented out, in `PartC/MSOOpen.lean`;
-* `lem:reachability-pebble-automaton` (lemma) -- not formalised (configuration encodings used inside proofs);
-* `claim:reachability-basic-run` (claim) -- not formalised (configuration encodings used inside proofs);
-* `lem:children-of-configuration-in-pebble-run` (lemma) -- not formalised (configuration encodings used inside proofs);
-* `claim:from-configuration-to-child-configuration-graph` (claim) -- not formalised (configuration encodings used inside proofs);
-* `claim:from-child-configuration-graph-to-children` (claim) -- not formalised (configuration encodings used inside proofs);
 -/
 
 end Transducers.Book

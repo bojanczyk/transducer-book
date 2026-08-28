@@ -18,9 +18,9 @@ corollaries, claims, one conjecture and one unnumbered paragraph.  Of these:
 | | count |
 | --- | --- |
 | definitions formalised | 20 |
-| results proved outright | 66 |
+| results proved outright | 71 |
 | results proved from an explicit, documented hypothesis | 6 |
-| not formalised (see §5) | 8 |
+| not formalised (see §5) | 3 |
 
 "Proved outright" means: the Lean proof is complete, no file it depends on
 contains a `sorry`, and `#print axioms` on it reports only `propext`,
@@ -102,6 +102,15 @@ list, including the merely presentational departures, is the section
   characterisation, Lemma `lem:aperiodicity-minimal-machine`, on which the
   book's procedure rests; the enumeration of state transformations that turns it
   into an algorithm is not written down.
+* **The mso formula of Lemma `lem:reachability-pebble-automaton` is a regular
+  language here.**  The book asks for a formula `φ(s, t)` whose two free
+  variables range over configurations of a pebble automaton.  Lean encodes the
+  pair of configurations into the input string instead, one letter per gap of
+  the input, and states that the set of encodings of reachable pairs is a
+  regular language — which, by Theorem `thm:mso-logic-languages`, is the same
+  thing.  The same applies to Claim `claim:reachability-basic-run`.  Because a
+  formula is only ever evaluated on a genuine structure, the Lean statements ask
+  for the language to be correct only on genuine encodings.
 
 Two further discrepancies that earlier passes of this formalisation reported
 have since been **corrected in the sources**, and the Lean statements now follow
@@ -150,10 +159,9 @@ proved unconditionally in this project.
 
 ## 5. What is not formalised, and why
 
-Eight theorem-like environments of the book have no Lean counterpart.  None of
-them is a gap in a proof: each is either not a mathematical result, or an
-internal step whose statement is about the configuration encoding of a pebble
-automaton, which this project deliberately does not introduce.
+Three theorem-like environments of the book have no Lean counterpart.  None of
+them is a gap in a proof: none of the three is a mathematical result that this
+formalisation is meant to establish.
 
 * **Definition `def:rational-recognisable-subsets`** (rational and recognisable
   subsets of a monoid).  The book uses it once, in the remark explaining the
@@ -161,16 +169,6 @@ automaton, which this project deliberately does not introduce.
   of `A* × B*` are formalised, for that monoid, as part of the exercises.
 * **Conjecture `conj:regular-via-weighted-automata`** — an open conjecture, not
   a result.
-* **Lemma `lem:reachability-pebble-automaton`, Claim
-  `claim:reachability-basic-run`, Lemma
-  `lem:children-of-configuration-in-pebble-run`, Claim
-  `claim:from-configuration-to-child-configuration-graph`, Claim
-  `claim:from-child-configuration-graph-to-children`** — the same situation one
-  level up, for pebble transducers.  The Lean proof of Theorem
-  `thm:pebble-are-for` replaces the book's reachability analysis by an induction
-  on the number of pebbles, in which a `(k+2)`-pebble transducer is simulated by
-  a `(k+1)`-pebble transducer over the marked square of the padded input.  The
-  theorem is proved outright.
 * **The unnumbered paragraph at the end of `logic.tex`** (first-order
   transductions are exactly the compositions of map reverse, map duplicate and
   first-order rational functions).  The book states it without proof and leaves

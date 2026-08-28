@@ -53,7 +53,11 @@ Each part directory has a roll-up file of the same name that imports its
 contents.  Inside a part, the definitions and the statements of the numbered
 results are in `Statements.lean` (for Part B, in `RationalStatements.lean` and
 `WeightedStatements.lean`); the other files contain the constructions used in
-their proofs.
+their proofs.  A few results are stated elsewhere because they are proved from
+the contents of `Statements.lean`: in Part D, the five results of Section
+*Pebble transducers* that speak about the string representation of
+configurations are in `PartD/PebReach.lean`, `PartD/ChildGraphFor.lean` and
+`PartD/CGFor.lean`.  `THEOREMS.md` gives the file of every result.
 
 This project was edited by [Aristotle](https://aristotle.harmonic.fun).
 

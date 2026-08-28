@@ -91,7 +91,7 @@ lemma next_sim_halt (S T : Fin k → Bool) (q : Q) (st : List ℕ)
 
 open scoped Classical in
 lemma next_sim_step (S T : Fin k → Bool) (q : Q) (st : List ℕ)
-    (hstb : ∀ p ∈ st, p ≤ w.length) (hstk : st.length ≤ k) (hl : ℓ ≤ st.length)
+    (hstb : ∀ p ∈ st, p ≤ w.length) (hl : ℓ ≤ st.length)
     (hne : ¬ (tOk T (viewOf (pairEnc (k := k) q₁ q₂ sts stt w) st) && decide (q = q₂)) = true) :
     (∃ (q' : Q) (st' : List ℕ) (o : List B),
         M.stepCfg w (PebbleCfg.conf q st) = some (o, PebbleCfg.conf q' st') ∧ ℓ ≤ st'.length ∧
@@ -260,7 +260,7 @@ lemma answers_of_restr (S : Fin k → Bool) (hsttb : ∀ p ∈ stt, p ≤ w.leng
         | conf q' st' =>
             rw [hc'] at hs hr
             have hl' : ℓ ≤ st'.length := restrReaches_le M w hr
-            rcases next_sim_step M ℓ q₁ q₂ sts stt w S (hmark k stt) q0 st0 hstb hstk hle hc with
+            rcases next_sim_step M ℓ q₁ q₂ sts stt w S (hmark k stt) q0 st0 hstb hle hc with
               ⟨q'', st'', o'', hs'', -, he⟩ | ⟨-, hbad⟩
             · rw [hs] at hs''
               simp only [Option.some.injEq, Prod.mk.injEq, PebbleCfg.conf.injEq] at hs''
@@ -293,7 +293,7 @@ lemma restr_of_answers (S : Fin k → Bool) (hsttb : ∀ p ∈ stt, p ≤ w.leng
           tOk_iff q₁ q₂ sts stt w st hstb hstk hsttk] at hc
         obtain ⟨rfl, rfl⟩ := hc
         exact Pebble.RestrReaches.refl _ _ hl
-      · rcases next_sim_step M ℓ q₁ q₂ sts stt w S (hmark k stt) q st hstb hstk hl hc with
+      · rcases next_sim_step M ℓ q₁ q₂ sts stt w S (hmark k stt) q st hstb hl hc with
           ⟨q', st', o, hs, hl', he⟩ | ⟨hno, -⟩
         · rw [he] at hn
           obtain ⟨hstb', hstk'⟩ := stepCfg_inv M w hstb hstk hs
