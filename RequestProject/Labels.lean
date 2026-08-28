@@ -391,11 +391,17 @@ alias «claim:conditional» := Transducers.sum_of_regular
 assert_no_sorry «claim:conditional»
 
 /-- **Lemma `lem:output-of-snake-graph-is-regular`** (the output of a snake graph is regular):
-`Transducers.boundedWidth_isRegular`.  Stated for the run of a two-way transducer -- the
-width-`k` output function `TwoWay.widthOut` -- rather than for an alphabet of snake letters,
-and for every `k : ℕ` rather than for `k ∈ {1, …, |Q|}`. -/
-alias «lem:output-of-snake-graph-is-regular» := Transducers.boundedWidth_isRegular
+`Transducers.SnakeGraph.snakeOut_isRegular`.  Stated as in the book, over the alphabet
+`Transducers.SnakeLetter Q B` of snake letters, and for every `k : ℕ` rather than for
+`k ∈ {1, …, |Q|}`. -/
+alias «lem:output-of-snake-graph-is-regular» := Transducers.SnakeGraph.snakeOut_isRegular
 assert_no_sorry «lem:output-of-snake-graph-is-regular»
+
+/-- **Lemma `lem:output-of-snake-graph-is-regular`** (the output of a snake graph is regular):
+`Transducers.boundedWidth_isRegular`.  The general form the book's statement is proved from:
+the width-`k` output function `TwoWay.widthOut` of a two-way transducer, for every `k : ℕ`. -/
+alias «lem:output-of-snake-graph-is-regular#2» := Transducers.boundedWidth_isRegular
+assert_no_sorry «lem:output-of-snake-graph-is-regular#2»
 
 /-- **Definition `def:sst`** (sst): `Transducers.SST`. -/
 alias «def:sst» := Transducers.SST

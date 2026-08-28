@@ -132,6 +132,13 @@ RequestProject/
 | `PartC/SnakeChkSlot.lean` | the pieces of the record-breaker decomposition as pieces of the chain — the two halves of an excursion (`TwoWay.Chk.exists_crossOK_exc`), a progress part (`TwoWay.Chk.exists_crossOK_prog`) and the final piece (`TwoWay.Chk.exists_haltOK_final`) — together with the two times that delimit a piece slot (`TwoWay.Chk.pcStart`, `TwoWay.Chk.pcEnd`) and the proof that consecutive slots meet |
 | `PartC/SnakeChkSlotOK.lean` | every slot of the record-breaker decomposition carries a piece of the chain, on a window confined to its pair of blocks (`TwoWay.Chk.SlotOK`, `TwoWay.Chk.exists_slotOK`) |
 | `PartC/SnakeChkRB.lean` | **the record-breaker decomposition of a good input is a chain of pieces** (`TwoWay.Chk.nonempty_chainData_of_good`): the last step of stage 1, and with it of Theorem `thm:2dfa-decomposition-into-primes` |
+| `PartC/SnakeAlph.lean` | **the book's alphabet of snake letters** `Transducers.SnakeLetter Q B` (a letter is a bipartite graph on two copies of `Q`, with at most one outgoing edge per vertex, labelled by output letters) and the snake graph a string over it represents: vertices, edges, paths (`SnakeGraph.IsSnakePath`), the output `SnakeGraph.pathOut` of a path, the width of the graph (`SnakeGraph.SnakeWidthLe`) and the function `SnakeGraph.snakeOut k` of Lemma `lem:output-of-snake-graph-is-regular` |
+| `PartC/SnakeAlphLoc.lean` | the edges of a snake graph read off the two letters adjacent to a column, which is what makes the conditions on the graph local |
+| `PartC/SnakeAlphChar.lean` | **the characterisation `SnakeGraph.representsSnake_iff`**: a string represents a snake graph exactly when in- and out-degrees are at most one, there is at most one source and there is no directed cycle |
+| `PartC/SnakeAlphLocLang.lean` | the degree conditions and the width condition are regular, being conditions on pairs of consecutive letters, and so is the uniqueness of the source |
+| `PartC/SnakeAlphCyc.lean` | acyclicity is a regular condition: a left-to-right automaton keeps track of the reachability relation between the vertices of the current column |
+| `PartC/SnakeAlphRun.lean` | the two-way transducer `SnakeGraph.snakeTrans` that walks along a snake graph, and the proof that it computes the output of the graph (`SnakeGraph.computes_snakeTrans`), so that the width-bounded output function of `Transducers.boundedWidth_isRegular` already computes it |
+| `PartC/SnakeAlphReg.lean` | **Lemma `lem:output-of-snake-graph-is-regular` in the form the book states it** (`SnakeGraph.snakeOut_isRegular`), obtained from the two previous items by the conditional of Lemma `lem:regular-closure-properties` |
 | `PartC/TwoWayOrder.lean` | the *order in time* of the visits of a run to a cut is a regular property: a cut marked with a pair of states `(q₁, q₂)` is accepted by the two-way automaton `TwoWay.orderAut` exactly when the run visits it in `q₁` before it ever visits it in `q₂` (`TwoWay.VisitsBefore`, `TwoWay.orderLang_isRegular`), together with the resulting API for the first and the last visit to a cut |
 | `PartC/TwoWayAnnotOrd.lean` | the same information as a *rational annotation* of the input (`TwoWay.exists_rational_visitOrder_annot`): from the annotation of the two letters adjacent to a cut one reads off, for every pair of states, which of the two visits comes first, and hence which visit to the cut is the first and which is the last |
 | `PartC/RatBi.lean` | *bilateral rewritings*: a rewriting in which the block produced at a letter depends on the letter, on the state of a deterministic automaton run left-to-right on the prefix and on the state of a deterministic automaton run right-to-left on the suffix, is computed by a bimachine and hence rational (`Transducers.isRationalFun_biEval`); the two standard instances are cutting out the factor selected by regular lookaround (`isRationalFun_biFilter`) and cutting the input into the blocks it delimits (`isRationalFun_biMarkSep`) |
@@ -303,10 +310,15 @@ false statements and into the list of statements the book has corrected.
   satisfy the same first-order *formulas* of quantifier rank at most `k`; the Lean
   statement quantifies over first-order **sentences** (`φ.freeFO = ∅`), which is
   what "a string satisfies `φ`" means when there is no valuation to supply.
-* Lemma `lem:output-of-snake-graph-is-regular` — stated for the run of a two-way transducer, as
-  the regularity of the width-`k` output function `TwoWay.widthOut M k`, rather than
-  for an alphabet of snake letters; and for every `k : ℕ`, not only for
-  `k ∈ {1, …, |Q|}`.
+* Lemma `lem:output-of-snake-graph-is-regular` — stated as in the book, over the alphabet
+  `Transducers.SnakeLetter Q B` of snake letters, but for every `k : ℕ`, not only for
+  `k ∈ {1, …, |Q|}`; that is more general, and the restriction is immaterial, since a
+  column has at most `|Q|` vertices.  The book's alphabet has, besides the slices, a
+  special letter for the empty input; it is not needed for snake graphs, since the
+  empty string already represents the graph with one column and no edge.  The general
+  form the book's statement is proved from, `Transducers.boundedWidth_isRegular`, is
+  kept: it says the same thing for the width-`k` output function `TwoWay.widthOut M k`
+  of a two-way transducer.
 * Claim `claim:transition-formula` — stated for the index of a bimachine rather than for an
   unambiguous transducer.
 * Claims `claim:bounded-extensions`, `claim:computing-branching-part`, `claim:offsets-are-regular`
@@ -718,7 +730,7 @@ The proofs are organised as follows.
 | Theorem `thm:continuity-2dfas` (continuity) | `Transducers.twoWay_continuous` | proved (`TwoWayCont.lean`, from Shepherdson's Theorem in `TwoDFA.lean`) | `PartC/Statements.lean` |
 | Lemma `lem:compute-configuration-graph` (computing the configuration graph) | `Transducers.twoWay_isRationalFun_enc`; the main observation it rests on: `Transducers.twoWay_encLang_isRegular` | **proved** (`ConfGraph.lean`, `ConfGraphRun.lean`, `ConfGraphAnnot.lean`, `ConfGraphReg.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`).  The alphabet `C` of the book is `Transducers.CLet` and the representation is `Transducers.TwoWay.enc` | `PartC/Statements.lean` |
 | Lemma `lem:check-if-output-string-of-configuration-graph-belongs-to-L` (output string of the configuration graph in `L`) | `Transducers.twoWay_encOutputLang_isRegular` | **proved** (`ConfGraphReg.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`), for a transducer that computes a total function, which is taken as an explicit hypothesis — see *Divergences from the book* above.  The output string of a representation is the string printed by the transducer `Transducers.TwoWay.pathTrans`, which walks along the represented graph; on a representation it is the output of the transducer itself (`Transducers.TwoWay.computes_enc`) | `PartC/Statements.lean` |
-| Lemma `lem:output-of-snake-graph-is-regular` (the output of a snake graph is regular) | `Transducers.boundedWidth_isRegular` | **proved** (`SnakeReg.lean`, on top of `SnakeBase.lean`, `SnakeWalk.lean`, `SnakeRec.lean`, `SnakeLoop.lean` and the checking automaton of `SnakeStage1.lean`/`SnakeChk*.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`).  Stated for the width-`k` output function `TwoWay.widthOut` of a two-way transducer rather than for an alphabet of snake letters, and for every `k : ℕ` rather than for `k ∈ {1, …, \|Q\|}` | `PartC/SnakeReg.lean` |
+| Lemma `lem:output-of-snake-graph-is-regular` (the output of a snake graph is regular) | `Transducers.SnakeGraph.snakeOut_isRegular`; the general form it is proved from: `Transducers.boundedWidth_isRegular` | **proved** (axioms: `propext`, `Classical.choice`, `Quot.sound`).  Stated as in the book, over the alphabet `Transducers.SnakeLetter Q B` of snake letters (`SnakeAlph.lean`), whose regular language of snake graphs is `SnakeAlphLoc.lean`, `SnakeAlphChar.lean`, `SnakeAlphLocLang.lean`, `SnakeAlphCyc.lean` and whose output is computed by the walking transducer of `SnakeAlphRun.lean`; the general form `boundedWidth_isRegular`, for the width-`k` output function `TwoWay.widthOut` of a two-way transducer, is proved in `SnakeReg.lean`, on top of `SnakeBase.lean`, `SnakeWalk.lean`, `SnakeRec.lean`, `SnakeLoop.lean` and the checking automaton of `SnakeStage1.lean`/`SnakeChk*.lean`.  Both forms are proved for every `k : ℕ` rather than only for `k ∈ {1, …, \|Q\|}`, which is more general | `PartC/SnakeAlphReg.lean`, `PartC/SnakeReg.lean` |
 | Theorem `thm:composition-of-two-way-transducers` (composition) | `Transducers.twoWay_comp` | proved (`TwoWayRun.lean`, `TwoWayVisit.lean`, `TwoWayAnnot.lean`, `TwoWayAnnotBim.lean`, `TwoWayCompAux.lean`, `TwoWayCompPred.lean`, `TwoWayComp.lean`, `TwoWayCompFinal.lean`) | `PartC/Statements.lean` |
 | Lemma `lem:2dfa-precomposition-with-mealy` (pre-composition with Mealy machines) | `Transducers.twoWay_precomp_mealy` | proved | `PartC/Statements.lean` |
 | Corollary `cor:2dfa-closure-under-composition` (pre-composition with rational functions) | `Transducers.twoWay_precomp_rational` | proved (`TwoWayHom.lean`, `TwoWayBlock.lean`, `TwoWayErase.lean` and `TwoWayRat.lean`, from Theorem `thm:rational-primes` and Lemma `lem:2dfa-precomposition-with-mealy`) | `PartC/Statements.lean` |
@@ -1218,6 +1230,56 @@ marking function that the induction step consumes was already proved:
 `Transducers.TwoWay.Chk.nonempty_chainData_of_good` all depend only on `propext`,
 `Classical.choice` and `Quot.sound`.
 
+#### The alphabet of snake letters
+
+The book states Lemma `lem:output-of-snake-graph-is-regular` over the alphabet
+`C` in which snakes are represented: a letter is a bipartite graph whose vertices
+are two copies of the state set `Q`, whose edges are directed and labelled with
+output strings, and in which each vertex has at most one outgoing edge, which
+must go to the other copy.  That alphabet is `Transducers.SnakeLetter Q B`
+(`SnakeAlph.lean`): a letter is a function `Bool × Q → Option (Q × Option B)`,
+where `(false, q)` is the copy of `q` at the cut to the left of the letter and
+`(true, q)` the copy at the cut to its right.  A string `w` over `C` glues the
+letters into a graph whose vertices are the pairs `(q, x)` of a state and a
+column `x ≤ |w|`; it *represents a snake graph* when all its edges lie on a
+single directed path (`SnakeGraph.RepresentsSnake`), and the output of that graph
+is the concatenation of the labels along the path (`SnakeGraph.pathOut`).  The
+function of the lemma is `SnakeGraph.snakeOut k`, which returns that output when
+`w` represents a snake graph of width at most `k` and the empty string otherwise.
+
+The book's form of the lemma, `SnakeGraph.snakeOut_isRegular`
+(`SnakeAlphReg.lean`), is proved *from* the form the project already had,
+`Transducers.boundedWidth_isRegular`, and not by repeating the induction on the
+width.  Two things are needed.
+
+* The strings that represent a snake graph of width at most `k` form a regular
+  language.  `SnakeGraph.representsSnake_iff` (`SnakeAlphChar.lean`) replaces
+  "all edges lie on one path" by four local-looking conditions -- out-degree at
+  most one, in-degree at most one, at most one source, no directed cycle -- and
+  each of them is regular: the degree conditions and the width condition are
+  conditions on pairs of consecutive letters (`SnakeAlphLocLang.lean`), the
+  uniqueness of the source is checked by a left-to-right automaton that
+  remembers whether it has seen one source and whether it has seen two (same
+  file), and acyclicity by one that carries the reachability relation between
+  the vertices of the current column (`SnakeAlphCyc.lean`).
+* On those strings the output of the graph is the output of the run of the
+  two-way transducer `SnakeGraph.snakeTrans` that walks along the snake
+  (`SnakeAlphRun.lean`): in the state `none` it sweeps right until it stands at
+  the source, and from there it follows the outgoing edge of the current vertex,
+  prints its label and moves to the column of the target
+  (`SnakeGraph.computes_snakeTrans`).  That run halts, so its width is at most
+  the number of states and the width-bounded output function of
+  `boundedWidth_isRegular` already computes the output
+  (`SnakeGraph.snakeOutIs_widthOut`).
+
+The two are combined by the conditional of Lemma
+`lem:regular-closure-properties`.  The two forms of the lemma are equivalent in
+strength: the book's form is proved from the transducer form here, and
+conversely the reachable part of the run of a two-way transducer of width at
+most `k` is a snake graph of width at most `k` over the letters read.
+`SnakeGraph.snakeOut_isRegular` depends only on `propext`, `Classical.choice`
+and `Quot.sound`.
+
 #### The proof of Theorem `theorem:sst-two-way-equivalence`
 
 Both implications of Theorem `theorem:sst-two-way-equivalence` are formalised, and every file that
@@ -1564,7 +1626,7 @@ There is **no `axiom` declaration**, no `@[implemented_by]` and no
 `native_decide` in the project.  The only assumptions are the six explicit
 hypotheses listed above, which are theorem arguments.
 
-This is checked by the build itself.  `RequestProject/Labels.lean` declares 180
+This is checked by the build itself.  `RequestProject/Labels.lean` declares 184
 aliases — one per formalised result, with `#2`, `#3`, … when a result is rendered
 by several declarations — covering the 90 environments of the book that are
 formalised, and each alias is followed by `assert_no_sorry`, which fails at
