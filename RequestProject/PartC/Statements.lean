@@ -17,10 +17,12 @@ that representation -- they work with the run semantics of `RequestProject/PartC
 directly -- but the representation and the run semantics are proved to agree
 (`Transducers.TwoWay.computes_enc`).
 
-Lemma `lem:output-of-snake-graph-is-regular`, the book's snake lemma, *is* formalised -- as
-`Transducers.boundedWidth_isRegular`, in `RequestProject/PartC/SnakeReg.lean`, for the width-`k`
-output function of a two-way transducer rather than for an alphabet of snake letters -- and it is
-the step through which Theorem `thm:2dfa-decomposition-into-primes` is proved. -/
+Lemma `lem:output-of-snake-graph-is-regular`, the book's snake lemma, is formalised twice: in the
+form the book states it, over the alphabet of snake letters, as
+`Transducers.SnakeGraph.snakeOut_isRegular` in `RequestProject/PartC/SnakeAlphReg.lean`, and in the
+general form it is proved from, for the width-`k` output function of a two-way transducer, as
+`Transducers.boundedWidth_isRegular` in `RequestProject/PartC/SnakeReg.lean`.  The latter is the
+step through which Theorem `thm:2dfa-decomposition-into-primes` is proved. -/
 import RequestProject.PartB.WeightedStatements
 import RequestProject.PartC.ContAux
 import RequestProject.PartC.TwoWayCont
