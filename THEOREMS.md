@@ -1617,8 +1617,8 @@ circular, and each of the five results is proved outright.
 
 This section is the final summary of the index above.  It was written after a
 `lake build` of the whole project **from scratch** (Mathlib included), which
-succeeded with **no errors**; the only diagnostics are style warnings of the
-Lean linter, inventoried in *The warnings of the build* below.
+succeeded with **no errors and no warnings**; see *The warnings of the build*
+below for what the earlier passes had to remove to get there.
 
 ### Counts
 
@@ -1690,7 +1690,7 @@ Mealy machine that computes `f`".  See *Divergences from the book* above.
 ### `sorry` and axioms
 
 There is **no `sorry` anywhere in the project**: `lake build` emits not one
-`declaration uses 'sorry'`.  The token `sorry` occurs ten times, every one of
+`declaration uses 'sorry'`.  The token `sorry` occurs nine times, every one of
 them inside a block comment `/- … -/` that preserves, for the record, a statement
 the project does not make:
 
@@ -1703,55 +1703,67 @@ the project does not make:
   `thm:decidable-equivalence-regular` and the printed, false form of Claim
   `claim:conditional` (two);
 * `PartC/MSOOpen.lean` — the withdrawn Theorem
-  `nolabel:thm-fo-transduction-into-primes` and its open half (two).
+  `nolabel:thm-fo-transduction-into-primes` and its open half — two commented-out
+  declarations, of which the open half carries the `sorry` and the theorem
+  itself is deduced from it (one).
 
 There is **no `axiom` declaration**, no `@[implemented_by]` and no
 `native_decide` in the project.  The only assumptions are the six explicit
-hypotheses listed above, which are theorem arguments.
+hypotheses listed above and, for the exercises, the ones listed in
+`EXERCISES.md`; all of them are theorem arguments.
 
-This is checked by the build itself.  `RequestProject/Labels.lean` declares 196
+This is checked by the build itself.  `RequestProject/Labels.lean` declares 210
 aliases — one per formalised result, with `#2`, `#3`, … when a result is rendered
 by several declarations: **116** of them cover the 97 environments of the book
-that are formalised, and the remaining **80** cover the 65 exercises that are
+that are formalised, and the remaining **94** cover the 79 exercises that are
 (they are indexed in `EXERCISES.md`).  Each alias is followed by
 `assert_no_sorry`, which fails at compile time if the declaration depends on
 `sorryAx` **or on any axiom other than `propext`, `Classical.choice`,
 `Quot.sound`**.  So the whole *proved outright* column above is re-verified on
 every build.  No alias carries `assert_uses_sorry`: nothing that is formalised is
-left unproved.  Running `#print axioms` by hand on all 196 aliases, in the
+left unproved.  Running `#print axioms` by hand on all 210 aliases, in the
 closing audit of the project, reproduced this: not one of them reports `sorryAx`
 or any axiom outside the three standard ones.
 
 ### The warnings of the build
 
-`lake build` from scratch (8386 jobs) reports **no error**.  The remaining
-diagnostics are **47** Lean linter warnings inside proofs; none of them touches a
-statement.  Earlier passes removed the mechanical ones (75 unused `simp`
-arguments in all — the last 13, in `Exercises/CompressionMapLift.lean`, in the
-closing audit — three deprecated lemma names, three unnecessary `simpa`s, five
-`<;>` that should be `;`, two no-op tactics and two `intro` chains), and the
-warnings that remain are of two kinds, both of which would change the
-*signature* of an auxiliary lemma if they were acted on, and are therefore left
-alone:
+`lake build` from scratch (8397 jobs) reports **no error and no warning**.  The
+build is silent: no `sorry`, no linter diagnostic of any kind.
 
-* 30 × `automatically included section variable(s) unused in theorem …` — a
-  section variable that a helper lemma does not use.  Silencing it with `omit …
-  in` removes the variable from the lemma's statement.  They are in
-  `PartC/RunElts.lean` (3), `PartC/RunMark.lean` (3), `PartC/SnakeBlock.lean`
-  (3), `PartC/SnakeChkAcc.lean` (1), `PartC/SnakeChkAnn.lean` (8),
-  `PartC/SnakeChkStruct.lean` (6), `PartC/SnakeChkVerify.lean` (4) and
-  `PartD/CGSem.lean` (2).
-* 17 × `unused variable …` — a hypothesis of a helper lemma that its proof does
-  not use.  Removing it changes the statement of the helper.  They are in
-  `PartB/SeqChar.lean` (1), `PartC/SnakeChkBuild.lean` (1),
-  `PartC/SnakeChkCtx.lean` (1), `PartC/SnakeChkReadData.lean` (1),
-  `PartC/SnakeChkStruct.lean` (2), `PartC/SnakeLocal.lean` (1),
-  `PartC/SnakeWinRun.lean` (6), `PartD/ForPrenex.lean` (1),
-  `PartD/PebbleSeq.lean` (2) and `Exercises/Compression.lean` (1).
+Getting there took three passes.  The mechanical warnings were removed first (75
+unused `simp` arguments in all, three deprecated lemma names, three unnecessary
+`simpa`s, five `<;>` that should be `;`, two no-op tactics and two `intro`
+chains).  The 47 that survived them were of two kinds, both inside auxiliary
+proofs and never in the statement of a numbered result, and both were cleared in
+the last pass:
 
-Both kinds occur only in the internal files of Parts B, C and D and in
-`Exercises/Compression.lean`; no numbered result of the book is stated with an
-unused hypothesis.
+* `automatically included section variable(s) unused in theorem …` — a section
+  variable, almost always an instance such as `[Finite A]` or `[Inhabited S]`,
+  that a helper lemma does not use.  Each is now declared away with an explicit
+  `omit … in` in front of the lemma, which is what the linter asks for; the
+  lemma becomes slightly more general and its call sites are unaffected.
+  Fifty-nine of these were needed, because dropping an instance from one lemma
+  makes it unused in the lemma that used it: the files concerned are `PartC/RunElts.lean`,
+  `PartC/RunMark.lean`, `PartC/SnakeBlock.lean`, `PartC/SnakeRunLang.lean`,
+  `PartC/SnakeChkAcc.lean`, `PartC/SnakeChkAnn.lean`, `PartC/SnakeChkStruct.lean`,
+  `PartC/SnakeChkVerify.lean`, `PartC/TwoWayMSO.lean`, `PartD/CGSem.lean` and
+  `PartD/CGFor.lean`.
+* `unused variable …` — a hypothesis of a helper lemma that its proof does not
+  use.  Each such hypothesis was deleted from the helper and from its call
+  sites, which only makes the helper more general (for instance
+  `Transducers.lengthModLang_isRegular` no longer asks `r < m`, and the four
+  `Transducers.TwoWay.exists_outRange_kind_*` no longer ask `y ≤ w.length`).
+  The two exceptions, where the binder is genuinely needed although it does not
+  occur in the value, are the `dite` of `Transducers.slpVal` in
+  `Exercises/Compression.lean`, whose hypothesis is used by the termination
+  proof and is now named `_hjk`, and the two `match … with` discriminants of
+  `Transducers.Comp.pseq` in `PartD/PebbleSeq.lean`, whose equation proofs were
+  simply dropped.
+
+No statement of a numbered result and no statement of an exercise changed: the
+declarations that lost a hypothesis or an instance are all internal helpers,
+none of them is aliased in `RequestProject/Labels.lean`, and the `#print axioms`
+sweep was rerun afterwards with the same outcome.
 
 ### The exercises
 
@@ -1760,30 +1772,37 @@ separately, in `EXERCISES.md`.  The LaTeX sources contain 83 `\exer`
 environments, but two of them — the one at line 311 and the unlabelled one at
 line 440 of `rational-functions.tex` — are **commented out** and carry no number
 in `main.aux`, so the book has **81 exercises**, every one of them with a written
-solution.  **65 are formalised and proved**, in `RequestProject/Exercises/`; each
-has an alias in `RequestProject/Labels.lean` with `assert_no_sorry`, so none of
-them depends on `sorryAx` or on a non-standard axiom, and there is no `sorry` in
-`RequestProject/Exercises/`.  The remaining **16** are listed in `EXERCISES.md`
-with a reason for each, and all 16 have a written solution in the book:
-`exer:rational-outpus-of-exactly-linear-size`,
-`exer:rational-outpus-of-exactly-linear-size-rational-number`,
-`exer:regular-outpus-of-exactly-linear-size`, `exer:full-ideal`,
-`exer:polynomial-ideals`, `exer:all-ideals`, `exer:decide-same-ideal`,
-`exer:rational-injectivity-decidable` (whose mathematical first step *is*
-proved), `exer:rational-composition-finiteness-undecidable`,
-`exer:minimal-bimachine-lexicographic`, `exer:non-minimal-automaton`,
-`exer:fo-non-elementary`, `exer:fo-suc`, `exer:polyregular-unmarked-squaring`,
-`exer:for-transducer-continuity-nonelementary` and
-`exer:forward-for-transducer`; item (b) of the otherwise formalised
-`exer:decide-rational-colision` is left out too.  Three of the 65 carry an
-explicit hypothesis rather than being proved outright, in the same style as the
-numbered results: `exer:function-that-is-not-rational`,
+solution.  **All 81 are formalised**, in `RequestProject/Exercises/`; each has an
+alias in `RequestProject/Labels.lean` with `assert_no_sorry`, so none of them
+depends on `sorryAx` or on a non-standard axiom, and there is no `sorry` in
+`RequestProject/Exercises/`.  Of the 81, **63 are proved outright** and **18
+are proved from an explicit hypothesis** — a `Prop`-valued definition stating a
+step that the book's own solution takes for granted or only sketches, taken as
+an ordinary theorem argument, exactly in the style of the numbered results.  The
+eighteen, and the hypothesis each rests on, are tabulated in the addendum at
+the end of `EXERCISES.md`; three of them are of long standing
+(`exer:function-that-is-not-rational`,
 `exer:rational-relations-intersection-undecidable` and item (a) of
-`exer:decide-rational-colision`.
+`exer:decide-rational-colision`), fourteen came with the conditional
+formalisations of the ideals, the linear output size, the two logic exercises
+and the minimal machines, and the last one is
+`exer:forward-for-transducer`.
 
-(The counts 63 and 20 that the `## Status (current)` section of `EXERCISES.md`
-gives are superseded by the ones above, which the closing audit recomputed from
-the sources; the final section of `EXERCISES.md` records the correction.)
+The two gaps that the closing audit reported have since been closed.
+`exer:polyregular-unmarked-squaring` is now proved in full
+(`Transducers.Exercises.unmarkedPolyregular_strict_subset_polyregular`), the
+strictness of the inclusion included; `exer:forward-for-transducer`, the last
+exercise of the book, is formalised as
+`Transducers.Exercises.forwardFor_iff_ratMarkedSquare`, from three explicit
+hypotheses; and item (b) of `exer:decide-rational-colision` is formalised as
+`Transducers.Exercises.rationalFun_equal_length_decidable`, from two.  The final
+section of `EXERCISES.md` sets out what each of those hypotheses assumes and
+what would be needed to remove it.
+
+(The counts given in the `## Status (current)` and `## Status (closing audit)`
+sections of `EXERCISES.md` are superseded by the ones above, which the closing
+audit recomputed from the sources; the addendum at the end of `EXERCISES.md`
+records the correction.)
 
 The four most recently added are `exer:2dfa-complexity`,
 `exer:2dfa-loop-elimination-sipser`, `exer:regular-compression` and
@@ -1807,10 +1826,10 @@ exercise `exer:2dfa-unary-output`.
 
 Five scripts in `tools/` check the bookkeeping, and all five report no problem.
 
-* `tools/print_axioms.sh` — runs `#print axioms` on all 196 aliases of
+* `tools/print_axioms.sh` — runs `#print axioms` on all 210 aliases of
   `Labels.lean` and reports any that depends on `sorryAx` or on an axiom outside
   `propext`, `Classical.choice`, `Quot.sound`.  It reports
-  *all 196 aliases depend only on propext, Classical.choice, Quot.sound*.
+  *all 210 aliases depend only on propext, Classical.choice, Quot.sound*.
 
 * `tools/gen_labels.py --check` — `Labels.lean` against `LABELS.md`,
   `THEOREMS.md` and `EXERCISES.md`: every formalised row has an alias, every

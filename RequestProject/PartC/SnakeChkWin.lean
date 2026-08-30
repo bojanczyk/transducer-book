@@ -135,7 +135,7 @@ variable (M : TwoWay A B Q) (w : List A)
 
 /-- **A piece of the kind `1` or `2` moves the run from one end of its window to
 the other.** -/
-theorem chain_step_adv {k x y a : ℕ} (hxy : x ≤ y) (hyw : y ≤ w.length)
+theorem chain_step_adv {k x y a : ℕ} (hxy : x ≤ y)
     {p : PieceParam A Q} {q f : Q} (hst : p.2.2.2 = some (q, f))
     (hl : p.2.1 = (w.take x).getLast?) (hr : p.2.2.1 = (w.drop y).head?)
     (hk : p.1 = 1 ∨ p.1 = 2)
@@ -153,13 +153,13 @@ theorem chain_step_adv {k x y a : ℕ} (hxy : x ≤ y) (hyw : y ≤ w.length)
   rcases hk with hk | hk
   · subst hk
     rw [if_pos rfl] at hstart ⊢
-    exact exists_outRange_kind_one M w hxy hyw hstart hwin.1 hwin.2.2
+    exact exists_outRange_kind_one M w hxy hstart hwin.1 hwin.2.2
   · subst hk
     rw [if_neg (by decide : ¬ (2 : Fin 5) = 1)] at hstart ⊢
-    exact exists_outRange_kind_two M w hxy hyw hstart hwin.1 hwin.2.2
+    exact exists_outRange_kind_two M w hxy hstart hwin.1 hwin.2.2
 
 /-- **A piece of the kind `3` or `4` halts inside its window.** -/
-theorem chain_step_halt {k x y a : ℕ} (hxy : x ≤ y) (hyw : y ≤ w.length)
+theorem chain_step_halt {k x y a : ℕ} (hxy : x ≤ y)
     {p : PieceParam A Q} {q : Q} (hst : p.2.2.2 = some (q, q))
     (hl : p.2.1 = (w.take x).getLast?) (hr : p.2.2.1 = (w.drop y).head?)
     (hk : p.1 = 3 ∨ p.1 = 4)
@@ -175,10 +175,10 @@ theorem chain_step_halt {k x y a : ℕ} (hxy : x ≤ y) (hyw : y ≤ w.length)
   rcases hk with hk | hk
   · subst hk
     rw [if_pos rfl] at hstart
-    exact exists_outRange_kind_three M w hxy hyw hstart hwin.1 hwin.2
+    exact exists_outRange_kind_three M w hxy hstart hwin.1 hwin.2
   · subst hk
     rw [if_neg (by decide : ¬ (4 : Fin 5) = 3)] at hstart
-    exact exists_outRange_kind_four M w hxy hyw hstart hwin.1 hwin.2
+    exact exists_outRange_kind_four M w hxy hstart hwin.1 hwin.2
 
 /-- A piece whose kind is not one of the four real ones produces no output. -/
 lemma pieceOut_of_kind_zero {k : ℕ} {p : PieceParam A Q} (h1 : p.1 ≠ 1) (h2 : p.1 ≠ 2)

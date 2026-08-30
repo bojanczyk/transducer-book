@@ -274,11 +274,11 @@ lemma stepCfg_mirrorWindow {p s p' s' : List A} {q q' : Q} {o : List B}
   exact hmir
 
 /-- The halting step of the piece, in the mirrored window transducer. -/
-lemma stepCfg_mirrorWindow_halt {p s : List A} {q : Q} {o : List B} (hps : p ++ s = m)
+lemma stepCfg_mirrorWindow_halt {p s : List A} {q : Q} {o : List B}
     (h : M.stepCfg (Cfg.conf (u ++ p) q (s ++ z)) = some (o, Cfg.halt)) :
     ((mirror M).withContext z.head? u.getLast? q₀).stepCfg (Cfg.conf s.reverse q p.reverse)
       = some (o, Cfg.halt) := by
-  have hN := stepCfg_window_halt M u m z q₀ hps h
+  have hN := stepCfg_window_halt M u z q₀ h
   have hmir := stepCfg_mirror (M.withContext u.getLast? z.head? q₀) (Cfg.conf p q s)
   rw [hN, mirrorCfg_conf, mirror_withContext] at hmir
   simp only [Option.map_some, mirrorCfg_halt] at hmir
@@ -345,7 +345,7 @@ lemma IsLastPieceRev.stepCfg_last {a n : ℕ} (hp : IsLastPieceRev M u m z q₀ 
   rw [hc] at hc'
   have hcc : c' = Cfg.conf (u ++ p) q (s ++ z) := (Option.some_injective _ hc').symm
   subst hcc
-  exact ⟨p, s, q, hS, stepCfg_mirrorWindow_halt hps hstepc⟩
+  exact ⟨p, s, q, hS, stepCfg_mirrorWindow_halt hstepc⟩
 
 theorem lastPieceRev_halt {a n : ℕ} (hp : IsLastPieceRev M u m z q₀ a n) :
     cfgAt ((mirror M).withContext z.head? u.getLast? q₀) m.reverse (n + 1) = some Cfg.halt := by

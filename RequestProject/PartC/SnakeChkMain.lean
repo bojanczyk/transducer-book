@@ -142,7 +142,7 @@ theorem exists_regular_snakeLang [Finite A] [Finite B] [Finite Q] (M : TwoWay A 
   refine ⟨Gam A Q S K, inferInstance, snakeIn K, snakeOutLet K, L, hLreg, ?_, ?_⟩
   · rintro u (⟨hgood, hchk⟩ | ⟨hbad, hflat⟩) hne
     · rw [homOf_snakeIn] at hne ⊢
-      rw [chk_sound M hK stp ini acc hacc hchk hgood,
+      rw [chk_sound M stp ini acc hacc hchk hgood,
         widthOut_eq_runOut_of_good hgood]
     · rw [homOf_snakeIn] at hne ⊢
       rw [homOf_snakeOutLet_of_flat ((flatB_eq_false_iff u).1 hflat), pairMap,

@@ -207,6 +207,7 @@ lemma time_eq_iff {q q' : Q} {p p' t t' : ℕ} (h : RunAt M w q p t) (h' : RunAt
   · rintro ⟨rfl, rfl⟩
     exact h.time_unique hTm h'
 
+omit [Finite A] [Finite Q] in
 /-- Selection: an element is selected exactly when the run produces the
 corresponding letter. -/
 lemma selected_iff (hF : Forms M upF ucF lpF lcF bppF bpcF bcpF bccF)
@@ -257,6 +258,7 @@ lemma eltPos_inl_of_lt {c : Fin m} {p : ℕ} (hp : p < w.length) :
   show (if p < w.length then p else w.length + 1) = p
   rw [if_pos hp]
 
+omit [Finite A] [Finite Q] in
 /-- **The specification of `runT`.** -/
 theorem spec_runT (hKb : ∀ (l : Option A) (q : Q) (r : Option A), (outWord M l q r).length ≤ K)
     (hF : Forms M upF ucF lpF lcF bppF bpcF bcpF bccF) :
@@ -554,7 +556,7 @@ theorem isMSOTransduction_of_isTwoWay {f : List A → List B} (hf : IsTwoWay f) 
   refine ⟨runT eIdx upF ucF lpF lcF bppF bpcF bcpF bccF, ?_, ?_⟩
   · intro w
     obtain ⟨Tm, hTm, -⟩ := exists_halt_time M w (hM w)
-    exact RunElts.proper_props hTm (spec_runT hTm hKb hF)
+    exact RunElts.proper_props (spec_runT hTm hKb hF)
   · intro w
     obtain ⟨Tm, hTm, hout⟩ := exists_halt_time M w (hM w)
     obtain ⟨es, h1, h2, h3, h4, h5⟩ := RunElts.exists_elts hTm (spec_runT hTm hKb hF)

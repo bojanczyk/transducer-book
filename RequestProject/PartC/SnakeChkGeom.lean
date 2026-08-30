@@ -37,7 +37,7 @@ describes a chain of pieces whose outputs concatenate to the output of the
 run, so the neighbouring-block map combinator applied to the block function
 computes the output of the run on it. -/
 theorem chk_sound [Finite A] [Finite B] [Finite Q] [Inhabited S]
-    (M : TwoWay A B Q) {K : ℕ} (hK : 2 ≤ K) (stp : S → A → S) (ini : S)
+    (M : TwoWay A B Q) {K : ℕ} (stp : S → A → S) (ini : S)
     (acc : PieceParam A Q → S → Prop)
     (hacc : ∀ (p : PieceParam A Q) (v : List A),
       v ∈ WinCond M (K - 1) p ↔ acc p (v.foldl stp ini))
@@ -49,7 +49,7 @@ theorem chk_sound [Finite A] [Finite B] [Finite Q] [Inhabited S]
   have hne : u ≠ [] := by
     intro h
     exact hgood.1 (by rw [h]; rfl)
-  obtain ⟨d, hN, hY, ha, hb, hp⟩ := exists_chainData_of_chkLang hK hacc hu hne
+  obtain ⟨d, hN, hY, ha, hb, hp⟩ := exists_chainData_of_chkLang hacc hu hne
   have hsplit : splitSep (homOf (snakeOutLet K) u)
       = splitSep (snakeAnn (u.map lt) K d.N d.Y d.a d.b d.p) := by
     rw [splitSep_homOf_snakeOutLet hu hne, splitSep_snakeAnn, hN, hY, ha, hb, hp]

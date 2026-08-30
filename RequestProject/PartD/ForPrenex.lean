@@ -365,7 +365,7 @@ lemma FreshNest.mono {a lo hi lo' hi' : ℕ} {L : List (Bool × ℕ)} {b : ForPr
 /-- The translation produces a fresh nest. -/
 lemma TrOk.toFresh {zv lv : ℕ} {P : ForProg A B} {k : ℕ} {L : List (Bool × ℕ)} {b : ForProg A B}
     {k' a : ℕ} (h : TrOk zv lv P k L b k') (hzv : zv < a) (hlv : lv < a)
-    (hP : ∀ i ∈ P.posVars, i < a) (hk : a ≤ k) : FreshNest a k k' L b where
+    (hP : ∀ i ∈ P.posVars, i < a) : FreshNest a k k' L b where
   loopRange := h.loopRange
   nodup := h.nodup
   posOk i hi := by
@@ -557,8 +557,8 @@ theorem trFor_spec (zv lv k₀ : ℕ) (hzv : zv < k₀) (hlv : lv < k₀) (w : L
       simp only [trFor, hr₁, hr₂, Prod.mk.injEq] at heq
       obtain ⟨rfl, rfl, rfl⟩ := heq
       have hm₁ : k + 1 ≤ k₁ := o₁.mono
-      have hf₁ : FreshNest k₀ (k + 1) k₁ L₁ b₁ := o₁.toFresh hzv hlv hPpos (by omega)
-      have hf₂ : FreshNest k₀ k₁ k₂ L₂ b₂ := o₂.toFresh hzv hlv hQpos (by omega)
+      have hf₁ : FreshNest k₀ (k + 1) k₁ L₁ b₁ := o₁.toFresh hzv hlv hPpos
+      have hf₂ : FreshNest k₀ k₁ k₂ L₂ b₂ := o₂.toFresh hzv hlv hQpos
       rw [exec_merge_fresh w zv lv k₀ hzv hlv hn pos hpz hpl bv₁ k (k + 1) k₁ k₁ k₂ L₁ L₂ b₁ b₂
         hf₁ hf₂ (by omega) (by omega) (by omega) le_rfl (by have := o₂.mono; omega)]
       obtain ⟨e₁, e₂⟩ := ihP hPpos hPbool hzvP' hlvP' (k + 1) L₁ b₁ k₁ hr₁ (by omega) pos hpz hpl
@@ -607,12 +607,12 @@ theorem trFor_spec (zv lv k₀ : ℕ) (hzv : zv < k₀) (hlv : lv < k₀) (w : L
         refine ⟨o₁.loopRange, o₁.nodup, fun i hi => ?_⟩
         simp only [hc₁, ForProg.posVars, ForTest.posVars, List.nil_append, List.append_nil,
           ] at hi
-        exact (o₁.toFresh (a := k₀) hzv hlv hPpos (by omega)).posOk i hi
+        exact (o₁.toFresh (a := k₀) hzv hlv hPpos).posOk i hi
       have hf₂ : FreshNest k₀ k₁ k₂ L₂ c₂ := by
         refine ⟨o₂.loopRange, o₂.nodup, fun i hi => ?_⟩
         simp only [hc₂, ForProg.posVars, ForTest.posVars, List.nil_append, List.append_nil,
           ] at hi
-        exact (o₂.toFresh (a := k₀) hzv hlv hQpos (by omega)).posOk i hi
+        exact (o₂.toFresh (a := k₀) hzv hlv hQpos).posOk i hi
       have hfM : FreshNest k₀ (k + 2) k₁ (mergeLoops (k + 2) [] L₁)
           (mergeBody zv lv (k + 2) [] L₁ b₀ c₁) :=
         FreshNest.merge hf₀ hf₁ hzv hlv (by omega) (by omega) le_rfl le_rfl (by omega)
@@ -729,7 +729,7 @@ theorem trFor_spec (zv lv k₀ : ℕ) (hzv : zv < k₀) (hlv : lv < k₀) (w : L
       simp only [trFor, hr, Prod.mk.injEq] at heq
       obtain ⟨rfl, rfl, rfl⟩ := heq
       have hm : k + 1 ≤ k₁ := o₁.mono
-      have hf₁ : FreshNest k₀ (k + 1) k₁ L₁ b₁ := o₁.toFresh hzv hlv hPpos (by omega)
+      have hf₁ : FreshNest k₀ (k + 1) k₁ L₁ b₁ := o₁.toFresh hzv hlv hPpos
       have hkb : k ∉ b₁.posVars := by
         intro h
         rcases hf₁.posOk k h with h' | h' <;> omega

@@ -34,7 +34,11 @@ verifies `RequestProject/Labels.lean` against `LABELS.md`, `THEOREMS.md` and
 `THEOREMS.md` against the files that actually declare the named declarations;
 and `tools/print_axioms.sh` runs `#print axioms` on every alias of
 `RequestProject/Labels.lean` and reports any that depends on `sorryAx` or on an
-axiom other than `propext`, `Classical.choice`, `Quot.sound`.  The first three
+axiom other than `propext`, `Classical.choice`, `Quot.sound`.
+`tools/omit_unused.py BUILDLOG` is a maintenance helper rather than a check: it
+reads the log of a `lake build` and puts an explicit `omit … in` in front of
+every theorem the linter reports as carrying an unused section variable, which
+is how the build was made warning-free.  The first three
 expect the LaTeX sources of the book, and `main.aux` in particular, in the
 parent directory; pass `--book DIR` if they are elsewhere.  `lake build` is run
 from this directory (`transducer-lean/`), which is the root of the Lean

@@ -59,11 +59,11 @@ def slpVal (rs : List (Rule A)) (i : ℕ) : List A :=
   | none => []
   | some (Rule.letter a) => [a]
   | some (Rule.cat j k) =>
-      if hjk : j < i ∧ k < i then slpVal rs j ++ slpVal rs k else []
+      if _hjk : j < i ∧ k < i then slpVal rs j ++ slpVal rs k else []
 termination_by i
 decreasing_by
-  · exact hjk.1
-  · exact hjk.2
+  · exact _hjk.1
+  · exact _hjk.2
 
 /-- A grammar compression *generates* a string when the string is the value of
 its last rule. -/

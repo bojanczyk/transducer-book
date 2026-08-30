@@ -168,6 +168,7 @@ lemma isRegular_probeLangT (M : TwoWay A B Q) (tg : Tgt Q)
     (probeLangT M tg ans).IsRegular :=
   RunProbe.isRegular_probeLang M Prod.fst (hitsB tg) ans
 
+omit [Finite A] [Finite Q] in
 /-- The characterisation of the language of a single target: since the run
 halts, it reaches a given configuration at most once, so the first trigger is
 the only one. -/
@@ -209,6 +210,7 @@ noncomputable def ansLab (M : TwoWay A B Q) (i : ℕ) (b : B) :
     Option (Mark2 A) → Q → Option (Mark2 A) → Bool :=
   fun l q r => decide ((outWord M (l.map Prod.fst) q (r.map Prod.fst))[i]? = some b)
 
+omit [Finite A] [Finite Q] in
 lemma outWord_at_target (M : TwoWay A B Q) (w : List A) {T : ℕ}
     (hT : cfgAt M w T = some Cfg.halt) (x y : ℕ) {q : Q} {p t : ℕ}
     (hrun : RunAt M w q p t) :
@@ -236,6 +238,7 @@ lemma isRegular_visitLang (M : TwoWay A B Q) (tg : Tgt Q) (i : ℕ) :
 lemma isRegular_labLang (M : TwoWay A B Q) (tg : Tgt Q) (i : ℕ) (b : B) :
     (labLang M tg i b).IsRegular := isRegular_probeLangT _ _ _
 
+omit [Finite A] [Finite Q] in
 lemma mem_visitLang (M : TwoWay A B Q) (tg : Tgt Q) (i : ℕ) (w : List A) {T : ℕ}
     (hT : cfgAt M w T = some Cfg.halt) (x y : ℕ) :
     markAt2 w x y ∈ visitLang M tg i ↔
@@ -245,6 +248,7 @@ lemma mem_visitLang (M : TwoWay A B Q) (tg : Tgt Q) (i : ℕ) (w : List A) {T : 
   refine exists_congr (fun t => and_congr_right (fun hrun => and_congr_right (fun _ => ?_)))
   rw [ansLen, decide_eq_true_eq, outWord_at_target M w hT x y hrun]
 
+omit [Finite A] [Finite Q] in
 lemma mem_labLang (M : TwoWay A B Q) (tg : Tgt Q) (i : ℕ) (b : B) (w : List A) {T : ℕ}
     (hT : cfgAt M w T = some Cfg.halt) (x y : ℕ) :
     markAt2 w x y ∈ labLang M tg i b ↔
@@ -266,6 +270,7 @@ lemma isRegular_beforeLang (M : TwoWay A B Q) (tg₁ tg₂ : Tgt Q) :
     (beforeLang M tg₁ tg₂).IsRegular :=
   RunProbe.isRegular_probeLang _ _ _ _
 
+omit [Finite A] [Finite Q] in
 lemma mem_beforeLang (M : TwoWay A B Q) (tg₁ tg₂ : Tgt Q) (w : List A) {T : ℕ}
     (hT : cfgAt M w T = some Cfg.halt) (x y : ℕ) :
     markAt2 w x y ∈ beforeLang M tg₁ tg₂ ↔

@@ -31,7 +31,7 @@ def lengthModDFA (m r : ℕ) : DFA B (ℕ × ℕ) where
   start := (0, r)
   accept := {s | s.1 = s.2 % m}
 
-lemma lengthModLang_isRegular (m r : ℕ) (hm : 0 < m) (hr : r < m) :
+lemma lengthModLang_isRegular (m r : ℕ) (hm : 0 < m) :
     (lengthModLang m r : Language B).IsRegular := by
   -- Define a finite-state DFA using Fin m
   let DFA' : DFA B (Fin m) := {
@@ -298,9 +298,9 @@ def modPre (r : ℕ) : Language A := {w | (f w).length % (K + 1) = r}
 /-- The inverse image of the suffix languages. -/
 def sufPre (u : List B) : Language A := {w | u <:+ f w}
 
-lemma modPre_isRegular (hcont : Continuous f) (r : ℕ) (hr : r < K + 1) :
+lemma modPre_isRegular (hcont : Continuous f) (r : ℕ) :
     (modPre f K r).IsRegular := by
-  have h := hcont (lengthModLang (K + 1) r) (lengthModLang_isRegular (K + 1) r (by omega) hr)
+  have h := hcont (lengthModLang (K + 1) r) (lengthModLang_isRegular (K + 1) r (by omega))
   convert h using 1
 
 lemma sufPre_isRegular [Finite B] (hcont : Continuous f) (u : List B) :
@@ -320,7 +320,7 @@ lemma state_append (w : List A) (a : A) :
 lemma state_range_finite [Finite B] (hcont : Continuous f) :
     (Set.range (state f K)).Finite := by
   have h1 : ∀ r : Fin (K + 1), (Set.range (modPre f K (r : ℕ)).leftQuotient).Finite := fun r =>
-    (modPre_isRegular f K hcont r r.isLt).finite_range_leftQuotient
+    (modPre_isRegular f K hcont r).finite_range_leftQuotient
   have h2 : ∀ u : Short B K, (Set.range (sufPre f u.val).leftQuotient).Finite := fun u =>
     (sufPre_isRegular f hcont u.val).finite_range_leftQuotient
   refine Set.Finite.subset

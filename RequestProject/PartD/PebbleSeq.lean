@@ -203,11 +203,11 @@ def pseq : Pebble A C (PSeqSt Q S C N) (k + 1) where
     | PSeqSt.run q s => pseqRun M T q s v
     | PSeqSt.pop1 q s => (PSeqSt.run q s, PebbleAction.pop)
     | PSeqSt.emit l q s =>
-        match hl : l.val with
+        match l.val with
         | [] => pseqRun M T q s v
         | c :: _ => (PSeqSt.emit (BddList.tail l) q s, PebbleAction.out c)
     | PSeqSt.fin l =>
-        match hl : l.val with
+        match l.val with
         | [] => (PSeqSt.fin l, PebbleAction.terminate)
         | c :: _ => (PSeqSt.fin (BddList.tail l), PebbleAction.out c)
 

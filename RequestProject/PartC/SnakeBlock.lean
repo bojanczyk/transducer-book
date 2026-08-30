@@ -170,6 +170,7 @@ private def winBim (r : ℕ) :
     | some (some g) => if inWin (slot p r) g then [g.1] else []
     | _ => []
 
+omit [Finite A] [Finite Q] in
 private lemma winBim_sfx (r : ℕ) (z : List (Option (SnakeLet A Q R)))
     (x : Option (SnakeLet A Q R)) :
     strTrans (winBim (A := A) (Q := Q) (R := R) r).suffixStep (x :: z).reverse
@@ -182,6 +183,7 @@ private lemma winBim_sfx (r : ℕ) (z : List (Option (SnakeLet A Q R)))
     | cons y v ih => intro s; simpa [strTrans] using ih _
   simpa using key z.reverse _
 
+omit [Finite A] [Finite Q] in
 private lemma winBim_evalFrom (r : ℕ) (p : Bool) (z : List (Option (SnakeLet A Q R))) :
     (winBim (A := A) (Q := Q) (R := R) r).evalFrom p z = extractWinAux r p z := by
   induction z generalizing p with
@@ -212,6 +214,7 @@ private def flStep (s : Bool × Option (Bool × SnakeLet A Q R)) (x : Option (Sn
     | none => (true, none)
     | some g => (s.1, some (s.1, g))
 
+omit [Finite A] [Finite Q] in
 private lemma flStep_eval (z : List (Option (SnakeLet A Q R))) (s : Bool) :
     (z.foldl flStep (s, none)).2 = firstLetAux s z := by
   have habs : ∀ (z : List (Option (SnakeLet A Q R))) (b : Bool) (v : Bool × SnakeLet A Q R),
@@ -247,6 +250,7 @@ lemma isRegular_paramOf (r : ℕ) (e : PieceParam A Q) :
   simp only [Set.mem_setOf_eq]
   exact ⟨fun hz => key.trans hz, fun hz => key.symm.trans hz⟩
 
+omit [Finite Q] in
 /-- Every piece function is regular, given the induction hypothesis of the snake
 lemma. -/
 lemma isRegularFun_pieceOut (M : TwoWay A B Q) (k : ℕ)

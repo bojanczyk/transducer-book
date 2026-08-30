@@ -39,11 +39,12 @@ lemma one_le_nsep (hu : u ∈ ChkLang M K stp ini acc) (h0 : 0 < u.length) :
   have h2 := blk_le_nsep (sep := sb) (u := u) 0
   omega
 
+omit [Inhabited S] in
 lemma nbl_eq_add (u : List (Gam A Q S K)) :
     nbl sb sa u = nsep sb u + (if u.getLast?.elim false sa then 1 else 0) := rfl
 
-lemma nPair_le_nsep (hu : u ∈ ChkLang M K stp ini acc) (h0 : 0 < u.length) :
-    nPair u ≤ nsep sb u := by
+omit [Inhabited S] in
+lemma nPair_le_nsep : nPair u ≤ nsep sb u := by
   rw [nPair, nbl_eq_add]
   split <;> omega
 
@@ -53,10 +54,11 @@ lemma nsep_le_nPair_succ (hu : u ∈ ChkLang M K stp ini acc) (h0 : 0 < u.length
   rw [nPair, nbl_eq_add]
   split <;> omega
 
+omit [Inhabited S] in
 /-- All the blocks but the `0`-th one and the last one are nonempty. -/
-lemma bY_blk (hu : u ∈ ChkLang M K stp ini acc) (h0 : 0 < u.length) {m : ℕ}
+lemma bY_blk (h0 : 0 < u.length) {m : ℕ}
     (hm1 : 1 ≤ m) (hmN : m ≤ nPair u) : bY u m < bY u (m + 1) :=
-  bstart_lt_succ hm1 (le_trans hmN (nPair_le_nsep hu h0)) h0
+  bstart_lt_succ hm1 (le_trans hmN nPair_le_nsep) h0
 
 /-- The last block ends at the end of the input. -/
 lemma bY_last (hu : u ∈ ChkLang M K stp ini acc) (h0 : 0 < u.length) :
@@ -69,7 +71,7 @@ lemma bY_last (hu : u ∈ ChkLang M K stp ini acc) (h0 : 0 < u.length) :
 lemma bY_lt_two (hu : u ∈ ChkLang M K stp ini acc) (h0 : 0 < u.length) {i : ℕ}
     (hi : i ≤ nPair u) : bY u i < bY u (i + 2) := by
   rcases Nat.lt_or_ge i (nPair u) with hlt | hge
-  · have h1 : bY u (i + 1) < bY u (i + 2) := bY_blk hu h0 (by omega) (by omega)
+  · have h1 : bY u (i + 1) < bY u (i + 2) := bY_blk h0 (by omega) (by omega)
     have h2 : bY u i ≤ bY u (i + 1) := bY_mono (by omega)
     omega
   · have hiN : i = nPair u := by omega
@@ -84,7 +86,7 @@ lemma bY_lt_two (hu : u ∈ ChkLang M K stp ini acc) (h0 : 0 < u.length) {i : �
         omega
       rw [bY_zero, this]
       exact h0
-    · have h1 : bY u i < bY u (i + 1) := bY_blk hu h0 hipos (by omega)
+    · have h1 : bY u i < bY u (i + 1) := bY_blk h0 hipos (by omega)
       have h2 : bY u (i + 1) ≤ bY u (i + 2) := bY_mono (by omega)
       omega
 
@@ -97,12 +99,15 @@ lemma blk_bounds (hu : u ∈ ChkLang M K stp ini acc) {j : ℕ} (hj : j < u.leng
   have h2 := nsep_le_nPair_succ hu h0
   omega
 
+omit [Inhabited S] in
 lemma bY_le_of_blk {j : ℕ} (hj : j < u.length) : bY u (blk sb u j) ≤ j :=
   bstart_le_self hj
 
+omit [Inhabited S] in
 lemma lt_bY_of_blk {j : ℕ} (hj : j < u.length) : j < bY u (blk sb u j + 1) :=
   lt_bstart_succ hj
 
+omit [Inhabited S] in
 /-- The block containing a position of a pair of neighbouring blocks is one of
 the two blocks of that pair. -/
 lemma blk_of_pair {i j : ℕ} (hj : j < u.length) (h1 : bY u i ≤ j) (h2 : j < bY u (i + 2)) :
@@ -123,6 +128,7 @@ lemma blk_of_pair {i j : ℕ} (hj : j < u.length) (h1 : bY u i ≤ j) (h2 : j < 
 
 /-! ## Two consecutive positions of a pair of neighbouring blocks -/
 
+omit [Inhabited S] in
 /-- Induction along a pair of neighbouring blocks. -/
 lemma pair_prop_induct {i : ℕ} (P : ℕ → Prop) (hb : P (bY u i))
     (hstep : ∀ j, bY u i ≤ j → j + 1 < bY u (i + 2) → P j → P (j + 1)) :
@@ -312,11 +318,13 @@ lemma sb_at_bY (hu : u ∈ ChkLang M K stp ini acc) {k j : ℕ} (hk1 : 1 ≤ k)
   rw [sep_iff_bstart (sb_zero' hu) hj, hb, ← bY_def]
   exact hjk
 
+omit [Inhabited S] in
 lemma bY_lt_length (h0 : 0 < u.length) {k : ℕ} (hk : k ≤ nsep sb u) : bY u k < u.length := by
   have hex : ∃ j, j < u.length ∧ k ≤ blk sb u j :=
     ⟨u.length - 1, by omega, by rw [blk_last h0]; exact hk⟩
   exact (bstart_spec (sep := sb) (u := u) hex).1
 
+omit [Inhabited S] in
 lemma getLast_sa (h0 : 0 < u.length) :
     u.getLast?.elim false sa = sa (u[u.length - 1]'(by omega)) := by
   rw [List.getLast?_eq_getElem?,
@@ -374,7 +382,7 @@ lemma lpOf_last (hu : u ∈ ChkLang M K stp ini acc) (h0 : 0 < u.length) :
 /-- **A pair of blocks other than the last one is not marked as the last one.** -/
 lemma lpOf_of_lt (hu : u ∈ ChkLang M K stp ini acc) (h0 : 0 < u.length) {i : ℕ}
     (hi : i < nPair u) : lpOf u i = false := by
-  have hb1 : bY u (i + 1) < bY u (i + 2) := bY_blk hu h0 (by omega) (by omega)
+  have hb1 : bY u (i + 1) < bY u (i + 2) := bY_blk h0 (by omega) (by omega)
   have hylen : bY u (i + 2) ≤ u.length := bY_le_length _
   have hjlt2 : bY u (i + 2) - 1 < bY u (i + 2) := by omega
   have hjlen : bY u (i + 2) - 1 < u.length := by omega

@@ -194,6 +194,7 @@ variable (hseq : CG.IsChildSeq M w q₀ st ch m) (hnid : (nid : ℕ) = st.length
 
 include hseq hnid hstk hstb hx
 
+omit [Finite A] [Finite Q] in
 lemma bits_edge (qa : Q) (da : CG.Dir) (qb : Q) (db : CG.Dir) :
     bitsOf M (CG.confEnc q₀ st w) x (iEdge nid qa da qb db) = true ↔
       SpotOk (spotOfDir da) x w.length ∧ SpotOk (spotOfDir db) x w.length ∧
@@ -202,6 +203,7 @@ lemma bits_edge (qa : Q) (da : CG.Dir) (qb : Q) (db : CG.Dir) :
   rw [bitsOf_eq_true_iff]
   exact mem_edgeL_iff M hseq hnid hstk hstb hx
 
+omit [Finite A] [Finite Q] in
 /-- The outgoing edge produced by the atoms is the one of the child configuration graph. -/
 lemma outLetter_nxt (q' : Q) :
     (if he : ∃ p : Q × CG.Dir,
@@ -261,6 +263,7 @@ lemma outLetter_nxt (q' : Q) :
       refine colOf_inj hsp2 hspot ?_
       rw [h2, hcolc]
 
+omit [Finite A] [Finite Q] in
 /-- The incoming edge produced by the atoms is the one of the child configuration graph. -/
 lemma outLetter_prv (q' : Q) :
     (if he : ∃ p : Q × CG.Dir,
@@ -332,6 +335,7 @@ lemma outLetter_prv (q' : Q) :
       refine ⟨h1, ?_⟩
       rw [h3, revDir_dirOf (by omega) (by omega)]
 
+omit [Finite A] [Finite Q] in
 /-- **The letter produced by the atoms in the gap `x` is the letter that the child configuration
 graph attaches to that gap.** -/
 theorem outOf_bitsOf :
@@ -423,6 +427,7 @@ lemma flatten_map_singleton {alpha beta : Type} (l : List alpha) (g : alpha → 
       have ht : (t.map g).flatten = t.map f := ih fun b hb => h b (by simp [hb])
       simp [ha, ht]
 
+omit [Finite A] [Finite Q] in
 /-- **On the string representation of a configuration, `cgOfConf` outputs the string
 representation of the child configuration graph of that configuration.** -/
 theorem cgOfConf_confEnc {M : Pebble A B Q k} {q₀ : Q} {st : List ℕ} {w : List A}

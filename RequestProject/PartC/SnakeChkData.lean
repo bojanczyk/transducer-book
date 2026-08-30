@@ -250,7 +250,7 @@ theorem runOut_of_chainData :
       have hst' : (d.p i r).2.2.2 = some (q, q) := by
         have h' : (d.p i r).2.2.2 = some (q, f) := hst
         rw [h', hqf]
-      obtain ⟨n, hhalt, hout⟩ := chain_step_halt M w hab hyw hst'
+      obtain ⟨n, hhalt, hout⟩ := chain_step_halt M w hab hst'
         (d.ctxL i hiN r (by omega)) (d.ctxR i hiN r (by omega)) hkd hstart
         (d.wcond i hiN r (by omega))
       exact ⟨n, hout, by rw [if_pos hlastj]; exact hhalt⟩
@@ -271,7 +271,7 @@ theorem runOut_of_chainData :
           · rw [hc]
             simp only [← hi, ← hr, stCut, kdOf]
             rcases hkd with h | h <;> rw [kdOf] at h <;> rw [h] <;> simp
-      obtain ⟨n, hnext, hout⟩ := chain_step_adv M w hab hyw hst
+      obtain ⟨n, hnext, hout⟩ := chain_step_adv M w hab hst
         (d.ctxL i hiN r (by omega)) (d.ctxR i hiN r (by omega)) hkd hstart
         (d.wcond i hiN r (by omega))
       refine ⟨n, hout, ?_⟩

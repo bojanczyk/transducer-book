@@ -51,23 +51,26 @@ lemma foldl_seg_min_succ {Γ D : Type} (stp : D → Γ → D) (ini : D) (v : Lis
 variable [Inhabited S] {M : TwoWay A B Q} {stp : S → A → S} {ini : S}
   {acc : PieceParam A Q → S → Prop} {u : List (Gam A Q S K)}
 
+omit [Inhabited S] in
 lemma length_map_lt (u : List (Gam A Q S K)) : (u.map lt).length = u.length := by
   rw [List.length_map]
 
+omit [Inhabited S] in
 lemma getElem_map_lt {j : ℕ} (hj : j < u.length) :
     (u.map lt)[j]'(by rw [length_map_lt]; exact hj) = lt (u[j]'hj) := by
   rw [List.getElem_map]
 
+omit [Inhabited S] in
 /-- The role of the first position of a pair of blocks is `false` unless the
 left block of the pair is empty. -/
-lemma rol_bY_eq_false (hu : u ∈ ChkLang M K stp ini acc) (h0 : 0 < u.length) {i : ℕ}
+lemma rol_bY_eq_false (h0 : 0 < u.length) {i : ℕ}
     (hi : i ≤ nPair u) (hpos : 0 < bY u i) : rol u i (bY u i) = false := by
   have h1 : 1 ≤ i := by
     by_contra hcon
     have : i = 0 := by omega
     rw [this, bY_zero] at hpos
     omega
-  have h2 : bY u i < bY u (i + 1) := bY_blk hu h0 h1 hi
+  have h2 : bY u i < bY u (i + 1) := bY_blk h0 h1 hi
   rw [rol, decide_eq_false_iff_not]
   omega
 
@@ -99,7 +102,7 @@ lemma ds_eq_foldl (hu : u ∈ ChkLang M K stp ini acc) (h0 : 0 < u.length) {i r 
         rw [heq] at hS
         exact hS
       · -- the pair starts at a block boundary
-        have hrf : rol u i (bY u i) = false := rol_bY_eq_false hu h0 hi hpos
+        have hrf : rol u i (bY u i) = false := rol_bY_eq_false h0 hi hpos
         have hj1 : bY u i - 1 + 1 < u.length := by omega
         have h1i : 1 ≤ i := by
           by_contra hcon
@@ -176,7 +179,7 @@ lemma acc_pPar (hu : u ∈ ChkLang M K stp ini acc) (h0 : 0 < u.length) {i r : �
       rw [hiN', bY_last hu h0] at hcase
       omega
     have hrol : rol u i (bY u (i + 2) - 1) = true := by
-      have : bY u (i + 1) < bY u (i + 2) := bY_blk hu h0 (by omega) (by omega)
+      have : bY u (i + 1) < bY u (i + 2) := bY_blk h0 (by omega) (by omega)
       rw [rol, decide_eq_true_eq]; omega
     have hj1 : bY u (i + 2) - 1 + 1 < u.length := by omega
     have hsb : sb (u[bY u (i + 2) - 1 + 1]'hj1) = true :=

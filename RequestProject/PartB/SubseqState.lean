@@ -40,10 +40,10 @@ lemma sufL_isRegular [Finite A] [Finite B] (u : List B) : Language.IsRegular (Su
   have h := D.cont (suffixLang u) (suffixLang_isRegular u)
   convert h using 1
 
-lemma modL_isRegular [Finite A] [Finite B] (r : ℕ) (hr : r < Mod D) :
+lemma modL_isRegular [Finite A] [Finite B] (r : ℕ) :
     Language.IsRegular (ModL D r) := by
   have h := D.cont (lengthModLang (Mod D) r)
-    (lengthModLang_isRegular (Mod D) r (Mod_pos D) hr)
+    (lengthModLang_isRegular (Mod D) r (Mod_pos D))
   convert h using 1
 
 /-! ## The state -/
@@ -64,7 +64,7 @@ lemma state_range_finite [Finite A] [Finite B] : (Set.range (state D)).Finite :=
       (Set.range (SufL D u.val).leftQuotient).Finite :=
     fun u => (sufL_isRegular D u.val).finite_range_leftQuotient
   have h2 : ∀ r : Fin (Mod D), (Set.range (ModL D r.val).leftQuotient).Finite :=
-    fun r => (modL_isRegular D r.val r.isLt).finite_range_leftQuotient
+    fun r => (modL_isRegular D r.val).finite_range_leftQuotient
   refine Set.Finite.subset
     (Set.Finite.prod h0 (Set.Finite.prod
       (Set.Finite.pi (t := fun u : {u : List B // u.length ≤ M0 D} =>

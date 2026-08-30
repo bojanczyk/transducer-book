@@ -177,18 +177,20 @@ all eleven are aliased in `RequestProject/Labels.lean`.
 | Exercise `exer:examples-of-rational-fun` (three functions as bimachines and as rational functions) | `isBimachine_isRationalFun_evenLength`, `isBimachine_isRationalFun_swapFirstLast`, `isBimachine_isRationalFun_upToLastHash` | proved |
 | Exercise `exer:non-rational` (the first half of the input, and duplication, are not rational) | `not_isRationalFun_firstHalf`, `not_isRationalFun_duplicate` | proved |
 | Exercise `exer:decide-unambiguous` (unambiguity of an nfa is decidable) | `ambiguous_iff_reach`, `decidableUnambiguousNFA` (with `RunFrom`, `AccRun`, `Ambiguous`, `UnambiguousNFA`, `prodStep`) | proved |
-| Exercise `exer:decide-rational-colision` (equal outputs, outputs of equal length) | `rationalFun_collision_undecidable` (item (a) only) | proved from an explicit hypothesis |
+| Exercise `exer:decide-rational-colision` (equal outputs, outputs of equal length) | `rationalFun_collision_undecidable` (item (a)), `rationalFun_equal_length_decidable` (item (b), with `meetsDiag`, `meetsZ`) | proved from explicit hypotheses |
 | Exercise `exer:rational-one-letter-input` (rational functions on a one-letter input alphabet) | `rationalFun_unary_graph` | proved |
 | Exercise `exer:function-that-is-not-rational` (not rational, yet rational after every rational function into `1*`) | `exists_not_isRationalFun_unary_compositions_rational` | proved from the hypothesis that reversal is not rational |
 | Exercise `exer:some-ideals` (two families of ideals of rational functions) | `IsIdeal`, `isIdeal_rangeAtMost`, `isIdeal_outputsPoly` | proved |
 | Exercise `exer:finite-range-ideals` (the ideals whose functions have finite range) | `ideal_mem_of_ncard_le`, `finite_range_ideal_classification` | proved |
-| Exercise `exer:full-ideal` (the ideal of all rational functions) | — | not formalised |
-| Exercise `exer:polynomial-ideals` (the ideals of polynomial growth) | — | not formalised |
-| Exercise `exer:all-ideals` (the classification of the ideals) | — | not formalised |
-| Exercise `exer:decide-same-ideal` (equality of the generated ideals is decidable) | — | not formalised |
+| Exercise `exer:full-ideal` (the ideal of all rational functions) | `full_ideal_iff` (with `IsIdeal`, `SuperPolyOutputs`, `isRationalFun_id`) | proved from the hypothesis `IdentityFromSuperPolyOutputs` (the loop analysis of the solution) |
+| Exercise `exer:polynomial-ideals` (the ideals of polynomial growth) | `polynomial_ideals` (with `OmegaOutputs`, `outCount`) | proved from the hypotheses `SortedFromOmegaOutputs` and `FactorThroughSortedOfOutputsPoly` (the two steps of the solution) |
+| Exercise `exer:all-ideals` (the classification of the ideals) | `all_ideals` (with `RangeAtMost`, `OutputsPoly`, `OutputsPolySome`, `AllRationalFuns`) | proved from `IdentityFromSuperPolyOutputs`, `SortedFromOmegaOutputs`, `FactorThroughSortedOfOutputsPoly` and `OutputsGrowthDichotomy` |
+| Exercise `exer:decide-same-ideal` (equality of the generated ideals is decidable) | `sameIdeal_iff` (with `SameIdeal`, `SameOutputInvariant`, `sameIdeal_decidable`) | proved from the same four hypotheses as `exer:all-ideals`; the invariant is characterised, and `sameIdeal_decidable` turns any decision of the invariant into a decision of the exercise |
 | Exercise `exer:surjective-rational-function` (a surjective rational function has a rational one-sided inverse) | `exists_rationalFun_leftInverse` | proved |
-| Exercise `exer:rational-injectivity-decidable` (injectivity is decidable) | `rationalFun_injective_iff_exists_inverse`, `exists_rationalFun_inverse_of_injective` (the criterion of the solution only) | the decision procedure is not formalised (see below) |
-| Exercise `exer:rational-composition-finiteness-undecidable` (finiteness of the iterates is undecidable) | — | not formalised |
+| Exercise `exer:rational-injectivity-decidable` (injectivity is decidable) | `rationalFun_injectivity_decidable` (with `rationalFun_injective_iff_exists_inverse`, `exists_rationalFun_inverse_of_injective`, `codeInjective_iff_section_comp_id`) | proved from the hypotheses `EffectiveWeightedEvalEq` and `EffectiveRationalSection` (a computable form of the Uniformisation Lemma) |
+| Exercise `exer:rational-outpus-of-exactly-linear-size` (a rational function of unbounded output size has exactly linear output size) | `rational_exactly_linear_output` (with `maxOutLen`, `HasLinearRate`) | proved from the hypothesis `RationalHasLinearRate` (the maximum cycle mean of the transducer) |
+| Exercise `exer:rational-outpus-of-exactly-linear-size-rational-number` (and the limit is a nonzero rational number) | `rational_exactly_linear_output` | proved from the same hypothesis; the limit the theorem produces is a positive rational |
+| Exercise `exer:rational-composition-finiteness-undecidable` (finiteness of the iterates is undecidable) | `iterates_finiteness_undecidable` (with `iterates_finite_iff`, `CodeSelfMap`, `CodeIteratesFinite`) | proved from the hypothesis `IteratesReduction` (the reduction from the halting problem) |
 | Exercise `exer:rational-compression` (rational functions are compatible with compression) | `compatCompression_of_isRationalFun` (with `CompatCompression`, `bimGaps`, `exists_slp_of_bimachine`) | proved in the size sense of `CompatCompression` (polynomial time is not modelled; see the divergence below) |
 
 ### Regular functions (`regular-primes.tex`)
@@ -205,8 +207,8 @@ all eleven are aliased in `RequestProject/Labels.lean`.
 | Exercise `exer:minimal-sequential` (minimal sequential transducers are unique up to isomorphism) | `minimal_sequential_unique` (with `residOf`, `canonSeq`, `MinimalFor`, `SeqIso`) | proved |
 | Exercise `exer:minimal-subsequential` (minimal subsequential transducers are not unique) | `minimal_subsequential_not_unique` | proved |
 | Exercise `exer:non-minimal-bimachine` (minimal bimachines are not unique) | `minimal_bimachine_not_unique` | proved |
-| Exercise `exer:minimal-bimachine-lexicographic` (the lexicographically least minimal bimachine) | — | not formalised |
-| Exercise `exer:non-minimal-automaton` (a rational function with two non-isomorphic minimal unambiguous transducers) | — | not formalised |
+| Exercise `exer:minimal-bimachine-lexicographic` (the lexicographically least minimal bimachine) | `minimal_bimachine_lexicographic` (with `card_classSet_le`, `suffix_automaton_unique`, `SuffixIso`) | proved from the hypothesis `CanonicalSuffixBimachineExists` (that the lower bound on the suffix automaton is attained) |
+| Exercise `exer:non-minimal-automaton` (a rational function with two non-isomorphic minimal unambiguous transducers) | `non_minimal_automaton` (with `MinimalUnambiguousSize`, `NFAOIso`) | proved from the hypothesis `EvenParityNeedsThreeStates` (the case analysis the solution sketches) |
 
 ### Regular functions, introduction (`regular-intro.tex`)
 
@@ -223,7 +225,7 @@ all eleven are aliased in `RequestProject/Labels.lean`.
 | Exercise `exer:2dfa-complexity` (the shortest accepted string can be exponential in the number of states) | `exists_twoDFA_shortest_exponential` (with `rulerAut`, `rulerAut_accepts`, `card_rulerSt`, `rulWord`; the author's own construction, and the bound it really gives, are `divAut`, `divAut_accepts`, `card_divSt`, `divAut_shortest`, `divAut_shortest_le`) | proved, but *not* by the author's construction, which does not prove the claim; see the divergence below |
 | Exercise `exer:2dfa-loop-elimination` (the inputs on which a two-way transducer terminates form a regular language) | `halts_isRegular` | proved |
 | Exercise `exer:2dfa-loop-elimination-sipser` (a polynomial-size two-way automaton for it) | `exists_terminating_twoDFA_halts` (with `dfsAut`, `dfsAut_accepts`, `dfsAut_terminates`, `exists_terminating_twoDFA`) | proved |
-| Exercise `exer:regular-outpus-of-exactly-linear-size` (a regular function of unbounded output size has exactly linear output size) | — | not formalised |
+| Exercise `exer:regular-outpus-of-exactly-linear-size` (a regular function of unbounded output size has exactly linear output size) | `regular_exactly_linear_output` | proved from the hypothesis `RationalHasLinearRate` (the maximum cycle mean of the transducer) |
 | Exercise `exer:2nft` (the two nondeterministic two-way models are incomparable) | `exists_isTwoNFT₁_not_isTwoNFT₂`, `exists_isTwoNFT₂_not_isTwoNFT₁` (with `TwoWayN`, `IsTwoNFT₁`, `IsTwoNFT₂`, `dupRel`) | proved |
 | Exercise `exer:2nft-uniformise` (both nondeterministic models can be uniformised) | `exists_isRegularFun_uniformising_isTwoNFT₁`, `exists_isRegularFun_uniformising_isTwoNFT₂` | proved |
 
@@ -244,24 +246,24 @@ all eleven are aliased in `RequestProject/Labels.lean`.
 | Book | Lean | Status |
 | --- | --- | --- |
 | Exercise `exer:mealy-as-restricted-mso-relabelling` (Mealy machines are the restricted mso relabellings) | `RestrictedRelabelling`, `isMealy_iff_restrictedRelabelling` | proved |
-| Exercise `exer:fo-non-elementary` (first-order sentences of non-elementary succinctness) | — | not formalised |
+| Exercise `exer:fo-non-elementary` (first-order sentences of non-elementary succinctness) | `fo_non_elementary` (with `expTower`, `lenOrder`, `expTower_le_lenOrder`) | proved from the hypothesis `FirstStringOfOrderDefinable` (the Claim the book leaves to the reader) |
 | Exercise `exer:so-logic` (second-order logic defines a non-regular language) | `exists_SO_lang_not_isRegular` (with `SO`, `SO.Sat`, `SO.lang`) | proved |
-| Exercise `exer:fo-suc` (first-order logic with successor only is strictly weaker) | — | not formalised |
+| Exercise `exer:fo-suc` (first-order logic with successor only is strictly weaker) | `fo_succ_strictly_weaker` (with `sepLang`, `sepLang_foDefinable`, `FOSuccDefinable`) | proved from the hypothesis `EFSuccSeparation` (the Ehrenfeucht–Fraïssé argument) |
 
 ### Polyregular functions, introduction (`polyregular-intro.tex`)
 
 | Book | Lean | Status |
 | --- | --- | --- |
 | Exercise `exer:polyregular-marked-squaring-compression` (marked squaring is not compatible with compression) | `markedSquare_not_compatible_with_compression` (with `Rule`, `slpVal`, `Generates`) | proved |
-| Exercise `exer:polyregular-unmarked-squaring` (unmarked squaring gives a strictly smaller class) | — | not formalised |
+| Exercise `exer:polyregular-unmarked-squaring` (unmarked squaring gives a strictly smaller class) | `unmarkedPolyregular_strict_subset_polyregular` (with `listPow`, `squaring`, `UnmarkedFam`, `IsUnmarkedPolyregular`, `compatCompression_squaring`, `isPolyregular_squaring`, `not_isUnmarkedPolyregular_markedSquare`) | proved |
 
 ### For-transducers (`polyregular-for.tex`)
 
 | Book | Lean | Status |
 | --- | --- | --- |
 | Exercise `exer:for-transducers-simulate-fo` (a first-order sentence is computed by a for-transducer of linear size) | `exists_forProg_of_isFO` (with `trans`, `fsize`, `progSize`, `foProg`) | proved |
-| Exercise `exer:for-transducer-continuity-nonelementary` (the preimage nfa can be non-elementary) | — | not formalised |
-| Exercise `exer:forward-for-transducer` (forward for-transducers = marked squaring and rational functions) | — | not formalised |
+| Exercise `exer:for-transducer-continuity-nonelementary` (the preimage nfa can be non-elementary) | `for_transducer_continuity_nonelementary` (with `PolyBounded`, `progSize`) | proved from the hypothesis `FirstStringOfOrderDefinable`, in the size sense (running time is not modelled) |
+| Exercise `exer:forward-for-transducer` (forward for-transducers = marked squaring and rational functions) | `forwardFor_iff_ratMarkedSquare` (with `ForwardProg`, `IsForwardFor`, `RatMarkedFam`, `IsRatMarkedSquare`, `isForwardFor_of_isRationalFun`, `isForwardFor_markedSquare`) | proved from explicit hypotheses |
 
 Every exercise of these chapters carries a `\label` in the sources, so every
 formalised one is aliased in `RequestProject/Labels.lean`.
@@ -461,8 +463,12 @@ named after the labels.
   and the undecidability of the Post correspondence problem is the explicit
   hypothesis `hPCP`.  The reduction is the author's, including the point that
   the two functions have to be made to differ on the empty input.  Item (b),
-  the decidable one, is not formalised: it goes through the semilinearity of
-  Parikh images of regular languages, which the project does not have.
+  the decidable one, was not formalised when this entry was written: it goes
+  through the semilinearity of Parikh images of regular languages, which the
+  project does not have.  It has since been formalised, from an effective form
+  of Parikh's theorem taken as an explicit hypothesis, as
+  `Transducers.Exercises.rationalFun_equal_length_decidable`
+  (`Exercises/LengthCollision.lean`); see the final section of this file.
 * **`exer:rational-one-letter-input`.**  The one-letter input alphabet is
   `Unit`, to which any one-letter alphabet is isomorphic; the graph is stated as
   a set of pairs and the finite union is indexed by `Fin n`; the repetition
@@ -814,3 +820,171 @@ Item (b) of `exer:decide-rational-colision` is left out for the same reason as
 `exer:rational-composition-finiteness-undecidable`; item (a) is proved, from the
 undecidability of the Post correspondence problem, so the exercise itself counts
 among the 65.
+
+## Status (addendum to the closing audit)
+
+The recount above was made before the conditional formalisations of
+`RequestProject/Exercises/{LinearOutput,Ideals,RatInjectiveDec,IterateFiniteness,MinimalBimachine,FOSucc,FONonElementary,ForContinuity,UnmarkedSquaring}.lean`
+were indexed here.  This section corrects it; the index tables at the top of the
+file are up to date and are what the corrected counts are based on.  The
+paragraphs *Exercises that are not formalised (continued)* and *The sixteen
+exercises of the book that have a written solution and no formalisation* are
+kept as they were written, as a record of what was still missing at that point,
+but fourteen of the sixteen have since been formalised from an explicit
+hypothesis and one more in part, so those two lists are superseded by the
+present one.
+
+**The book has 81 exercises**, all with a written solution (the count of 83
+`\exer` environments and the two commented-out ones is unchanged; see above).
+Of the 81:
+
+* **79 are formalised**, each with an alias in `RequestProject/Labels.lean`
+  followed by `assert_no_sorry`.  `#print axioms`, run on all 210 aliases of
+  that file, reports only `propext`, `Classical.choice`, `Quot.sound` for every
+  one of them, and there is no `sorry` anywhere in `RequestProject/Exercises/`.
+* Of those 79, **62 are proved outright** and **17 are proved from an explicit
+  hypothesis**, which is in every case a `Prop`-valued definition stating a step
+  that the book's own solution takes for granted or only sketches, taken as an
+  ordinary argument of the theorem — no `axiom` is declared anywhere in the
+  project.  The seventeen are:
+
+  | Exercise | hypothesis it is proved from |
+  | --- | --- |
+  | `exer:function-that-is-not-rational` | the non-rationality of string reversal (an *example* of the main text, not a numbered result) |
+  | `exer:rational-relations-intersection-undecidable` | undecidability of the Post correspondence problem |
+  | `exer:decide-rational-colision` (item (a)) | the same |
+  | `exer:rational-outpus-of-exactly-linear-size` | `RationalHasLinearRate` |
+  | `exer:rational-outpus-of-exactly-linear-size-rational-number` | `RationalHasLinearRate` |
+  | `exer:regular-outpus-of-exactly-linear-size` | `RationalHasLinearRate` |
+  | `exer:full-ideal` | `IdentityFromSuperPolyOutputs` |
+  | `exer:polynomial-ideals` | `SortedFromOmegaOutputs`, `FactorThroughSortedOfOutputsPoly` |
+  | `exer:all-ideals` | those three, and `OutputsGrowthDichotomy` |
+  | `exer:decide-same-ideal` | the same four |
+  | `exer:rational-injectivity-decidable` | `EffectiveWeightedEvalEq`, `EffectiveRationalSection` |
+  | `exer:rational-composition-finiteness-undecidable` | `IteratesReduction` |
+  | `exer:minimal-bimachine-lexicographic` | `CanonicalSuffixBimachineExists` |
+  | `exer:non-minimal-automaton` | `EvenParityNeedsThreeStates` |
+  | `exer:fo-non-elementary` | `FirstStringOfOrderDefinable` |
+  | `exer:fo-suc` | `EFSuccSeparation` |
+  | `exer:for-transducer-continuity-nonelementary` | `FirstStringOfOrderDefinable` |
+
+* **One is formalised in part**: `exer:polyregular-unmarked-squaring`, of which
+  the step the solution turns on — unmarked squaring is compatible with
+  compression in the size sense of `Transducers.Exercises.CompatCompression` —
+  is proved as `Transducers.Exercises.compatCompression_squaring`
+  (`Exercises/UnmarkedSquaring.lean`).  The exercise as a whole asks for a
+  *polynomial time* statement, which this project does not model, so it has no
+  alias.
+* **One is not formalised at all**: `exer:forward-for-transducer`, the last
+  exercise of the book, for the reason set out under *Exercises that are not
+  formalised (continued)*.
+
+Item (b) of `exer:decide-rational-colision` remains unformalised inside an
+otherwise formalised exercise; the exercise counts among the 79 because item (a)
+is proved.
+
+The three divergences from the literal statement of an exercise are unchanged:
+`exer:rational-compression` and `exer:regular-compression` are proved in their
+size half only, and `exer:2dfa-complexity` is proved by a construction other
+than the author's, whose own construction does not establish the claim.
+
+## Status (the last two gaps closed)
+
+The two exercises that the closing audit reported as unfinished have since been
+formalised, and so has item (b) of `exer:decide-rational-colision`.  The index
+tables at the top of the file are up to date; this section says what was added
+and, for the conditional ones, exactly what is assumed.
+
+* **`exer:polyregular-unmarked-squaring`** is now proved in full, as
+  `Transducers.Exercises.unmarkedPolyregular_strict_subset_polyregular`
+  (`Exercises/UnmarkedSquaring.lean`): every function built from regular
+  functions and *unmarked* squaring is polyregular, marked squaring is
+  polyregular, and marked squaring is *not* built from regular functions and
+  unmarked squaring.  The statement of the exercise — that the class is strictly
+  smaller — is rendered literally; compatibility with compression enters only as
+  the tool of the solution, and it is taken in the size sense of
+  `Transducers.Exercises.CompatCompression`, the sense in which the two
+  compression exercises are formalised, since running time is not modelled here.
+  The separating argument is the author's: unmarked squaring is
+  compatible with compression (`compatCompression_squaring`), the property passes
+  to compositions, and marked squaring is not compatible with it, because a
+  compression of `aⁿ` of size `O(log n)` would have to yield a compression of a
+  string that contains all `n` distinct blocks `aⁱ b aⁿ⁻ⁱ`.
+* **`exer:forward-for-transducer`**, the last exercise of the book, is
+  formalised as `Transducers.Exercises.forwardFor_iff_ratMarkedSquare`
+  (`Exercises/ForwardForTop.lean`), on top of `Exercises/ForwardFor.lean`.  A
+  forward for-transducer is a for-program all of whose loops carry the direction
+  `true` (`Transducers.Exercises.ForwardProg`, `IsForwardFor`), and the class on
+  the right is the composition closure of marked squaring and the *rational*
+  functions (`RatMarkedFam`, `IsRatMarkedSquare`) — the definition of the
+  polyregular functions with "regular" replaced by "rational".
+
+  Proved outright: marked squaring is computed by a forward for-transducer
+  (`isForwardFor_markedSquare`, the two loops of the program of Example
+  `ex:marked-squaring-for-transducer` are first-to-last); every rational
+  function is (`isForwardFor_of_isRationalFun`), by simulating a bimachine with
+  the suffix automaton run *forwards*, its state being the transition map
+  `S → S` of the suffix automaton on the part of the suffix already read, which
+  is what the author means by saying that the suffix automaton may be run in the
+  forward direction; the enumeration of the tuples of positions visited by a
+  *forward* nest of loops is a composition of marked squaring and rational
+  functions (`isRatMarkedSquare_enum`), and the base of that induction, the
+  enumeration of the empty nest, is rational outright (`isRationalFun_enum_nil`).
+
+  Also proved outright: the *scan* of the enumeration computes a rational
+  function (`isRationalFun_scanFun`).  The scanning machine of
+  `PartD/PolyScan.lean` has a single register and every one of its updates, as
+  well as its final output, only appends a block to that register; an
+  append-only one-register streaming string transducer is a sequential
+  rewriting with a final output, hence a bimachine, hence rational.  That
+  general statement is `Transducers.Exercises.isRationalFun_of_appendOnlySST`
+  in `Exercises/SeqSST.lean`.
+
+  Assumed, as three `Prop`-valued hypotheses taken as ordinary theorem arguments:
+
+  | hypothesis | what it says | why it is not proved here |
+  | --- | --- | --- |
+  | `ForwardForClosedUnderComp` | forward for-transducers are closed under composition | the composition construction of `PartD/ForComp*.lean` keeps the direction of every loop it is given, but it routes the inner program through `for_nest_form`, which prepends one last-to-first loop |
+  | `ForwardPrenexNormalForm` | a forward program is equivalent to a forward program in prenex form | the same: `trFor` preserves directions, but the prenex construction of `PartD/ForPrenexTop.lean` prepends a last-to-first loop, whose only role is to bind a variable to the *last* position of the input |
+  | `ForwardStepRational` | `stepFun true` is a rational function | the project proves it regular, as a streaming string transducer (`isRegularFun_stepFun`); for the first-to-last direction that transducer is append-only, which is what makes it rational, and proving so means redoing the correctness proof of `PartD/PolyStep.lean` against a one-way machine |
+
+  To make the exercise unconditional one would replay `PartD/ForMerge.lean`,
+  `ForPrenex.lean` and `ForPrenexTop.lean` with the last-to-first loop replaced
+  by a forward loop over the *second* position (the merge only needs two
+  distinct positions), and redo `PolyStep.lean` and `PolyScan.lean` against
+  one-way machines.
+* **Item (b) of `exer:decide-rational-colision`** is formalised as
+  `Transducers.Exercises.rationalFun_equal_length_decidable`
+  (`Exercises/LengthCollision.lean`).  The author's solution is: the pairs
+  `(|f(w)|, |g(w)|)` form the Parikh image of a regular language, hence a
+  semilinear set, which can be computed; it remains to check whether that set
+  contains a pair with two equal coordinates.
+
+  The check is proved here in full.  A semilinear set of pairs is given by
+  finitely many pairs `(base, periods)` (`LinPair`, `semiPairSet`); one of its
+  points lies on the diagonal exactly when the differences of the periods
+  generate the difference of the coordinates of the base as a nonnegative
+  integer combination, and that membership problem is decided outright in
+  `Exercises/IntComb.lean`: if the list of generators has both a positive and a
+  negative element the semigroup it generates is the set of multiples of the gcd
+  of the list — because each `-d` is then itself a nonnegative combination — and
+  otherwise a bounded search suffices.  `meetsDiag_eq_true_iff` is the
+  correctness of the whole test.
+
+  Assumed: `EffectiveLengthPairsSemilinear`, an effective form of Parikh's
+  theorem (a computable map from two codes to a semilinear description of the
+  set of pairs of output lengths), which the project has no semilinear sets or
+  Parikh images to prove; and `ComputableDiagonalTest`, which says that the
+  concrete procedure `meetsDiag` defined here is `Computable` in Mathlib's
+  sense.  The second is a library gap, not a mathematical one, and it is the
+  same gap that `PartB/Effective.lean` records for the decision procedures of
+  Part B: Mathlib's `Primrec`/`Computable` API has no arithmetic on `ℤ`.
+
+**Counts.**  The book has 81 exercises, every one with a written solution, and
+**all 81 are now formalised**: **63 proved outright** and **18 proved from an
+explicit hypothesis**.  The eighteen are the seventeen tabulated in the addendum
+above together with `exer:forward-for-transducer`; `exer:decide-rational-colision`
+was already among them for item (a) and now carries hypotheses for item (b) as
+well.  Every one of the 81 has an alias in `RequestProject/Labels.lean` with
+`assert_no_sorry`, so none depends on `sorryAx`, and there is no exercise of the
+book with a written solution and no formalisation.

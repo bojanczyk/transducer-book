@@ -8,9 +8,8 @@ short; the exhaustive tables are in `THEOREMS.md` (numbered results) and
 `EXERCISES.md` (exercises), and the file-by-file map is in `README.md`.
 
 Everything below was checked on a `lake build` of the whole project from
-scratch, which succeeds with no errors (8386 jobs).  Its only diagnostics are 47
-Lean linter warnings about unused variables inside auxiliary proofs; they are
-inventoried in `THEOREMS.md`, and none of them touches a statement.
+scratch, which succeeds with no errors and no warnings at all (8397 jobs): no
+`sorry`, and no Lean linter diagnostic.
 
 ## 1. How much is done
 
@@ -31,10 +30,12 @@ In Part C every numbered result is proved as well; the one qualification is
 Theorem `thm:decidable-equivalence-regular`, which is conditional in the sense
 of §4.
 
-Of the book's **81 exercises**, **65 are formalised and proved**, in
-`RequestProject/Exercises/`; the remaining 16 are listed with a reason in
-`EXERCISES.md`, and every one of them has a written solution in the book.  (The
-sources contain 83 `\exer` environments, but two of them, in
+Of the book's **81 exercises**, **all 81 are formalised**, in
+`RequestProject/Exercises/`: 63 proved outright, and 18 proved from an explicit
+hypothesis of the kind described in §4 — a step that the book's own solution
+takes for granted or only sketches, stated as a `Prop` and taken as a theorem
+argument.  The eighteen hypotheses are listed with a reason in `EXERCISES.md`.
+(The sources contain 83 `\exer` environments, but two of them, in
 `rational-functions.tex`, are commented out and carry no number, so they are not
 exercises of the book.)
 
@@ -181,26 +182,48 @@ formalisation is meant to establish.
   author's request.  Its easy half survives, proved, as
   `Transducers.isFOTransduction_of_compClosure`.
 
-Of the exercises, 16 are not formalised; `EXERCISES.md` groups them by reason.
-The recurring ones are statements about running time (which this project does
-not model), decidability statements whose reduction would have to be carried out
-for *codes* of automata, and statements that rest on theory the project does not
-have (the growth rates of regular languages, the maximum cycle mean of a
-weighted graph, Ehrenfeucht–Fraïssé games).  In full, they are
-`exer:rational-outpus-of-exactly-linear-size`,
-`exer:rational-outpus-of-exactly-linear-size-rational-number`,
-`exer:regular-outpus-of-exactly-linear-size`, `exer:full-ideal`,
-`exer:polynomial-ideals`, `exer:all-ideals`, `exer:decide-same-ideal`,
-`exer:rational-injectivity-decidable`,
-`exer:rational-composition-finiteness-undecidable`,
-`exer:minimal-bimachine-lexicographic`, `exer:non-minimal-automaton`,
-`exer:fo-non-elementary`, `exer:fo-suc`, `exer:polyregular-unmarked-squaring`,
-`exer:for-transducer-continuity-nonelementary` and
-`exer:forward-for-transducer`, together with item (b) of the otherwise
-formalised `exer:decide-rational-colision`.
+Every exercise of the book is formalised.  The two that were left open the
+longest are now in: **`exer:polyregular-unmarked-squaring`** is proved in full,
+strictness of the inclusion included, in the size sense of compatibility with
+compression that the project uses throughout (the exercise's own phrasing is
+about polynomial *running time*, which this project does not model, and the size
+reading is the stronger of the two); and **`exer:forward-for-transducer`**, the
+last exercise of the book, is proved as an equivalence between the functions
+computed by forward for-transducers and the composition closure of marked
+squaring and the *rational* functions, from three explicit hypotheses.  Those
+three are the steps of the author's solution that replay both inclusions of
+Theorem `thm:for-transducers-are-polyregular` with the direction of every loop
+tracked: closure of forward for-transducers under composition, a forward prenex
+normal form, and rationality of the one-step transducer of the enumeration.
+The fourth step of that solution, rationality of the *scan*, is proved here:
+the scanning machine has a single register and only ever appends to it, and an
+append-only one-register streaming string transducer computes a rational
+function (`Transducers.Exercises.isRationalFun_of_appendOnlySST`).  Everything
+else of that exercise is proved outright, including
+that marked squaring is computed by a forward for-transducer and that every
+rational function is — the latter by running the suffix automaton of a bimachine
+*forwards*, as the author suggests, its state being the transition map of the
+automaton on the part of the suffix already read.
 
-Three of the 65 that *are* formalised diverge from the literal statement of the
-exercise, and each divergence is recorded on the Lean statement and in
+Item (b) of `exer:decide-rational-colision` — is there an input on which the two
+outputs have the same length? — is formalised as well, from two hypotheses: an
+effective form of Parikh's theorem (semilinear sets are not developed here) and
+a `Computable` label for the concrete decision procedure, which Mathlib's
+computability API cannot yet express because it has no arithmetic on the
+integers, the same gap as in §4.  What the book's solution ends with, and what
+this project proves outright, is the test itself: whether a semilinear set of
+pairs contains a pair with two equal coordinates, which reduces to membership in
+the sub-semigroup of `ℤ` generated by a finite list of integers — the multiples
+of the gcd when the list has both signs, and a bounded search otherwise.
+
+Eighteen exercises in all are proved from an explicit hypothesis rather than
+outright; the recurring reasons are the same as for the numbered results —
+running time and computability, and theory the project does not have (the growth
+rates of regular languages, the maximum cycle mean of a weighted graph,
+Ehrenfeucht–Fraïssé games, Parikh images).
+
+Three of the exercises that are formalised diverge from the literal statement
+of the exercise, and each divergence is recorded on the Lean statement and in
 `EXERCISES.md`.  `exer:rational-compression` and `exer:regular-compression` ask
 for a polynomial time algorithm turning a grammar compression of the input into
 a grammar compression of the output; what is proved is the size half, that the
@@ -234,5 +257,5 @@ The bookkeeping is checked by machine rather than by hand.
   actually live.
 * `tools/relabel.py` finds any place where a result is still referred to by
   number instead of by label, and `tools/print_axioms.sh` runs `#print axioms`
-  on all 196 aliases and reports any that depends on `sorryAx` or on a
+  on all 210 aliases and reports any that depends on `sorryAx` or on a
   non-standard axiom.  Neither finds anything.

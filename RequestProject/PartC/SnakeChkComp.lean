@@ -32,7 +32,7 @@ theorem chk_complete [Finite A] [Finite B] [Finite Q] [Inhabited S]
     {w : List A} (hgood : GoodInput M K w) :
     ∃ u ∈ ChkLang M K stp ini acc, u.map lt = w := by
   obtain ⟨d⟩ := nonempty_chainData_of_good M hK hgood
-  exact exists_mem_chkLang_of_chainData M hK stp ini acc hacc d
+  exact exists_mem_chkLang_of_chainData M stp ini acc hacc d
 
 end Chk
 

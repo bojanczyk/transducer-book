@@ -34,7 +34,7 @@ variable {A B Q S : Type}
 /-- **Every chain of pieces is described by an annotation that the checking
 automaton accepts.** -/
 theorem exists_mem_chkLang_of_chainData [Finite A] [Finite B] [Finite Q] [Inhabited S]
-    (M : TwoWay A B Q) {K : ℕ} (hK : 2 ≤ K) (stp : S → A → S) (ini : S)
+    (M : TwoWay A B Q) {K : ℕ} (stp : S → A → S) (ini : S)
     (acc : PieceParam A Q → S → Prop)
     (hacc : ∀ (p : PieceParam A Q) (v : List A),
       v ∈ WinCond M (K - 1) p ↔ acc p (v.foldl stp ini))

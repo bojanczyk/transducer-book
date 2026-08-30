@@ -212,6 +212,7 @@ lemma stack_length_le (sp : Spot) (hstk : st.length < k) :
 
 variable [Finite A] [Finite Q]
 
+omit [Finite A] [Finite Q] in
 /-- **The reachability atom, on a genuine marked string representation of a configuration.** -/
 lemma mem_reachL_iff (M : Pebble A B Q k) {ell : ℕ} {nid : Fin k} {q₁ q₂ : Q} {sp₁ sp₂ : Spot}
     (hnid : (nid : ℕ) = st.length) (hstk : st.length < k) (hstb : ∀ p ∈ st, p ≤ w.length)
@@ -225,6 +226,7 @@ lemma mem_reachL_iff (M : Pebble A B Q k) {ell : ℕ} {nid : Fin k} {q₁ q₂ :
   exact PebEnc.mem_reachLang_iff M ell q₁ q₂ _ _ w (stack_bounds hstb hx hr h₁)
     (stack_bounds hstb hx hr h₂) (stack_length_le _ hstk) (stack_length_le _ hstk) hl
 
+omit [Finite A] [Finite Q] in
 /-- **The single-step atom, on a genuine marked string representation of a configuration.** -/
 lemma mem_stepL_iff (M : Pebble A B Q k) {nid : Fin k} {q₁ q₂ : Q} {sp₁ sp₂ : Spot}
     (hnid : (nid : ℕ) = st.length) (hstk : st.length < k) (hstb : ∀ p ∈ st, p ≤ w.length)
@@ -246,6 +248,7 @@ lemma spotStack_eq_singleton {sp : Spot} {c : ℕ} (hc : spotPos sp x r = some c
   rw [spotStack, hc]
   rfl
 
+omit [Finite A] [Finite Q] in
 /-- **The reachability atom describes chains of children.** -/
 lemma mem_reachL_childStar_iff (M : Pebble A B Q k) {nid : Fin k} {qa qb : Q} {sp₁ sp₂ : Spot}
     {c₁ c₂ : ℕ} (hnid : (nid : ℕ) = st.length) (hstk : st.length < k)
@@ -260,6 +263,7 @@ lemma mem_reachL_childStar_iff (M : Pebble A B Q k) {nid : Fin k} {qa qb : Q} {s
   rw [CG.childStar_iff_restrReaches, hs₁, hs₂, hnid]
   exact Iff.rfl
 
+omit [Finite A] [Finite Q] in
 /-- **The single-step atom to the first gap describes the first child.** -/
 lemma mem_firstL_iff (M : Pebble A B Q k) {nid : Fin k} {q q' : Q}
     (hnid : (nid : ℕ) = st.length) (hstk : st.length < k) (hstb : ∀ p ∈ st, p ≤ w.length)
@@ -271,6 +275,7 @@ lemma mem_firstL_iff (M : Pebble A B Q k) {nid : Fin k} {q q' : Q}
   rw [CG.firstChild_iff_step]
   simp only [spotStack_nop, spotStack_zero, List.append_nil, CG.cfgOf_eq_conf]
 
+omit [Finite A] [Finite Q] in
 /-- **The child atom describes the children reached from the first one.** -/
 lemma mem_childL_iff (M : Pebble A B Q k) {nid : Fin k} {qa : Q} {sp : Spot} {c : ℕ}
     {ch : ℕ → CG.Vtx Q} {m : ℕ} (hseq : CG.IsChildSeq M w q₀ st ch m)
@@ -397,6 +402,7 @@ lemma neq_vtx_iff {q₃ qa : Q} {c : ℕ} :
   · intro h hq hc
     exact h hq hc.symm
 
+omit [Finite A] [Finite Q] in
 /-- **The intermediate-child atom, on a genuine marked string representation.** -/
 lemma mem_midL_iff (M : Pebble A B Q k) {nid : Fin k} {qa qb : Q} {da db : CG.Dir}
     (hnid : (nid : ℕ) = st.length) (hstk : st.length < k) (hstb : ∀ p ∈ st, p ≤ w.length)
@@ -419,6 +425,7 @@ lemma mem_midL_iff (M : Pebble A B Q k) {nid : Fin k} {qa qb : Q} {da db : CG.Di
   · rw [mem_neqSpotL_iff hx hr h₂, neq_vtx_iff]
     simp only [spotPos_spotOfDir, ne_eq, Option.some.injEq]
 
+omit [Finite A] [Finite Q] in
 /-- **No child strictly in between**, on a genuine marked string representation. -/
 lemma mem_existsExtra_midL_iff (M : Pebble A B Q k) {nid : Fin k} {qa qb : Q} {da db : CG.Dir}
     {ch : ℕ → CG.Vtx Q} {m s : ℕ} (hseq : CG.IsChildSeq M w q₀ st ch m) (hs : s ≤ m)
@@ -489,6 +496,7 @@ lemma colOf_inj {n : ℕ} {da db : CG.Dir} (h₁ : SpotOk (spotOfDir da) x n)
                   exact absurd (show x - 1 = x + 1 from h) (by omega)
               | false => rfl
 
+omit [Finite A] [Finite Q] in
 /-- **The edge atom, on a genuine marked string representation of a configuration**: the vertex in
 the column that `da` leads to is a child, and the vertex in the column that `db` leads to is its
 successor. -/

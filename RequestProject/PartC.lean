@@ -24,3 +24,5 @@ import RequestProject.PartC.SnakeAlphReg
 import RequestProject.PartC.MSO
 import RequestProject.PartC.SSTRegular
 import RequestProject.PartC.SSTTwoWay
+import RequestProject.PartC.MSOWeak
+import RequestProject.PartC.MultiDFA

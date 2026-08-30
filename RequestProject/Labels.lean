@@ -745,6 +745,11 @@ assert_no_sorry «exer:decide-unambiguous#2»
 alias «exer:decide-rational-colision» := Transducers.Exercises.rationalFun_collision_undecidable
 assert_no_sorry «exer:decide-rational-colision»
 
+/-- **Exercise `exer:decide-rational-colision`** (item (b), the existence of an input with outputs of equal length is decidable): `Transducers.Exercises.rationalFun_equal_length_decidable`, from the hypotheses `Transducers.Exercises.EffectiveLengthPairsSemilinear` and `Transducers.Exercises.ComputableDiagonalTest`. -/
+alias «exer:decide-rational-colision#2» :=
+  Transducers.Exercises.rationalFun_equal_length_decidable
+assert_no_sorry «exer:decide-rational-colision#2»
+
 /-- **Exercise `exer:rational-one-letter-input`** (the graph of a rational function over a one-letter input alphabet): `Transducers.Exercises.rationalFun_unary_graph`. -/
 alias «exer:rational-one-letter-input» := Transducers.Exercises.rationalFun_unary_graph
 assert_no_sorry «exer:rational-one-letter-input»
@@ -881,6 +886,11 @@ alias «exer:polyregular-marked-squaring-compression» :=
   Transducers.Exercises.markedSquare_not_compatible_with_compression
 assert_no_sorry «exer:polyregular-marked-squaring-compression»
 
+/-- **Exercise `exer:polyregular-unmarked-squaring`** (unmarked squaring gives a strictly smaller class): `Transducers.Exercises.unmarkedPolyregular_strict_subset_polyregular`, in the size sense of compatibility with compression. -/
+alias «exer:polyregular-unmarked-squaring» :=
+  Transducers.Exercises.unmarkedPolyregular_strict_subset_polyregular
+assert_no_sorry «exer:polyregular-unmarked-squaring»
+
 /-- **Exercise `exer:2nft`** (first half: the first nondeterministic model of a two-way transducer is not contained in the second): `Transducers.Exercises.exists_isTwoNFT₁_not_isTwoNFT₂`. -/
 alias «exer:2nft» := Transducers.Exercises.exists_isTwoNFT₁_not_isTwoNFT₂
 assert_no_sorry «exer:2nft»
@@ -902,6 +912,83 @@ assert_no_sorry «exer:2nft-uniformise#2»
 /-- **Exercise `exer:for-transducers-simulate-fo`** (a first-order sentence is computed by a for-transducer of linear size): `Transducers.Exercises.exists_forProg_of_isFO`. -/
 alias «exer:for-transducers-simulate-fo» := Transducers.Exercises.exists_forProg_of_isFO
 assert_no_sorry «exer:for-transducers-simulate-fo»
+
+/-! ## Exercises proved from an explicit hypothesis -/
+
+/-- **Exercise `exer:rational-outpus-of-exactly-linear-size`** (a rational function of unbounded output size has exactly linear output size): `Transducers.Exercises.rational_exactly_linear_output`, from the hypothesis `Transducers.Exercises.RationalHasLinearRate` (the maximum cycle mean of the transducer). -/
+alias «exer:rational-outpus-of-exactly-linear-size» :=
+  Transducers.Exercises.rational_exactly_linear_output
+assert_no_sorry «exer:rational-outpus-of-exactly-linear-size»
+
+/-- **Exercise `exer:rational-outpus-of-exactly-linear-size-rational-number`** (and the limit is a nonzero rational number): `Transducers.Exercises.rational_exactly_linear_output`, the same theorem: the limit it produces is a positive rational. -/
+alias «exer:rational-outpus-of-exactly-linear-size-rational-number» :=
+  Transducers.Exercises.rational_exactly_linear_output
+assert_no_sorry «exer:rational-outpus-of-exactly-linear-size-rational-number»
+
+/-- **Exercise `exer:regular-outpus-of-exactly-linear-size`** (a regular function of unbounded output size has exactly linear output size): `Transducers.Exercises.regular_exactly_linear_output`, from the hypothesis `Transducers.Exercises.RationalHasLinearRate`. -/
+alias «exer:regular-outpus-of-exactly-linear-size» :=
+  Transducers.Exercises.regular_exactly_linear_output
+assert_no_sorry «exer:regular-outpus-of-exactly-linear-size»
+
+/-- **Exercise `exer:full-ideal`** (the ideal of all rational functions): `Transducers.Exercises.full_ideal_iff`, from the hypothesis `Transducers.Exercises.IdentityFromSuperPolyOutputs`. -/
+alias «exer:full-ideal» :=
+  Transducers.Exercises.full_ideal_iff
+assert_no_sorry «exer:full-ideal»
+
+/-- **Exercise `exer:polynomial-ideals`** (the ideals of polynomial growth): `Transducers.Exercises.polynomial_ideals`, from the hypotheses `Transducers.Exercises.SortedFromOmegaOutputs` and `Transducers.Exercises.FactorThroughSortedOfOutputsPoly`. -/
+alias «exer:polynomial-ideals» :=
+  Transducers.Exercises.polynomial_ideals
+assert_no_sorry «exer:polynomial-ideals»
+
+/-- **Exercise `exer:all-ideals`** (the classification of the ideals): `Transducers.Exercises.all_ideals`, from the four hypotheses of the solution. -/
+alias «exer:all-ideals» :=
+  Transducers.Exercises.all_ideals
+assert_no_sorry «exer:all-ideals»
+
+/-- **Exercise `exer:decide-same-ideal`** (equality of the generated ideals is decidable): `Transducers.Exercises.sameIdeal_iff`, from the same four hypotheses; `Transducers.Exercises.sameIdeal_decidable` turns any decision of the invariant into a decision of the exercise. -/
+alias «exer:decide-same-ideal» :=
+  Transducers.Exercises.sameIdeal_iff
+assert_no_sorry «exer:decide-same-ideal»
+
+/-- **Exercise `exer:rational-injectivity-decidable`** (injectivity is decidable): `Transducers.Exercises.rationalFun_injectivity_decidable`, from the hypotheses `Transducers.EffectiveWeightedEvalEq` and `Transducers.Exercises.EffectiveRationalSection`. -/
+alias «exer:rational-injectivity-decidable» :=
+  Transducers.Exercises.rationalFun_injectivity_decidable
+assert_no_sorry «exer:rational-injectivity-decidable»
+
+/-- **Exercise `exer:rational-composition-finiteness-undecidable`** (finiteness of the iterates is undecidable): `Transducers.Exercises.iterates_finiteness_undecidable`, from the hypothesis `Transducers.Exercises.IteratesReduction`. -/
+alias «exer:rational-composition-finiteness-undecidable» :=
+  Transducers.Exercises.iterates_finiteness_undecidable
+assert_no_sorry «exer:rational-composition-finiteness-undecidable»
+
+/-- **Exercise `exer:minimal-bimachine-lexicographic`** (the lexicographically least minimal bimachine): `Transducers.Exercises.minimal_bimachine_lexicographic`, from the hypothesis `Transducers.Exercises.CanonicalSuffixBimachineExists`. -/
+alias «exer:minimal-bimachine-lexicographic» :=
+  Transducers.Exercises.minimal_bimachine_lexicographic
+assert_no_sorry «exer:minimal-bimachine-lexicographic»
+
+/-- **Exercise `exer:non-minimal-automaton`** (a rational function with two non-isomorphic minimal unambiguous transducers): `Transducers.Exercises.non_minimal_automaton`, from the hypothesis `Transducers.Exercises.EvenParityNeedsThreeStates`. -/
+alias «exer:non-minimal-automaton» :=
+  Transducers.Exercises.non_minimal_automaton
+assert_no_sorry «exer:non-minimal-automaton»
+
+/-- **Exercise `exer:fo-non-elementary`** (first-order sentences of non-elementary succinctness): `Transducers.Exercises.fo_non_elementary`, from the hypothesis `Transducers.Exercises.FirstStringOfOrderDefinable`. -/
+alias «exer:fo-non-elementary» :=
+  Transducers.Exercises.fo_non_elementary
+assert_no_sorry «exer:fo-non-elementary»
+
+/-- **Exercise `exer:fo-suc`** (first-order logic with successor only is strictly weaker): `Transducers.Exercises.fo_succ_strictly_weaker`, from the hypothesis `Transducers.Exercises.EFSuccSeparation`. -/
+alias «exer:fo-suc» :=
+  Transducers.Exercises.fo_succ_strictly_weaker
+assert_no_sorry «exer:fo-suc»
+
+/-- **Exercise `exer:for-transducer-continuity-nonelementary`** (the preimage nfa can be non-elementary): `Transducers.Exercises.for_transducer_continuity_nonelementary`, from the hypothesis `Transducers.Exercises.FirstStringOfOrderDefinable`, in the size sense. -/
+alias «exer:for-transducer-continuity-nonelementary» :=
+  Transducers.Exercises.for_transducer_continuity_nonelementary
+assert_no_sorry «exer:for-transducer-continuity-nonelementary»
+
+/-- **Exercise `exer:forward-for-transducer`** (forward for-transducers compute exactly the composition closure of marked squaring and the rational functions): `Transducers.Exercises.forwardFor_iff_ratMarkedSquare`, from the hypotheses `Transducers.Exercises.ForwardForClosedUnderComp`, `Transducers.Exercises.ForwardPrenexNormalForm`, `Transducers.Exercises.ForwardStepRational`; rationality of the scan is proved, not assumed (`Transducers.Exercises.isRationalFun_scanFun`). -/
+alias «exer:forward-for-transducer» :=
+  Transducers.Exercises.forwardFor_iff_ratMarkedSquare
+assert_no_sorry «exer:forward-for-transducer»
 
 /-
 The theorem-like environments of the book that are not aliased

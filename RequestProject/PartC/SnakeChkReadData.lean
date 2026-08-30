@@ -143,7 +143,6 @@ theorem splitSep_homOf_snakeOutLet (hu : u ∈ ChkLang M K stp ini acc) (hne : u
 
 /-- **An accepted annotation carries a chain of pieces of the run.** -/
 theorem exists_chainData_of_chkLang [Finite A] [Finite B] [Finite Q]
-    (hK : 2 ≤ K)
     (hacc : ∀ (p : PieceParam A Q) (v : List A),
       v ∈ WinCond M (K - 1) p ↔ acc p (v.foldl stp ini))
     (hu : u ∈ ChkLang M K stp ini acc) (hne : u ≠ []) :
@@ -160,7 +159,7 @@ theorem exists_chainData_of_chkLang [Finite A] [Finite B] [Finite Q]
             Y_mono := fun m => bY_mono (by omega)
             Y_last := by rw [hwl]; exact bY_last hu h0
             Y_lt := fun i hi => bY_lt_two hu h0 hi
-            Y_blk := fun m hm1 hmN => bY_blk hu h0 hm1 hmN
+            Y_blk := fun m hm1 hmN => bY_blk h0 hm1 hmN
             win := ?_
             ctxL := fun i hi r hr => lOf_pPar hu h0 hi hr
             ctxR := fun i hi r hr => rOf_pPar hu h0 hi hr
@@ -248,7 +247,7 @@ theorem exists_chainData_of_chkLang [Finite A] [Finite B] [Finite Q]
     exact (letOK_at hu hj).2.2.2.2.2.2.1 _ r (by omega)
   · -- the last piece of a pair and the first piece of the next one meet
     intro i hi
-    have hb : bY u (i + 1) < bY u (i + 2) := bY_blk hu h0 (by omega) (by omega)
+    have hb : bY u (i + 1) < bY u (i + 2) := bY_blk h0 (by omega) (by omega)
     have hj : bY u (i + 1) < u.length := lt_of_lt_of_le hb (bY_le_length _)
     have hrt : rol u i (bY u (i + 1)) = true := by rw [rol, decide_eq_true_eq]
     have hrf : rol u (i + 1) (bY u (i + 1)) = false := by

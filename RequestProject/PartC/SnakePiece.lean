@@ -253,7 +253,7 @@ lemma IsLastPiece.stepCfg_last {a n : ℕ} (hp : IsLastPiece M u m z q₀ a n) :
   rw [hc] at hc'
   have hc'' : c' = Cfg.conf (u ++ p) q (s ++ z) := (Option.some_injective _ hc').symm
   subst hc''
-  exact ⟨p, s, q, hW, stepCfg_window_halt M u m z q₀ hps hstepc⟩
+  exact ⟨p, s, q, hW, stepCfg_window_halt M u z q₀ hstepc⟩
 
 /-- The window run of the last piece halts where `M` halts. -/
 theorem lastPiece_halt {a n : ℕ} (hp : IsLastPiece M u m z q₀ a n) :

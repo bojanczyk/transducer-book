@@ -42,7 +42,7 @@ lemma rol_pair_last_of_lt (hu : u ∈ ChkLang M K stp ini acc) (h0 : 0 < u.lengt
     have hiN' : i = nPair u := by omega
     rw [hiN', bY_last hu h0] at hlt
     omega
-  have hb : bY u (i + 1) < bY u (i + 2) := bY_blk hu h0 (by omega) (by omega)
+  have hb : bY u (i + 1) < bY u (i + 2) := bY_blk h0 (by omega) (by omega)
   rw [rol, decide_eq_true_eq]
   omega
 
@@ -85,7 +85,7 @@ lemma lOf_pPar_succ (hu : u ∈ ChkLang M K stp ini acc) (h0 : 0 < u.length) {i 
       rw [this, bY_zero] at hpos; omega
     have hj1 : n + 1 < u.length := by omega
     have hrf : rol u i (n + 1) = false := by
-      rw [← hA2]; exact rol_bY_eq_false hu h0 hi hpos
+      rw [← hA2]; exact rol_bY_eq_false h0 hi hpos
     have hfl : flL (u[n + 1]'hj1) false r = true := by
       have := (flL_iff_aCut (i := i) (r := r) hu hj1 hax (by omega)).2 (by omega)
       rwa [hrf] at this
@@ -223,7 +223,7 @@ lemma rOf_pPar_lt (hu : u ∈ ChkLang M K stp ini acc) (h0 : 0 < u.length) {i r 
         rw [this, bY_zero] at hpos0; omega
       have hrf : rol u i (m + 1) = false := by
         rw [show m + 1 = bY u i from by omega]
-        exact rol_bY_eq_false hu h0 hi hpos0
+        exact rol_bY_eq_false h0 hi hpos0
       have hfl : flR (u[m + 1]'hj1) false r = true := by
         have := (flR_iff_bCut (i := i) (r := r) hu hj1 (by omega) (by omega)).2 (by omega)
         rwa [hrf] at this
@@ -274,7 +274,7 @@ lemma rOf_pPar_lt (hu : u ∈ ChkLang M K stp ini acc) (h0 : 0 < u.length) {i r 
 /-- **A window that ends at the right end of the input has no letter to its
 right.** -/
 lemma rOf_pPar_end (hu : u ∈ ChkLang M K stp ini acc) (h0 : 0 < u.length) {i r : ℕ}
-    (hi : i ≤ nPair u) (hr : r < 2 * K + 1) (hy : bCut u i r = u.length) :
+    (hi : i ≤ nPair u) (hy : bCut u i r = u.length) :
     rOf (pPar u i r) = none := by
   have hlt2 : bY u i < bY u (i + 2) := bY_lt_two hu h0 hi
   have hlen2 : bY u (i + 2) ≤ u.length := bY_le_length _
@@ -319,7 +319,7 @@ theorem rOf_pPar (hu : u ∈ ChkLang M K stp ini acc) (h0 : 0 < u.length) {i r :
     exact rOf_pPar_lt hu h0 hi hr hy
   · have hyeq : bCut u i r = u.length := by omega
     rw [List.getElem?_eq_none (by omega)]
-    exact rOf_pPar_end hu h0 hi hr hyeq
+    exact rOf_pPar_end hu h0 hi hyeq
 
 end Chk
 

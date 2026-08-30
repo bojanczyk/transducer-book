@@ -139,7 +139,7 @@ lemma stepCfg_window {p s p' s' : List A} {q q' : Q} {o : List B}
 
 /-- A halting step of a run confined to the window is a halting step of the
 window run. -/
-lemma stepCfg_window_halt {p s : List A} {q : Q} {o : List B} (hps : p ++ s = m)
+lemma stepCfg_window_halt {p s : List A} {q : Q} {o : List B}
     (h : M.stepCfg (Cfg.conf (u ++ p) q (s ++ z)) = some (o, Cfg.halt)) :
     (M.withContext u.getLast? z.head? q₀).stepCfg (Cfg.conf p q s) = some (o, Cfg.halt) := by
   have hstep := step_window M u z q₀ p s q

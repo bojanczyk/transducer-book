@@ -319,6 +319,7 @@ noncomputable def visitStLang (M : TwoWay A B Q) (q : Q) : Language (Mark2 A) :=
 lemma isRegular_visitStLang (M : TwoWay A B Q) (q : Q) : (visitStLang M q).IsRegular :=
   isRegular_probeLangT _ _ _
 
+omit [Finite A] [Finite Q] in
 lemma mem_visitStLang (M : TwoWay A B Q) (q : Q) {w : List A} {T : ℕ}
     (hT : cfgAt M w T = some Cfg.halt) (x y : ℕ) :
     markAt2 w x y ∈ visitStLang M q ↔ (VisitSt M w x q ∧ x < w.length) := by

@@ -40,7 +40,7 @@ variable {A B Q : Type}
 /-- **The converse of `TwoWay.stepCfg_window`**: a step of the window run is a
 step of the run of `M` on the whole input. -/
 lemma stepCfg_of_window (M : TwoWay A B Q) (u m z : List A) (q₀ : Q) {p s p' s' : List A}
-    {q q' : Q} {o : List B} (hps : p ++ s = m) (hps' : p' ++ s' = m)
+    {q q' : Q} {o : List B} (hps' : p' ++ s' = m)
     (h : (M.withContext u.getLast? z.head? q₀).stepCfg (Cfg.conf p q s)
       = some (o, Cfg.conf p' q' s')) :
     M.stepCfg (Cfg.conf (u ++ p) q (s ++ z)) = some (o, Cfg.conf (u ++ p') q' (s' ++ z)) := by
@@ -81,8 +81,8 @@ lemma stepCfg_of_window (M : TwoWay A B Q) (u m z : List A) (q₀ : Q) {p s p' s
 
 /-- **The converse of `TwoWay.stepCfg_window_halt`**: a halting step of the
 window run is a halting step of the run of `M`. -/
-lemma stepCfg_of_window_halt (M : TwoWay A B Q) (u m z : List A) (q₀ : Q) {p s : List A}
-    {q : Q} {o : List B} (hps : p ++ s = m)
+lemma stepCfg_of_window_halt (M : TwoWay A B Q) (u z : List A) (q₀ : Q) {p s : List A}
+    {q : Q} {o : List B}
     (h : (M.withContext u.getLast? z.head? q₀).stepCfg (Cfg.conf p q s) = some (o, Cfg.halt)) :
     M.stepCfg (Cfg.conf (u ++ p) q (s ++ z)) = some (o, Cfg.halt) := by
   have hstep := step_window M u z q₀ p s q
@@ -125,10 +125,9 @@ lemma cfgAt_of_window (M : TwoWay A B Q) (u m z : List A) (q₀ : Q) {a : ℕ}
       intro p s q hc
       obtain ⟨c', hc', hstepc⟩ := exists_pred _ _ hc
       obtain ⟨p₀, q₀', s₀, rfl⟩ := exists_conf_of_stepCfg _ hstepc
-      have hps₀ : p₀ ++ s₀ = m := cfgAt_append _ _ i hc'
       have hps : p ++ s = m := cfgAt_append _ _ (i + 1) hc
       have hreal := ih p₀ s₀ q₀' hc'
-      have hst := stepCfg_of_window M u m z q₀ hps₀ hps hstepc
+      have hst := stepCfg_of_window M u m z q₀ hps hstepc
       rw [show a + (i + 1) = (a + i) + 1 by omega]
       exact cfgAt_succ_of_step _ _ hreal hst
 
@@ -231,7 +230,7 @@ theorem isPiece_of_stopRight (M : TwoWay A B Q) (u m z : List A) (q₀ fin : Q) 
 /-- **The converse of `TwoWay.stepCfg_pieceRev`**: a step of the mirrored window
 run is a step of the run of `M`. -/
 lemma stepCfg_of_windowRev (M : TwoWay A B Q) (u m z : List A) (q₀ : Q) {p s p' s' : List A}
-    {q q' : Q} {o : List B} (hps : p ++ s = m) (hps' : p' ++ s' = m)
+    {q q' : Q} {o : List B} (hps' : p' ++ s' = m)
     (h : ((mirror M).withContext z.head? u.getLast? q₀).stepCfg (Cfg.conf s.reverse q p.reverse)
       = some (o, Cfg.conf s'.reverse q' p'.reverse)) :
     M.stepCfg (Cfg.conf (u ++ p) q (s ++ z)) = some (o, Cfg.conf (u ++ p') q' (s' ++ z)) := by
@@ -247,12 +246,12 @@ lemma stepCfg_of_windowRev (M : TwoWay A B Q) (u m z : List A) (q₀ : Q) {p s p
       simpa using h2.symm
     subst hc''
     subst ho
-    exact stepCfg_of_window M u m z q₀ hps hps' hw
+    exact stepCfg_of_window M u m z q₀ hps' hw
 
 /-- A halting step of the mirrored window run is a halting step of the run of
 `M`. -/
-lemma stepCfg_of_windowRev_halt (M : TwoWay A B Q) (u m z : List A) (q₀ : Q) {p s : List A}
-    {q : Q} {o : List B} (hps : p ++ s = m)
+lemma stepCfg_of_windowRev_halt (M : TwoWay A B Q) (u z : List A) (q₀ : Q) {p s : List A}
+    {q : Q} {o : List B}
     (h : ((mirror M).withContext z.head? u.getLast? q₀).stepCfg (Cfg.conf s.reverse q p.reverse)
       = some (o, Cfg.halt)) :
     M.stepCfg (Cfg.conf (u ++ p) q (s ++ z)) = some (o, Cfg.halt) := by
@@ -268,7 +267,7 @@ lemma stepCfg_of_windowRev_halt (M : TwoWay A B Q) (u m z : List A) (q₀ : Q) {
       simpa using h2.symm
     subst hc''
     subst ho
-    exact stepCfg_of_window_halt M u m z q₀ hps hw
+    exact stepCfg_of_window_halt M u z q₀ hw
 
 /-- **The run of `M` follows the mirrored window run**: if the run of `M` on
 `u ++ m ++ z` is at time `a` at the right end of the window in the state `q₀`,
@@ -290,15 +289,12 @@ lemma cfgAt_of_windowRev (M : TwoWay A B Q) (u m z : List A) (q₀ : Q) {a : ℕ
       intro P S q hc
       obtain ⟨c', hc', hstepc⟩ := exists_pred _ _ hc
       obtain ⟨P₀, q₀', S₀, rfl⟩ := exists_conf_of_stepCfg _ hstepc
-      have hPS₀ : P₀ ++ S₀ = m.reverse := cfgAt_append _ _ i hc'
       have hPS : P ++ S = m.reverse := cfgAt_append _ _ (i + 1) hc
       have hreal := ih P₀ S₀ q₀' hc'
-      have h1 : S₀.reverse ++ P₀.reverse = m := by
-        rw [← List.reverse_append, hPS₀, List.reverse_reverse]
       have h2 : S.reverse ++ P.reverse = m := by
         rw [← List.reverse_append, hPS, List.reverse_reverse]
       have hstep := stepCfg_of_windowRev M u m z q₀ (p := S₀.reverse) (s := P₀.reverse)
-        (p' := S.reverse) (s' := P.reverse) h1 h2 (by simpa using hstepc)
+        (p' := S.reverse) (s' := P.reverse) h2 (by simpa using hstepc)
       rw [show a + (i + 1) = (a + i) + 1 by omega]
       exact cfgAt_succ_of_step _ _ hreal hstep
 
@@ -391,7 +387,7 @@ theorem isLastPiece_of_halt (M : TwoWay A B Q) (u m z : List A) (q₀ : Q) {a n 
     rw [hw] at hc'
     have hc'' : c' = Cfg.conf p q s := (Option.some_injective _ hc').symm
     subst hc''
-    exact cfgAt_succ_of_step _ _ hreal (stepCfg_of_window_halt M u m z q₀ hps hstepc)
+    exact cfgAt_succ_of_step _ _ hreal (stepCfg_of_window_halt M u z q₀ hstepc)
 
 /-- **A mirrored window run that halts is the last piece of the run of `M`,
 entered at the right end of the window.** -/
@@ -423,15 +419,13 @@ theorem isLastPieceRev_of_halt (M : TwoWay A B Q) (u m z : List A) (q₀ : Q) {a
       simp only [List.length_append, List.length_reverse] at this
       omega
     omega
-  · obtain ⟨P, S, q, hPS, hw, hreal⟩ := hcfg n (le_refl n)
+  · obtain ⟨P, S, q, -, hw, hreal⟩ := hcfg n (le_refl n)
     obtain ⟨c', hc', hstepc⟩ := exists_pred _ _ hend
     rw [hw] at hc'
     have hc'' : c' = Cfg.conf P q S := (Option.some_injective _ hc').symm
     subst hc''
-    have h1 : S.reverse ++ P.reverse = m := by
-      rw [← List.reverse_append, hPS, List.reverse_reverse]
     exact cfgAt_succ_of_step _ _ hreal
-      (stepCfg_of_windowRev_halt M u m z q₀ (p := S.reverse) (s := P.reverse) h1
+      (stepCfg_of_windowRev_halt M u z q₀ (p := S.reverse) (s := P.reverse)
         (by simpa using hstepc))
 
 /-! ## The four kinds of pieces, in the form in which the chain of stage 1 uses
@@ -441,7 +435,7 @@ variable (M : TwoWay A B Q) (w : List A)
 
 /-- **A piece of kind `1`**: the run enters the window at its left end and
 leaves it at its right end. -/
-theorem exists_outRange_kind_one {x y a k : ℕ} {q f : Q} (hxy : x ≤ y) (hyw : y ≤ w.length)
+theorem exists_outRange_kind_one {x y a k : ℕ} {q f : Q} (hxy : x ≤ y)
     (hstart : cfgAt M w a = some (Cfg.conf (w.take x) q (w.drop x)))
     (hend : ∃ n, cfgAt (stopRight M (w.take x).getLast? (w.drop y).head? q f) (seg w x y) n
       = some (Cfg.conf (seg w x y) f []))
@@ -464,7 +458,7 @@ theorem exists_outRange_kind_one {x y a k : ℕ} {q f : Q} (hxy : x ≤ y) (hyw 
 
 /-- **A piece of kind `2`**: the run enters the window at its right end and
 leaves it at its left end. -/
-theorem exists_outRange_kind_two {x y a k : ℕ} (hxy : x ≤ y) (hyw : y ≤ w.length) {q f : Q}
+theorem exists_outRange_kind_two {x y a k : ℕ} (hxy : x ≤ y) {q f : Q}
     (hstart : cfgAt M w a = some (Cfg.conf (w.take y) q (w.drop y)))
     (hend : ∃ n, cfgAt (stopRight (mirror M) (w.drop y).head? (w.take x).getLast? q f)
         (seg w x y).reverse n = some (Cfg.conf (seg w x y).reverse f []))
@@ -488,7 +482,7 @@ theorem exists_outRange_kind_two {x y a k : ℕ} (hxy : x ≤ y) (hyw : y ≤ w.
 
 /-- **A piece of kind `3`**: the last piece of the run, entered at the left end
 of the window, out of which the run does not leave. -/
-theorem exists_outRange_kind_three {x y a k : ℕ} (hxy : x ≤ y) (hyw : y ≤ w.length) {q : Q}
+theorem exists_outRange_kind_three {x y a k : ℕ} (hxy : x ≤ y) {q : Q}
     (hstart : cfgAt M w a = some (Cfg.conf (w.take x) q (w.drop x)))
     (hend : ∃ n, cfgAt (M.withContext (w.take x).getLast? (w.drop y).head? q) (seg w x y) n
       = some Cfg.halt)
@@ -516,7 +510,7 @@ theorem exists_outRange_kind_three {x y a k : ℕ} (hxy : x ≤ y) (hyw : y ≤ 
 
 /-- **A piece of kind `4`**: the last piece of the run, entered at the right end
 of the window, out of which the run does not leave. -/
-theorem exists_outRange_kind_four {x y a k : ℕ} (hxy : x ≤ y) (hyw : y ≤ w.length) {q : Q}
+theorem exists_outRange_kind_four {x y a k : ℕ} (hxy : x ≤ y) {q : Q}
     (hstart : cfgAt M w a = some (Cfg.conf (w.take y) q (w.drop y)))
     (hend : ∃ n, cfgAt ((mirror M).withContext (w.drop y).head? (w.take x).getLast? q)
       (seg w x y).reverse n = some Cfg.halt)

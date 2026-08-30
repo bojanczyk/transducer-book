@@ -163,12 +163,15 @@ noncomputable def letAt (j : ℕ) (hj : j < w.length) : Gam A Q S K :=
 noncomputable def annot : List (Gam A Q S K) :=
   List.mapIdx (fun j x => ((x, d.datOf stp ini j) : Gam A Q S K)) w
 
+omit [Inhabited S] in
 @[simp] lemma length_annot : (d.annot stp ini).length = w.length := List.length_mapIdx
 
+omit [Inhabited S] in
 lemma getElem_annot {j : ℕ} (hj : j < w.length) :
     (d.annot stp ini)[j]'(by rw [length_annot]; exact hj) = d.letAt stp ini j hj := by
   exact List.getElem_mapIdx
 
+omit [Inhabited S] in
 lemma map_lt_annot : (d.annot stp ini).map lt = w := by
   refine List.ext_getElem (by simp) ?_
   intro n h1 h2
@@ -182,25 +185,32 @@ lemma map_lt_annot : (d.annot stp ini).map lt = w := by
 
 variable {stp} {ini}
 
+omit [Inhabited S] in
 @[simp] lemma lt_letAt {j : ℕ} (hj : j < w.length) : lt (d.letAt stp ini j hj) = w[j]'hj := rfl
 
+omit [Inhabited S] in
 @[simp] lemma sb_letAt {j : ℕ} (hj : j < w.length) :
     sb (d.letAt stp ini j hj) = decide (j = d.Y (d.blkOf j)) := rfl
 
+omit [Inhabited S] in
 @[simp] lemma sa_letAt {j : ℕ} (hj : j < w.length) :
     sa (d.letAt stp ini j hj) = decide (j = w.length - 1 ∧ d.Y (d.N + 1) = d.Y (d.N + 2)) := rfl
 
+omit [Inhabited S] in
 @[simp] lemma lp_letAt {j : ℕ} (hj : j < w.length) (s : Bool) :
     lp (d.letAt stp ini j hj) s = decide (d.pidx s j = d.N) := rfl
 
+omit [Inhabited S] in
 lemma flL_letAt {j r : ℕ} (hj : j < w.length) (hr : r < 2 * K + 1) (s : Bool) :
     flL (d.letAt stp ini j hj) s r = decide (d.AA (d.pidx s j) r ≤ j) := by
   rw [flL, dif_pos hr]; rfl
 
+omit [Inhabited S] in
 lemma flR_letAt {j r : ℕ} (hj : j < w.length) (hr : r < 2 * K + 1) (s : Bool) :
     flR (d.letAt stp ini j hj) s r = decide (d.BB (d.pidx s j) r ≤ j) := by
   rw [flR, dif_pos hr]; rfl
 
+omit [Inhabited S] in
 lemma pr_letAt {j r : ℕ} (hj : j < w.length) (hr : r < 2 * K + 1) (s : Bool) :
     pr (d.letAt stp ini j hj) s r = d.PPar (d.pidx s j) r := by
   rw [pr, dif_pos hr]; rfl
@@ -209,10 +219,12 @@ lemma ds_letAt {j r : ℕ} (hj : j < w.length) (hr : r < 2 * K + 1) (s : Bool) :
     ds (d.letAt stp ini j hj) s r = d.dsv stp ini (d.pidx s j) r j := by
   rw [ds, dif_pos hr]; rfl
 
+omit [Inhabited S] in
 lemma kd_letAt {j r : ℕ} (hj : j < w.length) (hr : r < 2 * K + 1) (s : Bool) :
     kd (d.letAt stp ini j hj) s r = kdOf (d.PPar (d.pidx s j) r) := by
   rw [kd, pr_letAt d hj hr, kdOf]
 
+omit [Inhabited S] in
 lemma wb_letAt {j r : ℕ} (hj : j < w.length) (hr : r < 2 * K + 1) (s : Bool) :
     wb (d.letAt stp ini j hj) s r
       = decide (d.AA (d.pidx s j) r ≤ j ∧ j < d.BB (d.pidx s j) r) := by
@@ -220,6 +232,7 @@ lemma wb_letAt {j r : ℕ} (hj : j < w.length) (hr : r < 2 * K + 1) (s : Bool) :
   by_cases h1 : d.AA (d.pidx s j) r ≤ j <;> by_cases h2 : d.BB (d.pidx s j) r ≤ j <;>
     simp [h1, h2]; omega
 
+omit [Inhabited S] in
 lemma startfl_letAt {j r : ℕ} (hj : j < w.length) (hr : r < 2 * K + 1) (s : Bool) :
     startfl (d.letAt stp ini j hj) s r
       = decide (stCut (d.PPar (d.pidx s j) r) (d.AA (d.pidx s j) r)
@@ -229,6 +242,7 @@ lemma startfl_letAt {j r : ℕ} (hj : j < w.length) (hr : r < 2 * K + 1) (s : Bo
   · rw [flL_letAt d hj hr]
   · rw [flR_letAt d hj hr]
 
+omit [Inhabited S] in
 lemma endfl_letAt {j r : ℕ} (hj : j < w.length) (hr : r < 2 * K + 1) (s : Bool) :
     endfl (d.letAt stp ini j hj) s r
       = decide (enCut (d.PPar (d.pidx s j) r) (d.AA (d.pidx s j) r)

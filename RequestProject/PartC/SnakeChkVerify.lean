@@ -40,6 +40,7 @@ variable [Inhabited S] {stp : S → A → S} {ini : S} {acc : PieceParam A Q →
 
 /-! ## The state of the window-condition automaton -/
 
+omit [Inhabited S] in
 lemma dsv_succ (i r j : ℕ) (hj1 : j + 1 < w.length) :
     d.dsv stp ini i r (j + 1)
       = if d.AA i r ≤ j + 1 ∧ j + 1 < d.BB i r then stp (d.dsv stp ini i r j) (w[j + 1]'hj1)
@@ -47,10 +48,12 @@ lemma dsv_succ (i r j : ℕ) (hj1 : j + 1 < w.length) :
   rw [dsv, dsv]
   exact foldl_seg_min_succ stp ini w (d.AA i r) (d.BB i r) (j + 1) hj1
 
+omit [Inhabited S] in
 lemma dsv_of_le {i r j : ℕ} (h : j + 1 ≤ d.AA i r) : d.dsv stp ini i r j = ini := by
   rw [dsv, seg_eq_nil (show min (d.BB i r) (j + 1) ≤ d.AA i r by omega)]
   rfl
 
+omit [Inhabited S] in
 lemma dsv_zero (i r : ℕ) (h0 : 0 < w.length) :
     d.dsv stp ini i r 0
       = if d.AA i r ≤ 0 ∧ 0 < d.BB i r then stp ini (w[0]'h0) else ini := by
@@ -58,6 +61,7 @@ lemma dsv_zero (i r : ℕ) (h0 : 0 < w.length) :
     seg_eq_nil (show min (d.BB i r) 0 ≤ d.AA i r by omega)]
   rfl
 
+omit [Inhabited S] in
 lemma dsv_full {i r j : ℕ} (hi : i ≤ d.N) (h : d.BB i r ≤ j + 1) :
     d.dsv stp ini i r j = (TwoWay.seg w (d.a i r) (d.b i r)).foldl stp ini := by
   rw [dsv, show min (d.BB i r) (j + 1) = d.BB i r from by omega, AA_of_le d hi, BB_of_le d hi]
@@ -130,6 +134,7 @@ lemma rOf_PPar_end {i r : ℕ} (hr : r < 2 * K + 1) (hi : i ≤ d.N)
 
 /-! ## The conditions on a single letter -/
 
+omit [Inhabited S] in
 lemma letOK_letAt {j : ℕ} (hj : j < w.length) : LetOK K (d.letAt stp ini j hj) := by
   have hb1 : 1 ≤ d.blkOf j := d.one_le_blkOf j
   have hbN : d.blkOf j ≤ d.N + 1 := d.blkOf_le j

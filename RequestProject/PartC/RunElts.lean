@@ -142,9 +142,11 @@ lemma nodup_elts (hs : Spec M w st pos ix mk sel ord lab) :
   subst this
   rw [hi]
 
+omit hT in
 lemma length_elts : (elts M w T mk).length = (outRange M w 0 T).length := by
   rw [elts, List.length_map, length_pairs, outs_flatten]
 
+omit hT in
 lemma getElem_elts {j : ℕ} (hj : j < (elts M w T mk).length) :
     (elts M w T mk)[j] = mk ((pairs (outs M w T))[j]'(by
       simpa [elts] using hj)) := by
@@ -228,8 +230,9 @@ theorem exists_elts (hs : Spec M w st pos ix mk sel ord lab) :
       ∀ (j : ℕ) (hj : j < es.length) (hj' : j < (outRange M w 0 T).length),
         lab es[j] ((outRange M w 0 T)[j]) :=
   ⟨elts M w T mk, nodup_elts hT hs, mem_elts_iff hT hs,
-    ord_elts hT hs, length_elts hT, lab_elts hT hs⟩
+    ord_elts hT hs, length_elts, lab_elts hT hs⟩
 
+omit hT in
 /-- **The requirements of Definition `def:mso-transduction`.** -/
 theorem proper_props (hs : Spec M w st pos ix mk sel ord lab) :
     (∀ e, sel e → ∃! b, lab e b) ∧
