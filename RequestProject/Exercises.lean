@@ -42,6 +42,8 @@ import RequestProject.Exercises.TwoNFTUnif
 import RequestProject.Exercises.TwoNFTUnif1
 import RequestProject.Exercises.ForFO
 import RequestProject.Exercises.LinearOutput
+import RequestProject.Exercises.RegularGrowth
+import RequestProject.Exercises.RationalGrowth
 import RequestProject.Exercises.Ideals
 import RequestProject.Exercises.MinimalTransducer
 import RequestProject.Exercises.MinimalTransducerBound

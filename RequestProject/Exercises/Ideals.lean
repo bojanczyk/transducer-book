@@ -5,6 +5,7 @@ ideals of rational functions: `exer:full-ideal`, `exer:polynomial-ideals`, `exer
 `exer:finite-range-ideals`, which are formalised in `RequestProject/Exercises/PartBC.lean`.
 -/
 import RequestProject.Exercises.PartBC
+import RequestProject.Exercises.RationalGrowth
 
 /-!
 # The ideals of rational functions
@@ -44,20 +45,26 @@ ideals, so the two readings must not be mixed.  The divergence is recorded in `E
 The solutions of these four exercises rest on an analysis of the loops of an automaton — the
 patterns of Exercise `exer:polynomial-image-growth-decidable` — combined with the Uniformisation
 Lemma, and the book itself carries it out only in outline ("using a similar analysis", "this can be
-proved by analysing the structure of strongly connected components").  That analysis is not in this
-project, so the four consequences of it that the solutions use are isolated here as named
-hypotheses, in the style of `Transducers.EffectiveWeightedEvalEq` of
-`RequestProject/PartB/Effective.lean`:
+proved by analysing the structure of strongly connected components").  That analysis is carried out
+for an arbitrary deterministic automaton in `RequestProject/Exercises/RegularGrowth.lean` and
+transported to rational functions in `RequestProject/Exercises/RationalGrowth.lean`.  Two of the
+four consequences of it that the solutions use are proved there and are ordinary theorems here:
 
 * `IdentityFromSuperPolyOutputs` — a rational function with super-polynomially many outputs has the
-  identity of `{0,1}*` among its rational pre- and post-compositions;
+  identity of `{0,1}*` among its rational pre- and post-compositions; **proved**, from
+  `Transducers.Exercises.exists_rational_bool_identity_of_superPoly`;
+* `OutputsGrowthDichotomy` — the number of outputs of a rational function is either
+  super-polynomial or `Θ(n^k)` for some `k`; this is the gap in the growth rates of regular
+  languages, which the author's solution to `exer:all-ideals` uses silently; **proved**, from
+  `Transducers.Exercises.rationalFun_growth_dichotomy`.
+
+The remaining two are still isolated as named hypotheses, in the style of
+`Transducers.EffectiveWeightedEvalEq` of `RequestProject/PartB/Effective.lean`:
+
 * `SortedFromOmegaOutputs` — a rational function with `Ω(n^k)` outputs has the sorted-identity
   function `sortedFun k` among them;
 * `FactorThroughSortedOfOutputsPoly` — a rational function with `O(n^k)` outputs is a rational
-  pre- and post-composition of `sortedFun k`;
-* `OutputsGrowthDichotomy` — the number of outputs of a rational function is either
-  super-polynomial or `Θ(n^k)` for some `k`; this is the gap in the growth rates of regular
-  languages, which the author's solution to `exer:all-ideals` uses silently.
+  pre- and post-composition of `sortedFun k`.
 
 Everything else is proved here, and none of the four statements is a restatement of a hypothesis:
 `exer:full-ideal` needs the encoding of an arbitrary alphabet by blocks over `{0,1}` for its
@@ -160,11 +167,11 @@ sorted strings — those of `a_1^* a_2^* ⋯ a_k^*` — and the empty string on 
 noncomputable def sortedFun (k : ℕ) (w : List (Fin k)) : List (Fin k) :=
   if w.Pairwise (· ≤ ·) then w else []
 
-/-! ### The hypotheses -/
+/-! ### The consequences of the loop analysis, and the two remaining hypotheses -/
 
-/-- **Hypothesis: from super-polynomially many outputs to the identity.**  If a rational function
-`f` has super-polynomially many outputs, then the identity of `{0,1}*` is a rational
-pre-composition and post-composition of `f`.
+/-- **From super-polynomially many outputs to the identity.**  If a rational function `f` has
+super-polynomially many outputs, then the identity of `{0,1}*` is a rational pre-composition and
+post-composition of `f`.
 
 This is the second paragraph of the author's solution to Exercise `exer:full-ideal`: the range of
 `f` is a regular language of super-polynomial growth, so by the loop analysis of Exercise
@@ -172,12 +179,15 @@ This is the second paragraph of the author's solution to Exercise `exer:full-ide
 strings of the same length, which gives an injective encoding of `{0,1}*` inside the range; the
 Uniformisation Lemma turns the inverse of `f` into a rational function that produces, for a string
 of the range, an input of `f` mapped to it, and a rational function reads the encoded bits back.
-The loop analysis and that decoding function are what this project does not have. -/
-def IdentityFromSuperPolyOutputs : Prop :=
-  ∀ (A B : Type) [Finite A] [Finite B] (f : List A → List B), IsRationalFun f →
-    SuperPolyOutputs f →
-      ∃ (g : List Bool → List A) (h : List B → List Bool),
-        IsRationalFun g ∧ IsRationalFun h ∧ ∀ u : List Bool, h (f (g u)) = u
+The loop analysis is carried out in `RequestProject/Exercises/RegularGrowth.lean` and transported
+to rational functions in `RequestProject/Exercises/RationalGrowth.lean`; this statement is
+`Transducers.Exercises.exists_rational_bool_identity_of_superPoly`. -/
+theorem IdentityFromSuperPolyOutputs :
+    ∀ (A B : Type) [Finite A] [Finite B] (f : List A → List B), IsRationalFun f →
+      SuperPolyOutputs f →
+        ∃ (g : List Bool → List A) (h : List B → List Bool),
+          IsRationalFun g ∧ IsRationalFun h ∧ ∀ u : List Bool, h (f (g u)) = u :=
+  fun _ _ _ _ _ hf hsuper => exists_rational_bool_identity_of_superPoly hf hsuper
 
 /-- **Hypothesis: from `Ω(n^k)` outputs to the sorted identity.**  If a rational function `f` has
 `Ω(n^k)` outputs, then `sortedFun k` is a rational pre-composition and post-composition of `f`.
@@ -203,18 +213,18 @@ def FactorThroughSortedOfOutputsPoly : Prop :=
       ∃ (g : List A → List (Fin k)) (h : List (Fin k) → List B),
         IsRationalFun g ∧ IsRationalFun h ∧ ∀ w : List A, h (sortedFun k (g w)) = f w
 
-/-- **Hypothesis: the growth of a rational function has no gaps.**  The number of outputs of a
-rational function on inputs of length at most `n` is either super-polynomial, or `Θ(n^k)` for
-some `k`.
+/-- **The growth of a rational function has no gaps.**  The number of outputs of a rational
+function on inputs of length at most `n` is either super-polynomial, or `Θ(n^k)` for some `k`.
 
 This is the gap theorem for the growth rates of regular languages, which the author's solution to
 Exercise `exer:all-ideals` uses when it speaks of "the largest `k` such that some function in the
-ideal has range of growth `Ω(n^k)`".  It comes from the same loop analysis as the hypotheses
-above. -/
-def OutputsGrowthDichotomy : Prop :=
-  ∀ (A B : Type) [Finite A] [Finite B] (f : List A → List B), IsRationalFun f →
-    SuperPolyOutputs f ∨
-      ∃ k : ℕ, (∃ C : ℕ, ∀ n, outCount f n ≤ C * (n + 1) ^ k) ∧ OmegaOutputs f k
+ideal has range of growth `Ω(n^k)`".  It comes from the same loop analysis as the statement
+above; it is `Transducers.Exercises.rationalFun_growth_dichotomy`. -/
+theorem OutputsGrowthDichotomy :
+    ∀ (A B : Type) [Finite A] [Finite B] (f : List A → List B), IsRationalFun f →
+      SuperPolyOutputs f ∨
+        ∃ k : ℕ, (∃ C : ℕ, ∀ n, outCount f n ≤ C * (n + 1) ^ k) ∧ OmegaOutputs f k :=
+  fun _ _ _ _ _ hf => rationalFun_growth_dichotomy hf
 
 /-! ### Exercise `exer:full-ideal` -/
 
@@ -250,10 +260,10 @@ contains some function whose range is a regular language of super-polynomial gro
 The growth is measured as everywhere in this file; see the header.  The direction from left to
 right is witnessed by the identity of `{0,1}*`, whose range is the regular language of all strings
 and has `2^n` elements of length at most `n`.  The other direction is the author's argument: the
-hypothesis `IdentityFromSuperPolyOutputs` produces the identity of `{0,1}*` inside the ideal, and
+theorem `IdentityFromSuperPolyOutputs` produces the identity of `{0,1}*` inside the ideal, and
 every rational function `u` factors through it, because an arbitrary finite alphabet is encoded by
 blocks over `{0,1}` (`Transducers.Exercises.code` and `Transducers.Exercises.decBlock`). -/
-theorem full_ideal_iff (hid : IdentityFromSuperPolyOutputs)
+theorem full_ideal_iff
     {I : ∀ (A B : Type), (List A → List B) → Prop} (hI : IsIdeal I) :
     (∀ (A B : Type) [Finite A] [Finite B] (f : List A → List B), IsRationalFun f → I A B f) ↔
       ∃ (A B : Type) (_ : Finite A) (_ : Finite B) (f : List A → List B),
@@ -264,7 +274,8 @@ theorem full_ideal_iff (hid : IdentityFromSuperPolyOutputs)
       rationalRel_range_isRegular isRationalFun_id, superPolyOutputs_id_bool⟩
   · rintro ⟨A, B, iA, iB, f, hfI, -, hsuper⟩ C D _ _ u hu
     haveI := iA; haveI := iB
-    obtain ⟨g, h, hg, hh, hgh⟩ := hid A B f (hI.1 A B f hfI) hsuper
+    obtain ⟨g, h, hg, hh, hgh⟩ :=
+      IdentityFromSuperPolyOutputs A B f (hI.1 A B f hfI) hsuper
     have hpre : IsRationalFun (fun w : List C => g (homOf TwoLetter.code w)) :=
       isRationalFun_comp (isRationalFun_homOf TwoLetter.code) hg
     have hdec : IsRationalFun (fun b : List Bool => u (TwoLetter.decBlock C b)) :=
@@ -323,8 +334,8 @@ outputs, the ideal is everything by Exercise `exer:full-ideal`.  Otherwise every
 for some `k` by the dichotomy, and the ideal is `OutputsPoly k` for the largest level `k` that
 occurs, or the union of all of them if there is no largest one; both by Exercise
 `exer:polynomial-ideals`. -/
-theorem all_ideals (hid : IdentityFromSuperPolyOutputs) (hOmega : SortedFromOmegaOutputs)
-    (hPoly : FactorThroughSortedOfOutputsPoly) (hdich : OutputsGrowthDichotomy)
+theorem all_ideals (hOmega : SortedFromOmegaOutputs)
+    (hPoly : FactorThroughSortedOfOutputsPoly)
     {I : ∀ (A B : Type), (List A → List B) → Prop} (hI : IsIdeal I) :
     (∃ k : ℕ, ∀ (A B : Type) [Finite A] [Finite B] (f : List A → List B),
         I A B f ↔ RangeAtMost k A B f) ∨
@@ -351,7 +362,7 @@ theorem all_ideals (hid : IdentityFromSuperPolyOutputs) (hOmega : SortedFromOmeg
       refine ⟨fun hf => hI.1 A B f hf, fun hf => ?_⟩
       obtain ⟨A₁, B₁, i₁, i₂, f₁, hf₁I, hs₁⟩ := hsuper
       haveI := i₁; haveI := i₂
-      exact (full_ideal_iff hid hI).2
+      exact (full_ideal_iff hI).2
         ⟨A₁, B₁, i₁, i₂, f₁, hf₁I, rationalRel_range_isRegular (hI.1 A₁ B₁ f₁ hf₁I), hs₁⟩
         A B f hf
     · push_neg at hsuper
@@ -359,7 +370,7 @@ theorem all_ideals (hid : IdentityFromSuperPolyOutputs) (hOmega : SortedFromOmeg
       have hlevel : ∀ (A B : Type) [Finite A] [Finite B] (f : List A → List B), I A B f →
           ∃ j : ℕ, (∃ C : ℕ, ∀ n, outCount f n ≤ C * (n + 1) ^ j) ∧ OmegaOutputs f j := by
         intro A B _ _ f hf
-        rcases hdich A B f (hI.1 A B f hf) with hs | hj
+        rcases OutputsGrowthDichotomy A B f (hI.1 A B f hf) with hs | hj
         · exact absurd hs (hsuper A B ‹Finite A› ‹Finite B› f hf)
         · exact hj
       have hne : (IdealOmegaLevels I).Nonempty := by
@@ -413,8 +424,8 @@ the exercise.
 The direction from left to right uses only the two families of ideals of Exercise
 `exer:some-ideals`, which are known to be ideals; the other direction is the classification of
 Exercise `exer:all-ideals` and inherits its hypotheses. -/
-theorem sameIdeal_iff (hid : IdentityFromSuperPolyOutputs) (hOmega : SortedFromOmegaOutputs)
-    (hPoly : FactorThroughSortedOfOutputsPoly) (hdich : OutputsGrowthDichotomy)
+theorem sameIdeal_iff (hOmega : SortedFromOmegaOutputs)
+    (hPoly : FactorThroughSortedOfOutputsPoly)
     {A B C D : Type} [Finite A] [Finite B] [Finite C] [Finite D]
     {f : List A → List B} {g : List C → List D}
     (hf : IsRationalFun f) (hg : IsRationalFun g) :
@@ -437,7 +448,7 @@ theorem sameIdeal_iff (hid : IdentityFromSuperPolyOutputs) (hOmega : SortedFromO
       · exact ((hsame (OutputsPoly k) (isIdeal_outputsPoly k)).1 ⟨hf, hfk⟩).2
       · exact ((hsame (OutputsPoly k) (isIdeal_outputsPoly k)).2 ⟨hg, hgk⟩).2
   · intro hinv I hI
-    rcases all_ideals hid hOmega hPoly hdich hI with ⟨k, hk⟩ | ⟨k, hk⟩ | hk | hk
+    rcases all_ideals hOmega hPoly hI with ⟨k, hk⟩ | ⟨k, hk⟩ | hk | hk
     · rw [hk A B f, hk C D g]
       rcases hinv with ⟨hffin, hgfin, hcard⟩ | ⟨hffin, hgfin, -⟩
       · exact ⟨fun h => ⟨hg, hgfin, hcard ▸ h.2.2⟩, fun h => ⟨hf, hffin, hcard ▸ h.2.2⟩⟩
@@ -464,12 +475,12 @@ theorem sameIdeal_iff (hid : IdentityFromSuperPolyOutputs) (hOmega : SortedFromO
 /-- **Exercise `exer:decide-same-ideal`**, the decision procedure: once the invariant of
 `sameIdeal_iff` can be decided, so can the property that two rational functions generate the same
 ideal. -/
-def sameIdeal_decidable (hid : IdentityFromSuperPolyOutputs) (hOmega : SortedFromOmegaOutputs)
-    (hPoly : FactorThroughSortedOfOutputsPoly) (hdich : OutputsGrowthDichotomy)
+def sameIdeal_decidable (hOmega : SortedFromOmegaOutputs)
+    (hPoly : FactorThroughSortedOfOutputsPoly)
     {A B C D : Type} [Finite A] [Finite B] [Finite C] [Finite D]
     {f : List A → List B} {g : List C → List D}
     (hf : IsRationalFun f) (hg : IsRationalFun g)
     (hdec : Decidable (SameOutputInvariant f g)) : Decidable (SameIdeal f g) :=
-  decidable_of_iff _ (sameIdeal_iff hid hOmega hPoly hdich hf hg).symm
+  decidable_of_iff _ (sameIdeal_iff hOmega hPoly hf hg).symm
 
 end Transducers.Exercises

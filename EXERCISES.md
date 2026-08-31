@@ -182,10 +182,10 @@ all eleven are aliased in `RequestProject/Labels.lean`.
 | Exercise `exer:function-that-is-not-rational` (not rational, yet rational after every rational function into `1*`) | `exists_not_isRationalFun_unary_compositions_rational` | proved from the hypothesis that reversal is not rational |
 | Exercise `exer:some-ideals` (two families of ideals of rational functions) | `IsIdeal`, `isIdeal_rangeAtMost`, `isIdeal_outputsPoly` | proved |
 | Exercise `exer:finite-range-ideals` (the ideals whose functions have finite range) | `ideal_mem_of_ncard_le`, `finite_range_ideal_classification` | proved |
-| Exercise `exer:full-ideal` (the ideal of all rational functions) | `full_ideal_iff` (with `IsIdeal`, `SuperPolyOutputs`, `isRationalFun_id`) | proved from the hypothesis `IdentityFromSuperPolyOutputs` (the loop analysis of the solution) |
+| Exercise `exer:full-ideal` (the ideal of all rational functions) | `full_ideal_iff` (with `IsIdeal`, `SuperPolyOutputs`, `isRationalFun_id`) | proved; the loop analysis of the solution is `Exercises/RegularGrowth.lean` and `Exercises/RationalGrowth.lean`, and `IdentityFromSuperPolyOutputs` is now a theorem |
 | Exercise `exer:polynomial-ideals` (the ideals of polynomial growth) | `polynomial_ideals` (with `OmegaOutputs`, `outCount`) | proved from the hypotheses `SortedFromOmegaOutputs` and `FactorThroughSortedOfOutputsPoly` (the two steps of the solution) |
-| Exercise `exer:all-ideals` (the classification of the ideals) | `all_ideals` (with `RangeAtMost`, `OutputsPoly`, `OutputsPolySome`, `AllRationalFuns`) | proved from `IdentityFromSuperPolyOutputs`, `SortedFromOmegaOutputs`, `FactorThroughSortedOfOutputsPoly` and `OutputsGrowthDichotomy` |
-| Exercise `exer:decide-same-ideal` (equality of the generated ideals is decidable) | `sameIdeal_iff` (with `SameIdeal`, `SameOutputInvariant`, `sameIdeal_decidable`) | proved from the same four hypotheses as `exer:all-ideals`; the invariant is characterised, and `sameIdeal_decidable` turns any decision of the invariant into a decision of the exercise |
+| Exercise `exer:all-ideals` (the classification of the ideals) | `all_ideals` (with `RangeAtMost`, `OutputsPoly`, `OutputsPolySome`, `AllRationalFuns`) | proved from `SortedFromOmegaOutputs` and `FactorThroughSortedOfOutputsPoly`; `IdentityFromSuperPolyOutputs` and `OutputsGrowthDichotomy` are now theorems |
+| Exercise `exer:decide-same-ideal` (equality of the generated ideals is decidable) | `sameIdeal_iff` (with `SameIdeal`, `SameOutputInvariant`, `sameIdeal_decidable`) | proved from the same two hypotheses as `exer:all-ideals`; the invariant is characterised, and `sameIdeal_decidable` turns any decision of the invariant into a decision of the exercise |
 | Exercise `exer:surjective-rational-function` (a surjective rational function has a rational one-sided inverse) | `exists_rationalFun_leftInverse` | proved |
 | Exercise `exer:rational-injectivity-decidable` (injectivity is decidable) | `rationalFun_injectivity_decidable` (with `rationalFun_injective_iff_exists_inverse`, `exists_rationalFun_inverse_of_injective`, `codeInjective_iff_section_comp_id`) | proved from the hypotheses `EffectiveWeightedEvalEq` and `EffectiveRationalSection` (a computable form of the Uniformisation Lemma) |
 | Exercise `exer:rational-outpus-of-exactly-linear-size` (a rational function of unbounded output size has exactly linear output size) | `rational_exactly_linear_output` (with `maxOutLen`, `HasLinearRate`) | proved from the hypothesis `RationalHasLinearRate` (the maximum cycle mean of the transducer) |
@@ -842,11 +842,14 @@ Of the 81:
   followed by `assert_no_sorry`.  `#print axioms`, run on all 210 aliases of
   that file, reports only `propext`, `Classical.choice`, `Quot.sound` for every
   one of them, and there is no `sorry` anywhere in `RequestProject/Exercises/`.
-* Of those 79, **62 are proved outright** and **17 are proved from an explicit
+* Of those 79, **63 are proved outright** and **16 are proved from an explicit
   hypothesis**, which is in every case a `Prop`-valued definition stating a step
   that the book's own solution takes for granted or only sketches, taken as an
   ordinary argument of the theorem — no `axiom` is declared anywhere in the
-  project.  The seventeen are:
+  project.  (`exer:full-ideal` moved from the second group to the first when the
+  loop analysis of `Exercises/RegularGrowth.lean` and
+  `Exercises/RationalGrowth.lean` discharged `IdentityFromSuperPolyOutputs` and
+  `OutputsGrowthDichotomy`.)  The sixteen are:
 
   | Exercise | hypothesis it is proved from |
   | --- | --- |
@@ -856,10 +859,9 @@ Of the 81:
   | `exer:rational-outpus-of-exactly-linear-size` | `RationalHasLinearRate` |
   | `exer:rational-outpus-of-exactly-linear-size-rational-number` | `RationalHasLinearRate` |
   | `exer:regular-outpus-of-exactly-linear-size` | `RationalHasLinearRate` |
-  | `exer:full-ideal` | `IdentityFromSuperPolyOutputs` |
   | `exer:polynomial-ideals` | `SortedFromOmegaOutputs`, `FactorThroughSortedOfOutputsPoly` |
-  | `exer:all-ideals` | those three, and `OutputsGrowthDichotomy` |
-  | `exer:decide-same-ideal` | the same four |
+  | `exer:all-ideals` | the same two |
+  | `exer:decide-same-ideal` | the same two |
   | `exer:rational-injectivity-decidable` | `EffectiveWeightedEvalEq`, `EffectiveRationalSection` |
   | `exer:rational-composition-finiteness-undecidable` | `IteratesReduction` |
   | `exer:minimal-bimachine-lexicographic` | `CanonicalSuffixBimachineExists` — **now known to be false**, see the note below the table |
@@ -868,7 +870,7 @@ Of the 81:
   | `exer:fo-suc` | `EFSuccSeparation` |
   | `exer:for-transducer-continuity-nonelementary` | `FirstStringOfOrderDefinable` |
 
-  Of these seventeen hypotheses, one is now known to be **false**:
+  Of these sixteen hypotheses, one is now known to be **false**:
   `CanonicalSuffixBimachineExists`, the second paragraph of the solution of
   `exer:minimal-bimachine-lexicographic`, which says that some bimachine has one
   suffix state per class of the relation `∼` of Theorem

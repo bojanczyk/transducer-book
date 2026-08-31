@@ -930,7 +930,7 @@ alias «exer:regular-outpus-of-exactly-linear-size» :=
   Transducers.Exercises.regular_exactly_linear_output
 assert_no_sorry «exer:regular-outpus-of-exactly-linear-size»
 
-/-- **Exercise `exer:full-ideal`** (the ideal of all rational functions): `Transducers.Exercises.full_ideal_iff`, from the hypothesis `Transducers.Exercises.IdentityFromSuperPolyOutputs`. -/
+/-- **Exercise `exer:full-ideal`** (the ideal of all rational functions): `Transducers.Exercises.full_ideal_iff`, proved outright. -/
 alias «exer:full-ideal» :=
   Transducers.Exercises.full_ideal_iff
 assert_no_sorry «exer:full-ideal»
@@ -940,12 +940,12 @@ alias «exer:polynomial-ideals» :=
   Transducers.Exercises.polynomial_ideals
 assert_no_sorry «exer:polynomial-ideals»
 
-/-- **Exercise `exer:all-ideals`** (the classification of the ideals): `Transducers.Exercises.all_ideals`, from the four hypotheses of the solution. -/
+/-- **Exercise `exer:all-ideals`** (the classification of the ideals): `Transducers.Exercises.all_ideals`, from the hypotheses `Transducers.Exercises.SortedFromOmegaOutputs` and `Transducers.Exercises.FactorThroughSortedOfOutputsPoly`. -/
 alias «exer:all-ideals» :=
   Transducers.Exercises.all_ideals
 assert_no_sorry «exer:all-ideals»
 
-/-- **Exercise `exer:decide-same-ideal`** (equality of the generated ideals is decidable): `Transducers.Exercises.sameIdeal_iff`, from the same four hypotheses; `Transducers.Exercises.sameIdeal_decidable` turns any decision of the invariant into a decision of the exercise. -/
+/-- **Exercise `exer:decide-same-ideal`** (equality of the generated ideals is decidable): `Transducers.Exercises.sameIdeal_iff`, from the same two hypotheses; `Transducers.Exercises.sameIdeal_decidable` turns any decision of the invariant into a decision of the exercise. -/
 alias «exer:decide-same-ideal» :=
   Transducers.Exercises.sameIdeal_iff
 assert_no_sorry «exer:decide-same-ideal»

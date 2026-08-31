@@ -263,6 +263,7 @@ RequestProject/
 | `Exercises/TwoDFAPass.lean`, `Exercises/TwoDFARuler.lean`, `Exercises/TwoDFAExp.lean` | Exercise `exer:2dfa-complexity`: a two-way automaton performing a sequence of one-way passes, the ruler word and the conditions that characterise it, and the automaton with `4·(n+1)` states whose shortest accepted string has length `2^(n+1)-1` |
 | `Exercises/TwoDFASipserDef.lean`, `Exercises/TwoDFASipserRun.lean`, `Exercises/TwoDFASipserTree.lean`, `Exercises/TwoDFASipserExplore.lean`, `Exercises/TwoDFASipserScan.lean`, `Exercises/TwoDFASipserSound.lean`, `Exercises/TwoDFASipser.lean` | Exercise `exer:2dfa-loop-elimination-sipser`: the depth-first search of the tree of accepting configurations, performed by a two-way automaton of quadratic size |
 | `Exercises/CompressionSLP.lean`, `Exercises/CompressionRat.lean`, `Exercises/CompressionMapLift.lean`, `Exercises/CompressionReg.lean` | Exercises `exer:rational-compression` and `exer:regular-compression`: operations on grammar compressions, the rational case through a bimachine, Claim `claim:map-compression`, and the induction over the composition tree |
+| `Exercises/RegularGrowth.lean`, `Exercises/RationalGrowth.lean` | the loop analysis of a deterministic automaton and the growth gap theorem for regular languages (`Transducers.Exercises.regular_growth_dichotomy`), and its transport to rational functions (`Transducers.Exercises.rationalFun_growth_dichotomy`, `Transducers.Exercises.rationalFun_loop_of_superPoly`, `Transducers.Exercises.exists_rational_bool_identity_of_superPoly`).  This is the analysis that the solutions of the exercises on the ideals of rational functions rest on; see the addendum at the end of this file |
 | `Exercises/ForwardPrenex.lean`, `Exercises/ForwardComp.lean`, `Exercises/ForwardStep.lean` | Exercise `exer:forward-for-transducer`: the forward prenex normal form (the two designated positions are the first and the second, so that no last-to-first loop is introduced), the closure of the forward for-transducers under composition, and the fact that the one-step transducer of the enumeration is rational in the first-to-last direction because it is order preserving, hence a bimachine |
 | `Labels.lean` | the label-indexed view of the formalisation: for every result of the book that is formalised, an alias in the namespace `Transducers.Book` whose Lean name is the LaTeX label of the result, followed by `assert_no_sorry` or `assert_uses_sorry` according to its status in the tables below.  Kept in step with those tables by `tools/gen_labels.py --check`; see `LABELS.md` |
 
@@ -1942,3 +1943,77 @@ contains a `sorry`.
 section becomes **65 of the 81 exercises proved outright** and **16 proved from
 an explicit hypothesis** (the seventeen tabulated in the addendum of
 `EXERCISES.md`, less `exer:non-minimal-automaton`).
+
+## Addendum: the loop analysis, and the two hypotheses of `Exercises/Ideals.lean` that it discharges
+
+The four exercises of `rational-functions.tex` on the ideals of rational
+functions (`exer:full-ideal`, `exer:polynomial-ideals`, `exer:all-ideals`,
+`exer:decide-same-ideal`) used to rest on four named hypotheses, because the
+book carries out the loop analysis behind them only in outline.  That analysis
+is now formalised, in two new files, and two of the four hypotheses are proved.
+
+`Exercises/RegularGrowth.lean` carries out the analysis for an arbitrary
+deterministic automaton `M` over a finite alphabet:
+
+* `Transducers.Exercises.RegGrowth.AmbCycle M` — condition (*) of Exercise
+  `exer:polynomial-image-growth-decidable`, for a deterministic automaton: two
+  loops of the same length with different labels on a state that is both
+  reachable from the initial state and co-reachable to an accepting state.
+  (The Mealy-machine form of the same condition, `Mealy.AmbiguousCycle`, was
+  already in `Exercises/PartA.lean`; this is the form the counting needs.)
+* `Transducers.Exercises.RegGrowth.Chain M q k` — from `q` one can reach `k`
+  loops, each in a strictly lower strongly connected component than the last,
+  and then an accepting state.  It measures the degree of the growth.
+* `Transducers.Exercises.RegGrowth.reaches_of_loop_shift` — the shifting lemma:
+  if the word `u v` is also read as `x^d u v'` along a loop `x` at `r`, and `u`
+  leads from `r` to `r'`, then `r` is reachable from `r'`.  It is what makes the
+  words produced by a chain of loops pairwise distinct.
+* `Transducers.Exercises.RegGrowth.chain_lower_bound` — a chain of `k` loops
+  produces `Ω(n^k)` accepted words of length at most `n`;
+  `Transducers.Exercises.RegGrowth.accCount_le_of_not_chain` — with no ambiguous
+  cycle and no chain of `k+1` loops, there are `O(n^k)` of them.
+* `Transducers.Exercises.regular_growth_dichotomy` — the **growth gap theorem**:
+  for a nonempty regular language over a finite alphabet, either it contains all
+  the words `p · x^{b_1} y^{1-b_1} ⋯ · s` obtained by following a sequence of
+  bits along two loops of the same length with different labels — and then it has
+  super-polynomially many words — or the number of its words of length at most
+  `n` is `Θ(n^k)` for some `k`.
+
+`Exercises/RationalGrowth.lean` transports this to rational functions, using
+that a rational function has linearly bounded output length (Theorem
+`thm:bimachines`) and that every word of its range has a preimage of linearly
+bounded length (the Uniformisation Lemma `lem:uniformisation`, through
+`Transducers.Exercises.exists_rationalFun_section`):
+
+* `Transducers.Exercises.rationalFun_growth_dichotomy`;
+* `Transducers.Exercises.rationalFun_loop_of_superPoly`;
+* `Transducers.Exercises.exists_rational_bool_identity_of_superPoly`.
+
+**The two hypotheses discharged.**  In `Exercises/Ideals.lean`,
+`Transducers.Exercises.IdentityFromSuperPolyOutputs` and
+`Transducers.Exercises.OutputsGrowthDichotomy` are now theorems with exactly the
+statements they had as `def … : Prop`, and they have been removed from the
+argument lists of `full_ideal_iff`, `all_ideals`, `sameIdeal_iff` and
+`sameIdeal_decidable`, whose conclusions are unchanged.  Exercise
+`exer:full-ideal` is therefore **proved outright**.
+
+**Still assumed.**  `Transducers.Exercises.SortedFromOmegaOutputs` and
+`Transducers.Exercises.FactorThroughSortedOfOutputsPoly` are unchanged, so
+`exer:polynomial-ideals`, `exer:all-ideals` and `exer:decide-same-ideal` are
+still proved from those two — and from those two only, where they previously
+took four.
+
+`#print axioms` on `Transducers.Exercises.regular_growth_dichotomy`,
+`Transducers.Exercises.rationalFun_growth_dichotomy`,
+`Transducers.Exercises.rationalFun_loop_of_superPoly`,
+`Transducers.Exercises.exists_rational_bool_identity_of_superPoly`,
+`Transducers.Exercises.IdentityFromSuperPolyOutputs`,
+`Transducers.Exercises.OutputsGrowthDichotomy`,
+`Transducers.Exercises.full_ideal_iff`, `Transducers.Exercises.all_ideals` and
+`Transducers.Exercises.sameIdeal_iff` reports only `propext`,
+`Classical.choice`, `Quot.sound`, and neither new file contains a `sorry`.
+
+**Counts.**  With `exer:full-ideal` proved outright, the tally of the `## Status`
+section becomes **66 of the 81 exercises proved outright** and **15 proved from
+an explicit hypothesis**.  The counts of the numbered results of the book are
+unchanged: this work touches no numbered result.
