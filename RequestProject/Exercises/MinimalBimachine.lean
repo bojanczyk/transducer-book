@@ -25,17 +25,34 @@ The solution has two halves.
   well defined and, on a machine all of whose suffix states are reachable,
   surjective (`Transducers.Exercises.card_classSet_le`).
 * *The bound is attained*: some bimachine has one suffix state per class.  This
-  is the construction in the proof of Theorem
-  `thm:machine-independent-rational-functions`, refined so that the first of its
-  two steps is read as a suffix automaton; the project has that theorem, but not
-  in a form that exposes the construction, so this half is the explicit
-  hypothesis `Transducers.Exercises.CanonicalSuffixBimachineExists`.
+  is what the second paragraph of the solution claims, reading the first of the
+  two steps of the proof of Theorem
+  `thm:machine-independent-rational-functions` as a suffix automaton, and it is
+  the explicit hypothesis `Transducers.Exercises.CanonicalSuffixBimachineExists`.
+  **That half is false**, and this file now proves it false
+  (`Transducers.Exercises.not_canonicalSuffixBimachineExists`).  The counterexample is the
+  function `w ↦ [w.length is even]` over a one letter alphabet: all suffixes are
+  `∼`-equivalent, so `∼` has a single class, but a bimachine with a single
+  suffix state computes a function whose output on a string is a prefix of its
+  output on any one letter extension, which this function is not.  Two suffix
+  states are needed, to tell the empty suffix from the others; that is exactly
+  the end-of-input flush of the subsequential transducer of the second step of
+  the proof of Theorem `thm:machine-independent-rational-functions`, which a
+  suffix automaton with one state per `∼`-class cannot trigger.
 
 Everything else — that a suffix automaton with exactly that many states *is* the
 automaton of `∼`-classes, initial state and transitions included, and hence that
-any two minimal ones are isomorphic — is proved:
-`Transducers.Exercises.suffix_automaton_unique` is the unconditional statement,
-and `Transducers.Exercises.minimal_bimachine_lexicographic` is the exercise.
+any two bimachines attaining the bound have isomorphic suffix automata — is
+proved: `Transducers.Exercises.suffix_automaton_unique` is the unconditional
+statement.  Since the bound is not always attained, this does not settle the
+exercise: `Transducers.Exercises.minimal_bimachine_lexicographic` is the
+exercise as the solution of the book intends it, and it is proved *from the
+hypothesis that the bound is attained*, which is not a theorem.  What is missing
+for an unconditional proof is a Myhill–Nerode theory of bimachines proper: a
+canonical right-to-left congruence, finer than `∼`, that records how much of the
+output is still pending, and which every suffix automaton refines and some
+bimachine realises.  The counterexample below shows that `∼` itself is not that
+congruence.
 
 As in the book, all states of the suffix automaton are assumed reachable
 (`Transducers.Exercises.SuffixReachable`); unreachable states can be removed
@@ -219,31 +236,36 @@ def MinimalSuffixBimachine {P S : Type} (f : List A → List B) (M : Bimachine A
     ∀ (P' S' : Type), Finite P' → Finite S' → ∀ M' : Bimachine A B P' S', M'.eval = f →
       SuffixReachable M' → Nat.card S ≤ Nat.card S'
 
-/-- **Assumed: the bound of the first half of the solution is attained.**
+/-- **The bound of the first half of the solution is attained** — the second paragraph of the
+solution of `exer:minimal-bimachine-lexicographic`: for every function computed by a bimachine
+there is a bimachine, with all suffix states reachable, whose suffix automaton has exactly one
+state per `∼`-class.
 
-For every function computed by a bimachine there is a bimachine, with all suffix states
-reachable, whose suffix automaton has exactly one state per `∼`-class.
+**This statement is false**, and `Transducers.Exercises.not_canonicalSuffixBimachineExists`
+proves it false.  It is kept, with the statement the solution of the book intends, because
+`Transducers.Exercises.minimal_bimachine_lexicographic` is proved from it; a result proved from
+it is therefore *not* proved outright.
 
-*Why this is true.*  This is the second paragraph of the solution of
-`exer:minimal-bimachine-lexicographic`.  The proof of Theorem
+*Where the solution of the book breaks down.*  The proof of Theorem
 `thm:machine-independent-rational-functions` decomposes the function into a right-to-left
 automaton that annotates every position with the `∼`-class of the suffix after it, followed by a
-subsequential function on the annotated strings; the first step, read as a suffix automaton, is
-precisely the automaton of `∼`-classes, and the state of the subsequential transducer after an
-annotated prefix depends only on the prefix and on the class of the remaining suffix — because
-the annotations can be recovered from that class, `∼` being a left congruence — so it can serve
-as the state of the prefix automaton.
+*subsequential* function on the annotated strings.  Reading the first step as the suffix
+automaton of a bimachine and the second step as its prefix automaton does give the state of the
+prefix automaton correctly — the annotations can be recovered from the class of the remaining
+suffix, `∼` being a left congruence.  What it does not give is the *end of input*: a
+subsequential transducer flushes a final output when the input ends, and a bimachine can only
+produce that flush at the gap whose suffix state says that the remaining suffix is empty.  The
+automaton of `∼`-classes need not say that: for the function of the counterexample below, all
+suffixes are `∼`-equivalent, and the flush would be produced at every gap.
 
-*Why it is not available here.*  The project proves Theorem
-`thm:machine-independent-rational-functions` in the direction that is used elsewhere, and it
-does not expose the two-step decomposition of its proof in a form from which the suffix
-automaton of `∼`-classes can be read off.  Only this existence statement is assumed; the
-uniqueness argument, which is what the exercise asks for, is proved. -/
+So the suffix automaton of a minimal bimachine is in general strictly finer than the automaton
+of `∼`-classes, and the exercise needs a canonical congruence that `∼` is not. -/
 def CanonicalSuffixBimachineExists (f : List A → List B) : Prop :=
   ∃ (P S : Type) (_ : Finite P) (_ : Finite S) (M : Bimachine A B P S),
     M.eval = f ∧ SuffixReachable M ∧ Nat.card S = Nat.card (ClassSet f)
 
-/-- A minimal bimachine has exactly one suffix state per `∼`-class. -/
+/-- A minimal bimachine has exactly one suffix state per `∼`-class, *if* the bound is attained.
+The hypothesis `hattain` is false in general — see `not_canonicalSuffixBimachineExists`. -/
 lemma card_eq_of_minimal [Finite P] [Finite S] {f : List A → List B} {M : Bimachine A B P S}
     (hattain : CanonicalSuffixBimachineExists f) (hmin : MinimalSuffixBimachine f M) :
     Nat.card S = Nat.card (ClassSet f) := by
@@ -257,7 +279,10 @@ of states of the suffix automaton alone, then the suffix automaton of a minimal 
 unique up to isomorphism.
 
 The only assumption is `CanonicalSuffixBimachineExists`, that the lower bound of the first half
-of the solution is attained; see its docstring. -/
+of the solution is attained.  That assumption is *false in general*
+(`not_canonicalSuffixBimachineExists`), so this theorem, although true as stated, does not prove
+the exercise: for a function for which the bound is not attained it says nothing.  See the
+docstring of `CanonicalSuffixBimachineExists` and the header of this file. -/
 theorem minimal_bimachine_lexicographic {P₁ S₁ P₂ S₂ : Type} [Finite P₁] [Finite S₁] [Finite P₂]
     [Finite S₂] {f : List A → List B} {M₁ : Bimachine A B P₁ S₁} {M₂ : Bimachine A B P₂ S₂}
     (hattain : CanonicalSuffixBimachineExists f)
@@ -266,4 +291,143 @@ theorem minimal_bimachine_lexicographic {P₁ S₁ P₂ S₂ : Type} [Finite P�
   suffix_automaton_unique hmin₁.1 hmin₂.1 hmin₁.2.1 hmin₂.2.1
     (card_eq_of_minimal hattain hmin₁) (card_eq_of_minimal hattain hmin₂)
 
+/-! ## The bound of the first half is *not* attained in general
+
+The following is a counterexample to `CanonicalSuffixBimachineExists`: a function computed by a
+bimachine for which `∼` has exactly one class, but which no bimachine with a single suffix state
+computes.  See the docstring of `CanonicalSuffixBimachineExists`. -/
+
+section Counterexample
+
+open Transducers
+
+/-- A bimachine whose suffix automaton has only one state computes a function whose values grow
+monotonically along prefixes: the output on `u` is a prefix of the output on `u ++ [a]`.  Indeed,
+with a single suffix state the output produced at the positions of `u` does not depend on what
+follows `u`, and the output produced at the last gap of `u` is produced at the corresponding gap
+of `u ++ [a]` as well. -/
+lemma eval_prefix_eval_append_of_subsingleton {P S : Type} [Subsingleton S]
+    (M : Bimachine A B P S) (u : List A) (a : A) : M.eval u <+: M.eval (u ++ [a]) := by
+  have hu : M.eval u = BimachIndex.bmPref M M.prefixInit u (BimachIndex.sfx M [])
+      ++ M.evalFrom (strTrans M.prefixStep u M.prefixInit) [] := by
+    rw [Bimachine.eval_eq_evalFrom, ← BimachIndex.evalFrom_append M M.prefixInit u []]
+    simp
+  have hua : M.eval (u ++ [a]) = BimachIndex.bmPref M M.prefixInit u (BimachIndex.sfx M [])
+      ++ M.evalFrom (strTrans M.prefixStep u M.prefixInit) [a] := by
+    rw [Bimachine.eval_eq_evalFrom, BimachIndex.evalFrom_append M M.prefixInit u [a]]
+    congr 2
+    exact Subsingleton.elim _ _
+  set q := strTrans M.prefixStep u M.prefixInit with hq
+  have hstep : M.evalFrom q [a] = M.evalFrom q [] ++ M.out (M.prefixStep q a) M.suffixInit := by
+    rw [Bimachine.evalFrom_cons]
+    simp only [Bimachine.evalFrom_nil]
+    congr 2
+    exact Subsingleton.elim _ _
+  rw [hu, hua, hstep, ← List.append_assoc]
+  exact ⟨_, rfl⟩
+
+/-- The function of the counterexample: a string over a one letter alphabet is mapped to the
+single letter that says whether its length is even. -/
+def evenLenFun (w : List Unit) : List Bool := [decide (w.length % 2 = 0)]
+
+/-- A bimachine for `evenLenFun`: the prefix automaton computes the parity of the length of the
+prefix, the suffix automaton tests whether the suffix is empty, and the whole output is produced
+at the last gap. -/
+def evenLenBimach : Bimachine Unit Bool Bool Bool where
+  prefixInit := true
+  prefixStep p _ := !p
+  suffixInit := true
+  suffixStep _ _ := false
+  out p s := if s then [p] else []
+
+lemma evenLenBimach_evalFrom (p : Bool) (w : List Unit) :
+    evenLenBimach.evalFrom p w = [if w.length % 2 = 0 then p else !p] := by
+  induction w generalizing p with
+  | nil => simp [evenLenBimach]
+  | cons a w ih =>
+    rw [Bimachine.evalFrom_cons]
+    have hs : strTrans evenLenBimach.suffixStep (a :: w).reverse evenLenBimach.suffixInit
+        = false := by
+      simp [strTrans, List.reverse_cons, evenLenBimach]
+    have hout : evenLenBimach.out p false = [] := by simp [evenLenBimach]
+    rw [hs, hout, List.nil_append, ih]
+    have hstep : evenLenBimach.prefixStep p a = !p := rfl
+    rw [hstep]
+    simp only [List.length_cons]
+    rcases Nat.even_or_odd w.length with h | h
+    · rw [Nat.even_iff] at h
+      simp [h, Nat.add_mod]
+    · rw [Nat.odd_iff] at h
+      simp [h, Nat.add_mod]
+
+lemma evenLenBimach_eval : evenLenBimach.eval = evenLenFun := by
+  funext w
+  rw [Bimachine.eval_eq_evalFrom, evenLenBimach_evalFrom]
+  show _ = [decide (w.length % 2 = 0)]
+  have : evenLenBimach.prefixInit = true := rfl
+  rw [this]
+  by_cases h : w.length % 2 = 0 <;> simp [h]
+
+lemma evenLenBimach_suffixReachable : SuffixReachable evenLenBimach := by
+  intro s
+  cases s with
+  | false => exact ⟨[()], rfl⟩
+  | true => exact ⟨[], rfl⟩
+
+/-- All strings are `∼`-equivalent for `evenLenFun`: the outputs are single letters, so they are
+always at left distance at most `1`. -/
+lemma boundedVarRel_evenLenFun (v₁ v₂ : List Unit) : BoundedVarRel evenLenFun v₁ v₂ :=
+  ⟨1, fun w => leftDist_le (v := []) (v₁ := evenLenFun (w ++ v₁)) (v₂ := evenLenFun (w ++ v₂))
+    (by simp) (by simp) (by simp [evenLenFun]) (by simp [evenLenFun])⟩
+
+lemma clsOf_evenLenFun (w : List Unit) : clsOf evenLenFun w = Set.univ :=
+  Set.eq_univ_of_forall fun w' => boundedVarRel_evenLenFun w w'
+
+lemma classSet_evenLenFun : ClassSet evenLenFun = {Set.univ} := by
+  ext C
+  constructor
+  · rintro ⟨w, rfl⟩
+    exact clsOf_evenLenFun w
+  · rintro rfl
+    exact ⟨[], (clsOf_evenLenFun []).symm⟩
+
+lemma card_classSet_evenLenFun : Nat.card (ClassSet evenLenFun) = 1 := by
+  rw [classSet_evenLenFun]
+  simp
+
+/-- No bimachine with a single suffix state computes `evenLenFun`. -/
+lemma two_le_card_of_eval_evenLenFun {P S : Type} [Finite S]
+    (M : Bimachine Unit Bool P S) (hf : M.eval = evenLenFun) : 2 ≤ Nat.card S := by
+  haveI : Nonempty S := ⟨M.suffixInit⟩
+  have h1 : 1 ≤ Nat.card S := Nat.one_le_iff_ne_zero.2 (Nat.card_ne_zero.2 ⟨‹Nonempty S›, ‹Finite S›⟩)
+  have h2 : Nat.card S ≠ 1 := by
+    intro h
+    haveI : Subsingleton S := (Nat.card_eq_one_iff_unique.1 h).1
+    have hpref := eval_prefix_eval_append_of_subsingleton M [] ()
+    rw [hf] at hpref
+    simp [evenLenFun] at hpref
+  omega
+
+/-- **The hypothesis `CanonicalSuffixBimachineExists` is false.**  For `evenLenFun` the relation
+`∼` has a single class, but every bimachine computing it has at least two suffix states. -/
+theorem not_canonicalSuffixBimachineExists :
+    ¬ CanonicalSuffixBimachineExists evenLenFun := by
+  rintro ⟨P, S, hP, hS, M, hf, hreach, hcard⟩
+  haveI : Finite S := hS
+  have h2 := two_le_card_of_eval_evenLenFun M hf
+  rw [hcard, card_classSet_evenLenFun] at h2
+  omega
+
+/-- The bimachine `evenLenBimach` is minimal in the sense of the exercise, and it has two suffix
+states, whereas `∼` has a single class: the lower bound `card_classSet_le` is strict here. -/
+theorem evenLenBimach_minimal : MinimalSuffixBimachine evenLenFun evenLenBimach := by
+  refine ⟨evenLenBimach_eval, evenLenBimach_suffixReachable, ?_⟩
+  intro P' S' _ hS' M' hf' _
+  haveI : Finite S' := hS'
+  have := two_le_card_of_eval_evenLenFun M' hf'
+  simpa using this
+
+end Counterexample
+
 end Transducers.Exercises
+

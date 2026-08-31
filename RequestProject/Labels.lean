@@ -960,7 +960,7 @@ alias «exer:rational-composition-finiteness-undecidable» :=
   Transducers.Exercises.iterates_finiteness_undecidable
 assert_no_sorry «exer:rational-composition-finiteness-undecidable»
 
-/-- **Exercise `exer:minimal-bimachine-lexicographic`** (the lexicographically least minimal bimachine): `Transducers.Exercises.minimal_bimachine_lexicographic`, from the hypothesis `Transducers.Exercises.CanonicalSuffixBimachineExists`. -/
+/-- **Exercise `exer:minimal-bimachine-lexicographic`** (the lexicographically least minimal bimachine): `Transducers.Exercises.minimal_bimachine_lexicographic`, from the hypothesis `Transducers.Exercises.CanonicalSuffixBimachineExists` (that a bimachine attains the lower bound of `Transducers.Exercises.card_classSet_le`).  That hypothesis is **false**: `Transducers.Exercises.not_canonicalSuffixBimachineExists` refutes it.  So the exercise is *not* proved; what is proved unconditionally is the lower bound `Transducers.Exercises.card_classSet_le` and the uniqueness `Transducers.Exercises.suffix_automaton_unique` of a suffix automaton that attains it. -/
 alias «exer:minimal-bimachine-lexicographic» :=
   Transducers.Exercises.minimal_bimachine_lexicographic
 assert_no_sorry «exer:minimal-bimachine-lexicographic»

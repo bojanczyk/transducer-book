@@ -207,7 +207,7 @@ all eleven are aliased in `RequestProject/Labels.lean`.
 | Exercise `exer:minimal-sequential` (minimal sequential transducers are unique up to isomorphism) | `minimal_sequential_unique` (with `residOf`, `canonSeq`, `MinimalFor`, `SeqIso`) | proved |
 | Exercise `exer:minimal-subsequential` (minimal subsequential transducers are not unique) | `minimal_subsequential_not_unique` | proved |
 | Exercise `exer:non-minimal-bimachine` (minimal bimachines are not unique) | `minimal_bimachine_not_unique` | proved |
-| Exercise `exer:minimal-bimachine-lexicographic` (the lexicographically least minimal bimachine) | `minimal_bimachine_lexicographic` (with `card_classSet_le`, `suffix_automaton_unique`, `SuffixIso`) | proved from the hypothesis `CanonicalSuffixBimachineExists` (that the lower bound on the suffix automaton is attained) |
+| Exercise `exer:minimal-bimachine-lexicographic` (the lexicographically least minimal bimachine) | `minimal_bimachine_lexicographic` (with `card_classSet_le`, `suffix_automaton_unique`, `SuffixIso`) | **not proved**: proved from the hypothesis `CanonicalSuffixBimachineExists` (that the lower bound on the suffix automaton is attained), and that hypothesis is **false** — `not_canonicalSuffixBimachineExists` refutes it.  The lower bound `card_classSet_le` and the uniqueness `suffix_automaton_unique` of a suffix automaton attaining it are proved outright |
 | Exercise `exer:non-minimal-automaton` (a rational function with two non-isomorphic minimal unambiguous transducers) | `non_minimal_automaton` (with `MinimalUnambiguousSize`, `NFAOIso`) | proved from the hypothesis `EvenParityNeedsThreeStates` (the case analysis the solution sketches) |
 
 ### Regular functions, introduction (`regular-intro.tex`)
@@ -862,11 +862,32 @@ Of the 81:
   | `exer:decide-same-ideal` | the same four |
   | `exer:rational-injectivity-decidable` | `EffectiveWeightedEvalEq`, `EffectiveRationalSection` |
   | `exer:rational-composition-finiteness-undecidable` | `IteratesReduction` |
-  | `exer:minimal-bimachine-lexicographic` | `CanonicalSuffixBimachineExists` |
+  | `exer:minimal-bimachine-lexicographic` | `CanonicalSuffixBimachineExists` — **now known to be false**, see the note below the table |
   | `exer:non-minimal-automaton` | `EvenParityNeedsThreeStates` |
   | `exer:fo-non-elementary` | `FirstStringOfOrderDefinable` |
   | `exer:fo-suc` | `EFSuccSeparation` |
   | `exer:for-transducer-continuity-nonelementary` | `FirstStringOfOrderDefinable` |
+
+  Of these seventeen hypotheses, one is now known to be **false**:
+  `CanonicalSuffixBimachineExists`, the second paragraph of the solution of
+  `exer:minimal-bimachine-lexicographic`, which says that some bimachine has one
+  suffix state per class of the relation `∼` of Theorem
+  `thm:machine-independent-rational-functions`.
+  `Transducers.Exercises.not_canonicalSuffixBimachineExists`
+  (`Exercises/MinimalBimachine.lean`) refutes it, with the function `w ↦ [w.length is
+  even]` over a one letter alphabet: all suffixes are `∼`-equivalent, so `∼` has a
+  single class, while every bimachine computing that function has at least two
+  suffix states (`evenLenBimach_minimal` exhibits a minimal one, with two).  The
+  reason is the end-of-input flush of the subsequential transducer of the second
+  step of the proof of that theorem: a bimachine can only produce it at a gap whose
+  suffix state says that the remaining suffix is empty, which the automaton of
+  `∼`-classes need not say.  So `exer:minimal-bimachine-lexicographic` must be
+  counted as **not proved**: `minimal_bimachine_lexicographic` is true as stated but
+  says nothing about a function for which the bound is not attained.  An
+  unconditional proof needs a Myhill–Nerode theory of bimachines proper — a
+  canonical right-to-left congruence, finer than `∼`, that records how much output
+  is still pending, is refined by every suffix automaton, and is realised by some
+  bimachine.  The project does not have it.
 
 * **One is formalised in part**: `exer:polyregular-unmarked-squaring`, of which
   the step the solution turns on — unmarked squaring is compatible with

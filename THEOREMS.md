@@ -1853,3 +1853,51 @@ Five scripts in `tools/` check the bookkeeping, and all five report no problem.
 
 `FORMALISATION.md` is a short prose companion to this file, addressed to a
 reader of the book rather than to a maintainer of the formalisation.
+
+## Addendum: the solution of `exer:minimal-bimachine-lexicographic` and Theorem `thm:machine-independent-rational-functions`
+
+Theorem `thm:machine-independent-rational-functions` itself is unchanged: it is
+proved outright (`Transducers.isRationalFun_iff`, `RatIndex.lean`,
+`SubseqRat.lean`, `RatAnnot.lean`), and `#print axioms` on it reports only
+`propext`, `Classical.choice`, `Quot.sound`.
+
+What has changed is the reading of its proof that the solution of Exercise
+`exer:minimal-bimachine-lexicographic` makes.  That solution says that the first
+of the two steps of the proof — the right-to-left automaton that annotates every
+position with the class of the suffix after it, for the relation `∼` of the
+theorem — can be read as the suffix automaton of a bimachine, so that some
+bimachine has exactly one suffix state per `∼`-class.  This is the hypothesis
+`Transducers.Exercises.CanonicalSuffixBimachineExists` of
+`RequestProject/Exercises/MinimalBimachine.lean`, and it is **false**:
+
+* `Transducers.Exercises.not_canonicalSuffixBimachineExists` refutes it, for the
+  function `w ↦ [w.length is even]` over a one letter alphabet.  All suffixes are
+  `∼`-equivalent for that function, so `∼` has a single class
+  (`card_classSet_evenLenFun`), while a bimachine with a single suffix state can
+  only compute a function whose output on a string is a prefix of its output on
+  any one letter extension (`eval_prefix_eval_append_of_subsingleton`), which
+  this one is not.  `evenLenBimach_minimal` exhibits a minimal bimachine for it,
+  with two suffix states.
+* The reason is the *end of input*.  The second step of the proof of the theorem
+  is a **subsequential** function, and a subsequential transducer flushes a final
+  output when the input ends; a bimachine can only produce that flush at the gap
+  whose suffix state says that the remaining suffix is empty, and the automaton
+  of `∼`-classes need not say that.
+* Consequently the lower bound `Transducers.Exercises.card_classSet_le` — every
+  suffix-reachable bimachine has at least as many suffix states as `∼` has
+  classes — is in general **strict**, and Exercise
+  `exer:minimal-bimachine-lexicographic` is *not* proved by this project.
+  `Transducers.Exercises.minimal_bimachine_lexicographic` is true as stated, but
+  it assumes the bound attained, so it says nothing about a function for which it
+  is not.  An unconditional proof needs a Myhill–Nerode theory of bimachines
+  proper: a canonical right-to-left congruence, finer than `∼`, which records how
+  much of the output is still pending, which every suffix automaton refines, and
+  which some bimachine realises.  `EXERCISES.md` records the same.
+
+`#print axioms` on the declarations added for this
+(`Transducers.Exercises.not_canonicalSuffixBimachineExists`,
+`Transducers.Exercises.evenLenBimach_minimal`,
+`Transducers.Exercises.suffix_automaton_unique`,
+`Transducers.Exercises.minimal_bimachine_lexicographic`) reports only `propext`,
+`Classical.choice`, `Quot.sound`, and `RequestProject/Exercises/MinimalBimachine.lean`
+contains no `sorry`.
