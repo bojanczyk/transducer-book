@@ -263,7 +263,7 @@ all eleven are aliased in `RequestProject/Labels.lean`.
 | --- | --- | --- |
 | Exercise `exer:for-transducers-simulate-fo` (a first-order sentence is computed by a for-transducer of linear size) | `exists_forProg_of_isFO` (with `trans`, `fsize`, `progSize`, `foProg`) | proved |
 | Exercise `exer:for-transducer-continuity-nonelementary` (the preimage nfa can be non-elementary) | `for_transducer_continuity_nonelementary` (with `PolyBounded`, `progSize`) | proved from the hypothesis `FirstStringOfOrderDefinable`, in the size sense (running time is not modelled) |
-| Exercise `exer:forward-for-transducer` (forward for-transducers = marked squaring and rational functions) | `forwardFor_iff_ratMarkedSquare` (with `ForwardProg`, `IsForwardFor`, `RatMarkedFam`, `IsRatMarkedSquare`, `isForwardFor_of_isRationalFun`, `isForwardFor_markedSquare`) | proved from explicit hypotheses |
+| Exercise `exer:forward-for-transducer` (forward for-transducers = marked squaring and rational functions) | `forwardFor_iff_ratMarkedSquare` (with `ForwardProg`, `IsForwardFor`, `RatMarkedFam`, `IsRatMarkedSquare`, `isForwardFor_of_isRationalFun`, `isForwardFor_markedSquare`) | proved |
 
 Every exercise of these chapters carries a `\label` in the sources, so every
 formalised one is aliased in `RequestProject/Labels.lean`.
@@ -940,19 +940,16 @@ and, for the conditional ones, exactly what is assumed.
   general statement is `Transducers.Exercises.isRationalFun_of_appendOnlySST`
   in `Exercises/SeqSST.lean`.
 
-  Assumed, as three `Prop`-valued hypotheses taken as ordinary theorem arguments:
+  The three remaining steps of the author's solution, which used to be assumed
+  as `Prop`-valued hypotheses taken as theorem arguments, are now proved; the
+  exercise is unconditional.
 
-  | hypothesis | what it says | why it is not proved here |
+  | step | Lean | how it is proved |
   | --- | --- | --- |
-  | `ForwardForClosedUnderComp` | forward for-transducers are closed under composition | the composition construction of `PartD/ForComp*.lean` keeps the direction of every loop it is given, but it routes the inner program through `for_nest_form`, which prepends one last-to-first loop |
-  | `ForwardPrenexNormalForm` | a forward program is equivalent to a forward program in prenex form | the same: `trFor` preserves directions, but the prenex construction of `PartD/ForPrenexTop.lean` prepends a last-to-first loop, whose only role is to bind a variable to the *last* position of the input |
-  | `ForwardStepRational` | `stepFun true` is a rational function | the project proves it regular, as a streaming string transducer (`isRegularFun_stepFun`); for the first-to-last direction that transducer is append-only, which is what makes it rational, and proving so means redoing the correctness proof of `PartD/PolyStep.lean` against a one-way machine |
+  | `ForwardForClosedUnderComp` | forward for-transducers are closed under composition | `Exercises/ForwardComp.lean`.  The composed program of Lemma `lem:for-closed-under-composition` is named `Transducers.compProgAt` and its correctness `Transducers.eval_compProgAt`, so that the loops can be inspected: `lenProg` is a first-to-last loop, `tr` reproduces the loops of the nest it is given, `closeProg` binds free variables with the first-to-last loop of `firstOnly`, and the short-input branch is loop-free (`forwardProg_compProgAt`).  The only last-to-first loop of the construction came from the nest form `for_nest_form`, which is replaced by the forward nest form `for_nest_form_fwd`. |
+  | `ForwardPrenexNormalForm` | a forward program is equivalent to a forward program in prenex form | `Exercises/ForwardPrenex.lean` and `Exercises/ForwardComp.lean`.  `trFor` reproduces the direction of every loop it translates and the loop it adds for a sequential composition (in `mergeLoops`) is first-to-last (`fwd_trFor`); the *only* last-to-first loop of Lemma `lemma:prenex-normal-form` is the one that binds `lv` to the **last** position.  It is removed by taking the two designated positions to be the **first and the second** instead of the first and the last: nothing in the merging construction uses that the second designated position is last, only that it comes after the first.  `Transducers.exec_merge` (`PartD/ForMerge.lean`), `Transducers.exec_merge_fresh` and `Transducers.trFor_spec` (`PartD/ForPrenex.lean`) have therefore been generalised, in place, from `pos zv = 0 ∧ pos lv = w.length - 1` to `pos zv < pos lv ∧ pos lv < w.length`; the book's prenex form and the forward one are both instances. |
+  | `ForwardStepRational` | `stepFun true` is a rational function | `Exercises/ForwardStep.lean`.  Contrary to what this file used to say, `stepSST true A k` is *not* append-only: it has three registers.  But for `d = true` every update concatenates them in the fixed order `res`, `grp`, `cur` and only appends new letters, so the transformation is order preserving, and the only thing a letter's contribution does not know is whether it will survive.  That is exactly a bimachine: the prefix automaton is the state space `BS` of the transducer and the suffix automaton carries the next letter together with the map `phi : BS → Reg → Bool` saying which registers still reach the output.  Rationality then follows from Theorem `thm:bimachines`. |
 
-  To make the exercise unconditional one would replay `PartD/ForMerge.lean`,
-  `ForPrenex.lean` and `ForPrenexTop.lean` with the last-to-first loop replaced
-  by a forward loop over the *second* position (the merge only needs two
-  distinct positions), and redo `PolyStep.lean` and `PolyScan.lean` against
-  one-way machines.
 * **Item (b) of `exer:decide-rational-colision`** is formalised as
   `Transducers.Exercises.rationalFun_equal_length_decidable`
   (`Exercises/LengthCollision.lean`).  The author's solution is: the pairs
@@ -981,10 +978,12 @@ and, for the conditional ones, exactly what is assumed.
   Part B: Mathlib's `Primrec`/`Computable` API has no arithmetic on `ℤ`.
 
 **Counts.**  The book has 81 exercises, every one with a written solution, and
-**all 81 are now formalised**: **63 proved outright** and **18 proved from an
-explicit hypothesis**.  The eighteen are the seventeen tabulated in the addendum
-above together with `exer:forward-for-transducer`; `exer:decide-rational-colision`
-was already among them for item (a) and now carries hypotheses for item (b) as
-well.  Every one of the 81 has an alias in `RequestProject/Labels.lean` with
+**all 81 are now formalised**: **64 proved outright** and **17 proved from an
+explicit hypothesis**.  The seventeen are the ones tabulated in the addendum
+above; `exer:decide-rational-colision` was already among them for item (a) and
+now carries hypotheses for item (b) as well.  `exer:forward-for-transducer` was
+the eighteenth: its three hypotheses -- `ForwardForClosedUnderComp`,
+`ForwardPrenexNormalForm` and `ForwardStepRational` -- have since been
+discharged, so it is proved outright.  Every one of the 81 has an alias in `RequestProject/Labels.lean` with
 `assert_no_sorry`, so none depends on `sorryAx`, and there is no exercise of the
 book with a written solution and no formalisation.

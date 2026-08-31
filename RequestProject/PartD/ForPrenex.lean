@@ -416,7 +416,7 @@ lemma FreshNest.merge {a lo₁ hi₁ lo₂ hi₂ pi zv lv : ℕ} {L₁ L₂ : Li
 
 /-- `Transducers.exec_merge`, with the freshness hypotheses packaged as `FreshNest`. -/
 lemma exec_merge_fresh (w : List A) (zv lv a : ℕ) (hzv : zv < a) (hlv : lv < a)
-    (hn : 2 ≤ w.length) (pos : ℕ → ℕ) (hposz : pos zv = 0) (hposl : pos lv = w.length - 1)
+    (pos : ℕ → ℕ) (hposz : pos zv < pos lv) (hposl : pos lv < w.length)
     (bv : ℕ → Bool) (pi lo₁ hi₁ lo₂ hi₂ : ℕ) (L₁ L₂ : List (Bool × ℕ)) (b₁ b₂ : ForProg A B)
     (h₁ : FreshNest a lo₁ hi₁ L₁ b₁) (h₂ : FreshNest a lo₂ hi₂ L₂ b₂)
     (hpa : a ≤ pi) (hpl : pi < lo₁) (hle₁ : lo₁ ≤ hi₁) (hmid : hi₁ ≤ lo₂) (hle₂ : lo₂ ≤ hi₂) :
@@ -430,7 +430,7 @@ lemma exec_merge_fresh (w : List A) (zv lv a : ℕ) (hzv : zv < a) (hlv : lv < a
     rcases hy with hy | hy
     · have := h₁.loopRange y hy; omega
     · have := h₂.loopRange y hy; omega
-  refine exec_merge w zv lv pi L₁ L₂ b₁ b₂ pos bv hn hposz hposl (by omega) (by omega)
+  refine exec_merge w zv lv pi L₁ L₂ b₁ b₂ pos bv hposz hposl (by omega) (by omega)
     (fun h => by have := hmem pi h; omega)
     (fun h => by rcases h₁.posOk pi h with h' | h' <;> omega)
     (fun h => by rcases h₂.posOk pi h with h' | h' <;> omega)
@@ -502,17 +502,18 @@ lemma nest_bv_fix (w : List A) (L : List (Bool × ℕ)) (body : ForProg A B) (po
 
 /-! ## The correctness of the translation -/
 
-/-- **The translation is correct on inputs of length at least two.**  If `zv` and `lv` hold the
-first and the last position of the input, then the nest of loops produced by `Transducers.trFor`
-produces the same output as the source program, and leaves the same values in the variables of the
-source program. -/
-theorem trFor_spec (zv lv k₀ : ℕ) (hzv : zv < k₀) (hlv : lv < k₀) (w : List A)
-    (hn : 2 ≤ w.length) :
+/-- **The translation is correct.**  If `zv` and `lv` hold two positions of the input, the first
+strictly before the second, then the nest of loops produced by `Transducers.trFor` produces the
+same output as the source program, and leaves the same values in the variables of the source
+program.  In the prenex form of the book `zv` and `lv` hold the first and the last position; the
+forward prenex form of Exercise `exer:forward-for-transducer` uses the first and the second one
+instead, which is why only the order of the two positions is assumed here. -/
+theorem trFor_spec (zv lv k₀ : ℕ) (hzv : zv < k₀) (hlv : lv < k₀) (w : List A) :
     ∀ (P : ForProg A B), (∀ i ∈ P.posVars, i < k₀) → (∀ i ∈ P.boolVars, i < k₀) →
       zv ∉ P.posVars → lv ∉ P.posVars →
       ∀ (k : ℕ) (L : List (Bool × ℕ)) (b : ForProg A B) (k' : ℕ),
         trFor zv lv P k = (L, b, k') → k₀ ≤ k →
-        ∀ pos : ℕ → ℕ, pos zv = 0 → pos lv = w.length - 1 →
+        ∀ pos : ℕ → ℕ, pos zv < pos lv → pos lv < w.length →
         ∀ bv₁ bv₂ : ℕ → Bool, (∀ i, i < k₀ → bv₁ i = bv₂ i) →
           (ForProg.exec w (ForProg.nestLoops L b) pos bv₁).2 = (ForProg.exec w P pos bv₂).2 ∧
             ∀ i, i < k₀ → (ForProg.exec w (ForProg.nestLoops L b) pos bv₁).1 i
@@ -559,7 +560,7 @@ theorem trFor_spec (zv lv k₀ : ℕ) (hzv : zv < k₀) (hlv : lv < k₀) (w : L
       have hm₁ : k + 1 ≤ k₁ := o₁.mono
       have hf₁ : FreshNest k₀ (k + 1) k₁ L₁ b₁ := o₁.toFresh hzv hlv hPpos
       have hf₂ : FreshNest k₀ k₁ k₂ L₂ b₂ := o₂.toFresh hzv hlv hQpos
-      rw [exec_merge_fresh w zv lv k₀ hzv hlv hn pos hpz hpl bv₁ k (k + 1) k₁ k₁ k₂ L₁ L₂ b₁ b₂
+      rw [exec_merge_fresh w zv lv k₀ hzv hlv pos hpz hpl bv₁ k (k + 1) k₁ k₁ k₂ L₁ L₂ b₁ b₂
         hf₁ hf₂ (by omega) (by omega) (by omega) le_rfl (by have := o₂.mono; omega)]
       obtain ⟨e₁, e₂⟩ := ihP hPpos hPbool hzvP' hlvP' (k + 1) L₁ b₁ k₁ hr₁ (by omega) pos hpz hpl
         bv₁ bv₂ hbv
@@ -617,13 +618,13 @@ theorem trFor_spec (zv lv k₀ : ℕ) (hzv : zv < k₀) (hlv : lv < k₀) (w : L
           (mergeBody zv lv (k + 2) [] L₁ b₀ c₁) :=
         FreshNest.merge hf₀ hf₁ hzv hlv (by omega) (by omega) le_rfl le_rfl (by omega)
       -- unfold the two merges
-      rw [exec_merge_fresh w zv lv k₀ hzv hlv hn pos hpz hpl bv₁ k (k + 2) k₁ k₁ k₂
+      rw [exec_merge_fresh w zv lv k₀ hzv hlv pos hpz hpl bv₁ k (k + 2) k₁ k₁ k₂
         (mergeLoops (k + 2) [] L₁) L₂ _ c₂ hfM hf₂ (by omega) (by omega) (by omega) le_rfl
         (by omega)]
       have hinner : ForProg.exec w (ForProg.nestLoops (mergeLoops (k + 2) [] L₁)
             (mergeBody zv lv (k + 2) [] L₁ b₀ c₁)) pos bv₁
           = ForProg.exec w (ForProg.seq b₀ (ForProg.nestLoops L₁ c₁)) pos bv₁ :=
-        exec_merge_fresh w zv lv k₀ hzv hlv hn pos hpz hpl bv₁ (k + 2) (k + 3) (k + 3) (k + 3) k₁
+        exec_merge_fresh w zv lv k₀ hzv hlv pos hpz hpl bv₁ (k + 2) (k + 3) (k + 3) (k + 3) k₁
           [] L₁ b₀ c₁ hf₀ hf₁ (by omega) (by omega) le_rfl le_rfl (by omega)
       rw [show ForProg.exec w (ForProg.seq (ForProg.nestLoops (mergeLoops (k + 2) [] L₁)
               (mergeBody zv lv (k + 2) [] L₁ b₀ c₁)) (ForProg.nestLoops L₂ c₂)) pos bv₁
@@ -782,7 +783,7 @@ theorem trFor_spec (zv lv k₀ : ℕ) (hzv : zv < k₀) (hlv : lv < k₀) (w : L
       refine runList_sim _ _ (fun s₁ s₂ => ∀ i, i < k₀ → s₁ i = s₂ i) _ bv₁ bv₂ hbv
         (fun t₁ t₂ p _ hR => ?_)
       exact ih hPpos hPbool hzvP' hlvP' (k + 1) L₁ b₁ k₁ hr (by omega) (Function.update pos x p)
-        (by rw [Function.update_of_ne hzx]; exact hpz)
+        (by rw [Function.update_of_ne hzx, Function.update_of_ne hlx]; exact hpz)
         (by rw [Function.update_of_ne hlx]; exact hpl) t₁ t₂ hR
 
 end Transducers

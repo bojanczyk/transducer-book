@@ -181,23 +181,33 @@ lemma exec_cpsFree (w : List A) : ∀ (R : ForProg A B), R.LoopFree →
 
 /-! ## The composition -/
 
-/-- **Lemma `lem:for-closed-under-composition`.**  The string-to-string functions computed by
-for-transducers are closed under composition.  This is the statement proved in
-`RequestProject/PartD/Statements.lean`. -/
-theorem forTransducer_comp_aux {f : List A → List B} {g : List B → List C}
-    (hf : IsForTransducer f) (hg : IsForTransducer g) : IsForTransducer (g ∘ f) := by
+/-- **The composed program** of Lemma `lem:for-closed-under-composition`.  The inner
+for-transducer `P` is given by the nest of loops `L` with loop-free body `p`, and the outer one by
+the program `Q`; `base`, `flQ`, `flS` are the fresh variables of the translation, `X` and `Y` the
+two length flags, and `N` the fresh variable used to close the atomised form of `Q`.
+
+The program is named so that the proof of Exercise `exer:forward-for-transducer` can inspect the
+direction of its loops; the numbered result is `Transducers.forTransducer_comp_aux` below. -/
+noncomputable def compProgAt (P : ForProg A B) (Q : ForProg B C) (L : List (Bool × ℕ))
+    (p : ForProg A B) (base flQ flS X Y N : ℕ) : ForProg A C :=
+  ForProg.seq (lenProg X Y)
+    (ForProg.ite (ForTest.boolVar Y)
+      (tr L p base flQ flS (fun _ => 0) 1 (closeProg N (N + 1) (ForProg.atomize Q)))
+      (cpsFree (shortSim X P) (fun v => constProg (Q.eval v))))
+
+/-- **The composed program is correct.** -/
+theorem eval_compProgAt (P : ForProg A B) (Q : ForProg B C) (L : List (Bool × ℕ))
+    (p : ForProg A B) (M N base flQ flS X Y : ℕ)
+    (hbase : base = M + 3) (hflQ : flQ = M + 1) (hflS : flS = M + 2)
+    (hX : X = base) (hY : Y = base + 2)
+    (hMmem : ∀ x ∈ p.posVars ++ p.boolVars ++ L.map Prod.snd ++ P.posVars ++ P.boolVars, x ≤ M)
+    (hNmem : ∀ i ∈ (ForProg.atomize Q).boolVars, i < N)
+    (hpLF : p.LoopFree) (hpout : p.OutputsAtMostOne) (hpnd : (L.map Prod.snd).Nodup)
+    (hnest : ∀ w : List A, 2 ≤ w.length →
+      (ForProg.exec w (ForProg.nestLoops L p) (fun _ => 0) (fun _ => false)).2 = P.eval w)
+    (w : List A) :
+    (compProgAt P Q L p base flQ flS X Y N).eval w = Q.eval (P.eval w) := by
   classical
-  obtain ⟨P, hP⟩ := hf
-  obtain ⟨Q, hQ⟩ := hg
-  obtain ⟨L, p, hpLF, hpout, hpnd, hnest⟩ := for_nest_form P
-  -- the fresh variables of the translation
-  set M : ℕ := maxList (p.posVars ++ p.boolVars ++ L.map Prod.snd ++ P.posVars ++ P.boolVars)
-    with hM
-  have hMmem : ∀ x ∈ p.posVars ++ p.boolVars ++ L.map Prod.snd ++ P.posVars ++ P.boolVars,
-      x ≤ M := fun x hx => le_maxList _ x hx
-  set flQ : ℕ := M + 1 with hflQ
-  set flS : ℕ := M + 2 with hflS
-  set base : ℕ := M + 3 with hbase
   have hok : CompOk L p base flQ flS :=
     { loopFree := hpLF
       out1 := hpout
@@ -209,38 +219,28 @@ theorem forTransducer_comp_aux {f : List A → List B} {g : List B → List C}
       flSbase := by omega }
   -- the closed, atomised form of the outer program
   set Q₀ : ForProg B C := ForProg.atomize Q with hQ₀
-  set N : ℕ := maxList Q₀.boolVars + 1 with hN
-  have hNmem : ∀ i ∈ Q₀.boolVars, i < N := fun i hi => by
-    have := le_maxList Q₀.boolVars i hi; omega
   set Q₂ : ForProg B C := closeProg N (N + 1) Q₀ with hQ₂
   have hQ₂atom : Q₂.AllAtomic :=
     allAtomic_closeProg _ _ _ (ForProg.allAtomic_atomize Q)
   have hQ₂free : Q₂.freePos = [] := freePos_closeProg _ _ _
-  have hQ₂eval : ∀ v, Q₂.eval v = g v := by
+  have hQ₂eval : ∀ v, Q₂.eval v = Q.eval v := by
     intro v
     rw [hQ₂, eval_closeProg N (N + 1) Q₀ (fun hc => absurd (hNmem N hc) (lt_irrefl _))
       (fun i hi => by have := hNmem i hi; omega)]
-    show (ForProg.exec v (ForProg.atomize Q) (fun _ => 0) (fun _ => false)).2 = g v
+    show (ForProg.exec v (ForProg.atomize Q) (fun _ => 0) (fun _ => false)).2 = Q.eval v
     rw [ForProg.exec_atomize]
-    exact hQ v
-  -- the two length flags
-  set X : ℕ := base with hX
-  set Y : ℕ := base + 2 with hY
+    rfl
   have hXY : X ≠ Y := by omega
   have hqbvX : ∀ i, qbv base i ≠ X := fun i => by rw [qbv]; omega
   have hqbvY : ∀ i, qbv base i ≠ Y := fun i => by rw [qbv]; omega
   have hXP : X ∉ P.boolVars := fun hc => by have := hMmem X (by simp [hc]); omega
   have hYP : Y ∉ P.boolVars := fun hc => by have := hMmem Y (by simp [hc]); omega
-  -- the composed program
-  refine ⟨ForProg.seq (lenProg X Y)
-    (ForProg.ite (ForTest.boolVar Y)
-      (tr L p base flQ flS (fun _ => 0) 1 Q₂)
-      (cpsFree (shortSim X P) (fun v => constProg (Q.eval v)))), fun w => ?_⟩
+  rw [compProgAt, ForProg.eval]
   set s : ℕ → Bool := (ForProg.exec w (lenProg X Y : ForProg A C) (fun _ => 0)
     (fun _ => false)).1 with hs
   obtain ⟨hlen1, hlen2, hlen3, hlen4⟩ :=
     lenProg_spec (C := C) w X Y hXY (fun _ => 0) (fun _ => false) rfl rfl
-  show (ForProg.exec w (ForProg.seq _ _) (fun _ => 0) (fun _ => false)).2 = g (f w)
+  show (ForProg.exec w (ForProg.seq _ _) (fun _ => 0) (fun _ => false)).2 = Q.eval (P.eval w)
   rw [exec_seq, hlen1, List.nil_append]
   by_cases hbig : 2 ≤ w.length
   · -- the input has at least two letters: the translation of the outer program
@@ -255,9 +255,9 @@ theorem forTransducer_comp_aux {f : List A → List B} {g : List B → List C}
       (fun y hy => absurd hy (by rw [hQ₂free]; simp))
       hbv
     rw [hout]
-    have hinner : innerOut w L p = f w := by
-      rw [innerOut_def, hnest w hbig, hP w]
-    show (ForProg.exec (innerOut w L p) Q₂ (fun _ => 0) (fun _ => false)).2 = g (f w)
+    have hinner : innerOut w L p = P.eval w := by
+      rw [innerOut_def, hnest w hbig]
+    show (ForProg.exec (innerOut w L p) Q₂ (fun _ => 0) (fun _ => false)).2 = Q.eval (P.eval w)
     rw [show (ForProg.exec (innerOut w L p) Q₂ (fun _ => 0) (fun _ => false)).2
         = Q₂.eval (innerOut w L p) from rfl, hQ₂eval, hinner]
   · -- the input has at most one letter: the direct simulation
@@ -269,12 +269,30 @@ theorem forTransducer_comp_aux {f : List A → List B} {g : List B → List C}
       exec_cpsFree w (shortSim X P) (loopFree_shortSim X P) _ (fun _ => 0) s]
     have hsim : ForProg.exec w (shortSim X P) (fun _ => 0) s = ForProg.exec w P (fun _ => 0) s :=
       shortSim_spec X w hshort _ (fun _ => rfl) P hXP s hlen2
-    have hstate : (ForProg.exec w P (fun _ => 0) s).2 = f w := by
-      rw [← hP w, ForProg.eval]
+    have hstate : (ForProg.exec w P (fun _ => 0) s).2 = P.eval w := by
+      rw [ForProg.eval]
       exact (exec_congr_bv w P (fun _ => 0) (fun i => i ∈ P.boolVars) (fun i hi => hi)
         s (fun _ => false) (fun i hi => by
           rw [hs, hlen4 i (fun hc => hXP (hc ▸ hi)) (fun hc => hYP (hc ▸ hi))])).1
     rw [hsim, hstate, exec_constProg]
-    exact hQ (f w)
+
+/-- **Lemma `lem:for-closed-under-composition`.**  The string-to-string functions computed by
+for-transducers are closed under composition.  This is the statement proved in
+`RequestProject/PartD/Statements.lean`. -/
+theorem forTransducer_comp_aux {f : List A → List B} {g : List B → List C}
+    (hf : IsForTransducer f) (hg : IsForTransducer g) : IsForTransducer (g ∘ f) := by
+  classical
+  obtain ⟨P, hP⟩ := hf
+  obtain ⟨Q, hQ⟩ := hg
+  obtain ⟨L, p, hpLF, hpout, hpnd, hnest⟩ := for_nest_form P
+  set M : ℕ := maxList (p.posVars ++ p.boolVars ++ L.map Prod.snd ++ P.posVars ++ P.boolVars)
+    with hM
+  set N : ℕ := maxList (ForProg.atomize Q).boolVars + 1 with hN
+  refine ⟨compProgAt P Q L p (M + 3) (M + 1) (M + 2) (M + 3) (M + 5) N, fun w => ?_⟩
+  rw [eval_compProgAt P Q L p M N (M + 3) (M + 1) (M + 2) (M + 3) (M + 5) rfl rfl rfl rfl rfl
+    (fun x hx => le_maxList _ x hx)
+    (fun i hi => by have := le_maxList (ForProg.atomize Q).boolVars i hi; omega)
+    hpLF hpout hpnd (fun v hv => by rw [hnest v hv]) w, hP w]
+  exact hQ (f w)
 
 end Transducers

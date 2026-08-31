@@ -337,9 +337,10 @@ theorem exec_nest_big (P : ForProg A B) (zv lv k₀ : ℕ) (L : List (Bool × �
     intro t s hs
     rw [hguard t s hs, ForProg.exec_bv_unchanged w b _ s hbdn]
     exact hs
-  have hspec := trFor_spec zv lv k₀ hzv hlv w hbig P hPpos' hPbool' hz hl k₀ L b k' htr le_rfl
-    (Function.update p2 k' 0) (by rw [Function.update_of_ne (by omega), hp2z])
-    (by rw [Function.update_of_ne (by omega), hp2l]) (fun _ => false) (fun _ => false)
+  have hspec := trFor_spec zv lv k₀ hzv hlv w P hPpos' hPbool' hz hl k₀ L b k' htr le_rfl
+    (Function.update p2 k' 0)
+    (by rw [Function.update_of_ne (by omega), Function.update_of_ne (by omega), hp2z, hp2l]; omega)
+    (by rw [Function.update_of_ne (by omega), hp2l]; omega) (fun _ => false) (fun _ => false)
     (fun _ _ => rfl)
   have hposP : ForProg.exec w P (Function.update p2 k' 0) (fun _ => false)
       = ForProg.exec w P (fun _ => 0) (fun _ => false) := by

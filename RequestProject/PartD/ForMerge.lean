@@ -56,12 +56,15 @@ def mergeBody (zv lv pi : ℕ) (L₁ L₂ : List (Bool × ℕ)) (b₁ b₂ : For
   ForProg.ite (ForTest.and (ForTest.eqPos pi zv) (pinTest zv L₂)) b₁
     (ForProg.ite (ForTest.and (ForTest.eqPos pi lv) (pinTest zv L₁)) b₂ ForProg.skip)
 
-/-- **Merging two nests of loops.**  On an input of length at least two, and with `zv`, `lv`
-pointing at the first and the last position, the nest `mergeLoops`/`mergeBody` computes the
-sequential composition of the two nests it is built from. -/
+/-- **Merging two nests of loops.**  With `zv` pointing at a position of the input and `lv` at a
+later one, the nest `mergeLoops`/`mergeBody` computes the sequential composition of the two nests
+it is built from.  Only the *order* of the two designated positions matters, so the same lemma
+serves the prenex form of the book, where `zv` and `lv` hold the first and the last position, and
+the *forward* prenex form of Exercise `exer:forward-for-transducer`, where they hold the first and
+the second one. -/
 lemma exec_merge (w : List A) (zv lv pi : ℕ) (L₁ L₂ : List (Bool × ℕ)) (b₁ b₂ : ForProg A B)
     (pos : ℕ → ℕ) (bv : ℕ → Bool)
-    (hn : 2 ≤ w.length) (hzv : pos zv = 0) (hlv : pos lv = w.length - 1)
+    (hzv : pos zv < pos lv) (hlv : pos lv < w.length)
     (hpiz : pi ≠ zv) (hpil : pi ≠ lv)
     (hpiL : pi ∉ (L₁ ++ L₂).map Prod.snd)
     (hpib₁ : pi ∉ b₁.posVars) (hpib₂ : pi ∉ b₂.posVars)
@@ -81,28 +84,23 @@ lemma exec_merge (w : List A) (zv lv pi : ℕ) (L₁ L₂ : List (Bool × ℕ)) 
   have hset : ∀ (t : List ℕ) (p : ℕ) (i : ℕ), i ∉ M.map Prod.snd →
       setTuple M t (Function.update pos pi p) i = Function.update pos pi p i :=
     fun t p i hi => setTuple_of_not_mem M t _ hi
-  -- the outer loop, as a fold
-  have hstep : ∀ (p : ℕ) (s : ℕ → Bool),
-      ForProg.exec w (ForProg.nestLoops M body) (Function.update pos pi p) s
-        = ForProg.exec w (ForProg.nestLoops M body) (Function.update pos pi p) s := fun _ _ => rfl
-  clear hstep
   have hloop : ForProg.exec w (ForProg.nestLoops (mergeLoops pi L₁ L₂) body) pos bv
       = runList (fun s p => ForProg.exec w (ForProg.nestLoops M body)
           (Function.update pos pi p) s) (List.range n) bv := by
     show ForProg.exec w (ForProg.loop true pi (ForProg.nestLoops M body)) pos bv = _
     rw [ForProg.exec]
     simp only [if_true, forLoopRun_eq_runList, hnw]
-  -- iterations other than the first and the last do nothing
-  have hdead : ∀ p, p < n → ¬ (p = 0 ∨ p = n - 1) → ∀ s,
+  -- iterations other than the two designated ones do nothing
+  have hdead : ∀ p, p < n → ¬ (p = pos zv ∨ p = pos lv) → ∀ s,
       ForProg.exec w (ForProg.nestLoops M body) (Function.update pos pi p) s = (s, []) := by
     intro p _ hp s
     refine nest_noop w M body _ s (fun t => ?_)
     have hpi : setTuple M t (Function.update pos pi p) pi = p := by
       rw [hset t p pi hpiL, Function.update_self]
-    have hz : setTuple M t (Function.update pos pi p) zv = 0 := by
-      rw [hset t p zv hzL, Function.update_of_ne (Ne.symm hpiz), hzv]
-    have hl : setTuple M t (Function.update pos pi p) lv = n - 1 := by
-      rw [hset t p lv hlL, Function.update_of_ne (Ne.symm hpil), hlv]
+    have hz : setTuple M t (Function.update pos pi p) zv = pos zv := by
+      rw [hset t p zv hzL, Function.update_of_ne (Ne.symm hpiz)]
+    have hl : setTuple M t (Function.update pos pi p) lv = pos lv := by
+      rw [hset t p lv hlL, Function.update_of_ne (Ne.symm hpil)]
     simp only [hbody, mergeBody, ForProg.exec]
     rw [if_neg, if_neg]
     · rintro ⟨h1, -⟩
@@ -111,28 +109,28 @@ lemma exec_merge (w : List A) (zv lv pi : ℕ) (L₁ L₂ : List (Bool × ℕ)) 
     · rintro ⟨h1, -⟩
       simp only [ForTest.Holds] at h1
       exact hp (Or.inl (by rw [hpi, hz] at h1; exact h1))
-  -- the first iteration runs the first nest
-  have hfirst : ∀ s, ForProg.exec w (ForProg.nestLoops M body) (Function.update pos pi 0) s
+  -- the iteration at `pos zv` runs the first nest
+  have hfirst : ∀ s, ForProg.exec w (ForProg.nestLoops M body) (Function.update pos pi (pos zv)) s
       = ForProg.exec w (ForProg.nestLoops L₁ b₁) pos s := by
     intro s
-    have hpi : Function.update pos pi 0 pi = 0 := Function.update_self _ _ _
-    have hz : Function.update pos pi 0 zv = 0 := by
-      rw [Function.update_of_ne (Ne.symm hpiz), hzv]
-    have hl : Function.update pos pi 0 lv = n - 1 := by
-      rw [Function.update_of_ne (Ne.symm hpil), hlv]
-    have hcongr : ForProg.exec w (ForProg.nestLoops M body) (Function.update pos pi 0) s
+    have hpi : Function.update pos pi (pos zv) pi = pos zv := Function.update_self _ _ _
+    have hz : Function.update pos pi (pos zv) zv = pos zv :=
+      Function.update_of_ne (Ne.symm hpiz) _ _
+    have hl : Function.update pos pi (pos zv) lv = pos lv :=
+      Function.update_of_ne (Ne.symm hpil) _ _
+    have hcongr : ForProg.exec w (ForProg.nestLoops M body) (Function.update pos pi (pos zv)) s
         = ForProg.exec w (ForProg.nestLoops M (ForProg.ite (pinTest zv L₂) b₁ ForProg.skip))
-            (Function.update pos pi 0) s := by
+            (Function.update pos pi (pos zv)) s := by
       refine nest_congr w M body _ _ s (fun _ => True) trivial (fun t s' _ => ?_)
         (fun _ _ _ => trivial)
-      have hpi' : setTuple M t (Function.update pos pi 0) pi = 0 := by
-        rw [hset t 0 pi hpiL, hpi]
-      have hz' : setTuple M t (Function.update pos pi 0) zv = 0 := by
-        rw [hset t 0 zv hzL, hz]
-      have hl' : setTuple M t (Function.update pos pi 0) lv = n - 1 := by
-        rw [hset t 0 lv hlL, hl]
+      have hpi' : setTuple M t (Function.update pos pi (pos zv)) pi = pos zv := by
+        rw [hset t (pos zv) pi hpiL, hpi]
+      have hz' : setTuple M t (Function.update pos pi (pos zv)) zv = pos zv := by
+        rw [hset t (pos zv) zv hzL, hz]
+      have hl' : setTuple M t (Function.update pos pi (pos zv)) lv = pos lv := by
+        rw [hset t (pos zv) lv hlL, hl]
       simp only [hbody, mergeBody, ForProg.exec, ForTest.Holds]
-      by_cases hpin : ForTest.Holds w (setTuple M t (Function.update pos pi 0)) s'
+      by_cases hpin : ForTest.Holds w (setTuple M t (Function.update pos pi (pos zv))) s'
           (pinTest zv L₂ : ForTest A)
       · rw [if_pos ⟨by rw [hpi', hz'], hpin⟩, if_pos hpin]
       · rw [if_neg (fun h => hpin h.2), if_neg hpin, if_neg]
@@ -148,29 +146,29 @@ lemma exec_merge (w : List A) (zv lv pi : ℕ) (L₁ L₂ : List (Bool × ℕ)) 
       · exact hpiL (by simp [hM, h])
       · exact hpib₁ h
     exact Function.update_of_ne this _ _
-  -- the last iteration runs the second nest
-  have hlast : ∀ s, ForProg.exec w (ForProg.nestLoops M body) (Function.update pos pi (n - 1)) s
+  -- the iteration at `pos lv` runs the second nest
+  have hlast : ∀ s, ForProg.exec w (ForProg.nestLoops M body) (Function.update pos pi (pos lv)) s
       = ForProg.exec w (ForProg.nestLoops L₂ b₂) pos s := by
     intro s
-    have hpi : Function.update pos pi (n - 1) pi = n - 1 := Function.update_self _ _ _
-    have hz : Function.update pos pi (n - 1) zv = 0 := by
-      rw [Function.update_of_ne (Ne.symm hpiz), hzv]
-    have hl : Function.update pos pi (n - 1) lv = n - 1 := by
-      rw [Function.update_of_ne (Ne.symm hpil), hlv]
-    have hcongr : ForProg.exec w (ForProg.nestLoops M body) (Function.update pos pi (n - 1)) s
+    have hpi : Function.update pos pi (pos lv) pi = pos lv := Function.update_self _ _ _
+    have hz : Function.update pos pi (pos lv) zv = pos zv :=
+      Function.update_of_ne (Ne.symm hpiz) _ _
+    have hl : Function.update pos pi (pos lv) lv = pos lv :=
+      Function.update_of_ne (Ne.symm hpil) _ _
+    have hcongr : ForProg.exec w (ForProg.nestLoops M body) (Function.update pos pi (pos lv)) s
         = ForProg.exec w (ForProg.nestLoops M (ForProg.ite (pinTest zv L₁) b₂ ForProg.skip))
-            (Function.update pos pi (n - 1)) s := by
+            (Function.update pos pi (pos lv)) s := by
       refine nest_congr w M body _ _ s (fun _ => True) trivial (fun t s' _ => ?_)
         (fun _ _ _ => trivial)
-      have hpi' : setTuple M t (Function.update pos pi (n - 1)) pi = n - 1 := by
-        rw [hset t (n - 1) pi hpiL, hpi]
-      have hz' : setTuple M t (Function.update pos pi (n - 1)) zv = 0 := by
-        rw [hset t (n - 1) zv hzL, hz]
-      have hl' : setTuple M t (Function.update pos pi (n - 1)) lv = n - 1 := by
-        rw [hset t (n - 1) lv hlL, hl]
+      have hpi' : setTuple M t (Function.update pos pi (pos lv)) pi = pos lv := by
+        rw [hset t (pos lv) pi hpiL, hpi]
+      have hz' : setTuple M t (Function.update pos pi (pos lv)) zv = pos zv := by
+        rw [hset t (pos lv) zv hzL, hz]
+      have hl' : setTuple M t (Function.update pos pi (pos lv)) lv = pos lv := by
+        rw [hset t (pos lv) lv hlL, hl]
       simp only [hbody, mergeBody, ForProg.exec, ForTest.Holds]
       rw [if_neg]
-      · by_cases hpin : ForTest.Holds w (setTuple M t (Function.update pos pi (n - 1))) s'
+      · by_cases hpin : ForTest.Holds w (setTuple M t (Function.update pos pi (pos lv))) s'
             (pinTest zv L₁ : ForTest A)
         · rw [if_pos ⟨by rw [hpi', hl'], hpin⟩, if_pos hpin]
         · rw [if_neg (fun h => hpin h.2), if_neg hpin]
@@ -187,9 +185,10 @@ lemma exec_merge (w : List A) (zv lv pi : ℕ) (L₁ L₂ : List (Bool × ℕ)) 
       · exact hpib₂ h
     exact Function.update_of_ne this _ _
   -- put the three parts together
-  have hfilter : (List.range n).filter (fun p => decide (p = 0 ∨ p = n - 1)) = [0, n - 1] :=
-    filter_range_pair n 0 (n - 1) (by omega) (by omega) _ (fun x _ => by simp)
-  rw [hloop, runList_filter _ (fun p => decide (p = 0 ∨ p = n - 1)) _ _
+  have hfilter : (List.range n).filter (fun p => decide (p = pos zv ∨ p = pos lv))
+      = [pos zv, pos lv] :=
+    filter_range_pair n (pos zv) (pos lv) (by omega) (by omega) _ (fun x _ => by simp)
+  rw [hloop, runList_filter _ (fun p => decide (p = pos zv ∨ p = pos lv)) _ _
     (fun p hp hpf s => hdead p (List.mem_range.mp hp) (by simpa using hpf) s), hfilter]
   rw [runList_cons, runList_cons, runList_nil, hfirst, hlast]
   simp [ForProg.exec]

@@ -10,11 +10,9 @@ The class on the right-hand side is `Transducers.Exercises.IsRatMarkedSquare` be
 definition of the polyregular functions (Definition `def:polyregular-functions`) with "regular"
 replaced by "rational".
 
-The two inclusions are proved here from three explicitly named hypotheses, in the style used
-elsewhere in this project for the exercises whose solutions need machinery the project does not
-develop.  They are three of the four steps of the author's solution that ask for the proof of
-Theorem `thm:for-transducers-are-polyregular` to be replayed with the direction of every loop
-tracked:
+The two inclusions are proved here outright.  Three of the four steps of the author's solution
+ask for the proof of Theorem `thm:for-transducers-are-polyregular` to be replayed with the
+direction of every loop tracked; they used to be assumed, and are now proved:
 
 * `ForwardForClosedUnderComp` -- forward for-transducers are closed under composition.  This is
   Lemma `lem:for-closed-under-composition` with the extra bookkeeping that the composition
@@ -22,31 +20,33 @@ tracked:
   into a forward one.  The construction itself keeps the direction of every loop it is given --
   the loop of `Transducers.lenProg` is first-to-last and `Transducers.tr` reproduces the
   directions of the nest it translates -- but it routes the inner program through the nest form
-  `Transducers.for_nest_form`, which prepends one last-to-first loop, exactly as the prenex
-  normal form below does.
+  `Transducers.for_nest_form`, which prepends one last-to-first loop; that nest form is replaced
+  by the forward one, `Transducers.Exercises.for_nest_form_fwd`.  The proof is in
+  `RequestProject/Exercises/ForwardComp.lean`.
 * `ForwardPrenexNormalForm` -- Lemma `lemma:prenex-normal-form` for forward programs: a forward
   program is equivalent to one in prenex form all of whose loops are forward.  The project's
   construction (`RequestProject/PartD/ForPrenexTop.lean`) preserves the direction of every loop
-  of the given program but prepends one last-to-first loop, whose only purpose is to bind a
-  variable to the last position of the input.
+  of the given program, and the *only* last-to-first loop it introduces is the one that binds a
+  variable to the last position of the input.  That loop is removed by using the **first and the
+  second** position of the input as the two designated positions rather than the first and the
+  last; nothing in the merging construction uses that the second designated position is the last
+  one, only that it comes after the first, so `Transducers.exec_merge` and
+  `Transducers.trFor_spec` have been generalised, in place, to two designated positions in
+  increasing order.  See `RequestProject/Exercises/ForwardPrenex.lean`.
 * `ForwardStepRational` -- the one-step transducer of the enumeration, in the first-to-last
   direction, computes a rational function.  The project proves it is a streaming string
   transducer, hence regular (`Transducers.PolyEnum.isRegularFun_stepFun`); for `d = true` that
-  transducer is append-only, which is what makes the function rational.
-The fourth ingredient of the solution, that the *scan* of the enumeration computes a rational
-function and not merely a regular one, is **not** assumed: it is proved below
-(`Transducers.Exercises.isRationalFun_scanFun`).  The project shows the scanning machine is a
-streaming string transducer; that machine has a single register and only ever appends to it, so
-it is a sequential rewriting with a final output, hence a bimachine, hence rational.  The general
-statement is `Transducers.Exercises.isRationalFun_of_appendOnlySST`, in
-`RequestProject/Exercises/SeqSST.lean`.
+  transducer has three registers but is *order preserving* -- every update concatenates them in
+  the fixed order `res`, `grp`, `cur` and only ever appends -- so it is a bimachine, hence
+  rational.  See `RequestProject/Exercises/ForwardStep.lean`.
 
 Everything else -- the two inclusions themselves, the enumeration of the tuples of a forward nest
 of loops, and the base case of the enumeration -- is proved outright.  The right-to-left inclusion
 also uses the two constructions of `RequestProject/Exercises/ForwardFor.lean`: marked squaring and
 every rational function are computed by forward for-transducers.
 -/
-import RequestProject.Exercises.ForwardFor
+import RequestProject.Exercises.ForwardComp
+import RequestProject.Exercises.ForwardStep
 import RequestProject.Exercises.SeqSST
 import RequestProject.PartD.PolyFor
 
@@ -96,13 +96,17 @@ lemma isRatMarkedSquare_id {A : Type} : IsRatMarkedSquare (id : List A → List 
 lemma isRatMarkedSquare_markedSquare (A : Type) : IsRatMarkedSquare (markedSquare A) :=
   CompClosure.base (Or.inr ⟨A, Equiv.refl _, Equiv.refl _, by intro w; simp⟩)
 
-/-! ## The hypotheses -/
+/-! ## The three steps of the solution -/
 
-/-- **Hypothesis.**  Forward for-transducers are closed under composition: Lemma
-`lem:for-closed-under-composition` with the directions of the loops tracked. -/
-def ForwardForClosedUnderComp : Prop :=
-  ∀ (A B C : Type) [Finite A] [Finite B] [Finite C] (f : List A → List B) (g : List B → List C),
-    IsForwardFor f → IsForwardFor g → IsForwardFor (g ∘ f)
+/-- **Forward for-transducers are closed under composition**: Lemma
+`lem:for-closed-under-composition` with the directions of the loops tracked.  The finiteness
+assumptions are not needed; they are kept so that the statement is the one that used to be
+assumed. -/
+theorem ForwardForClosedUnderComp :
+    ∀ (A B C : Type) [Finite A] [Finite B] [Finite C] (f : List A → List B) (g : List B → List C),
+      IsForwardFor f → IsForwardFor g → IsForwardFor (g ∘ f) := by
+  intro _ _ _ _ _ _ _ _ hf hg
+  exact isForwardFor_comp hf hg
 
 /-- A program in prenex form all of whose loops are of the first-to-last kind. -/
 def ForwardPrenexForm {A B : Type} (P : ForProg A B) : Prop :=
@@ -110,16 +114,21 @@ def ForwardPrenexForm {A B : Type} (P : ForProg A B) : Prop :=
     (∀ p ∈ ls, p.1 = true) ∧ body.LoopFree ∧ epilogue.LoopFree ∧
       ForProg.OutputsAtMostOne body ∧ P = ForProg.seq (ForProg.nestLoops ls body) epilogue
 
-/-- **Hypothesis.**  Lemma `lemma:prenex-normal-form` for forward programs: every forward
-for-program is equivalent to a forward program in prenex form. -/
-def ForwardPrenexNormalForm : Prop :=
-  ∀ (A B : Type) (P : ForProg A B), ForwardProg P →
-    ∃ P' : ForProg A B, ForwardPrenexForm P' ∧ ∀ w, P'.eval w = P.eval w
+/-- **Lemma `lemma:prenex-normal-form` for forward programs**: every forward for-program is
+equivalent to a forward program in prenex form. -/
+theorem ForwardPrenexNormalForm :
+    ∀ (A B : Type) (P : ForProg A B), ForwardProg P →
+      ∃ P' : ForProg A B, ForwardPrenexForm P' ∧ ∀ w, P'.eval w = P.eval w := by
+  intro A B P hP
+  obtain ⟨ls, body, epilogue, hfwd, hbody, hepi, hone, heval⟩ := forwardPrenex P hP
+  exact ⟨ForProg.seq (ForProg.nestLoops ls body) epilogue,
+    ⟨ls, body, epilogue, hfwd, hbody, hepi, hone, rfl⟩, heval⟩
 
-/-- **Hypothesis.**  The one-step transducer of the enumeration is rational in the first-to-last
-direction. -/
-def ForwardStepRational : Prop :=
-  ∀ (A : Type) [Finite A] (k : ℕ), IsRationalFun (stepFun true A k)
+/-- **The one-step transducer of the enumeration is rational in the first-to-last
+direction.** -/
+theorem ForwardStepRational :
+    ∀ (A : Type) [Finite A] (k : ℕ), IsRationalFun (stepFun true A k) :=
+  fun A _ k => isRationalFun_stepFun_true A k
 
 /-! ## The scan of the enumeration is a rational function
 
@@ -166,7 +175,7 @@ end Scan
 
 /-- **The composition closure of marked squaring and the rational functions is computed by
 forward for-transducers.** -/
-theorem isForwardFor_of_isRatMarkedSquare (hcomp : ForwardForClosedUnderComp) :
+theorem isForwardFor_of_isRatMarkedSquare :
     ∀ {A B : Type} {f : List A → List B}, IsRatMarkedSquare f →
       Finite A → Finite B → IsForwardFor f := by
   intro A B f hf
@@ -179,8 +188,10 @@ theorem isForwardFor_of_isRatMarkedSquare (hcomp : ForwardForClosedUnderComp) :
       · exact isForwardFor_of_isRationalFun hrat
       · haveI : Finite A₀ := Finite.of_equiv A e
         refine IsForwardFor.congr
-          (hcomp A (A₀ ⊕ A₀) B _ (fun v => v.map (e'.symm : A₀ ⊕ A₀ → B))
-            (hcomp A A₀ (A₀ ⊕ A₀) (fun w => w.map (e : A → A₀)) (markedSquare A₀)
+          (ForwardForClosedUnderComp A (A₀ ⊕ A₀) B _
+            (fun v => v.map (e'.symm : A₀ ⊕ A₀ → B))
+            (ForwardForClosedUnderComp A A₀ (A₀ ⊕ A₀) (fun w => w.map (e : A → A₀))
+              (markedSquare A₀)
               (isForwardFor_of_isRationalFun (isRationalFun_map (e : A → A₀)))
               (isForwardFor_markedSquare A₀))
             (isForwardFor_of_isRationalFun (isRationalFun_map (e'.symm : A₀ ⊕ A₀ → B))))
@@ -192,7 +203,7 @@ theorem isForwardFor_of_isRatMarkedSquare (hcomp : ForwardForClosedUnderComp) :
         (fun w => by simp)
   | comp _ _ ihf ihg =>
       intro hA hC
-      exact hcomp _ _ _ _ _ (ihf hA ‹Finite _›) (ihg ‹Finite _› hC)
+      exact ForwardForClosedUnderComp _ _ _ _ _ (ihf hA ‹Finite _›) (ihg ‹Finite _› hC)
 
 /-! ## The enumeration of a forward nest of loops -/
 
@@ -240,7 +251,7 @@ lemma isRationalFun_enum_nil [Finite A] :
 
 /-- **The enumeration of the tuples of positions visited by a forward nest of loops is a
 composition of marked squaring and rational functions.** -/
-theorem isRatMarkedSquare_enum (hstep : ForwardStepRational) [Finite A] :
+theorem isRatMarkedSquare_enum [Finite A] :
     ∀ (L : List (Bool × ℕ)), (∀ p ∈ L, p.1 = true) → ∀ (k : ℕ), L.length = k →
       IsRatMarkedSquare (fun w : List A => enum k L w) := by
   intro L
@@ -261,7 +272,7 @@ theorem isRatMarkedSquare_enum (hstep : ForwardStepRational) [Finite A] :
       refine IsRatMarkedSquare.comp' (g := stepFun true A L.length)
         ((ih hL' L.length rfl).comp' (isRatMarkedSquare_markedSquare (Ann A L.length))
           (fun w => rfl))
-        (IsRatMarkedSquare.of_rational (hstep A L.length)) (fun w => ?_)
+        (IsRatMarkedSquare.of_rational (ForwardStepRational A L.length)) (fun w => ?_)
       exact (stepFun_enum true x L w).symm
 
 end Enum
@@ -272,7 +283,7 @@ variable {A B : Type}
 
 /-- **A forward for-transducer in prenex form computes a composition of marked squaring and
 rational functions.** -/
-theorem isRatMarkedSquare_of_forwardPrenex (hstep : ForwardStepRational)
+theorem isRatMarkedSquare_of_forwardPrenex
     [Finite A] [Finite B] {P : ForProg A B} (hP : ForwardPrenexForm P) :
     IsRatMarkedSquare P.eval := by
   classical
@@ -285,19 +296,18 @@ theorem isRatMarkedSquare_of_forwardPrenex (hstep : ForwardStepRational)
     omega
   refine IsRatMarkedSquare.comp' (g := scanFun k m body epilogue
       (fun i => ⟨virt L i, Nat.lt_succ_of_le (virt_le L i)⟩))
-    (isRatMarkedSquare_enum hstep L hfwd k hk.symm)
+    (isRatMarkedSquare_enum L hfwd k hk.symm)
     (IsRatMarkedSquare.of_rational (isRationalFun_scanFun k m body epilogue _))
     (fun w => ?_)
   exact (scan_enum k m body epilogue _ hk.symm hbody hepi (fun _ => rfl) hmlt w).symm
 
 /-- **Every function computed by a forward for-transducer is a composition of marked squaring and
 rational functions.** -/
-theorem isRatMarkedSquare_of_isForwardFor (hpre : ForwardPrenexNormalForm)
-    (hstep : ForwardStepRational) [Finite A] [Finite B]
+theorem isRatMarkedSquare_of_isForwardFor [Finite A] [Finite B]
     {f : List A → List B} (hf : IsForwardFor f) : IsRatMarkedSquare f := by
   obtain ⟨P, hP, hval⟩ := hf
-  obtain ⟨P', hpre', hval'⟩ := hpre A B P hP
-  exact (isRatMarkedSquare_of_forwardPrenex hstep hpre').congr
+  obtain ⟨P', hpre', hval'⟩ := ForwardPrenexNormalForm A B P hP
+  exact (isRatMarkedSquare_of_forwardPrenex hpre').congr
     (fun w => by rw [hval' w, hval w])
 
 /-! ## The exercise -/
@@ -306,15 +316,13 @@ theorem isRatMarkedSquare_of_isForwardFor (hpre : ForwardPrenexNormalForm)
 for-transducers -- for-transducers all of whose loops are of the first-to-last kind -- are exactly
 the composition closure of marked squaring and the rational functions.
 
-The three hypotheses are the steps of the author's solution that replay the proof of Theorem
-`thm:for-transducers-are-polyregular` with the direction of every loop tracked; they are described
-in the header of this file. -/
-theorem forwardFor_iff_ratMarkedSquare (hcomp : ForwardForClosedUnderComp)
-    (hpre : ForwardPrenexNormalForm) (hstep : ForwardStepRational)
-    [Finite A] [Finite B] (f : List A → List B) :
+The three steps of the author's solution that replay the proof of Theorem
+`thm:for-transducers-are-polyregular` with the direction of every loop tracked are described in
+the header of this file; all three are proved. -/
+theorem forwardFor_iff_ratMarkedSquare [Finite A] [Finite B] (f : List A → List B) :
     IsForwardFor f ↔ IsRatMarkedSquare f :=
-  ⟨fun hf => isRatMarkedSquare_of_isForwardFor hpre hstep hf,
-    fun hf => isForwardFor_of_isRatMarkedSquare hcomp hf ‹Finite A› ‹Finite B›⟩
+  ⟨fun hf => isRatMarkedSquare_of_isForwardFor hf,
+    fun hf => isForwardFor_of_isRatMarkedSquare hf ‹Finite A› ‹Finite B›⟩
 
 end Exercises
 end Transducers

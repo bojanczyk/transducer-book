@@ -210,13 +210,13 @@ RequestProject/
 | `PartD/MarkedSquare.lean` | marked squaring and its continuity |
 | `PartD/ForDef.lean` | the syntax and the semantics of the for-transducers, and Definition `def:prenex-normal-form-for-transducers` |
 | `PartD/ForSem.lean` | the semantic toolkit: folds over lists, nests of loops as folds over tuples, the variables and the letters of a program |
-| `PartD/ForNest.lean`, `PartD/ForMerge.lean`, `PartD/ForPrenex.lean`, `PartD/ForLex.lean`, `PartD/ForTrace.lean`, `PartD/ForPrenexTop.lean` | the translation of a program into a single nest of loops and the proof of Lemma `lemma:prenex-normal-form` |
+| `PartD/ForNest.lean`, `PartD/ForMerge.lean`, `PartD/ForPrenex.lean`, `PartD/ForLex.lean`, `PartD/ForTrace.lean`, `PartD/ForPrenexTop.lean` | the translation of a program into a single nest of loops and the proof of Lemma `lemma:prenex-normal-form`.  `Transducers.exec_merge`, `Transducers.exec_merge_fresh` and `Transducers.trFor_spec` are stated for **two designated positions in increasing order** (`pos zv < pos lv` and `pos lv < w.length`) rather than for the first and the last position; the prenex form of the book is the instance `0`, `w.length - 1`, and the forward prenex form of Exercise `exer:forward-for-transducer` is the instance `0`, `1`.  Nothing in the merging construction uses that the second designated position is the last one, only that it comes after the first |
 | `PartD/ForAtom.lean` | atomic tests, the atomisation of a program, constant programs, and the letters a program can see |
 | `PartD/ForEvents.lean` | the tuples at which the body of a nest produces a letter, and their lexicographic order |
 | `PartD/ForResim.lean` | the re-simulation of the inner nest of loops: answering, inside the composed program, a question about the letter produced at a given tuple |
 | `PartD/ForFree.lean` | the free position variables of a program, and the transformation making a program closed (every free position variable bound by a loop that runs at the first position only) |
 | `PartD/ForCompDef.lean`, `PartD/ForComp.lean` | the translation of the outer for-transducer over the tuples of the inner one, and its correctness (`Transducers.tr_spec`) |
-| `PartD/ForCompTop.lean` | the assembly of Lemma `lem:for-closed-under-composition`: the length flags, the continuation-passing simulation on the inputs of length at most one, and the composed program |
+| `PartD/ForCompTop.lean` | the assembly of Lemma `lem:for-closed-under-composition`: the length flags, the continuation-passing simulation on the inputs of length at most one, and the composed program.  The composed program is named `Transducers.compProgAt` and its correctness `Transducers.eval_compProgAt`, so that the loops of the construction can be inspected by Exercise `exer:forward-for-transducer`; `Transducers.forTransducer_comp_aux` is unchanged and is now a corollary |
 | `PartD/PolyDef.lean` | Definition `def:polyregular-functions` and the elementary closure properties of the polyregular functions (moved here, unchanged, from `PartD/Statements.lean`, so that the constructions of the proof of Theorem `thm:for-transducers-are-polyregular` can be developed before the statements) |
 | `PartD/ForMachine.lean` | a small machine language over a finite set of states, compiled into for-programs |
 | `PartD/ForMapRev.lean` | map reverse and map duplicate are computed by for-transducers |
@@ -263,6 +263,7 @@ RequestProject/
 | `Exercises/TwoDFAPass.lean`, `Exercises/TwoDFARuler.lean`, `Exercises/TwoDFAExp.lean` | Exercise `exer:2dfa-complexity`: a two-way automaton performing a sequence of one-way passes, the ruler word and the conditions that characterise it, and the automaton with `4·(n+1)` states whose shortest accepted string has length `2^(n+1)-1` |
 | `Exercises/TwoDFASipserDef.lean`, `Exercises/TwoDFASipserRun.lean`, `Exercises/TwoDFASipserTree.lean`, `Exercises/TwoDFASipserExplore.lean`, `Exercises/TwoDFASipserScan.lean`, `Exercises/TwoDFASipserSound.lean`, `Exercises/TwoDFASipser.lean` | Exercise `exer:2dfa-loop-elimination-sipser`: the depth-first search of the tree of accepting configurations, performed by a two-way automaton of quadratic size |
 | `Exercises/CompressionSLP.lean`, `Exercises/CompressionRat.lean`, `Exercises/CompressionMapLift.lean`, `Exercises/CompressionReg.lean` | Exercises `exer:rational-compression` and `exer:regular-compression`: operations on grammar compressions, the rational case through a bimachine, Claim `claim:map-compression`, and the induction over the composition tree |
+| `Exercises/ForwardPrenex.lean`, `Exercises/ForwardComp.lean`, `Exercises/ForwardStep.lean` | Exercise `exer:forward-for-transducer`: the forward prenex normal form (the two designated positions are the first and the second, so that no last-to-first loop is introduced), the closure of the forward for-transducers under composition, and the fact that the one-step transducer of the enumeration is rational in the first-to-last direction because it is order preserving, hence a bimachine |
 | `Labels.lean` | the label-indexed view of the formalisation: for every result of the book that is formalised, an alias in the namespace `Transducers.Book` whose Lean name is the LaTeX label of the result, followed by `assert_no_sorry` or `assert_uses_sorry` according to its status in the tables below.  Kept in step with those tables by `tools/gen_labels.py --check`; see `LABELS.md` |
 
 ## Conventions
@@ -1775,26 +1776,33 @@ in `main.aux`, so the book has **81 exercises**, every one of them with a writte
 solution.  **All 81 are formalised**, in `RequestProject/Exercises/`; each has an
 alias in `RequestProject/Labels.lean` with `assert_no_sorry`, so none of them
 depends on `sorryAx` or on a non-standard axiom, and there is no `sorry` in
-`RequestProject/Exercises/`.  Of the 81, **63 are proved outright** and **18
+`RequestProject/Exercises/`.  Of the 81, **64 are proved outright** and **17
 are proved from an explicit hypothesis** — a `Prop`-valued definition stating a
 step that the book's own solution takes for granted or only sketches, taken as
 an ordinary theorem argument, exactly in the style of the numbered results.  The
-eighteen, and the hypothesis each rests on, are tabulated in the addendum at
+seventeen, and the hypothesis each rests on, are tabulated in the addendum at
 the end of `EXERCISES.md`; three of them are of long standing
 (`exer:function-that-is-not-rational`,
 `exer:rational-relations-intersection-undecidable` and item (a) of
-`exer:decide-rational-colision`), fourteen came with the conditional
+`exer:decide-rational-colision`), and fourteen came with the conditional
 formalisations of the ideals, the linear output size, the two logic exercises
-and the minimal machines, and the last one is
-`exer:forward-for-transducer`.
+and the minimal machines.  `exer:forward-for-transducer` was the eighteenth: its
+three hypotheses (`ForwardForClosedUnderComp`, `ForwardPrenexNormalForm`,
+`ForwardStepRational`) have since been discharged, so it is proved outright.
+`#print axioms` on `Transducers.Exercises.forwardFor_iff_ratMarkedSquare`, on
+each of those three theorems, and on the two numbered results whose proofs were
+touched to obtain them (Lemma `lemma:prenex-normal-form` and Lemma
+`lem:for-closed-under-composition`, whose statements are unchanged) reports only
+`propext`, `Classical.choice`, `Quot.sound`.
 
 The two gaps that the closing audit reported have since been closed.
 `exer:polyregular-unmarked-squaring` is now proved in full
 (`Transducers.Exercises.unmarkedPolyregular_strict_subset_polyregular`), the
 strictness of the inclusion included; `exer:forward-for-transducer`, the last
 exercise of the book, is formalised as
-`Transducers.Exercises.forwardFor_iff_ratMarkedSquare`, from three explicit
-hypotheses; and item (b) of `exer:decide-rational-colision` is formalised as
+`Transducers.Exercises.forwardFor_iff_ratMarkedSquare` and, since its three
+hypotheses have been discharged, is proved outright; and item (b) of
+`exer:decide-rational-colision` is formalised as
 `Transducers.Exercises.rationalFun_equal_length_decidable`, from two.  The final
 section of `EXERCISES.md` sets out what each of those hypotheses assumes and
 what would be needed to remove it.

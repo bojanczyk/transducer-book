@@ -53,6 +53,9 @@ import RequestProject.Exercises.NFAPump
 import RequestProject.Exercises.ForContinuity
 import RequestProject.Exercises.UnmarkedSquaring
 import RequestProject.Exercises.ForwardFor
+import RequestProject.Exercises.ForwardPrenex
+import RequestProject.Exercises.ForwardComp
+import RequestProject.Exercises.ForwardStep
 import RequestProject.Exercises.SeqSST
 import RequestProject.Exercises.ForwardForTop
 import RequestProject.Exercises.IntComb

@@ -985,7 +985,7 @@ alias «exer:for-transducer-continuity-nonelementary» :=
   Transducers.Exercises.for_transducer_continuity_nonelementary
 assert_no_sorry «exer:for-transducer-continuity-nonelementary»
 
-/-- **Exercise `exer:forward-for-transducer`** (forward for-transducers compute exactly the composition closure of marked squaring and the rational functions): `Transducers.Exercises.forwardFor_iff_ratMarkedSquare`, from the hypotheses `Transducers.Exercises.ForwardForClosedUnderComp`, `Transducers.Exercises.ForwardPrenexNormalForm`, `Transducers.Exercises.ForwardStepRational`; rationality of the scan is proved, not assumed (`Transducers.Exercises.isRationalFun_scanFun`). -/
+/-- **Exercise `exer:forward-for-transducer`** (forward for-transducers compute exactly the composition closure of marked squaring and the rational functions): `Transducers.Exercises.forwardFor_iff_ratMarkedSquare`.  Proved outright: closure under composition (`Transducers.Exercises.ForwardForClosedUnderComp`), the forward prenex normal form (`Transducers.Exercises.ForwardPrenexNormalForm`), rationality of the one-step transducer (`Transducers.Exercises.ForwardStepRational`) and rationality of the scan (`Transducers.Exercises.isRationalFun_scanFun`) are all theorems. -/
 alias «exer:forward-for-transducer» :=
   Transducers.Exercises.forwardFor_iff_ratMarkedSquare
 assert_no_sorry «exer:forward-for-transducer»
