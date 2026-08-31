@@ -337,18 +337,18 @@ theorem rationalFun_loop_of_superPoly {A B : Type} [Finite A] [Finite B] {f : Li
     obtain ⟨n, hn⟩ := hs k (K * (C0 + 1) ^ k)
     exact absurd (outSet_ncard_le_of_langCount_le hC0 hK n) (by omega)
 
-/-- **The identity of `{0,1}*` inside a rational function with super-polynomially many outputs.**
-The two loops of `Transducers.Exercises.rationalFun_loop_of_superPoly` give an injective rational
-encoding `enc` of `{0,1}*` inside the range of `f`; a rational section of `f` (the Uniformisation
-Lemma) turns a bit string into an input of `f` mapped to its encoding, and the rational left
-inverse of `enc` (Exercise `exer:rational-injectivity-decidable`) reads the bits back. -/
-theorem exists_rational_bool_identity_of_superPoly {A B : Type} [Finite A] [Finite B]
-    {f : List A → List B} (hf : IsRationalFun f)
-    (hs : ∀ k C : ℕ, ∃ n, C * (n + 1) ^ k < (f '' {w : List A | w.length ≤ n}).ncard) :
+/-- **The identity of `{0,1}*` from two loops in the range.**  Two loops of the same length with
+different labels in the range of `f` give an injective rational encoding `enc` of `{0,1}*` inside
+that range; a rational section of `f` (the Uniformisation Lemma) turns a bit string into an input
+of `f` mapped to its encoding, and the rational left inverse of `enc` (Exercise
+`exer:rational-injectivity-decidable`) reads the bits back. -/
+theorem exists_rational_bool_identity_of_range_loops {A B : Type} [Finite A] [Finite B]
+    {f : List A → List B} (hf : IsRationalFun f) {p x y s : List B}
+    (hxpos : 0 < x.length) (hlen : x.length = y.length) (hxy : x ≠ y)
+    (hmem : ∀ u : List Bool, ∃ w : List A, f w = p ++ cycleWord x y u ++ s) :
     ∃ (g : List Bool → List A) (h : List B → List Bool),
       IsRationalFun g ∧ IsRationalFun h ∧ ∀ u : List Bool, h (f (g u)) = u := by
   classical
-  obtain ⟨p, x, y, s, hxpos, hlen, hxy, hmem⟩ := rationalFun_loop_of_superPoly hf hs
   have hencrat : IsRationalFun
       (fun u : List Bool => p ++ homOf (fun b : Bool => if b then x else y) u ++ s) :=
     isRationalFun_constHom p s _
@@ -371,5 +371,17 @@ theorem exists_rational_bool_identity_of_superPoly {A B : Type} [Finite A] [Fini
     exact ⟨w, by rw [hencval]; exact hw.symm⟩
   rw [hg0 _ hin]
   exact hh u
+
+/-- **The identity of `{0,1}*` inside a rational function with super-polynomially many outputs.**
+The range of such a function has two loops
+(`Transducers.Exercises.rationalFun_loop_of_superPoly`), and two loops give the identity
+(`Transducers.Exercises.exists_rational_bool_identity_of_range_loops`). -/
+theorem exists_rational_bool_identity_of_superPoly {A B : Type} [Finite A] [Finite B]
+    {f : List A → List B} (hf : IsRationalFun f)
+    (hs : ∀ k C : ℕ, ∃ n, C * (n + 1) ^ k < (f '' {w : List A | w.length ≤ n}).ncard) :
+    ∃ (g : List Bool → List A) (h : List B → List Bool),
+      IsRationalFun g ∧ IsRationalFun h ∧ ∀ u : List Bool, h (f (g u)) = u := by
+  obtain ⟨p, x, y, s, hxpos, hlen, hxy, hmem⟩ := rationalFun_loop_of_superPoly hf hs
+  exact exists_rational_bool_identity_of_range_loops hf hxpos hlen hxy hmem
 
 end Transducers.Exercises

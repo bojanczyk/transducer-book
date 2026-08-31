@@ -264,6 +264,8 @@ RequestProject/
 | `Exercises/TwoDFASipserDef.lean`, `Exercises/TwoDFASipserRun.lean`, `Exercises/TwoDFASipserTree.lean`, `Exercises/TwoDFASipserExplore.lean`, `Exercises/TwoDFASipserScan.lean`, `Exercises/TwoDFASipserSound.lean`, `Exercises/TwoDFASipser.lean` | Exercise `exer:2dfa-loop-elimination-sipser`: the depth-first search of the tree of accepting configurations, performed by a two-way automaton of quadratic size |
 | `Exercises/CompressionSLP.lean`, `Exercises/CompressionRat.lean`, `Exercises/CompressionMapLift.lean`, `Exercises/CompressionReg.lean` | Exercises `exer:rational-compression` and `exer:regular-compression`: operations on grammar compressions, the rational case through a bimachine, Claim `claim:map-compression`, and the induction over the composition tree |
 | `Exercises/RegularGrowth.lean`, `Exercises/RationalGrowth.lean` | the loop analysis of a deterministic automaton and the growth gap theorem for regular languages (`Transducers.Exercises.regular_growth_dichotomy`), and its transport to rational functions (`Transducers.Exercises.rationalFun_growth_dichotomy`, `Transducers.Exercises.rationalFun_loop_of_superPoly`, `Transducers.Exercises.exists_rational_bool_identity_of_superPoly`).  This is the analysis that the solutions of the exercises on the ideals of rational functions rest on; see the addendum at the end of this file |
+| `Exercises/ChainWords.lean`, `Exercises/SortedPattern.lean`, `Exercises/IdealsOmega.lean` | the `Ω(n^k)` half of the solution of Exercise `exer:polynomial-ideals`: the words produced by a chain of `k` loops, the rational bijection between such a word and a sorted word, and the two rational functions that put `Transducers.Exercises.sortedFun k` among the pre- and post-compositions of a rational function with `Ω(n^k)` outputs (`Transducers.Exercises.exists_rational_sorted_of_omega`) |
+| `Exercises/PatternCover.lean`, `Exercises/PatternCoverRat.lean`, `Exercises/IdealsPoly.lean` | the `O(n^k)` half: the analysis of the strongly connected components of an automaton with no ambiguous cycle and no chain of `k+1` loops, which covers its language by finitely many `k`-patterns (`Transducers.Exercises.RegGrowth.exists_pattern_cover`), the rational realisation of a finite family of `k`-patterns, and the factorisation of a rational function with `O(n^k)` outputs, `k ≥ 1`, through `sortedFun k` (`Transducers.Exercises.exists_rational_factor_through_sorted`) |
 | `Exercises/ForwardPrenex.lean`, `Exercises/ForwardComp.lean`, `Exercises/ForwardStep.lean` | Exercise `exer:forward-for-transducer`: the forward prenex normal form (the two designated positions are the first and the second, so that no last-to-first loop is introduced), the closure of the forward for-transducers under composition, and the fact that the one-step transducer of the enumeration is rational in the first-to-last direction because it is order preserving, hence a bimachine |
 | `Labels.lean` | the label-indexed view of the formalisation: for every result of the book that is formalised, an alias in the namespace `Transducers.Book` whose Lean name is the LaTeX label of the result, followed by `assert_no_sorry` or `assert_uses_sorry` according to its status in the tables below.  Kept in step with those tables by `tools/gen_labels.py --check`; see `LABELS.md` |
 
@@ -1997,7 +1999,9 @@ argument lists of `full_ideal_iff`, `all_ideals`, `sameIdeal_iff` and
 `sameIdeal_decidable`, whose conclusions are unchanged.  Exercise
 `exer:full-ideal` is therefore **proved outright**.
 
-**Still assumed.**  `Transducers.Exercises.SortedFromOmegaOutputs` and
+**Still assumed** *(at the time this section was written; both have since been
+discharged — see the next addendum)*.
+`Transducers.Exercises.SortedFromOmegaOutputs` and
 `Transducers.Exercises.FactorThroughSortedOfOutputsPoly` are unchanged, so
 `exer:polynomial-ideals`, `exer:all-ideals` and `exer:decide-same-ideal` are
 still proved from those two — and from those two only, where they previously
@@ -2017,3 +2021,101 @@ took four.
 section becomes **66 of the 81 exercises proved outright** and **15 proved from
 an explicit hypothesis**.  The counts of the numbered results of the book are
 unchanged: this work touches no numbered result.
+
+## Addendum: the last two hypotheses of `Exercises/Ideals.lean` are discharged
+
+The two hypotheses that the previous addendum left in place are now theorems, so
+no declaration of `Exercises/Ideals.lean` takes a hypothesis, and Exercises
+`exer:polynomial-ideals`, `exer:all-ideals` and `exer:decide-same-ideal` are
+proved.  Six new files carry the argument.
+
+**`SortedFromOmegaOutputs`** — a rational function with `Ω(n^k)` outputs has
+`Transducers.Exercises.sortedFun k` among its rational pre- and
+post-compositions — is proved as
+`Transducers.Exercises.exists_rational_sorted_of_omega`.  It is the argument of
+`IdentityFromSuperPolyOutputs` with a chain of `k` loops in place of the two
+loops of an ambiguous cycle.
+
+* `Exercises/ChainWords.lean` — `Transducers.Exercises.RegGrowth.chainWord`, the
+  word `p₀ x₀^{c₀} p₁ ⋯ x_{k-1}^{c_{k-1}} p_k` produced by a chain of `k` loops,
+  and the injectivity of `c ↦ chainWord c` on exponent tuples, from the shifting
+  lemma `RegGrowth.reaches_of_loop_shift` of `Exercises/RegularGrowth.lean`.
+* `Exercises/SortedPattern.lean` — `Transducers.Exercises.sortedFun k`, the
+  sorted words over `Fin k`, and the rational function
+  `Transducers.Exercises.patEmit` that turns a sorted word
+  `0^{c₀} ⋯ (k-1)^{c_{k-1}}` into the corresponding chain word, together with
+  its injectivity on sorted words.
+* `Exercises/IdealsOmega.lean` — the assembly, with the Uniformisation Lemma
+  `lem:uniformisation` (`Transducers.Exercises.exists_rationalFun_section`).
+
+**`FactorThroughSortedOfOutputsPoly`** — a rational function with `O(n^k)`
+outputs is a rational pre- and post-composition of `sortedFun k` — is the step
+the author describes as "analysing the structure of strongly connected
+components in the automaton that computes a rational function whose range has
+growth `O(n^k)`".  It is proved **for `k ≥ 1`**, as
+`Transducers.Exercises.exists_rational_factor_through_sorted`, and refuted at
+`k = 0`.
+
+* `Exercises/PatternCover.lean` — `Transducers.Exercises.RegGrowth.exists_pattern_cover`:
+  in a deterministic automaton with no ambiguous cycle and no chain of `k+1`
+  loops, every word accepted from a state `q` is a word of one of finitely
+  many `k`-patterns.  The induction is on the number of states reachable from
+  `q`.  If no nonempty word loops at `q`, every accepted word is a letter
+  followed by a word accepted from a state with strictly fewer states
+  reachable.  Otherwise the letters that keep a state in the component of `q`
+  are forced — a second such letter would give two loops of the same length with
+  different labels, an ambiguous cycle — so the forced path out of `q` is
+  eventually periodic, with a preperiod `a` and a period `d`, and an accepted
+  word either follows the forced path forever, giving one of the patterns
+  `u_s` or `u_a (x^d)^m u_j`, or leaves it at some point with a letter that
+  drops into a strictly lower component, to which the induction hypothesis
+  applies.
+* `Exercises/PatternCoverRat.lean` — a finite family of `k`-patterns is realised
+  by a single rational function of a sorted word
+  (`Transducers.Exercises.exists_rational_cover_of_patterns`): the counts of the
+  letters of a sorted word are read off by a rational function, one pattern is
+  selected by a regular test on the word, and the emitted word is assembled by a
+  transducer.
+* `Exercises/IdealsPoly.lean` — the range of a rational function with `O(n^k)`
+  outputs is a regular language of growth `O(n^k)`
+  (`Transducers.Exercises.rationalRel_range_isRegular`,
+  `Transducers.Exercises.langCount_le_outSet_ncard`), so an automaton for it has
+  no ambiguous cycle (`RegGrowth.outSet_superPoly_of_range_loops`) and no chain
+  of `k+1` loops (`RegGrowth.chain_lower_bound`); the pattern cover applies, and
+  `f` factors as `e ∘ sortedFun k ∘ (section of e ∘ sortedFun k) ∘ f`.
+
+### A divergence: the factorisation, and `exer:polynomial-ideals`, are false at `k = 0`
+
+Over the empty alphabet there is only the empty word, so `w ↦ h (sortedFun 0 (g
+w))` is constant, whereas a rational function with `O(n^0)` outputs need only
+have a finite range: `Transducers.Exercises.not_factorThroughSortedOfOutputsPoly`
+refutes the hypothesis as literally stated, with the rational function
+`w ↦ if w = [] then [] else [true]`.  Exercise `exer:polynomial-ideals` fails at
+`k = 0` for the same reason — `OmegaOutputs f 0` holds of every function and
+`O(n^0)` outputs is a finite range — and
+`Transducers.Exercises.polynomial_ideals_false_at_zero` refutes it, with the
+ideal `RangeAtMost 1`.
+
+Both faithful statements are kept: `FactorThroughSortedOfOutputsPoly` as a
+`def … : Prop` next to its refutation, and the faithful form of
+`polynomial_ideals` as a commented-out statement.
+`Transducers.Exercises.polynomial_ideals` carries the extra hypothesis `1 ≤ k`;
+its conclusion is unchanged.  `all_ideals` and `sameIdeal_iff` are unaffected
+and unconditional, because in the two places where `all_ideals` applies
+`polynomial_ideals` the ideal has a member of infinite range, whose level is at
+least `1` (`Transducers.Exercises.one_le_of_not_finite_range`, from
+`Transducers.Exercises.outputsPoly_zero_iff_finite_range`).  The divergence is
+also recorded in `EXERCISES.md` and in the docstrings concerned.
+
+`#print axioms`, run through `tools/print_axioms.sh` on all 213 aliases of
+`RequestProject/Labels.lean` — which include
+`Transducers.Book.«exer:polynomial-ideals»`,
+`Transducers.Book.«exer:all-ideals»` and
+`Transducers.Book.«exer:decide-same-ideal»` — reports only `propext`,
+`Classical.choice`, `Quot.sound` for every one of them, and none of the six new
+files contains a `sorry`.
+
+**Counts.**  With these three exercises proved outright, the tally of the
+`## Status` section becomes **69 of the 81 exercises proved outright** and **12
+proved from an explicit hypothesis**.  The counts of the numbered results of the
+book are unchanged: this work touches no numbered result.

@@ -183,9 +183,9 @@ all eleven are aliased in `RequestProject/Labels.lean`.
 | Exercise `exer:some-ideals` (two families of ideals of rational functions) | `IsIdeal`, `isIdeal_rangeAtMost`, `isIdeal_outputsPoly` | proved |
 | Exercise `exer:finite-range-ideals` (the ideals whose functions have finite range) | `ideal_mem_of_ncard_le`, `finite_range_ideal_classification` | proved |
 | Exercise `exer:full-ideal` (the ideal of all rational functions) | `full_ideal_iff` (with `IsIdeal`, `SuperPolyOutputs`, `isRationalFun_id`) | proved; the loop analysis of the solution is `Exercises/RegularGrowth.lean` and `Exercises/RationalGrowth.lean`, and `IdentityFromSuperPolyOutputs` is now a theorem |
-| Exercise `exer:polynomial-ideals` (the ideals of polynomial growth) | `polynomial_ideals` (with `OmegaOutputs`, `outCount`) | proved from the hypotheses `SortedFromOmegaOutputs` and `FactorThroughSortedOfOutputsPoly` (the two steps of the solution) |
-| Exercise `exer:all-ideals` (the classification of the ideals) | `all_ideals` (with `RangeAtMost`, `OutputsPoly`, `OutputsPolySome`, `AllRationalFuns`) | proved from `SortedFromOmegaOutputs` and `FactorThroughSortedOfOutputsPoly`; `IdentityFromSuperPolyOutputs` and `OutputsGrowthDichotomy` are now theorems |
-| Exercise `exer:decide-same-ideal` (equality of the generated ideals is decidable) | `sameIdeal_iff` (with `SameIdeal`, `SameOutputInvariant`, `sameIdeal_decidable`) | proved from the same two hypotheses as `exer:all-ideals`; the invariant is characterised, and `sameIdeal_decidable` turns any decision of the invariant into a decision of the exercise |
+| Exercise `exer:polynomial-ideals` (the ideals of polynomial growth) | `polynomial_ideals` (with `OmegaOutputs`, `outCount`) | proved, with the extra hypothesis `1 ≤ k`: the exercise is **false at `k = 0`**, see `polynomial_ideals_false_at_zero` and the divergence below |
+| Exercise `exer:all-ideals` (the classification of the ideals) | `all_ideals` (with `RangeAtMost`, `OutputsPoly`, `OutputsPolySome`, `AllRationalFuns`) | proved outright; all four steps of the solution (`IdentityFromSuperPolyOutputs`, `OutputsGrowthDichotomy`, `SortedFromOmegaOutputs`, `FactorThroughSortedOfOutputsPolyPos`) are theorems |
+| Exercise `exer:decide-same-ideal` (equality of the generated ideals is decidable) | `sameIdeal_iff` (with `SameIdeal`, `SameOutputInvariant`, `sameIdeal_decidable`) | proved outright; the invariant is characterised, and `sameIdeal_decidable` turns any decision of the invariant into a decision of the exercise |
 | Exercise `exer:surjective-rational-function` (a surjective rational function has a rational one-sided inverse) | `exists_rationalFun_leftInverse` | proved |
 | Exercise `exer:rational-injectivity-decidable` (injectivity is decidable) | `rationalFun_injectivity_decidable` (with `rationalFun_injective_iff_exists_inverse`, `exists_rationalFun_inverse_of_injective`, `codeInjective_iff_section_comp_id`) | proved from the hypotheses `EffectiveWeightedEvalEq` and `EffectiveRationalSection` (a computable form of the Uniformisation Lemma) |
 | Exercise `exer:rational-outpus-of-exactly-linear-size` (a rational function of unbounded output size has exactly linear output size) | `rational_exactly_linear_output` (with `maxOutLen`, `HasLinearRate`) | proved from the hypothesis `RationalHasLinearRate` (the maximum cycle mean of the transducer) |
@@ -548,11 +548,15 @@ make.
   in the form `Transducers.exists_rationalFun_of_total_rel`, which asserts that
   a rational function exists and not that a code for one can be computed.  The
   exercise is therefore still counted as not formalised.
-* Statements resting on theory that the project does not have: the growth rates
+* ~~Statements resting on theory that the project does not have: the growth rates
   of regular languages, together with the pattern analysis that Exercise
   `exer:polynomial-image-growth-decidable` of Part A asks for, for the series
   of exercises on ideals that follows `exer:finite-range-ideals`:
-  `exer:full-ideal`, `exer:polynomial-ideals`, `exer:all-ideals`.
+  `exer:full-ideal`, `exer:polynomial-ideals`, `exer:all-ideals`.~~  This is no
+  longer the case: the growth analysis has since been formalised, in
+  `Exercises/RegularGrowth.lean`, `Exercises/RationalGrowth.lean`,
+  `Exercises/ChainWords.lean` and `Exercises/PatternCover.lean`, and all three
+  exercises are formalised and proved — see the closing section of this file.
 
 ## Status
 
@@ -859,9 +863,9 @@ Of the 81:
   | `exer:rational-outpus-of-exactly-linear-size` | `RationalHasLinearRate` |
   | `exer:rational-outpus-of-exactly-linear-size-rational-number` | `RationalHasLinearRate` |
   | `exer:regular-outpus-of-exactly-linear-size` | `RationalHasLinearRate` |
-  | `exer:polynomial-ideals` | `SortedFromOmegaOutputs`, `FactorThroughSortedOfOutputsPoly` |
-  | `exer:all-ideals` | the same two |
-  | `exer:decide-same-ideal` | the same two |
+  | `exer:polynomial-ideals` | `SortedFromOmegaOutputs`, `FactorThroughSortedOfOutputsPoly` — **both discharged**, see the closing section |
+  | `exer:all-ideals` | the same two — **both discharged** |
+  | `exer:decide-same-ideal` | the same two — **both discharged** |
   | `exer:rational-injectivity-decidable` | `EffectiveWeightedEvalEq`, `EffectiveRationalSection` |
   | `exer:rational-composition-finiteness-undecidable` | `IteratesReduction` |
   | `exer:minimal-bimachine-lexicographic` | `CanonicalSuffixBimachineExists` — **now known to be false**, see the note below the table |
@@ -1082,3 +1086,82 @@ explicit hypothesis**: the seventeen tabulated there, less this one.  The
 hypothesis `EvenParityNeedsThreeStates` is no longer taken by any declaration;
 its statement is kept only inside the commented-out block at the end of
 `RequestProject/Exercises/MinimalTransducer.lean`.
+
+## Status (the ideals of `rational-functions.tex`: the last two hypotheses discharged)
+
+The four exercises on the ideals of rational functions — `exer:full-ideal`,
+`exer:polynomial-ideals`, `exer:all-ideals`, `exer:decide-same-ideal` — rested
+on four named hypotheses, one per step of the author's solutions, because the
+book carries out the underlying loop analysis only in outline.  All four are now
+theorems, and no declaration of `Exercises/Ideals.lean` takes a hypothesis any
+more.
+
+* `IdentityFromSuperPolyOutputs` and `OutputsGrowthDichotomy` were discharged
+  earlier, by `Exercises/RegularGrowth.lean` and `Exercises/RationalGrowth.lean`
+  (recorded in `THEOREMS.md`), which made `exer:full-ideal` unconditional.
+* **`SortedFromOmegaOutputs`** — a rational function with `Ω(n^k)` outputs has
+  `sortedFun k` among its rational pre- and post-compositions — is now proved,
+  as `Transducers.Exercises.exists_rational_sorted_of_omega`.  It is the same
+  argument as `IdentityFromSuperPolyOutputs`, with a chain of `k` loops in the
+  range in place of the two loops of the ambiguous cycle:
+  `Exercises/ChainWords.lean` extracts from a chain of `k` loops the family of
+  words `p₀ x₀^{c₀} p₁ x₁^{c₁} ⋯ x_{k-1}^{c_{k-1}} p_k` and shows that distinct
+  exponent tuples give distinct words, and `Exercises/SortedPattern.lean` builds
+  the rational bijection between such a word and the sorted word
+  `0^{c₀} 1^{c₁} ⋯ (k-1)^{c_{k-1}}`; `Exercises/IdealsOmega.lean` assembles the
+  two rational functions with the Uniformisation Lemma.
+* **`FactorThroughSortedOfOutputsPoly`** — a rational function with `O(n^k)`
+  outputs is a rational pre- and post-composition of `sortedFun k` — is the step
+  the author describes as "analysing the structure of strongly connected
+  components in the automaton that computes a rational function whose range has
+  growth `O(n^k)`".  It is proved **for `k ≥ 1`**, as
+  `Transducers.Exercises.exists_rational_factor_through_sorted`, and is false at
+  `k = 0` (see the divergence below).  The analysis is
+  `Transducers.Exercises.RegGrowth.exists_pattern_cover`
+  (`Exercises/PatternCover.lean`): in a deterministic automaton with no ambiguous
+  cycle and no chain of `k+1` loops, every accepted word from a state `q` is a
+  word of one of finitely many `k`-patterns.  The induction is on the number of
+  states reachable from `q`: either no loop of `q` stays in its component, and
+  every accepted word is a letter followed by a word of a smaller component, or
+  the letters that stay in the component of `q` are forced (otherwise there
+  would be an ambiguous cycle), so the forced path out of `q` is eventually
+  periodic and every accepted word either follows it or leaves it at some point
+  into a strictly lower component, which has no chain of `k` loops.
+  `Exercises/PatternCoverRat.lean` realises a finite family of `k`-patterns by a
+  single rational function of a sorted word, and `Exercises/IdealsPoly.lean`
+  applies this to the range of `f` — a regular language of growth `O(n^k)` — and
+  composes with a rational section.
+
+### A divergence: `exer:polynomial-ideals` is false at `k = 0`
+
+`OmegaOutputs f 0` says that `1 ≤ c · outCount f n` for large `n`, which holds
+of every function, and `O(n^0)` outputs is exactly a finite range
+(`outputsPoly_zero_iff_finite_range`).  At `k = 0` the exercise would therefore
+say that every ideal with a member at all contains every rational function of
+finite range, and the ideal `RangeAtMost 1` refutes that: it contains the
+constant function, and not the rational function `w ↦ if w = [] then [] else
+[true]`, which has two outputs in all.  This is
+`Transducers.Exercises.polynomial_ideals_false_at_zero`.  The same failure hits
+the step of the solution: `Transducers.Exercises.not_factorThroughSortedOfOutputsPoly`
+refutes `FactorThroughSortedOfOutputsPoly` as literally stated, because the only
+word over the empty alphabet is the empty one, so `w ↦ h (sortedFun 0 (g w))` is
+constant.
+
+Both faithful statements are kept: `FactorThroughSortedOfOutputsPoly` as a
+`def … : Prop` next to its refutation, and the faithful form of
+`polynomial_ideals` as a commented-out statement next to
+`polynomial_ideals_false_at_zero`.  `Transducers.Exercises.polynomial_ideals`
+carries the extra hypothesis `1 ≤ k`, and its conclusion is unchanged.
+`exer:all-ideals` and `exer:decide-same-ideal` are **unaffected and
+unconditional**: in the two cases of `all_ideals` where `polynomial_ideals` is
+applied, the ideal has a member with an infinite range, whose level is therefore
+at least `1` (`Transducers.Exercises.one_le_of_not_finite_range`).
+
+**Counts.**  With `exer:polynomial-ideals`, `exer:all-ideals` and
+`exer:decide-same-ideal` proved outright, the tally of the `## Status` section
+of `THEOREMS.md` becomes **69 of the 81 exercises proved outright** and **12
+proved from an explicit hypothesis** — the sixteen tabulated in the addendum
+above, less `exer:non-minimal-automaton` and these three.  `#print
+axioms`, run on all 213 aliases of `RequestProject/Labels.lean`, reports only
+`propext`, `Classical.choice`, `Quot.sound` for every one of them, and there is
+no `sorry` anywhere in `RequestProject/Exercises/`.
