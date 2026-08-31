@@ -115,7 +115,7 @@ generator working from the tables alone would delete them.
 | B.4.11 | claim | `claim:offsets-are-regular` | `myhill-nerode.tex` |
 | B.4.12 | claim | `claim:eliminating-negative-letters` | `myhill-nerode.tex` |
 | B.4.13 | theorem | `thm:machine-independent-rational-functions` | `myhill-nerode.tex` |
-| C.0.14 | definition | `def:regular-functions` | `regular-intro.tex` |
+| C.0.1 | definition | `def:regular-functions` | `regular-intro.tex` |
 | C.1.1 | theorem | `thm:regular-functions-are-continuous-and-closed-under-composition` | `regular-primes.tex` |
 | C.1.2 | lemma | `lem:reversal-duplication-continuous` | `regular-primes.tex` |
 | C.1.3 | lemma | `lem:map-lifting-continuous` | `regular-primes.tex` |
@@ -152,8 +152,8 @@ generator working from the tables alone would delete them.
 | C.4.15 | lemma | `lem:k-types-properties` | `logic.tex` |
 | C.4.16 | theorem | `thm:fo-rational-functions` | `logic.tex` |
 | (unnumbered) | paragraph | `nolabel:thm-fo-transduction-into-primes` | `logic.tex` |
-| D.0.18 | definition | `def:polyregular-functions` | `polyregular-intro.tex` |
-| D.0.19 | theorem | `thm:polyregular-functions-are-continuous` | `polyregular-intro.tex` |
+| D.0.1 | definition | `def:polyregular-functions` | `polyregular-intro.tex` |
+| D.0.2 | theorem | `thm:polyregular-functions-are-continuous` | `polyregular-intro.tex` |
 | D.1.1 | theorem | `thm:for-transducers-are-polyregular` | `polyregular-for.tex` |
 | D.1.2 | definition | `def:prenex-normal-form-for-transducers` | `polyregular-for.tex` |
 | D.1.3 | lemma | `lemma:prenex-normal-form` | `polyregular-for.tex` |

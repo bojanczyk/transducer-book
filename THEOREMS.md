@@ -2119,3 +2119,18 @@ files contains a `sorry`.
 `## Status` section becomes **69 of the 81 exercises proved outright** and **12
 proved from an explicit hypothesis**.  The counts of the numbered results of the
 book are unchanged: this work touches no numbered result.
+
+### Verification of this state
+
+The state described in the two addenda above was re-checked from scratch: a full
+`lake build` of `transducer-lean/` succeeds (**8414 jobs, no errors, no
+warnings**), `tools/print_axioms.sh --all` reports `propext`,
+`Classical.choice`, `Quot.sound` and nothing else for **all 213 aliases** of
+`RequestProject/Labels.lean`, and `RequestProject/` contains no `sorry` outside
+block comments, no `axiom`, no `@[implemented_by]` and no `native_decide`.  The
+bookkeeping scripts `tools/gen_labels.py --check`, `tools/decl_files.py --check`
+and `tools/tex_numbering.py --check` all pass; the last one had flagged three
+stale numbers in the dictionary of `LABELS.md` (`def:regular-functions`,
+`def:polyregular-functions`, `thm:polyregular-functions-are-continuous`), which
+were brought back into agreement with `main.aux`.  Only the number column
+changed; no label, no statement and no proof was touched.

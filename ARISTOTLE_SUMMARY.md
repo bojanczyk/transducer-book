@@ -1,3 +1,33 @@
+# Summary of the re-verification of the ideals of rational functions
+
+This run added no mathematics: the two remaining hypotheses of
+`RequestProject/Exercises/Ideals.lean` were already discharged, and the run
+checked that state end to end and repaired one stale index entry.
+
+* `Transducers.Exercises.SortedFromOmegaOutputs` and
+  `Transducers.Exercises.FactorThroughSortedOfOutputsPolyPos` are theorems, with
+  the statements they had as hypotheses (the second with the extra `1 ≤ k`, the
+  form without it being refuted by
+  `Transducers.Exercises.not_factorThroughSortedOfOutputsPoly`).  No declaration
+  of the file takes a hypothesis argument, so Exercises `exer:full-ideal`,
+  `exer:polynomial-ideals`, `exer:all-ideals` and `exer:decide-same-ideal` are
+  proved outright, the last two unconditionally.
+* A full `lake build` from the fetched Mathlib cache succeeds: **8414 jobs, no
+  errors, no warnings**.
+* `tools/print_axioms.sh --all` reports `propext`, `Classical.choice`,
+  `Quot.sound` and nothing else for **all 213 aliases** of
+  `RequestProject/Labels.lean`, including the four ideal exercises.
+* `RequestProject/` contains no `sorry` outside block comments, no `axiom`, no
+  `@[implemented_by]` and no `native_decide`.
+* `tools/gen_labels.py --check` and `tools/decl_files.py --check` pass;
+  `tools/tex_numbering.py --check` had flagged three numbers of the dictionary
+  of `LABELS.md` (`def:regular-functions`, `def:polyregular-functions`,
+  `thm:polyregular-functions-are-continuous`) as out of date against
+  `main.aux`, and they were corrected — number column only.  The check now
+  passes.
+* A *Verification of this state* section recording all of the above was appended
+  to `THEOREMS.md`.
+
 # Summary of the closing audit of the project
 
 This run proved no new result; it audited the whole project and brought the
