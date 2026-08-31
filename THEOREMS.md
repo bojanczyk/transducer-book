@@ -1901,3 +1901,44 @@ bimachine has exactly one suffix state per `∼`-class.  This is the hypothesis
 `Transducers.Exercises.minimal_bimachine_lexicographic`) reports only `propext`,
 `Classical.choice`, `Quot.sound`, and `RequestProject/Exercises/MinimalBimachine.lean`
 contains no `sorry`.
+
+## Addendum: `exer:non-minimal-automaton` and the size of a transition
+
+The hypothesis `Transducers.Exercises.EvenParityNeedsThreeStates` of
+`RequestProject/Exercises/MinimalTransducer.lean` — that every unambiguous
+transducer computing `evenParity`, the function `aⁿ ↦ [n is even]` over a one
+letter alphabet, has at least three states — is **false** in the model of
+Definition `def:nfa-with-output` as formalised here, in which a transition is
+labelled by an arbitrary input string and an arbitrary output string.  The
+two-state transducer `Transducers.Exercises.wideStart`
+(`RequestProject/Exercises/MinimalTransducerBound.lean`), whose loop reads two
+letters at once, is unambiguous and computes `evenParity`, so
+`Transducers.Exercises.not_minimalUnambiguousSize_evenParity_three` refutes the
+hypothesis; two states is the true minimum there
+(`Transducers.Exercises.minimalUnambiguousSize_evenParity_two`).
+
+Exercise `exer:non-minimal-automaton` is nevertheless now proved outright, in two
+forms: `Transducers.Exercises.non_minimal_automaton`, for the transducers the
+book draws, which read at most one letter per transition
+(`Transducers.Exercises.Letterwise`), with the minimal size three and the two
+non-isomorphic transducers `endOut` and `startOut` of the original solution — the
+lower bound is
+`Transducers.Exercises.minimalLetterwiseUnambiguousSize_evenParity_three`; and
+`Transducers.Exercises.non_minimal_automaton_wide`, in the unrestricted model,
+with the minimal size two and the two non-isomorphic two-state transducers
+`wideStart` and `wideEnd`.  `EXERCISES.md` records the argument in detail, and
+the previous conditional statement is kept, commented out, at the end of
+`RequestProject/Exercises/MinimalTransducer.lean`.
+
+`#print axioms` on `Transducers.Exercises.non_minimal_automaton`,
+`Transducers.Exercises.non_minimal_automaton_wide`,
+`Transducers.Exercises.minimalLetterwiseUnambiguousSize_evenParity_three`,
+`Transducers.Exercises.minimalUnambiguousSize_evenParity_two` and
+`Transducers.Exercises.not_minimalUnambiguousSize_evenParity_three` reports only
+`propext`, `Classical.choice`, `Quot.sound`, and neither of the two files
+contains a `sorry`.
+
+**Counts.**  With this exercise proved outright, the tally of the `## Status`
+section becomes **65 of the 81 exercises proved outright** and **16 proved from
+an explicit hypothesis** (the seventeen tabulated in the addendum of
+`EXERCISES.md`, less `exer:non-minimal-automaton`).

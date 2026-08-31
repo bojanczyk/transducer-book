@@ -208,7 +208,7 @@ all eleven are aliased in `RequestProject/Labels.lean`.
 | Exercise `exer:minimal-subsequential` (minimal subsequential transducers are not unique) | `minimal_subsequential_not_unique` | proved |
 | Exercise `exer:non-minimal-bimachine` (minimal bimachines are not unique) | `minimal_bimachine_not_unique` | proved |
 | Exercise `exer:minimal-bimachine-lexicographic` (the lexicographically least minimal bimachine) | `minimal_bimachine_lexicographic` (with `card_classSet_le`, `suffix_automaton_unique`, `SuffixIso`) | **not proved**: proved from the hypothesis `CanonicalSuffixBimachineExists` (that the lower bound on the suffix automaton is attained), and that hypothesis is **false** — `not_canonicalSuffixBimachineExists` refutes it.  The lower bound `card_classSet_le` and the uniqueness `suffix_automaton_unique` of a suffix automaton attaining it are proved outright |
-| Exercise `exer:non-minimal-automaton` (a rational function with two non-isomorphic minimal unambiguous transducers) | `non_minimal_automaton` (with `MinimalUnambiguousSize`, `NFAOIso`) | proved from the hypothesis `EvenParityNeedsThreeStates` (the case analysis the solution sketches) |
+| Exercise `exer:non-minimal-automaton` (a rational function with two non-isomorphic minimal unambiguous transducers) | `non_minimal_automaton` (with `MinimalLetterwiseUnambiguousSize`, `Letterwise`, `NFAOIso`, `non_minimal_automaton_wide`, `MinimalUnambiguousSize`, `minimalUnambiguousSize_evenParity_two`, `not_minimalUnambiguousSize_evenParity_three`) | proved, in two forms.  The hypothesis `EvenParityNeedsThreeStates` is discharged, but as a refutation: `not_minimalUnambiguousSize_evenParity_three` shows it is **false** in the model formalised here, where a transition may read an arbitrary string.  `non_minimal_automaton` proves the exercise for the transducers the book draws, which read at most one letter per transition, with the minimal size 3 and `endOut`, `startOut`; `non_minimal_automaton_wide` proves it in the unrestricted model, with the minimal size 2 and the two-state `wideStart`, `wideEnd` |
 
 ### Regular functions, introduction (`regular-intro.tex`)
 
@@ -863,7 +863,7 @@ Of the 81:
   | `exer:rational-injectivity-decidable` | `EffectiveWeightedEvalEq`, `EffectiveRationalSection` |
   | `exer:rational-composition-finiteness-undecidable` | `IteratesReduction` |
   | `exer:minimal-bimachine-lexicographic` | `CanonicalSuffixBimachineExists` — **now known to be false**, see the note below the table |
-  | `exer:non-minimal-automaton` | `EvenParityNeedsThreeStates` |
+  | `exer:non-minimal-automaton` | `EvenParityNeedsThreeStates` — **discharged as a refutation**, see the addendum at the end of this file; the exercise is now proved outright, in two forms |
   | `exer:fo-non-elementary` | `FirstStringOfOrderDefinable` |
   | `exer:fo-suc` | `EFSuccSeparation` |
   | `exer:for-transducer-continuity-nonelementary` | `FirstStringOfOrderDefinable` |
@@ -1008,3 +1008,75 @@ the eighteenth: its three hypotheses -- `ForwardForClosedUnderComp`,
 discharged, so it is proved outright.  Every one of the 81 has an alias in `RequestProject/Labels.lean` with
 `assert_no_sorry`, so none depends on `sorryAx`, and there is no exercise of the
 book with a written solution and no formalisation.
+
+## Addendum: `exer:non-minimal-automaton` and the size of a transition
+
+The hypothesis `Transducers.Exercises.EvenParityNeedsThreeStates` of
+`RequestProject/Exercises/MinimalTransducer.lean` said that every unambiguous
+transducer computing `evenParity` — the function `aⁿ ↦ [n is even]` over a one
+letter alphabet — has at least three states.  It is **false** in the model of
+`def:nfa-with-output` as formalised here, in which a transition is labelled by an
+arbitrary input string and an arbitrary output string:
+
+* `Transducers.Exercises.wideStart`
+  (`RequestProject/Exercises/MinimalTransducerBound.lean`) has two states, `i` and
+  `f`, the transitions `i --ε/1--> f`, `i --a/0--> f` and `f --aa/ε--> f`, and is
+  unambiguous (`wideStart_unambiguous`) and computes `evenParity`
+  (`wideStart_rel`): the accepting run over `aⁿ` guesses the parity bit first and
+  then reads the input two letters at a time.  Hence
+  `Transducers.Exercises.not_minimalUnambiguousSize_evenParity_three`.
+* Two states is the true minimum in that model
+  (`Transducers.Exercises.minimalUnambiguousSize_evenParity_two`): no state of a
+  transducer computing `evenParity` is both initial and final, since the empty run
+  would then be accepting with no output, while `evenParity ε = 1`.
+* So the exercise itself is still true in that model, and is now proved outright
+  there: `Transducers.Exercises.non_minimal_automaton_wide` gives the two
+  non-isomorphic unambiguous transducers of the minimal size two, `wideStart` and
+  `wideEnd`, which produce the parity bit at the beginning and at the end of the
+  input, as the book's solution asks.
+
+The book draws transducers that read at most one letter per transition — `endOut`
+and `startOut` are of that shape — and for those the answer of the exercise is
+the expected one.  `Transducers.Exercises.Letterwise` says that every transition
+of a transducer reads at most one letter, and
+`Transducers.Exercises.minimalLetterwiseUnambiguousSize_evenParity_three` proves
+that three states are necessary for an unambiguous letterwise transducer
+computing `evenParity`.  The argument is a case analysis on runs, not on
+automata, since the family is still infinite:
+
+* no state is both initial and final (as above);
+* so the accepting run over `ε`, whose output is the bit `1`, goes from an
+  initial state `i` to a final state `f ≠ i`; with at most two states this forces
+  `Q = {i, f}`, `init = {i}` and `final = {f}`, and the accepting run over `a`
+  also goes from `i` to `f`;
+* no transition leaves `f`: composing the run over `ε` with it, and — if it
+  returns to `i` — with the run over `a`, gives an accepting run whose output is
+  either two bits long or starts with the wrong bit; the one remaining case, a
+  transition `f --ε/ε--> f`, is excluded by unambiguity, since inserting it into
+  the run over `ε` gives a second accepting run over `ε`;
+* no transition goes from `i` to `i`, for the same reasons;
+* so every accepting run consists of a single transition, which reads at most one
+  letter, and there is no accepting run over `aa`.
+
+`Transducers.Exercises.non_minimal_automaton` is therefore unconditional, with
+the minimality clause `MinimalLetterwiseUnambiguousSize evenParity 3` and the two
+three-state transducers `endOut` and `startOut` of the original solution, which
+are letterwise (`endOut_letterwise`, `startOut_letterwise`).  The previous
+conditional statement is kept, commented out, at the end of
+`RequestProject/Exercises/MinimalTransducer.lean`, with the reason.
+
+`#print axioms` on `Transducers.Exercises.non_minimal_automaton`,
+`non_minimal_automaton_wide`,
+`minimalLetterwiseUnambiguousSize_evenParity_three`,
+`minimalUnambiguousSize_evenParity_two` and
+`not_minimalUnambiguousSize_evenParity_three` reports only `propext`,
+`Classical.choice`, `Quot.sound`, and neither
+`RequestProject/Exercises/MinimalTransducer.lean` nor
+`RequestProject/Exercises/MinimalTransducerBound.lean` contains a `sorry`.
+
+**Counts.**  With `exer:non-minimal-automaton` proved outright, the tally of the
+section above becomes **65 exercises proved outright** and **16 proved from an
+explicit hypothesis**: the seventeen tabulated there, less this one.  The
+hypothesis `EvenParityNeedsThreeStates` is no longer taken by any declaration;
+its statement is kept only inside the commented-out block at the end of
+`RequestProject/Exercises/MinimalTransducer.lean`.

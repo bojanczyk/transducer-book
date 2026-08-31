@@ -32,11 +32,14 @@ enter the same state, in the second one they leave the same state.  Formally we
 use the invariant that in `endOut` the initial state has an outgoing transition
 that reads a letter, while in `startOut` it does not.
 
-The remaining half of the solution — that three states are *necessary* — is the
-case analysis that the book itself only sketches ("a short case analysis on the
-two remaining states"); it is taken here as the explicit hypothesis
-`Transducers.Exercises.EvenParityNeedsThreeStates`, which is the only
-assumption of the final statement `non_minimal_automaton`.
+The remaining half of the solution — that three states are *necessary* — and the
+statement of the exercise itself are in
+`RequestProject/Exercises/MinimalTransducerBound.lean`.  Three states are
+necessary for the transducers that the book draws, in which a transition reads
+at most one letter; in the model of `def:nfa-with-output` as formalised here, in
+which a transition may read an arbitrary string, two states already suffice, and
+the exercise holds there with two non-isomorphic two-state transducers.  See the
+module documentation of that file.
 -/
 
 namespace Transducers.Exercises
@@ -402,20 +405,30 @@ def MinimalUnambiguousSize {A B : Type} (f : List A → List B) (n : ℕ) : Prop
   ∀ (Q : Type) (_ : Finite Q) (M : NFAO A B Q), M.Unambiguous → (∀ w v, M.rel w v ↔ v = f w) →
     n ≤ Nat.card Q
 
-/-- **Assumed.**  Three states are necessary for an unambiguous transducer computing
-`evenParity`.
-
-This is the last paragraph of the solution of `exer:non-minimal-automaton`, and it is the one
-step of the solution that the book does not carry out: it says that the runs over the inputs
-`a⁰` and `a¹` are disjoint and that "a short case analysis on the two remaining states, which
-have to track the parity, shows that these two runs cannot be accommodated".  The case analysis
-ranges over all unambiguous transducers with at most two states — an unbounded family, since the
-transitions may read and write arbitrary strings — and is left here as an explicit hypothesis
-rather than reconstructed.  Everything else in the exercise is proved outright. -/
-def EvenParityNeedsThreeStates : Prop := MinimalUnambiguousSize evenParity 3
-
 lemma card_option_bool : Nat.card (Option Bool) = 3 := by
   simp [Nat.card_eq_fintype_card]
+
+/-
+The lower bound of the exercise, and the statement of the exercise itself, are in
+`RequestProject/Exercises/MinimalTransducerBound.lean`.
+
+The two declarations below are the previous version of that lower bound and of the exercise.
+They are kept, commented out, because the assumption `EvenParityNeedsThreeStates` that they were
+built on turned out to be **false** in the model of `def:nfa-with-output` as formalised here, in
+which a transition may read an arbitrary input string: the transducer
+`Transducers.Exercises.wideStart` is unambiguous, computes `evenParity` and has two states, so
+`MinimalUnambiguousSize evenParity 3` is refuted by
+`Transducers.Exercises.not_minimalUnambiguousSize_evenParity_three`.  The three-state lower bound
+does hold for the transducers that the book draws, in which every transition reads at most one
+letter; that is `Transducers.Exercises.minimalLetterwiseUnambiguousSize_evenParity_three`, and it
+is what the unconditional `Transducers.Exercises.non_minimal_automaton` now uses.  In the
+unrestricted model the minimal size is two and the exercise is still true, with the two
+non-isomorphic two-state transducers `wideStart` and `wideEnd`:
+`Transducers.Exercises.non_minimal_automaton_wide`.
+
+/-- **Assumed.**  Three states are necessary for an unambiguous transducer computing
+`evenParity`. -/
+def EvenParityNeedsThreeStates : Prop := MinimalUnambiguousSize evenParity 3
 
 /-- **Exercise `exer:non-minimal-automaton`.**  There is a rational function with two
 non-isomorphic unambiguous transducers of minimal size: the function `evenParity`, which maps
@@ -433,5 +446,6 @@ theorem non_minimal_automaton (h : EvenParityNeedsThreeStates) :
     ⟨Option Bool, inferInstance, endOut, fun w v => (endOut_rel w v).symm⟩,
     card_option_bool, h, endOut_unambiguous, endOut_rel, startOut_unambiguous, startOut_rel,
     endOut_not_iso_startOut⟩
+-/
 
 end Transducers.Exercises

@@ -965,7 +965,7 @@ alias «exer:minimal-bimachine-lexicographic» :=
   Transducers.Exercises.minimal_bimachine_lexicographic
 assert_no_sorry «exer:minimal-bimachine-lexicographic»
 
-/-- **Exercise `exer:non-minimal-automaton`** (a rational function with two non-isomorphic minimal unambiguous transducers): `Transducers.Exercises.non_minimal_automaton`, from the hypothesis `Transducers.Exercises.EvenParityNeedsThreeStates`. -/
+/-- **Exercise `exer:non-minimal-automaton`** (a rational function with two non-isomorphic minimal unambiguous transducers): `Transducers.Exercises.non_minimal_automaton`, proved outright.  The hypothesis `Transducers.Exercises.EvenParityNeedsThreeStates` that this used to rest on is **false** in the model of `def:nfa-with-output` as formalised here, where a transition may read an arbitrary string: `Transducers.Exercises.not_minimalUnambiguousSize_evenParity_three` refutes it with a two-state transducer.  So the minimality clause here is `Transducers.Exercises.MinimalLetterwiseUnambiguousSize`, minimality among the transducers the book draws, which read at most one letter per transition; in the unrestricted model the minimal size is two and the exercise holds as well, with two non-isomorphic two-state transducers (`Transducers.Exercises.non_minimal_automaton_wide`). -/
 alias «exer:non-minimal-automaton» :=
   Transducers.Exercises.non_minimal_automaton
 assert_no_sorry «exer:non-minimal-automaton»

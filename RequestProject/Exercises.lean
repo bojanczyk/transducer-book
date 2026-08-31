@@ -44,6 +44,7 @@ import RequestProject.Exercises.ForFO
 import RequestProject.Exercises.LinearOutput
 import RequestProject.Exercises.Ideals
 import RequestProject.Exercises.MinimalTransducer
+import RequestProject.Exercises.MinimalTransducerBound
 import RequestProject.Exercises.RatInjectiveDec
 import RequestProject.Exercises.MinimalBimachine
 import RequestProject.Exercises.FOSucc
