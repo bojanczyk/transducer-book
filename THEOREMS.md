@@ -2164,3 +2164,8 @@ sources alone:
   `tools/tex_numbering.py --check` all pass, with no change needed.
 
 No statement, proof or count changed in this pass.
+
+A further pass repeated the whole of this check from a clean checkout (fresh
+`lake build`: 8414 jobs, no errors; `tools/print_axioms.sh`: all 213 aliases on
+`propext`, `Classical.choice`, `Quot.sound`; the three bookkeeping checks pass)
+and again found nothing to change.
