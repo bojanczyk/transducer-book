@@ -257,7 +257,7 @@ lemma primrec_wcodeBound : Primrec wcodeBound := by
   exact (Primrec.nat_add.comp
     (Primrec.nat_add.comp (Primrec.const 1) hlen) hsum).of_eq (fun c => rfl)
 
-/-- **The second effectivity hypothesis of `RequestProject/PartB/Effective.lean`
+/-- **The effective Schützenberger bound stated in `RequestProject/PartB/Effective.lean`
 is a theorem.**  A Schützenberger bound can be computed from the two codes. -/
 theorem effectiveWeightedBound : EffectiveWeightedBound := by
   have hprim : Primrec₂ (fun c₁ c₂ : WCode => wcodeBound c₁ + wcodeBound c₂) :=

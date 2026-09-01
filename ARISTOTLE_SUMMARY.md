@@ -1,3 +1,64 @@
+# Summary of the run on the effectivity hypotheses blocked on Mathlib's `Primrec` API
+
+The task was to discharge the effectivity hypotheses that were blocked on a gap
+in Mathlib rather than on mathematics, by building the missing `Primrec`
+lemmas.  Three of the four named statements are now theorems; the fourth is left
+in place, with a precise account of why no `Primrec` lemma would discharge it.
+
+* **`Transducers.EffectiveWeightedEvalEq` — proved** (`PartB/WCodePrimrec.lean`).
+  The four numbered results that rested on it,
+  `thm:equivalence-weighted-automata`, `thm:equivalence-rational-functions`,
+  `thm:zeroness-weighted-automata` and `thm:decide-if-mealy`, are **proved
+  outright** and take no hypothesis.
+* **`Transducers.Exercises.ComputableDiagonalTest` — proved**
+  (`Exercises/LengthCollision.lean`, from `Exercises/IntCombPrimrec.lean`).
+* **`Transducers.EffectiveTwoWayEvalEq` — proved**
+  (`PartC/TwoWaySimPrimrec.lean`, new, on the fuel-bounded simulation of
+  `PartC/TwoWaySim.lean`, also new).  A halting run of a deterministic two-way
+  transducer cannot repeat a configuration, so it is shorter than
+  `(|w| + 1) * |states of the code| + 1` (`Transducers.RegDec.halt_time_lt_fuel`,
+  by pigeonhole on `TwoWay.run_inj`); the simulation runs the coded transducer
+  for that many steps and returns the output produced, and is shown primitive
+  recursive.  It needs no rational arithmetic at all — only list operations, in
+  particular lookup in the transition table.
+* **`Transducers.EffectiveTwoWayBound` — still a hypothesis**, and Theorem
+  `thm:decidable-equivalence-regular` still takes it.  It is *not* blocked on
+  Mathlib.  The bound comes from `Transducers.RegDec.exists_bound` →
+  `Transducers.regularFun_eq_of_short` → `Transducers.isRegularFun_of_isTwoWay`
+  (`PartC/SnakeReg.lean`), `Transducers.isWeighted_comp_regular` and
+  `Transducers.exists_injective_weighted` (`PartC/WeightedRegClosure.lean`), and
+  `Transducers.weighted_eq_of_short` (`PartB/WeightedZero.lean`); every step is
+  an existential over an abstract `Finite` type carrying no size information, so
+  the bound is not a function of the codes.  Making it computable needs a
+  size-explicit, code-to-code map `TwoWayCode → WCode` with its correctness
+  proof — after which `Transducers.effectiveWeightedBound` of
+  `PartB/WeightedBound.lean` would finish it.  That means re-proving the prime
+  decomposition and the closure properties of weighted automata in code-to-code
+  form: a large piece of work, out of scope here.  The docstring of the
+  hypothesis and the section *The conditional result of Part C* of `THEOREMS.md`
+  record this.
+
+**The general-purpose library.**  None of it is about transducers.
+`Common/PrimrecArith.lean` supplies the arithmetic of `ℤ` and `ℚ` in Mathlib's
+`Primrec` API (Mathlib supplies the `Primcodable` instances and `Primrec.eq`,
+but no arithmetic on either type at the pinned commit), and
+`Common/PrimrecList.lean` the list operations on top of it — this run added
+`Primrec.list_getLast?`, `Primrec.list_dropLast` and `Primrec.list_lookup`
+there.
+
+**Verification.**  `lake build` from scratch: **8429 jobs, no errors, no
+warnings**.  `#print axioms` reports only `propext`, `Classical.choice`,
+`Quot.sound` for `EffectiveWeightedEvalEq`, `EffectiveTwoWayEvalEq`,
+`effectiveWeightedBound`, `ComputableDiagonalTest`, the four Part B results and
+`regular_equivalence_decidable`.  `tools/gen_labels.py --check`,
+`tools/decl_files.py --check` and `tools/tex_numbering.py --check` pass.
+`RequestProject/` contains no `sorry` outside block comments, no `axiom`, no
+`@[implemented_by]` and no `native_decide`.  `THEOREMS.md`, `EXERCISES.md`,
+`FORMALISATION.md` and `RequestProject/Labels.lean` were brought into line: the
+numbered results now stand at **75 proved outright** and **2 proved from an
+explicit hypothesis** (the undecidability of the Post correspondence problem,
+and `EffectiveTwoWayBound`).
+
 # Summary of the re-verification of the ideals of rational functions
 
 This run added no mathematics: the two remaining hypotheses of

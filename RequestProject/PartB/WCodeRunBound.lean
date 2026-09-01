@@ -1,13 +1,13 @@
 /-
 A length bound for the accepting runs of a coded weighted automaton over `ℚ`.
 
-This file proves the combinatorial fact behind the effectivity hypothesis
-`Transducers.EffectiveWeightedEvalEq` of `RequestProject/PartB/Effective.lean`: if a code is
+This file proves the combinatorial fact behind `Transducers.EffectiveWeightedEvalEq`
+(`RequestProject/PartB/WCodePrimrec.lean`): if a code is
 *valid*, i.e. if every input string has only finitely many accepting runs, then every accepting
 run over an input `v` has at most `(|v| + 1) * n` transitions, where `n` is the number of states
 occurring in the code.
 
-The argument is the one sketched in the docstring of the hypothesis.  An accepting run with a
+An accepting run with a
 nonempty infix that starts and ends in the same state and reads nothing can be *pumped*: repeating
 that infix any number of times gives again an accepting run over the same input, and these runs are
 pairwise distinct because their lengths differ, so the code would have infinitely many accepting

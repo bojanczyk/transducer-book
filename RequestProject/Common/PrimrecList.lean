@@ -87,4 +87,47 @@ theorem list_isPrefixOf : Primrec₂ (fun (l₁ l₂ : List ℕ) => l₁.isPrefi
       (list_take.comp snd (list_length.comp fst))).decide.to₂
   exact h.of_eq fun l₁ l₂ => (isPrefixOf_eq_decide l₁ l₂).symm
 
+/-! ## The last element, and dropping it -/
+
+/-- Reading the last element of a list is primitive recursive. -/
+theorem list_getLast? : Primrec (fun l : List α => l.getLast?) :=
+  (list_head?.comp list_reverse).of_eq fun _ => List.getLast?_eq_head?_reverse.symm
+
+/-- Removing the last element of a list is primitive recursive. -/
+theorem list_dropLast : Primrec (fun l : List α => l.dropLast) :=
+  (list_take.comp Primrec.id (Primrec.nat_sub.comp list_length (const 1))).of_eq fun _ =>
+    List.dropLast_eq_take.symm
+
+/-! ## Lookup in an association list -/
+
+omit [Primcodable α] [Primcodable β] in
+private lemma lookup_eq_foldr [DecidableEq α] [BEq α] [LawfulBEq α] (a : α) (l : List (α × β)) :
+    l.lookup a = l.foldr (fun p r => if p.1 = a then some p.2 else r) none := by
+  induction l with
+  | nil => rfl
+  | cons p l ih =>
+      obtain ⟨k, b⟩ := p
+      rw [List.lookup_cons, List.foldr_cons, ← ih]
+      by_cases hk : a = k
+      · subst hk; simp
+      · have : (a == k) = false := by simpa using hk
+        simp [this, Ne.symm hk]
+
+/-- Lookup in an association list is primitive recursive. -/
+theorem list_lookup [DecidableEq α] [BEq α] [LawfulBEq α] :
+    Primrec₂ (fun (l : List (α × β)) (a : α) => l.lookup a) := by
+  have h : Primrec fun p : List (α × β) × α =>
+      p.1.foldr (fun x r => if x.1 = p.2 then some x.2 else r) none := by
+    refine Primrec.list_foldr (f := fun p : List (α × β) × α => p.1)
+      (g := fun _ => (none : Option β))
+      (h := fun (p : List (α × β) × α) (x : (α × β) × Option β) =>
+        if x.1.1 = p.2 then some x.1.2 else x.2)
+      fst (const none) ?_
+    have hcond : Primrec fun q : (List (α × β) × α) × ((α × β) × Option β) =>
+        bif decide (q.2.1.1 = q.1.2) then some q.2.1.2 else q.2.2 :=
+      Primrec.cond (PrimrecRel.comp Primrec.eq (fst.comp (fst.comp snd)) (snd.comp fst)).decide
+        (option_some.comp (snd.comp (fst.comp snd))) (snd.comp snd)
+    exact hcond.to₂.of_eq fun p x => by by_cases hx : x.1.1 = p.2 <;> simp [hx]
+  exact h.to₂.of_eq fun l a => (lookup_eq_foldr a l).symm
+
 end Primrec

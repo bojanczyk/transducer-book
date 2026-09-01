@@ -15,10 +15,12 @@ this to be a *total* procedure and a correct one.
   table: renaming every letter outside the two tables to the fresh letter
   changes neither behaviour (`Transducers.RegDec.twoWayCodeRel_map`) and
   preserves the length of the input.
-* Everything about rational arithmetic is confined to the two hypotheses of
-  `RequestProject/PartC/EffectiveReg.lean`; the mathematical content of the
-  second of them, the existence of the equivalence bound, is proved in
-  `RequestProject/PartC/RegCodeBound.lean`
+* The two coded transducers have to be compared on a given input, and the equivalence bound has to
+  be computed from the two codes.  The first of these is proved:
+  `Transducers.EffectiveTwoWayEvalEq` in `RequestProject/PartC/TwoWaySimPrimrec.lean`.  The second
+  is the remaining hypothesis `Transducers.EffectiveTwoWayBound` of
+  `RequestProject/PartC/EffectiveReg.lean`, whose mathematical content -- the existence of the
+  equivalence bound -- is proved in `RequestProject/PartC/RegCodeBound.lean`
   (`Transducers.exists_twoWayCode_bound`).
 -/
 import RequestProject.PartC.EffectiveReg
@@ -116,14 +118,14 @@ lemma computable_regEqB {D : TwoWayCode × TwoWayCode × List ℕ → Bool}
 
 end RegDec
 
-/-- **Theorem `thm:decidable-equivalence-regular`** from the effectivity hypotheses.  Equivalence is
-decidable for the two-way transducers computing regular functions. -/
-theorem regular_equivalence_decidable_aux (hEval : EffectiveTwoWayEvalEq)
-    (hBound : EffectiveTwoWayBound) :
+/-- **Theorem `thm:decidable-equivalence-regular`** from the effectivity hypothesis
+`EffectiveTwoWayBound`.  Equivalence is decidable for the two-way transducers computing regular
+functions. -/
+theorem regular_equivalence_decidable_aux (hBound : EffectiveTwoWayBound) :
     DecidableUnderPromise
       (fun p : TwoWayCode × TwoWayCode => TwoWayCodeTotal p.1 ∧ TwoWayCodeTotal p.2)
       (fun p => twoWayCodeRel p.1 = twoWayCodeRel p.2) := by
-  obtain ⟨D, hDcomp, hD⟩ := hEval
+  obtain ⟨D, hDcomp, hD⟩ := EffectiveTwoWayEvalEq
   obtain ⟨N, hNcomp, hN⟩ := hBound
   exact ⟨RegDec.regEqB D N, RegDec.computable_regEqB hDcomp hNcomp,
     fun p hp => RegDec.regEqB_iff hD hN p hp.1 hp.2⟩
