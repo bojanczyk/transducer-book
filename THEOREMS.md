@@ -500,7 +500,7 @@ transformations of the prefixes of the input).
 | Definition `def:rational-recognisable-subsets` (the rational and the recognisable subsets of a monoid) | — | not formalised.  The book uses it once, in the remark that explains the name *Kleene Theorem*; nothing else in the book, and nothing in this project, depends on it.  The recognisable subsets of `A* × B*` are formalised, for that monoid only, as `Transducers.Exercises.IsRecognisableRel` (Exercise `ex:recognisable-relations`, see `EXERCISES.md`) | — |
 | Theorem `thm:composition-rational-relations` (composition) | `Transducers.rationalRel_comp` | proved (product automaton in `RatComp.lean`, on the atomic normal form of `Atomize.lean`) | `PartB/RationalStatements.lean` |
 | Theorem `thm:continuity-rational-relations` (continuity) | `Transducers.rationalRel_continuous` | proved (ε-automaton running a dfa on the output, `RatCont.lean`) | `PartB/RationalStatements.lean` |
-| Theorem `thm:undecidable-equivalence-rational-relations` (undecidable equivalence) | `Transducers.rationalRel_equivalence_undecidable` | proved outright; the undecidability of the Post correspondence problem, formerly an explicit hypothesis, is now proved as `Transducers.PCP.solvable_not_computablePred` — see the closing status section.  (Former wording: proved from an explicit hypothesis that the Post correspondence problem is undecidable (reduction in `PCPRed.lean`) | `PartB/RationalStatements.lean` |
+| Theorem `thm:undecidable-equivalence-rational-relations` (undecidable equivalence) | `Transducers.rationalRel_equivalence_undecidable` | proved outright; the reduction is in `PCPRed.lean`, and the undecidability of the Post correspondence problem, which this used to take as an explicit hypothesis, is now proved as `Transducers.PCP.solvable_not_computablePred` (`PCP/Index.lean`) | `PartB/RationalStatements.lean` |
 | Claim `claim:homomorphism-complement-rational` (complement of a homomorphism) | `Transducers.hom_complement_rational` | proved (explicit four-state automaton, `HomComplement.lean`) | `PartB/RationalStatements.lean` |
 | Definition `def:rational-function` (rational function) | `Transducers.IsRationalFun` | — | `PartB/LabAut.lean` |
 | Definition `def:bimachine` (bimachine) | `Transducers.Bimachine`, `Transducers.IsBimachine` | — | `PartB/Bimachine.lean` |
@@ -1676,8 +1676,8 @@ row in the index above.
 | | Introduction | Part A | Part B | Part C | Part D | total |
 | --- | --- | --- | --- | --- | --- | --- |
 | definitions formalised | 1 | 4 | 7 | 6 | 2 | **20** |
-| results proved outright | 0 | 11 | 25 | 28 | 11 | **75** |
-| results proved from an explicit hypothesis | 0 | 0 | 1 | 1 | 0 | **2** |
+| results proved outright | 0 | 11 | 26 | 28 | 11 | **76** |
+| results proved from an explicit hypothesis | 0 | 0 | 0 | 1 | 0 | **1** |
 | environments not formalised | 0 | 0 | 1 | 1 | 0 | **3** |
 
 *Proved outright* means: the proof is complete, no file it depends on contains a
@@ -1692,42 +1692,41 @@ below.  Part D now includes the five results of Section *Pebble transducers*
 that are about the string representation of configurations; they used to be the
 only unformalised results of that part.
 
-### The two results proved from an explicit hypothesis
+### The one result proved from an explicit hypothesis
 
-Each of these takes its hypothesis as an ordinary explicit argument of the
-theorem, so it is visible in the statement, and `#print axioms` on the theorem
-still reports only the three standard axioms.  No `axiom` is declared anywhere
-in the project.
+It takes its hypothesis as an ordinary explicit argument of the theorem, so it
+is visible in the statement, and `#print axioms` on the theorem still reports
+only the three standard axioms.  No `axiom` is declared anywhere in the project.
 
 | result | hypothesis | where the hypothesis is defined |
 | --- | --- | --- |
-| Theorem `thm:undecidable-equivalence-rational-relations` | ~~`¬ ComputablePred Transducers.PCP.Solvable`~~ — **discharged**, proved as `Transducers.PCP.solvable_not_computablePred` in `RequestProject/PCP/Index.lean` | `PartB/PCPRed.lean` |
-| Theorem `thm:equivalence-weighted-automata` | `Transducers.EffectiveWeightedEvalEq` | `PartB/Effective.lean` |
-| Theorem `thm:equivalence-rational-functions` | `Transducers.EffectiveWeightedEvalEq` | `PartB/Effective.lean` |
-| Theorem `thm:zeroness-weighted-automata` | `Transducers.EffectiveWeightedEvalEq` | `PartB/Effective.lean` |
-| Theorem `thm:decide-if-mealy` | `Transducers.EffectiveWeightedEvalEq` | `PartB/Effective.lean` |
-| Theorem `thm:decidable-equivalence-regular` | `Transducers.EffectiveTwoWayEvalEq`, `Transducers.EffectiveTwoWayBound` | `PartC/EffectiveReg.lean` |
-| Theorem `thm:undecidable-equivalence-rational-relations` | `¬ ComputablePred Transducers.PCP.Solvable` | `PartB/PCPRed.lean` |
 | Theorem `thm:decidable-equivalence-regular` | `Transducers.EffectiveTwoWayBound` | `PartC/EffectiveReg.lean` |
 
-The first is the undecidability of the Post correspondence problem, which the book itself takes as
-given.  The second says that an equivalence bound for two coded two-way transducers can be
+It says that an equivalence bound for two coded two-way transducers can be
 *computed* from the two codes; that such a bound exists is proved
 (`Transducers.exists_twoWayCode_bound`, `PartC/RegCodeBound.lean`), and *The conditional result of
 Part C* above explains precisely what is missing — a size-explicit, code-to-code form of the
 book's reduction of regular equivalence to weighted zeroness — and why no `Primrec` lemma would
-supply it.
+supply it.  The missing construction is written out as a Lean statement,
+`Transducers.EffectiveTwoWayWeighted` of `PartC/RegBoundGap.lean`, with a proof that it implies
+the hypothesis; that statement is assumed nowhere.
 
-Four further results used to appear in this table: Theorems
-`thm:equivalence-weighted-automata`, `thm:equivalence-rational-functions`,
-`thm:zeroness-weighted-automata` and `thm:decide-if-mealy` were proved from
-`Transducers.EffectiveWeightedEvalEq`, and Theorem `thm:decidable-equivalence-regular` also took
-`Transducers.EffectiveTwoWayEvalEq`.  Both of those hypotheses were isolated because Mathlib's
-`Primrec`/`Computable` API supplied no arithmetic on `ℤ` or `ℚ`.  That arithmetic has since been
-built here, as the general-purpose library `Common/PrimrecArith.lean` and
-`Common/PrimrecList.lean`, and both hypotheses are now theorems
-(`PartB/WCodePrimrec.lean` and `PartC/TwoWaySimPrimrec.lean`); the four results of Part B are
-proved outright.
+Six further results used to appear in this table, and every one of them is now proved outright.
+
+* Theorem `thm:undecidable-equivalence-rational-relations` took
+  `¬ ComputablePred Transducers.PCP.Solvable`, the undecidability of the Post correspondence
+  problem, which the book itself takes as given.  It is now proved, as
+  `Transducers.PCP.solvable_not_computablePred` (`RequestProject/PCP/Index.lean`), from the
+  Turing-machine development of `RequestProject/Acceptance/`, `RequestProject/Sim/` and
+  `RequestProject/PCP/`.
+* Theorems `thm:equivalence-weighted-automata`, `thm:equivalence-rational-functions`,
+  `thm:zeroness-weighted-automata` and `thm:decide-if-mealy` were proved from
+  `Transducers.EffectiveWeightedEvalEq`, and Theorem `thm:decidable-equivalence-regular` also took
+  `Transducers.EffectiveTwoWayEvalEq`.  Both of those hypotheses were isolated because Mathlib's
+  `Primrec`/`Computable` API supplied no arithmetic on `ℤ` or `ℚ`.  That arithmetic has since been
+  built here, as the general-purpose library `Common/PrimrecArith.lean` and
+  `Common/PrimrecList.lean`, and both hypotheses are now theorems
+  (`PartB/WCodePrimrec.lean` and `PartC/TwoWaySimPrimrec.lean`).
 
 ### The three environments that are not formalised
 
@@ -1832,41 +1831,36 @@ in `main.aux`, so the book has **81 exercises**, every one of them with a writte
 solution.  **All 81 are formalised**, in `RequestProject/Exercises/`; each has an
 alias in `RequestProject/Labels.lean` with `assert_no_sorry`, so none of them
 depends on `sorryAx` or on a non-standard axiom, and there is no `sorry` in
-`RequestProject/Exercises/`.  Of the 81, **64 are proved outright** and **17
-are proved from an explicit hypothesis** — a `Prop`-valued definition stating a
-step that the book's own solution takes for granted or only sketches, taken as
-an ordinary theorem argument, exactly in the style of the numbered results.  The
-seventeen, and the hypothesis each rests on, are tabulated in the addendum at
-the end of `EXERCISES.md`; three of them are of long standing
-(`exer:function-that-is-not-rational`,
-`exer:rational-relations-intersection-undecidable` and item (a) of
-`exer:decide-rational-colision`), and fourteen came with the conditional
-formalisations of the ideals, the linear output size, the two logic exercises
-and the minimal machines.  `exer:forward-for-transducer` was the eighteenth: its
-three hypotheses (`ForwardForClosedUnderComp`, `ForwardPrenexNormalForm`,
-`ForwardStepRational`) have since been discharged, so it is proved outright.
-`#print axioms` on `Transducers.Exercises.forwardFor_iff_ratMarkedSquare`, on
-each of those three theorems, and on the two numbered results whose proofs were
-touched to obtain them (Lemma `lemma:prenex-normal-form` and Lemma
-`lem:for-closed-under-composition`, whose statements are unchanged) reports only
-`propext`, `Classical.choice`, `Quot.sound`.
+`RequestProject/Exercises/`.  Of the 81, **77 are proved outright**, **3 are
+proved from an explicit hypothesis** — a `Prop`-valued definition stating a step
+that the book's own solution takes for granted or only sketches, taken as an
+ordinary theorem argument, exactly in the style of the numbered results — and
+**1 is formalised but not proved**, its hypothesis having turned out to be
+false.  The four, with the reason in each case, are tabulated in the section
+*Status (final: the closing audit)* at the end of `EXERCISES.md`; they are
+`exer:fo-suc` (`EFSuccSeparation`, the Ehrenfeucht–Fraïssé argument),
+`exer:rational-composition-finiteness-undecidable` (`IteratesReduction`, the
+reduction from the halting problem), item (b) of `exer:decide-rational-colision`
+(`EffectiveLengthPairsSemilinear`, the effective form of Parikh's theorem) and
+`exer:minimal-bimachine-lexicographic`, whose hypothesis
+`CanonicalSuffixBimachineExists` is refuted by
+`Transducers.Exercises.not_canonicalSuffixBimachineExists`.
 
-The two gaps that the closing audit reported have since been closed.
-`exer:polyregular-unmarked-squaring` is now proved in full
-(`Transducers.Exercises.unmarkedPolyregular_strict_subset_polyregular`), the
-strictness of the inclusion included; `exer:forward-for-transducer`, the last
-exercise of the book, is formalised as
-`Transducers.Exercises.forwardFor_iff_ratMarkedSquare` and, since its three
-hypotheses have been discharged, is proved outright; and item (b) of
-`exer:decide-rational-colision` is formalised as
-`Transducers.Exercises.rationalFun_equal_length_decidable`, from two.  The final
-section of `EXERCISES.md` sets out what each of those hypotheses assumes and
-what would be needed to remove it.
+Every other hypothesis the exercises once carried has been discharged, the last
+of them in this audit: Example `ex:string-reversal-not-rational` of the main
+text, that string reversal is not rational, which
+`exer:function-that-is-not-rational` and `exer:not-semiring-continuous` took as
+an explicit hypothesis, is now the theorem
+`Transducers.Exercises.not_isRationalFun_reverse` of
+`RequestProject/Exercises/ReverseNotRational.lean`, so those two exercises are
+unconditional; and the undecidability of the Post correspondence problem, which
+item (a) of `exer:decide-rational-colision` and
+`exer:rational-relations-intersection-undecidable` took as a hypothesis, is the
+theorem `Transducers.PCP.solvable_not_computablePred`.
 
-(The counts given in the `## Status (current)` and `## Status (closing audit)`
-sections of `EXERCISES.md` are superseded by the ones above, which the closing
-audit recomputed from the sources; the addendum at the end of `EXERCISES.md`
-records the correction.)
+(All counts given in the earlier `## Status` sections of `EXERCISES.md` are
+superseded by the ones above and by *Status (final: the closing audit)* at the
+end of that file.)
 
 The four most recently added are `exer:2dfa-complexity`,
 `exer:2dfa-loop-elimination-sipser`, `exer:regular-compression` and
@@ -1888,12 +1882,14 @@ exercise `exer:2dfa-unary-output`.
 
 ### How this index is kept honest
 
-Five scripts in `tools/` check the bookkeeping, and all five report no problem.
+Five scripts in `tools/` check the bookkeeping.  Four of them report no problem;
+the fifth, `tools/relabel.py`, reports only references to another textbook, as
+noted below.
 
-* `tools/print_axioms.sh` — runs `#print axioms` on all 210 aliases of
+* `tools/print_axioms.sh` — runs `#print axioms` on all 213 aliases of
   `Labels.lean` and reports any that depends on `sorryAx` or on an axiom outside
   `propext`, `Classical.choice`, `Quot.sound`.  It reports
-  *all 210 aliases depend only on propext, Classical.choice, Quot.sound*.
+  *all 213 aliases depend only on propext, Classical.choice, Quot.sound*.
 
 * `tools/gen_labels.py --check` — `Labels.lean` against `LABELS.md`,
   `THEOREMS.md` and `EXERCISES.md`: every formalised row has an alias, every
@@ -1905,7 +1901,12 @@ Five scripts in `tools/` check the bookkeeping, and all five report no problem.
 * `tools/decl_files.py --check` — the `File` column of the index above against
   the files that actually declare the named declarations.
 * `tools/relabel.py` — finds any place where a result of the book is still
-  referred to by number instead of by label.
+  referred to by number instead of by label.  It reports 28 hits, all of them in
+  `RequestProject/Acceptance/`, `RequestProject/PCP/` and `RequestProject.lean`,
+  and all of them references to the numbering of Sipser's *Introduction to the
+  Theory of Computation* (Theorem 4.11, Corollary 4.18, Theorem 4.22, Corollary
+  4.23, Theorem 5.15), which is the source those files follow; none of them
+  refers to a result of *Transducers*.
 
 `FORMALISATION.md` is a short prose companion to this file, addressed to a
 reader of the book rather than to a maintainer of the formalisation.
@@ -2532,3 +2533,69 @@ reports only `propext`, `Classical.choice`, `Quot.sound` for
 **Counts.**  The numbered results of the book are unchanged at **75 proved
 outright** and **2 proved from an explicit hypothesis**.  The exercises become
 **75 of the 81 proved outright** and **6 proved from an explicit hypothesis**.
+
+## Status (final: the closing audit)
+
+This section supersedes every earlier `## Status` section and every addendum of
+this file where they disagree.
+
+**The build.**  `lake build` from scratch, Mathlib included, succeeds: **8463
+jobs**, **no errors**, **no warnings** of any kind (no linter diagnostic and no
+`declaration uses 'sorry'`).  `RequestProject/` contains no `axiom`, no
+`@[implemented_by]` and no `native_decide`; the token `sorry` occurs five times,
+every one of them inside a block comment that records a statement the project
+does not make (`PartB/WeightedStatements.lean` twice, `PartC/Statements.lean`
+twice, `PartC/MSOOpen.lean` once).
+
+**Axioms.**  `tools/print_axioms.sh` runs `#print axioms`, through the aliases of
+`RequestProject/Labels.lean`, on every formalised result and every formalised
+exercise, and reports *all 213 aliases depend only on propext, Classical.choice,
+Quot.sound*.
+
+**The numbered results.**  Of the book's 100 theorem-like environments: 20
+definitions formalised, **76 results proved outright**, **1 proved from an
+explicit hypothesis**, 3 not formalised (Definition
+`def:rational-recognisable-subsets`, Conjecture
+`conj:regular-via-weighted-automata`, and Theorem
+`nolabel:thm-fo-transduction-into-primes`, which the author withdrew).  Parts A,
+B and D are proved in full; in Part C the single exception is Theorem
+`thm:decidable-equivalence-regular`.
+
+**Every assumption that remains, in the whole project.**  There are four, and
+each is a `Prop`-valued definition taken as an ordinary explicit argument of the
+theorem that uses it.
+
+| assumption | where defined | used by | account |
+| --- | --- | --- | --- |
+| `Transducers.EffectiveTwoWayBound` | `PartC/EffectiveReg.lean` | Theorem `thm:decidable-equivalence-regular` | a real obstacle: an equivalence bound for two coded two-way transducers has to be *computed* from the two codes.  Its existence is proved (`Transducers.exists_twoWayCode_bound`); what is missing is a size-explicit, code-to-code form of the book's reduction to weighted automata, written out as `Transducers.EffectiveTwoWayWeighted` in `PartC/RegBoundGap.lean` with a proof that it implies the hypothesis.  See *The conditional result of Part C* above |
+| `Transducers.Exercises.EFSuccSeparation` | `Exercises/FOSucc.lean` | Exercise `exer:fo-suc` | the Ehrenfeucht–Fraïssé argument; deliberately out of scope |
+| `Transducers.Exercises.IteratesReduction` | `Exercises/IterateFiniteness.lean` | Exercise `exer:rational-composition-finiteness-undecidable` | the reduction from the halting problem; deliberately out of scope |
+| `Transducers.Exercises.EffectiveLengthPairsSemilinear` | `Exercises/LengthCollision.lean` | Exercise `exer:decide-rational-colision`, item (b) | the effective form of Parikh's theorem: neither Parikh images nor semilinear sets exist in Mathlib or in this project.  The rest of that exercise — the diagonal test on a semilinear set, and its computability — is proved outright |
+
+One further `Prop`-valued definition is still taken as an argument, but it is not
+an open assumption: `Transducers.Exercises.CanonicalSuffixBimachineExists`
+(`Exercises/MinimalBimachine.lean`), the hypothesis of Exercise
+`exer:minimal-bimachine-lexicographic`, is **false**, and
+`Transducers.Exercises.not_canonicalSuffixBimachineExists` proves it false.  That
+exercise is therefore counted as formalised but *not* proved; the lower bound
+`card_classSet_le` and the uniqueness `suffix_automaton_unique` are proved
+outright.  Two further `Prop`-valued definitions,
+`Transducers.EffectiveTwoWayWeighted` (`PartC/RegBoundGap.lean`) and
+`Transducers.Exercises.FactorThroughSortedOfOutputsPoly` (`Exercises/Ideals.lean`,
+which is refuted by `not_factorThroughSortedOfOutputsPoly`), are assumed by
+nothing; `Transducers.EffectiveWeightedBound` (`PartB/Effective.lean`) is assumed
+by nothing either and is proved, as `Transducers.effectiveWeightedBound`.
+
+**What this audit changed.**  Example `ex:string-reversal-not-rational` of the
+main text, that string reversal over a two-letter alphabet is not rational, was
+the last assumption of the exercises outside the list above: Exercises
+`exer:function-that-is-not-rational` and `exer:not-semiring-continuous` took it
+as an explicit hypothesis.  It is now proved, by the author's own argument
+through Theorem `thm:machine-independent-rational-functions`, as
+`Transducers.Exercises.not_isRationalFun_reverse` in
+`RequestProject/Exercises/ReverseNotRational.lean`, and both exercises are
+unconditional, with their conclusions unchanged.  Three stale entries were also
+corrected: the alias docstrings of those two exercises and of Theorem
+`thm:decidable-equivalence-regular` in `RequestProject/Labels.lean`, and the
+index rows of `exer:not-semiring-continuous` and `exer:decide-rational-colision`
+in `EXERCISES.md`.

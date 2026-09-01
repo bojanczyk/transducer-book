@@ -35,6 +35,7 @@ RequestProject/
     KrohnRhodes.lean            -- further exercises of krohn-rhodes.tex
     MyhillNerode.lean           -- the exercises of myhill-nerode.tex
     RegularPrimes.lean          -- further exercises of regular-primes.tex
+    ReverseNotRational.lean     -- string reversal is not a rational function
     TwoDFAEx.lean               -- the exercises of 2dfa.tex
     TwoDFALoop.lean             -- loop elimination for two-way transducers
     TwoDFAPass.lean             -- a two-way automaton that performs a sequence of one-way passes
@@ -65,6 +66,7 @@ RequestProject/
 | `Exercises/KrohnRhodes.lean` | the two exercises of `krohn-rhodes.tex` on the first-letter function: its decomposition as a flip-flop followed by a letter-to-letter map, and the fact that it is not a composition of reversible machines |
 | `Exercises/MyhillNerode.lean` | the exercises of `myhill-nerode.tex` that are formalised: the uniqueness of the minimal sequential transducer, the failure of uniqueness for subsequential transducers, and the failure of uniqueness for bimachines |
 | `Exercises/RegularPrimes.lean` | the exercise of `regular-primes.tex` on the semiring of weighted functions: a regular function that is not obtained by precomposing a weighted function |
+| `Exercises/ReverseNotRational.lean` | Example `ex:string-reversal-not-rational` of the main text, that string reversal over a two-letter alphabet is not rational (`Transducers.Exercises.not_isRationalFun_reverse`), by the author's argument through Theorem `thm:machine-independent-rational-functions`: the strings `falseⁿ` are pairwise inequivalent for the relation `BoundedVarRel` of reversal (`Transducers.Exercises.not_boundedVarRel_reverse`), so that relation has infinite index.  Exercises `exer:function-that-is-not-rational` and `exer:not-semiring-continuous` used to take this as an explicit hypothesis and are now unconditional |
 | `Exercises/TwoDFAEx.lean` | the exercise of `2dfa.tex` on Boolean combinations: the languages of deterministic two-way automata are closed under complement, union and intersection |
 | `Exercises/TwoDFALoop.lean` | loop elimination: the set of inputs on which a deterministic two-way transducer terminates is a regular language |
 | `Exercises/TwoDFAPass.lean` | a two-way deterministic automaton that performs a fixed sequence of left-to-right passes, one one-way automaton after another, rewinding between two passes: the transition function, the count of its states (the *sum* of the numbers of states of the passes, plus one rewinding state per pass) and the characterisation of its language as the non-empty inputs on which every pass accepts |
@@ -177,9 +179,9 @@ all eleven are aliased in `RequestProject/Labels.lean`.
 | Exercise `exer:examples-of-rational-fun` (three functions as bimachines and as rational functions) | `isBimachine_isRationalFun_evenLength`, `isBimachine_isRationalFun_swapFirstLast`, `isBimachine_isRationalFun_upToLastHash` | proved |
 | Exercise `exer:non-rational` (the first half of the input, and duplication, are not rational) | `not_isRationalFun_firstHalf`, `not_isRationalFun_duplicate` | proved |
 | Exercise `exer:decide-unambiguous` (unambiguity of an nfa is decidable) | `ambiguous_iff_reach`, `decidableUnambiguousNFA` (with `RunFrom`, `AccRun`, `Ambiguous`, `UnambiguousNFA`, `prodStep`) | proved |
-| Exercise `exer:decide-rational-colision` (equal outputs, outputs of equal length) | `rationalFun_collision_undecidable` (item (a)), `rationalFun_equal_length_decidable` (item (b), with `meetsDiag`, `meetsZ`) | proved from explicit hypotheses (item (a): the undecidability of PCP; item (b): an effective form of Parikh's theorem) |
+| Exercise `exer:decide-rational-colision` (equal outputs, outputs of equal length) | `rationalFun_collision_undecidable` (item (a)), `rationalFun_equal_length_decidable` (item (b), with `meetsDiag`, `meetsZ`) | item (a) proved outright (the undecidability of PCP it used to assume is now the theorem `Transducers.PCP.solvable_not_computablePred`); item (b) proved from the hypothesis `EffectiveLengthPairsSemilinear`, an effective form of Parikh's theorem |
 | Exercise `exer:rational-one-letter-input` (rational functions on a one-letter input alphabet) | `rationalFun_unary_graph` | proved |
-| Exercise `exer:function-that-is-not-rational` (not rational, yet rational after every rational function into `1*`) | `exists_not_isRationalFun_unary_compositions_rational` | proved from the hypothesis that reversal is not rational |
+| Exercise `exer:function-that-is-not-rational` (not rational, yet rational after every rational function into `1*`) | `exists_not_isRationalFun_unary_compositions_rational` | proved outright; that reversal is not rational (Example `ex:string-reversal-not-rational` of the main text), which this used to assume, is now the theorem `not_isRationalFun_reverse` of `Exercises/ReverseNotRational.lean` |
 | Exercise `exer:some-ideals` (two families of ideals of rational functions) | `IsIdeal`, `isIdeal_rangeAtMost`, `isIdeal_outputsPoly` | proved |
 | Exercise `exer:finite-range-ideals` (the ideals whose functions have finite range) | `ideal_mem_of_ncard_le`, `finite_range_ideal_classification` | proved |
 | Exercise `exer:full-ideal` (the ideal of all rational functions) | `full_ideal_iff` (with `IsIdeal`, `SuperPolyOutputs`, `isRationalFun_id`) | proved; the loop analysis of the solution is `Exercises/RegularGrowth.lean` and `Exercises/RationalGrowth.lean`, and `IdentityFromSuperPolyOutputs` is now a theorem |
@@ -198,7 +200,7 @@ all eleven are aliased in `RequestProject/Labels.lean`.
 | Book | Lean | Status |
 | --- | --- | --- |
 | Exercise `exer:two-letter-alphabet-suffices` (a two-letter alphabet suffices for map reverse and map duplicate) | `RegularFam2`, `isRegularFun_iff_compClosure2` | proved |
-| Exercise `exer:not-semiring-continuous` (a regular function that is not obtained by precomposing a weighted function) | `exists_isRegularFun_not_weighted_precomp` | proved |
+| Exercise `exer:not-semiring-continuous` (a regular function that is not obtained by precomposing a weighted function) | `exists_isRegularFun_not_weighted_precomp` | proved outright; it used to assume that reversal is not rational, which is now the theorem `not_isRationalFun_reverse` of `Exercises/ReverseNotRational.lean` |
 
 ### Machine independent characterisations (`myhill-nerode.tex`)
 
@@ -1381,3 +1383,80 @@ false, see the table above), `exer:fo-suc` (`EFSuccSeparation`),
 `exer:decide-rational-colision` item (b) (`EffectiveLengthPairsSemilinear`) and
 `exer:polyregular-unmarked-squaring`.  The counts of the numbered results of the
 book are unchanged.
+
+## Status (final: the closing audit)
+
+This section supersedes every earlier `## Status` section and every addendum of
+this file where they disagree.  It was written after a `lake build` of the whole
+project **from scratch**, Mathlib included, which succeeded with **no errors and
+no warnings** (8463 jobs), and after running `#print axioms`, through the
+aliases of `RequestProject/Labels.lean`, on every formalised result and
+exercise: all **213** aliases depend only on `propext`, `Classical.choice` and
+`Quot.sound` (`tools/print_axioms.sh`).  No file of the project contains a
+`sorry` outside a comment.
+
+**Counts.**  All **81** exercises of the book are formalised.
+
+| | count |
+| --- | --- |
+| proved outright | 77 |
+| proved from an explicit hypothesis | 3 |
+| formalised but *not* proved (hypothesis refuted) | 1 |
+
+*Proved outright* means: the statement takes no hypothesis beyond those of the
+exercise itself, its proof is complete, and `#print axioms` reports only the
+three standard axioms.
+
+**The three exercises that still rest on a hypothesis.**  The hypothesis is in
+each case a `def ... : Prop` of the project, taken as an ordinary explicit
+argument of the theorem, so it is visible in the statement.
+
+| Exercise | hypothesis | why it is still assumed |
+| --- | --- | --- |
+| `exer:fo-suc` | `Transducers.Exercises.EFSuccSeparation` (`Exercises/FOSucc.lean`) | the Ehrenfeucht–Fraïssé argument; Ehrenfeucht–Fraïssé games are not developed in this project.  Deliberately out of scope |
+| `exer:rational-composition-finiteness-undecidable` | `Transducers.Exercises.IteratesReduction` (`Exercises/IterateFiniteness.lean`) | the reduction from the halting problem, which would have to be carried out on Turing machines.  Deliberately out of scope |
+| `exer:decide-rational-colision`, item (b) | `Transducers.Exercises.EffectiveLengthPairsSemilinear` (`Exercises/LengthCollision.lean`) | the effective form of Parikh's theorem: that a semilinear description of the set of pairs of output lengths can be *computed* from two codes.  Neither Parikh images nor semilinear sets exist in Mathlib or in this project; the rest of the exercise — the diagonal test on a semilinear set and its computability — is proved outright |
+
+**The exercise that is not proved.**
+`exer:minimal-bimachine-lexicographic` is proved from
+`Transducers.Exercises.CanonicalSuffixBimachineExists`, and that hypothesis is
+**false**: `Transducers.Exercises.not_canonicalSuffixBimachineExists` refutes it
+with `evenLenFun`.  So the exercise as the book states it does not hold in the
+formalisation, and the conditional statement is not evidence for it.  What is
+proved unconditionally is the lower bound `card_classSet_le` and the uniqueness
+`suffix_automaton_unique` of a suffix automaton attaining it; the discrepancy is
+recorded in the addendum *the solution of `exer:minimal-bimachine-lexicographic`
+and Theorem `thm:machine-independent-rational-functions`* of `THEOREMS.md` and
+in the docstring of the hypothesis.
+
+**What changed in this audit.**  Two exercises that the earlier status sections
+counted as conditional are now unconditional, because Example
+`ex:string-reversal-not-rational` of the main text — that string reversal is not
+rational, which both took as an explicit hypothesis — is now proved, by the
+author's own argument, as `Transducers.Exercises.not_isRationalFun_reverse` in
+`RequestProject/Exercises/ReverseNotRational.lean`.  The two are
+`exer:function-that-is-not-rational` and `exer:not-semiring-continuous`; their
+conclusions are unchanged.
+
+Three earlier entries were also **bookkeeping errors**, and are corrected above:
+
+* the index row of `exer:not-semiring-continuous` said "proved" while the
+  theorem still took the reversal hypothesis (it no longer does);
+* the index row of `exer:decide-rational-colision` credited item (a) to an
+  assumed undecidability of the Post correspondence problem, which has been a
+  theorem of the project (`Transducers.PCP.solvable_not_computablePred`) since
+  Turing machines and the reduction were formalised;
+* the closing list of the addendum *`EffectiveRationalSection` is no longer a
+  hypothesis* counted `exer:polyregular-unmarked-squaring` as conditional and
+  omitted `exer:not-semiring-continuous`; `exer:polyregular-unmarked-squaring`
+  takes no hypothesis (its qualification is the *size* reading of the exercise,
+  a divergence, not an assumption).
+
+**Divergences, not assumptions.**  A few formalised exercises depart from the
+literal statement of the book, each recorded on the Lean statement and in this
+file: `exer:polynomial-ideals` (an extra `1 ≤ k`, without which the exercise is
+false), `exer:rational-compression`, `exer:regular-compression` and
+`exer:polyregular-unmarked-squaring` (the size reading of compatibility with
+compression, running time not being modelled), and `exer:2dfa-complexity` (a
+construction other than the author's, whose own construction gives only a
+superpolynomial bound and is kept beside it).

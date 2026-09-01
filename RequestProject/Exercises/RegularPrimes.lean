@@ -9,6 +9,7 @@ are referred to by their LaTeX label.
 -/
 import RequestProject.PartC.Statements
 import RequestProject.PartB.WeightedStatements
+import RequestProject.Exercises.ReverseNotRational
 
 namespace Transducers.Exercises
 
@@ -30,14 +31,14 @@ lemma dropSep_map_some {A : Type} (w : List A) : dropSep A (w.map some) = w := b
 lemma isRationalFun_dropSep (A : Type) [Finite A] : IsRationalFun (dropSep A) :=
   isRationalFun_homOf _
 
-/-- Map reverse over a two-letter alphabet is not a rational function, as soon as string reversal
-is not one: reversal factors as the homomorphism `a ↦ a` into `(A + 1)*`, followed by map reverse,
-followed by the homomorphism that erases the separators. -/
-lemma not_isRationalFun_mapReverse
-    (hrev : ¬ IsRationalFun (List.reverse : List Bool → List Bool)) :
+/-- Map reverse over a two-letter alphabet is not a rational function, since string reversal is
+not one (`Transducers.Exercises.not_isRationalFun_reverse`): reversal factors as the homomorphism
+`a ↦ a` into `(A + 1)*`, followed by map reverse, followed by the homomorphism that erases the
+separators. -/
+lemma not_isRationalFun_mapReverse :
     ¬ IsRationalFun (mapReverse Bool) := by
   intro hmr
-  refine hrev ?_
+  refine not_isRationalFun_reverse ?_
   have h1 : IsRationalFun (fun w : List Bool => w.map (some : Bool → Option Bool)) :=
     isRationalFun_map _
   have h := isRationalFun_comp (isRationalFun_comp h1 hmr) (isRationalFun_dropSep Bool)
@@ -57,17 +58,15 @@ The proof is the author's.  By Theorem `thm:characterisation-rational-functions-
 is rational, so it suffices to exhibit a regular function that is not rational; the author's
 witness is string reversal, and the one used here is map reverse, which is one of the prime
 regular functions.  That reversal is not rational is Example `ex:string-reversal-not-rational` of
-the main text, which is not part of this formalisation; it is therefore taken here as the explicit
-hypothesis `hrev`, exactly as in Exercise `exer:function-that-is-not-rational`
-(`Transducers.Exercises.exists_not_isRationalFun_unary_compositions_rational`), and everything else
-in the exercise is proved. -/
-theorem exists_isRegularFun_not_weighted_precomp
-    (hrev : ¬ IsRationalFun (List.reverse : List Bool → List Bool)) :
+the main text; it used to be taken here as an explicit hypothesis, and is now proved, by the
+author's argument, as `Transducers.Exercises.not_isRationalFun_reverse` in
+`RequestProject/Exercises/ReverseNotRational.lean`.  The exercise is therefore unconditional. -/
+theorem exists_isRegularFun_not_weighted_precomp :
     ∃ f : List (Option Bool) → List (Option Bool), IsRegularFun f ∧
       ∃ (S : Type) (_ : Semiring S) (h : List (Option Bool) → S),
         IsWeighted h ∧ ¬ IsWeighted (h ∘ f) := by
   refine ⟨mapReverse Bool, isRegularFun_mapReverse Bool, ?_⟩
-  have hnr := not_isRationalFun_mapReverse hrev
+  have hnr := not_isRationalFun_mapReverse
   rw [rational_iff_weighted_precomp] at hnr
   push_neg at hnr
   obtain ⟨S, hS, h, hh, hcomp⟩ := hnr

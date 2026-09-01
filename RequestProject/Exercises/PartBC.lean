@@ -16,6 +16,7 @@ import RequestProject.Exercises.PartBCAux
 import RequestProject.PCP.Index
 import RequestProject.Exercises.PartBCPCP
 import RequestProject.Exercises.PartBCUnary
+import RequestProject.Exercises.ReverseNotRational
 
 namespace Transducers
 namespace Exercises
@@ -834,17 +835,18 @@ lemma length_eval_swapBimachine (M : Bimachine A B P S) (w : List A) :
 yet whose composition with every rational function into a one-letter output alphabet is rational.
 
 The author's witness is string reversal.  That reversal is not rational is Example
-`ex:string-reversal-not-rational` of the main text, which is not part of this formalisation; it is
-therefore taken here as the explicit hypothesis `hrev`, and everything else in the exercise is
-proved.  The rest is the author's solution: a rational `g` into `1*` is computed by a bimachine
+`ex:string-reversal-not-rational` of the main text; it used to be taken here as the explicit
+hypothesis `hrev`, and is now proved, by the author's argument, as
+`Transducers.Exercises.not_isRationalFun_reverse` in
+`RequestProject/Exercises/ReverseNotRational.lean`, so the exercise is unconditional.
+The rest is the author's solution: a rational `g` into `1*` is computed by a bimachine
 (Theorem `thm:bimachines`), and the bimachine with its prefix and suffix automata swapped computes
 `g` on the reversed input, because it produces the same pieces of output in the opposite order,
 which is invisible over a one-letter alphabet. -/
-theorem exists_not_isRationalFun_unary_compositions_rational
-    (hrev : ¬ IsRationalFun (List.reverse : List Bool → List Bool)) :
+theorem exists_not_isRationalFun_unary_compositions_rational :
     ∃ f : List Bool → List Bool, ¬ IsRationalFun f ∧
       ∀ g : List Bool → List Unit, IsRationalFun g → IsRationalFun (g ∘ f) := by
-  refine ⟨List.reverse, hrev, fun g hg => ?_⟩
+  refine ⟨List.reverse, not_isRationalFun_reverse, fun g hg => ?_⟩
   obtain ⟨P, S, hP, hS, M, hM⟩ := isBimachine_of_rationalFun hg
   refine rationalFun_of_isBimachine ⟨S, P, hS, hP, swapBimachine M, ?_⟩
   funext w

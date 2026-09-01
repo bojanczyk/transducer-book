@@ -326,7 +326,7 @@ assert_no_sorry «lem:reversal-duplication-continuous»
 alias «lem:map-lifting-continuous» := Transducers.mapLift_continuous
 assert_no_sorry «lem:map-lifting-continuous»
 
-/-- **Theorem `thm:decidable-equivalence-regular`** (decidable equivalence): `Transducers.regular_equivalence_decidable`. -/
+/-- **Theorem `thm:decidable-equivalence-regular`** (decidable equivalence): `Transducers.regular_equivalence_decidable`, from the one remaining effectivity hypothesis `Transducers.EffectiveTwoWayBound` (an equivalence bound can be computed from the two codes); see `RequestProject/PartC/RegBoundGap.lean` for exactly what is missing. -/
 alias «thm:decidable-equivalence-regular» := Transducers.regular_equivalence_decidable
 assert_no_sorry «thm:decidable-equivalence-regular»
 
@@ -754,7 +754,7 @@ assert_no_sorry «exer:decide-rational-colision#2»
 alias «exer:rational-one-letter-input» := Transducers.Exercises.rationalFun_unary_graph
 assert_no_sorry «exer:rational-one-letter-input»
 
-/-- **Exercise `exer:function-that-is-not-rational`** (not rational, yet rational after every rational function into a one-letter alphabet): `Transducers.Exercises.exists_not_isRationalFun_unary_compositions_rational`. -/
+/-- **Exercise `exer:function-that-is-not-rational`** (not rational, yet rational after every rational function into a one-letter alphabet): `Transducers.Exercises.exists_not_isRationalFun_unary_compositions_rational`, proved outright.  Example `ex:string-reversal-not-rational` of the main text, that reversal is not rational, which this used to take as an explicit hypothesis, is proved as `Transducers.Exercises.not_isRationalFun_reverse`. -/
 alias «exer:function-that-is-not-rational» :=
   Transducers.Exercises.exists_not_isRationalFun_unary_compositions_rational
 assert_no_sorry «exer:function-that-is-not-rational»
@@ -809,7 +809,7 @@ assert_no_sorry «exer:minimal-subsequential»
 alias «exer:non-minimal-bimachine» := Transducers.Exercises.minimal_bimachine_not_unique
 assert_no_sorry «exer:non-minimal-bimachine»
 
-/-- **Exercise `exer:not-semiring-continuous`** (a regular function whose precomposition does not preserve the weighted-automaton functions): `Transducers.Exercises.exists_isRegularFun_not_weighted_precomp`. -/
+/-- **Exercise `exer:not-semiring-continuous`** (a regular function whose precomposition does not preserve the weighted-automaton functions): `Transducers.Exercises.exists_isRegularFun_not_weighted_precomp`, proved outright.  Example `ex:string-reversal-not-rational` of the main text, that reversal is not rational, which this used to take as an explicit hypothesis, is proved as `Transducers.Exercises.not_isRationalFun_reverse`. -/
 alias «exer:not-semiring-continuous» :=
   Transducers.Exercises.exists_isRegularFun_not_weighted_precomp
 assert_no_sorry «exer:not-semiring-continuous»
