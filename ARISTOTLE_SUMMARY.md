@@ -1,3 +1,29 @@
+# Sharpening the one remaining effectivity hypothesis
+
+A follow-up run on the same targets.  Nothing changed in the mathematics or in
+any statement of the book; the three effectivity hypotheses discharged above are
+still theorems, and `Transducers.EffectiveTwoWayBound` is still the one
+hypothesis of Theorem `thm:decidable-equivalence-regular`.  What this run added
+is a machine-checked account of what is missing for it, in the new file
+`RequestProject/PartC/RegBoundGap.lean`:
+
+* `Transducers.EffectiveTwoWayWeighted` -- the effective form of the book's
+  reduction: a computable map sending two codes of two-way transducers to two
+  *valid* codes of weighted automata over `ℚ` whose values on an input are equal
+  exactly when the two coded transducers produce the same output on it.
+* `Transducers.effectiveTwoWayBound_of_effectiveTwoWayWeighted` -- that this one
+  statement implies `EffectiveTwoWayBound`, the bound being the sum of the two
+  Schützenberger bounds `Transducers.wcodeBound` of the images, which is
+  primitive recursive in the codes.  So the gap is exactly one construction, and
+  everything downstream of it is already proved.
+
+`EffectiveTwoWayWeighted` is assumed nowhere: no theorem takes it, and the
+argument list of Theorem `thm:decidable-equivalence-regular` is unchanged.
+`lake build`: **8453 jobs, no errors, no warnings**; `tools/print_axioms.sh`
+reports `propext`, `Classical.choice`, `Quot.sound` and nothing else for all 213
+aliases, and the same three for the new theorem; `tools/gen_labels.py --check`,
+`tools/decl_files.py --check` and `tools/tex_numbering.py --check` pass.
+
 # Summary of the run on the effectivity hypotheses blocked on Mathlib's `Primrec` API
 
 The task was to discharge the effectivity hypotheses that were blocked on a gap

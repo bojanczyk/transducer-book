@@ -100,6 +100,7 @@ RequestProject/
 | `PartC/RegCodeSan.lean` | codes of two-way transducers (`TwoWayCode`, `twoWayCodeAut`, `twoWayCodeRel`, `TwoWayCodeTotal`, moved here unchanged from `PartC/Statements.lean`), and the fact that a coded transducer is blind to the letters that do not occur in its table: renaming them does not change the computed relation (`Transducers.RegDec.twoWayCodeRel_map`), which is what makes the equivalence test of Theorem `thm:decidable-equivalence-regular` a finite check |
 | `PartC/RegCodeBound.lean` | the existence of the equivalence bound of Theorem `thm:decidable-equivalence-regular` for two codes (`Transducers.exists_twoWayCode_bound`): the transducer of a code read over the finite alphabets and the finite state set that occur in it, the step-by-step correspondence between its runs and those of the coded transducer, the determinism of two-way transducers (`TwoWay.computes_unique`), and the application of `Transducers.regularFun_eq_of_short` |
 | `PartC/EffectiveReg.lean` | the two effectivity statements used by Theorem `thm:decidable-equivalence-regular`, with their justification: `EffectiveTwoWayEvalEq` is **proved** (in `PartC/TwoWaySimPrimrec.lean`), and `EffectiveTwoWayBound` is the one hypothesis of the theorem that remains |
+| `PartC/RegBoundGap.lean` | what exactly is missing for `EffectiveTwoWayBound`: the effective form of the book's reduction to weighted automata, stated as `Transducers.EffectiveTwoWayWeighted` (a computable map from two codes of two-way transducers to two codes of weighted automata over `ℚ` that separate the same inputs), together with the proof that it implies the hypothesis, `Transducers.effectiveTwoWayBound_of_effectiveTwoWayWeighted`. `EffectiveTwoWayWeighted` is *not* assumed anywhere: the file records the gap, it does not close it and it changes no statement |
 | `PartC/TwoWaySim.lean`, `PartC/TwoWaySimPrimrec.lean` | the fuel-bounded simulation of a coded two-way transducer on an input string (with the pigeonhole bound `Transducers.RegDec.halt_time_lt_fuel` on the length of a halting run) and the proof that it is primitive recursive, giving `Transducers.EffectiveTwoWayEvalEq` |
 | `PartC/RegEqDec.lean` | the decision procedure of Theorem `thm:decidable-equivalence-regular`: compare the two codes on the strings of length at most the bound over the letters of the two codes together with one fresh letter |
 | `PartC/RatBuild.lean`, `PartC/RatTools.lean`, `PartC/RatSeq.lean` | a bimachine-based builder for rational functions, and the rational functions used by Lemma `lem:regular-closure-properties` and Claim `claim:conditional` (constants, `cons`, letter-to-letter maps, homomorphisms, conditionals on a regular language, and sequential letter-by-letter transducers) |
@@ -968,6 +969,16 @@ now a theorem; the second remains.
   `PartC/Snake*.lean`) and the closure properties of `WeightedRegClosure.lean` in a size-explicit,
   code-to-code form.  The docstring of `EffectiveTwoWayBound` in `PartC/EffectiveReg.lean` records
   this in full.
+
+  That account is also machine-checked, in `PartC/RegBoundGap.lean`.  The missing construction is
+  stated there as `Transducers.EffectiveTwoWayWeighted` — there is a computable map sending two
+  codes of two-way transducers to two *valid* codes of weighted automata over `ℚ` whose values on
+  an input are equal exactly when the two coded transducers produce the same output on it — and
+  `Transducers.effectiveTwoWayBound_of_effectiveTwoWayWeighted` proves that this single statement
+  implies `EffectiveTwoWayBound`, the bound being `Transducers.wcodeBound` of the two images added
+  together.  So the gap is exactly one construction, and everything downstream of it is already
+  proved.  `EffectiveTwoWayWeighted` is not assumed anywhere in the project, and Theorem
+  `thm:decidable-equivalence-regular` still takes `EffectiveTwoWayBound`, unchanged.
 
 Everything else is proved:
 
@@ -2427,11 +2438,17 @@ conditional result of Part C* above and the docstring of the hypothesis in
 `PartC/EffectiveReg.lean` say precisely which piece of mathematics is missing (a
 size-explicit, code-to-code form of the book's reduction of regular equivalence
 to weighted zeroness, i.e. a computable `TwoWayCode → WCode` with its
-correctness proof) and how large it looks.
+correctness proof) and how large it looks.  That missing piece is now also
+written out as a Lean statement, `Transducers.EffectiveTwoWayWeighted` of
+`PartC/RegBoundGap.lean`, with a proof that it implies the hypothesis
+(`Transducers.effectiveTwoWayBound_of_effectiveTwoWayWeighted`); it is assumed
+nowhere, and the hypothesis of Theorem `thm:decidable-equivalence-regular` is
+unchanged.
 
-**Verification.**  `lake build` from scratch succeeds — 8429 jobs, no error and
+**Verification.**  `lake build` from scratch succeeds — 8453 jobs, no error and
 no warning.  `#print axioms` reports only `propext`, `Classical.choice`,
-`Quot.sound` for `Transducers.EffectiveWeightedEvalEq`,
+`Quot.sound` for `Transducers.effectiveTwoWayBound_of_effectiveTwoWayWeighted`,
+`Transducers.EffectiveWeightedEvalEq`,
 `Transducers.EffectiveTwoWayEvalEq`, `Transducers.effectiveWeightedBound`,
 `Transducers.weighted_equivalence_decidable`,
 `Transducers.rationalFun_equivalence_decidable`,

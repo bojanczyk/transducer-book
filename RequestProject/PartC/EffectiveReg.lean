@@ -88,7 +88,13 @@ decides the equality of the coded relations.  The bound would then be
 (Theorem `thm:2dfa-decomposition-into-primes`, the snake lemma of `RequestProject/PartC/Snake*.lean`)
 and the closure properties of weighted automata used in `WeightedRegClosure.lean` in a size-explicit,
 code-to-code form; that is a large piece of work, and it is the only thing standing between this
-hypothesis and a theorem. -/
+hypothesis and a theorem.
+
+That last sentence is made precise, and machine-checked, in
+`RequestProject/PartC/RegBoundGap.lean`: the missing construction is stated there as
+`Transducers.EffectiveTwoWayWeighted`, and
+`Transducers.effectiveTwoWayBound_of_effectiveTwoWayWeighted` proves that it implies this
+hypothesis.  `EffectiveTwoWayWeighted` is not assumed anywhere in the project. -/
 def EffectiveTwoWayBound : Prop :=
   ∃ N : TwoWayCode → TwoWayCode → ℕ, Computable₂ N ∧
     ∀ c₁ c₂, TwoWayCodeTotal c₁ → TwoWayCodeTotal c₂ →

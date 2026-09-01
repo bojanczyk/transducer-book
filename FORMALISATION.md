@@ -161,7 +161,11 @@ is not a function of the codes at all.  Making it one means giving the book's
 reduction a size-explicit, code-to-code form: a computable map
 `TwoWayCode → WCode` with a proof that `Transducers.wcodeEval` of the image
 decides the equality of the coded relations.  `THEOREMS.md` sets this out in
-detail, as does the docstring of the hypothesis.
+detail, as does the docstring of the hypothesis.  The missing construction is
+also written out as a Lean statement, `Transducers.EffectiveTwoWayWeighted` of
+`PartC/RegBoundGap.lean`, together with a proof that it implies the hypothesis
+(`Transducers.effectiveTwoWayBound_of_effectiveTwoWayWeighted`); that statement
+is assumed nowhere.
 
 Four further results — `thm:equivalence-weighted-automata`,
 `thm:equivalence-rational-functions`, `thm:zeroness-weighted-automata` and
