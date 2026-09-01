@@ -25,20 +25,19 @@ Parikh images; it is taken as the explicit hypothesis
 `Transducers.Exercises.EffectiveLengthPairsSemilinear`, in the style used by the other
 decidability statements of the project.
 
-A second hypothesis, `Transducers.Exercises.ComputableDiagonalTest`, says that the concrete
-decision procedure `meetsDiag` defined here is `Computable` in the sense of Mathlib.  It is a
-plain total recursive Lean function on a `Primcodable` type -- it is defined by structural
-recursion and it runs -- but its correctness proof passes through arithmetic on `ℤ`, and, as
-`RequestProject/PartB/Effective.lean` records for the decidability results of Part B, Mathlib's
-`Primrec`/`Computable` API has no arithmetic on `ℤ`, so the predicate `Computable` cannot yet be
-established for it inside the library.  The hypothesis is stated separately so that exactly this
-gap, and nothing else, is what the result rests on besides Parikh's theorem.
+That the concrete procedure `meetsDiag` is `Computable` in the sense of Mathlib is proved here,
+as `Transducers.Exercises.ComputableDiagonalTest`; it used to be an explicit hypothesis, because
+Mathlib's `Primrec`/`Computable` API has no arithmetic on `ℤ`.  That arithmetic is now supplied
+by `RequestProject/Common/PrimrecArith.lean` (a general-purpose file, about `ℤ` and `ℚ` and not
+about transducers), and the procedure itself is shown primitive recursive in
+`RequestProject/Exercises/IntCombPrimrec.lean`.  So the only thing the result still rests on is
+Parikh's theorem.
 
 Item (a) of the exercise -- the undecidability of the existence of an input with *equal* outputs --
 is `Transducers.Exercises.rationalFun_collision_undecidable`, in
 `RequestProject/Exercises/PartBC.lean`.
 -/
-import RequestProject.Exercises.IntComb
+import RequestProject.Exercises.IntCombPrimrec
 import RequestProject.PartB.Codes
 
 namespace Transducers
@@ -150,12 +149,33 @@ def EffectiveLengthPairsSemilinear : Prop :=
     ∀ p : RelCode × RelCode, CodeFunctional p.1 → CodeFunctional p.2 →
       semiPairSet (F p) = lengthPairs p.1 p.2
 
-/-- **Hypothesis (a `Computable` label for a concrete procedure).**  The decision procedure
-`Transducers.Exercises.meetsDiag`, which is defined here by structural recursion and computes, is
-`Computable` in the sense of Mathlib.  It is stated as a hypothesis only because Mathlib's
-`Primrec`/`Computable` API has no arithmetic on `ℤ`, exactly as recorded in
-`RequestProject/PartB/Effective.lean` for the decision procedures of Part B. -/
-def ComputableDiagonalTest : Prop := Computable meetsDiag
+open Primrec in
+/-- The test for one linear set is primitive recursive. -/
+theorem primrec_diagLin : Primrec diagLin := by
+  have hmap : Primrec fun l : LinPair => l.2.map (fun p : ℕ × ℕ => (p.1 : ℤ) - p.2) :=
+    Primrec.list_map snd (int_subNat.comp (fst.comp snd) (snd.comp snd)).to₂
+  have hc : Primrec fun l : LinPair => ((l.1.2 : ℤ) - l.1.1) :=
+    int_subNat.comp (snd.comp fst) (fst.comp fst)
+  exact primrec_meetsZ.comp hmap hc
+
+open Primrec in
+/-- The diagonal test is primitive recursive. -/
+theorem primrec_meetsDiag : Primrec meetsDiag := by
+  have h : PrimrecPred fun S : List LinPair => ∃ l ∈ S, diagLin l = true :=
+    PrimrecPred.exists_mem_list (p := fun l : LinPair => diagLin l = true)
+      (PrimrecRel.comp (Primrec.eq (α := Bool)) primrec_diagLin (const true))
+  refine h.decide.of_eq fun S => ?_
+  rw [Bool.eq_iff_iff]
+  simp only [decide_eq_true_eq, meetsDiag, List.any_eq_true]
+
+/-- **A `Computable` label for the concrete procedure.**  The decision procedure
+`Transducers.Exercises.meetsDiag` is `Computable` in the sense of Mathlib.
+
+This was once an explicit hypothesis, because Mathlib's `Primrec`/`Computable` API has no
+arithmetic on `ℤ`.  It is now a theorem: the missing arithmetic is developed in the
+general-purpose file `RequestProject/Common/PrimrecArith.lean`, and the procedure is shown
+primitive recursive in `RequestProject/Exercises/IntCombPrimrec.lean`. -/
+theorem ComputableDiagonalTest : Computable meetsDiag := primrec_meetsDiag.to_comp
 
 /-- **Exercise `exer:decide-rational-colision`, item (b).**  It is decidable whether two rational
 functions have outputs of the same length on some input.
@@ -165,15 +185,14 @@ functions is a problem about their finite descriptions, the codes `Transducers.R
 the promise that they describe functions (`Transducers.CodeFunctional`).
 
 The mathematical step of the solution that the project can carry out -- deciding whether a
-semilinear set of pairs meets the diagonal -- is proved in full above; the two hypotheses are the
-effective form of Parikh's theorem and the `Computable` label for the concrete procedure, both
-described in the header of this file. -/
-theorem rationalFun_equal_length_decidable (hpar : EffectiveLengthPairsSemilinear)
-    (hdec : ComputableDiagonalTest) :
+semilinear set of pairs meets the diagonal, and the computability of that decision -- is proved
+in full above; the one remaining hypothesis is the effective form of Parikh's theorem, described
+in the header of this file. -/
+theorem rationalFun_equal_length_decidable (hpar : EffectiveLengthPairsSemilinear) :
     DecidableUnderPromise (fun p : RelCode × RelCode => CodeFunctional p.1 ∧ CodeFunctional p.2)
       (fun p => ∃ w v u, codeRel p.1 w v ∧ codeRel p.2 w u ∧ v.length = u.length) := by
   obtain ⟨F, hFcomp, hFsem⟩ := hpar
-  refine ⟨fun p => meetsDiag (F p), hdec.comp hFcomp, ?_⟩
+  refine ⟨fun p => meetsDiag (F p), ComputableDiagonalTest.comp hFcomp, ?_⟩
   rintro p ⟨h1, h2⟩
   rw [meetsDiag_eq_true_iff, hFsem p h1 h2]
   constructor

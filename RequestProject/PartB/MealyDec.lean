@@ -58,12 +58,11 @@ end MealyDec
 /-- **Theorem `thm:decide-if-mealy`** from the effectivity hypotheses of
 `RequestProject/PartB/Effective.lean`: one can decide whether a rational
 function is computed by a Mealy machine. -/
-theorem rationalFun_isMealy_decidable_aux
-    (hEval : EffectiveWeightedEvalEq) :
+theorem rationalFun_isMealy_decidable_aux :
     DecidableUnderPromise CodeFunctional
       (fun c => ∃ f : List ℕ → List ℕ,
         (∀ w, CodeWord c w → ∀ v, (codeRel c w v ↔ v = f w)) ∧ IsMealy f) := by
-  obtain ⟨D, hDcomp, hD⟩ := rationalFun_equivalence_decidable_aux hEval
+  obtain ⟨D, hDcomp, hD⟩ := rationalFun_equivalence_decidable_aux
   exact ⟨MealyDec.mealyDecB D, MealyDec.computable_mealyDecB hDcomp,
     fun c hc => MealyDec.mealyDecB_iff (fun p hp₁ hp₂ => hD p ⟨hp₁, hp₂⟩) hc⟩
 

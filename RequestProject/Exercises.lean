@@ -63,4 +63,5 @@ import RequestProject.Exercises.ForwardStep
 import RequestProject.Exercises.SeqSST
 import RequestProject.Exercises.ForwardForTop
 import RequestProject.Exercises.IntComb
+import RequestProject.Exercises.IntCombPrimrec
 import RequestProject.Exercises.LengthCollision

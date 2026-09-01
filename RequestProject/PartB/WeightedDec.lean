@@ -185,10 +185,10 @@ end WDec
 /-- **Theorem `thm:equivalence-weighted-automata`** from the effectivity hypotheses.  Given two
 weighted automata over the field of rationals, it is decidable whether they compute the same
 function. -/
-theorem weighted_equivalence_decidable_aux (hEval : EffectiveWeightedEvalEq) :
+theorem weighted_equivalence_decidable_aux :
     DecidableUnderPromise (fun p : WCode × WCode => WCodeValid p.1 ∧ WCodeValid p.2)
       (fun p => wcodeEval p.1 = wcodeEval p.2) := by
-  obtain ⟨D, hDcomp, hD⟩ := hEval
+  obtain ⟨D, hDcomp, hD⟩ := EffectiveWeightedEvalEq
   obtain ⟨N, hNcomp, hN⟩ := effectiveWeightedBound
   exact ⟨WDec.wEqB D N, WDec.computable_wEqB hDcomp hNcomp,
     fun p hp => WDec.wEqB_iff hD hN p hp.1 hp.2⟩
@@ -196,9 +196,9 @@ theorem weighted_equivalence_decidable_aux (hEval : EffectiveWeightedEvalEq) :
 /-- **Theorem `thm:zeroness-weighted-automata`** from the effectivity hypotheses.  The zeroness
 problem is decidable for weighted automata over the field of rationals; it is the special case of
 Theorem `thm:equivalence-weighted-automata` in which the second automaton is the empty one. -/
-theorem weighted_zeroness_decidable_aux (hEval : EffectiveWeightedEvalEq) :
+theorem weighted_zeroness_decidable_aux :
     DecidableUnderPromise WCodeValid (fun c => wcodeEval c = 0) := by
-  obtain ⟨D, hDcomp, hD⟩ := weighted_equivalence_decidable_aux hEval
+  obtain ⟨D, hDcomp, hD⟩ := weighted_equivalence_decidable_aux
   refine ⟨fun c => D (c, zeroWCode), hDcomp.comp (Computable.pair Computable.id
     (Computable.const zeroWCode)), fun c hc => ?_⟩
   rw [hD (c, zeroWCode) ⟨hc, wCodeValid_zeroWCode⟩]

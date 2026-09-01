@@ -265,11 +265,10 @@ end RatEq
 /-- **Theorem `thm:equivalence-rational-functions`** from the effectivity hypotheses of
 `RequestProject/PartB/Effective.lean`: the equivalence problem `f = g` is
 decidable for rational functions. -/
-theorem rationalFun_equivalence_decidable_aux
-    (hEval : EffectiveWeightedEvalEq) :
+theorem rationalFun_equivalence_decidable_aux :
     DecidableUnderPromise (fun p : RelCode × RelCode => CodeFunctional p.1 ∧ CodeFunctional p.2)
       (fun p => codeRel p.1 = codeRel p.2) := by
-  obtain ⟨D, hDcomp, hD⟩ := weighted_equivalence_decidable_aux hEval
+  obtain ⟨D, hDcomp, hD⟩ := weighted_equivalence_decidable_aux
   exact ⟨RatEq.ratEqB D, RatEq.computable_ratEqB hDcomp,
     fun p hp => RatEq.ratEqB_iff (fun q hq₁ hq₂ => hD q ⟨hq₁, hq₂⟩) p hp.1 hp.2⟩
 

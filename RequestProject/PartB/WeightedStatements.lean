@@ -7,8 +7,9 @@ This file contains the definitions of Sections *Rational relations and weighted 
 *Machine independent characterisations* and the statements of their theorems, lemmas and claims.
 The proofs are in the supporting files (`MealyChar.lean`, `Typing.lean`, `LenNormalForm.lean`,
 `SeqChar.lean`).  Every result of these sections is proved; four of them are proved from the
-effectivity hypothesis `Transducers.EffectiveWeightedEvalEq`, which they take as an explicit
-argument, and `THEOREMS.md` records that.  No file of Part B contains a `sorry`.
+effectivity hypothesis `Transducers.EffectiveWeightedEvalEq`, which is now itself proved (in
+`RequestProject/PartB/WCodePrimrec.lean`), so that every result of Part B is unconditional.  No file
+of Part B contains a `sorry`.
 
 Not stated here: Claims `claim:bounded-extensions` to `claim:eliminating-negative-letters`, which
 are internal steps of the proof of Theorem `thm:subsequential-functions`.  They speak about the
@@ -58,64 +59,29 @@ promise that it is a genuine weighted automaton (`WCodeValid`) are defined in
 `RequestProject/PartB/WCodes.lean`, so that the decision procedures used below
 can be developed before the statements of the numbered results. -/
 
-/-  The unconditional form of Theorem `thm:equivalence-weighted-automata` is
-
-theorem weighted_equivalence_decidable :
-    DecidableUnderPromise (fun p : WCode × WCode => WCodeValid p.1 ∧ WCodeValid p.2)
-      (fun p => wcodeEval p.1 = wcodeEval p.2) := by
-  sorry
-
-Its mathematical content is proved in this project: Schützenberger's criterion
-(`weighted_eq_of_short` in `RequestProject/PartB/WeightedZero.lean`) together with its effective
-form, in which the bound is computed from the two codes (`effectiveWeightedBound` in
-`RequestProject/PartB/WeightedBound.lean`).  What is missing is only that the statement asks for a
-`Computable` procedure manipulating rational weights, while Mathlib's `Primrec`/`Computable` API has
-no arithmetic on `ℤ` or `ℚ`.  That single missing ingredient is isolated in
-`RequestProject/PartB/Effective.lean` as the hypothesis `EffectiveWeightedEvalEq` (the values of two
-coded weighted automata over `ℚ` on a given string can be compared effectively); the version below
-takes it as an explicit assumption, exactly as Theorem
-`thm:undecidable-equivalence-rational-relations` takes the undecidability of the Post correspondence
-problem as an explicit assumption.  When Mathlib gains the missing arithmetic, the hypothesis
-becomes provable and the unconditional statement above can be reinstated. -/
-
 /-- **Theorem `thm:equivalence-weighted-automata`.**  Given two weighted automata over the field of
 rationals, it is decidable whether they compute the same function.
 
-Proved from the effectivity hypothesis `EffectiveWeightedEvalEq` of
-`RequestProject/PartB/Effective.lean`; see the comment above. -/
-theorem weighted_equivalence_decidable
-    (hEval : EffectiveWeightedEvalEq) :
+The decision procedure combines Schützenberger's criterion in its effective form
+(`Transducers.effectiveWeightedBound`, in `RequestProject/PartB/WeightedBound.lean`) with the
+computable equality test `Transducers.EffectiveWeightedEvalEq` for the values of two coded weighted
+automata over `ℚ` (proved in `RequestProject/PartB/WCodePrimrec.lean`). -/
+theorem weighted_equivalence_decidable :
     DecidableUnderPromise (fun p : WCode × WCode => WCodeValid p.1 ∧ WCodeValid p.2)
       (fun p => wcodeEval p.1 = wcodeEval p.2) :=
-  weighted_equivalence_decidable_aux hEval
-
-/-  The unconditional form of Theorem `thm:equivalence-rational-functions` is
-
-theorem rationalFun_equivalence_decidable :
-    DecidableUnderPromise (fun p : RelCode × RelCode => CodeFunctional p.1 ∧ CodeFunctional p.2)
-      (fun p => codeRel p.1 = codeRel p.2) := by
-  sorry
-
-As in the book, it is proved by a reduction to Theorem `thm:equivalence-weighted-automata` (the
-reduction is carried out in full in `RequestProject/PartB/PairWeighted.lean`,
-`RequestProject/PartB/PairWeightedEval.lean` and `RequestProject/PartB/RatEqDec.lean`), so it
-inherits the effectivity hypothesis `EffectiveWeightedEvalEq` of
-`RequestProject/PartB/Effective.lean` and nothing else.  The version below takes it as an explicit
-assumption. -/
+  weighted_equivalence_decidable_aux
 
 /-- **Theorem `thm:equivalence-rational-functions`.**  The equivalence problem `f = g` is decidable
 for rational functions.
 
-Proved from the effectivity hypothesis `EffectiveWeightedEvalEq` of
-`RequestProject/PartB/Effective.lean`, by the reduction of the book to Theorem
-`thm:equivalence-weighted-automata`: the two coded functions are turned into two weighted automata
-over `ℚ` whose values are the numerical encodings of the outputs, multiplied by the numbers of
-accepting runs of the two automata, which are the same for both. See the comment above. -/
-theorem rationalFun_equivalence_decidable
-    (hEval : EffectiveWeightedEvalEq) :
+Proved by the reduction of the book to Theorem `thm:equivalence-weighted-automata`: the two coded
+functions are turned into two weighted automata over `ℚ` whose values are the numerical encodings of
+the outputs, multiplied by the numbers of accepting runs of the two automata, which are the same for
+both. -/
+theorem rationalFun_equivalence_decidable :
     DecidableUnderPromise (fun p : RelCode × RelCode => CodeFunctional p.1 ∧ CodeFunctional p.2)
       (fun p => codeRel p.1 = codeRel p.2) :=
-  rationalFun_equivalence_decidable_aux hEval
+  rationalFun_equivalence_decidable_aux
 
 /-- **Lemma `lem:closure-weighted-automata-precomposition`.**  Weighted automata (over any semiring)
 are closed under pre-composition with rational functions. -/
@@ -132,27 +98,14 @@ theorem rational_iff_weighted_precomp {A B : Type} [Finite A] [Finite B]
       ∀ (S : Type) (_ : Semiring S) (h : List B → S), IsWeighted h → IsWeighted (h ∘ f) :=
   rational_iff_weighted_precomp_aux f
 
-/-  The unconditional form of Theorem `thm:zeroness-weighted-automata` is
-
-theorem weighted_zeroness_decidable :
-    DecidableUnderPromise WCodeValid (fun c => wcodeEval c = 0) := by
-  sorry
-
-As for Theorem `thm:equivalence-weighted-automata`, what is missing is not mathematics but the
-effectivity of arithmetic on `ℚ` inside Mathlib's `Primrec`/`Computable` API; the version below
-takes the hypothesis `EffectiveWeightedEvalEq` of `RequestProject/PartB/Effective.lean` as an
-explicit assumption. -/
-
 /-- **Theorem `thm:zeroness-weighted-automata`.**  The zeroness problem is decidable for weighted
 automata over the field of rationals.  (The same proof works for any computable field.)
 
-Proved from the effectivity hypothesis `EffectiveWeightedEvalEq` of
-`RequestProject/PartB/Effective.lean`, as the special case of Theorem
-`thm:equivalence-weighted-automata` in which the second automaton is the empty one. -/
-theorem weighted_zeroness_decidable
-    (hEval : EffectiveWeightedEvalEq) :
+Proved as the special case of Theorem `thm:equivalence-weighted-automata` in which the second
+automaton is the empty one. -/
+theorem weighted_zeroness_decidable :
     DecidableUnderPromise WCodeValid (fun c => wcodeEval c = 0) :=
-  weighted_zeroness_decidable_aux hEval
+  weighted_zeroness_decidable_aux
 
 /-! ## Machine independent characterisations -/
 
@@ -179,35 +132,21 @@ therefore false for every code, and the statement would be provable with the
 constant procedure `fun _ => false`.  The statement below relativises both the
 promise and the property to strings over the alphabet of the code. -/
 
-/-  The relativised statement of Theorem `thm:decide-if-mealy` without the effectivity
-hypotheses is
-
-theorem rationalFun_isMealy_decidable :
-    DecidableUnderPromise CodeFunctional
-      (fun c => ∃ f : List ℕ → List ℕ,
-        (∀ w, CodeWord c w → ∀ v, (codeRel c w v ↔ v = f w)) ∧ IsMealy f) := by
-  sorry
-
-Its proof reduces prefix preservation to the equality of two rational functions
-(`RequestProject/PartB/PrefixCodes.lean`), which is decided by Theorem
-`thm:equivalence-rational-functions`, so it inherits the effectivity hypothesis
-`EffectiveWeightedEvalEq` of `RequestProject/PartB/Effective.lean` and nothing else; everything else
--- the characterisation of the Mealy fragment, the decision of length preservation (Lemma
-`lem:decide-if-length-preserving`) and the two code constructions -- is discharged in full. -/
-
 /-- **Theorem `thm:decide-if-mealy`.**  One can decide if a rational function is computed by a
 Mealy machine.
 
 The relation described by the code and the Mealy machine are compared on the
 strings over the alphabet of the code (`CodeWord`); see the comment above the
-original statement for why the unrelativised statement is degenerate, and the
-comment just above for the effectivity hypothesis. -/
-theorem rationalFun_isMealy_decidable
-    (hEval : EffectiveWeightedEvalEq) :
+original statement for why the unrelativised statement is degenerate.
+
+The proof reduces prefix preservation to the equality of two rational functions
+(`RequestProject/PartB/PrefixCodes.lean`), which is decided by Theorem
+`thm:equivalence-rational-functions`. -/
+theorem rationalFun_isMealy_decidable :
     DecidableUnderPromise CodeFunctional
       (fun c => ∃ f : List ℕ → List ℕ,
         (∀ w, CodeWord c w → ∀ v, (codeRel c w v ↔ v = f w)) ∧ IsMealy f) :=
-  rationalFun_isMealy_decidable_aux hEval
+  rationalFun_isMealy_decidable_aux
 
 /-- **Lemma `lem:decide-if-length-preserving`.**  One can decide if a rational function is
 length-preserving.

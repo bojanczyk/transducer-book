@@ -745,7 +745,7 @@ assert_no_sorry «exer:decide-unambiguous#2»
 alias «exer:decide-rational-colision» := Transducers.Exercises.rationalFun_collision_undecidable
 assert_no_sorry «exer:decide-rational-colision»
 
-/-- **Exercise `exer:decide-rational-colision`** (item (b), the existence of an input with outputs of equal length is decidable): `Transducers.Exercises.rationalFun_equal_length_decidable`, from the hypotheses `Transducers.Exercises.EffectiveLengthPairsSemilinear` and `Transducers.Exercises.ComputableDiagonalTest`. -/
+/-- **Exercise `exer:decide-rational-colision`** (item (b), the existence of an input with outputs of equal length is decidable): `Transducers.Exercises.rationalFun_equal_length_decidable`, from the hypothesis `Transducers.Exercises.EffectiveLengthPairsSemilinear` (the effective form of Parikh's theorem). -/
 alias «exer:decide-rational-colision#2» :=
   Transducers.Exercises.rationalFun_equal_length_decidable
 assert_no_sorry «exer:decide-rational-colision#2»

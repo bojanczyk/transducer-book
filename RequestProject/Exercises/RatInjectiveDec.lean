@@ -218,10 +218,9 @@ functions (Theorem `thm:equivalence-rational-functions`) decidable, and
 `EffectiveRationalSection`, the effective form of the Uniformisation Lemma described above.  The
 mathematics of the exercise — that injectivity is equivalent to the composition with a section
 being the identity — is proved, not assumed. -/
-theorem rationalFun_injectivity_decidable (hEval : EffectiveWeightedEvalEq)
-    (hSec : EffectiveRationalSection) :
+theorem rationalFun_injectivity_decidable (hSec : EffectiveRationalSection) :
     DecidableUnderPromise CodeFunctional CodeInjective := by
-  obtain ⟨Deq, hDcomp, hDeq⟩ := rationalFun_equivalence_decidable_aux hEval
+  obtain ⟨Deq, hDcomp, hDeq⟩ := rationalFun_equivalence_decidable_aux
   obtain ⟨inv, hinvComp, hinv⟩ := hSec
   refine ⟨fun c => Deq (inv c, idCode c), ?_, ?_⟩
   · exact hDcomp.comp (Computable.pair hinvComp primrec_idCode.to_comp)

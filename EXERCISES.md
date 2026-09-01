@@ -177,7 +177,7 @@ all eleven are aliased in `RequestProject/Labels.lean`.
 | Exercise `exer:examples-of-rational-fun` (three functions as bimachines and as rational functions) | `isBimachine_isRationalFun_evenLength`, `isBimachine_isRationalFun_swapFirstLast`, `isBimachine_isRationalFun_upToLastHash` | proved |
 | Exercise `exer:non-rational` (the first half of the input, and duplication, are not rational) | `not_isRationalFun_firstHalf`, `not_isRationalFun_duplicate` | proved |
 | Exercise `exer:decide-unambiguous` (unambiguity of an nfa is decidable) | `ambiguous_iff_reach`, `decidableUnambiguousNFA` (with `RunFrom`, `AccRun`, `Ambiguous`, `UnambiguousNFA`, `prodStep`) | proved |
-| Exercise `exer:decide-rational-colision` (equal outputs, outputs of equal length) | `rationalFun_collision_undecidable` (item (a)), `rationalFun_equal_length_decidable` (item (b), with `meetsDiag`, `meetsZ`) | proved from explicit hypotheses |
+| Exercise `exer:decide-rational-colision` (equal outputs, outputs of equal length) | `rationalFun_collision_undecidable` (item (a)), `rationalFun_equal_length_decidable` (item (b), with `meetsDiag`, `meetsZ`) | proved from explicit hypotheses (item (a): the undecidability of PCP; item (b): an effective form of Parikh's theorem) |
 | Exercise `exer:rational-one-letter-input` (rational functions on a one-letter input alphabet) | `rationalFun_unary_graph` | proved |
 | Exercise `exer:function-that-is-not-rational` (not rational, yet rational after every rational function into `1*`) | `exists_not_isRationalFun_unary_compositions_rational` | proved from the hypothesis that reversal is not rational |
 | Exercise `exer:some-ideals` (two families of ideals of rational functions) | `IsIdeal`, `isIdeal_rangeAtMost`, `isIdeal_outputsPoly` | proved |
@@ -466,7 +466,7 @@ named after the labels.
   the decidable one, was not formalised when this entry was written: it goes
   through the semilinearity of Parikh images of regular languages, which the
   project does not have.  It has since been formalised, from an effective form
-  of Parikh's theorem taken as an explicit hypothesis, as
+  of Parikh's theorem taken as the one explicit hypothesis, as
   `Transducers.Exercises.rationalFun_equal_length_decidable`
   (`Exercises/LengthCollision.lean`); see the final section of this file.
 * **`exer:rational-one-letter-input`.**  The one-letter input alphabet is
@@ -998,11 +998,13 @@ and, for the conditional ones, exactly what is assumed.
   Assumed: `EffectiveLengthPairsSemilinear`, an effective form of Parikh's
   theorem (a computable map from two codes to a semilinear description of the
   set of pairs of output lengths), which the project has no semilinear sets or
-  Parikh images to prove; and `ComputableDiagonalTest`, which says that the
-  concrete procedure `meetsDiag` defined here is `Computable` in Mathlib's
-  sense.  The second is a library gap, not a mathematical one, and it is the
-  same gap that `PartB/Effective.lean` records for the decision procedures of
-  Part B: Mathlib's `Primrec`/`Computable` API has no arithmetic on `ℤ`.
+  Parikh images to prove.  That was once the *second* of two hypotheses; the
+  other, `ComputableDiagonalTest` — that the concrete procedure `meetsDiag` is
+  `Computable` in Mathlib's sense — is now **proved**, and is a theorem of
+  `Exercises/LengthCollision.lean`.  The library gap behind it (Mathlib's
+  `Primrec`/`Computable` API has no arithmetic on `ℤ` or `ℚ`) is filled by the
+  general-purpose file `Common/PrimrecArith.lean`, and the procedure itself is
+  shown primitive recursive in `Exercises/IntCombPrimrec.lean`.
 
 **Counts.**  The book has 81 exercises, every one with a written solution, and
 **all 81 are now formalised**: **64 proved outright** and **17 proved from an
