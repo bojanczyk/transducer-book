@@ -2467,3 +2467,68 @@ counts are unchanged at 74 and 7: `exer:rational-injectivity-decidable` was
 already counted as conditional and remains so, on
 `Transducers.Exercises.EffectiveRationalSection` alone now that
 `EffectiveWeightedEvalEq` is a theorem.
+
+## Status (`EffectiveRationalSection` discharged)
+
+`Transducers.Exercises.EffectiveRationalSection` — the effective form of the
+Uniformisation Lemma `lem:uniformisation` — is no longer a hypothesis.  It is a
+**theorem** of `RequestProject/Exercises/RatInjectiveDec.lean`, with exactly the
+statement it had as a `def ... : Prop`; the only change to the statement is that
+`def` became `theorem`.  `Transducers.Exercises.rationalFun_injectivity_decidable`
+(Exercise `exer:rational-injectivity-decidable`) therefore takes no hypothesis at
+all, with its conclusion unchanged.
+
+The project already proved uniformisation semantically, as
+`Transducers.exists_rationalFun_of_total_rel`, but by a choice argument over the
+runs of the automaton, which gives no construction on codes.  The construction is
+now explicit.  The witness is `Transducers.Exercises.LAut.invCode`, built in four
+steps:
+
+1. `Transducers.Exercises.Split.splitCode` splits every output block of the code
+   into single letters (`RequestProject/Exercises/SplitCode.lean`;
+   `codeRel_splitCode`, `codeAlphabet_splitCode`, `length_output_le_one`).
+2. `Transducers.Exercises.LAut.invLCode` inverts the split code and eliminates
+   its ε-transitions, giving a *letter automaton with terminal output* for the
+   inverse relation (`RequestProject/Exercises/LAutInv.lean`; `invLCode_sound`,
+   `invLCode_dom`).  The model itself is
+   `RequestProject/Exercises/LAut.lean`: reading one letter per transition is
+   what makes the runs over a fixed input aligned, so that they can be compared
+   position by position.
+3. `Transducers.Exercises.LAut.unifLCode` uniformises a letter automaton by
+   selecting the lexicographically least accepting run
+   (`RequestProject/Exercises/LAutUnif.lean`; `unifLCode_sound`,
+   `unifLCode_dom`, `unifLCode_functional`).  Its states are pairs of a state of
+   the original automaton and the set of states of the runs that have already
+   diverged below the run being followed.
+4. `Transducers.Exercises.LAut.prodCode` composes the code with that section by
+   a product construction (`RequestProject/Exercises/RatSection.lean`;
+   `codeRel_prodCode_iff`, `codeRel_invCode`, `codeWord_invCode`,
+   `codeFunctional_invCode`).
+
+`RequestProject/Exercises/RatSectionPrimrec.lean` proves every definition of
+those four steps primitive recursive in the code, ending in
+`Transducers.Exercises.LAut.computable_invCode`.  Three general additions to
+Mathlib's `Primrec` API for lists were needed and are collected in
+`RequestProject/Common/PrimrecList2.lean`: `Primrec.list_find?`,
+`Primrec.list_all` and `Primrec.list_sublists`.
+
+**New files.**  `RequestProject/Common/PrimrecList2.lean`,
+`RequestProject/Exercises/LAut.lean`, `RequestProject/Exercises/LAutUnif.lean`,
+`RequestProject/Exercises/SplitCode.lean`,
+`RequestProject/Exercises/LAutInv.lean`,
+`RequestProject/Exercises/RatSection.lean`,
+`RequestProject/Exercises/RatSectionPrimrec.lean`.
+
+**Verification.**  `lake build` succeeds — 8460 jobs, no error.  `#print axioms`
+reports only `propext`, `Classical.choice`, `Quot.sound` for
+`Transducers.Exercises.EffectiveRationalSection`,
+`Transducers.Exercises.rationalFun_injectivity_decidable`,
+`Transducers.Exercises.LAut.computable_invCode` and
+`Transducers.Exercises.LAut.codeRel_invCode`.  `tools/gen_labels.py --check`,
+`tools/decl_files.py --check` and `tools/tex_numbering.py --check` pass, and
+`RequestProject/` contains no `sorry` outside block comments, no `axiom`, no
+`@[implemented_by]` and no `native_decide`.
+
+**Counts.**  The numbered results of the book are unchanged at **75 proved
+outright** and **2 proved from an explicit hypothesis**.  The exercises become
+**75 of the 81 proved outright** and **6 proved from an explicit hypothesis**.

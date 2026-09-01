@@ -187,7 +187,7 @@ all eleven are aliased in `RequestProject/Labels.lean`.
 | Exercise `exer:all-ideals` (the classification of the ideals) | `all_ideals` (with `RangeAtMost`, `OutputsPoly`, `OutputsPolySome`, `AllRationalFuns`) | proved outright; all four steps of the solution (`IdentityFromSuperPolyOutputs`, `OutputsGrowthDichotomy`, `SortedFromOmegaOutputs`, `FactorThroughSortedOfOutputsPolyPos`) are theorems |
 | Exercise `exer:decide-same-ideal` (equality of the generated ideals is decidable) | `sameIdeal_iff` (with `SameIdeal`, `SameOutputInvariant`, `sameIdeal_decidable`) | proved outright; the invariant is characterised, and `sameIdeal_decidable` turns any decision of the invariant into a decision of the exercise |
 | Exercise `exer:surjective-rational-function` (a surjective rational function has a rational one-sided inverse) | `exists_rationalFun_leftInverse` | proved |
-| Exercise `exer:rational-injectivity-decidable` (injectivity is decidable) | `rationalFun_injectivity_decidable` (with `rationalFun_injective_iff_exists_inverse`, `exists_rationalFun_inverse_of_injective`, `codeInjective_iff_section_comp_id`) | proved from the hypothesis `EffectiveRationalSection` (a computable form of the Uniformisation Lemma); the second hypothesis it used to take, `EffectiveWeightedEvalEq`, has since been discharged (it is a theorem of `RequestProject/PartB/WCodePrimrec.lean`) |
+| Exercise `exer:rational-injectivity-decidable` (injectivity is decidable) | `rationalFun_injectivity_decidable` (with `rationalFun_injective_iff_exists_inverse`, `exists_rationalFun_inverse_of_injective`, `codeInjective_iff_section_comp_id`) | proved outright; both hypotheses it used to take have since been discharged — `EffectiveWeightedEvalEq` is a theorem of `RequestProject/PartB/WCodePrimrec.lean`, and `EffectiveRationalSection`, the computable form of the Uniformisation Lemma, is a theorem of `RequestProject/Exercises/RatInjectiveDec.lean`, proved from the explicit construction on automata of `RequestProject/Exercises/RatSection.lean` and its primitive recursiveness in `RequestProject/Exercises/RatSectionPrimrec.lean` |
 | Exercise `exer:rational-outpus-of-exactly-linear-size` (a rational function of unbounded output size has exactly linear output size) | `rational_exactly_linear_output` (with `maxOutLen`, `HasLinearRate`) | proved outright; the maximum cycle mean `RationalHasLinearRate` it rests on is a theorem, proved in `Exercises/CycleMean.lean` |
 | Exercise `exer:rational-outpus-of-exactly-linear-size-rational-number` (and the limit is a nonzero rational number) | `rational_exactly_linear_output` | proved outright, by the same theorem; the limit it produces is a positive rational |
 | Exercise `exer:rational-composition-finiteness-undecidable` (finiteness of the iterates is undecidable) | `iterates_finiteness_undecidable` (with `iterates_finite_iff`, `CodeSelfMap`, `CodeIteratesFinite`) | proved from the hypothesis `IteratesReduction` (the reduction from the halting problem) |
@@ -866,7 +866,7 @@ Of the 81:
   | `exer:polynomial-ideals` | `SortedFromOmegaOutputs`, `FactorThroughSortedOfOutputsPoly` — **both discharged**, see the closing section |
   | `exer:all-ideals` | the same two — **both discharged** |
   | `exer:decide-same-ideal` | the same two — **both discharged** |
-  | `exer:rational-injectivity-decidable` | `EffectiveRationalSection`; also `EffectiveWeightedEvalEq` at the time — **since discharged**, it is now a theorem of `RequestProject/PartB/WCodePrimrec.lean` |
+  | `exer:rational-injectivity-decidable` | `EffectiveRationalSection` — **discharged**, see the closing section; also `EffectiveWeightedEvalEq` at the time — **since discharged**, it is now a theorem of `RequestProject/PartB/WCodePrimrec.lean` |
   | `exer:rational-composition-finiteness-undecidable` | `IteratesReduction` |
   | `exer:minimal-bimachine-lexicographic` | `CanonicalSuffixBimachineExists` — **now known to be false**, see the note below the table |
   | `exer:non-minimal-automaton` | `EvenParityNeedsThreeStates` — **discharged as a refutation**, see the addendum at the end of this file; the exercise is now proved outright, in two forms |
@@ -1321,3 +1321,63 @@ kind that used to be blocked on the same gap in Mathlib's `Primrec` API, was
 already recorded as discharged in the section *Status (the last two gaps
 closed)* above; `#print axioms` on it reports only `propext`,
 `Classical.choice`, `Quot.sound`.
+
+## Addendum: `EffectiveRationalSection` is no longer a hypothesis
+
+`Transducers.Exercises.EffectiveRationalSection` — the effective form of the
+Uniformisation Lemma `lem:uniformisation`, that from a code of a rational
+function one can *compute* a code for its composition with a rational section —
+is now a **theorem**, of `RequestProject/Exercises/RatInjectiveDec.lean`.  Its
+statement is unchanged; only the `def ... : Prop` became a `theorem`.
+
+The project already had the Uniformisation Lemma semantically, as
+`Transducers.exists_rationalFun_of_total_rel`, but that proof selects a run by a
+choice argument and yields no construction.  The witness is now explicit,
+`Transducers.Exercises.LAut.invCode`, and is built in four steps:
+
+* `RequestProject/Exercises/SplitCode.lean` — `Transducers.Exercises.Split.splitCode`
+  splits every output block of the code into single letters, preserving the
+  relation and the alphabet.
+* `RequestProject/Exercises/LAut.lean` — codes of *letter automata with terminal
+  output*, the machine model in which the runs over a fixed input are aligned
+  and so can be compared position by position.
+* `RequestProject/Exercises/LAutInv.lean` —
+  `Transducers.Exercises.LAut.invLCode` inverts the split code and eliminates
+  its ε-transitions, giving a letter automaton for the inverse relation.
+* `RequestProject/Exercises/LAutUnif.lean` —
+  `Transducers.Exercises.LAut.unifLCode` uniformises a letter automaton by
+  selecting the lexicographically least accepting run, using a subset
+  construction that records which runs have already diverged below the one being
+  followed.  Soundness, preservation of the domain and functionality are
+  `unifLCode_sound`, `unifLCode_dom` and `unifLCode_functional`.
+* `RequestProject/Exercises/RatSection.lean` —
+  `Transducers.Exercises.LAut.prodCode` composes the code with the section by a
+  product construction; `codeRel_prodCode_iff` is its correctness, and
+  `codeRel_invCode`, `codeWord_invCode` and `codeFunctional_invCode` describe
+  the composite.
+
+`RequestProject/Exercises/RatSectionPrimrec.lean` shows every one of those
+definitions primitive recursive in the code, ending in
+`Transducers.Exercises.LAut.computable_invCode`.  It uses three additions to
+Mathlib's `Primrec` API for lists — `Primrec.list_find?`, `Primrec.list_all` and
+`Primrec.list_sublists` — collected in
+`RequestProject/Common/PrimrecList2.lean`.
+
+`Transducers.Exercises.rationalFun_injectivity_decidable` no longer takes any
+hypothesis; its conclusion is unchanged.
+
+`#print axioms` reports only `propext`, `Classical.choice`, `Quot.sound` for
+`Transducers.Exercises.EffectiveRationalSection`,
+`Transducers.Exercises.LAut.computable_invCode`,
+`Transducers.Exercises.LAut.codeRel_invCode` and
+`Transducers.Exercises.rationalFun_injectivity_decidable`.
+
+**Counts.**  The tally becomes **75 of the 81 exercises proved outright** and
+**6 proved from an explicit hypothesis** — the six being
+`exer:function-that-is-not-rational`,
+`exer:rational-composition-finiteness-undecidable` (`IteratesReduction`),
+`exer:minimal-bimachine-lexicographic` (whose hypothesis is now known to be
+false, see the table above), `exer:fo-suc` (`EFSuccSeparation`),
+`exer:decide-rational-colision` item (b) (`EffectiveLengthPairsSemilinear`) and
+`exer:polyregular-unmarked-squaring`.  The counts of the numbered results of the
+book are unchanged.

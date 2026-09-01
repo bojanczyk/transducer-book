@@ -4,6 +4,7 @@ chapter on rational functions (`rational-functions.tex`) of *Transducers*
 (M. Bojańczyk).
 -/
 import RequestProject.PartB.RatEqDec
+import RequestProject.Exercises.RatSectionPrimrec
 
 /-!
 # Injectivity of a rational function is decidable
@@ -34,9 +35,13 @@ Two things are needed for that.
   identity function on the alphabet of a given code.  It is built and its
   semantics proved here in full.
 * An effective form of step 1: from a code of `f` one can *compute* a code of
-  `g ∘ f`.  The project has the Uniformisation Lemma as a statement about
-  functions only, not as a construction on codes, so this is taken as the
-  explicit hypothesis `Transducers.Exercises.EffectiveRationalSection`.
+  `g ∘ f`.  This is `Transducers.Exercises.EffectiveRationalSection`, proved
+  here from the explicit construction on automata carried out in
+  `RequestProject/Exercises/SplitCode.lean`,
+  `RequestProject/Exercises/LAutInv.lean`,
+  `RequestProject/Exercises/LAutUnif.lean` and
+  `RequestProject/Exercises/RatSection.lean`, whose primitive recursiveness is
+  `RequestProject/Exercises/RatSectionPrimrec.lean`.
 
 Given these, the equivalence test of Theorem `thm:equivalence-rational-functions`
 (`Transducers.rationalFun_equivalence_decidable_aux`, itself proved outright) decides
@@ -125,11 +130,6 @@ lemma codeFunctional_idCode (c : RelCode) : CodeFunctional (idCode c) := by
   have hcw : CodeWord c w := codeWord_of_codeWord_idCode hw
   exact ⟨w, (codeRel_idCode c w w).2 ⟨rfl, hcw⟩, fun v hv => ((codeRel_idCode c w v).1 hv).1⟩
 
-lemma primrec_codeAlphabet : Primrec codeAlphabet := by
-  refine Primrec.list_flatMap Primrec.fst ?_
-  show Primrec fun z : RelCode × (ℕ × List ℕ × List ℕ × ℕ) => z.2.2.1
-  exact Primrec.fst.comp (Primrec.snd.comp Primrec.snd)
-
 lemma primrec_idCode : Primrec idCode := by
   refine Primrec.pair ?_ (Primrec.const ([0], [0]))
   refine Primrec.list_map primrec_codeAlphabet ?_
@@ -146,36 +146,39 @@ are equal. -/
 def CodeInjective (c : RelCode) : Prop :=
   ∀ w w', CodeWord c w → CodeWord c w' → ∀ v, codeRel c w v → codeRel c w' v → w = w'
 
-/-- **Assumed: an effective form of the Uniformisation Lemma.**
+/-- **An effective form of the Uniformisation Lemma `lem:uniformisation`.**
 
 There is a computable map `inv` which, given a code `c` of a rational function `f`, returns a
 code of the function `g ∘ f`, where `g` is a rational *section* of `f`: a rational function which
 picks, for every `v` in the range of `f`, some input string that `f` maps to `v`.
 
-*Why this is true.*  This is step 1 of the solution of
-`exer:rational-injectivity-decidable`, carried out on codes.  The inverse relation of `f` is
-rational and its automaton is obtained from the automaton of `f` by swapping the input and the
-output of every transition; the range of `f` is a regular language whose automaton is obtained
-by projection, so the inverse relation can be made total by adding a default output outside the
-range; the Uniformisation Lemma `lem:uniformisation` turns that total relation into a rational
-function `g`, and its proof is a construction on automata; and the composition of two rational
-functions is rational, again by a construction on automata.  Each of these steps transforms
-automata in a primitive recursive way.
-
-*Why it is not available here.*  The project proves each of these steps as a statement about
-functions and relations — the Uniformisation Lemma is
-`Transducers.exists_rationalFun_of_total_rel`, and step 1 in this form is
-`Transducers.Exercises.exists_rationalFun_inverse_of_injective` — but not as a construction on
-`RelCode`s with a `Computable` proof; the uniformisation in particular is proved by a choice
-argument over the runs of the automaton.  Only the effectivity is assumed here: the semantic
-content of the exercise is proved below. -/
-def EffectiveRationalSection : Prop :=
-  ∃ inv : RelCode → RelCode, Computable inv ∧
-    ∀ c, CodeFunctional c →
-      CodeFunctional (inv c) ∧
-      ∃ g : List ℕ → List ℕ,
-        (∀ w v, CodeWord c w → codeRel c w v → CodeWord c (g v) ∧ codeRel c (g v) v) ∧
-        (∀ w u, codeRel (inv c) w u ↔ ∃ v, CodeWord c w ∧ codeRel c w v ∧ u = g v)
+This is step 1 of the solution of `exer:rational-injectivity-decidable`, carried out on codes.
+The witness is `Transducers.Exercises.LAut.invCode`.  It is built in four steps, each an explicit
+construction on automata: the output blocks of `c` are split into single letters
+(`Transducers.Exercises.Split.splitCode`); the resulting code is inverted and its ε-transitions
+eliminated, giving a *letter automaton* for the inverse relation
+(`Transducers.Exercises.LAut.invLCode`); that letter automaton is uniformised by selecting, over
+each input word, the lexicographically least accepting run
+(`Transducers.Exercises.LAut.unifLCode`), which gives the section; and finally `c` is composed
+with the section by a product construction (`Transducers.Exercises.LAut.prodCode`).  That each of
+these steps is primitive recursive in the code is
+`Transducers.Exercises.LAut.computable_invCode`. -/
+theorem EffectiveRationalSection :
+    ∃ inv : RelCode → RelCode, Computable inv ∧
+      ∀ c, CodeFunctional c →
+        CodeFunctional (inv c) ∧
+        ∃ g : List ℕ → List ℕ,
+          (∀ w v, CodeWord c w → codeRel c w v → CodeWord c (g v) ∧ codeRel c (g v) v) ∧
+          (∀ w u, codeRel (inv c) w u ↔ ∃ v, CodeWord c w ∧ codeRel c w v ∧ u = g v) := by
+  refine ⟨LAut.invCode, LAut.computable_invCode, fun c hc =>
+    ⟨LAut.codeFunctional_invCode hc, LAut.secFun c,
+      fun _ _ _ h => LAut.secFun_spec h, fun w u => ?_⟩⟩
+  rw [LAut.codeRel_invCode]
+  constructor
+  · rintro ⟨v, hv, rfl⟩
+    exact ⟨v, LAut.codeWord_of_codeRel hv, hv, rfl⟩
+  · rintro ⟨v, -, hv, rfl⟩
+    exact ⟨v, hv, rfl⟩
 
 /-- **Step 2 of the solution**, at the level of codes: a code describes an injective function
 exactly when composing it with a section of it gives the identity.  Nothing is assumed here about
@@ -211,16 +214,16 @@ theorem codeInjective_iff_section_comp_id {c d : RelCode} {g : List ℕ → List
 decidable: under the promise that a code describes a function, one can decide whether that
 function is injective.
 
-The two hypotheses are the effectivity hypotheses of the project:
-`Transducers.EffectiveWeightedEvalEq`, which is what makes the equivalence problem for rational
-functions (Theorem `thm:equivalence-rational-functions`) decidable, and
-`EffectiveRationalSection`, the effective form of the Uniformisation Lemma described above.  The
-mathematics of the exercise — that injectivity is equivalent to the composition with a section
-being the identity — is proved, not assumed. -/
-theorem rationalFun_injectivity_decidable (hSec : EffectiveRationalSection) :
+The decision procedure combines the equivalence test of Theorem
+`thm:equivalence-rational-functions` (`Transducers.rationalFun_equivalence_decidable_aux`) with
+the effective form of the Uniformisation Lemma, `EffectiveRationalSection`; both are theorems of
+the project, so nothing is assumed here.  The mathematics of the exercise — that injectivity is
+equivalent to the composition with a section being the identity — is
+`codeInjective_iff_section_comp_id`. -/
+theorem rationalFun_injectivity_decidable :
     DecidableUnderPromise CodeFunctional CodeInjective := by
   obtain ⟨Deq, hDcomp, hDeq⟩ := rationalFun_equivalence_decidable_aux
-  obtain ⟨inv, hinvComp, hinv⟩ := hSec
+  obtain ⟨inv, hinvComp, hinv⟩ := EffectiveRationalSection
   refine ⟨fun c => Deq (inv c, idCode c), ?_, ?_⟩
   · exact hDcomp.comp (Computable.pair hinvComp primrec_idCode.to_comp)
   · intro c hc

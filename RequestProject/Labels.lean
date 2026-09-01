@@ -950,7 +950,7 @@ alias «exer:decide-same-ideal» :=
   Transducers.Exercises.sameIdeal_iff
 assert_no_sorry «exer:decide-same-ideal»
 
-/-- **Exercise `exer:rational-injectivity-decidable`** (injectivity is decidable): `Transducers.Exercises.rationalFun_injectivity_decidable`, from the hypothesis `Transducers.Exercises.EffectiveRationalSection`.  It used to take `Transducers.EffectiveWeightedEvalEq` as well; that one is now a theorem, of `RequestProject/PartB/WCodePrimrec.lean`. -/
+/-- **Exercise `exer:rational-injectivity-decidable`** (injectivity is decidable): `Transducers.Exercises.rationalFun_injectivity_decidable`, proved outright.  It used to take two hypotheses, `Transducers.EffectiveWeightedEvalEq` and `Transducers.Exercises.EffectiveRationalSection`; both are now theorems, the first of `RequestProject/PartB/WCodePrimrec.lean`, the second of `RequestProject/Exercises/RatInjectiveDec.lean` (from the construction of `RequestProject/Exercises/RatSection.lean` and `RequestProject/Exercises/RatSectionPrimrec.lean`). -/
 alias «exer:rational-injectivity-decidable» :=
   Transducers.Exercises.rationalFun_injectivity_decidable
 assert_no_sorry «exer:rational-injectivity-decidable»
