@@ -294,37 +294,36 @@ reverse and map duplicate -- is proved in `RequestProject/PartC/WeightedRegClosu
 note at the end of Section *The prime regular functions* above, and in particular
 `Transducers.regularFun_eq_of_short`, which reduces the equivalence of two regular functions to a
 finite check.  What is missing for the unconditional statement is only the *effective* form of that
-chain on codes: a code has to be turned into a linear representation over `ℚ` and the bound has to
-be computed from it, and, as for Theorems `thm:equivalence-weighted-automata` and
-`thm:zeroness-weighted-automata`, this runs into the absence of arithmetic on `ℤ` and `ℚ` in
-Mathlib's `Primrec`/`Computable` API (see `RequestProject/PartB/Effective.lean`).
+chain on codes: the equivalence bound has to be computed from the two codes.
 
-That missing ingredient is isolated in `RequestProject/PartC/EffectiveReg.lean` as the two
-hypotheses `Transducers.EffectiveTwoWayEvalEq` (two coded two-way transducers can be compared
-effectively on a given input) and `Transducers.EffectiveTwoWayBound` (an equivalence bound can be
-computed from the two codes; that such a bound *exists* is `Transducers.exists_twoWayCode_bound`,
-proved from the book's argument).  The version below takes them as explicit assumptions, exactly as
-Theorems `thm:equivalence-weighted-automata`, `thm:equivalence-rational-functions`,
-`thm:zeroness-weighted-automata` and `thm:decide-if-mealy` take
-`Transducers.EffectiveWeightedEvalEq` as an explicit assumption and Theorem
+The comparison of two coded two-way transducers on a given input, which used to be assumed as well,
+is now **proved**: `Transducers.EffectiveTwoWayEvalEq` in
+`RequestProject/PartC/TwoWaySimPrimrec.lean`, by simulating the run with the bound on its length of
+`Transducers.RegDec.halt_time_lt_fuel`.  What is left is isolated in
+`RequestProject/PartC/EffectiveReg.lean` as the single hypothesis
+`Transducers.EffectiveTwoWayBound` (an equivalence bound can be computed from the two codes; that
+such a bound *exists* is `Transducers.exists_twoWayCode_bound`, proved from the book's argument).
+The docstring of that hypothesis says precisely what would have to be built for it to become a
+theorem: an effective, code-to-code form of the prime decomposition and of the closure properties of
+weighted automata over `ℚ`, after which the bound would be `Transducers.wcodeBound` and the
+statement would follow from `Transducers.effectiveWeightedBound`, which is proved.  The version
+below takes that one statement as an explicit assumption, as Theorem
 `thm:undecidable-equivalence-rational-relations` takes the undecidability of the Post correspondence
-problem as an explicit assumption.  Everything else -- that the finitely many inputs to be tested
-may be taken over the letters of the two codes together with one fresh letter, and the assembly of
-the decision procedure -- is discharged in full in `RequestProject/PartC/RegEqDec.lean`. -/
+problem.  Everything else -- that the finitely many inputs to be tested may be taken over the
+letters of the two codes together with one fresh letter, and the assembly of the decision
+procedure -- is discharged in full in `RequestProject/PartC/RegEqDec.lean`. -/
 
 /-- **Theorem `thm:decidable-equivalence-regular`.**  Equivalence is decidable for regular functions
 (here: for the two-way transducers that compute them, cf. Theorem
 `thm:2dfa-decomposition-into-primes`).
 
-Proved from the effectivity hypotheses `EffectiveTwoWayEvalEq` and
-`EffectiveTwoWayBound` of `RequestProject/PartC/EffectiveReg.lean`; see the
-comment above. -/
-theorem regular_equivalence_decidable (hEval : EffectiveTwoWayEvalEq)
-    (hBound : EffectiveTwoWayBound) :
+Proved from the effectivity hypothesis `EffectiveTwoWayBound` of
+`RequestProject/PartC/EffectiveReg.lean`; see the comment above. -/
+theorem regular_equivalence_decidable (hBound : EffectiveTwoWayBound) :
     DecidableUnderPromise
       (fun p : TwoWayCode × TwoWayCode => TwoWayCodeTotal p.1 ∧ TwoWayCodeTotal p.2)
       (fun p => twoWayCodeRel p.1 = twoWayCodeRel p.2) :=
-  regular_equivalence_decidable_aux hEval hBound
+  regular_equivalence_decidable_aux hBound
 
 /-! ### Decomposition into prime functions -/
 

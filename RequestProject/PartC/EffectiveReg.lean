@@ -1,5 +1,5 @@
 /-
-The effectivity hypotheses used by Theorem `thm:decidable-equivalence-regular` of *Transducers*
+The effectivity statements used by Theorem `thm:decidable-equivalence-regular` of *Transducers*
 (M. Bojańczyk): equivalence is decidable for regular functions.
 
 The mathematical content of the book's proof is developed in full in this
@@ -13,57 +13,31 @@ soon as they agree on the finitely many inputs of length at most a bound coming
 from Schützenberger's criterion.
 
 The *formal* statement of Theorem `thm:decidable-equivalence-regular`, however, asks for a
-`Computable` decision procedure on finite descriptions of two-way transducers, and there -- exactly
-as for Theorems `thm:equivalence-weighted-automata` and `thm:zeroness-weighted-automata` of Part B,
-see `RequestProject/PartB/Effective.lean` -- the development runs into a gap in Mathlib rather than
-into a gap in the mathematics: Mathlib's `Primrec` and `Computable` API contains **no arithmetic on
-`ℤ` or on `ℚ`**, while both steps of the chain above manipulate rational weights (the bound is read
-off a linear representation over `ℚ` built from the code, and the values compared along the way are
-rational numbers).
+`Computable` decision procedure on finite descriptions of two-way transducers.  Two effectivity
+statements are needed for that.
 
-The two facts that are needed are therefore isolated here as named hypotheses, in the style already
-used in this project for Theorem `thm:undecidable-equivalence-rational-relations` (which takes the
-undecidability of the Post correspondence problem as an explicit hypothesis) and for Theorems
-`thm:equivalence-weighted-automata`, `thm:equivalence-rational-functions`,
-`thm:zeroness-weighted-automata` and `thm:decide-if-mealy` (which take
-`Transducers.EffectiveWeightedEvalEq` as an explicit hypothesis).  Both are *true statements* about
-ordinary computability, and everything else -- that the finitely many strings to be tested may be
-taken over the letters of the two codes together with one fresh letter
-(`RequestProject/PartC/RegCodeSan.lean`), and the assembly of the decision procedure -- is
-discharged in full in `RequestProject/PartC/RegEqDec.lean`. -/
-import RequestProject.PartC.RegCodeSan
+* Two coded two-way transducers can be compared effectively on a given input.  This is **proved**:
+  it is `Transducers.EffectiveTwoWayEvalEq` in `RequestProject/PartC/TwoWaySimPrimrec.lean`, from
+  the fuel-bounded simulation of `RequestProject/PartC/TwoWaySim.lean`.  It used to be assumed,
+  because Mathlib's `Primrec`/`Computable` API has no arithmetic on `ℤ` or on `ℚ`; that arithmetic,
+  and the operations on lists that go with it, are now developed as a general-purpose library in
+  `RequestProject/Common/PrimrecArith.lean` and `RequestProject/Common/PrimrecList.lean`, and it
+  turned out that the comparison of two coded two-way transducers needs no rational arithmetic at
+  all -- only a bound on the length of a halting run, which is
+  `Transducers.RegDec.halt_time_lt_fuel`.
+
+* An equivalence bound can be *computed* from the two codes.  This one is still assumed, as
+  `Transducers.EffectiveTwoWayBound` below; the docstring of that statement says precisely what is
+  missing.  That such a bound *exists* is proved (`Transducers.exists_twoWayCode_bound`,
+  `RequestProject/PartC/RegCodeBound.lean`).
+
+Everything else -- that the finitely many strings to be tested may be taken over the letters of the
+two codes together with one fresh letter (`RequestProject/PartC/RegCodeSan.lean`), and the assembly
+of the decision procedure -- is discharged in full in `RequestProject/PartC/RegEqDec.lean`. -/
+import RequestProject.PartC.TwoWaySimPrimrec
 import RequestProject.PartB.Codes
 
 namespace Transducers
-
-/-- **Effectivity hypothesis: comparing coded two-way transducers on a given
-input.**
-
-There is a computable procedure which, given two codes `c₁, c₂` of two-way
-transducers and an input string `w`, decides whether the two transducers have
-the same outputs on `w` -- correctly at least when both codes are *total*, i.e.
-when every input has at least one output (`TwoWayCodeTotal`).
-
-*Why this is true.*  A two-way transducer is deterministic, so its run on `w` is
-a uniquely determined sequence of configurations; the promise says that this run
-reaches the halting vertex, and then the output is the concatenation of the
-strings produced along it.  Simulating the run and comparing the two outputs is
-an ordinary computation on finite objects.
-
-*Why it is not available here.*  Simulating the run is an unbounded search: the
-promise guarantees termination, but a `Computable` (as opposed to `Partrec`)
-procedure has to be given a bound in advance, and the natural bound -- the run
-of a halting deterministic two-way transducer visits each position at most once
-per state, cf. `Transducers.TwoWay.widthLe_card` -- has to be extracted from the
-code, which is precisely the kind of effective bookkeeping on codes that the
-missing `Primrec` API for the arithmetic used by the equivalence test makes
-unavailable here.  The hypothesis is stated as a test of *equality of the two
-behaviours* rather than as the computability of the output itself, because the
-latter is all that the decision procedure needs. -/
-def EffectiveTwoWayEvalEq : Prop :=
-  ∃ D : TwoWayCode × TwoWayCode × List ℕ → Bool, Computable D ∧
-    ∀ c₁ c₂ (w : List ℕ), TwoWayCodeTotal c₁ → TwoWayCodeTotal c₂ →
-      (D (c₁, c₂, w) = true ↔ twoWayCodeRel c₁ w = twoWayCodeRel c₂ w)
 
 /-- **Effectivity hypothesis: a computable equivalence bound.**
 
@@ -80,11 +54,41 @@ the book's proof of Theorem `thm:decidable-equivalence-regular` in
 function (Theorem `thm:2dfa-decomposition-into-primes`, `Transducers.twoWay_isRegular`), the
 equality of two regular functions is the zeroness of a weighted automaton over `ℚ` obtained from
 them, and Schützenberger's criterion bounds the length of a witness of non-zeroness by the dimension
-of a linear representation of that automaton, which is a function of the two codes.  What is assumed
-here is only that this bound can be *computed* from the two codes; it is the same missing ingredient
-as in Theorems `thm:equivalence-weighted-automata` and `thm:zeroness-weighted-automata`, namely
-arithmetic on `ℤ` and `ℚ` in Mathlib's `Primrec`/`Computable` API, which the construction of the
-linear representation from the code needs. -/
+of a linear representation of that automaton.
+
+*What is missing, precisely.*  Not a `Primrec` lemma: the obstacle is not in Mathlib but in the
+shape of the chain above, and no amount of arithmetic on `ℤ` or `ℚ` in Mathlib's `Primrec` API
+would remove it.  What the hypothesis asks for is a bound that is a *computable function of the two
+codes*, and the bound produced by the chain is obtained from three existential statements over
+abstract finite types, none of which carries any size information:
+
+* `Transducers.isRegularFun_of_isTwoWay` (`RequestProject/PartC/SnakeReg.lean`) turns a two-way
+  transducer into a decomposition into prime functions; `IsRegularFun` is an existential over
+  compositions of primes, and the snake induction that produces it recurses on the width of the run,
+  so the number and the size of the primes obtained are not read off the transducer anywhere in the
+  proof.
+* `Transducers.isWeighted_comp_regular` and `Transducers.exists_injective_weighted`
+  (`RequestProject/PartC/WeightedRegClosure.lean`) turn such a
+  decomposition into a weighted automaton over `ℚ`; `IsWeighted f` is
+  `∃ (Q : Type) (_ : Finite Q), …`, so the state space -- and hence the dimension that
+  Schützenberger's criterion turns into the bound -- exists only as an abstract finite type.
+* `Transducers.weighted_eq_of_short` (`RequestProject/PartB/WeightedZero.lean`) then supplies the
+  bound as `d₁ + d₂`, the sum of the dimensions of two linear representations obtained from those
+  abstract types.
+
+For the analogous statement about *weighted* automata the same chain is effective, and there the
+bound is proved computable: `Transducers.effectiveWeightedBound` in
+`RequestProject/PartB/WeightedBound.lean` computes it with the explicit `Transducers.wcodeBound`,
+because a `WCode` *is* a linear representation, up to normalisation.  What would have to exist here
+is the corresponding effective form of the book's reduction: a computable map `TwoWayCode → WCode`,
+together with a proof that a valid code is produced and that `Transducers.wcodeEval` of the image
+decides the equality of the coded relations.  The bound would then be
+`Transducers.wcodeBound` of the two images, and this hypothesis would follow from
+`Transducers.effectiveWeightedBound`.  Producing that map means re-proving the prime decomposition
+(Theorem `thm:2dfa-decomposition-into-primes`, the snake lemma of `RequestProject/PartC/Snake*.lean`)
+and the closure properties of weighted automata used in `WeightedRegClosure.lean` in a size-explicit,
+code-to-code form; that is a large piece of work, and it is the only thing standing between this
+hypothesis and a theorem. -/
 def EffectiveTwoWayBound : Prop :=
   ∃ N : TwoWayCode → TwoWayCode → ℕ, Computable₂ N ∧
     ∀ c₁ c₂, TwoWayCodeTotal c₁ → TwoWayCodeTotal c₂ →

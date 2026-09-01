@@ -8,7 +8,7 @@ short; the exhaustive tables are in `THEOREMS.md` (numbered results) and
 `EXERCISES.md` (exercises), and the file-by-file map is in `README.md`.
 
 Everything below was checked on a `lake build` of the whole project from
-scratch, which succeeds with no errors and no warnings at all (8397 jobs): no
+scratch, which succeeds with no errors and no warnings at all (8429 jobs): no
 `sorry`, and no Lean linter diagnostic.
 
 ## 1. How much is done
@@ -19,8 +19,8 @@ corollaries, claims, one conjecture and one unnumbered paragraph.  Of these:
 | | count |
 | --- | --- |
 | definitions formalised | 20 |
-| results proved outright | 71 |
-| results proved from an explicit, documented hypothesis | 6 |
+| results proved outright | 75 |
+| results proved from an explicit, documented hypothesis | 2 |
 | not formalised (see §5) | 3 |
 
 "Proved outright" means: the Lean proof is complete, no file it depends on
@@ -31,10 +31,10 @@ Theorem `thm:decidable-equivalence-regular`, which is conditional in the sense
 of §4.
 
 Of the book's **81 exercises**, **all 81 are formalised**, in
-`RequestProject/Exercises/`: 63 proved outright, and 18 proved from an explicit
+`RequestProject/Exercises/`: 74 proved outright, and 7 proved from an explicit
 hypothesis of the kind described in §4 — a step that the book's own solution
 takes for granted or only sketches, stated as a `Prop` and taken as a theorem
-argument.  The eighteen hypotheses are listed with a reason in `EXERCISES.md`.
+argument.  Those hypotheses are listed with a reason in `EXERCISES.md`.
 (The sources contain 83 `\exer` environments, but two of them, in
 `rational-functions.tex`, are commented out and carry no number, so they are not
 exercises of the book.)
@@ -134,34 +134,48 @@ the book exactly:
   Lean uses.  With the earlier reading `f⁽ʷ⁾(v) = f(wv)` even the identity has
   infinitely many derivatives and the Myhill–Nerode lemma is false.
 
-## 4. The six results that are proved from a hypothesis
+## 4. The two results that are proved from a hypothesis
 
-Six statements of the book are decidability statements whose mathematical
-content is fully proved here, but whose last step — "and this can be computed" —
-runs into a gap in Mathlib rather than in the mathematics: Mathlib's
-`Primrec`/`Computable` API has no arithmetic on `ℤ` or `ℚ`, so a linear
-representation over `ℚ` cannot yet be manipulated by a *provably computable*
-function.  Rather than assert the missing ingredient as an axiom, each theorem
-takes it as an explicit argument, so that the dependency is visible in the
-statement and `#print axioms` still reports only the three standard axioms.
+Two statements of the book are proved here from an explicit hypothesis.  Rather
+than assert the missing ingredient as an axiom, each theorem takes it as an
+explicit argument, so that the dependency is visible in the statement and
+`#print axioms` still reports only the three standard axioms.
 
 | result | hypothesis |
 | --- | --- |
 | `thm:undecidable-equivalence-rational-relations` | `¬ ComputablePred Transducers.PCP.Solvable` (undecidability of Post correspondence) |
-| `thm:equivalence-weighted-automata` | `Transducers.EffectiveWeightedEvalEq` |
-| `thm:equivalence-rational-functions` | `Transducers.EffectiveWeightedEvalEq` |
-| `thm:zeroness-weighted-automata` | `Transducers.EffectiveWeightedEvalEq` |
-| `thm:decide-if-mealy` | `Transducers.EffectiveWeightedEvalEq` |
-| `thm:decidable-equivalence-regular` | `Transducers.EffectiveTwoWayEvalEq` and `Transducers.EffectiveTwoWayBound` |
+| `thm:decidable-equivalence-regular` | `Transducers.EffectiveTwoWayBound` |
 
-`EffectiveWeightedEvalEq` (`PartB/Effective.lean`) says that the values of two
-coded weighted automata on a given input can be compared effectively;
-`EffectiveTwoWayEvalEq` and `EffectiveTwoWayBound` (`PartC/EffectiveReg.lean`)
-say the same for two coded two-way transducers, and that an equivalence bound
-can be computed from the codes.  All three are true, and the *non-effective*
-content behind them — Schützenberger's bound, the reduction of equivalence of
-regular functions to a finite check (`Transducers.regularFun_eq_of_short`) — is
-proved unconditionally in this project.
+The first is the undecidability of the Post correspondence problem, which the
+book itself takes as given.
+
+`EffectiveTwoWayBound` (`PartC/EffectiveReg.lean`) says that an equivalence
+bound for two coded two-way transducers can be *computed* from the two codes.
+That such a bound exists is proved (`Transducers.exists_twoWayCode_bound`); what
+is missing is only its computability, and the reason is structural rather than a
+missing Mathlib lemma.  The chain that produces the bound passes through
+existentials over abstract finite types — `IsRegularFun` is an existential over
+compositions of prime functions, `IsWeighted f` is
+`∃ (Q : Type) (_ : Finite Q), …` — which carry no size information, so the bound
+is not a function of the codes at all.  Making it one means giving the book's
+reduction a size-explicit, code-to-code form: a computable map
+`TwoWayCode → WCode` with a proof that `Transducers.wcodeEval` of the image
+decides the equality of the coded relations.  `THEOREMS.md` sets this out in
+detail, as does the docstring of the hypothesis.
+
+Four further results — `thm:equivalence-weighted-automata`,
+`thm:equivalence-rational-functions`, `thm:zeroness-weighted-automata` and
+`thm:decide-if-mealy` — used to appear in this table, together with a second
+hypothesis of `thm:decidable-equivalence-regular`.  Their last step, "and this
+can be computed", ran into a gap in Mathlib rather than in the mathematics:
+Mathlib's `Primrec`/`Computable` API had no arithmetic on `ℤ` or `ℚ`, so a
+linear representation over `ℚ` could not be manipulated by a *provably
+computable* function.  That arithmetic is now developed here, as a
+general-purpose library independent of transducers
+(`Common/PrimrecArith.lean`, `Common/PrimrecList.lean`), and both hypotheses are
+now theorems: `Transducers.EffectiveWeightedEvalEq` in
+`PartB/WCodePrimrec.lean` and `Transducers.EffectiveTwoWayEvalEq` in
+`PartC/TwoWaySimPrimrec.lean`.  The four results of Part B are proved outright.
 
 ## 5. What is not formalised, and why
 

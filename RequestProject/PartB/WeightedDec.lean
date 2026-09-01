@@ -2,11 +2,10 @@
 *Transducers* (M. Bojańczyk): equivalence and zeroness are decidable for weighted automata over the
 field of rationals.
 
-Both are proved here from the single effectivity hypothesis
-`EffectiveWeightedEvalEq` of `RequestProject/PartB/Effective.lean`; everything
-else, including the effective Schützenberger bound
-(`effectiveWeightedBound`, proved in
-`RequestProject/PartB/WeightedBound.lean`), is discharged in full.
+Both are proved here outright.  The two effectivity facts they use are theorems: the computable
+equality test `Transducers.EffectiveWeightedEvalEq` (`RequestProject/PartB/WCodePrimrec.lean`) and
+the effective Schützenberger bound `Transducers.effectiveWeightedBound`
+(`RequestProject/PartB/WeightedBound.lean`).
 The decision procedure for equivalence is the expected one: compute the
 Schützenberger bound `N` for the two codes and compare the two values on all
 strings of length at most `N`.  Two things have to be checked for this to be a

@@ -39,9 +39,8 @@ Two things are needed for that.
   explicit hypothesis `Transducers.Exercises.EffectiveRationalSection`.
 
 Given these, the equivalence test of Theorem `thm:equivalence-rational-functions`
-(`Transducers.rationalFun_equivalence_decidable_aux`, itself proved from the
-effectivity hypothesis `Transducers.EffectiveWeightedEvalEq` of
-`RequestProject/PartB/Effective.lean`) decides injectivity: this is
+(`Transducers.rationalFun_equivalence_decidable_aux`, itself proved outright) decides
+injectivity: this is
 `Transducers.Exercises.rationalFun_injectivity_decidable`.  The mathematical
 content of step 2 is *not* assumed; it is proved here again, at the level of
 codes, as `Transducers.Exercises.codeInjective_iff_section_comp_id`.
