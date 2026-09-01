@@ -268,6 +268,7 @@ RequestProject/
 | `Exercises/ChainWords.lean`, `Exercises/SortedPattern.lean`, `Exercises/IdealsOmega.lean` | the `Ω(n^k)` half of the solution of Exercise `exer:polynomial-ideals`: the words produced by a chain of `k` loops, the rational bijection between such a word and a sorted word, and the two rational functions that put `Transducers.Exercises.sortedFun k` among the pre- and post-compositions of a rational function with `Ω(n^k)` outputs (`Transducers.Exercises.exists_rational_sorted_of_omega`) |
 | `Exercises/PatternCover.lean`, `Exercises/PatternCoverRat.lean`, `Exercises/IdealsPoly.lean` | the `O(n^k)` half: the analysis of the strongly connected components of an automaton with no ambiguous cycle and no chain of `k+1` loops, which covers its language by finitely many `k`-patterns (`Transducers.Exercises.RegGrowth.exists_pattern_cover`), the rational realisation of a finite family of `k`-patterns, and the factorisation of a rational function with `O(n^k)` outputs, `k ≥ 1`, through `sortedFun k` (`Transducers.Exercises.exists_rational_factor_through_sorted`) |
 | `Exercises/ForwardPrenex.lean`, `Exercises/ForwardComp.lean`, `Exercises/ForwardStep.lean` | Exercise `exer:forward-for-transducer`: the forward prenex normal form (the two designated positions are the first and the second, so that no last-to-first loop is introduced), the closure of the forward for-transducers under composition, and the fact that the one-step transducer of the enumeration is rational in the first-to-last direction because it is order preserving, hence a bimachine |
+| `Exercises/FONonElemOrder.lean`, `Exercises/FONonElemParse.lean`, `Exercises/FONonElemCore.lean`, `Exercises/FONonElemDSL.lean`, `Exercises/FONonElemForm.lean`, `Exercises/FONonElemTop.lean` | the Claim of the solution of Exercise `exer:fo-non-elementary`: the strings of order `n` (`Transducers.Exercises.ordStr`) and their length (`Transducers.Exercises.lenOrder`, `Transducers.Exercises.expTower_le_lenOrder`), the block structure of such a string, the combinatorics of the induction step (`Transducers.Exercises.formSem_iff`), the elementary first-order formulas used as building blocks, the formula `Transducers.Exercises.phiOrd` of the Claim with its four free position variables (`Transducers.Exercises.sat_phiOrd`) and the sentence `Transducers.Exercises.fTop` whose unique model is the first string of order `n` (`Transducers.Exercises.sat_fTop`), of size linear in `n`.  This is what `Transducers.Exercises.FirstStringOfOrderDefinable` rests on; see the addendum at the end of this file |
 | `Labels.lean` | the label-indexed view of the formalisation: for every result of the book that is formalised, an alias in the namespace `Transducers.Book` whose Lean name is the LaTeX label of the result, followed by `assert_no_sorry` or `assert_uses_sorry` according to its status in the tables below.  Kept in step with those tables by `tools/gen_labels.py --check`; see `LABELS.md` |
 
 ## Conventions
@@ -2247,3 +2248,89 @@ errors, no warnings.
 of the 81 exercises proved outright** and **9 proved from an explicit
 hypothesis**.  The counts of the numbered results of the book are unchanged:
 this work touches no numbered result.
+
+## Addendum: the first string of order `n`, and the two exercises on non-elementary succinctness
+
+Exercise `exer:fo-non-elementary` (of `logic.tex`) and Exercise
+`exer:for-transducer-continuity-nonelementary` (of `polyregular-for.tex`) rested
+on the hypothesis `Transducers.Exercises.FirstStringOfOrderDefinable`, the Claim
+of the book's solution, which the book states and leaves to the reader: there is
+a polynomially bounded `p` such that for every `n` there are a finite alphabet, a
+first-order sentence `φ` with `fsize φ ≤ p n` and a string `w` of length
+`lenOrder n` such that `w` is the unique model of `φ`.  It is now a theorem with
+exactly the statement it had as a `def … : Prop`, and it has been removed from
+the argument lists of `Transducers.Exercises.fo_non_elementary` and
+`Transducers.Exercises.for_transducer_continuity_nonelementary`, whose
+conclusions are unchanged.  No declaration of
+`RequestProject/Exercises/FONonElementary.lean` or of
+`RequestProject/Exercises/ForContinuity.lean` takes a hypothesis any more, and
+the two exercises are **proved outright** — the second still in the size sense,
+running time not being modelled, as before.
+
+The notion of size is the `fsize` the file already used, the number of nodes of
+the syntax tree; it was not adjusted.  The bound obtained is in fact linear:
+`Transducers.Exercises.sizeBound n = 363 + 943 * n`.
+
+The construction follows the book's sketch, in six new files.
+
+* `RequestProject/Exercises/FONonElemOrder.lean` — the strings of order `n`
+  themselves, over the alphabet `Transducers.Exercises.Lett N = Fin (N+1) × Bool`
+  (a marker level and a bit).  They are indexed by the naturals below
+  `Transducers.Exercises.numOrder n`, `Transducers.Exercises.ordStr N n i` being
+  the `i`-th one; `Transducers.Exercises.lenOrder n` is their common length and
+  `Transducers.Exercises.expTower_le_lenOrder` is the bound the exercise asks
+  for.  "Consecutive in the lexicographic order" is rendered as "with
+  consecutive indices": the index of a string of order `n+1` is read off the
+  bits of its markers, most significant bit last, which is the order in which
+  the construction enumerates them.
+* `RequestProject/Exercises/FONonElemParse.lean` — the block structure of such a
+  string: which positions carry a marker of which level
+  (`Transducers.Exercises.MkAt`, `Transducers.Exercises.IsOrdAt`), which bit a
+  marker carries (`Transducers.Exercises.BitPos`), and the uniqueness of the
+  block decomposition (`Transducers.Exercises.isBE_unique`).
+* `RequestProject/Exercises/FONonElemCore.lean` — the induction step,
+  combinatorially.  `Transducers.Exercises.formSem_iff` says what one layer of
+  the construction amounts to on an actual string: two infixes are strings of
+  order `k` with equal, or consecutive, indices exactly when their sub-blocks of
+  order `k-1` carrying the same index are related in the corresponding way and
+  the marker bits form equal, or consecutive, binary numbers.
+* `RequestProject/Exercises/FONonElemDSL.lean` — the elementary first-order
+  formulas out of which the construction is assembled (a position carries a
+  marker of a given level, or a given bit; a position lies in a given infix; a
+  position is the next marker after another), with their satisfaction lemmas.
+* `RequestProject/Exercises/FONonElemForm.lean` — the formula
+  `Transducers.Exercises.phiOrd N k`, with four free position variables, and
+  `Transducers.Exercises.sat_phiOrd`.  The size is kept polynomial by the trick
+  the book indicates: the formula contains a **single** syntactic copy of
+  `phiOrd N (k-1)`, applied to universally quantified arguments under an
+  `∃ ∀ ∃` prefix, so that each level adds a constant.  Concretely
+  `Transducers.Exercises.fsize_phiOrd : fsize (phiOrd N k) = 19 + 943 * k`.
+* `RequestProject/Exercises/FONonElemTop.lean` — the sentence
+  `Transducers.Exercises.fTop N k`, whose unique model is the first string of
+  order `k+1` (`Transducers.Exercises.sat_fTop`).  `phiOrd` speaks of its infixes
+  in the left-exclusive form `(x₁, x₂]`, while the top-level sentence has to
+  speak of the whole string, whose first position is `0`; so the block structure
+  is repeated there in the left-inclusive form
+  (`Transducers.Exercises.BlkStructA`).
+  `Transducers.Exercises.fsize_fTop : fsize (fTop N k) = 363 + 943 * k`.
+
+The two smallest cases are handled by ad hoc sentences in
+`RequestProject/Exercises/FONonElementary.lean`
+(`Transducers.Exercises.fEmptyS`, `Transducers.Exercises.fOneS`): `lenOrder 0 =
+0` and `lenOrder 1 = 1` are too short to accommodate the two positions the
+general argument needs, while `lenOrder n ≥ 4` for `n ≥ 2`.
+
+`#print axioms` on `Transducers.Exercises.FirstStringOfOrderDefinable`,
+`Transducers.Exercises.fo_non_elementary` and
+`Transducers.Exercises.for_transducer_continuity_nonelementary` reports only
+`propext`, `Classical.choice`, `Quot.sound`; `tools/print_axioms.sh` reports the
+same for all 213 aliases of `RequestProject/Labels.lean`; `RequestProject/`
+contains no `sorry` outside block comments, no `axiom`, no `@[implemented_by]`
+and no `native_decide`; and `tools/gen_labels.py --check`,
+`tools/decl_files.py --check` and `tools/tex_numbering.py --check` pass.
+`lake build` succeeds — 8421 jobs, no errors.
+
+**Counts.**  With these two exercises proved outright, the tally becomes **74 of
+the 81 exercises proved outright** and **7 proved from an explicit hypothesis**.
+The counts of the numbered results of the book are unchanged: this work touches
+no numbered result.

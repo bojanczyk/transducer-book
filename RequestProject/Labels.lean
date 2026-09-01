@@ -970,7 +970,7 @@ alias «exer:non-minimal-automaton» :=
   Transducers.Exercises.non_minimal_automaton
 assert_no_sorry «exer:non-minimal-automaton»
 
-/-- **Exercise `exer:fo-non-elementary`** (first-order sentences of non-elementary succinctness): `Transducers.Exercises.fo_non_elementary`, from the hypothesis `Transducers.Exercises.FirstStringOfOrderDefinable`. -/
+/-- **Exercise `exer:fo-non-elementary`** (first-order sentences of non-elementary succinctness): `Transducers.Exercises.fo_non_elementary`, proved outright.  The Claim of the book's solution, which the book leaves to the reader, is `Transducers.Exercises.FirstStringOfOrderDefinable`; it is now a theorem. -/
 alias «exer:fo-non-elementary» :=
   Transducers.Exercises.fo_non_elementary
 assert_no_sorry «exer:fo-non-elementary»
@@ -980,7 +980,7 @@ alias «exer:fo-suc» :=
   Transducers.Exercises.fo_succ_strictly_weaker
 assert_no_sorry «exer:fo-suc»
 
-/-- **Exercise `exer:for-transducer-continuity-nonelementary`** (the preimage nfa can be non-elementary): `Transducers.Exercises.for_transducer_continuity_nonelementary`, from the hypothesis `Transducers.Exercises.FirstStringOfOrderDefinable`, in the size sense. -/
+/-- **Exercise `exer:for-transducer-continuity-nonelementary`** (the preimage nfa can be non-elementary): `Transducers.Exercises.for_transducer_continuity_nonelementary`, proved outright, in the size sense (running time is not modelled). -/
 alias «exer:for-transducer-continuity-nonelementary» :=
   Transducers.Exercises.for_transducer_continuity_nonelementary
 assert_no_sorry «exer:for-transducer-continuity-nonelementary»

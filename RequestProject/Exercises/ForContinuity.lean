@@ -33,8 +33,6 @@ project:
 
 * `exer:fo-non-elementary` (`Transducers.Exercises.fo_non_elementary`): a first-order sentence
   `φ` of size polynomial in `n` whose language is a single string of length at least `exp n`.
-  As there, this rests on the Claim `FirstStringOfOrderDefinable`, which the book leaves to the
-  reader; it is the explicit hypothesis of the theorem below.
 * `exer:for-transducers-simulate-fo`
   (`Transducers.Exercises.exists_forProg_of_isFO`): a for-program of size linear in `φ` which
   outputs `yes` or `no` according to whether `φ` holds.
@@ -64,11 +62,8 @@ such that every nfa recognising the preimage of `{yes}` has more than `exp n` st
 Hence the computational version of continuity — from the source code of a for-transducer and an
 nfa over its output alphabet, produce an nfa for the preimage — cannot be solved in elementary
 time: on the input consisting of this program together with the one-state nfa for `{yes}`, whose
-total size is polynomial in `n`, the output alone is of non-elementary size.
-
-The hypothesis is the Claim of the solution of `exer:fo-non-elementary`,
-`FirstStringOfOrderDefinable`; see its docstring. -/
-theorem for_transducer_continuity_nonelementary (h : FirstStringOfOrderDefinable) :
+total size is polynomial in `n`, the output alone is of non-elementary size. -/
+theorem for_transducer_continuity_nonelementary :
     ∃ p : ℕ → ℕ, PolyBounded p ∧
       ∀ n : ℕ, ∃ (A : Type) (_ : Finite A) (P : ForProg A Bool),
         progSize P ≤ p n ∧
@@ -76,7 +71,7 @@ theorem for_transducer_continuity_nonelementary (h : FirstStringOfOrderDefinable
         ∀ (Q : Type) (_ : Fintype Q) (M : NFA A Q),
           (∀ u : List A, u ∈ M.accepts ↔ P.eval u = [true]) →
             expTower n < Fintype.card Q := by
-  obtain ⟨q, hq, hclaim⟩ := h
+  obtain ⟨q, hq, hclaim⟩ := FirstStringOfOrderDefinable
   refine ⟨fun n => 10 * q n + 5, hq.affine 10 5, fun n => ?_⟩
   obtain ⟨A, hA, φ, w, hfo, hsize, hlen, hsat⟩ := hclaim n
   obtain ⟨P, hbool, hiff, hps⟩ := exists_forProg_of_isFO φ hfo
