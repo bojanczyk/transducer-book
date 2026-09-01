@@ -10,6 +10,7 @@ Every result of these sections is proved; Theorem `thm:undecidable-equivalence-r
 is proved from the undecidability of the Post correspondence problem, which it takes as an explicit
 argument, and `THEOREMS.md` records that.  No file of Part B contains a `sorry`. -/
 import RequestProject.PartA.Statements
+import RequestProject.PCP.Index
 import RequestProject.PartB.RatComp
 import RequestProject.PartB.RatCont
 import RequestProject.PartB.HomComplement
@@ -69,14 +70,18 @@ the numbered results. -/
 is undecidable for rational relations.
 
 As is customary, undecidability is proved by a reduction from the Post
-correspondence problem, whose undecidability is *not* proved here but is taken
-as the explicit hypothesis `hPCP`: no algorithm decides, given a finite list of
-pairs of strings, whether some nonempty sequence of indices makes the two
-concatenations equal (`Transducers.PCP.Solvable`). -/
-theorem rationalRel_equivalence_undecidable
-    (hPCP : ¬ ComputablePred PCP.Solvable) :
+correspondence problem: no algorithm decides, given a finite list of pairs of
+strings, whether some nonempty sequence of indices makes the two concatenations
+equal (`Transducers.PCP.Solvable`).  That undecidability used to be taken here as
+an explicit hypothesis; it is now itself proved, as
+`Transducers.PCP.solvable_not_computablePred`
+(`RequestProject/PCP/Index.lean`), so this theorem is unconditional.  The
+reduction proper is `PCP.equivalence_undecidable`, which still takes the
+undecidability of the Post correspondence problem as an argument, since that is
+what a reduction is. -/
+theorem rationalRel_equivalence_undecidable :
     ¬ ComputablePred (fun p : RelCode × RelCode => codeRel p.1 = codeRel p.2) :=
-  PCP.equivalence_undecidable hPCP
+  PCP.equivalence_undecidable PCP.solvable_not_computablePred
 
 /-- **Claim `claim:homomorphism-complement-rational`.**  If `h : A* → B*` is a homomorphism, then
 its complement `{(w, v) | v ≠ h w}` is a rational relation. -/

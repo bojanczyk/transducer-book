@@ -166,7 +166,7 @@ all eleven are aliased in `RequestProject/Labels.lean`.
 | Exercise `exer:regular-languages-for-rational-relations` (the domain and the range of a rational relation are regular) | `rationalRel_domain_isRegular`, `rationalRel_range_isRegular` | proved |
 | Exercise `exer:non-regular-languages-for-rational-relations` (the inputs with at most one output need not be regular) | `exists_rationalRel_atMostOneOutput_not_isRegular` | proved |
 | Exercise `exer:rational-relations-not-closed-under-intersection` (rational relations are not closed under intersection) | `exists_rationalRel_inter_not_rationalRel` | proved |
-| Exercise `exer:rational-relations-intersection-undecidable` (nonemptiness of the intersection is undecidable) | `rationalRel_intersection_undecidable` | proved from the undecidability of the Post correspondence problem |
+| Exercise `exer:rational-relations-intersection-undecidable` (nonemptiness of the intersection is undecidable) | `rationalRel_intersection_undecidable` | proved outright; the undecidability of the Post correspondence problem, which this used to assume, is now itself proved as `Transducers.PCP.solvable_not_computablePred` |
 | Exercise `exer:rational-output-size` (finitely many outputs ⟺ affine bound on the output length) | `rationalRel_finiteOutputs_iff_affine` | proved |
 | Exercise `ex:recognisable-relations` (the recognisable subsets of `A* × B*`) | `IsRecognisableRel`, `isRecognisableRel_iff_finite_union` | proved |
 
@@ -858,8 +858,8 @@ Of the 81:
   | Exercise | hypothesis it is proved from |
   | --- | --- |
   | `exer:function-that-is-not-rational` | the non-rationality of string reversal (an *example* of the main text, not a numbered result) |
-  | `exer:rational-relations-intersection-undecidable` | undecidability of the Post correspondence problem |
-  | `exer:decide-rational-colision` (item (a)) | the same |
+  | `exer:rational-relations-intersection-undecidable` | undecidability of the Post correspondence problem — **discharged**, see the closing section |
+  | `exer:decide-rational-colision` (item (a)) | the same — **discharged** |
   | `exer:rational-outpus-of-exactly-linear-size` | `RationalHasLinearRate` — **discharged**, see the closing section |
   | `exer:rational-outpus-of-exactly-linear-size-rational-number` | `RationalHasLinearRate` — **discharged** |
   | `exer:regular-outpus-of-exactly-linear-size` | `RationalHasLinearRate` — **discharged** |
@@ -1266,3 +1266,38 @@ nine of the previous section, less these two.  `#print axioms` reports only
 `propext`, `Classical.choice`, `Quot.sound` for `FirstStringOfOrderDefinable`,
 `fo_non_elementary` and `for_transducer_continuity_nonelementary`, and there is
 no `sorry` anywhere in `RequestProject/Exercises/`.
+
+## Status (the Post correspondence problem)
+
+The undecidability of the Post correspondence problem, which the two exercises
+`exer:rational-relations-intersection-undecidable` and `exer:decide-rational-colision`
+(item (a)) rested on, is no longer an assumption of this project: it is proved, as
+`Transducers.PCP.solvable_not_computablePred` in `RequestProject/PCP/Index.lean`, about
+the very `Transducers.PCP.Solvable` of `RequestProject/PartB/PCPRed.lean` that those
+exercises are stated with.  Both are therefore **proved outright**.
+
+The proof was carried out as a separate development and merged in, and lives in three
+new directories:
+
+* `RequestProject/PCP/` — Sipser's Section 5.2: string rewriting systems, the reduction
+  of MPCP to PCP by the `⋆` trick, tape machines whose configurations are strings, and
+  `PCP.hasMatch_sipserPCP_iff`, that the constructed instance has a match exactly when
+  the machine accepts.  `Index.lean` transports the result from a match given as a list
+  of dominos over the symbol type `PCP.Sym` to one given as a list of indices over `ℕ`,
+  which is the book's formulation.
+* `RequestProject/Acceptance/` — Sipser's Section 4.2: the acceptance problem for
+  partial recursive programs and its undecidability by diagonalisation
+  (`Acceptance.atm_not_turingDecidable`).
+* `RequestProject/Sim/` — a counter machine and a compiler from `Nat.Partrec'` into it,
+  giving `PCP.Sim.exists_tape_machine`: the tape machines of Section 5.2 are
+  Turing-complete.  This is what joins the other two, and it is the part that took the
+  longest; until it existed the undecidability of the Post correspondence problem was
+  proved only relative to an unproved simulation.
+
+The reductions themselves — `PCP.equivalence_undecidable`,
+`intersection_undecidable_aux`, `collision_undecidable_aux` — still take the
+undecidability of the Post correspondence problem as an argument, which is what a
+reduction is; it is the statement-level results that are unconditional.
+
+Item (b) of `exer:decide-rational-colision` is unaffected and still rests on
+`EffectiveLengthPairsSemilinear`.

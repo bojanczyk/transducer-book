@@ -493,7 +493,7 @@ transformations of the prefixes of the input).
 | Definition `def:rational-recognisable-subsets` (the rational and the recognisable subsets of a monoid) | — | not formalised.  The book uses it once, in the remark that explains the name *Kleene Theorem*; nothing else in the book, and nothing in this project, depends on it.  The recognisable subsets of `A* × B*` are formalised, for that monoid only, as `Transducers.Exercises.IsRecognisableRel` (Exercise `ex:recognisable-relations`, see `EXERCISES.md`) | — |
 | Theorem `thm:composition-rational-relations` (composition) | `Transducers.rationalRel_comp` | proved (product automaton in `RatComp.lean`, on the atomic normal form of `Atomize.lean`) | `PartB/RationalStatements.lean` |
 | Theorem `thm:continuity-rational-relations` (continuity) | `Transducers.rationalRel_continuous` | proved (ε-automaton running a dfa on the output, `RatCont.lean`) | `PartB/RationalStatements.lean` |
-| Theorem `thm:undecidable-equivalence-rational-relations` (undecidable equivalence) | `Transducers.rationalRel_equivalence_undecidable` | proved from an explicit hypothesis that the Post correspondence problem is undecidable (reduction in `PCPRed.lean`) | `PartB/RationalStatements.lean` |
+| Theorem `thm:undecidable-equivalence-rational-relations` (undecidable equivalence) | `Transducers.rationalRel_equivalence_undecidable` | proved outright; the undecidability of the Post correspondence problem, formerly an explicit hypothesis, is now proved as `Transducers.PCP.solvable_not_computablePred` — see the closing status section.  (Former wording: proved from an explicit hypothesis that the Post correspondence problem is undecidable (reduction in `PCPRed.lean`) | `PartB/RationalStatements.lean` |
 | Claim `claim:homomorphism-complement-rational` (complement of a homomorphism) | `Transducers.hom_complement_rational` | proved (explicit four-state automaton, `HomComplement.lean`) | `PartB/RationalStatements.lean` |
 | Definition `def:rational-function` (rational function) | `Transducers.IsRationalFun` | — | `PartB/LabAut.lean` |
 | Definition `def:bimachine` (bimachine) | `Transducers.Bimachine`, `Transducers.IsBimachine` | — | `PartB/Bimachine.lean` |
@@ -1660,7 +1660,7 @@ in the project.
 
 | result | hypothesis | where the hypothesis is defined |
 | --- | --- | --- |
-| Theorem `thm:undecidable-equivalence-rational-relations` | `¬ ComputablePred Transducers.PCP.Solvable` | `PartB/PCPRed.lean` |
+| Theorem `thm:undecidable-equivalence-rational-relations` | ~~`¬ ComputablePred Transducers.PCP.Solvable`~~ — **discharged**, proved as `Transducers.PCP.solvable_not_computablePred` in `RequestProject/PCP/Index.lean` | `PartB/PCPRed.lean` |
 | Theorem `thm:equivalence-weighted-automata` | `Transducers.EffectiveWeightedEvalEq` | `PartB/Effective.lean` |
 | Theorem `thm:equivalence-rational-functions` | `Transducers.EffectiveWeightedEvalEq` | `PartB/Effective.lean` |
 | Theorem `thm:zeroness-weighted-automata` | `Transducers.EffectiveWeightedEvalEq` | `PartB/Effective.lean` |
@@ -2334,3 +2334,19 @@ and no `native_decide`; and `tools/gen_labels.py --check`,
 the 81 exercises proved outright** and **7 proved from an explicit hypothesis**.
 The counts of the numbered results of the book are unchanged: this work touches
 no numbered result.
+
+## Status (the Post correspondence problem)
+
+Theorem `thm:undecidable-equivalence-rational-relations` no longer takes the
+undecidability of the Post correspondence problem as a hypothesis: that is now a theorem
+of this project, `Transducers.PCP.solvable_not_computablePred`
+(`RequestProject/PCP/Index.lean`), proved about the same `Transducers.PCP.Solvable` the
+theorem is stated with.  `Transducers.rationalRel_equivalence_undecidable` is therefore
+unconditional, and `#print axioms` reports only `propext`, `Classical.choice`,
+`Quot.sound` for it.
+
+The development that proves it was carried out separately and merged in; see the
+corresponding section of `EXERCISES.md` for what is in `RequestProject/PCP`,
+`RequestProject/Acceptance` and `RequestProject/Sim`.  The reduction proper,
+`PCP.equivalence_undecidable` of `PartB/PCPRed.lean`, still takes the undecidability of
+the Post correspondence problem as an argument, since that is what the reduction states.

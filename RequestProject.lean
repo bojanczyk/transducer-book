@@ -15,6 +15,12 @@ The project is organised as follows.
   pebble transducers.
 * `RequestProject/Exercises` — the exercises of the book, indexed in
   `EXERCISES.md`.
+* `RequestProject/PCP`, `RequestProject/Acceptance`, `RequestProject/Sim` — the
+  undecidability of the Post correspondence problem, formalised separately and
+  merged in: the reduction of Sipser's Theorem 5.15, the undecidability of the
+  acceptance problem, and the counter machine that makes the two meet.
+  `RequestProject/PCP/Index.lean` states the result for the book's own
+  `Transducers.PCP.Solvable`.
 
 In each part, the file `Statements.lean` (for Part B, `RationalStatements.lean`
 and `WeightedStatements.lean`) contains the definitions and the statements of
@@ -28,4 +34,5 @@ import RequestProject.PartB
 import RequestProject.PartC
 import RequestProject.PartD
 import RequestProject.Exercises
+import RequestProject.PCP.Index
 import RequestProject.Labels

@@ -13,6 +13,7 @@ docstring says otherwise.  The auxiliary facts that the solutions take for grant
 `RequestProject/Exercises/PartBCAux.lean`.
 -/
 import RequestProject.Exercises.PartBCAux
+import RequestProject.PCP.Index
 import RequestProject.Exercises.PartBCPCP
 import RequestProject.Exercises.PartBCUnary
 
@@ -254,17 +255,19 @@ rational relations have a nonempty intersection.
 
 As for the numbered results of Part B, a decision problem about rational relations is a problem
 about their finite descriptions, the codes `Transducers.RelCode`, and the undecidability of the
-Post correspondence problem is not proved here but is taken as the explicit hypothesis `hPCP`,
-exactly as in Theorem `thm:undecidable-equivalence-rational-relations`.
+Post correspondence problem is now itself proved, as
+`Transducers.PCP.solvable_not_computablePred` (`RequestProject/PCP/Index.lean`), so this
+exercise is unconditional; `intersection_undecidable_aux` still takes it as an argument,
+since that is what the reduction is.
 
 The reduction is the author's, and is carried out in `RequestProject/Exercises/PartBCPCP.lean`: a
 homomorphism `g`, viewed as the relation `{(w, g w) | w ≠ ε}`, is computed by a two-state
 automaton, and the two relations obtained this way from the two homomorphisms of an instance meet
 exactly when the instance has a solution.  Since these two relations are functions, the problem
 remains undecidable for rational functions. -/
-theorem rationalRel_intersection_undecidable (hPCP : ¬ ComputablePred PCP.Solvable) :
+theorem rationalRel_intersection_undecidable :
     ¬ ComputablePred (fun p : RelCode × RelCode => ∃ w v, codeRel p.1 w v ∧ codeRel p.2 w v) :=
-  intersection_undecidable_aux hPCP
+  intersection_undecidable_aux PCP.solvable_not_computablePred
 
 /-! ### Exercise `exer:rational-output-size` -/
 
@@ -714,8 +717,10 @@ functions have the same output on some input.
 As for the numbered results of Part B, a decision problem about rational functions is a problem
 about their finite descriptions, the codes `Transducers.RelCode`, under the promise that they
 describe functions (`Transducers.CodeFunctional`), and the undecidability of the Post
-correspondence problem is not proved here but is taken as the explicit hypothesis `hPCP`, exactly
-as in Theorem `thm:undecidable-equivalence-rational-relations`.
+correspondence problem is now itself proved, as
+`Transducers.PCP.solvable_not_computablePred` (`RequestProject/PCP/Index.lean`), so this
+exercise is unconditional, exactly as Theorem
+`thm:undecidable-equivalence-rational-relations` now is.
 
 The reduction is the author's, and is carried out in `RequestProject/Exercises/PartBCPCP.lean`:
 the two homomorphisms of an instance of the Post correspondence problem are turned into rational
@@ -726,10 +731,10 @@ empty input separately.  The two functions then collide exactly when the instanc
 Item (b) of the exercise, the decidability of the existence of an input on which the two outputs
 have the same length, is not formalised: its solution goes through the semilinearity of Parikh
 images of regular languages, which this project does not have. -/
-theorem rationalFun_collision_undecidable (hPCP : ¬ ComputablePred PCP.Solvable) :
+theorem rationalFun_collision_undecidable :
     ¬ DecidableUnderPromise (fun p : RelCode × RelCode => CodeFunctional p.1 ∧ CodeFunctional p.2)
       (fun p => ∃ w v, codeRel p.1 w v ∧ codeRel p.2 w v) :=
-  collision_undecidable_aux hPCP
+  collision_undecidable_aux PCP.solvable_not_computablePred
 
 /-! ### Exercise `exer:rational-one-letter-input` -/
 
