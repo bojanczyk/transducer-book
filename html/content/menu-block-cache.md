@@ -35,6 +35,18 @@ list = "never"
 \item[2] The Krohn--Rhodes Decomposition Theorem
 \end{list}
 {{< /latex >}}
+{{< latex preamble="book" as="menu-04a-mealy-machines-bibliographic-notes.tex" >}}
+\begin{list}{}{
+  \setlength{\leftmargin}{1.5em}
+  \setlength{\labelwidth}{1em}
+  \setlength{\labelsep}{.5em}
+  \setlength{\topsep}{0pt}
+  \setlength{\partopsep}{0pt}
+  \setlength{\itemsep}{0pt}
+  \setlength{\parsep}{0pt}}
+\item[3] References
+\end{list}
+{{< /latex >}}
 {{< latex preamble="book" as="menu-05-rational-functions-introduction.tex" >}}
 \noindent Part B: Rational functions
 {{< /latex >}}
@@ -84,6 +96,18 @@ list = "never"
   \setlength{\itemsep}{0pt}
   \setlength{\parsep}{0pt}}
 \item[4] Machine-independent characterisations
+\end{list}
+{{< /latex >}}
+{{< latex preamble="book" as="menu-09a-rational-functions-bibliographic-notes.tex" >}}
+\begin{list}{}{
+  \setlength{\leftmargin}{1.5em}
+  \setlength{\labelwidth}{1em}
+  \setlength{\labelsep}{.5em}
+  \setlength{\topsep}{0pt}
+  \setlength{\partopsep}{0pt}
+  \setlength{\itemsep}{0pt}
+  \setlength{\parsep}{0pt}}
+\item[5] References
 \end{list}
 {{< /latex >}}
 {{< latex preamble="book" as="menu-10-regular-functions-introduction.tex" >}}
@@ -137,6 +161,18 @@ list = "never"
 \item[4] Logic
 \end{list}
 {{< /latex >}}
+{{< latex preamble="book" as="menu-14a-regular-functions-bibliographic-notes.tex" >}}
+\begin{list}{}{
+  \setlength{\leftmargin}{1.5em}
+  \setlength{\labelwidth}{1em}
+  \setlength{\labelsep}{.5em}
+  \setlength{\topsep}{0pt}
+  \setlength{\partopsep}{0pt}
+  \setlength{\itemsep}{0pt}
+  \setlength{\parsep}{0pt}}
+\item[5] References
+\end{list}
+{{< /latex >}}
 {{< latex preamble="book" as="menu-15-polyregular-functions-introduction.tex" >}}
 \noindent Part D: Polyregular functions
 {{< /latex >}}
@@ -164,6 +200,18 @@ list = "never"
 \item[2] Pebble transducers
 \end{list}
 {{< /latex >}}
+{{< latex preamble="book" as="menu-17a-polyregular-functions-bibliographic-notes.tex" >}}
+\begin{list}{}{
+  \setlength{\leftmargin}{1.5em}
+  \setlength{\labelwidth}{1em}
+  \setlength{\labelsep}{.5em}
+  \setlength{\topsep}{0pt}
+  \setlength{\partopsep}{0pt}
+  \setlength{\itemsep}{0pt}
+  \setlength{\parsep}{0pt}}
+\item[3] References
+\end{list}
+{{< /latex >}}
 {{< latex preamble="book" as="book-title.tex" >}}
 \noindent {\color[HTML]{EB5757}\Large\bfseries Transducers}\par
 \noindent {\small Miko{\l}aj Boja\'nczyk}
@@ -180,6 +228,9 @@ list = "never"
 {{< latex preamble="book" as="title-04-krohn-rhodes.tex" >}}
 \noindent {\Large\bfseries The Krohn--Rhodes Decomposition Theorem}
 {{< /latex >}}
+{{< latex preamble="book" as="title-04a-mealy-machines-bibliographic-notes.tex" >}}
+\noindent {\Large\bfseries References}
+{{< /latex >}}
 {{< latex preamble="book" as="title-05-rational-functions-introduction.tex" >}}
 \noindent {\Large\bfseries Rational functions}
 {{< /latex >}}
@@ -194,6 +245,9 @@ list = "never"
 {{< /latex >}}
 {{< latex preamble="book" as="title-09-machine-independent.tex" >}}
 \noindent {\Large\bfseries Machine-independent characterisations}
+{{< /latex >}}
+{{< latex preamble="book" as="title-09a-rational-functions-bibliographic-notes.tex" >}}
+\noindent {\Large\bfseries References}
 {{< /latex >}}
 {{< latex preamble="book" as="title-10-regular-functions-introduction.tex" >}}
 \noindent {\Large\bfseries Regular functions}
@@ -210,6 +264,9 @@ list = "never"
 {{< latex preamble="book" as="title-14-logic.tex" >}}
 \noindent {\Large\bfseries Logic}
 {{< /latex >}}
+{{< latex preamble="book" as="title-14a-regular-functions-bibliographic-notes.tex" >}}
+\noindent {\Large\bfseries References}
+{{< /latex >}}
 {{< latex preamble="book" as="title-15-polyregular-functions-introduction.tex" >}}
 \noindent {\Large\bfseries Polyregular functions}
 {{< /latex >}}
@@ -218,4 +275,7 @@ list = "never"
 {{< /latex >}}
 {{< latex preamble="book" as="title-17-pebble-transducers.tex" >}}
 \noindent {\Large\bfseries Pebble transducers}
+{{< /latex >}}
+{{< latex preamble="book" as="title-17a-polyregular-functions-bibliographic-notes.tex" >}}
+\noindent {\Large\bfseries References}
 {{< /latex >}}

@@ -44,6 +44,23 @@
 \usepackage{libertine}
 \usepackage{inconsolata}
 
+% Cyrillic, for the one Russian citation in partCRegular/bib-notes.tex.
+% Under pdflatex T1 is listed *last* so that it stays the default encoding:
+% Libertine has no T2A small caps, so making T2A the default silently turns
+% every \textsc into upright roman -- \mso among them.  Note also that this
+% deliberately does not load babel: babel with russian as its only language
+% makes Russian the main language of the whole document, which is what turns
+% \proofname into a Cyrillic word.  Under lualatex (the web edition's engine)
+% libertine goes through fontspec and its OTF already covers Cyrillic, so
+% there is nothing to switch.
+\usepackage{iftex}
+\ifpdftex
+  \usepackage[T2A,T1]{fontenc}
+  \newcommand{\rus}[1]{{\fontencoding{T2A}\fontfamily{cmr}\selectfont #1}}
+\else
+  \newcommand{\rus}[1]{#1}
+\fi
+
 % infrastructure for theorem names, actual names configured below
 \usepackage{amsthm} 
 

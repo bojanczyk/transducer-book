@@ -53,7 +53,7 @@ saying that  the transition applied in configuration $c$ leads to $d$ (which is 
 \subsection{Continuity} 
 \label{sec:2dfa-continuity}
 This section shows that two-way transducers are continuous, i.e.~inverse images of regular languages are regular. Ultimately, we will show that two-way transducers are the same as the regular functions, and hence they must be  continuous by Theorem~\ref{thm:regular-functions-are-continuous-and-closed-under-composition}. However, the direct proof  of continuity is worth the effort, since it will introduce some useful techniques.
-\begin{theorem}\label{thm:continuity-2dfas}
+\begin{theorem}[Rabin-Scott, Shepherdson]\label{thm:continuity-2dfas}
     Every function computed by a two-way transducer is continuous.
 \end{theorem}
 \begin{proof}
@@ -122,7 +122,7 @@ This section shows that two-way transducers are continuous, i.e.~inverse images 
 \subsection{Closure under composition}
 We now prove that two-way transducers are closed under composition. This is a non-trivial result, because we cannot simply use a product construction, since the heads of the two transducers that are composed can move in different directions. 
 
-\begin{theorem}\label{thm:composition-of-two-way-transducers}
+\begin{theorem}[Chytil and J{\'a}kl]\label{thm:composition-of-two-way-transducers}
     Functions computed by two-way transducers are closed under composition, i.e.~
 \begin{align*}\twodftmath \cdot \twodftmath \subseteq \twodftmath.    
 \end{align*}

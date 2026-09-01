@@ -15,6 +15,10 @@
       {
         "href": "/04-krohn-rhodes/",
         "tex": "menu-04-krohn-rhodes.tex"
+      },
+      {
+        "href": "/04a-mealy-machines-bibliographic-notes/",
+        "tex": "menu-04a-mealy-machines-bibliographic-notes.tex"
       }
     ]
   },
@@ -37,6 +41,10 @@
       {
         "href": "/09-machine-independent/",
         "tex": "menu-09-machine-independent.tex"
+      },
+      {
+        "href": "/09a-rational-functions-bibliographic-notes/",
+        "tex": "menu-09a-rational-functions-bibliographic-notes.tex"
       }
     ]
   },
@@ -59,6 +67,10 @@
       {
         "href": "/14-logic/",
         "tex": "menu-14-logic.tex"
+      },
+      {
+        "href": "/14a-regular-functions-bibliographic-notes/",
+        "tex": "menu-14a-regular-functions-bibliographic-notes.tex"
       }
     ]
   },
@@ -73,6 +85,10 @@
       {
         "href": "/17-pebble-transducers/",
         "tex": "menu-17-pebble-transducers.tex"
+      },
+      {
+        "href": "/17a-polyregular-functions-bibliographic-notes/",
+        "tex": "menu-17a-polyregular-functions-bibliographic-notes.tex"
       }
     ]
   }

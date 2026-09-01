@@ -1,7 +1,7 @@
 +++
 title = "Mealy Machines: Introduction"
 weight = 20
-source = "mealy-intro.tex"
+source = "partAMealy/intro.tex"
 part = true
 +++
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
@@ -9,6 +9,6 @@ part = true
 \setcounter{mypart}{1}
 \setcounter{section}{0}
 \setcounter{ourexamplecounter}{1}
-% source stamp mealy-intro.tex:1a0db247
-\input{../../../mealy-intro.tex}
+% source stamp partAMealy/intro.tex:726bb3eb
+\input{../../../partAMealy/intro.tex}
 {{< /latex >}}

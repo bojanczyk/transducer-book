@@ -190,8 +190,12 @@ shortcodes only expand in content. Three hand-written pieces:
   `as=` registers a block under a name that any template can then look up
   (`layouts/partials/book-toc-node.html`, `latex-file-block.html`).
 
-Adding or renaming a chapter means touching all three, plus `CHAPTERS` in
-`build-references.py` and a new `content/NN-slug.md`. Nothing generates them.
+Adding or renaming a chapter means touching all three, plus the page list in
+`build-references.py`, `build-search-index.py` and `build-source-stamps.py` —
+they are three copies of the same order — and a new `content/NN-slug.md`.
+Nothing generates them. A chapter added in the middle of the book takes a slug
+like `04a-…` and a weight between its neighbours' rather than renumbering what
+follows: the numbers are in URLs readers have already been given.
 
 ### The margin
 
@@ -208,9 +212,9 @@ names a reader sees changed.
 
 The column is emitted on every chapter, but the pill offers a button only where
 the chapter states numbered results. A chapter can cite a paper without stating
-one — `mealy-intro.tex` does — and gating the column on `$labels` used to leave
-those citations opening nothing at all. Where there is no list to offer, the
-button is hidden, "All results" does not appear, a saved `lean=1` is not
+one — `partAMealy/intro.tex` does — and gating the column on `$labels` used to
+leave those citations opening nothing at all. Where there is no list to offer,
+the button is hidden, "All results" does not appear, a saved `lean=1` is not
 honoured, and the column is reached by clicking a citation and left by closing
 it. `HAS_RESULTS` in the script is that condition.
 
@@ -344,9 +348,11 @@ which is 143 MB Hugo publishes into `dist/pdfs` and `publish.sh` sends up with
 the rest. Mounting a component replaces its default mount, which is why the
 ordinary `static/` is named again beside it.
 
-Inside a footnote `macros.sty` makes `\cite` mean `\incite`, which prints the
-names, title and year itself and never goes through `bibhyperref`, so the
-preamble redeclares `\incite` with the same link wrapped round its output.
+Inside a footnote `macros.sty` makes `\cite` mean `\incite`, which spells the
+reference out — authors, title, year — because a printed footnote has nowhere
+else to send the reader. Here it has the third column, so the preamble undoes
+that (`\let\incite\shortcite`) and footnotes carry the same short label as the
+rest of the text. The long form stays in the PDF.
 
 **One patch lives outside this repository.** The viewer lays a footnote out from
 a document that omits the block's `links` table, so references inside footnotes

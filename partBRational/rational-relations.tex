@@ -1,8 +1,7 @@
 \section{Rational relations}
 \label{sec:rational-relations}
 
-We  begin with the rational relations, which are a nondeterministic version of the rational functions, in which the underlying model is an \nfa equipped with an output mechanism\footnote{This model was introduced in~\cite[Definition 15]{RabinScott59} under the name of ``two-tape one-way automata''. To the best of my knowledge, the functional fragment first appears in \cite[Section II]{schutzenberger1961} under the name of ``transductions'', where the corresponding model is the same as what we call a bimachine, see~\cref{def:bimachine}.  Another early reference is 
-\cite{elgotMezei1965}. In this part of the book, we follow the approach of Elgot and Mezei: we first introduce rational relations, and then isolate the functions as a special case. Elgot and Mezei do not use the name  rational, they call them ``recognised by generalised finite automata''. We will comment on the origin of the name ``rational'' later in this part. }. One of the advantages of this model is that it does not treat the input and output differently. 
+We  begin with the rational relations, which are a nondeterministic version of the rational functions, in which the underlying model is an \nfa equipped with an output mechanism. One of the advantages of this model is that it does not treat the input and output differently. 
 
 \begin{definition}[\nfa with output]\label{def:nfa-with-output}
     A \emph{nondeterministic automaton with output} consists of the following ingredients:
@@ -64,15 +63,8 @@ This function is not computed by a Mealy machine, even though it is letter-to-le
     \end{align*}
     \end{itemize}
 \end{definition}
-Often the second class is called the \emph{regular expressions}, but the French algebraic tradition uses the name rational, which is inspired by similar terminology for power series\footnote{
-        This name is inspired by the monoid  $\field(x)$ of rational functions (this is the standard name in algebra, which clashes with our name for a transducer class) over a field $\field$, which consists of fractions of polynomials with one variable $x$, modulo common factors. This monoid is the least supset which contains all polynomials, is closed under addition and multiplication, and the following version of Kleene star:
-        \begin{align*}
-        1 + x + x^2 + \cdots + x^n + \cdots = \frac{1}{1-x}.
-        \end{align*}
-}.
-In the free monoid $A^*$, the two notions coincide\footnote{
-This is sometimes called the Kleene Theorem, see \cite[Chapter III, Theorem 2.1]{berstel1979}. However, there could be some confusion, since there are three classes of languages involved: (a) defined by regular expressions; (b) recognised by finite automata; and (c) recognised by finite monoids. The two classes in \cref{def:rational-recognisable-subsets} are (a) and (c).    
- As originally proved, Kleene's theorem is about the equality of (a) and (b), i.e.~regular expressions and automata, see~\cite[Theorems 4 and 6]{kleene1951}. The equivalence of (b) and (c), i.e.~finite automata and monoids is harder to trace to a single paper, especially since it is a simple observation. The syntactic monoid of a language is first defined in~\cite[p.~10]{schutzenberger1956}. An even older reference is \cite[Theorem 3]{dubreil1941}, which introduces the syntactic congruence of a subset of a monoid (not necessarily a free monoid, and the congruence is a right congruence, as in a \dfa).}, are exactly the rational subsets from the above definition, which can be proved by converting an \nfa with output into a regular expression. The recognisable subsets of $A^* \times B^*$ are much weaker; these are relations that can be recognised by separately testing some regular properties of the input and output strings, as explained in Exercise~\ref{ex:recognisable-relations}.
+Often the second class is called the \emph{regular expressions}, but the French algebraic tradition uses the name rational, which is inspired by similar terminology for power series.
+In the free monoid $A^*$, the two notions coincide, are exactly the rational subsets from the above definition, which can be proved by converting an \nfa with output into a regular expression. The recognisable subsets of $A^* \times B^*$ are much weaker; these are relations that can be recognised by separately testing some regular properties of the input and output strings, as explained in Exercise~\ref{ex:recognisable-relations}.
 
 
 \subsection{Composition and continuity} We now show that rational relations enjoy some  of the important properties that we have identified in the introduction, namely closure under composition and continuity.
@@ -133,10 +125,10 @@ Observe that rational relations are symmetric with respect to input and output, 
 
 
 
-\subsection{Undecidable equivalence} The trouble with rational relations is that  nondeterminism makes the equivalence problem undecidable\footnote{\cite[p.410]{Griffiths1968}}.
+\subsection{Undecidable equivalence} The trouble with rational relations is that  nondeterminism makes the equivalence problem undecidable.
 
 
-\begin{theorem}\label{thm:undecidable-equivalence-rational-relations}
+\begin{theorem}[Griffiths]\label{thm:undecidable-equivalence-rational-relations}
     The equivalence problem $R=S$ is undecidable for rational relations.
 \end{theorem}
 \begin{proof}
@@ -217,7 +209,7 @@ Once we have found them, the relation is simply the union of the two functions, 
     which is not rational. Indeed, the image of the regular language $a^*$ under this relation is $\setbuild{b^nc^n}{$n \geq 0$}$, which is not regular, while rational relations map regular languages to regular languages, as observed after Theorem~\ref{thm:continuity-rational-relations}.
 }
 
-\exer {\label{exer:rational-relations-intersection-undecidable} Show that it is undecidable if two rational relations have nonempty intersection\footnote{\cite[Theorem 18]{RabinScott59}}.}{
+\exer {\label{exer:rational-relations-intersection-undecidable} Show that it is undecidable if two rational relations have nonempty intersection.}{
     We reduce from the Post Correspondence Problem, as in the proof of Theorem~\ref{thm:undecidable-equivalence-rational-relations}, except that this time we do not need to complement the homomorphisms. Consider two homomorphisms $g,h : A^* \to B^*$, and view each of them as a relation, e.g.
     \begin{align*}
     \setbuild{(w,g(w))}{$w \in A^*$ is nonempty}.

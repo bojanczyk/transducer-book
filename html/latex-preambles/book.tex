@@ -1,4 +1,4 @@
-% source stamp shared:3147a1a2 — maintained by build-source-stamps.py; it is what makes editing ../macros.sty, the pictures or the book's numbering recompile every block
+% source stamp shared:635ac902 — maintained by build-source-stamps.py; it is what makes editing ../macros.sty, the pictures or the book's numbering recompile every block
 % Each extraction job runs in html/.reflowtex-build/HASH, i.e. always exactly
 % three directories below the book repository root, so ../../../ reaches the
 % book's own LaTeX sources (macros.sty, knowledges.tex, main.aux) wherever the
@@ -32,10 +32,9 @@
 % never biber (src/encode/pipeline.py). So no \jobname.bbl can ever exist here,
 % however many passes it makes, and every \cite comes out undefined.
 %
-% In a footnote that is worse than it sounds. macros.sty makes \cite mean
-% \incite inside a footnote, and \incite prints author, title and year straight
-% from the bibliography data — so with no data it prints *nothing*, and the
-% sentence simply stops ("first appear in .").
+% An undefined citation is not a small blemish here: biblatex prints the raw key
+% in bold, and the label is all the reader gets in the text, the entry itself
+% being the third column's business. Hundreds of them, in every chapter.
 %
 % The book's own bibliography is already resolved by biber during the PDF build,
 % next door in ../../../main.bbl, and main.tex \inputs every chapter, so that
@@ -75,25 +74,22 @@
 % where it is lost.
 \DeclareFieldFormat{bibhyperref}{\href{cite:\thefield{entrykey}}{#1}}
 
-% Inside a footnote, macros.sty makes \cite mean \incite, which prints the names,
-% the title and the year itself rather than a label — and prints them with
-% \printnames and \printfield, which never pass through `bibhyperref` above. Two
-% citations in three are in footnotes, so they would all have stayed dead. This
-% is macros.sty's own definition with the printed run wrapped in the same link;
-% biblatex's punctuation buffer survives the extra group, so the footnote still
-% reads "…Elgot and J. E. Mezei, “On relations defined…”, 1965, and also…".
+% Inside a footnote, macros.sty makes \cite mean \incite, which spells the
+% reference out — "J. E. Mezei, “On relations defined…”, 1965" — because a
+% printed footnote has nowhere to send the reader but the bibliography at the
+% back of the book. Here it does: a citation is a link, and clicking it opens
+% the entry in the third column, with the authors, the title, the venue, a DOI
+% and often the paper itself. The long form in the footnote would just be that
+% same column, retyped into the middle of a sentence, so the web edition keeps
+% the short label everywhere — in footnotes as well as outside them.
+%
+% \shortcite is macros.sty's escape hatch: biblatex's own \cite, saved before
+% the footnote switch was put on top of it. So this is exactly an ordinary
+% citation, label and all, and it goes through `bibhyperref` above like every
+% other one — which is what makes it clickable. \inciteblock, which is built on
+% \incite, follows along.
 %
 % Kept here rather than in macros.sty because it is the web edition's business:
-% the PDF has a bibliography of its own to jump to. If \incite is ever changed
-% over there, change it here too.
-\DeclareCiteCommand{\incite}
-  {\usebibmacro{prenote}}
-  {\href{cite:\thefield{entrykey}}{%
-     \printnames[given-family]{labelname}%
-     \setunit{\addcomma\space}%
-     \printfield[citetitle]{title}%
-     \setunit{\addcomma\space}%
-     \printfield{year}}}
-  {\multicitedelim}
-  {\usebibmacro{postnote}}
+% the PDF has no side column and keeps its long footnote form.
+\let\incite\shortcite
 

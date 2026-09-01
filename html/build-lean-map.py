@@ -420,10 +420,40 @@ def read_theorems_md(book):
     claims inside the proof of Theorem B.4.8, say, which are not numbered
     results in Lean but do have proofs there under names of their own. Read
     literally, such a row links n results to n declarations, in order.
+
+    A result may be named by more than one row, and the rows are folded together
+    rather than the last one winning. Not every table with the shape of an index
+    row is one: the table of effectivity hypotheses near the end of the file
+    reads
+
+        | Theorem `thm:equivalence-rational-functions` |
+        | `Transducers.EffectiveWeightedEvalEq` | `PartB/Effective.lean` |
+
+    which is a result, a backticked declaration and a file — an index row to the
+    letter. It is the last word on those five results, so it used to replace the
+    rows that name the theorems themselves, and four theorems of Part B and one
+    of Part C ended up pointing at the effectivity hypothesis they are proved
+    *from* rather than at their own statement. Both facts are worth keeping, and
+    order is what separates them: the first row to name a declaration decides
+    what the result is formalised by, later rows only add to it, and it is the
+    first name in the list that becomes the primary the page links.
     """
     if not THEOREMS.exists():
         return {}
     out = {}
+
+    def record(key, names, fields):
+        """Fold one row into the entry for `key`."""
+        e = out.get(key)
+        if e is None or not e["names"]:
+            # nothing recorded yet, or only a row that named no declaration —
+            # that one was carrying a status, not a mapping, so this row may
+            # still say what the result is formalised by
+            out[key] = {"names": list(names), **fields}
+            return
+        for n in names:
+            if n not in e["names"]:
+                e["names"].append(n)
     for line in THEOREMS.read_text(errors="ignore").splitlines():
         if not line.startswith("|"):
             continue
@@ -443,18 +473,18 @@ def read_theorems_md(book):
             # result; anything else is prose, not a mapping
             paired = len(names) == len(results)
             for i, key in enumerate(results):
-                out[key] = {"names": [names[i]] if paired else [],
-                            "status": re.sub(r"\s+", " ", cells[1])[:160],
-                            "internal": paired and absent,
-                            "mathlib": mathlib,
-                            "not_formalised": absent and not paired}
+                record(key, [names[i]] if paired else [],
+                       {"status": re.sub(r"\s+", " ", cells[1])[:160],
+                        "internal": paired and absent,
+                        "mathlib": mathlib,
+                        "not_formalised": absent and not paired})
             continue
         if not names:
             continue
         status = cells[2] if len(cells) > 2 else ""
-        out[results[0]] = {
-            "names": names, "status": re.sub(r"\s+", " ", status).strip(" —-"),
-            "internal": False, "mathlib": mathlib, "not_formalised": absent}
+        record(results[0], names,
+               {"status": re.sub(r"\s+", " ", status).strip(" —-"),
+                "internal": False, "mathlib": mathlib, "not_formalised": absent})
     return out
 
 

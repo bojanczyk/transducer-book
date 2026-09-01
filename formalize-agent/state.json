@@ -25,7 +25,17 @@
     "encoding-snake-alphabet",
     "encoding-pebble",
     "exercises-encoding",
-    "audit-final"
+    "audit-final",
+    "hyp-forward-for",
+    "hyp-minimal-bimachine",
+    "hyp-even-parity",
+    "hyp-growth-dichotomy",
+    "hyp-polynomial-ideals",
+    "hyp-linear-rate",
+    "hyp-fo-non-elementary",
+    "hyp-effective-arithmetic",
+    "hyp-effective-section",
+    "audit-conditionals"
   ],
   "targets": {
     "B-effectivity-conditional": {
@@ -641,13 +651,230 @@
           "at": "2026-08-28 19:14:44Z"
         }
       ]
+    },
+    "hyp-forward-for": {
+      "status": "done",
+      "attempts": 1,
+      "continues": 0,
+      "reattempts": 0,
+      "task_ids": [
+        "7e2f74df-5f84-4e6a-819f-2dac66ff4146"
+      ],
+      "started_at": "2026-08-31 00:26:07Z",
+      "finished_at": "2026-08-31 03:20:02Z",
+      "note": null,
+      "sorries_at_start": 0,
+      "runs": [
+        {
+          "task_id": "7e2f74df-5f84-4e6a-819f-2dac66ff4146",
+          "project_id": "148323d8-8406-4d47-89cb-a7c58853b18b",
+          "base": "0cce264c758c3cae4ad5abd15d8a96a09d60f8e8",
+          "kind": "initial",
+          "at": "2026-08-31 00:26:07Z"
+        }
+      ]
+    },
+    "hyp-minimal-bimachine": {
+      "status": "done",
+      "attempts": 1,
+      "continues": 0,
+      "reattempts": 0,
+      "task_ids": [
+        "275d3fd0-c55d-4963-82d8-32b8a32f225f"
+      ],
+      "started_at": "2026-08-31 03:20:10Z",
+      "finished_at": "2026-08-31 04:20:29Z",
+      "note": null,
+      "sorries_at_start": 0,
+      "runs": [
+        {
+          "task_id": "275d3fd0-c55d-4963-82d8-32b8a32f225f",
+          "project_id": "270ef888-05f7-4a89-8cd0-6b528f31138d",
+          "base": "e756bc477650dccc4d1711b8cf846054cd556ebc",
+          "kind": "initial",
+          "at": "2026-08-31 03:20:10Z"
+        }
+      ]
+    },
+    "hyp-even-parity": {
+      "status": "done",
+      "attempts": 1,
+      "continues": 0,
+      "reattempts": 0,
+      "task_ids": [
+        "1f89c2cf-a81c-4fe8-8a7d-a1256180d1fd"
+      ],
+      "started_at": "2026-08-31 04:20:37Z",
+      "finished_at": "2026-08-31 09:21:52Z",
+      "note": null,
+      "sorries_at_start": 0,
+      "runs": [
+        {
+          "task_id": "1f89c2cf-a81c-4fe8-8a7d-a1256180d1fd",
+          "project_id": "4957ed1a-c08f-45a8-bf13-f4d2ffbdd80b",
+          "base": "367ed26f55256d966e705cf71903c32836bcefee",
+          "kind": "initial",
+          "at": "2026-08-31 04:20:37Z"
+        }
+      ]
+    },
+    "hyp-growth-dichotomy": {
+      "status": "done",
+      "attempts": 1,
+      "continues": 0,
+      "reattempts": 0,
+      "task_ids": [
+        "5035ddde-593a-4b4c-b21e-2c7d510044af"
+      ],
+      "started_at": "2026-08-31 09:22:01Z",
+      "finished_at": "2026-08-31 10:56:20Z",
+      "note": null,
+      "sorries_at_start": 0,
+      "runs": [
+        {
+          "task_id": "5035ddde-593a-4b4c-b21e-2c7d510044af",
+          "project_id": "c792f6aa-b377-4f44-b163-0eec3a8671f3",
+          "base": "16690ebeb3a742a74a1de35ae024fac8e5d26931",
+          "kind": "initial",
+          "at": "2026-08-31 09:22:01Z"
+        }
+      ]
+    },
+    "hyp-polynomial-ideals": {
+      "status": "done",
+      "attempts": 4,
+      "continues": 3,
+      "reattempts": 0,
+      "task_ids": [
+        "fc782431-5e13-4c58-ab03-95b572c2f9af",
+        "f1fd8c1d-224e-4c19-b0bf-3ba6d5401953",
+        "3e02de39-f487-4737-935c-836354cebe44",
+        "8fad49f0-5b6f-4578-9b23-d34f3f33474a"
+      ],
+      "started_at": "2026-08-31 10:56:40Z",
+      "finished_at": "2026-09-01 01:21:53Z",
+      "note": "stopped after 1 continuation(s) with no .lean change",
+      "sorries_at_start": 0,
+      "runs": [
+        {
+          "task_id": "fc782431-5e13-4c58-ab03-95b572c2f9af",
+          "project_id": "81fed3ca-6632-43fc-8489-fce48d00bbce",
+          "base": "0ecf8bb640ac5afd8cefed630fc54d9d36ef4b52",
+          "kind": "initial",
+          "at": "2026-08-31 10:56:40Z"
+        },
+        {
+          "task_id": "f1fd8c1d-224e-4c19-b0bf-3ba6d5401953",
+          "project_id": "80bb769f-4264-4d5b-b78e-baeac0dc185b",
+          "base": "bacbe85e55f2ef1d484d5494b7531e911b8cfb94",
+          "kind": "continue",
+          "at": "2026-08-31 13:49:57Z"
+        },
+        {
+          "task_id": "3e02de39-f487-4737-935c-836354cebe44",
+          "project_id": "237b0fdc-97a7-4651-b346-52ccb55b12d9",
+          "base": "385afe043089bb38e8c405b75b75d2e24240fea8",
+          "kind": "continue",
+          "at": "2026-08-31 22:58:36Z"
+        },
+        {
+          "task_id": "8fad49f0-5b6f-4578-9b23-d34f3f33474a",
+          "project_id": "60f2259f-b453-4857-b1cb-5b47f7054c07",
+          "base": "c9700fc2c0ccd5d78e5b79a0e28c167471b63c6d",
+          "kind": "continue",
+          "at": "2026-09-01 00:28:53Z"
+        }
+      ],
+      "idle_continues": 1
+    },
+    "hyp-linear-rate": {
+      "status": "done",
+      "attempts": 1,
+      "continues": 0,
+      "reattempts": 0,
+      "task_ids": [
+        "002cf0a5-b9be-4f00-b018-005645791886"
+      ],
+      "started_at": "2026-09-01 01:21:59Z",
+      "finished_at": "2026-09-01 03:04:01Z",
+      "note": null,
+      "sorries_at_start": 0,
+      "runs": [
+        {
+          "task_id": "002cf0a5-b9be-4f00-b018-005645791886",
+          "project_id": "938a8052-0879-4ee0-80df-41723b2b8439",
+          "base": "23aef885a4cb15b2e5e9d309d9784dad9baf7eb4",
+          "kind": "initial",
+          "at": "2026-09-01 01:21:59Z"
+        }
+      ],
+      "idle_continues": 0
+    },
+    "hyp-fo-non-elementary": {
+      "status": "running",
+      "attempts": 1,
+      "continues": 0,
+      "reattempts": 0,
+      "task_ids": [
+        "2febbf4f-dc1f-40fc-8b5f-9dd07b5dee77"
+      ],
+      "started_at": "2026-09-01 03:04:07Z",
+      "finished_at": null,
+      "note": null,
+      "sorries_at_start": 0,
+      "runs": [
+        {
+          "task_id": "2febbf4f-dc1f-40fc-8b5f-9dd07b5dee77",
+          "project_id": "eefa0b78-d8a8-483a-a78d-a280a5c3bb9b",
+          "base": "cff11cfd8b442ecf6d10265a7ca09235694a4296",
+          "kind": "initial",
+          "at": "2026-09-01 03:04:07Z"
+        }
+      ]
+    },
+    "hyp-effective-arithmetic": {
+      "status": "pending",
+      "attempts": 0,
+      "continues": 0,
+      "reattempts": 0,
+      "task_ids": [],
+      "started_at": null,
+      "finished_at": null,
+      "note": null
+    },
+    "hyp-effective-section": {
+      "status": "pending",
+      "attempts": 0,
+      "continues": 0,
+      "reattempts": 0,
+      "task_ids": [],
+      "started_at": null,
+      "finished_at": null,
+      "note": null
+    },
+    "audit-conditionals": {
+      "status": "pending",
+      "attempts": 0,
+      "continues": 0,
+      "reattempts": 0,
+      "task_ids": [],
+      "started_at": null,
+      "finished_at": null,
+      "note": null
     }
   },
-  "current": null,
+  "current": {
+    "target_id": "hyp-fo-non-elementary",
+    "task_id": "2febbf4f-dc1f-40fc-8b5f-9dd07b5dee77",
+    "project_id": "eefa0b78-d8a8-483a-a78d-a280a5c3bb9b",
+    "base": "cff11cfd8b442ecf6d10265a7ca09235694a4296",
+    "submitted_at": "2026-09-01 03:04:07Z",
+    "kind": "initial"
+  },
   "paused": false,
   "pause_reason": null,
-  "finished_at": "2026-08-28 21:30:35Z",
-  "ticks": 478,
-  "last_tick": "2026-08-28 22:15:42Z",
-  "review_pending": 6
+  "finished_at": null,
+  "ticks": 560,
+  "last_tick": "2026-09-01 03:10:36Z",
+  "review_pending": 1
 }

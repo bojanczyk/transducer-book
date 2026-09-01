@@ -111,7 +111,7 @@ Q \times A \to Q \times B^*,
 \end{align*}
 which means that a transition can produce an output string of variable length, instead of exactly one letter. 
 
-\begin{theorem}\label{thm:sequential-function-independent}
+\begin{theorem}[Ginsburg and Rose]\label{thm:sequential-function-independent}
     A function $f : A^* \to B^*$ is  sequential if and only if it: (a) is continuous; (b) is prefix preserving; (c) outputs $\varepsilon$ when the input is $\varepsilon$; and (d) has the following bounded increase property:
         \begin{align*}
         \myoverbrace{\sup_{\substack{w \in A^* \\ a \in A}} |f(wa)| - |f(w)|}{maximal increase in output length due \\ to extending input with  one letter} \quad < \quad \infty.
@@ -185,7 +185,7 @@ In the decomposition from the above definition, the string $v$ will necessarily 
 The characterisation of subsequential functions will say that they are exactly the functions which are: (a) continuous; and (b) have a property called bounded variation, which is defined in terms of the left distance. The continuity condition is the same as in Definition~\ref{def:continuity}, except that we use inverse images for partial functions in the natural way. The bounded variation property is actually the same as uniform continuity with respect to the left distance, but we prefer to avoid the word continuity to avoid a name clash with condition (a).
 
 
-\begin{theorem}\label{thm:subsequential-functions}
+\begin{theorem}[Choffrut]\label{thm:subsequential-functions}
         A partial function $f : A^* \to B^*$ is subsequential if and only if it is continuous and has the following  property: 
         \begin{itemize}
             \item \textbf{Bounded variation:}  for every $w_1$ and $w_2$ in $A^*$, we have 
@@ -323,7 +323,8 @@ We finish this chapter with  a machine independent characterisation of the ratio
 
 
 
-\begin{theorem}\label{thm:machine-independent-rational-functions}
+
+\begin{theorem}[Reutenauer and Sch\"utzenberger]\label{thm:machine-independent-rational-functions}
     A function $f : A^* \to B^*$ is rational if and only if it is continuous, and the following equivalence relation on input strings has finite index:
     \begin{align*}
 w_1 \sim w_2 \quad \eqdef \quad  \sup_{w \in A^*} \distance{f(w w_1)}{f(w w_2)} < \infty.
@@ -383,7 +384,6 @@ We can easily choose the string $w$ so that the reversals differ in one of the f
 \exerciseheader
 
 \exer{\label{exer:minimal-sequential} We order sequential transducers by the number of states. Show that minimal sequential transducers are unique up to isomorphism.
-\review{New solution.}
 } {
     This is the Myhill-Nerode theorem for sequential transducers. The key point, which is also what distinguishes this exercise from the following one, is that the output of each transition is already determined by the function. Indeed, a sequential function is prefix preserving, and therefore the transition which reads the $i$-th letter must produce
     \begin{align*}

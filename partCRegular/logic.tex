@@ -60,7 +60,7 @@ As it turns out, first-order logic is not strong enough to define all regular la
 \end{align*}
 \end{myexample}
 
-\begin{theorem}
+\begin{theorem}[Büchi, Elgot, Trakhtenbrot]
     \label{thm:mso-logic-languages}
     A language $L \subseteq A^*$ is regular if and only if it is definable in \mso.
 \end{theorem}
@@ -133,7 +133,7 @@ In the previous section, we showed how monadic second-order logic can be used to
 
 An \mso relabelling defines a function of type $A^* \to B^*$ as follows. If the input string is empty, then we use the string from the last item. Otherwise, if the input string is nonempty, then to each input position we associate the unique formula from $\Phi$ that is true in that position, and we output the string that the output map assigns to this formula. The resulting string -- with the outputs concatenated from left to right -- is the output of the function. 
 
-\begin{theorem}
+\begin{theorem}[Bloem-Engelfriet]
     \label{thm:logic-rational-functions}
     A string-to-string function is rational if and only if it is definable by an \mso relabelling.
 \end{theorem}
@@ -349,7 +349,7 @@ The semantics of an \mso transduction is a function of type $A^* \to B^*$, which
 \end{align*}    
 \end{myexample}
 
-\begin{theorem}\label{thm:logic-regular-functions}
+\begin{theorem}[Engelfriet-Hoogeboom]\label{thm:logic-regular-functions}
     String-to-string \mso transductions define exactly the regular functions.
 \end{theorem}
 \begin{proof} As our model for the regular functions, we use two-way transducers. 
@@ -467,9 +467,8 @@ If $f$ is this rational function, then there is a one-to-one correspondence betw
 \newcommand{\fotype}{\text{tp}}
 
 
-Recall the notion of an aperiodic string-to-string function from Definition~\ref{def:aperiodic-mealy}, and the corresponding condition on state transformations in Lemma~\ref{lem:aperiodicity-minimal-machine}. The latter condition only talks about state transformations, and hence it  can be meaningfully applied to deterministic automata without output:  a \dfa is called \emph{aperiodic} if for every state transformation $\delta$, the sequence $\delta^1, \delta^2, \ldots$ eventually reaches a stable value. The following theorem shows that the characterisation in Theorem~\ref{thm:aperiodic-mealy}, which talked about aperiodic Mealy machines and flip-flops, happens to identify the same class as first-order logic\footnote{This result was originally a combination of three results: (a) aperiodic \dfa's are the same as aperiodic monoid, which is a straightforward obeservation; (b) aperiodic monoids are the same as star-free expressions, which was proved in~\cite[Main Property]{Schutzenberger1965}; and (c) star-free expressions are the same as first-order logic, which was proved in~\cite[Theorem 10.5]{McNaughtonPapert1971}. Our proof leverages the Krohn-Rhodes Theorem, this option was already noticed in~\cite[Footnote 1]{meyer1969}.}. 
-
-\begin{theorem}
+Recall the notion of an aperiodic string-to-string function from Definition~\ref{def:aperiodic-mealy}, and the corresponding condition on state transformations in Lemma~\ref{lem:aperiodicity-minimal-machine}. The latter condition only talks about state transformations, and hence it  can be meaningfully applied to deterministic automata without output:  a \dfa is called \emph{aperiodic} if for every state transformation $\delta$, the sequence $\delta^1, \delta^2, \ldots$ eventually reaches a stable value. The following theorem shows that the characterisation in Theorem~\ref{thm:aperiodic-mealy}, which talked about aperiodic Mealy machines and flip-flops, happens to identify the same class as first-order logic.
+\begin{theorem}[McNaughton-Papert, Schützenberger]
     \label{thm:logic-aperiodic}
     A language is definable in first-order logic if and only if it is recognised by an aperiodic \dfa.
 \end{theorem}

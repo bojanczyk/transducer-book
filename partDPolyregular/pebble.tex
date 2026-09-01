@@ -7,9 +7,9 @@ A pebble transducer extends a two-way transducer by having not one head, but a s
 Similarly to one-way and  two-way transducers (but unlike for-transducers), our pebbles point to gaps between positions, and not positions. 
 Importantly, the pebbles are organised in a stack, with pebble 1 at the bottom of the stack, and a  pebble can only be modified by the transducer if it is at the top of the stack\footnote{
     \label{footnote:stack-discipline}
-    Stack discipline is what ensures that the model is finite-state, which was originally proved in~\cite[Theorem 4.2]{lewenstein1996}. Without the stack discipline the model would be the same as multi-head automata, which correspond to logarithmic space~\cite[Corollary 3.5]{ibarra1971}.}.
+    Without  stack discipline the model would be the same as multi-head automata, which correspond to logarithmic space~\cite[Corollary 3.5]{ibarra1971}.}.
 The stack can be potentially empty, and -- more importantly -- its height is bounded by a constant $k$ that is given in the pebble automaton. (There are models with unbounded numbers of pebbles~\cite{engelfriet2007}.)
-We use the name \emph{head} for the topmost pebble on the stack\footnote{Like~\cite{milo2003} but unlike~\cite{lewenstein1996, engelfriet2002}, we count the head as just another pebble. Therefore, a transducer with $k$ pebbles in our notation becomes, in the notation  of~\cite{lewenstein1996, engelfriet2002}, a transducer with $k-1$ pebbles and a head. The motivation for our choice is that a transducer with $k$ pebbles in our notation will have output size $\Oo(n^k)$.}. Apart from the pebble stack, the automaton has a state from a finite set. To update its configuration, the pebble transducer looks at its state, and the answers to the  following \emph{questions}, where $i \in \set{1,\ldots,k}$ range over pebble numbers:
+We use the name \emph{head} for the topmost pebble on the stack. Apart from the pebble stack, the automaton has a state from a finite set. To update its configuration, the pebble transducer looks at its state, and the answers to the  following \emph{questions}, where $i \in \set{1,\ldots,k}$ range over pebble numbers:
 \begin{enumerate}
     \item \label{pebble-question:label} what are the two input letters adjacent to pebble $i$?
     \item \label{pebble-question:left} which other pebbles are in the same place as pebble $i$?

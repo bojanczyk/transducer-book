@@ -119,7 +119,17 @@ if [ "$PDF" != "no" ]; then
   STALE=""
   if [ ! -f "$BOOK/main.aux" ]; then
     STALE="main.aux does not exist yet"
-  elif [ -n "$(find "$BOOK" -maxdepth 1 \( -name '*.tex' -o -name '*.sty' -o -name '*.bib' \) -newer "$BOOK/main.aux" -print -quit)" ]; then
+  # depth 2, because the chapters live in partAMealy/, partBRational/ and the
+  # rest rather than at the root — a depth-1 search would see main.tex and
+  # macros.sty and nothing else, and every chapter edit would look like no
+  # change at all. Everything at the root that is not book source is pruned by
+  # name: html/ alone is tens of thousands of files, and transducer-lean/ and
+  # literature/ are no smaller.
+  elif [ -n "$(find "$BOOK" -maxdepth 2 \
+       \( -name '.*' -o -name html -o -name html-radek -o -name transducer-lean \
+          -o -name literature -o -name formalize-agent \) -prune -o \
+       -type f \( -name '*.tex' -o -name '*.sty' -o -name '*.bib' \) \
+       -newer "$BOOK/main.aux" -print -quit)" ]; then
     STALE="sources are newer than main.aux"
   fi
   if [ "$PDF" = "yes" ] || [ -n "$STALE" ]; then

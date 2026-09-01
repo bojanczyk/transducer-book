@@ -522,7 +522,7 @@ def git(ld: Path, *args: str, **kw) -> subprocess.CompletedProcess:
                           capture_output=True, text=True, **kw)
 
 
-GITIGNORE = ".lake/\n*.olean\n*.olean.tmp\n.DS_Store\n"
+GITIGNORE = ".lake/\n*.olean\n*.olean.tmp\n.DS_Store\n__pycache__/\n*.pyc\n"
 
 
 def ensure_gitignore(ld: Path) -> None:
@@ -531,8 +531,11 @@ def ensure_gitignore(ld: Path) -> None:
     Must be re-asserted after every rsync: the archive carries no .gitignore.
     """
     gi = ld / ".gitignore"
-    if not gi.exists() or ".lake/" not in gi.read_text(errors="ignore"):
-        gi.write_text(GITIGNORE)
+    have = gi.read_text(errors="ignore") if gi.exists() else ""
+    missing = [l for l in GITIGNORE.split() if l not in have]
+    if missing:
+        gi.write_text(have.rstrip("\n") + "\n" + "\n".join(missing) + "\n" if have
+                      else GITIGNORE)
 
 
 def ensure_git(ld: Path) -> None:
@@ -740,8 +743,8 @@ def harvest(cfg: dict, st: dict, project, task, target: dict | None,
                f"Co-authored-by: Aristotle (Harmonic) <aristotle-harmonic@harmonic.fun>\n")
 
         base = base or (st.get("current") or {}).get("base") or "HEAD"
-        outcome = integrate(cfg, st, src, base,
-                            f"aristotle/{task.agent_task_id[:8]}", msg)
+        branch = f"aristotle/{task.agent_task_id[:8]}"
+        outcome = integrate(cfg, st, src, base, branch, msg)
         if outcome == "conflict":
             review(cfg, st, f"{tid} conflicts with local work",
                    f"The run started from {base[:8]} and its result does not merge "
@@ -753,9 +756,25 @@ def harvest(cfg: dict, st: dict, project, task, target: dict | None,
             st["pause_reason"] = f"{tid} needs a merge by hand"
             log("merge conflict — paused")
             return False
+        # Did the run touch the sources at all?  Compared against the base the
+        # run started from, not against local HEAD, so an edit made here while
+        # it was running is not mistaken for its work.  A continuation that
+        # writes only prose has nothing left to do and must not be continued
+        # again: that is how hyp-polynomial-ideals burned three continuations
+        # re-reporting a result it had already finished.
+        touched = git(ld, "diff", "--name-only", f"{base}..{branch}").stdout.split()
+        lean_touched = any(f.endswith(".lean") for f in touched)
+        if target:
+            trec = st["targets"].get(target["id"])
+            if trec is not None:
+                if lean_touched:
+                    trec["idle_continues"] = 0
+                elif (st.get("current") or {}).get("kind") == "continue":
+                    trec["idle_continues"] = trec.get("idle_continues", 0) + 1
         if outcome == "merged":
             log(f"merged {n_lean} lean files from {task.agent_task_id[:8]}; "
-                f"sorries {before} -> {sorry_count(ld)}")
+                f"sorries {before} -> {sorry_count(ld)}"
+                f"{'' if lean_touched else '; no .lean change'}")
         else:
             log(f"integration: {outcome}")
     return True
@@ -940,26 +959,47 @@ def tick(cfg: dict, q: list, st: dict) -> None:
                           f"still open: {', '.join(still)}" if still else None)
 
         elif state in TERMINAL_PARTIAL and target:
-            if rec["continues"] < target.get("max_continues", cfg.get("max_continues", 3)):
-                rec["continues"] += 1
-                extra = (f"Please continue exactly where you left off on the following task, "
-                         f"picking up from the state of the repository and your own last "
-                         f"summary.\n\nThe task was:\n\n{target['prompt']}")
-                st["current"] = None
-                if submit(cfg, st, target, "continue", extra):
-                    return
-            still = open_results(lean_dir(cfg), target.get("lean_names", []))
-            review(cfg, st, f"{target['id']} ran out of budget",
-                   f"Budget exhausted after {rec['continues']} continuation(s). Still "
-                   f"containing `sorry`: {', '.join(still) if still else 'none detected'}.\n\n"
-                   f"The run has moved on. To give this another go:\n"
-                   f"    formalize requeue {target['id']}\n\n"
-                   f"Its last summary:\n\n{task.output_summary or ''}")
-            note_sorry_delta(cfg, st, rec, target)
-            finish_target(st, target["id"], "partial",
-                          f"budget exhausted after {rec['continues']} continuations; "
-                          f"still open: {', '.join(still) if still else 'none detected'}")
-            maybe_pause(cfg, st, "partial", f"{target['id']} ran out of budget")
+            # A partial status means the budget ran out, not that work is left:
+            # Aristotle reports COMPLETE_WITH_ERRORS for a pass that found
+            # nothing to repair just as it does for one cut off mid-proof.  So
+            # spend a continuation only when the last one actually changed the
+            # sources.  Without this the driver re-submits a finished target
+            # until its whole budget is gone.
+            idle_cap = cfg.get("stop_after_idle_continues", 1)
+            idle = rec.get("idle_continues", 0)
+            if idle >= idle_cap:
+                review(cfg, st, f"{target['id']} stopped: nothing left to do",
+                       f"The last {idle} continuation(s) changed no `.lean` file — only "
+                       f"prose — so the driver stopped rather than spend the remaining "
+                       f"{target.get('max_continues', cfg.get('max_continues', 3)) - rec['continues']} "
+                       f"continuation(s) on a finished target.\n\nIf you think there was "
+                       f"more to do:\n\n    formalize requeue {target['id']}\n\n"
+                       f"Its last summary:\n\n{task.output_summary or ''}")
+                note_sorry_delta(cfg, st, rec, target)
+                finish_target(st, target["id"], "done",
+                              f"stopped after {idle} continuation(s) with no .lean change")
+            else:
+                if rec["continues"] < target.get("max_continues",
+                                                 cfg.get("max_continues", 3)):
+                    rec["continues"] += 1
+                    extra = (f"Please continue exactly where you left off on the following "
+                             f"task, picking up from the state of the repository and your "
+                             f"own last summary.\n\nThe task was:\n\n{target['prompt']}")
+                    st["current"] = None
+                    if submit(cfg, st, target, "continue", extra):
+                        return
+                still = open_results(lean_dir(cfg), target.get("lean_names", []))
+                review(cfg, st, f"{target['id']} ran out of budget",
+                       f"Budget exhausted after {rec['continues']} continuation(s). Still "
+                       f"containing `sorry`: {', '.join(still) if still else 'none detected'}."
+                       f"\n\nThe run has moved on. To give this another go:\n"
+                       f"    formalize requeue {target['id']}\n\n"
+                       f"Its last summary:\n\n{task.output_summary or ''}")
+                note_sorry_delta(cfg, st, rec, target)
+                finish_target(st, target["id"], "partial",
+                              f"budget exhausted after {rec['continues']} continuations; "
+                              f"still open: {', '.join(still) if still else 'none detected'}")
+                maybe_pause(cfg, st, "partial", f"{target['id']} ran out of budget")
 
         elif state in TERMINAL_BAD and target:
             if rec["attempts"] <= cfg.get("max_retries_on_failure", 2):
