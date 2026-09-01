@@ -2134,3 +2134,33 @@ stale numbers in the dictionary of `LABELS.md` (`def:regular-functions`,
 `def:polyregular-functions`, `thm:polyregular-functions-are-continuous`), which
 were brought back into agreement with `main.aux`.  Only the number column
 changed; no label, no statement and no proof was touched.
+
+### Re-verification (independent pass)
+
+The same state was checked once more, independently and end to end, from the
+sources alone:
+
+* `lake build` of `transducer-lean/` succeeds — **8414 jobs, no errors, no
+  warnings**;
+* `tools/print_axioms.sh` reports that **all 213 aliases** of
+  `RequestProject/Labels.lean` depend only on `propext`, `Classical.choice`,
+  `Quot.sound`;
+* `#print axioms` run directly on
+  `Transducers.Exercises.SortedFromOmegaOutputs`,
+  `Transducers.Exercises.FactorThroughSortedOfOutputsPolyPos`,
+  `Transducers.Exercises.not_factorThroughSortedOfOutputsPoly`,
+  `Transducers.Exercises.polynomial_ideals`,
+  `Transducers.Exercises.all_ideals`,
+  `Transducers.Exercises.sameIdeal_iff` and
+  `Transducers.Exercises.full_ideal_iff` reports the same three axioms for each;
+* no declaration of `RequestProject/Exercises/Ideals.lean` takes a hypothesis
+  argument: the two former hypotheses `SortedFromOmegaOutputs` and
+  `FactorThroughSortedOfOutputsPolyPos` are theorems, and the only remaining
+  `def … : Prop`, `FactorThroughSortedOfOutputsPoly`, is the faithful rendering
+  of the book's `k = 0` statement, which is refuted, not assumed;
+* `RequestProject/` contains no `sorry` outside block comments, no `axiom`, no
+  `@[implemented_by]` and no `native_decide`;
+* `tools/gen_labels.py --check`, `tools/decl_files.py --check` and
+  `tools/tex_numbering.py --check` all pass, with no change needed.
+
+No statement, proof or count changed in this pass.
