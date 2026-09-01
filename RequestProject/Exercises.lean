@@ -41,6 +41,7 @@ import RequestProject.Exercises.TwoNFT2
 import RequestProject.Exercises.TwoNFTUnif
 import RequestProject.Exercises.TwoNFTUnif1
 import RequestProject.Exercises.ForFO
+import RequestProject.Exercises.CycleMean
 import RequestProject.Exercises.LinearOutput
 import RequestProject.Exercises.RegularGrowth
 import RequestProject.Exercises.RationalGrowth

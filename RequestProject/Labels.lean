@@ -913,22 +913,22 @@ assert_no_sorry «exer:2nft-uniformise#2»
 alias «exer:for-transducers-simulate-fo» := Transducers.Exercises.exists_forProg_of_isFO
 assert_no_sorry «exer:for-transducers-simulate-fo»
 
-/-! ## Exercises proved from an explicit hypothesis -/
-
-/-- **Exercise `exer:rational-outpus-of-exactly-linear-size`** (a rational function of unbounded output size has exactly linear output size): `Transducers.Exercises.rational_exactly_linear_output`, from the hypothesis `Transducers.Exercises.RationalHasLinearRate` (the maximum cycle mean of the transducer). -/
+/-- **Exercise `exer:rational-outpus-of-exactly-linear-size`** (a rational function of unbounded output size has exactly linear output size): `Transducers.Exercises.rational_exactly_linear_output`, proved outright; the maximum cycle mean `Transducers.Exercises.RationalHasLinearRate` it rests on is a theorem, proved in `Exercises/CycleMean.lean`. -/
 alias «exer:rational-outpus-of-exactly-linear-size» :=
   Transducers.Exercises.rational_exactly_linear_output
 assert_no_sorry «exer:rational-outpus-of-exactly-linear-size»
 
-/-- **Exercise `exer:rational-outpus-of-exactly-linear-size-rational-number`** (and the limit is a nonzero rational number): `Transducers.Exercises.rational_exactly_linear_output`, the same theorem: the limit it produces is a positive rational. -/
+/-- **Exercise `exer:rational-outpus-of-exactly-linear-size-rational-number`** (and the limit is a nonzero rational number): `Transducers.Exercises.rational_exactly_linear_output`, proved outright, by the same theorem: the limit it produces is a positive rational. -/
 alias «exer:rational-outpus-of-exactly-linear-size-rational-number» :=
   Transducers.Exercises.rational_exactly_linear_output
 assert_no_sorry «exer:rational-outpus-of-exactly-linear-size-rational-number»
 
-/-- **Exercise `exer:regular-outpus-of-exactly-linear-size`** (a regular function of unbounded output size has exactly linear output size): `Transducers.Exercises.regular_exactly_linear_output`, from the hypothesis `Transducers.Exercises.RationalHasLinearRate`. -/
+/-- **Exercise `exer:regular-outpus-of-exactly-linear-size`** (a regular function of unbounded output size has exactly linear output size): `Transducers.Exercises.regular_exactly_linear_output`, proved outright; the maximum cycle mean `Transducers.Exercises.RationalHasLinearRate` it rests on is a theorem, proved in `Exercises/CycleMean.lean`. -/
 alias «exer:regular-outpus-of-exactly-linear-size» :=
   Transducers.Exercises.regular_exactly_linear_output
 assert_no_sorry «exer:regular-outpus-of-exactly-linear-size»
+
+/-! ## Exercises proved from an explicit hypothesis -/
 
 /-- **Exercise `exer:full-ideal`** (the ideal of all rational functions): `Transducers.Exercises.full_ideal_iff`, proved outright. -/
 alias «exer:full-ideal» :=

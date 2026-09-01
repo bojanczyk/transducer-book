@@ -188,8 +188,8 @@ all eleven are aliased in `RequestProject/Labels.lean`.
 | Exercise `exer:decide-same-ideal` (equality of the generated ideals is decidable) | `sameIdeal_iff` (with `SameIdeal`, `SameOutputInvariant`, `sameIdeal_decidable`) | proved outright; the invariant is characterised, and `sameIdeal_decidable` turns any decision of the invariant into a decision of the exercise |
 | Exercise `exer:surjective-rational-function` (a surjective rational function has a rational one-sided inverse) | `exists_rationalFun_leftInverse` | proved |
 | Exercise `exer:rational-injectivity-decidable` (injectivity is decidable) | `rationalFun_injectivity_decidable` (with `rationalFun_injective_iff_exists_inverse`, `exists_rationalFun_inverse_of_injective`, `codeInjective_iff_section_comp_id`) | proved from the hypotheses `EffectiveWeightedEvalEq` and `EffectiveRationalSection` (a computable form of the Uniformisation Lemma) |
-| Exercise `exer:rational-outpus-of-exactly-linear-size` (a rational function of unbounded output size has exactly linear output size) | `rational_exactly_linear_output` (with `maxOutLen`, `HasLinearRate`) | proved from the hypothesis `RationalHasLinearRate` (the maximum cycle mean of the transducer) |
-| Exercise `exer:rational-outpus-of-exactly-linear-size-rational-number` (and the limit is a nonzero rational number) | `rational_exactly_linear_output` | proved from the same hypothesis; the limit the theorem produces is a positive rational |
+| Exercise `exer:rational-outpus-of-exactly-linear-size` (a rational function of unbounded output size has exactly linear output size) | `rational_exactly_linear_output` (with `maxOutLen`, `HasLinearRate`) | proved outright; the maximum cycle mean `RationalHasLinearRate` it rests on is a theorem, proved in `Exercises/CycleMean.lean` |
+| Exercise `exer:rational-outpus-of-exactly-linear-size-rational-number` (and the limit is a nonzero rational number) | `rational_exactly_linear_output` | proved outright, by the same theorem; the limit it produces is a positive rational |
 | Exercise `exer:rational-composition-finiteness-undecidable` (finiteness of the iterates is undecidable) | `iterates_finiteness_undecidable` (with `iterates_finite_iff`, `CodeSelfMap`, `CodeIteratesFinite`) | proved from the hypothesis `IteratesReduction` (the reduction from the halting problem) |
 | Exercise `exer:rational-compression` (rational functions are compatible with compression) | `compatCompression_of_isRationalFun` (with `CompatCompression`, `bimGaps`, `exists_slp_of_bimachine`) | proved in the size sense of `CompatCompression` (polynomial time is not modelled; see the divergence below) |
 
@@ -225,7 +225,7 @@ all eleven are aliased in `RequestProject/Labels.lean`.
 | Exercise `exer:2dfa-complexity` (the shortest accepted string can be exponential in the number of states) | `exists_twoDFA_shortest_exponential` (with `rulerAut`, `rulerAut_accepts`, `card_rulerSt`, `rulWord`; the author's own construction, and the bound it really gives, are `divAut`, `divAut_accepts`, `card_divSt`, `divAut_shortest`, `divAut_shortest_le`) | proved, but *not* by the author's construction, which does not prove the claim; see the divergence below |
 | Exercise `exer:2dfa-loop-elimination` (the inputs on which a two-way transducer terminates form a regular language) | `halts_isRegular` | proved |
 | Exercise `exer:2dfa-loop-elimination-sipser` (a polynomial-size two-way automaton for it) | `exists_terminating_twoDFA_halts` (with `dfsAut`, `dfsAut_accepts`, `dfsAut_terminates`, `exists_terminating_twoDFA`) | proved |
-| Exercise `exer:regular-outpus-of-exactly-linear-size` (a regular function of unbounded output size has exactly linear output size) | `regular_exactly_linear_output` | proved from the hypothesis `RationalHasLinearRate` (the maximum cycle mean of the transducer) |
+| Exercise `exer:regular-outpus-of-exactly-linear-size` (a regular function of unbounded output size has exactly linear output size) | `regular_exactly_linear_output` | proved outright; the maximum cycle mean `RationalHasLinearRate` it rests on is a theorem, proved in `Exercises/CycleMean.lean` |
 | Exercise `exer:2nft` (the two nondeterministic two-way models are incomparable) | `exists_isTwoNFT₁_not_isTwoNFT₂`, `exists_isTwoNFT₂_not_isTwoNFT₁` (with `TwoWayN`, `IsTwoNFT₁`, `IsTwoNFT₂`, `dupRel`) | proved |
 | Exercise `exer:2nft-uniformise` (both nondeterministic models can be uniformised) | `exists_isRegularFun_uniformising_isTwoNFT₁`, `exists_isRegularFun_uniformising_isTwoNFT₂` | proved |
 
@@ -860,9 +860,9 @@ Of the 81:
   | `exer:function-that-is-not-rational` | the non-rationality of string reversal (an *example* of the main text, not a numbered result) |
   | `exer:rational-relations-intersection-undecidable` | undecidability of the Post correspondence problem |
   | `exer:decide-rational-colision` (item (a)) | the same |
-  | `exer:rational-outpus-of-exactly-linear-size` | `RationalHasLinearRate` |
-  | `exer:rational-outpus-of-exactly-linear-size-rational-number` | `RationalHasLinearRate` |
-  | `exer:regular-outpus-of-exactly-linear-size` | `RationalHasLinearRate` |
+  | `exer:rational-outpus-of-exactly-linear-size` | `RationalHasLinearRate` — **discharged**, see the closing section |
+  | `exer:rational-outpus-of-exactly-linear-size-rational-number` | `RationalHasLinearRate` — **discharged** |
+  | `exer:regular-outpus-of-exactly-linear-size` | `RationalHasLinearRate` — **discharged** |
   | `exer:polynomial-ideals` | `SortedFromOmegaOutputs`, `FactorThroughSortedOfOutputsPoly` — **both discharged**, see the closing section |
   | `exer:all-ideals` | the same two — **both discharged** |
   | `exer:decide-same-ideal` | the same two — **both discharged** |
@@ -1165,3 +1165,38 @@ above, less `exer:non-minimal-automaton` and these three.  `#print
 axioms`, run on all 213 aliases of `RequestProject/Labels.lean`, reports only
 `propext`, `Classical.choice`, `Quot.sound` for every one of them, and there is
 no `sorry` anywhere in `RequestProject/Exercises/`.
+
+## Status (the maximum cycle mean discharged)
+
+The three exercises on functions of exactly linear output size —
+`exer:rational-outpus-of-exactly-linear-size`,
+`exer:rational-outpus-of-exactly-linear-size-rational-number` and
+`exer:regular-outpus-of-exactly-linear-size` — rested on the hypothesis
+`RationalHasLinearRate`: that the maximal output length of a rational function
+on the inputs of length at most `n` is `(p/q)·n` up to an additive constant.  It
+is now a theorem, with exactly the statement it had as a `def … : Prop`, and it
+has been removed from the argument lists of `rational_exactly_linear_output` and
+`regular_exactly_linear_output`, whose conclusions are unchanged.  No
+declaration of `Exercises/LinearOutput.lean` takes a hypothesis any more.
+
+The analysis is the new file `Exercises/CycleMean.lean`, on top of the loop
+combinatorics of `PartB/PathComb.lean`: `p/q` is the largest ratio
+(output)/(input) over the cycles of a transducer for `f` that pass through a
+productive state, read a nonempty input and use at most `|Q|` transitions.  That
+set of ratios is finite — which is exactly why the limit of the exercises is a
+rational number — and the maximum over it bounds *every* cycle
+(`CycleMean.cycle_bound`, by splitting a long cycle into a short one and a
+shorter one), hence every accepting run up to an additive constant
+(`CycleMean.path_bound`); the matching lower bound iterates a cycle attaining
+the maximum, between a path from an initial state and a path to a final state.
+A cycle that reads nothing writes nothing
+(`CycleMean.outputOf_eq_nil_of_cycle_of_input_nil`) — the one point where `f`
+being a function is used.  The details are in the addendum at the end of
+`THEOREMS.md`.
+
+**Counts.**  With these three proved outright, the tally becomes **72 of the 81
+exercises proved outright** and **9 proved from an explicit hypothesis** — the
+twelve of the previous section, less these three.  `#print axioms`, run on all
+213 aliases of `RequestProject/Labels.lean`, reports only `propext`,
+`Classical.choice`, `Quot.sound` for every one of them, and there is no `sorry`
+anywhere in `RequestProject/Exercises/`.

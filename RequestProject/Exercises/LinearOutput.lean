@@ -6,6 +6,7 @@ The three exercises of *Transducers* (M. Bojańczyk) on functions of exactly lin
 -/
 import RequestProject.Exercises.TwoDFAUnary
 import RequestProject.Exercises.PartBCAux
+import RequestProject.Exercises.CycleMean
 
 /-!
 # Exactly linear output size
@@ -20,29 +21,26 @@ to exist, to be nonzero, and (the second and the third exercise) to be a rationa
 The numerator is `Transducers.Exercises.maxOutLen f n`, the supremum of `|f w|` over the inputs
 `w` of length at most `n`; the alphabet is finite, so that supremum is a maximum.
 
-## What is proved and what is assumed
+## What is proved
 
 The solution of the book computes the limit as the maximum, over the cycles of a trim
 nondeterministic transducer for `f`, of the ratio (output length)/(input length) of the cycle —
-the *maximum cycle mean* of the weighted graph of the transducer.  That analysis of the cycles of
-a weighted graph is not in this project, and the exercise is the one place that would need it, so
-it is isolated here as a named hypothesis, exactly as the effectivity hypothesis
-`Transducers.EffectiveWeightedEvalEq` of `RequestProject/PartB/Effective.lean` isolates the missing
-`Primrec` arithmetic on `ℚ`.
+the *maximum cycle mean* of the weighted graph of the transducer.  That analysis is carried out in
+`RequestProject/Exercises/CycleMean.lean`; it gives
+`Transducers.Exercises.RationalHasLinearRate`, which used to be a hypothesis of this file and is
+now a theorem.
 
-The hypothesis is `Transducers.Exercises.HasLinearRate f`: there are natural numbers `p`, `q > 0`
-and `C` with
+It says that every rational function `f` has a *linear rate*,
+`Transducers.Exercises.HasLinearRate f`: there are natural numbers `p`, `q > 0` and `C` with
 
   `|q · maxOutLen f n − p · n| ≤ C`  for every `n`,
 
-i.e. the maximal output length is `(p/q)·n` up to a bounded error.  This is what the maximum cycle
-mean gives for a trim transducer: `p/q` is the maximal ratio of a cycle, the upper bound comes from
-decomposing a run into cycles and a simple path, and the lower bound from pumping an optimal cycle,
-the error `C` accounting in both cases for the bounded parts of the run that lie outside the
-cycles.  It is stated for all rational functions at once as
-`Transducers.Exercises.RationalHasLinearRate`, which is the form the exercises below take it in.
+i.e. the maximal output length is `(p/q)·n` up to a bounded error.  Here `p/q` is the maximal ratio
+of a cycle through a productive state, the upper bound comes from decomposing a run into cycles and
+a short path, and the lower bound from pumping an optimal cycle, the error `C` accounting in both
+cases for the bounded parts of the run that lie outside the cycles.
 
-What is proved here is the exercise itself from that hypothesis, and it is not a restatement of it:
+What is proved here is the exercise itself from that statement, and it is not a restatement of it:
 that the limit *exists*, that it is *nonzero* — this is where the unboundedness of the output size
 is used, and it is the only place where it is used — and that it is a *rational number*, namely
 `p/q`.  The third exercise is then reduced to the first two exactly as the book does it: replacing
@@ -83,22 +81,42 @@ lemma maxOutLen_le (f : List A → List B) {n m : ℕ}
   rintro x ⟨w, hw, rfl⟩
   exact h w hw
 
+/-- The maximum is attained: the alphabet is finite, so the supremum is over a finite nonempty set
+of natural numbers. -/
+lemma exists_maxOutLen_eq [Finite A] (f : List A → List B) (n : ℕ) :
+    ∃ w : List A, w.length ≤ n ∧ (f w).length = maxOutLen f n := by
+  have hne : ((fun w => (f w).length) '' {w : List A | w.length ≤ n}).Nonempty :=
+    ⟨(f []).length, [], by simp, rfl⟩
+  obtain ⟨w, hw, hval⟩ := Nat.sSup_mem hne (maxOutLen_finite f n).bddAbove
+  exact ⟨w, hw, hval⟩
+
 end MaxOut
 
-/-! ### The hypothesis: the maximal output length grows at a fixed rational rate -/
+/-! ### The maximal output length grows at a fixed rational rate -/
 
-/-- **The maximum cycle mean hypothesis, for one function.**  The maximal output length of `f` on
-inputs of length at most `n` is `(p/q)·n` up to an additive constant.  See the header of this file
-for why this is what the analysis of the cycles of a transducer for `f` gives, and why that
-analysis is assumed rather than carried out. -/
+/-- **The maximum cycle mean, for one function.**  The maximal output length of `f` on inputs of
+length at most `n` is `(p/q)·n` up to an additive constant.  See the header of this file for why
+this is what the analysis of the cycles of a transducer for `f` gives. -/
 def HasLinearRate {A B : Type} (f : List A → List B) : Prop :=
   ∃ p q C : ℕ, 0 < q ∧
     ∀ n : ℕ, q * maxOutLen f n ≤ p * n + C ∧ p * n ≤ q * maxOutLen f n + C
 
-/-- **The maximum cycle mean hypothesis.**  Every rational function has a linear rate in the sense
-of `Transducers.Exercises.HasLinearRate`. -/
-def RationalHasLinearRate : Prop :=
-  ∀ (A B : Type) [Finite A] [Finite B] (f : List A → List B), IsRationalFun f → HasLinearRate f
+/-- **The maximum cycle mean.**  Every rational function has a linear rate in the sense of
+`Transducers.Exercises.HasLinearRate`.  This was a hypothesis of the two exercises below; it is
+now a theorem, proved in `RequestProject/Exercises/CycleMean.lean` from the analysis of the cycles
+of a transducer for `f`. -/
+theorem RationalHasLinearRate :
+    ∀ (A B : Type) [Finite A] [Finite B] (f : List A → List B), IsRationalFun f →
+      HasLinearRate f := by
+  intro A B _ _ f hf
+  obtain ⟨pn, qd, C, hq, h⟩ := CycleMean.exists_linear_rate hf
+  refine ⟨pn, qd, C, hq, fun n => ⟨?_, ?_⟩⟩
+  · obtain ⟨w, hw, hval⟩ := exists_maxOutLen_eq f n
+    rw [← hval]
+    exact (h n).1 w hw
+  · obtain ⟨w, hw, hle⟩ := (h n).2
+    have hmono : (f w).length ≤ maxOutLen f n := le_maxOutLen f hw
+    exact le_trans hle (Nat.add_le_add_right (Nat.mul_le_mul_left _ hmono) C)
 
 /-! ### The limit -/
 
@@ -147,16 +165,13 @@ theorem exists_pos_rat_tendsto_of_hasLinearRate {A B : Type} [Finite A] {f : Lis
 /-- **Exercises `exer:rational-outpus-of-exactly-linear-size` and
 `exer:rational-outpus-of-exactly-linear-size-rational-number`.**  A rational function whose output
 size is unbounded has exactly linear output size: the limit of the maximal output length on inputs
-of length at most `n`, divided by `n`, exists, is nonzero, and is a rational number.
-
-The hypothesis `hrate` is the maximum cycle mean analysis of the solution, assumed rather than
-carried out; see the header of this file. -/
-theorem rational_exactly_linear_output (hrate : RationalHasLinearRate)
+of length at most `n`, divided by `n`, exists, is nonzero, and is a rational number. -/
+theorem rational_exactly_linear_output
     {A B : Type} [Finite A] [Finite B] {f : List A → List B} (hf : IsRationalFun f)
     (hunb : ¬ ∃ N : ℕ, ∀ w : List A, (f w).length ≤ N) :
     ∃ r : ℚ, 0 < r ∧
       Tendsto (fun n : ℕ => (maxOutLen f n : ℝ) / n) atTop (𝓝 (r : ℝ)) :=
-  exists_pos_rat_tendsto_of_hasLinearRate (hrate A B f hf) hunb
+  exists_pos_rat_tendsto_of_hasLinearRate (RationalHasLinearRate A B f hf) hunb
 
 /-! ### The regular case -/
 
@@ -172,7 +187,7 @@ This is the author's reduction: replacing every output letter by a single letter
 the output lengths nor regularity, and over a one-letter output alphabet the regular functions are
 exactly the rational functions (Exercise `exer:2dfa-unary-output`), so the statement follows from
 the rational case. -/
-theorem regular_exactly_linear_output (hrate : RationalHasLinearRate)
+theorem regular_exactly_linear_output
     {A B : Type} [Finite A] [Finite B] {f : List A → List B} (hf : IsRegularFun f)
     (hunb : ¬ ∃ N : ℕ, ∀ w : List A, (f w).length ≤ N) :
     ∃ r : ℚ, 0 < r ∧
@@ -184,7 +199,7 @@ theorem regular_exactly_linear_output (hrate : RationalHasLinearRate)
   have hgunb : ¬ ∃ N : ℕ, ∀ w : List A, ((f w).map (fun _ : B => ())).length ≤ N := by
     rintro ⟨N, hN⟩
     exact hunb ⟨N, fun w => by simpa using hN w⟩
-  obtain ⟨r, hr, htend⟩ := rational_exactly_linear_output hrate hgrat hgunb
+  obtain ⟨r, hr, htend⟩ := rational_exactly_linear_output hgrat hgunb
   refine ⟨r, hr, ?_⟩
   simpa only [maxOutLen_map_const f] using htend
 

@@ -264,6 +264,7 @@ RequestProject/
 | `Exercises/TwoDFASipserDef.lean`, `Exercises/TwoDFASipserRun.lean`, `Exercises/TwoDFASipserTree.lean`, `Exercises/TwoDFASipserExplore.lean`, `Exercises/TwoDFASipserScan.lean`, `Exercises/TwoDFASipserSound.lean`, `Exercises/TwoDFASipser.lean` | Exercise `exer:2dfa-loop-elimination-sipser`: the depth-first search of the tree of accepting configurations, performed by a two-way automaton of quadratic size |
 | `Exercises/CompressionSLP.lean`, `Exercises/CompressionRat.lean`, `Exercises/CompressionMapLift.lean`, `Exercises/CompressionReg.lean` | Exercises `exer:rational-compression` and `exer:regular-compression`: operations on grammar compressions, the rational case through a bimachine, Claim `claim:map-compression`, and the induction over the composition tree |
 | `Exercises/RegularGrowth.lean`, `Exercises/RationalGrowth.lean` | the loop analysis of a deterministic automaton and the growth gap theorem for regular languages (`Transducers.Exercises.regular_growth_dichotomy`), and its transport to rational functions (`Transducers.Exercises.rationalFun_growth_dichotomy`, `Transducers.Exercises.rationalFun_loop_of_superPoly`, `Transducers.Exercises.exists_rational_bool_identity_of_superPoly`).  This is the analysis that the solutions of the exercises on the ideals of rational functions rest on; see the addendum at the end of this file |
+| `Exercises/CycleMean.lean` | the maximum cycle mean of an nfa with output: every cycle through a productive state has (output length)/(input length) at most the largest such ratio `p/q` over the cycles with at most `|Q|` transitions (`Transducers.Exercises.CycleMean.cycle_bound`), every path between a reachable and a co-reachable state obeys the same bound up to an additive constant (`Transducers.Exercises.CycleMean.path_bound`), and hence the output length of a rational function on the inputs of length at most `n` is `(p/q)·n` up to an additive constant (`Transducers.Exercises.CycleMean.exists_linear_rate`).  This is the analysis that the exercises on functions of exactly linear output size rest on; see the addendum at the end of this file |
 | `Exercises/ChainWords.lean`, `Exercises/SortedPattern.lean`, `Exercises/IdealsOmega.lean` | the `Ω(n^k)` half of the solution of Exercise `exer:polynomial-ideals`: the words produced by a chain of `k` loops, the rational bijection between such a word and a sorted word, and the two rational functions that put `Transducers.Exercises.sortedFun k` among the pre- and post-compositions of a rational function with `Ω(n^k)` outputs (`Transducers.Exercises.exists_rational_sorted_of_omega`) |
 | `Exercises/PatternCover.lean`, `Exercises/PatternCoverRat.lean`, `Exercises/IdealsPoly.lean` | the `O(n^k)` half: the analysis of the strongly connected components of an automaton with no ambiguous cycle and no chain of `k+1` loops, which covers its language by finitely many `k`-patterns (`Transducers.Exercises.RegGrowth.exists_pattern_cover`), the rational realisation of a finite family of `k`-patterns, and the factorisation of a rational function with `O(n^k)` outputs, `k ≥ 1`, through `sortedFun k` (`Transducers.Exercises.exists_rational_factor_through_sorted`) |
 | `Exercises/ForwardPrenex.lean`, `Exercises/ForwardComp.lean`, `Exercises/ForwardStep.lean` | Exercise `exer:forward-for-transducer`: the forward prenex normal form (the two designated positions are the first and the second, so that no last-to-first loop is introduced), the closure of the forward for-transducers under composition, and the fact that the one-step transducer of the enumeration is rational in the first-to-last direction because it is order preserving, hence a bimachine |
@@ -2169,3 +2170,80 @@ A further pass repeated the whole of this check from a clean checkout (fresh
 `lake build`: 8414 jobs, no errors; `tools/print_axioms.sh`: all 213 aliases on
 `propext`, `Classical.choice`, `Quot.sound`; the three bookkeeping checks pass)
 and again found nothing to change.
+
+## Addendum: the maximum cycle mean, and the exercises on exactly linear output size
+
+The three exercises on functions of exactly linear output size —
+`exer:rational-outpus-of-exactly-linear-size`,
+`exer:rational-outpus-of-exactly-linear-size-rational-number` (both of
+`rational-functions.tex`) and `exer:regular-outpus-of-exactly-linear-size` (of
+`2dfa.tex`) — rested on the hypothesis
+`Transducers.Exercises.RationalHasLinearRate`, the maximum cycle mean of a
+transducer, which the book's solution appeals to and does not prove.  It is now
+a theorem with exactly the statement it had as a `def … : Prop`, and it has been
+removed from the argument lists of
+`Transducers.Exercises.rational_exactly_linear_output` and
+`Transducers.Exercises.regular_exactly_linear_output`, whose conclusions are
+unchanged.  No declaration of `RequestProject/Exercises/LinearOutput.lean` takes
+a hypothesis any more, and the three exercises are **proved outright**.
+
+The analysis is one new file, `RequestProject/Exercises/CycleMean.lean`, built on
+the loop combinatorics of `RequestProject/PartB/PathComb.lean`
+(`Transducers.LabAut.Path.loop_of_not_nodup`,
+`Transducers.LabAut.Path.small_loop`), which was already in the project.  Let `M`
+be an nfa with output computing the *function* `f`, weight each transition by the
+length of the string it reads and by the length of the string it writes, and let
+`p/q` be the largest ratio (output)/(input) over the cycles of `M` that pass
+through a productive state, read a nonempty input and use at most `|Q|`
+transitions — a maximum over a finite set of pairs of natural numbers, since a
+cycle that short reads and writes a bounded amount, which is why `p` and `q` are
+the numerator and the denominator of a *rational* number, and hence why the
+limit the exercises ask about is rational.  The steps are:
+
+* `Transducers.Exercises.CycleMean.outputOf_eq_nil_of_cycle_of_input_nil` — a
+  cycle through a productive state that reads nothing writes nothing.  This is
+  the only place where `f` being a function, and not merely a rational relation,
+  is used: such a cycle can be inserted into an accepting run, and would give a
+  second output for the same input.  Without it the mean would be infinite.
+* `Transducers.Exercises.CycleMean.cycle_bound` — *every* cycle through a
+  productive state, however long, has `q·(output) ≤ p·(input)`.  A long cycle is
+  split by the pigeonhole principle into a short cycle and a strictly shorter
+  cycle, both through productive states, and the two bounds are added.
+* `Transducers.Exercises.CycleMean.path_bound` — every path from a reachable
+  state to a co-reachable state has `q·(output) ≤ p·(input) + q·K`, where `K`
+  bounds the output of a path with at most `|Q|` transitions: the cycles of the
+  path are removed one at a time.
+* `Transducers.Exercises.CycleMean.exists_linear_rate` — the two-sided bound.
+  The upper half is `path_bound` applied to an accepting run.  The lower half
+  iterates a cycle that *attains* the maximum: that cycle passes through a
+  productive state, so it can be preceded by a path from an initial state and
+  followed by a path to a final state, and taking `k = (n − A₀)/q` copies of it
+  gives an input of length at most `n` whose output has length at least `k·p`.
+  If the maximum is attained by the trivial candidate `0/1`, the lower half is
+  vacuous and the upper half says that the output length is bounded.
+
+`Transducers.Exercises.RationalHasLinearRate` follows because the supremum
+defining `Transducers.Exercises.maxOutLen f n` is attained over a finite
+alphabet (`Transducers.Exercises.exists_maxOutLen_eq`).  The analytic half of the
+exercises — that the limit exists, is nonzero (this is where the unboundedness of
+the output size enters) and is the rational number `p/q` — was already proved
+from the hypothesis and is unchanged.
+
+`#print axioms` on `Transducers.Exercises.CycleMean.cycle_bound`,
+`Transducers.Exercises.CycleMean.path_bound`,
+`Transducers.Exercises.CycleMean.exists_linear_rate`,
+`Transducers.Exercises.RationalHasLinearRate`,
+`Transducers.Exercises.rational_exactly_linear_output` and
+`Transducers.Exercises.regular_exactly_linear_output` reports only `propext`,
+`Classical.choice`, `Quot.sound`; `tools/print_axioms.sh` reports the same for
+all 213 aliases of `RequestProject/Labels.lean`; `RequestProject/` contains no
+`sorry` outside block comments, no `axiom`, no `@[implemented_by]` and no
+`native_decide`; and
+`tools/gen_labels.py --check`, `tools/decl_files.py --check` and
+`tools/tex_numbering.py --check` pass.  `lake build` succeeds — 8415 jobs, no
+errors, no warnings.
+
+**Counts.**  With these three exercises proved outright, the tally becomes **72
+of the 81 exercises proved outright** and **9 proved from an explicit
+hypothesis**.  The counts of the numbered results of the book are unchanged:
+this work touches no numbered result.
