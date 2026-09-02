@@ -49,3 +49,11 @@ _minted*
 main.pdf
 main.pdf
 main.pdf
+
+# PDFs are not tracked. The literature/ scans are third-party and were removed
+# from this repository's history on 2026-09-02; main.pdf and the picture PDFs
+# are build artefacts that latexmk regenerates, and tracking main.pdf alone had
+# put 40 MB of superseded revisions into the history. Publish the book through
+# a Release or the web edition rather than through git.
+# To track one anyway, in full knowledge of the above: git add -f <file>
+*.pdf
