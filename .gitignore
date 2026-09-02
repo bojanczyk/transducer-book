@@ -57,3 +57,8 @@ main.pdf
 # a Release or the web edition rather than through git.
 # To track one anyway, in full knowledge of the above: git add -f <file>
 *.pdf
+# ...except the figures.  transducer-book-pics.pdf is not a build artefact: it
+# is the source of every picture in the book, included page by page from
+# macros.sty (\includegraphics[page=#1]{transducer-book-pics}).  Removing it
+# from the repository breaks the compilation of the whole book.
+!transducer-book-pics.pdf
