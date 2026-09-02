@@ -19,16 +19,16 @@ corollaries, claims, one conjecture and one unnumbered paragraph.  Of these:
 | | count |
 | --- | --- |
 | definitions formalised | 20 |
-| results proved outright | 76 |
-| results proved from an explicit, documented hypothesis | 1 |
+| results proved outright | 77 |
+| results proved from an explicit, documented hypothesis | 0 |
 | not formalised (see §5) | 3 |
 
 "Proved outright" means: the Lean proof is complete, no file it depends on
 contains a `sorry`, and `#print axioms` on it reports only `propext`,
-`Classical.choice` and `Quot.sound`.  **Parts A, B and D are proved in full.**
-In Part C every numbered result is proved as well; the one qualification is
-Theorem `thm:decidable-equivalence-regular`, which is conditional in the sense
-of §4.
+`Classical.choice` and `Quot.sound`.  **Parts A, B, C and D are proved in
+full**, and no numbered result takes a hypothesis: the last one that did,
+Theorem `thm:decidable-equivalence-regular`, became unconditional when
+`Transducers.EffectiveTwoWayBound` was proved (see §4).
 
 Of the book's **81 exercises**, **all 81 are formalised**, in
 `RequestProject/Exercises/`: 77 proved outright, 3 proved from an explicit
@@ -142,13 +142,12 @@ the book exactly:
 The project asserts no `axiom` of its own.  Where a step is missing, the theorem
 that needs it takes it as an explicit argument — a `Prop`-valued definition — so
 that the dependency is visible in the statement and `#print axioms` still reports
-only `propext`, `Classical.choice` and `Quot.sound`.  **Four such assumptions are
-left in the whole project**, one in the numbered results and three in the
-exercises.
+only `propext`, `Classical.choice` and `Quot.sound`.  **Three such assumptions
+are left in the whole project**, all of them in the exercises; no numbered result
+takes one.
 
 | result | hypothesis | what is missing |
 | --- | --- | --- |
-| `thm:decidable-equivalence-regular` | `Transducers.EffectiveTwoWayBound` | the computability of an equivalence bound; see below |
 | `exer:fo-suc` | `Transducers.Exercises.EFSuccSeparation` | the Ehrenfeucht–Fraïssé argument |
 | `exer:rational-composition-finiteness-undecidable` | `Transducers.Exercises.IteratesReduction` | the reduction from the halting problem for this particular problem |
 | `exer:decide-rational-colision`, item (b) | `Transducers.Exercises.EffectiveLengthPairsSemilinear` | the effective form of Parikh's theorem; semilinear sets are not developed here |
@@ -167,23 +166,32 @@ is Example `ex:string-reversal-not-rational`, that string reversal is not
 rational, which two exercises used to assume
 (`Transducers.Exercises.not_isRationalFun_reverse`).
 
-`EffectiveTwoWayBound` (`PartC/EffectiveReg.lean`) says that an equivalence
-bound for two coded two-way transducers can be *computed* from the two codes.
-That such a bound exists is proved (`Transducers.exists_twoWayCode_bound`); what
-is missing is only its computability, and the reason is structural rather than a
-missing Mathlib lemma.  The chain that produces the bound passes through
-existentials over abstract finite types — `IsRegularFun` is an existential over
-compositions of prime functions, `IsWeighted f` is
-`∃ (Q : Type) (_ : Finite Q), …` — which carry no size information, so the bound
-is not a function of the codes at all.  Making it one means giving the book's
-reduction a size-explicit, code-to-code form: a computable map
-`TwoWayCode → WCode` with a proof that `Transducers.wcodeEval` of the image
-decides the equality of the coded relations.  `THEOREMS.md` sets this out in
-detail, as does the docstring of the hypothesis.  The missing construction is
-also written out as a Lean statement, `Transducers.EffectiveTwoWayWeighted` of
-`PartC/RegBoundGap.lean`, together with a proof that it implies the hypothesis
+`EffectiveTwoWayBound` (`PartC/EffectiveReg.lean`) used to be the one assumption
+of a numbered result: it says that an equivalence bound for two coded two-way
+transducers can be *computed* from the two codes.  That such a bound exists was
+already proved (`Transducers.exists_twoWayCode_bound`); what was missing was only
+its computability, and the reason was structural rather than a missing Mathlib
+lemma.  The chain that produces the bound passes through existentials over
+abstract finite types — `IsRegularFun` is an existential over compositions of
+prime functions, `IsWeighted f` is `∃ (Q : Type) (_ : Finite Q), …` — which carry
+no size information, so the bound is not a function of the codes at all.
+
+It is now **proved**, as `Transducers.effectiveTwoWayBound` of
+`PartC/RegEffBound.lean`, not by making that chain effective but by a direct
+construction of an explicit bound: the value of the output of a two-way
+transducer on `u ++ v` decomposes as a finite sum `∑ ι, g ι u * h ι v` indexed by
+the crossing data of the run at the cut, that index set has an explicit size, and
+Schützenberger's rank criterion (`Common/HankelRank.lean`) then gives a length
+bound which is an arithmetic expression in the number of states and the size of
+the alphabet.  Counting the letters and the states occurring in a code turns it
+into the primitive recursive `Transducers.RegDec.codeBound`.  `THEOREMS.md` sets
+this out in detail, as does the docstring of `EffectiveTwoWayBound`.
+
+The effective form of the book's *own* reduction is still only written out as a
+Lean statement, `Transducers.EffectiveTwoWayWeighted` of `PartC/RegBoundGap.lean`,
+together with a proof that it too would imply the bound
 (`Transducers.effectiveTwoWayBound_of_effectiveTwoWayWeighted`); that statement
-is assumed nowhere.
+is assumed nowhere and nothing depends on it.
 
 Four further results — `thm:equivalence-weighted-automata`,
 `thm:equivalence-rational-functions`, `thm:zeroness-weighted-automata` and

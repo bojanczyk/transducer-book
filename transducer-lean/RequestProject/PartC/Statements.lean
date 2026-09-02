@@ -4,9 +4,10 @@
 
 This file contains the definitions of Sections *The prime regular functions* to *Streaming string
 transducers* and the statements of their theorems, lemmas and claims.  All of them are proved, in
-the supporting files of `RequestProject/PartC/`; Theorem `thm:decidable-equivalence-regular` is
-proved from the two effectivity hypotheses of `RequestProject/PartC/EffectiveReg.lean`, which it
-takes as explicit arguments.  No file of Part C contains a `sorry`.
+the supporting files of `RequestProject/PartC/`, and none of them takes a hypothesis: the two
+effectivity statements of `RequestProject/PartC/EffectiveReg.lean` used by Theorem
+`thm:decidable-equivalence-regular` are both proved (`Transducers.EffectiveTwoWayEvalEq` and
+`Transducers.effectiveTwoWayBound`).  No file of Part C contains a `sorry`.
 
 Lemmas `lem:compute-configuration-graph` and
 `lem:check-if-output-string-of-configuration-graph-belongs-to-L`, which speak about the string
@@ -280,50 +281,44 @@ here; they have been moved, unchanged, to
 `RequestProject/PartC/RegCodeSan.lean`, which this file imports, so that the
 decision procedure below could be developed before this file. -/
 
-/-  The unconditional form of Theorem `thm:decidable-equivalence-regular` is
-
-theorem regular_equivalence_decidable :
-    DecidableUnderPromise
-      (fun p : TwoWayCode × TwoWayCode => TwoWayCodeTotal p.1 ∧ TwoWayCodeTotal p.2)
-      (fun p => twoWayCodeRel p.1 = twoWayCodeRel p.2) := by
-  sorry
+/-  Theorem `thm:decidable-equivalence-regular` is now unconditional.
 
 The mathematical content of the book's proof -- the reduction to equivalence of weighted automata
 over the field of rationals through the prime decomposition, including the constructions for map
 reverse and map duplicate -- is proved in `RequestProject/PartC/WeightedRegClosure.lean`; see the
 note at the end of Section *The prime regular functions* above, and in particular
 `Transducers.regularFun_eq_of_short`, which reduces the equivalence of two regular functions to a
-finite check.  What is missing for the unconditional statement is only the *effective* form of that
-chain on codes: the equivalence bound has to be computed from the two codes.
+finite check.
 
-The comparison of two coded two-way transducers on a given input, which used to be assumed as well,
-is now **proved**: `Transducers.EffectiveTwoWayEvalEq` in
-`RequestProject/PartC/TwoWaySimPrimrec.lean`, by simulating the run with the bound on its length of
-`Transducers.RegDec.halt_time_lt_fuel`.  What is left is isolated in
-`RequestProject/PartC/EffectiveReg.lean` as the single hypothesis
-`Transducers.EffectiveTwoWayBound` (an equivalence bound can be computed from the two codes; that
-such a bound *exists* is `Transducers.exists_twoWayCode_bound`, proved from the book's argument).
-The docstring of that hypothesis says precisely what would have to be built for it to become a
-theorem: an effective, code-to-code form of the prime decomposition and of the closure properties of
-weighted automata over `ℚ`, after which the bound would be `Transducers.wcodeBound` and the
-statement would follow from `Transducers.effectiveWeightedBound`, which is proved.  The version
-below takes that one statement as an explicit assumption, as Theorem
-`thm:undecidable-equivalence-rational-relations` takes the undecidability of the Post correspondence
-problem.  Everything else -- that the finitely many inputs to be tested may be taken over the
-letters of the two codes together with one fresh letter, and the assembly of the decision
-procedure -- is discharged in full in `RequestProject/PartC/RegEqDec.lean`. -/
+Both effectivity ingredients of the decision procedure on codes are proved.
+
+* The comparison of two coded two-way transducers on a given input is
+  `Transducers.EffectiveTwoWayEvalEq` in `RequestProject/PartC/TwoWaySimPrimrec.lean`, by
+  simulating the run with the bound on its length of `Transducers.RegDec.halt_time_lt_fuel`.
+* The equivalence bound is computed from the two codes by `Transducers.RegDec.codeBound`
+  (`RequestProject/PartC/RegEffBound.lean`), which discharges what used to be the hypothesis
+  `Transducers.EffectiveTwoWayBound` of `RequestProject/PartC/EffectiveReg.lean`.  The bound is an
+  explicit arithmetic expression in the sizes of the two codes; it comes from
+  `Transducers.RegHankel.twoWay_eq_of_short` (`RequestProject/PartC/RegShort.lean`), an
+  explicit-rank form of Schützenberger's criterion applied to the crossing-sequence decomposition
+  of a two-way run (`RequestProject/PartC/RegPos.lean`, `RegBlock.lean`, `RegCross.lean`,
+  `RegProfile.lean`, `RegVal.lean`, `RegHankel.lean`), which replaces the chain of existentials
+  over abstract finite types that made `Transducers.exists_twoWayCode_bound` non-effective.
+
+Everything else -- that the finitely many inputs to be tested may be taken over the letters of the
+two codes together with one fresh letter, and the assembly of the decision procedure -- is
+discharged in full in `RequestProject/PartC/RegEqDec.lean`. -/
 
 /-- **Theorem `thm:decidable-equivalence-regular`.**  Equivalence is decidable for regular functions
 (here: for the two-way transducers that compute them, cf. Theorem
 `thm:2dfa-decomposition-into-primes`).
 
-Proved from the effectivity hypothesis `EffectiveTwoWayBound` of
-`RequestProject/PartC/EffectiveReg.lean`; see the comment above. -/
-theorem regular_equivalence_decidable (hBound : EffectiveTwoWayBound) :
+Unconditional; see the comment above. -/
+theorem regular_equivalence_decidable :
     DecidableUnderPromise
       (fun p : TwoWayCode × TwoWayCode => TwoWayCodeTotal p.1 ∧ TwoWayCodeTotal p.2)
       (fun p => twoWayCodeRel p.1 = twoWayCodeRel p.2) :=
-  regular_equivalence_decidable_aux hBound
+  regular_equivalence_decidable_aux
 
 /-! ### Decomposition into prime functions -/
 

@@ -326,7 +326,7 @@ assert_no_sorry «lem:reversal-duplication-continuous»
 alias «lem:map-lifting-continuous» := Transducers.mapLift_continuous
 assert_no_sorry «lem:map-lifting-continuous»
 
-/-- **Theorem `thm:decidable-equivalence-regular`** (decidable equivalence): `Transducers.regular_equivalence_decidable`, from the one remaining effectivity hypothesis `Transducers.EffectiveTwoWayBound` (an equivalence bound can be computed from the two codes); see `RequestProject/PartC/RegBoundGap.lean` for exactly what is missing. -/
+/-- **Theorem `thm:decidable-equivalence-regular`** (decidable equivalence): `Transducers.regular_equivalence_decidable`, unconditional.  The equivalence bound is computed from the two codes by `Transducers.RegDec.codeBound` (`RequestProject/PartC/RegEffBound.lean`), which discharges the former hypothesis `Transducers.EffectiveTwoWayBound`. -/
 alias «thm:decidable-equivalence-regular» := Transducers.regular_equivalence_decidable
 assert_no_sorry «thm:decidable-equivalence-regular»
 

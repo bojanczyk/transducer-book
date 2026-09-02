@@ -1,3 +1,51 @@
+# `EffectiveTwoWayBound` discharged: Theorem `thm:decidable-equivalence-regular` is unconditional
+
+The last hypothesis of a numbered result anywhere in the project,
+`Transducers.EffectiveTwoWayBound` (`RequestProject/PartC/EffectiveReg.lean`),
+is now a **theorem**: `Transducers.effectiveTwoWayBound` in
+`RequestProject/PartC/RegEffBound.lean`, with exactly the statement it had as a
+`def ... : Prop`.  Nothing takes it as an argument any more:
+`Transducers.regular_equivalence_decidable` and
+`Transducers.RegDec.regular_equivalence_decidable_aux` lost their `hBound`
+argument, their conclusions unchanged, and
+`#check @Transducers.Book.«thm:decidable-equivalence-regular»` shows a type with
+no hypotheses.  So **all 77 formalised numbered results are proved outright**,
+and Parts A, B, C and D are complete.
+
+The route is not the book's reduction to weighted automata -- whose effective,
+code-to-code form is still only *stated*, as
+`Transducers.EffectiveTwoWayWeighted` of `PartC/RegBoundGap.lean`, which is
+assumed nowhere and on which nothing depends.  Instead the bound is constructed
+directly, as an arithmetic formula:
+
+* `Common/HankelRank.lean` -- Schützenberger's rank criterion in elementary
+  form: if `f (u ++ v) = ∑ i : ι, g i u * h i v` over a `Fintype ι` and `f`
+  vanishes on all strings of length at most `card ι`, then `f ≡ 0`.
+* `PartC/RegPos.lean`, `RegBlock.lean`, `RegCross.lean`, `RegProfile.lean`,
+  `RegVal.lean`, `RegHankel.lean` -- the crossing-sequence decomposition of a run
+  of a two-way transducer at a cut of the input: a positional description of
+  runs, runs confined to one side, the alternating sequence of such runs that a
+  full run decomposes into (of length at most `2·|Q|`), the pieces read off each
+  side, the injective rational value `oval` of an output string, and the
+  resulting `Transducers.RegHankel.hankel_decomp`.
+* `PartC/RegShort.lean` -- the index set has explicit size
+  `Transducers.RegHankel.idxBound`, so two two-way transducers computing total
+  functions over a finite alphabet agree everywhere as soon as they agree on the
+  inputs of length at most `idxBound a q₁ + idxBound a q₂`
+  (`Transducers.RegHankel.twoWay_eq_of_short`).
+* `PartC/RegEffBound.lean` -- a code lists at most two letters and at most two
+  states per entry, so those numbers are read off its length; this gives the
+  primitive recursive `Transducers.RegDec.codeBound`, and the bookkeeping of
+  `Transducers.RegDec.exists_bound` is repeated with it in place of the abstract
+  bound.
+
+No statement of the book changed, no `sorry`, no `axiom`, no `native_decide`.
+`lake build` succeeds with no errors and no warnings; `tools/gen_labels.py
+--check`, `tools/decl_files.py --check` and `tools/tex_numbering.py --check`
+pass; `#print axioms` on the label alias of Theorem
+`thm:decidable-equivalence-regular` and on `Transducers.effectiveTwoWayBound`
+reports only `propext`, `Classical.choice`, `Quot.sound`.
+
 # Sharpening the one remaining effectivity hypothesis
 
 A follow-up run on the same targets.  Nothing changed in the mathematics or in
