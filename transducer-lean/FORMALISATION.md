@@ -34,7 +34,7 @@ Of the book's **81 exercises**, **all 81 are formalised**, in
 `RequestProject/Exercises/`: 77 proved outright, 3 proved from an explicit
 hypothesis of the kind described in §4 — a step that the book's own solution
 takes for granted or only sketches, stated as a `Prop` and taken as a theorem
-argument — and one, `exer:minimal-bimachine-lexicographic`, formalised but *not*
+argument — and one, `nolabel:exer-minimal-bimachine-lexicographic`, formalised but *not*
 proved, because the hypothesis its solution needs turned out to be false (it is
 refuted in the project).  Those hypotheses are listed with a reason in
 `EXERCISES.md`.
@@ -152,7 +152,7 @@ takes one.
 | `exer:rational-composition-finiteness-undecidable` | `Transducers.Exercises.IteratesReduction` | the reduction from the halting problem for this particular problem |
 | `exer:decide-rational-colision`, item (b) | `Transducers.Exercises.EffectiveLengthPairsSemilinear` | the effective form of Parikh's theorem; semilinear sets are not developed here |
 
-One exercise, `exer:minimal-bimachine-lexicographic`, is also stated from a
+One exercise, `nolabel:exer-minimal-bimachine-lexicographic`, is also stated from a
 hypothesis, `Transducers.Exercises.CanonicalSuffixBimachineExists`; that
 hypothesis is *false* and is refuted in the project, so the exercise is counted
 as not proved rather than as conditional.
@@ -264,7 +264,7 @@ of the gcd when the list has both signs, and a bounded search otherwise.
 
 Three exercises in all are proved from an explicit hypothesis rather than
 outright, and they are the three listed in §4; a fourth,
-`exer:minimal-bimachine-lexicographic`, is formalised but not proved, its
+`nolabel:exer-minimal-bimachine-lexicographic`, is formalised but not proved, its
 hypothesis being false.  Eighteen exercises were conditional at one time or
 another, for the reasons that recur throughout — running time and computability,
 and theory the project did not have (the growth rates of regular languages, the

@@ -960,10 +960,13 @@ alias «exer:rational-composition-finiteness-undecidable» :=
   Transducers.Exercises.iterates_finiteness_undecidable
 assert_no_sorry «exer:rational-composition-finiteness-undecidable»
 
-/-- **Exercise `exer:minimal-bimachine-lexicographic`** (the lexicographically least minimal bimachine): `Transducers.Exercises.minimal_bimachine_lexicographic`, from the hypothesis `Transducers.Exercises.CanonicalSuffixBimachineExists` (that a bimachine attains the lower bound of `Transducers.Exercises.card_classSet_le`).  That hypothesis is **false**: `Transducers.Exercises.not_canonicalSuffixBimachineExists` refutes it.  So the exercise is *not* proved; what is proved unconditionally is the lower bound `Transducers.Exercises.card_classSet_le` and the uniqueness `Transducers.Exercises.suffix_automaton_unique` of a suffix automaton that attains it. -/
-alias «exer:minimal-bimachine-lexicographic» :=
-  Transducers.Exercises.minimal_bimachine_lexicographic
-assert_no_sorry «exer:minimal-bimachine-lexicographic»
+/-! Exercise `nolabel:exer-minimal-bimachine-lexicographic` was withdrawn from the book by the
+author, and its alias is removed with it.  It had been proved from
+`Transducers.Exercises.CanonicalSuffixBimachineExists`, which
+`Transducers.Exercises.not_canonicalSuffixBimachineExists` refutes, so it was the one
+formalised exercise that was not proved.  The unconditional mathematics is still there:
+`Transducers.Exercises.card_classSet_le` and `Transducers.Exercises.suffix_automaton_unique`
+in `RequestProject/Exercises/MinimalBimachine.lean`. -/
 
 /-- **Exercise `exer:non-minimal-automaton`** (a rational function with two non-isomorphic minimal unambiguous transducers): `Transducers.Exercises.non_minimal_automaton`, proved outright.  The hypothesis `Transducers.Exercises.EvenParityNeedsThreeStates` that this used to rest on is **false** in the model of `def:nfa-with-output` as formalised here, where a transition may read an arbitrary string: `Transducers.Exercises.not_minimalUnambiguousSize_evenParity_three` refutes it with a two-state transducer.  So the minimality clause here is `Transducers.Exercises.MinimalLetterwiseUnambiguousSize`, minimality among the transducers the book draws, which read at most one letter per transition; in the unrestricted model the minimal size is two and the exercise holds as well, with two non-isomorphic two-state transducers (`Transducers.Exercises.non_minimal_automaton_wide`). -/
 alias «exer:non-minimal-automaton» :=

@@ -1,5 +1,5 @@
 /-
-Exercise `exer:minimal-bimachine-lexicographic` of the chapter on machine
+Exercise `nolabel:exer-minimal-bimachine-lexicographic` of the chapter on machine
 independent characterisations (`myhill-nerode.tex`) of *Transducers*
 (M. Bojańczyk).
 -/
@@ -8,7 +8,7 @@ import RequestProject.PartB.RatIndex
 /-!
 # The suffix automaton of a minimal bimachine is unique
 
-Exercise `exer:minimal-bimachine-lexicographic` orders bimachines by the number
+Exercise `nolabel:exer-minimal-bimachine-lexicographic` orders bimachines by the number
 of states of the *suffix* automaton alone, and asks to show that the suffix
 automaton of a minimal bimachine is unique up to isomorphism.
 
@@ -45,10 +45,10 @@ automaton of `∼`-classes, initial state and transitions included, and hence th
 any two bimachines attaining the bound have isomorphic suffix automata — is
 proved: `Transducers.Exercises.suffix_automaton_unique` is the unconditional
 statement.  Since the bound is not always attained, this does not settle the
-exercise: `Transducers.Exercises.minimal_bimachine_lexicographic` is the
-exercise as the solution of the book intends it, and it is proved *from the
-hypothesis that the bound is attained*, which is not a theorem.  What is missing
-for an unconditional proof is a Myhill–Nerode theory of bimachines proper: a
+exercise, and the exercise itself — `nolabel:exer-minimal-bimachine-lexicographic` —
+has since been **withdrawn from the book by the author**, so nothing here is
+stated conditionally any more.  What would have been missing for an
+unconditional proof is a Myhill–Nerode theory of bimachines proper: a
 canonical right-to-left congruence, finer than `∼`, that records how much of the
 output is still pending, and which every suffix automaton refines and some
 bimachine realises.  The counterexample below shows that `∼` itself is not that
@@ -229,7 +229,7 @@ theorem suffix_automaton_unique {P₁ S₁ P₂ S₂ : Type} [Finite P₁] [Fini
 
 /-! ## The exercise -/
 
-/-- A bimachine is minimal for the order of `exer:minimal-bimachine-lexicographic`: no bimachine
+/-- A bimachine is minimal for the order of `nolabel:exer-minimal-bimachine-lexicographic`: no bimachine
 computing the same function, with all suffix states reachable, has a smaller suffix automaton. -/
 def MinimalSuffixBimachine {P S : Type} (f : List A → List B) (M : Bimachine A B P S) : Prop :=
   M.eval = f ∧ SuffixReachable M ∧
@@ -237,14 +237,13 @@ def MinimalSuffixBimachine {P S : Type} (f : List A → List B) (M : Bimachine A
       SuffixReachable M' → Nat.card S ≤ Nat.card S'
 
 /-- **The bound of the first half of the solution is attained** — the second paragraph of the
-solution of `exer:minimal-bimachine-lexicographic`: for every function computed by a bimachine
+solution of `nolabel:exer-minimal-bimachine-lexicographic`: for every function computed by a bimachine
 there is a bimachine, with all suffix states reachable, whose suffix automaton has exactly one
 state per `∼`-class.
 
 **This statement is false**, and `Transducers.Exercises.not_canonicalSuffixBimachineExists`
-proves it false.  It is kept, with the statement the solution of the book intends, because
-`Transducers.Exercises.minimal_bimachine_lexicographic` is proved from it; a result proved from
-it is therefore *not* proved outright.
+proves it false.  Nothing in the project assumes it: it is kept only so that its refutation has
+something to refute, since that refutation is the reason the exercise was withdrawn.
 
 *Where the solution of the book breaks down.*  The proof of Theorem
 `thm:machine-independent-rational-functions` decomposes the function into a right-to-left
@@ -274,22 +273,29 @@ lemma card_eq_of_minimal [Finite P] [Finite S] {f : List A → List B} {M : Bima
   refine le_antisymm ?_ (card_classSet_le hf hreach)
   exact hcard₀ ▸ hle P₀ S₀ hP₀ hS₀ M₀ hf₀ hreach₀
 
-/-- **Exercise `exer:minimal-bimachine-lexicographic`.**  If bimachines are ordered by the number
-of states of the suffix automaton alone, then the suffix automaton of a minimal bimachine is
-unique up to isomorphism.
+/-! ### The exercise this file was written for, and why it is gone
 
-The only assumption is `CanonicalSuffixBimachineExists`, that the lower bound of the first half
-of the solution is attained.  That assumption is *false in general*
-(`not_canonicalSuffixBimachineExists`), so this theorem, although true as stated, does not prove
-the exercise: for a function for which the bound is not attained it says nothing.  See the
-docstring of `CanonicalSuffixBimachineExists` and the header of this file. -/
-theorem minimal_bimachine_lexicographic {P₁ S₁ P₂ S₂ : Type} [Finite P₁] [Finite S₁] [Finite P₂]
-    [Finite S₂] {f : List A → List B} {M₁ : Bimachine A B P₁ S₁} {M₂ : Bimachine A B P₂ S₂}
-    (hattain : CanonicalSuffixBimachineExists f)
-    (hmin₁ : MinimalSuffixBimachine f M₁) (hmin₂ : MinimalSuffixBimachine f M₂) :
-    SuffixIso M₁ M₂ :=
-  suffix_automaton_unique hmin₁.1 hmin₂.1 hmin₁.2.1 hmin₂.2.1
-    (card_eq_of_minimal hattain hmin₁) (card_eq_of_minimal hattain hmin₂)
+Exercise `nolabel:exer-minimal-bimachine-lexicographic` asked to show that if bimachines are ordered by
+the number of states of the suffix automaton alone, then the suffix automaton of a minimal
+bimachine is unique up to isomorphism.  It was formalised here as
+
+    theorem minimal_bimachine_lexicographic
+        (hattain : CanonicalSuffixBimachineExists f)
+        (hmin₁ : MinimalSuffixBimachine f M₁) (hmin₂ : MinimalSuffixBimachine f M₂) :
+      SuffixIso M₁ M₂
+
+and that is where the matter rested: true as stated, but saying nothing about any function for
+which the bound is not attained -- and `not_canonicalSuffixBimachineExists` below shows there are
+such functions, so the hypothesis is false in general and the theorem proved no exercise.  The
+author has since **withdrawn the exercise from the book**, and the conditional statement is
+removed with it; it is recorded here only in this comment.
+
+What the file still proves, unconditionally, is the mathematics the exercise was reaching for:
+the lower bound `card_classSet_le`, the uniqueness `suffix_automaton_unique` of a suffix
+automaton that attains it, and `not_canonicalSuffixBimachineExists`, the reason the exercise
+could not stand as written.  An exercise of this shape needs a Myhill-Nerode theory of
+bimachines proper -- a canonical right-to-left congruence, finer than `∼`, that records how much
+output is still pending -- which this project does not have. -/
 
 /-! ## The bound of the first half is *not* attained in general
 

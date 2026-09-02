@@ -209,7 +209,7 @@ all eleven are aliased in `RequestProject/Labels.lean`.
 | Exercise `exer:minimal-sequential` (minimal sequential transducers are unique up to isomorphism) | `minimal_sequential_unique` (with `residOf`, `canonSeq`, `MinimalFor`, `SeqIso`) | proved |
 | Exercise `exer:minimal-subsequential` (minimal subsequential transducers are not unique) | `minimal_subsequential_not_unique` | proved |
 | Exercise `exer:non-minimal-bimachine` (minimal bimachines are not unique) | `minimal_bimachine_not_unique` | proved |
-| Exercise `exer:minimal-bimachine-lexicographic` (the lexicographically least minimal bimachine) | `minimal_bimachine_lexicographic` (with `card_classSet_le`, `suffix_automaton_unique`, `SuffixIso`) | **not proved**: proved from the hypothesis `CanonicalSuffixBimachineExists` (that the lower bound on the suffix automaton is attained), and that hypothesis is **false** — `not_canonicalSuffixBimachineExists` refutes it.  The lower bound `card_classSet_le` and the uniqueness `suffix_automaton_unique` of a suffix automaton attaining it are proved outright |
+| ~~Exercise `nolabel:exer-minimal-bimachine-lexicographic`~~ (the lexicographically least minimal bimachine) | — | **withdrawn from the book by the author**; see the closing status section. The unconditional mathematics it rested on is still proved in `RequestProject/Exercises/MinimalBimachine.lean`: `card_classSet_le`, `suffix_automaton_unique`, and `not_canonicalSuffixBimachineExists` |
 | Exercise `exer:non-minimal-automaton` (a rational function with two non-isomorphic minimal unambiguous transducers) | `non_minimal_automaton` (with `MinimalLetterwiseUnambiguousSize`, `Letterwise`, `NFAOIso`, `non_minimal_automaton_wide`, `MinimalUnambiguousSize`, `minimalUnambiguousSize_evenParity_two`, `not_minimalUnambiguousSize_evenParity_three`) | proved, in two forms.  The hypothesis `EvenParityNeedsThreeStates` is discharged, but as a refutation: `not_minimalUnambiguousSize_evenParity_three` shows it is **false** in the model formalised here, where a transition may read an arbitrary string.  `non_minimal_automaton` proves the exercise for the transducers the book draws, which read at most one letter per transition, with the minimal size 3 and `endOut`, `startOut`; `non_minimal_automaton_wide` proves it in the unrestricted model, with the minimal size 2 and the two-state `wideStart`, `wideEnd` |
 
 ### Regular functions, introduction (`regular-intro.tex`)
@@ -707,7 +707,7 @@ statement the book does not make.
   (which reduces to them through `exer:2dfa-unary-output`), `exer:fo-suc`
   (Ehrenfeucht–Fraïssé games) and `exer:fo-non-elementary`.
 * Two exercises of `myhill-nerode.tex` whose solutions are long case analyses
-  over arbitrary machines: `exer:minimal-bimachine-lexicographic` (a
+  over arbitrary machines: `nolabel:exer-minimal-bimachine-lexicographic` (a
   Myhill–Nerode theory for bimachines) and `exer:non-minimal-automaton` (the
   example is easy, but the claim that three states are necessary is a case
   analysis over all two-state unambiguous transducers with arbitrary output
@@ -814,7 +814,7 @@ summarised here so that the list can be read in one place.
 | `exer:decide-same-ideal` | `rational-functions.tex` | same, plus a decision procedure about codes of automata |
 | `exer:rational-injectivity-decidable` | `rational-functions.tex` | the *first* step of the solution is proved (`Exercises/RatInjective.lean`); the decision procedure needs a *computable* form of the Uniformisation Lemma, which the project does not have |
 | `exer:rational-composition-finiteness-undecidable` | `rational-functions.tex` | the undecidability reduction is not carried out for codes of automata |
-| `exer:minimal-bimachine-lexicographic` | `myhill-nerode.tex` | a Myhill–Nerode theory for bimachines, which the project does not have |
+| `nolabel:exer-minimal-bimachine-lexicographic` | `myhill-nerode.tex` | a Myhill–Nerode theory for bimachines, which the project does not have |
 | `exer:non-minimal-automaton` | `myhill-nerode.tex` | the hard half is a case analysis over all two-state unambiguous transducers that the solution itself only sketches |
 | `exer:fo-non-elementary` | `logic.tex` | non-elementary succinctness of first-order sentences |
 | `exer:fo-suc` | `logic.tex` | Ehrenfeucht–Fraïssé games, which the project does not have |
@@ -870,7 +870,7 @@ Of the 81:
   | `exer:decide-same-ideal` | the same two — **both discharged** |
   | `exer:rational-injectivity-decidable` | `EffectiveRationalSection` — **discharged**, see the closing section; also `EffectiveWeightedEvalEq` at the time — **since discharged**, it is now a theorem of `RequestProject/PartB/WCodePrimrec.lean` |
   | `exer:rational-composition-finiteness-undecidable` | `IteratesReduction` |
-  | `exer:minimal-bimachine-lexicographic` | `CanonicalSuffixBimachineExists` — **now known to be false**, see the note below the table |
+  | `nolabel:exer-minimal-bimachine-lexicographic` | `CanonicalSuffixBimachineExists` — **now known to be false**, see the note below the table |
   | `exer:non-minimal-automaton` | `EvenParityNeedsThreeStates` — **discharged as a refutation**, see the addendum at the end of this file; the exercise is now proved outright, in two forms |
   | `exer:fo-non-elementary` | `FirstStringOfOrderDefinable` — **discharged**, see the closing section |
   | `exer:fo-suc` | `EFSuccSeparation` |
@@ -878,7 +878,7 @@ Of the 81:
 
   Of these sixteen hypotheses, one is now known to be **false**:
   `CanonicalSuffixBimachineExists`, the second paragraph of the solution of
-  `exer:minimal-bimachine-lexicographic`, which says that some bimachine has one
+  `nolabel:exer-minimal-bimachine-lexicographic`, which says that some bimachine has one
   suffix state per class of the relation `∼` of Theorem
   `thm:machine-independent-rational-functions`.
   `Transducers.Exercises.not_canonicalSuffixBimachineExists`
@@ -889,7 +889,7 @@ Of the 81:
   reason is the end-of-input flush of the subsequential transducer of the second
   step of the proof of that theorem: a bimachine can only produce it at a gap whose
   suffix state says that the remaining suffix is empty, which the automaton of
-  `∼`-classes need not say.  So `exer:minimal-bimachine-lexicographic` must be
+  `∼`-classes need not say.  So `nolabel:exer-minimal-bimachine-lexicographic` must be
   counted as **not proved**: `minimal_bimachine_lexicographic` is true as stated but
   says nothing about a function for which the bound is not attained.  An
   unconditional proof needs a Myhill–Nerode theory of bimachines proper — a
@@ -1378,7 +1378,7 @@ hypothesis; its conclusion is unchanged.
 **6 proved from an explicit hypothesis** — the six being
 `exer:function-that-is-not-rational`,
 `exer:rational-composition-finiteness-undecidable` (`IteratesReduction`),
-`exer:minimal-bimachine-lexicographic` (whose hypothesis is now known to be
+`nolabel:exer-minimal-bimachine-lexicographic` (whose hypothesis is now known to be
 false, see the table above), `exer:fo-suc` (`EFSuccSeparation`),
 `exer:decide-rational-colision` item (b) (`EffectiveLengthPairsSemilinear`) and
 `exer:polyregular-unmarked-squaring`.  The counts of the numbered results of the
@@ -1418,14 +1418,14 @@ argument of the theorem, so it is visible in the statement.
 | `exer:decide-rational-colision`, item (b) | `Transducers.Exercises.EffectiveLengthPairsSemilinear` (`Exercises/LengthCollision.lean`) | the effective form of Parikh's theorem: that a semilinear description of the set of pairs of output lengths can be *computed* from two codes.  Neither Parikh images nor semilinear sets exist in Mathlib or in this project; the rest of the exercise — the diagonal test on a semilinear set and its computability — is proved outright |
 
 **The exercise that is not proved.**
-`exer:minimal-bimachine-lexicographic` is proved from
+`nolabel:exer-minimal-bimachine-lexicographic` is proved from
 `Transducers.Exercises.CanonicalSuffixBimachineExists`, and that hypothesis is
 **false**: `Transducers.Exercises.not_canonicalSuffixBimachineExists` refutes it
 with `evenLenFun`.  So the exercise as the book states it does not hold in the
 formalisation, and the conditional statement is not evidence for it.  What is
 proved unconditionally is the lower bound `card_classSet_le` and the uniqueness
 `suffix_automaton_unique` of a suffix automaton attaining it; the discrepancy is
-recorded in the addendum *the solution of `exer:minimal-bimachine-lexicographic`
+recorded in the addendum *the solution of `nolabel:exer-minimal-bimachine-lexicographic`
 and Theorem `thm:machine-independent-rational-functions`* of `THEOREMS.md` and
 in the docstring of the hypothesis.
 
@@ -1460,3 +1460,38 @@ false), `exer:rational-compression`, `exer:regular-compression` and
 compression, running time not being modelled), and `exer:2dfa-complexity` (a
 construction other than the author's, whose own construction gives only a
 superpolynomial bound and is kept beside it).
+
+## Status (the withdrawal of `nolabel:exer-minimal-bimachine-lexicographic`)
+
+This section supersedes every earlier section of this file where they disagree.
+
+The author has **withdrawn Exercise `nolabel:exer-minimal-bimachine-lexicographic`** from the
+book, and the Lean statement has been removed with it: `minimal_bimachine_lexicographic`
+no longer exists as a declaration, and its alias is gone from
+`RequestProject/Labels.lean`, which now carries **212** aliases rather than 213.
+
+The reason for the withdrawal is the one this formalisation turned up.  The exercise was
+proved here only from `Transducers.Exercises.CanonicalSuffixBimachineExists`, that some
+bimachine attains the lower bound of `card_classSet_le`, and that hypothesis is **false**:
+`Transducers.Exercises.not_canonicalSuffixBimachineExists` refutes it with the function
+`w ↦ [w.length is even]` over a one-letter alphabet, where every suffix is `∼`-equivalent
+but no single-suffix-state bimachine computes the function, because a bimachine can only
+produce the end-of-input flush at a gap whose suffix state knows the remaining suffix is
+empty.  So the exercise as stated did not hold, and the conditional theorem, while true,
+proved nothing about the functions that matter.
+
+**Nothing was lost mathematically.**  What the exercise was reaching for is still proved,
+unconditionally, in `RequestProject/Exercises/MinimalBimachine.lean`: the lower bound
+`card_classSet_le`, the uniqueness `suffix_automaton_unique` of a suffix automaton that
+attains it, the counterexample `not_canonicalSuffixBimachineExists`, and the minimal
+bimachine `evenLenBimach_minimal` that witnesses it.  `CanonicalSuffixBimachineExists` is
+kept as a definition so that its refutation has something to refute; **it is assumed
+nowhere**.
+
+**Counts.**  The book now has **80** exercises, all formalised: **77 proved outright** and
+**3 proved from an explicit hypothesis** (`exer:fo-suc` on `EFSuccSeparation`,
+`exer:rational-composition-finiteness-undecidable` on `IteratesReduction`, and
+`exer:decide-rational-colision` item (b) on `EffectiveLengthPairsSemilinear`).  The
+category *formalised but not proved* is now **empty**, and with it the project's only
+false hypothesis leaves every statement.  `#print axioms` on all 212 aliases reports only
+`propext`, `Classical.choice`, `Quot.sound`.

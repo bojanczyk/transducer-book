@@ -1853,7 +1853,7 @@ false.  The four, with the reason in each case, are tabulated in the section
 `exer:rational-composition-finiteness-undecidable` (`IteratesReduction`, the
 reduction from the halting problem), item (b) of `exer:decide-rational-colision`
 (`EffectiveLengthPairsSemilinear`, the effective form of Parikh's theorem) and
-`exer:minimal-bimachine-lexicographic`, whose hypothesis
+`nolabel:exer-minimal-bimachine-lexicographic`, whose hypothesis
 `CanonicalSuffixBimachineExists` is refuted by
 `Transducers.Exercises.not_canonicalSuffixBimachineExists`.
 
@@ -1922,7 +1922,7 @@ noted below.
 `FORMALISATION.md` is a short prose companion to this file, addressed to a
 reader of the book rather than to a maintainer of the formalisation.
 
-## Addendum: the solution of `exer:minimal-bimachine-lexicographic` and Theorem `thm:machine-independent-rational-functions`
+## Addendum: the solution of `nolabel:exer-minimal-bimachine-lexicographic` and Theorem `thm:machine-independent-rational-functions`
 
 Theorem `thm:machine-independent-rational-functions` itself is unchanged: it is
 proved outright (`Transducers.isRationalFun_iff`, `RatIndex.lean`,
@@ -1930,7 +1930,7 @@ proved outright (`Transducers.isRationalFun_iff`, `RatIndex.lean`,
 `propext`, `Classical.choice`, `Quot.sound`.
 
 What has changed is the reading of its proof that the solution of Exercise
-`exer:minimal-bimachine-lexicographic` makes.  That solution says that the first
+`nolabel:exer-minimal-bimachine-lexicographic` makes.  That solution says that the first
 of the two steps of the proof — the right-to-left automaton that annotates every
 position with the class of the suffix after it, for the relation `∼` of the
 theorem — can be read as the suffix automaton of a bimachine, so that some
@@ -1954,7 +1954,7 @@ bimachine has exactly one suffix state per `∼`-class.  This is the hypothesis
 * Consequently the lower bound `Transducers.Exercises.card_classSet_le` — every
   suffix-reachable bimachine has at least as many suffix states as `∼` has
   classes — is in general **strict**, and Exercise
-  `exer:minimal-bimachine-lexicographic` is *not* proved by this project.
+  `nolabel:exer-minimal-bimachine-lexicographic` is *not* proved by this project.
   `Transducers.Exercises.minimal_bimachine_lexicographic` is true as stated, but
   it assumes the bound attained, so it says nothing about a function for which it
   is not.  An unconditional proof needs a Myhill–Nerode theory of bimachines
@@ -2589,7 +2589,7 @@ theorem that uses it.
 One further `Prop`-valued definition is still taken as an argument, but it is not
 an open assumption: `Transducers.Exercises.CanonicalSuffixBimachineExists`
 (`Exercises/MinimalBimachine.lean`), the hypothesis of Exercise
-`exer:minimal-bimachine-lexicographic`, is **false**, and
+`nolabel:exer-minimal-bimachine-lexicographic`, is **false**, and
 `Transducers.Exercises.not_canonicalSuffixBimachineExists` proves it false.  That
 exercise is therefore counted as formalised but *not* proved; the lower bound
 `card_classSet_le` and the uniqueness `suffix_automaton_unique` are proved
@@ -2668,7 +2668,7 @@ as an ordinary explicit argument of the exercise that uses it.
 
 As before, `Transducers.Exercises.CanonicalSuffixBimachineExists`
 (`Exercises/MinimalBimachine.lean`) is still taken as an argument by Exercise
-`exer:minimal-bimachine-lexicographic`, but it is not an open assumption: it is
+`nolabel:exer-minimal-bimachine-lexicographic`, but it is not an open assumption: it is
 **false**, and `Transducers.Exercises.not_canonicalSuffixBimachineExists` proves
 it false.  The `Prop`-valued definitions
 `Transducers.EffectiveTwoWayWeighted` (`PartC/RegBoundGap.lean`) and
@@ -2686,3 +2686,18 @@ statements the project does not make.  `#print axioms
 Transducers.Book.«thm:decidable-equivalence-regular»` reports only `propext`,
 `Classical.choice`, `Quot.sound`, and so does `#print axioms
 Transducers.effectiveTwoWayBound`.
+
+## Status (the withdrawal of `nolabel:exer-minimal-bimachine-lexicographic`)
+
+Exercise `nolabel:exer-minimal-bimachine-lexicographic` has been **withdrawn from the book by the
+author**, on the strength of the refutation this formalisation produced, and its Lean
+statement is removed.  The addendum *the solution of `nolabel:exer-minimal-bimachine-lexicographic`
+and Theorem `thm:machine-independent-rational-functions`* above is kept as the record of
+what went wrong and still describes the mathematics correctly; only the exercise itself is
+gone.
+
+The consequence for this file is that `Transducers.Exercises.CanonicalSuffixBimachineExists`
+— the one hypothesis of the project that was known to be **false** — is now taken as an
+argument by no declaration at all.  Every assumption that remains is on an exercise, and
+every one of them is a statement believed true but not formalised here.  `Labels.lean`
+carries 212 aliases, all depending only on `propext`, `Classical.choice`, `Quot.sound`.
