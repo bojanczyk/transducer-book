@@ -35,7 +35,9 @@
     "hyp-fo-non-elementary",
     "hyp-effective-arithmetic",
     "hyp-effective-section",
-    "audit-conditionals"
+    "audit-conditionals",
+    "hyp-two-way-bound",
+    "hyp-iterates-reduction"
   ],
   "targets": {
     "B-effectivity-conditional": {
@@ -811,16 +813,17 @@
       "idle_continues": 0
     },
     "hyp-fo-non-elementary": {
-      "status": "running",
-      "attempts": 1,
-      "continues": 0,
+      "status": "partial",
+      "attempts": 2,
+      "continues": 1,
       "reattempts": 0,
       "task_ids": [
-        "2febbf4f-dc1f-40fc-8b5f-9dd07b5dee77"
+        "2febbf4f-dc1f-40fc-8b5f-9dd07b5dee77",
+        "9f605b14-72d4-40bb-b674-60bd19229731"
       ],
       "started_at": "2026-09-01 03:04:07Z",
-      "finished_at": null,
-      "note": null,
+      "finished_at": "2026-09-01 07:55:31Z",
+      "note": "canceled by hand",
       "sorries_at_start": 0,
       "runs": [
         {
@@ -829,30 +832,133 @@
           "base": "cff11cfd8b442ecf6d10265a7ca09235694a4296",
           "kind": "initial",
           "at": "2026-09-01 03:04:07Z"
+        },
+        {
+          "task_id": "9f605b14-72d4-40bb-b674-60bd19229731",
+          "project_id": "44672a3b-1d0f-48b8-a352-c822633728df",
+          "base": "caabbdfc1d3ba5caaf0f26cadcb6c3a950573629",
+          "kind": "continue",
+          "at": "2026-09-01 07:49:28Z"
+        }
+      ],
+      "idle_continues": 1
+    },
+    "hyp-effective-arithmetic": {
+      "status": "done",
+      "attempts": 3,
+      "continues": 2,
+      "reattempts": 0,
+      "task_ids": [
+        "b80355b4-5432-408d-9369-b909c41a4131",
+        "1cb9406b-b692-4469-90a6-b1a928cc57f3",
+        "982d2b7d-a3b8-42ca-a3df-2dc525172986"
+      ],
+      "started_at": "2026-09-01 07:55:36Z",
+      "finished_at": "2026-09-01 13:32:20Z",
+      "note": null,
+      "sorries_at_start": 0,
+      "runs": [
+        {
+          "task_id": "b80355b4-5432-408d-9369-b909c41a4131",
+          "project_id": "e5e1b526-40c9-4663-bfb8-03fa48131f06",
+          "base": "caabbdfc1d3ba5caaf0f26cadcb6c3a950573629",
+          "kind": "initial",
+          "at": "2026-09-01 07:55:36Z"
+        },
+        {
+          "task_id": "1cb9406b-b692-4469-90a6-b1a928cc57f3",
+          "project_id": "047e2ea4-d5ab-45ca-bc29-3a6159934937",
+          "base": "2a1fe6e8939102be0371c1c6cbdc948867b20cf3",
+          "kind": "continue",
+          "at": "2026-09-01 10:00:36Z"
+        },
+        {
+          "task_id": "982d2b7d-a3b8-42ca-a3df-2dc525172986",
+          "project_id": "9a6b8da5-5d0b-4117-b3d0-973b2b4b115b",
+          "base": "11d9d8abb341e5b21c958fe8e6c05c0f52ebbb5f",
+          "kind": "continue",
+          "at": "2026-09-01 12:13:52Z"
+        }
+      ],
+      "idle_continues": 0
+    },
+    "hyp-effective-section": {
+      "status": "partial",
+      "attempts": 1,
+      "continues": 1,
+      "reattempts": 0,
+      "task_ids": [
+        "86298df0-bb21-491b-bf50-36ff132ed9b0"
+      ],
+      "started_at": "2026-09-01 13:32:28Z",
+      "finished_at": "2026-09-01 15:20:44Z",
+      "note": "budget exhausted after 1 continuations; still open: none detected",
+      "sorries_at_start": 0,
+      "runs": [
+        {
+          "task_id": "86298df0-bb21-491b-bf50-36ff132ed9b0",
+          "project_id": "498ef784-70c8-409f-9e60-d1fee4354cf8",
+          "base": "c3eea81819167a60491bfce175522db3a3e9d9af",
+          "kind": "initial",
+          "at": "2026-09-01 13:32:28Z"
+        }
+      ],
+      "idle_continues": 0
+    },
+    "audit-conditionals": {
+      "status": "done",
+      "attempts": 1,
+      "continues": 0,
+      "reattempts": 0,
+      "task_ids": [
+        "225fdf11-95e8-4617-89f2-843b79f40254"
+      ],
+      "started_at": "2026-09-01 15:20:59Z",
+      "finished_at": "2026-09-01 16:21:56Z",
+      "note": null,
+      "sorries_at_start": 0,
+      "runs": [
+        {
+          "task_id": "225fdf11-95e8-4617-89f2-843b79f40254",
+          "project_id": "0c3d91d9-d42a-4cf3-b8b0-6905ea404660",
+          "base": "48e0f0673e0247892fb2676c6d2f1c43fa0055fd",
+          "kind": "initial",
+          "at": "2026-09-01 15:20:59Z"
+        }
+      ],
+      "idle_continues": 0
+    },
+    "hyp-two-way-bound": {
+      "status": "running",
+      "attempts": 2,
+      "continues": 0,
+      "reattempts": 0,
+      "task_ids": [
+        "e333a46b-307b-4e36-b6be-8278ccc5cf74",
+        "acbc6353-b7cf-4496-aa7e-86b99c0cbe58"
+      ],
+      "started_at": "2026-09-01 23:43:02Z",
+      "finished_at": null,
+      "note": null,
+      "sorries_at_start": 0,
+      "runs": [
+        {
+          "task_id": "e333a46b-307b-4e36-b6be-8278ccc5cf74",
+          "project_id": "441ff9d8-6c4f-448e-9852-eb981e520637",
+          "base": "36d34d7c1dc5e594f0eadb782c0dfcf822fb0633",
+          "kind": "initial",
+          "at": "2026-09-01 23:43:02Z"
+        },
+        {
+          "task_id": "acbc6353-b7cf-4496-aa7e-86b99c0cbe58",
+          "project_id": "777affba-049e-4620-bf5c-e56bba0e71db",
+          "base": "021d7da8436fc357826098e724153f86e4a7411d",
+          "kind": "initial",
+          "at": "2026-09-01 23:58:38Z"
         }
       ]
     },
-    "hyp-effective-arithmetic": {
-      "status": "pending",
-      "attempts": 0,
-      "continues": 0,
-      "reattempts": 0,
-      "task_ids": [],
-      "started_at": null,
-      "finished_at": null,
-      "note": null
-    },
-    "hyp-effective-section": {
-      "status": "pending",
-      "attempts": 0,
-      "continues": 0,
-      "reattempts": 0,
-      "task_ids": [],
-      "started_at": null,
-      "finished_at": null,
-      "note": null
-    },
-    "audit-conditionals": {
+    "hyp-iterates-reduction": {
       "status": "pending",
       "attempts": 0,
       "continues": 0,
@@ -864,17 +970,17 @@
     }
   },
   "current": {
-    "target_id": "hyp-fo-non-elementary",
-    "task_id": "2febbf4f-dc1f-40fc-8b5f-9dd07b5dee77",
-    "project_id": "eefa0b78-d8a8-483a-a78d-a280a5c3bb9b",
-    "base": "cff11cfd8b442ecf6d10265a7ca09235694a4296",
-    "submitted_at": "2026-09-01 03:04:07Z",
+    "target_id": "hyp-two-way-bound",
+    "task_id": "acbc6353-b7cf-4496-aa7e-86b99c0cbe58",
+    "project_id": "777affba-049e-4620-bf5c-e56bba0e71db",
+    "base": "021d7da8436fc357826098e724153f86e4a7411d",
+    "submitted_at": "2026-09-01 23:58:38Z",
     "kind": "initial"
   },
   "paused": false,
   "pause_reason": null,
   "finished_at": null,
-  "ticks": 560,
-  "last_tick": "2026-09-01 03:10:36Z",
-  "review_pending": 1
+  "ticks": 631,
+  "last_tick": "2026-09-01 23:58:32Z",
+  "review_pending": 0
 }

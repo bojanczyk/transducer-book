@@ -407,6 +407,42 @@ def classify(ld: Path, pairs: list[tuple[str, str]]) -> list[tuple[str, str, str
     return out
 
 
+def live_hypotheses(ld: Path, names: list[str]) -> list[str]:
+    """Which of these `Prop`s is still taken as an argument by some declaration.
+
+    The goal of a `hyp-*` target is not "no `sorry`" but "this assumption is gone
+    from the statements", so `open_results` cannot see whether it is finished. A
+    run that has already discharged its hypotheses will happily spend another
+    continuation restating what it did -- that is how hyp-fo-non-elementary came
+    to be continued after `FirstStringOfOrderDefinable` was already a theorem.
+
+    Deliberately a stopping heuristic and not an oracle: it only ever ends a
+    target early, and files a review item saying so, so a false positive costs a
+    `requeue` and a false negative costs nothing beyond the old behaviour.
+    """
+    if not names:
+        return []
+    live: set[str] = set()
+    for f in ld.rglob("*.lean"):
+        if ".lake" in f.parts:
+            continue
+        try:
+            txt = f.read_text(errors="ignore")
+        except OSError:
+            continue
+        txt = re.sub(r"/-[-!]?[\s\S]*?-/", "", txt)
+        txt = "\n".join(l for l in txt.split("\n") if not l.lstrip().startswith("--"))
+        for n in names:
+            if n in live:
+                continue
+            # a binder `(h : Name)` / `{h : Name}` / `[h : Name]`, the only way a
+            # hypothesis of this kind is ever taken
+            if re.search(r"[(\{\[]\s*[A-Za-z_][A-Za-z0-9_'\u2080-\u2089]*\s*:\s*"
+                         + re.escape(n) + r"\s*[)\}\]]", txt):
+                live.add(n)
+    return [n for n in names if n in live]
+
+
 def open_results(ld: Path, names: list[str]) -> list[str]:
     """Which of these declarations are not yet fully proved.
 
@@ -525,6 +561,31 @@ def git(ld: Path, *args: str, **kw) -> subprocess.CompletedProcess:
 GITIGNORE = ".lake/\n*.olean\n*.olean.tmp\n.DS_Store\n__pycache__/\n*.pyc\n"
 
 
+# The Lean project used to be a repository of its own; it is now a directory of
+# the book's repository, so that one push backs up the book and its
+# formalisation together. Nothing here hard-codes either arrangement: the two
+# helpers below ask git where the Lean sources sit, and every operation that
+# used to assume "the Lean project is the repository root" is scoped through
+# them. Without that scoping the rsync in `integrate` would delete the book:
+# its `--delete` is relative to the worktree root, which under the old
+# assumption *was* the Lean tree and is now the whole book.
+
+def repo_root(ld: Path) -> Path:
+    """The top of the repository the Lean sources live in."""
+    out = git(ld, "rev-parse", "--show-toplevel").stdout.strip()
+    return Path(out) if out else ld
+
+
+def lean_prefix(ld: Path) -> str:
+    """Where the Lean project sits inside that repository.
+
+    `''` when it is the repository root, `'transducer-lean/'` when it is a
+    directory of the book's repository. Git reports paths relative to the root,
+    so this is also the prefix every path in a `git diff` carries.
+    """
+    return git(ld, "rev-parse", "--show-prefix").stdout.strip()
+
+
 def ensure_gitignore(ld: Path) -> None:
     """Keep .lake (hundreds of MB of dependencies) out of the repository.
 
@@ -539,7 +600,10 @@ def ensure_gitignore(ld: Path) -> None:
 
 
 def ensure_git(ld: Path) -> None:
-    if (ld / ".git").exists():
+    # A directory inside the book's repository is already under version
+    # control; `.git` does not exist there, and `git init` would make a nested
+    # repository that silently shadows the real one.
+    if git(ld, "rev-parse", "--is-inside-work-tree").stdout.strip() == "true":
         return
     ensure_gitignore(ld)
     git(ld, "init", "-q")
@@ -551,10 +615,13 @@ def ensure_git(ld: Path) -> None:
 
 
 def commit(ld: Path, message: str) -> bool:
-    git(ld, "add", "-A")
-    if not git(ld, "diff", "--cached", "--quiet").returncode:
+    # `-- .` keeps this to the directory it was given. Unscoped, a commit made
+    # from the Lean directory would sweep in whatever the author had left
+    # uncommitted in the book's LaTeX.
+    git(ld, "add", "-A", "--", ".")
+    if not git(ld, "diff", "--cached", "--quiet", "--", ".").returncode:
         return False  # nothing staged
-    r = subprocess.run(["git", "-C", str(ld), "commit", "-q", "-F", "-"],
+    r = subprocess.run(["git", "-C", str(ld), "commit", "-q", "-F", "-", "--", "."],
                        input=message, text=True, capture_output=True)
     if r.returncode:
         log(f"git commit failed: {r.stderr.strip()[:300]}")
@@ -600,16 +667,31 @@ def new_project(cfg: dict, prompt: str):
 # on them every single time, and the collision is never interesting — both
 # sections belong. Anything outside this list that conflicts is a real
 # disagreement about the same content and stops the run for a human.
-AGGREGATE_FILES = ("EXERCISES.md", "RequestProject/Exercises.lean")
+#
+# THEOREMS.md belongs here for exactly the reason EXERCISES.md does — it is the
+# same status table for the numbered results, and ten of the last eleven runs
+# rewrote it. Leaving it out meant any local edit to it collided with the next
+# run and stopped the queue. The cost of including it: two runs that disagree
+# about the *same* table row are union-resolved into two rows rather than
+# stopping for a human, so a status table that suddenly lists a result twice is
+# worth reading as a disagreement rather than a typo. A conflict in any file
+# outside this list still stops the run, even if these conflicted too.
+AGGREGATE_FILES = ("EXERCISES.md", "THEOREMS.md", "RequestProject/Exercises.lean")
 
 
-def resolve_aggregates(tree: Path) -> bool:
-    """Union-resolve conflicts in the index files. False if any others remain."""
-    out = git(tree, "diff", "--diff-filter=U", "--name-only").stdout.split()
-    if not out or any(f not in AGGREGATE_FILES for f in out):
+def resolve_aggregates(root: Path, pre: str = "") -> bool:
+    """Union-resolve conflicts in the index files. False if any others remain.
+
+    `root` is the repository root and `pre` the Lean project's prefix inside it,
+    because git reports conflicted paths from the root: the index files are
+    `transducer-lean/EXERCISES.md` now, not `EXERCISES.md`.
+    """
+    out = git(root, "diff", "--diff-filter=U", "--name-only").stdout.split()
+    names = tuple(pre + f for f in AGGREGATE_FILES)
+    if not out or any(f not in names for f in out):
         return False
     for name in out:
-        f = tree / name
+        f = root / name
         text = f.read_text(errors="ignore")
         # keep both sides of every region, then drop what that duplicates
         text = re.sub(r"<<<<<<< [^\n]*\n(.*?)=======\n(.*?)>>>>>>> [^\n]*\n",
@@ -630,7 +712,7 @@ def resolve_aggregates(tree: Path) -> bool:
             if not skip:
                 keep.append(line)
         f.write_text("\n".join(keep).rstrip() + "\n")
-        git(tree, "add", name)
+        git(root, "add", name)
     log(f"union-resolved {', '.join(out)}")
     return True
 
@@ -648,7 +730,8 @@ def integrate(cfg: dict, st: dict, src: Path, base: str, branch: str,
     repeated inside a prompt to survive the next harvest.
     """
     ld = lean_dir(cfg)
-    if git(ld, "status", "--porcelain").stdout.strip():
+    pre = lean_prefix(ld)
+    if git(ld, "status", "--porcelain", "--", ".").stdout.strip():
         commit(ld, "local edits, committed before integrating a run\n\n"
                    "Made in the working tree while a task was running.")
     work = Path(tempfile.mkdtemp(prefix="aristotle-merge-"))
@@ -659,14 +742,17 @@ def integrate(cfg: dict, st: dict, src: Path, base: str, branch: str,
             log(f"worktree failed: {r.stderr.strip()[:200]}")
             return "error"
         git(tree, "checkout", "-b", branch)
+        # into the Lean directory of the worktree, not over the whole worktree
+        dest = tree / pre if pre else tree
+        dest.mkdir(parents=True, exist_ok=True)
         subprocess.run(["rsync", "-a", "--delete", "--exclude", ".lake/",
                         "--exclude", ".git", "--exclude", ".gitignore",
-                        f"{src}/", f"{tree}/"], check=True, capture_output=True)
+                        f"{src}/", f"{dest}/"], check=True, capture_output=True)
         if not commit(tree, message):
             return "empty"          # the run changed nothing
         m = git(ld, "merge", "--no-edit", branch)
         if m.returncode:
-            if resolve_aggregates(ld):
+            if resolve_aggregates(repo_root(ld), pre):
                 c = git(ld, "commit", "--no-edit")
                 if not c.returncode:
                     return "merged"
@@ -965,9 +1051,22 @@ def tick(cfg: dict, q: list, st: dict) -> None:
             # spend a continuation only when the last one actually changed the
             # sources.  Without this the driver re-submits a finished target
             # until its whole budget is gone.
+            wanted = target.get("discharges", [])
+            live = live_hypotheses(lean_dir(cfg), wanted)
             idle_cap = cfg.get("stop_after_idle_continues", 1)
             idle = rec.get("idle_continues", 0)
-            if idle >= idle_cap:
+            if wanted and not live:
+                review(cfg, st, f"{target['id']} finished: its hypotheses are discharged",
+                       f"None of {', '.join(wanted)} is taken as an argument any more, so "
+                       f"the target is done and the driver stopped rather than spend the "
+                       f"remaining "
+                       f"{target.get('max_continues', cfg.get('max_continues', 3)) - rec['continues']} "
+                       f"continuation(s) on it.\n\nIts last summary:\n\n"
+                       f"{task.output_summary or ''}")
+                note_sorry_delta(cfg, st, rec, target)
+                finish_target(st, target["id"], "done",
+                              f"discharged: {', '.join(wanted)}")
+            elif idle >= idle_cap:
                 review(cfg, st, f"{target['id']} stopped: nothing left to do",
                        f"The last {idle} continuation(s) changed no `.lean` file — only "
                        f"prose — so the driver stopped rather than spend the remaining "
@@ -1014,6 +1113,8 @@ def tick(cfg: dict, q: list, st: dict) -> None:
                    f"often enough:\n\n    formalize requeue {target['id']}")
             maybe_pause(cfg, st, "failed", f"{target['id']} failed on the server")
 
+        elif state in TERMINAL_STOP:
+            pass          # already dealt with above; not an unhandled status
         else:
             log(f"unhandled status {state}; clearing current task")
             st["current"] = None
@@ -1097,7 +1198,8 @@ def cmd_status(args) -> None:
               f"since {cur['submitted_at']})")
     if ld.exists():
         print(f"sorries in the Lean sources: {sorry_count(ld)}")
-        r = git(ld, "log", "--oneline", "-5")
+        # `-- .` so this stays the Lean history, not the book's LaTeX commits
+        r = git(ld, "log", "--oneline", "-5", "--", ".")
         if r.returncode == 0 and r.stdout.strip():
             print("\nrecent commits:")
             for l in r.stdout.strip().splitlines():

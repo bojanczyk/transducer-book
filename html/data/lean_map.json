@@ -45,16 +45,6 @@
    "label": "thm:decidable-equivalence-regular",
    "number": "C.1.4"
   },
-  "Transducers.EffectiveTwoWayEvalEq": {
-   "kind": "theorem",
-   "label": "thm:decidable-equivalence-regular",
-   "number": "C.1.4"
-  },
-  "Transducers.EffectiveWeightedEvalEq": {
-   "kind": "theorem",
-   "label": "thm:equivalence-weighted-automata",
-   "number": "B.3.3"
-  },
   "Transducers.Exercises.ambiguous_iff_reach": {
    "kind": "exercise",
    "label": "exer:decide-unambiguous",
@@ -1418,7 +1408,7 @@
  },
  "entries": {
   "claim:aperiodic-pumping": {
-   "anchor": "claim.82",
+   "anchor": "claim.81",
    "kind": "claim",
    "label": "claim:aperiodic-pumping",
    "lean": [
@@ -1437,7 +1427,7 @@
    "theorems_md_status": "proved"
   },
   "claim:bounded-extensions": {
-   "anchor": "claim.211",
+   "anchor": "claim.210",
    "kind": "claim",
    "label": "claim:bounded-extensions",
    "lean": [
@@ -1464,7 +1454,7 @@
    "theorems_md_status": "proved (`SubseqAlpha.lean`); a **reorganised** step, not a literal rendering — see the note below"
   },
   "claim:computing-branching-part": {
-   "anchor": "claim.215",
+   "anchor": "claim.214",
    "kind": "claim",
    "label": "claim:computing-branching-part",
    "lean": [
@@ -1483,15 +1473,15 @@
    "theorems_md_status": "proved (`SubseqState.lean`); phrased through Myhill–Nerode states rather than through regular languages — see the note below"
   },
   "claim:conditional": {
-   "anchor": "claim.284",
+   "anchor": "claim.283",
    "kind": "claim",
    "label": "claim:conditional",
    "lean": [
     {
-     "decl_line": 415,
-     "end": 426,
+     "decl_line": 414,
+     "end": 425,
      "file": "RequestProject/PartC/Statements.lean",
-     "line": 408,
+     "line": 407,
      "name": "Transducers.sum_of_regular",
      "primary": true,
      "state": "proved"
@@ -1518,7 +1508,7 @@
    "theorems_md_status": "**proved** (`SumShape.lean`, `SumPrime.lean`, `SumReg.lean`, `RegSum.lean`), in the corrected form — the claim as printed is false on the empty input, see *An error in Claim `claim:conditional`* below"
   },
   "claim:eliminating-negative-letters": {
-   "anchor": "claim.219",
+   "anchor": "claim.218",
    "kind": "claim",
    "label": "claim:eliminating-negative-letters",
    "lean": [
@@ -1537,7 +1527,7 @@
    "theorems_md_status": "proved (`SubseqBound.lean`); the free group is not used — see the note below"
   },
   "claim:fo-composition-quantifier-rank": {
-   "anchor": "claim.374",
+   "anchor": "claim.373",
    "kind": "claim",
    "label": "claim:fo-composition-quantifier-rank",
    "lean": [
@@ -1556,7 +1546,7 @@
    "theorems_md_status": "proved (`FOComp.lean`), as the internal step of the proof of Lemma `lem:k-types-fo-equivalence`"
   },
   "claim:from-child-configuration-graph-to-children": {
-   "anchor": "claim.546",
+   "anchor": "claim.545",
    "kind": "claim",
    "label": "claim:from-child-configuration-graph-to-children",
    "lean": [
@@ -1575,7 +1565,7 @@
    "theorems_md_status": "proved (`ChildGraph.lean`, `ChildPath.lean`, `ChildGraphAut.lean`, `ChildGraphRun.lean`)"
   },
   "claim:from-configuration-to-child-configuration-graph": {
-   "anchor": "claim.545",
+   "anchor": "claim.544",
    "kind": "claim",
    "label": "claim:from-configuration-to-child-configuration-graph",
    "lean": [
@@ -1594,15 +1584,15 @@
    "theorems_md_status": "proved (`ChildSem.lean`, `ChildReach.lean`, `CGLang.lean`, `CGAtom.lean`, `CGSem.lean`)"
   },
   "claim:homomorphism-complement-rational": {
-   "anchor": "claim.112",
+   "anchor": "claim.111",
    "kind": "claim",
    "label": "claim:homomorphism-complement-rational",
    "lean": [
     {
-     "decl_line": 83,
-     "end": 85,
+     "decl_line": 88,
+     "end": 90,
      "file": "RequestProject/PartB/RationalStatements.lean",
-     "line": 81,
+     "line": 86,
      "name": "Transducers.hom_complement_rational",
      "primary": true,
      "state": "proved"
@@ -1621,7 +1611,7 @@
    "theorems_md_status": "proved (explicit four-state automaton, `HomComplement.lean`)"
   },
   "claim:map-compression": {
-   "anchor": "claim.247",
+   "anchor": "claim.246",
    "kind": "claim",
    "label": "claim:map-compression",
    "lean": [
@@ -1647,7 +1637,7 @@
    "page": "83"
   },
   "claim:mso-annotation-regular": {
-   "anchor": "claim.338",
+   "anchor": "claim.337",
    "kind": "claim",
    "label": "claim:mso-annotation-regular",
    "lean": [
@@ -1674,7 +1664,7 @@
    "theorems_md_status": "**proved** (`MSORelab.lean`, from Lemma `lem:mso-free-variables`)"
   },
   "claim:offsets-are-regular": {
-   "anchor": "claim.218",
+   "anchor": "claim.217",
    "kind": "claim",
    "label": "claim:offsets-are-regular",
    "lean": [
@@ -1693,7 +1683,7 @@
    "theorems_md_status": "proved (`SubseqState.lean`); phrased through Myhill–Nerode states rather than through regular languages — see the note below"
   },
   "claim:reachability-basic-run": {
-   "anchor": "claim.541",
+   "anchor": "claim.540",
    "kind": "claim",
    "label": "claim:reachability-basic-run",
    "lean": [
@@ -1712,7 +1702,7 @@
    "theorems_md_status": "proved (the same files)"
   },
   "claim:transition-formula": {
-   "anchor": "claim.337",
+   "anchor": "claim.336",
    "kind": "claim",
    "label": "claim:transition-formula",
    "lean": [
@@ -1731,15 +1721,15 @@
    "theorems_md_status": "proved (`MSORatRelab.lean`), as the internal step of Theorem `thm:logic-rational-functions`; stated for the index of a bimachine rather than for an unambiguous transducer"
   },
   "claim:typing-length-preserving": {
-   "anchor": "claim.198",
+   "anchor": "claim.197",
    "kind": "claim",
    "label": "claim:typing-length-preserving",
    "lean": [
     {
-     "decl_line": 233,
-     "end": 240,
+     "decl_line": 172,
+     "end": 179,
      "file": "RequestProject/PartB/WeightedStatements.lean",
-     "line": 229,
+     "line": 168,
      "name": "Transducers.lengthPreserving_iff_typing",
      "primary": true,
      "state": "proved"
@@ -1758,7 +1748,7 @@
    "theorems_md_status": "proved (`Typing.lean`)"
   },
   "conj:regular-via-weighted-automata": {
-   "anchor": "conjecture.259",
+   "anchor": "conjecture.258",
    "kind": "conjecture",
    "label": "conj:regular-via-weighted-automata",
    "lean": [],
@@ -1768,7 +1758,7 @@
    "page": "87"
   },
   "cor:2dfa-closure-under-composition": {
-   "anchor": "corollary.278",
+   "anchor": "corollary.277",
    "kind": "corollary",
    "label": "cor:2dfa-closure-under-composition",
    "lean": [
@@ -1795,7 +1785,7 @@
    "theorems_md_status": "proved (`TwoWayHom.lean`, `TwoWayBlock.lean`, `TwoWayErase.lean` and `TwoWayRat.lean`, from Theorem `thm:rational-primes` and Lemma `lem:2dfa-precomposition-with-mealy`)"
   },
   "cor:2dfa-computes-all-regular-functions": {
-   "anchor": "corollary.279",
+   "anchor": "corollary.278",
    "kind": "corollary",
    "label": "cor:2dfa-computes-all-regular-functions",
    "lean": [
@@ -1822,7 +1812,7 @@
    "theorems_md_status": "proved (`TwoWaySweep.lean`, `TwoWayRegular.lean`, from Corollary `cor:2dfa-closure-under-composition` and Theorem `thm:composition-of-two-way-transducers`)"
   },
   "def:aperiodic-mealy": {
-   "anchor": "definition.78",
+   "anchor": "definition.77",
    "kind": "definition",
    "label": "def:aperiodic-mealy",
    "lean": [
@@ -1841,7 +1831,7 @@
    "theorems_md_status": ""
   },
   "def:bimachine": {
-   "anchor": "definition.127",
+   "anchor": "definition.126",
    "kind": "definition",
    "label": "def:bimachine",
    "lean": [
@@ -1887,7 +1877,7 @@
    "theorems_md_status": ""
   },
   "def:k-types": {
-   "anchor": "definition.372",
+   "anchor": "definition.371",
    "kind": "definition",
    "label": "def:k-types",
    "lean": [
@@ -1906,7 +1896,7 @@
    "theorems_md_status": ""
   },
   "def:left-distance": {
-   "anchor": "definition.209",
+   "anchor": "definition.208",
    "kind": "definition",
    "label": "def:left-distance",
    "lean": [
@@ -1925,7 +1915,7 @@
    "theorems_md_status": ""
   },
   "def:map-lifting": {
-   "anchor": "definition.60",
+   "anchor": "definition.59",
    "kind": "definition",
    "label": "def:map-lifting",
    "lean": [
@@ -1944,7 +1934,7 @@
    "theorems_md_status": ""
   },
   "def:mealy-machine": {
-   "anchor": "definition.32",
+   "anchor": "definition.31",
    "kind": "definition",
    "label": "def:mealy-machine",
    "lean": [
@@ -1979,7 +1969,7 @@
    "theorems_md_status": ""
   },
   "def:mso-relabeling": {
-   "anchor": "definition.330",
+   "anchor": "definition.329",
    "kind": "definition",
    "label": "def:mso-relabeling",
    "lean": [
@@ -2006,7 +1996,7 @@
    "theorems_md_status": ""
   },
   "def:mso-transduction": {
-   "anchor": "definition.352",
+   "anchor": "definition.351",
    "kind": "definition",
    "label": "def:mso-transduction",
    "lean": [
@@ -2033,7 +2023,7 @@
    "theorems_md_status": ""
   },
   "def:nfa-with-output": {
-   "anchor": "definition.101",
+   "anchor": "definition.100",
    "kind": "definition",
    "label": "def:nfa-with-output",
    "lean": [
@@ -2060,7 +2050,7 @@
    "theorems_md_status": ""
   },
   "def:polyregular-functions": {
-   "anchor": "definition.395",
+   "anchor": "definition.394",
    "kind": "definition",
    "label": "def:polyregular-functions",
    "lean": [
@@ -2087,7 +2077,7 @@
    "theorems_md_status": ""
   },
   "def:prenex-normal-form-for-transducers": {
-   "anchor": "definition.471",
+   "anchor": "definition.470",
    "kind": "definition",
    "label": "def:prenex-normal-form-for-transducers",
    "lean": [
@@ -2106,7 +2096,7 @@
    "theorems_md_status": ""
   },
   "def:prime-mealy-machines": {
-   "anchor": "definition.56",
+   "anchor": "definition.55",
    "kind": "definition",
    "label": "def:prime-mealy-machines",
    "lean": [
@@ -2141,7 +2131,7 @@
    "theorems_md_status": ""
   },
   "def:rational-function": {
-   "anchor": "definition.125",
+   "anchor": "definition.124",
    "kind": "definition",
    "label": "def:rational-function",
    "lean": [
@@ -2160,7 +2150,7 @@
    "theorems_md_status": ""
   },
   "def:rational-recognisable-subsets": {
-   "anchor": "definition.106",
+   "anchor": "definition.105",
    "kind": "definition",
    "label": "def:rational-recognisable-subsets",
    "lean": [],
@@ -2170,7 +2160,7 @@
    "page": "34"
   },
   "def:rational-relation": {
-   "anchor": "definition.102",
+   "anchor": "definition.101",
    "kind": "definition",
    "label": "def:rational-relation",
    "lean": [
@@ -2189,7 +2179,7 @@
    "theorems_md_status": ""
   },
   "def:regular-functions": {
-   "anchor": "definition.242",
+   "anchor": "definition.241",
    "kind": "definition",
    "label": "def:regular-functions",
    "lean": [
@@ -2216,7 +2206,7 @@
    "theorems_md_status": ""
   },
   "def:semiring": {
-   "anchor": "definition.173",
+   "anchor": "definition.172",
    "kind": "definition",
    "label": "def:semiring",
    "lean": [
@@ -2233,7 +2223,7 @@
    "theorems_md_status": ""
   },
   "def:sst": {
-   "anchor": "definition.309",
+   "anchor": "definition.308",
    "kind": "definition",
    "label": "def:sst",
    "lean": [
@@ -2260,7 +2250,7 @@
    "theorems_md_status": ""
   },
   "def:two-way-transducer": {
-   "anchor": "definition.264",
+   "anchor": "definition.263",
    "kind": "definition",
    "label": "def:two-way-transducer",
    "lean": [
@@ -2287,7 +2277,7 @@
    "theorems_md_status": ""
   },
   "def:weighted-automaton": {
-   "anchor": "definition.177",
+   "anchor": "definition.176",
    "kind": "definition",
    "label": "def:weighted-automaton",
    "lean": [
@@ -2376,7 +2366,7 @@
    "page": "6"
   },
   "ex:map-lifting-continuous": {
-   "anchor": "exercise.94",
+   "anchor": "exercise.93",
    "kind": "exercise",
    "label": "ex:map-lifting-continuous",
    "lean": [
@@ -2395,15 +2385,15 @@
    "page": "29"
   },
   "ex:recognisable-relations": {
-   "anchor": "exercise.123",
+   "anchor": "exercise.122",
    "kind": "exercise",
    "label": "ex:recognisable-relations",
    "lean": [
     {
-     "decl_line": 346,
-     "end": 420,
+     "decl_line": 350,
+     "end": 424,
      "file": "RequestProject/Exercises/PartBC.lean",
-     "line": 332,
+     "line": 336,
      "name": "Transducers.Exercises.isRecognisableRel_iff_finite_union",
      "primary": true,
      "state": "proved"
@@ -2414,7 +2404,7 @@
    "page": "39"
   },
   "exer:2dfa-boolean": {
-   "anchor": "exercise.293",
+   "anchor": "exercise.292",
    "kind": "exercise",
    "label": "exer:2dfa-boolean",
    "lean": [
@@ -2433,7 +2423,7 @@
    "page": "102"
   },
   "exer:2dfa-complexity": {
-   "anchor": "exercise.294",
+   "anchor": "exercise.293",
    "kind": "exercise",
    "label": "exer:2dfa-complexity",
    "lean": [
@@ -2452,7 +2442,7 @@
    "page": "102"
   },
   "exer:2dfa-loop-elimination": {
-   "anchor": "exercise.295",
+   "anchor": "exercise.294",
    "kind": "exercise",
    "label": "exer:2dfa-loop-elimination",
    "lean": [
@@ -2471,7 +2461,7 @@
    "page": "102"
   },
   "exer:2dfa-loop-elimination-sipser": {
-   "anchor": "exercise.296",
+   "anchor": "exercise.295",
    "kind": "exercise",
    "label": "exer:2dfa-loop-elimination-sipser",
    "lean": [
@@ -2490,7 +2480,7 @@
    "page": "103"
   },
   "exer:2dfa-unary-output": {
-   "anchor": "exercise.292",
+   "anchor": "exercise.291",
    "kind": "exercise",
    "label": "exer:2dfa-unary-output",
    "lean": [
@@ -2509,7 +2499,7 @@
    "page": "101"
   },
   "exer:2nft": {
-   "anchor": "exercise.298",
+   "anchor": "exercise.297",
    "kind": "exercise",
    "label": "exer:2nft",
    "lean": [
@@ -2536,7 +2526,7 @@
    "page": "104"
   },
   "exer:2nft-uniformise": {
-   "anchor": "exercise.301",
+   "anchor": "exercise.300",
    "kind": "exercise",
    "label": "exer:2nft-uniformise",
    "lean": [
@@ -2582,7 +2572,7 @@
    "page": "7"
   },
   "exer:all-ideals": {
-   "anchor": "exercise.164",
+   "anchor": "exercise.163",
    "kind": "exercise",
    "label": "exer:all-ideals",
    "lean": [
@@ -2601,7 +2591,7 @@
    "page": "52"
   },
   "exer:alternating-not-flip-flop-composition": {
-   "anchor": "exercise.92",
+   "anchor": "exercise.91",
    "kind": "exercise",
    "label": "exer:alternating-not-flip-flop-composition",
    "lean": [
@@ -2620,7 +2610,7 @@
    "page": "28"
   },
   "exer:composition-needs-many-states": {
-   "anchor": "exercise.45",
+   "anchor": "exercise.44",
    "kind": "exercise",
    "label": "exer:composition-needs-many-states",
    "lean": [
@@ -2658,7 +2648,7 @@
    "page": "7"
   },
   "exer:copyful-sst-decidable": {
-   "anchor": "exercise.321",
+   "anchor": "exercise.320",
    "kind": "exercise",
    "label": "exer:copyful-sst-decidable",
    "lean": [
@@ -2677,24 +2667,24 @@
    "page": "114"
   },
   "exer:decide-rational-colision": {
-   "anchor": "exercise.157",
+   "anchor": "exercise.156",
    "kind": "exercise",
    "label": "exer:decide-rational-colision",
    "lean": [
     {
-     "decl_line": 729,
-     "end": 732,
+     "decl_line": 735,
+     "end": 738,
      "file": "RequestProject/Exercises/PartBC.lean",
-     "line": 711,
+     "line": 715,
      "name": "Transducers.Exercises.rationalFun_collision_undecidable",
      "primary": true,
      "state": "proved"
     },
     {
-     "decl_line": 171,
-     "end": 186,
+     "decl_line": 191,
+     "end": 205,
      "file": "RequestProject/Exercises/LengthCollision.lean",
-     "line": 160,
+     "line": 180,
      "name": "rationalFun_equal_length_decidable",
      "state": "proved"
     }
@@ -2704,7 +2694,7 @@
    "page": "48"
   },
   "exer:decide-same-ideal": {
-   "anchor": "exercise.165",
+   "anchor": "exercise.164",
    "kind": "exercise",
    "label": "exer:decide-same-ideal",
    "lean": [
@@ -2731,7 +2721,7 @@
    "page": "52"
   },
   "exer:decide-unambiguous": {
-   "anchor": "exercise.156",
+   "anchor": "exercise.155",
    "kind": "exercise",
    "label": "exer:decide-unambiguous",
    "lean": [
@@ -2766,7 +2756,7 @@
    "page": "48"
   },
   "exer:delay-not-flip-flop-composition": {
-   "anchor": "exercise.91",
+   "anchor": "exercise.90",
    "kind": "exercise",
    "label": "exer:delay-not-flip-flop-composition",
    "lean": [
@@ -2804,32 +2794,32 @@
    "page": "4"
   },
   "exer:examples-of-rational-fun": {
-   "anchor": "exercise.152",
+   "anchor": "exercise.151",
    "kind": "exercise",
    "label": "exer:examples-of-rational-fun",
    "lean": [
     {
-     "decl_line": 473,
-     "end": 489,
+     "decl_line": 477,
+     "end": 493,
      "file": "RequestProject/Exercises/PartBC.lean",
-     "line": 470,
+     "line": 474,
      "name": "Transducers.Exercises.isBimachine_isRationalFun_evenLength",
      "primary": true,
      "state": "proved"
     },
     {
-     "decl_line": 552,
-     "end": 573,
+     "decl_line": 556,
+     "end": 577,
      "file": "RequestProject/Exercises/PartBC.lean",
-     "line": 550,
+     "line": 554,
      "name": "isBimachine_isRationalFun_swapFirstLast",
      "state": "proved"
     },
     {
-     "decl_line": 637,
-     "end": 644,
+     "decl_line": 641,
+     "end": 648,
      "file": "RequestProject/Exercises/PartBC.lean",
-     "line": 634,
+     "line": 638,
      "name": "isBimachine_isRationalFun_upToLastHash",
      "state": "proved"
     }
@@ -2896,15 +2886,15 @@
    "page": "6"
   },
   "exer:finite-range-ideals": {
-   "anchor": "exercise.161",
+   "anchor": "exercise.160",
    "kind": "exercise",
    "label": "exer:finite-range-ideals",
    "lean": [
     {
-     "decl_line": 1041,
-     "end": 1073,
+     "decl_line": 1048,
+     "end": 1080,
      "file": "RequestProject/Exercises/PartBC.lean",
-     "line": 1030,
+     "line": 1037,
      "name": "Transducers.Exercises.finite_range_ideal_classification",
      "primary": true,
      "state": "proved"
@@ -2915,7 +2905,7 @@
    "page": "50"
   },
   "exer:flip-flop-from-sequential-composition": {
-   "anchor": "exercise.90",
+   "anchor": "exercise.89",
    "kind": "exercise",
    "label": "exer:flip-flop-from-sequential-composition",
    "lean": [
@@ -2934,15 +2924,15 @@
    "page": "27"
   },
   "exer:fo-non-elementary": {
-   "anchor": "exercise.383",
+   "anchor": "exercise.382",
    "kind": "exercise",
    "label": "exer:fo-non-elementary",
    "lean": [
     {
-     "decl_line": 120,
-     "end": 130,
+     "decl_line": 158,
+     "end": 168,
      "file": "RequestProject/Exercises/FONonElementary.lean",
-     "line": 113,
+     "line": 152,
      "name": "fo_non_elementary",
      "primary": true,
      "state": "proved"
@@ -2953,7 +2943,7 @@
    "page": "133"
   },
   "exer:fo-suc": {
-   "anchor": "exercise.386",
+   "anchor": "exercise.385",
    "kind": "exercise",
    "label": "exer:fo-suc",
    "lean": [
@@ -2972,15 +2962,15 @@
    "page": "135"
   },
   "exer:for-transducer-continuity-nonelementary": {
-   "anchor": "exercise.523",
+   "anchor": "exercise.522",
    "kind": "exercise",
    "label": "exer:for-transducer-continuity-nonelementary",
    "lean": [
     {
-     "decl_line": 71,
-     "end": 98,
+     "decl_line": 66,
+     "end": 93,
      "file": "RequestProject/Exercises/ForContinuity.lean",
-     "line": 60,
+     "line": 58,
      "name": "for_transducer_continuity_nonelementary",
      "primary": true,
      "state": "proved"
@@ -2991,7 +2981,7 @@
    "page": "149"
   },
   "exer:for-transducers-simulate-fo": {
-   "anchor": "exercise.522",
+   "anchor": "exercise.521",
    "kind": "exercise",
    "label": "exer:for-transducers-simulate-fo",
    "lean": [
@@ -3010,7 +3000,7 @@
    "page": "149"
   },
   "exer:forward-for-transducer": {
-   "anchor": "exercise.524",
+   "anchor": "exercise.523",
    "kind": "exercise",
    "label": "exer:forward-for-transducer",
    "lean": [
@@ -3029,7 +3019,7 @@
    "page": "149"
   },
   "exer:full-ideal": {
-   "anchor": "exercise.162",
+   "anchor": "exercise.161",
    "kind": "exercise",
    "label": "exer:full-ideal",
    "lean": [
@@ -3048,15 +3038,15 @@
    "page": "51"
   },
   "exer:function-that-is-not-rational": {
-   "anchor": "exercise.159",
+   "anchor": "exercise.158",
    "kind": "exercise",
    "label": "exer:function-that-is-not-rational",
    "lean": [
     {
-     "decl_line": 838,
-     "end": 850,
+     "decl_line": 846,
+     "end": 857,
      "file": "RequestProject/Exercises/PartBC.lean",
-     "line": 828,
+     "line": 834,
      "name": "exists_not_isRationalFun_unary_compositions_rational",
      "primary": true,
      "state": "proved"
@@ -3067,7 +3057,7 @@
    "page": "49"
   },
   "exer:invertible": {
-   "anchor": "exercise.46",
+   "anchor": "exercise.45",
    "kind": "exercise",
    "label": "exer:invertible",
    "lean": [
@@ -3094,7 +3084,7 @@
    "page": "13"
   },
   "exer:invertible-mealy-group": {
-   "anchor": "exercise.47",
+   "anchor": "exercise.46",
    "kind": "exercise",
    "label": "exer:invertible-mealy-group",
    "lean": [
@@ -3113,7 +3103,7 @@
    "page": "14"
   },
   "exer:invertible-mealy-is-reversible": {
-   "anchor": "exercise.93",
+   "anchor": "exercise.92",
    "kind": "exercise",
    "label": "exer:invertible-mealy-is-reversible",
    "lean": [
@@ -3132,7 +3122,7 @@
    "page": "28"
   },
   "exer:letter-to-letter-not-mealy": {
-   "anchor": "exercise.44",
+   "anchor": "exercise.43",
    "kind": "exercise",
    "label": "exer:letter-to-letter-not-mealy",
    "lean": [
@@ -3151,15 +3141,15 @@
    "page": "13"
   },
   "exer:mealy-as-restricted-mso-relabelling": {
-   "anchor": "exercise.340",
+   "anchor": "exercise.339",
    "kind": "exercise",
    "label": "exer:mealy-as-restricted-mso-relabelling",
    "lean": [
     {
-     "decl_line": 1372,
-     "end": 1380,
+     "decl_line": 1379,
+     "end": 1387,
      "file": "RequestProject/Exercises/PartBC.lean",
-     "line": 1369,
+     "line": 1376,
      "name": "isMealy_iff_restrictedRelabelling",
      "primary": true,
      "state": "proved"
@@ -3189,7 +3179,7 @@
    "page": "6"
   },
   "exer:minimal-bimachine-lexicographic": {
-   "anchor": "exercise.231",
+   "anchor": "exercise.230",
    "kind": "exercise",
    "label": "exer:minimal-bimachine-lexicographic",
    "lean": [
@@ -3208,7 +3198,7 @@
    "page": "75"
   },
   "exer:minimal-sequential": {
-   "anchor": "exercise.228",
+   "anchor": "exercise.227",
    "kind": "exercise",
    "label": "exer:minimal-sequential",
    "lean": [
@@ -3227,7 +3217,7 @@
    "page": "73"
   },
   "exer:minimal-subsequential": {
-   "anchor": "exercise.229",
+   "anchor": "exercise.228",
    "kind": "exercise",
    "label": "exer:minimal-subsequential",
    "lean": [
@@ -3246,7 +3236,7 @@
    "page": "74"
   },
   "exer:non-minimal-automaton": {
-   "anchor": "exercise.234",
+   "anchor": "exercise.233",
    "kind": "exercise",
    "label": "exer:non-minimal-automaton",
    "lean": [
@@ -3273,7 +3263,7 @@
    "page": "77"
   },
   "exer:non-minimal-bimachine": {
-   "anchor": "exercise.230",
+   "anchor": "exercise.229",
    "kind": "exercise",
    "label": "exer:non-minimal-bimachine",
    "lean": [
@@ -3292,24 +3282,24 @@
    "page": "75"
   },
   "exer:non-rational": {
-   "anchor": "exercise.155",
+   "anchor": "exercise.154",
    "kind": "exercise",
    "label": "exer:non-rational",
    "lean": [
     {
-     "decl_line": 678,
-     "end": 694,
+     "decl_line": 682,
+     "end": 698,
      "file": "RequestProject/Exercises/PartBC.lean",
-     "line": 672,
+     "line": 676,
      "name": "Transducers.Exercises.not_isRationalFun_firstHalf",
      "primary": true,
      "state": "proved"
     },
     {
-     "decl_line": 704,
-     "end": 707,
+     "decl_line": 708,
+     "end": 711,
      "file": "RequestProject/Exercises/PartBC.lean",
-     "line": 696,
+     "line": 700,
      "name": "Transducers.Exercises.not_isRationalFun_duplicate",
      "state": "proved"
     }
@@ -3319,15 +3309,15 @@
    "page": "47"
   },
   "exer:non-regular-languages-for-rational-relations": {
-   "anchor": "exercise.119",
+   "anchor": "exercise.118",
    "kind": "exercise",
    "label": "exer:non-regular-languages-for-rational-relations",
    "lean": [
     {
-     "decl_line": 106,
-     "end": 164,
+     "decl_line": 108,
+     "end": 166,
      "file": "RequestProject/Exercises/PartBC.lean",
-     "line": 95,
+     "line": 97,
      "name": "exists_rationalRel_atMostOneOutput_not_isRegular",
      "primary": true,
      "state": "proved"
@@ -3338,15 +3328,15 @@
    "page": "37"
   },
   "exer:not-semiring-continuous": {
-   "anchor": "exercise.262",
+   "anchor": "exercise.261",
    "kind": "exercise",
    "label": "exer:not-semiring-continuous",
    "lean": [
     {
      "decl_line": 64,
-     "end": 76,
+     "end": 75,
      "file": "RequestProject/Exercises/RegularPrimes.lean",
-     "line": 50,
+     "line": 51,
      "name": "exists_isRegularFun_not_weighted_precomp",
      "primary": true,
      "state": "proved"
@@ -3357,7 +3347,7 @@
    "page": "87"
   },
   "exer:polynomial-ideals": {
-   "anchor": "exercise.163",
+   "anchor": "exercise.162",
    "kind": "exercise",
    "label": "exer:polynomial-ideals",
    "lean": [
@@ -3376,7 +3366,7 @@
    "page": "51"
   },
   "exer:polynomial-image-growth-decidable": {
-   "anchor": "exercise.48",
+   "anchor": "exercise.47",
    "kind": "exercise",
    "label": "exer:polynomial-image-growth-decidable",
    "lean": [
@@ -3403,7 +3393,7 @@
    "page": "14"
   },
   "exer:polyregular-marked-squaring-compression": {
-   "anchor": "exercise.401",
+   "anchor": "exercise.400",
    "kind": "exercise",
    "label": "exer:polyregular-marked-squaring-compression",
    "lean": [
@@ -3422,7 +3412,7 @@
    "page": "140"
   },
   "exer:polyregular-unmarked-squaring": {
-   "anchor": "exercise.403",
+   "anchor": "exercise.402",
    "kind": "exercise",
    "label": "exer:polyregular-unmarked-squaring",
    "lean": [
@@ -3441,7 +3431,7 @@
    "page": "141"
   },
   "exer:rational-composition-finiteness-undecidable": {
-   "anchor": "exercise.168",
+   "anchor": "exercise.167",
    "kind": "exercise",
    "label": "exer:rational-composition-finiteness-undecidable",
    "lean": [
@@ -3460,7 +3450,7 @@
    "page": "53"
   },
   "exer:rational-compression": {
-   "anchor": "exercise.169",
+   "anchor": "exercise.168",
    "kind": "exercise",
    "label": "exer:rational-compression",
    "lean": [
@@ -3479,7 +3469,7 @@
    "page": "54"
   },
   "exer:rational-injectivity-decidable": {
-   "anchor": "exercise.167",
+   "anchor": "exercise.166",
    "kind": "exercise",
    "label": "exer:rational-injectivity-decidable",
    "lean": [
@@ -3501,10 +3491,10 @@
      "state": "proved"
     },
     {
-     "decl_line": 221,
-     "end": 233,
+     "decl_line": 223,
+     "end": 234,
      "file": "RequestProject/Exercises/RatInjectiveDec.lean",
-     "line": 211,
+     "line": 213,
      "name": "rationalFun_injectivity_decidable",
      "state": "proved"
     }
@@ -3514,15 +3504,15 @@
    "page": "53"
   },
   "exer:rational-one-letter-input": {
-   "anchor": "exercise.158",
+   "anchor": "exercise.157",
    "kind": "exercise",
    "label": "exer:rational-one-letter-input",
    "lean": [
     {
-     "decl_line": 758,
-     "end": 785,
+     "decl_line": 764,
+     "end": 791,
      "file": "RequestProject/Exercises/PartBC.lean",
-     "line": 737,
+     "line": 743,
      "name": "Transducers.Exercises.rationalFun_unary_graph",
      "primary": true,
      "state": "proved"
@@ -3533,7 +3523,7 @@
    "page": "49"
   },
   "exer:rational-outpus-of-exactly-linear-size": {
-   "anchor": "exercise.153",
+   "anchor": "exercise.152",
    "kind": "exercise",
    "label": "exer:rational-outpus-of-exactly-linear-size",
    "lean": [],
@@ -3542,7 +3532,7 @@
    "page": "47"
   },
   "exer:rational-outpus-of-exactly-linear-size-rational-number": {
-   "anchor": "exercise.154",
+   "anchor": "exercise.153",
    "kind": "exercise",
    "label": "exer:rational-outpus-of-exactly-linear-size-rational-number",
    "lean": [],
@@ -3551,15 +3541,15 @@
    "page": "47"
   },
   "exer:rational-output-size": {
-   "anchor": "exercise.122",
+   "anchor": "exercise.121",
    "kind": "exercise",
    "label": "exer:rational-output-size",
    "lean": [
     {
-     "decl_line": 283,
-     "end": 312,
+     "decl_line": 287,
+     "end": 316,
      "file": "RequestProject/Exercises/PartBC.lean",
-     "line": 271,
+     "line": 275,
      "name": "Transducers.Exercises.rationalRel_finiteOutputs_iff_affine",
      "primary": true,
      "state": "proved"
@@ -3570,15 +3560,15 @@
    "page": "38"
   },
   "exer:rational-relations-intersection-undecidable": {
-   "anchor": "exercise.121",
+   "anchor": "exercise.120",
    "kind": "exercise",
    "label": "exer:rational-relations-intersection-undecidable",
    "lean": [
     {
-     "decl_line": 265,
-     "end": 267,
+     "decl_line": 269,
+     "end": 271,
      "file": "RequestProject/Exercises/PartBC.lean",
-     "line": 252,
+     "line": 254,
      "name": "rationalRel_intersection_undecidable",
      "primary": true,
      "state": "proved"
@@ -3589,15 +3579,15 @@
    "page": "38"
   },
   "exer:rational-relations-not-closed-under-intersection": {
-   "anchor": "exercise.120",
+   "anchor": "exercise.119",
    "kind": "exercise",
    "label": "exer:rational-relations-not-closed-under-intersection",
    "lean": [
     {
-     "decl_line": 192,
-     "end": 248,
+     "decl_line": 194,
+     "end": 250,
      "file": "RequestProject/Exercises/PartBC.lean",
-     "line": 178,
+     "line": 180,
      "name": "exists_rationalRel_inter_not_rationalRel",
      "primary": true,
      "state": "proved"
@@ -3608,7 +3598,7 @@
    "page": "38"
   },
   "exer:regular-complete-mealy": {
-   "anchor": "exercise.49",
+   "anchor": "exercise.48",
    "kind": "exercise",
    "label": "exer:regular-complete-mealy",
    "lean": [
@@ -3627,7 +3617,7 @@
    "page": "14"
   },
   "exer:regular-complete-mealy-2": {
-   "anchor": "exercise.50",
+   "anchor": "exercise.49",
    "kind": "exercise",
    "label": "exer:regular-complete-mealy-2",
    "lean": [
@@ -3654,7 +3644,7 @@
    "page": "15"
   },
   "exer:regular-compression": {
-   "anchor": "exercise.246",
+   "anchor": "exercise.245",
    "kind": "exercise",
    "label": "exer:regular-compression",
    "lean": [
@@ -3681,24 +3671,24 @@
    "page": "83"
   },
   "exer:regular-languages-for-rational-relations": {
-   "anchor": "exercise.115",
+   "anchor": "exercise.114",
    "kind": "exercise",
    "label": "exer:regular-languages-for-rational-relations",
    "lean": [
     {
-     "decl_line": 34,
-     "end": 39,
+     "decl_line": 36,
+     "end": 41,
      "file": "RequestProject/Exercises/PartBC.lean",
-     "line": 28,
+     "line": 30,
      "name": "rationalRel_domain_isRegular",
      "primary": true,
      "state": "proved"
     },
     {
-     "decl_line": 47,
-     "end": 49,
+     "decl_line": 49,
+     "end": 51,
      "file": "RequestProject/Exercises/PartBC.lean",
-     "line": 41,
+     "line": 43,
      "name": "rationalRel_range_isRegular",
      "state": "proved"
     }
@@ -3708,7 +3698,7 @@
    "page": "37"
   },
   "exer:regular-outpus-of-exactly-linear-size": {
-   "anchor": "exercise.297",
+   "anchor": "exercise.296",
    "kind": "exercise",
    "label": "exer:regular-outpus-of-exactly-linear-size",
    "lean": [
@@ -3746,7 +3736,7 @@
    "page": "4"
   },
   "exer:simple-decomposition-example": {
-   "anchor": "exercise.88",
+   "anchor": "exercise.87",
    "kind": "exercise",
    "label": "exer:simple-decomposition-example",
    "lean": [
@@ -3765,7 +3755,7 @@
    "page": "26"
   },
   "exer:simple-decomposition-example-2": {
-   "anchor": "exercise.89",
+   "anchor": "exercise.88",
    "kind": "exercise",
    "label": "exer:simple-decomposition-example-2",
    "lean": [
@@ -3784,7 +3774,7 @@
    "page": "27"
   },
   "exer:so-logic": {
-   "anchor": "exercise.385",
+   "anchor": "exercise.384",
    "kind": "exercise",
    "label": "exer:so-logic",
    "lean": [
@@ -3803,24 +3793,24 @@
    "page": "134"
   },
   "exer:some-ideals": {
-   "anchor": "exercise.160",
+   "anchor": "exercise.159",
    "kind": "exercise",
    "label": "exer:some-ideals",
    "lean": [
     {
-     "decl_line": 893,
-     "end": 903,
+     "decl_line": 900,
+     "end": 910,
      "file": "RequestProject/Exercises/PartBC.lean",
-     "line": 888,
+     "line": 895,
      "name": "Transducers.Exercises.isIdeal_rangeAtMost",
      "primary": true,
      "state": "proved"
     },
     {
-     "decl_line": 913,
-     "end": 938,
+     "decl_line": 920,
+     "end": 945,
      "file": "RequestProject/Exercises/PartBC.lean",
-     "line": 905,
+     "line": 912,
      "name": "Transducers.Exercises.isIdeal_outputsPoly",
      "state": "proved"
     }
@@ -3849,7 +3839,7 @@
    "page": "4"
   },
   "exer:sst-copyful-sst": {
-   "anchor": "exercise.316",
+   "anchor": "exercise.315",
    "kind": "exercise",
    "label": "exer:sst-copyful-sst",
    "lean": [
@@ -3876,7 +3866,7 @@
    "page": "113"
   },
   "exer:sst-copyful-sst-no-composition": {
-   "anchor": "exercise.318",
+   "anchor": "exercise.317",
    "kind": "exercise",
    "label": "exer:sst-copyful-sst-no-composition",
    "lean": [
@@ -3895,7 +3885,7 @@
    "page": "113"
   },
   "exer:sst-copyful-sst-output-size": {
-   "anchor": "exercise.317",
+   "anchor": "exercise.316",
    "kind": "exercise",
    "label": "exer:sst-copyful-sst-output-size",
    "lean": [
@@ -3922,7 +3912,7 @@
    "page": "113"
   },
   "exer:sst-polynomial-automaton": {
-   "anchor": "exercise.319",
+   "anchor": "exercise.318",
    "kind": "exercise",
    "label": "exer:sst-polynomial-automaton",
    "lean": [
@@ -3941,7 +3931,7 @@
    "page": "113"
   },
   "exer:sst-polynomial-automaton-doubly-exponential": {
-   "anchor": "exercise.320",
+   "anchor": "exercise.319",
    "kind": "exercise",
    "label": "exer:sst-polynomial-automaton-doubly-exponential",
    "lean": [
@@ -3960,7 +3950,7 @@
    "page": "114"
   },
   "exer:sst-sorting": {
-   "anchor": "exercise.315",
+   "anchor": "exercise.314",
    "kind": "exercise",
    "label": "exer:sst-sorting",
    "lean": [
@@ -3987,15 +3977,15 @@
    "page": "112"
   },
   "exer:surjective-rational-function": {
-   "anchor": "exercise.166",
+   "anchor": "exercise.165",
    "kind": "exercise",
    "label": "exer:surjective-rational-function",
    "lean": [
     {
-     "decl_line": 1085,
-     "end": 1091,
+     "decl_line": 1092,
+     "end": 1098,
      "file": "RequestProject/Exercises/PartBC.lean",
-     "line": 1077,
+     "line": 1084,
      "name": "Transducers.Exercises.exists_rationalFun_leftInverse",
      "primary": true,
      "state": "proved"
@@ -4006,15 +3996,15 @@
    "page": "52"
   },
   "exer:two-letter-alphabet-suffices": {
-   "anchor": "exercise.261",
+   "anchor": "exercise.260",
    "kind": "exercise",
    "label": "exer:two-letter-alphabet-suffices",
    "lean": [
     {
-     "decl_line": 1205,
-     "end": 1216,
+     "decl_line": 1212,
+     "end": 1223,
      "file": "RequestProject/Exercises/PartBC.lean",
-     "line": 1197,
+     "line": 1204,
      "name": "Transducers.Exercises.isRegularFun_iff_compClosure2",
      "primary": true,
      "state": "proved"
@@ -4025,7 +4015,7 @@
    "page": "87"
   },
   "lem:2dfa-precomposition-with-mealy": {
-   "anchor": "lemma.276",
+   "anchor": "lemma.275",
    "kind": "lemma",
    "label": "lem:2dfa-precomposition-with-mealy",
    "lean": [
@@ -4044,7 +4034,7 @@
    "theorems_md_status": "proved"
   },
   "lem:Mealy-map-lifting": {
-   "anchor": "lemma.68",
+   "anchor": "lemma.67",
    "kind": "lemma",
    "label": "lem:Mealy-map-lifting",
    "lean": [
@@ -4062,7 +4052,7 @@
    "page": "20"
   },
   "lem:aperiodicity-minimal-machine": {
-   "anchor": "lemma.85",
+   "anchor": "lemma.84",
    "kind": "lemma",
    "label": "lem:aperiodicity-minimal-machine",
    "lean": [
@@ -4081,15 +4071,15 @@
    "theorems_md_status": "proved"
   },
   "lem:characterisation-length-preserving": {
-   "anchor": "lemma.199",
+   "anchor": "lemma.198",
    "kind": "lemma",
    "label": "lem:characterisation-length-preserving",
    "lean": [
     {
-     "decl_line": 245,
-     "end": 249,
+     "decl_line": 184,
+     "end": 188,
      "file": "RequestProject/PartB/WeightedStatements.lean",
-     "line": 242,
+     "line": 181,
      "name": "Transducers.lengthPreserving_rational_normal_form",
      "primary": true,
      "state": "proved"
@@ -4108,7 +4098,7 @@
    "theorems_md_status": "proved (`LenNormalForm.lean`)"
   },
   "lem:check-if-output-string-of-configuration-graph-belongs-to-L": {
-   "anchor": "lemma.273",
+   "anchor": "lemma.272",
    "kind": "lemma",
    "label": "lem:check-if-output-string-of-configuration-graph-belongs-to-L",
    "lean": [
@@ -4126,7 +4116,7 @@
    "page": "93"
   },
   "lem:children-of-configuration-in-pebble-run": {
-   "anchor": "lemma.544",
+   "anchor": "lemma.543",
    "kind": "lemma",
    "label": "lem:children-of-configuration-in-pebble-run",
    "lean": [
@@ -4153,15 +4143,15 @@
    "theorems_md_status": "proved (composition of the two claims below)"
   },
   "lem:closure-weighted-automata-precomposition": {
-   "anchor": "lemma.187",
+   "anchor": "lemma.186",
    "kind": "lemma",
    "label": "lem:closure-weighted-automata-precomposition",
    "lean": [
     {
-     "decl_line": 122,
-     "end": 125,
+     "decl_line": 88,
+     "end": 91,
      "file": "RequestProject/PartB/WeightedStatements.lean",
-     "line": 120,
+     "line": 86,
      "name": "Transducers.weighted_precomp_rational",
      "primary": true,
      "state": "proved"
@@ -4180,7 +4170,7 @@
    "theorems_md_status": "proved (`WeightedNF.lean`, `WeightedLinRep.lean` and `WeightedPrecomp.lean`)"
   },
   "lem:compute-configuration-graph": {
-   "anchor": "lemma.271",
+   "anchor": "lemma.270",
    "kind": "lemma",
    "label": "lem:compute-configuration-graph",
    "lean": [
@@ -4215,15 +4205,15 @@
    "theorems_md_status": "**proved** (`ConfGraph.lean`, `ConfGraphRun.lean`, `ConfGraphAnnot.lean`, `ConfGraphReg.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`). The alphabet `C` of the book is `Transducers.CLet` and the representation is `Transducers.TwoWay.enc`"
   },
   "lem:decide-if-length-preserving": {
-   "anchor": "lemma.197",
+   "anchor": "lemma.196",
    "kind": "lemma",
    "label": "lem:decide-if-length-preserving",
    "lean": [
     {
-     "decl_line": 221,
-     "end": 224,
+     "decl_line": 160,
+     "end": 163,
      "file": "RequestProject/PartB/WeightedStatements.lean",
-     "line": 212,
+     "line": 151,
      "name": "Transducers.rationalFun_lengthPreserving_decidable",
      "primary": true,
      "state": "proved"
@@ -4234,7 +4224,7 @@
    "theorems_md_status": "proved (bounded enumeration of transition sequences, `PathComb.lean` and `LenDec.lean`)"
   },
   "lem:for-closed-under-composition": {
-   "anchor": "lemma.486",
+   "anchor": "lemma.485",
    "kind": "lemma",
    "label": "lem:for-closed-under-composition",
    "lean": [
@@ -4261,7 +4251,7 @@
    "theorems_md_status": "proved (`ForCompTop.lean`)"
   },
   "lem:k-types-fo-equivalence": {
-   "anchor": "lemma.373",
+   "anchor": "lemma.372",
    "kind": "lemma",
    "label": "lem:k-types-fo-equivalence",
    "lean": [
@@ -4280,7 +4270,7 @@
    "theorems_md_status": "**proved** (`MSO.lean`, from `FOComp.lean` and `FOHintikka.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`)"
   },
   "lem:k-types-properties": {
-   "anchor": "lemma.375",
+   "anchor": "lemma.374",
    "kind": "lemma",
    "label": "lem:k-types-properties",
    "lean": [
@@ -4307,7 +4297,7 @@
    "theorems_md_status": "proved (`KTypes.lean`)"
   },
   "lem:logic-precomputation": {
-   "anchor": "lemma.358",
+   "anchor": "lemma.357",
    "kind": "lemma",
    "label": "lem:logic-precomputation",
    "lean": [
@@ -4334,7 +4324,7 @@
    "theorems_md_status": "**proved** (`MSO.lean`, from `MSOPrecomp.lean`, `MarkStr.lean`, `MarkBimach.lean`, `MarkDelay.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`)"
   },
   "lem:logic-reduction-to-type-n": {
-   "anchor": "lemma.357",
+   "anchor": "lemma.356",
    "kind": "lemma",
    "label": "lem:logic-reduction-to-type-n",
    "lean": [
@@ -4353,7 +4343,7 @@
    "theorems_md_status": "proved (`MSONorm.lean`), as the normalisation of the type τ inside the proof of Theorem `thm:logic-regular-functions`"
   },
   "lem:map-lifting-continuous": {
-   "anchor": "lemma.253",
+   "anchor": "lemma.252",
    "kind": "lemma",
    "label": "lem:map-lifting-continuous",
    "lean": [
@@ -4380,7 +4370,7 @@
    "theorems_md_status": "proved (Myhill–Nerode, `ContAux.lean`)"
   },
   "lem:map-lifting-decomposition-mealy": {
-   "anchor": "lemma.61",
+   "anchor": "lemma.60",
    "kind": "lemma",
    "label": "lem:map-lifting-decomposition-mealy",
    "lean": [
@@ -4407,7 +4397,7 @@
    "theorems_md_status": "proved (in `MapLift.lean`)"
   },
   "lem:mso-free-variables": {
-   "anchor": "lemma.328",
+   "anchor": "lemma.327",
    "kind": "lemma",
    "label": "lem:mso-free-variables",
    "lean": [
@@ -4442,7 +4432,7 @@
    "theorems_md_status": "**proved** (`RegAut.lean`, `MSOSyntax.lean`, `MSOAnnot.lean`)"
   },
   "lem:output-of-snake-graph-is-regular": {
-   "anchor": "lemma.285",
+   "anchor": "lemma.284",
    "kind": "lemma",
    "label": "lem:output-of-snake-graph-is-regular",
    "lean": [
@@ -4469,7 +4459,7 @@
    "theorems_md_status": "**proved** (axioms: `propext`, `Classical.choice`, `Quot.sound`). Stated as in the book, over the alphabet `Transducers.SnakeLetter Q B` of snake letters (`SnakeAlph.lean`), whose regular language of snake graphs is `SnakeAlphLoc.lean`, `SnakeAlphChar.lean`, `SnakeAlphLocLang.lean`, `SnakeAlphCyc.lean` and whose output is computed by the walking transducer of `SnakeAlphRun.lean`; the general form `boundedWidth_isRegular`, for the width-`k` output function `TwoWay.widthOut` of a two-way transducer, is proved in `SnakeReg.lean`, on top of `SnakeBase.lean`, `SnakeWalk.lean`, `SnakeRec.lean`, `SnakeLoop.lean` and the checking automaton of `SnakeStage1.lean`/`SnakeChk*.lean`. Both forms are proved for every `k : ℕ` rather than only for `k ∈ {1, …, \\"
   },
   "lem:reachability-pebble-automaton": {
-   "anchor": "lemma.540",
+   "anchor": "lemma.539",
    "kind": "lemma",
    "label": "lem:reachability-pebble-automaton",
    "lean": [
@@ -4488,15 +4478,15 @@
    "theorems_md_status": "proved (`PebEnc.lean`, `PebReachAut.lean`, `PebReachRun.lean`, `PebReachSim.lean`)"
   },
   "lem:regular-closure-properties": {
-   "anchor": "lemma.283",
+   "anchor": "lemma.282",
    "kind": "lemma",
    "label": "lem:regular-closure-properties",
    "lean": [
     {
-     "decl_line": 377,
-     "end": 406,
+     "decl_line": 376,
+     "end": 405,
      "file": "RequestProject/PartC/Statements.lean",
-     "line": 375,
+     "line": 374,
      "name": "Transducers.regular_closure_properties",
      "primary": true,
      "state": "proved"
@@ -4539,7 +4529,7 @@
    "theorems_md_status": "**proved** (`MapLiftAux.lean`, `MapLiftRat.lean`, `MapLiftPrime.lean`, `RegMapLift.lean`, `RatSeq.lean`, `RegClosure.lean`)"
   },
   "lem:reversal-duplication-continuous": {
-   "anchor": "lemma.251",
+   "anchor": "lemma.250",
    "kind": "lemma",
    "label": "lem:reversal-duplication-continuous",
    "lean": [
@@ -4558,7 +4548,7 @@
    "theorems_md_status": "proved (`ContAux.lean`)"
   },
   "lem:reversible-composition": {
-   "anchor": "lemma.77",
+   "anchor": "lemma.76",
    "kind": "lemma",
    "label": "lem:reversible-composition",
    "lean": [
@@ -4577,15 +4567,15 @@
    "theorems_md_status": "proved"
   },
   "lem:uniformisation": {
-   "anchor": "lemma.138",
+   "anchor": "lemma.137",
    "kind": "lemma",
    "label": "lem:uniformisation",
    "lean": [
     {
-     "decl_line": 150,
-     "end": 153,
+     "decl_line": 155,
+     "end": 158,
      "file": "RequestProject/PartB/RationalStatements.lean",
-     "line": 148,
+     "line": 153,
      "name": "Transducers.uniformisation",
      "primary": true,
      "state": "proved"
@@ -4604,7 +4594,7 @@
    "theorems_md_status": "proved (`Uniform.lean`, from the ε-free normal form of Lemma `lemma:eliminate-epsilon-transitions` and the unambiguisation of `Unambig.lean`)"
   },
   "lemma:derivatives": {
-   "anchor": "lemma.84",
+   "anchor": "lemma.83",
    "kind": "lemma",
    "label": "lemma:derivatives",
    "lean": [
@@ -4639,15 +4629,15 @@
    "theorems_md_status": "proved"
   },
   "lemma:eliminate-epsilon-transitions": {
-   "anchor": "lemma.135",
+   "anchor": "lemma.134",
    "kind": "lemma",
    "label": "lemma:eliminate-epsilon-transitions",
    "lean": [
     {
-     "decl_line": 139,
-     "end": 146,
+     "decl_line": 144,
+     "end": 151,
      "file": "RequestProject/PartB/RationalStatements.lean",
-     "line": 135,
+     "line": 140,
      "name": "Transducers.epsilon_elimination",
      "primary": true,
      "state": "proved"
@@ -4666,7 +4656,7 @@
    "theorems_md_status": "proved (`EpsElim.lean`, using the regularity of the outputs on a fixed input, `OutLang.lean`)"
   },
   "lemma:prenex-normal-form": {
-   "anchor": "lemma.485",
+   "anchor": "lemma.484",
    "kind": "lemma",
    "label": "lemma:prenex-normal-form",
    "lean": [
@@ -4709,15 +4699,15 @@
    "theorems_md_status": "proved (`ForPrenexTop.lean`)"
   },
   "theorem:sst-two-way-equivalence": {
-   "anchor": "theorem.311",
+   "anchor": "theorem.310",
    "kind": "theorem",
    "label": "theorem:sst-two-way-equivalence",
    "lean": [
     {
-     "decl_line": 448,
-     "end": 452,
+     "decl_line": 447,
+     "end": 451,
      "file": "RequestProject/PartC/Statements.lean",
-     "line": 438,
+     "line": 437,
      "name": "Transducers.sst_iff_regular",
      "primary": true,
      "state": "proved"
@@ -4744,24 +4734,24 @@
    "theorems_md_status": "both implications are **proved** (`SSTComp.lean`, `SSTMealyRev.lean`, `SSTMealyFF.lean`, `SSTMealy.lean`, `SSTMapRev.lean`, `SSTMapDup.lean`, `SSTRegular.lean` for `regular ⊆ sst`; `SSTNorm.lean`, `SSTWalk.lean`, `SSTTwoWay.lean` for `sst ⊆ two-way`), and since Theorem `thm:2dfa-decomposition-into-primes` is now proved the statement depends only on `propext`, `Classical.choice`, `Quot.sound` — see *The proof of Theorem `theorem:sst-two-way-equivalence`* below"
   },
   "thm:2dfa-decomposition-into-primes": {
-   "anchor": "theorem.282",
+   "anchor": "theorem.281",
    "kind": "theorem",
    "label": "thm:2dfa-decomposition-into-primes",
    "lean": [
     {
-     "decl_line": 370,
-     "end": 374,
+     "decl_line": 369,
+     "end": 373,
      "file": "RequestProject/PartC/Statements.lean",
-     "line": 364,
+     "line": 363,
      "name": "Transducers.twoWay_iff_regular",
      "primary": true,
      "state": "proved"
     },
     {
-     "decl_line": 360,
-     "end": 362,
+     "decl_line": 359,
+     "end": 361,
      "file": "RequestProject/PartC/Statements.lean",
-     "line": 331,
+     "line": 330,
      "name": "Transducers.twoWay_isRegular",
      "state": "proved"
     }
@@ -4771,7 +4761,7 @@
    "theorems_md_status": "**both implications are proved**: the right-to-left one is Corollary `cor:2dfa-computes-all-regular-functions` above, and the left-to-right one, `Transducers.twoWay_isRegular` (two-way ⊆ regular, the inclusion printed in Corollary `cor:2dfa-computes-all-regular-functions`), is reduced to the snake lemma `Transducers.boundedWidth_isRegular` of `SnakeReg.lean`, whose base cases `k ≤ 1` are in `SnakeBase.lean`, whose combinatorial content is in `SnakeWalk.lean`, `SnakeRec.lean` and `SnakeLoop.lean`, and whose induction step `Transducers.boundedWidth_isRegular_step` is proved through the checking automaton of stage 1 (`SnakeStage1.lean`, `SnakeChk*.lean`); the whole theorem depends only on `propext`, `Classical.choice`, `Quot.sound` — see *How Theorem `thm:2dfa-decomposition-into-primes` is proved* below"
   },
   "thm:aperiodic-mealy": {
-   "anchor": "theorem.80",
+   "anchor": "theorem.79",
    "kind": "theorem",
    "label": "thm:aperiodic-mealy",
    "lean": [
@@ -4790,15 +4780,15 @@
    "theorems_md_status": "proved (\"⇐\" by `flipflop_composition_aperiodic`, \"⇒\" by `krohn_rhodes_flipFlop`, which runs the construction of `StateTrans.lean` inside the class of flip-flops, using that only realisable state transformations occur, see `StateTransAperiodic.lean`). The theorem's last sentence, \"moreover, this property can be decided\", is *not* part of the Lean statement — see *Divergences from the book* above"
   },
   "thm:bimachines": {
-   "anchor": "theorem.129",
+   "anchor": "theorem.128",
    "kind": "theorem",
    "label": "thm:bimachines",
    "lean": [
     {
-     "decl_line": 101,
-     "end": 115,
+     "decl_line": 106,
+     "end": 120,
      "file": "RequestProject/PartB/RationalStatements.lean",
-     "line": 97,
+     "line": 102,
      "name": "Transducers.rational_iff_unambiguous_iff_bimachine",
      "primary": true,
      "state": "proved"
@@ -4809,15 +4799,15 @@
    "theorems_md_status": "proved (unambiguity by the least accepting run, `Unambig.lean` and `Uniform.lean`; bimachine → rational in `Bimachine.lean`, rational → bimachine in `RatBimach.lean`)"
   },
   "thm:characterisation-rational-functions-weighted-automata": {
-   "anchor": "theorem.188",
+   "anchor": "theorem.187",
    "kind": "theorem",
    "label": "thm:characterisation-rational-functions-weighted-automata",
    "lean": [
     {
-     "decl_line": 129,
-     "end": 144,
+     "decl_line": 95,
+     "end": 99,
      "file": "RequestProject/PartB/WeightedStatements.lean",
-     "line": 127,
+     "line": 93,
      "name": "Transducers.rational_iff_weighted_precomp",
      "primary": true,
      "state": "proved"
@@ -4836,7 +4826,7 @@
    "theorems_md_status": "proved (\"⇒\" is Lemma `lem:closure-weighted-automata-precomposition`, \"⇐\" in `WeightedRegular.lean`)"
   },
   "thm:composition-mealy": {
-   "anchor": "theorem.40",
+   "anchor": "theorem.39",
    "kind": "theorem",
    "label": "thm:composition-mealy",
    "lean": [
@@ -4855,7 +4845,7 @@
    "theorems_md_status": "proved"
   },
   "thm:composition-of-two-way-transducers": {
-   "anchor": "theorem.275",
+   "anchor": "theorem.274",
    "kind": "theorem",
    "label": "thm:composition-of-two-way-transducers",
    "lean": [
@@ -4882,15 +4872,15 @@
    "theorems_md_status": "proved (`TwoWayRun.lean`, `TwoWayVisit.lean`, `TwoWayAnnot.lean`, `TwoWayAnnotBim.lean`, `TwoWayCompAux.lean`, `TwoWayCompPred.lean`, `TwoWayComp.lean`, `TwoWayCompFinal.lean`)"
   },
   "thm:composition-rational-relations": {
-   "anchor": "theorem.108",
+   "anchor": "theorem.107",
    "kind": "theorem",
    "label": "thm:composition-rational-relations",
    "lean": [
     {
-     "decl_line": 38,
-     "end": 42,
+     "decl_line": 39,
+     "end": 43,
      "file": "RequestProject/PartB/RationalStatements.lean",
-     "line": 36,
+     "line": 37,
      "name": "Transducers.rationalRel_comp",
      "primary": true,
      "state": "proved"
@@ -4909,7 +4899,7 @@
    "theorems_md_status": "proved (product automaton in `RatComp.lean`, on the atomic normal form of `Atomize.lean`)"
   },
   "thm:continuity-2dfas": {
-   "anchor": "theorem.267",
+   "anchor": "theorem.266",
    "kind": "theorem",
    "label": "thm:continuity-2dfas",
    "lean": [
@@ -4936,7 +4926,7 @@
    "theorems_md_status": "proved (`TwoWayCont.lean`, from Shepherdson's Theorem in `TwoDFA.lean`)"
   },
   "thm:continuity-mealy": {
-   "anchor": "theorem.42",
+   "anchor": "theorem.41",
    "kind": "theorem",
    "label": "thm:continuity-mealy",
    "lean": [
@@ -4955,15 +4945,15 @@
    "theorems_md_status": "proved"
   },
   "thm:continuity-rational-relations": {
-   "anchor": "theorem.109",
+   "anchor": "theorem.108",
    "kind": "theorem",
    "label": "thm:continuity-rational-relations",
    "lean": [
     {
-     "decl_line": 46,
-     "end": 48,
+     "decl_line": 47,
+     "end": 49,
      "file": "RequestProject/PartB/RationalStatements.lean",
-     "line": 44,
+     "line": 45,
      "name": "Transducers.rationalRel_continuous",
      "primary": true,
      "state": "proved"
@@ -4982,15 +4972,15 @@
    "theorems_md_status": "proved (ε-automaton running a dfa on the output, `RatCont.lean`)"
   },
   "thm:decidable-equivalence-regular": {
-   "anchor": "theorem.258",
+   "anchor": "theorem.257",
    "kind": "theorem",
    "label": "thm:decidable-equivalence-regular",
    "lean": [
     {
      "decl_line": 322,
-     "end": 327,
+     "end": 326,
      "file": "RequestProject/PartC/Statements.lean",
-     "line": 315,
+     "line": 316,
      "name": "Transducers.regular_equivalence_decidable",
      "primary": true,
      "state": "proved"
@@ -5065,62 +5055,44 @@
      "state": "proved"
     },
     {
-     "decl_line": 63,
-     "end": 66,
+     "decl_line": 98,
+     "end": 104,
      "file": "RequestProject/PartC/EffectiveReg.lean",
      "from": "THEOREMS.md",
-     "line": 39,
-     "name": "Transducers.EffectiveTwoWayEvalEq",
-     "state": "proved"
-    },
-    {
-     "decl_line": 88,
-     "end": 94,
-     "file": "RequestProject/PartC/EffectiveReg.lean",
-     "from": "THEOREMS.md",
-     "line": 68,
+     "line": 42,
      "name": "Transducers.EffectiveTwoWayBound",
      "state": "proved"
     },
     {
-     "decl_line": 121,
-     "end": 131,
+     "decl_line": 124,
+     "end": 133,
      "file": "RequestProject/PartC/RegEqDec.lean",
-     "line": 119,
+     "line": 121,
      "name": "regular_equivalence_decidable_aux",
      "state": "proved"
     }
    ],
    "number": "C.1.4",
    "page": "85",
-   "theorems_md_status": "the mathematical content of the book's proof is **proved** (`WeightedLin.lean`, `WeightedMapLift.lean`, `WeightedRegClosure.lean`): the reduction to zeroness of weighted automata over `ℚ` through the prime decomposition, with the constructions for map reverse (transposition of the matrices of a linear representation, where commutativity of the semiring is used) and map duplicate (Kronecker squares), the injective encoding of output strings by rationals, and the resulting bound reducing equivalence to a finite check. The decidability statement on *codes*, `Transducers.regular_equivalence_decidable`, is **proved from two explicit effectivity hypotheses** (`EffectiveTwoWayEvalEq` and `EffectiveTwoWayBound` of `PartC/EffectiveReg.lean`, `PartC/RegEqDec.lean`), exactly as Theorems `thm:equivalence-weighted-automata` and `thm:zeroness-weighted-automata` are: what those hypotheses isolate is the missing `Primrec`/`Computable` arithmetic on `ℤ` and `ℚ`. The *existence* of the equivalence bound, the mathematical content of the second hypothesis, is proved (`Transducers.exists_twoWayCode_bound`, `PartC/RegCodeBound.lean`)"
+   "theorems_md_status": "the mathematical content of the book's proof is **proved** (`WeightedLin.lean`, `WeightedMapLift.lean`, `WeightedRegClosure.lean`): the reduction to zeroness of weighted automata over `ℚ` through the prime decomposition, with the constructions for map reverse (transposition of the matrices of a linear representation, where commutativity of the semiring is used) and map duplicate (Kronecker squares), the injective encoding of output strings by rationals, and the resulting bound reducing equivalence to a finite check. The decidability statement on *codes*, `Transducers.regular_equivalence_decidable`, is **proved from one explicit effectivity hypothesis**, `EffectiveTwoWayBound` of `PartC/EffectiveReg.lean` (`PartC/RegEqDec.lean`): that an equivalence bound can be *computed* from the two codes. The *existence* of that bound is proved (`Transducers.exists_twoWayCode_bound`, `PartC/RegCodeBound.lean`); see *The conditional result of Part C* below for what its computability would need. The other effectivity hypothesis the theorem used to take, `EffectiveTwoWayEvalEq` — a computable equality test for two coded transducers on a given input — is now **proved**, from a fuel-bounded simulation (`PartC/TwoWaySim.lean`, `PartC/TwoWaySimPrimrec.lean`)"
   },
   "thm:decide-if-mealy": {
-   "anchor": "theorem.196",
+   "anchor": "theorem.195",
    "kind": "theorem",
    "label": "thm:decide-if-mealy",
    "lean": [
     {
-     "decl_line": 205,
-     "end": 210,
+     "decl_line": 145,
+     "end": 149,
      "file": "RequestProject/PartB/WeightedStatements.lean",
-     "line": 198,
+     "line": 135,
      "name": "Transducers.rationalFun_isMealy_decidable",
      "primary": true,
      "state": "proved"
     },
     {
-     "decl_line": 70,
-     "end": 73,
-     "file": "RequestProject/PartB/Effective.lean",
-     "from": "THEOREMS.md",
-     "line": 42,
-     "name": "Transducers.EffectiveWeightedEvalEq",
-     "state": "proved"
-    },
-    {
      "decl_line": 61,
-     "end": 70,
+     "end": 69,
      "file": "RequestProject/PartB/MealyDec.lean",
      "line": 58,
      "name": "rationalFun_isMealy_decidable_aux",
@@ -5129,10 +5101,10 @@
    ],
    "number": "B.4.2",
    "page": "62",
-   "theorems_md_status": "proved from `EffectiveWeightedEvalEq` (`PrefixCodes.lean`, `CodeRat.lean`, `MealyDec.lean`); the statement is relativised to the strings over the alphabet of the code"
+   "theorems_md_status": "proved (`PrefixCodes.lean`, `CodeRat.lean`, `MealyDec.lean`); the statement is relativised to the strings over the alphabet of the code"
   },
   "thm:equivalence-decidable-mealy": {
-   "anchor": "theorem.38",
+   "anchor": "theorem.37",
    "kind": "theorem",
    "label": "thm:equivalence-decidable-mealy",
    "lean": [
@@ -5151,31 +5123,22 @@
    "theorems_md_status": "proved"
   },
   "thm:equivalence-rational-functions": {
-   "anchor": "theorem.186",
+   "anchor": "theorem.185",
    "kind": "theorem",
    "label": "thm:equivalence-rational-functions",
    "lean": [
     {
-     "decl_line": 114,
-     "end": 118,
+     "decl_line": 81,
+     "end": 84,
      "file": "RequestProject/PartB/WeightedStatements.lean",
-     "line": 106,
+     "line": 74,
      "name": "Transducers.rationalFun_equivalence_decidable",
      "primary": true,
      "state": "proved"
     },
     {
-     "decl_line": 70,
-     "end": 73,
-     "file": "RequestProject/PartB/Effective.lean",
-     "from": "THEOREMS.md",
-     "line": 42,
-     "name": "Transducers.EffectiveWeightedEvalEq",
-     "state": "proved"
-    },
-    {
      "decl_line": 268,
-     "end": 276,
+     "end": 275,
      "file": "RequestProject/PartB/RatEqDec.lean",
      "line": 265,
      "name": "rationalFun_equivalence_decidable_aux",
@@ -5184,46 +5147,37 @@
    ],
    "number": "B.3.4",
    "page": "58",
-   "theorems_md_status": "proved from `EffectiveWeightedEvalEq` (reduction to `thm:equivalence-weighted-automata` in `RatEqDec.lean`)"
+   "theorems_md_status": "proved (reduction to `thm:equivalence-weighted-automata` in `RatEqDec.lean`)"
   },
   "thm:equivalence-weighted-automata": {
-   "anchor": "theorem.185",
+   "anchor": "theorem.184",
    "kind": "theorem",
    "label": "thm:equivalence-weighted-automata",
    "lean": [
     {
-     "decl_line": 86,
-     "end": 104,
+     "decl_line": 69,
+     "end": 72,
      "file": "RequestProject/PartB/WeightedStatements.lean",
-     "line": 81,
+     "line": 62,
      "name": "Transducers.weighted_equivalence_decidable",
      "primary": true,
      "state": "proved"
     },
     {
-     "decl_line": 70,
-     "end": 73,
-     "file": "RequestProject/PartB/Effective.lean",
-     "from": "THEOREMS.md",
-     "line": 42,
-     "name": "Transducers.EffectiveWeightedEvalEq",
-     "state": "proved"
-    },
-    {
-     "decl_line": 188,
-     "end": 194,
+     "decl_line": 187,
+     "end": 193,
      "file": "RequestProject/PartB/WeightedDec.lean",
-     "line": 185,
+     "line": 184,
      "name": "weighted_equivalence_decidable_aux",
      "state": "proved"
     }
    ],
    "number": "B.3.3",
    "page": "58",
-   "theorems_md_status": "proved from the effectivity hypothesis `EffectiveWeightedEvalEq` (`WeightedDec.lean`)"
+   "theorems_md_status": "proved (`WeightedDec.lean`, from the effective Schützenberger bound `Transducers.effectiveWeightedBound` of `WeightedBound.lean` and the computable evaluation `Transducers.EffectiveWeightedEvalEq` of `WCodePrimrec.lean`)"
   },
   "thm:fo-rational-functions": {
-   "anchor": "theorem.380",
+   "anchor": "theorem.379",
    "kind": "theorem",
    "label": "thm:fo-rational-functions",
    "lean": [
@@ -5242,7 +5196,7 @@
    "theorems_md_status": "**proved** (`MSO.lean`, from `FORelabBimach.lean` for `first-order relabelling ⊆ aperiodic bimachine` and `FOBimachRelab.lean` for the converse, on top of `FORev.lean` and `FOPos.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`)"
   },
   "thm:for-transducers-are-polyregular": {
-   "anchor": "theorem.440",
+   "anchor": "theorem.439",
    "kind": "theorem",
    "label": "thm:for-transducers-are-polyregular",
    "lean": [
@@ -5261,7 +5215,7 @@
    "theorems_md_status": "proved (`ForPolyreg.lean` and `PolyFor.lean`)"
   },
   "thm:krohn-rhodes": {
-   "anchor": "theorem.58",
+   "anchor": "theorem.57",
    "kind": "theorem",
    "label": "thm:krohn-rhodes",
    "lean": [
@@ -5280,7 +5234,7 @@
    "theorems_md_status": "proved"
   },
   "thm:logic-aperiodic": {
-   "anchor": "theorem.369",
+   "anchor": "theorem.368",
    "kind": "theorem",
    "label": "thm:logic-aperiodic",
    "lean": [
@@ -5299,7 +5253,7 @@
    "theorems_md_status": "**proved** (`MSO.lean`, from `FOTypeDFA.lean` and `FOMealy.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`)"
   },
   "thm:logic-rational-functions": {
-   "anchor": "theorem.336",
+   "anchor": "theorem.335",
    "kind": "theorem",
    "label": "thm:logic-rational-functions",
    "lean": [
@@ -5326,7 +5280,7 @@
    "theorems_md_status": "**proved** (`MSO.lean`, from `MSORatRelab.lean`, `MarkStr.lean`, `MarkLogic.lean`, `MarkBimach.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`)"
   },
   "thm:logic-regular-functions": {
-   "anchor": "theorem.356",
+   "anchor": "theorem.355",
    "kind": "theorem",
    "label": "thm:logic-regular-functions",
    "lean": [
@@ -5353,15 +5307,15 @@
    "theorems_md_status": "both implications are **proved** (`MSO.lean`, from `MSOReg.lean`, `MSOWalkData.lean`, `WalkAut.lean`, `MSOWalkForms.lean`, `MSONorm.lean`, `SortedEnum.lean` for `mso ⊆ regular`; `TwoWayMSO.lean`, `RunProbe.lean`, `RunMark.lean`, `RunElts.lean`, `MarkLogic2.lean` for `regular ⊆ mso`), and since Theorem `thm:2dfa-decomposition-into-primes` is now proved the statement depends only on `propext`, `Classical.choice`, `Quot.sound` — see *The proof of Theorem `thm:logic-regular-functions`* below"
   },
   "thm:machine-independent-rational-functions": {
-   "anchor": "theorem.223",
+   "anchor": "theorem.222",
    "kind": "theorem",
    "label": "thm:machine-independent-rational-functions",
    "lean": [
     {
-     "decl_line": 314,
-     "end": 320,
+     "decl_line": 253,
+     "end": 259,
      "file": "RequestProject/PartB/WeightedStatements.lean",
-     "line": 312,
+     "line": 251,
      "name": "Transducers.isRationalFun_iff",
      "primary": true,
      "state": "proved"
@@ -5380,15 +5334,15 @@
    "theorems_md_status": "proved (`RatIndex.lean`, `SubseqRat.lean`, `RatAnnot.lean`)"
   },
   "thm:mealy-machine-independent": {
-   "anchor": "theorem.194",
+   "anchor": "theorem.193",
    "kind": "theorem",
    "label": "thm:mealy-machine-independent",
    "lean": [
     {
-     "decl_line": 163,
-     "end": 196,
+     "decl_line": 116,
+     "end": 133,
      "file": "RequestProject/PartB/WeightedStatements.lean",
-     "line": 161,
+     "line": 114,
      "name": "Transducers.isMealy_iff",
      "primary": true,
      "state": "proved"
@@ -5407,7 +5361,7 @@
    "theorems_md_status": "proved (`MealyChar.lean`)"
   },
   "thm:mso-logic-languages": {
-   "anchor": "theorem.327",
+   "anchor": "theorem.326",
    "kind": "theorem",
    "label": "thm:mso-logic-languages",
    "lean": [
@@ -5450,7 +5404,7 @@
    "theorems_md_status": "**proved** (`MSO.lean`, from `MSOSyntax.lean`, `RegAut.lean`, `MSOAnnot.lean`, `MSOBuchi.lean`)"
   },
   "thm:pebble-are-continuous": {
-   "anchor": "theorem.538",
+   "anchor": "theorem.537",
    "kind": "theorem",
    "label": "thm:pebble-are-continuous",
    "lean": [
@@ -5477,7 +5431,7 @@
    "theorems_md_status": "proved (`PebbleReg.lean`, on top of `PebbleAut.lean`, `PebbleProd.lean`, `PebbleSub.lean`, `PebbleAnn.lean`, `PebbleBisim.lean`, `PebbleOne.lean`, `PebbleLev1.lean`)"
   },
   "thm:pebble-are-for": {
-   "anchor": "theorem.543",
+   "anchor": "theorem.542",
    "kind": "theorem",
    "label": "thm:pebble-are-for",
    "lean": [
@@ -5496,7 +5450,7 @@
    "theorems_md_status": "proved (`PebbleForTop.lean` for `for ⊆ pebble`, `PebblePoly.lean` for `pebble ⊆ polyregular`, then `thm:for-transducers-are-polyregular`)"
   },
   "thm:polyregular-functions-are-continuous": {
-   "anchor": "theorem.396",
+   "anchor": "theorem.395",
    "kind": "theorem",
    "label": "thm:polyregular-functions-are-continuous",
    "lean": [
@@ -5515,15 +5469,15 @@
    "theorems_md_status": "proved (continuity of marked squaring, `MarkedSquare.lean`)"
   },
   "thm:rational-is-mealy-characterisation": {
-   "anchor": "theorem.150",
+   "anchor": "theorem.149",
    "kind": "theorem",
    "label": "thm:rational-is-mealy-characterisation",
    "lean": [
     {
-     "decl_line": 232,
-     "end": 247,
+     "decl_line": 237,
+     "end": 252,
      "file": "RequestProject/PartB/RationalStatements.lean",
-     "line": 229,
+     "line": 234,
      "name": "Transducers.rational_isMealy_iff",
      "primary": true,
      "state": "proved"
@@ -5534,15 +5488,15 @@
    "theorems_md_status": "proved (from Theorem `thm:mealy-machine-independent` and Theorem `thm:continuity-rational-relations`)"
   },
   "thm:rational-primes": {
-   "anchor": "theorem.144",
+   "anchor": "theorem.143",
    "kind": "theorem",
    "label": "thm:rational-primes",
    "lean": [
     {
-     "decl_line": 164,
-     "end": 171,
+     "decl_line": 169,
+     "end": 176,
      "file": "RequestProject/PartB/RationalStatements.lean",
-     "line": 162,
+     "line": 167,
      "name": "Transducers.rational_iff_prime_composition",
      "primary": true,
      "state": "proved"
@@ -5553,7 +5507,7 @@
    "theorems_md_status": "proved (`PrimeRat.lean` and `BimachPrime.lean`, from Theorem `thm:bimachines` and the Krohn–Rhodes Theorem)"
   },
   "thm:regular-functions-are-continuous-and-closed-under-composition": {
-   "anchor": "theorem.250",
+   "anchor": "theorem.249",
    "kind": "theorem",
    "label": "thm:regular-functions-are-continuous-and-closed-under-composition",
    "lean": [
@@ -5580,15 +5534,15 @@
    "theorems_md_status": "proved (continuity by induction on the decomposition into primes, `ContAux.lean`)"
   },
   "thm:sequential-function-independent": {
-   "anchor": "theorem.205",
+   "anchor": "theorem.204",
    "kind": "theorem",
    "label": "thm:sequential-function-independent",
    "lean": [
     {
-     "decl_line": 279,
-     "end": 283,
+     "decl_line": 218,
+     "end": 222,
      "file": "RequestProject/PartB/WeightedStatements.lean",
-     "line": 271,
+     "line": 210,
      "name": "Transducers.isSequential_iff",
      "primary": true,
      "state": "proved"
@@ -5607,15 +5561,15 @@
    "theorems_md_status": "proved (`SeqChar.lean`). The Lean statement is faithful: the book's condition (c) — *outputs ε when the input is ε* — is the Lean conjunct `f [] = []`. An earlier edition of the book omitted (c), which made the theorem false; the docstring in `PartB/WeightedStatements.lean` still keeps that version, commented out, as a record"
   },
   "thm:subsequential-functions": {
-   "anchor": "theorem.210",
+   "anchor": "theorem.209",
    "kind": "theorem",
    "label": "thm:subsequential-functions",
    "lean": [
     {
-     "decl_line": 297,
-     "end": 302,
+     "decl_line": 236,
+     "end": 241,
      "file": "RequestProject/PartB/WeightedStatements.lean",
-     "line": 294,
+     "line": 233,
      "name": "Transducers.isSubsequential_iff",
      "primary": true,
      "state": "proved"
@@ -5634,15 +5588,15 @@
    "theorems_md_status": "proved (`SubseqDef.lean`, `SubseqAlpha.lean`, `SubseqState.lean`, `SubseqBound.lean`, `SubseqChar.lean`)"
   },
   "thm:undecidable-equivalence-rational-relations": {
-   "anchor": "theorem.111",
+   "anchor": "theorem.110",
    "kind": "theorem",
    "label": "thm:undecidable-equivalence-rational-relations",
    "lean": [
     {
-     "decl_line": 76,
-     "end": 79,
+     "decl_line": 82,
+     "end": 84,
      "file": "RequestProject/PartB/RationalStatements.lean",
-     "line": 68,
+     "line": 69,
      "name": "Transducers.rationalRel_equivalence_undecidable",
      "primary": true,
      "state": "proved"
@@ -5658,43 +5612,34 @@
    ],
    "number": "B.1.6",
    "page": "36",
-   "theorems_md_status": "proved from an explicit hypothesis that the Post correspondence problem is undecidable (reduction in `PCPRed.lean`)"
+   "theorems_md_status": "proved outright; the reduction is in `PCPRed.lean`, and the undecidability of the Post correspondence problem, which this used to take as an explicit hypothesis, is now proved as `Transducers.PCP.solvable_not_computablePred` (`PCP/Index.lean`)"
   },
   "thm:zeroness-weighted-automata": {
-   "anchor": "theorem.190",
+   "anchor": "theorem.189",
    "kind": "theorem",
    "label": "thm:zeroness-weighted-automata",
    "lean": [
     {
-     "decl_line": 152,
-     "end": 155,
+     "decl_line": 106,
+     "end": 108,
      "file": "RequestProject/PartB/WeightedStatements.lean",
-     "line": 146,
+     "line": 101,
      "name": "Transducers.weighted_zeroness_decidable",
      "primary": true,
      "state": "proved"
     },
     {
-     "decl_line": 70,
-     "end": 73,
-     "file": "RequestProject/PartB/Effective.lean",
-     "from": "THEOREMS.md",
-     "line": 42,
-     "name": "Transducers.EffectiveWeightedEvalEq",
-     "state": "proved"
-    },
-    {
-     "decl_line": 199,
-     "end": 207,
+     "decl_line": 198,
+     "end": 206,
      "file": "RequestProject/PartB/WeightedDec.lean",
-     "line": 196,
+     "line": 195,
      "name": "weighted_zeroness_decidable_aux",
      "state": "proved"
     }
    ],
    "number": "B.3.7",
    "page": "60",
-   "theorems_md_status": "proved from `EffectiveWeightedEvalEq` (special case of `thm:equivalence-weighted-automata`, `WeightedDec.lean`)"
+   "theorems_md_status": "proved (special case of `thm:equivalence-weighted-automata`, `WeightedDec.lean`)"
   }
  }
 }

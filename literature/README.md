@@ -16,6 +16,12 @@ BibTeX entries for everything listed here live in the book's bibliography, [../b
   RAND: https://www.rand.org/pubs/research_memoranda/RM704.html (report RM-704)  
   PDF: [Kleene1951_Representation_of_Events_in_Nerve_Nets_and_Finite_Automata.pdf](pdfs/Kleene1951_Representation_of_Events_in_Nerve_Nets_and_Finite_Automata.pdf) (RAND memorandum)
 
+- **Dana Scott (1967), _Some Definitional Suggestions for Automata Theory_.**  
+  Scott proposing a uniform terminology for the abstract machines that were multiplying at the time. Two of the proposals matter here. The first is that nondeterminism can be dispensed with — Scott, who had helped popularise it in Rabin-Scott, writes that he "now feels that it is simpler to avoid" nondeterministic machines, and Section 5 shows how the sets normally obtained from them can be defined without. The second is the separation of program from machine, developed over Sections 1-3, so that a definition need not be restated "every time an inspiration for a new machine strikes".  
+  Of most relevance to a book on transducers is the emphasis Scott places on functions rather than sets: "the basic nature of a program is to compute a function", with the recognised sets recovered afterwards as they are in recursive function theory. Section 4 gives examples of machines, Section 6 miscellaneous applications.  
+  DOI: https://doi.org/10.1016/S0022-0000(67)80014-X  
+  PDF: [Scott1967_Some_Definitional_Suggestions_for_Automata_Theory.pdf](pdfs/Scott1967_Some_Definitional_Suggestions_for_Automata_Theory.pdf) (26 pp.)
+
 - **Jean-Éric Pin (2025), _Mathematical Foundations of Automata Theory_ (MPRI lecture notes).**  
   General algebraic-automata-theory reference: semigroups, Green's relations, recognisable and rational sets, star-free and piecewise testable languages, varieties. The profinite material is **Chapter X, _Profinite words_, pp. 175-188** — profinite metric and topology (§2.1), free profinite monoid and its universal property (§2.2-2.3), ω-terms (§2.4), recognisable languages as clopen sets (§3).  
   Link: https://www.irif.fr/~jep/PDF/MPRI/MPRI.pdf  
@@ -45,6 +51,11 @@ BibTeX entries for everything listed here live in the book's bibliography, [../b
   DOI: https://doi.org/10.1515/9781400882618-006  
   Publisher: https://press.princeton.edu/books/paperback/9780691079165/automata-studies-am-34-volume-34  
   PDF: [Moore1956_Gedanken-Experiments_on_Sequential_Machines.pdf](pdfs/Moore1956_Gedanken-Experiments_on_Sequential_Machines.pdf) (offprint of the chapter, 26 pp.)
+
+- **Anil Nerode (1958), _Linear Automaton Transformations_.**  
+  The source of the Nerode right congruence, and so of the Myhill-Nerode chapter. What the paper calls an "automaton transformation" is a Mealy machine in the terminology of this book, written for maps on infinite sequences; the main result settles which linear transformations over a finite commutative ring are computed by one. The right-congruence argument used to get there is the machine-independent characterisation that the Mealy chapter treats as folklore.  
+  DOI: https://doi.org/10.1090/S0002-9939-1958-0135681-9  
+  PDF: [Nerode1958_Linear_Automaton_Transformations.pdf](pdfs/Nerode1958_Linear_Automaton_Transformations.pdf) (4 pp., free from the AMS)
 
 - **Kenneth Krohn and John Rhodes (1965), _Algebraic Theory of Machines. I. Prime Decomposition Theorem for Finite Semigroups and Machines_.**  
   The classical decomposition theorem behind the book’s Krohn-Rhodes chapter.  
@@ -426,7 +437,7 @@ BibTeX entries for everything listed here live in the book's bibliography, [../b
 
 ## Local PDFs
 
-The 79 PDFs currently stored here are:
+The 81 PDFs currently stored here are:
 
 - [pdfs/AhoHopcroftUllman1969_A_General_Theory_of_Translation.pdf](pdfs/AhoHopcroftUllman1969_A_General_Theory_of_Translation.pdf)
 - [pdfs/AhoUllman1970_A_Characterization_of_Two-Way_Deterministic_Classes_of_Languages.pdf](pdfs/AhoUllman1970_A_Characterization_of_Two-Way_Deterministic_Classes_of_Languages.pdf)
@@ -485,6 +496,7 @@ The 79 PDFs currently stored here are:
 - [pdfs/Moore1956_Gedanken-Experiments_on_Sequential_Machines.pdf](pdfs/Moore1956_Gedanken-Experiments_on_Sequential_Machines.pdf)
 - [pdfs/MurlakNiwinskiRytter2017_200_Problems_in_Formal_Languages_and_Automata_Theory.pdf](pdfs/MurlakNiwinskiRytter2017_200_Problems_in_Formal_Languages_and_Automata_Theory.pdf)
 - [pdfs/MuschollPuppis2019_The_Many_Facets_of_String_Transducers.pdf](pdfs/MuschollPuppis2019_The_Many_Facets_of_String_Transducers.pdf)
+- [pdfs/Nerode1958_Linear_Automaton_Transformations.pdf](pdfs/Nerode1958_Linear_Automaton_Transformations.pdf)
 - [pdfs/Nguyen2024_Two_or_three_things_I_know_about_tree_transducers.pdf](pdfs/Nguyen2024_Two_or_three_things_I_know_about_tree_transducers.pdf)
 - [pdfs/Nivat1968.pdf](pdfs/Nivat1968.pdf)
 - [pdfs/Nivat1968_Transductions_des_langages_de_Chomsky.pdf](pdfs/Nivat1968_Transductions_des_langages_de_Chomsky.pdf)
@@ -501,6 +513,7 @@ The 79 PDFs currently stored here are:
 - [pdfs/Schutzenberger1976_Sur_les_relations_rationnelles_entre_monoides_libres.pdf](pdfs/Schutzenberger1976_Sur_les_relations_rationnelles_entre_monoides_libres.pdf)
 - [pdfs/Schutzenberger1976_Sur_les_relations_rationnelles_entre_monoides_libres_clean_scan.pdf](pdfs/Schutzenberger1976_Sur_les_relations_rationnelles_entre_monoides_libres_clean_scan.pdf)
 - [pdfs/Schutzenberger2009_Oeuvres_completes_Tome_8.pdf](pdfs/Schutzenberger2009_Oeuvres_completes_Tome_8.pdf)
+- [pdfs/Scott1967_Some_Definitional_Suggestions_for_Automata_Theory.pdf](pdfs/Scott1967_Some_Definitional_Suggestions_for_Automata_Theory.pdf)
 - [pdfs/SeidlManethKemper2018_Equivalence_of_Deterministic_Top-Down_Tree-to-String_Transducers_Is_Decidable.pdf](pdfs/SeidlManethKemper2018_Equivalence_of_Deterministic_Top-Down_Tree-to-String_Transducers_Is_Decidable.pdf)
 - [pdfs/Shepherdson1959_The_reduction_of_two-way_automata_to_one-way_automata.pdf](pdfs/Shepherdson1959_The_reduction_of_two-way_automata_to_one-way_automata.pdf)
 - [pdfs/Sipser2012_Introduction_to_the_Theory_of_Computation.pdf](pdfs/Sipser2012_Introduction_to_the_Theory_of_Computation.pdf)

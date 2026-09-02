@@ -1,0 +1,301 @@
+[2026-08-21 06:06:11Z] B-effectivity-conditional finished with OUT_OF_BUDGET
+[2026-08-21 06:06:16Z] synced 75 lean files; sorries 26 -> 24
+[2026-08-21 06:06:16Z] committed harvest of bd434f7d-10b8-43ea-b6cd-2ac4d213547b
+[2026-08-21 06:06:18Z] submitted [continue] B-effectivity-conditional -> task 46d0d173-8ad3-4258-9bcc-40b346993508
+[2026-08-21 09:55:25Z] B-effectivity-conditional finished with OUT_OF_BUDGET
+[2026-08-21 09:55:30Z] synced 83 lean files; sorries 24 -> 37
+[2026-08-21 09:55:31Z] committed harvest of 46d0d173-8ad3-4258-9bcc-40b346993508
+[2026-08-21 09:55:33Z] submitted [continue] B-effectivity-conditional -> task 0827f1f7-10f3-4b74-be12-52b127932c85
+[2026-08-21 13:30:10Z] B-effectivity-conditional finished with COMPLETE_WITH_ERRORS
+[2026-08-21 13:30:41Z] synced 83 lean files; sorries 37 -> 22
+[2026-08-21 13:30:41Z] committed harvest of 0827f1f7-10f3-4b74-be12-52b127932c85
+[2026-08-21 13:30:43Z] submitted [continue] B-effectivity-conditional -> task 33aa71ea-a67e-4c0a-be30-cc2bbc4a901a
+[2026-08-21 17:52:20Z] B-effectivity-conditional finished with COMPLETE
+[2026-08-21 18:08:57Z] download failed: AristotleAPIError('Request failed: ')
+[2026-08-21 18:08:57Z] target B-effectivity-conditional: done
+[2026-08-21 18:08:59Z] submitted [initial] C2-composition -> task e7d126c5-73be-4cfe-8123-84d426dc7176
+[2026-08-21 22:14:26Z] C2-composition finished with OUT_OF_BUDGET
+[2026-08-21 22:14:34Z] synced 93 lean files; sorries 22 -> 21
+[2026-08-21 22:14:35Z] committed harvest of e7d126c5-73be-4cfe-8123-84d426dc7176
+[2026-08-21 22:14:37Z] submitted [continue] C2-composition -> task 920d28d5-71df-4100-8a3e-e68f23664962
+[2026-08-21 23:45:18Z] C2-composition finished with COMPLETE
+[2026-08-21 23:45:24Z] synced 94 lean files; sorries 21 -> 21
+[2026-08-21 23:45:24Z] committed harvest of 920d28d5-71df-4100-8a3e-e68f23664962
+[2026-08-21 23:45:27Z] submitted [reattempt] C2-composition -> task a70904ec-32fe-4145-99e5-0af08d90b3dc
+[2026-08-22 01:31:35Z] C2-composition finished with COMPLETE
+[2026-08-22 01:31:40Z] note: Aristotle's copy of the book differs from yours in myhill-nerode.tex, krohn-rhodes.tex, rational-relations.tex, weighted.tex (not synced back — inspect by hand if you care)
+[2026-08-22 01:31:41Z] synced 94 lean files; sorries 21 -> 20
+[2026-08-22 01:31:41Z] committed harvest of a70904ec-32fe-4145-99e5-0af08d90b3dc
+[2026-08-22 01:31:41Z] target C2-composition: done
+[2026-08-22 01:31:44Z] submitted [initial] C2-regular-equivalence -> task 9d137945-d4cf-41d8-8871-9d3a9373cd01
+[2026-08-22 05:13:16Z] C2-regular-equivalence finished with COMPLETE_WITH_ERRORS
+[2026-08-22 05:13:22Z] note: Aristotle's copy of the book differs from yours in intro.tex, sst.tex, polyregular-pebble.tex, myhill-nerode.tex, krohn-rhodes.tex, rational-relations.tex, logic.tex, mealy.tex, 2dfa.tex, weighted.tex (not synced back — inspect by hand if you care)
+[2026-08-22 05:13:22Z] synced 107 lean files; sorries 20 -> 18
+[2026-08-22 05:13:23Z] committed harvest of 9d137945-d4cf-41d8-8871-9d3a9373cd01
+[2026-08-22 05:13:25Z] submitted [continue] C2-regular-equivalence -> task 03a3b34b-c4f2-4d92-950d-e24cc792eba7
+[2026-08-22 07:32:20Z] C2-regular-equivalence finished with COMPLETE_WITH_ERRORS
+[2026-08-22 07:38:05Z] download failed: AristotleAPIError('Request failed: ')
+[2026-08-22 07:38:08Z] submitted [continue] C2-regular-equivalence -> task 6818947a-3c36-4a48-8fe7-8841c4550aac
+[2026-08-22 13:07:25Z] C2-regular-equivalence finished with COMPLETE_WITH_ERRORS
+[2026-08-22 13:07:29Z] note: Aristotle's copy of the book differs from yours in intro.tex, sst.tex, polyregular-pebble.tex, myhill-nerode.tex, krohn-rhodes.tex, rational-relations.tex, logic.tex, mealy.tex, 2dfa.tex, weighted.tex (not synced back — inspect by hand if you care)
+[2026-08-22 13:07:29Z] synced 115 lean files; sorries 18 -> 18
+[2026-08-22 13:07:30Z] committed harvest of 6818947a-3c36-4a48-8fe7-8841c4550aac
+[2026-08-22 13:07:32Z] submitted [continue] C2-regular-equivalence -> task 04728d6d-0d8e-49d9-a595-f4417e8135b3
+[2026-08-22 18:25:05Z] C2-regular-equivalence finished with OUT_OF_BUDGET
+[2026-08-22 18:52:48Z] download failed: AristotleAPIError('Request failed: ')
+[2026-08-22 18:52:49Z] REVIEW: C2-regular-equivalence ran out of budget
+[2026-08-22 18:52:49Z] target C2-regular-equivalence: partial — budget exhausted after 3 continuations; still open: none detected
+[2026-08-22 18:52:52Z] submitted [initial] C3-sst -> task ad29a00d-dbc6-4ff3-af09-5eca74209884
+[2026-08-22 23:14:16Z] C3-sst finished with COMPLETE
+[2026-08-22 23:14:22Z] note: Aristotle's copy of the book differs from yours in intro.tex, sst.tex, polyregular-pebble.tex, myhill-nerode.tex, krohn-rhodes.tex, rational-relations.tex, logic.tex, mealy.tex, 2dfa.tex, weighted.tex (not synced back — inspect by hand if you care)
+[2026-08-22 23:14:22Z] synced 134 lean files; sorries 18 -> 17
+[2026-08-22 23:14:23Z] committed harvest of ad29a00d-dbc6-4ff3-af09-5eca74209884
+[2026-08-22 23:14:23Z] target C3-sst: done
+[2026-08-22 23:14:27Z] submitted [initial] C4-buchi -> task 86f31353-c7cd-4628-ba0f-79fee4267ca0
+[2026-08-23 03:52:15Z] C4-buchi finished with COMPLETE
+[2026-08-23 04:13:00Z] download failed: AristotleAPIError('Request failed: ')
+[2026-08-23 04:13:05Z] submitted [reattempt] C4-buchi -> task d27f8813-5e4f-473d-8a06-5516daba23d6
+[2026-08-23 06:23:40Z] C4-buchi finished with COMPLETE_WITH_ERRORS
+[2026-08-23 06:23:43Z] note: Aristotle's copy of the book differs from yours in intro.tex, sst.tex, polyregular-pebble.tex, myhill-nerode.tex, krohn-rhodes.tex, rational-relations.tex, logic.tex, mealy.tex, 2dfa.tex, weighted.tex (not synced back — inspect by hand if you care)
+[2026-08-23 06:23:44Z] synced 141 lean files; sorries 17 -> 14
+[2026-08-23 06:23:44Z] committed harvest of d27f8813-5e4f-473d-8a06-5516daba23d6
+[2026-08-23 06:23:47Z] submitted [continue] C4-buchi -> task 575f3b58-e1d1-4531-80d9-5fd69c6c052b
+[2026-08-23 09:37:25Z] C4-buchi finished with COMPLETE_WITH_ERRORS
+[2026-08-23 09:37:28Z] note: Aristotle's copy of the book differs from yours in intro.tex, sst.tex, polyregular-pebble.tex, myhill-nerode.tex, krohn-rhodes.tex, rational-relations.tex, logic.tex, mealy.tex, 2dfa.tex, weighted.tex (not synced back — inspect by hand if you care)
+[2026-08-23 09:37:29Z] synced 141 lean files; sorries 14 -> 14
+[2026-08-23 09:37:32Z] submitted [continue] C4-buchi -> task 0d705cf6-5a38-4135-bc42-75ac36a4c777
+[2026-08-23 10:27:37Z] C4-buchi finished with COMPLETE_WITH_ERRORS
+[2026-08-23 10:27:42Z] note: Aristotle's copy of the book differs from yours in intro.tex, sst.tex, polyregular-pebble.tex, myhill-nerode.tex, krohn-rhodes.tex, rational-relations.tex, logic.tex, mealy.tex, 2dfa.tex, weighted.tex (not synced back — inspect by hand if you care)
+[2026-08-23 10:27:44Z] synced 141 lean files; sorries 14 -> 14
+[2026-08-23 10:27:44Z] committed harvest of 0d705cf6-5a38-4135-bc42-75ac36a4c777
+[2026-08-23 10:27:47Z] submitted [continue] C4-buchi -> task f95b456f-9e04-48e0-b460-9e66b53dfc4b
+[2026-08-23 11:12:56Z] C4-buchi finished with COMPLETE_WITH_ERRORS
+[2026-08-23 11:13:00Z] note: Aristotle's copy of the book differs from yours in intro.tex, sst.tex, polyregular-pebble.tex, myhill-nerode.tex, krohn-rhodes.tex, rational-relations.tex, logic.tex, mealy.tex, 2dfa.tex, weighted.tex (not synced back — inspect by hand if you care)
+[2026-08-23 11:13:01Z] synced 141 lean files; sorries 14 -> 14
+[2026-08-23 11:13:02Z] REVIEW: C4-buchi ran out of budget
+[2026-08-23 11:13:02Z] target C4-buchi: partial — budget exhausted after 3 continuations; still open: none detected
+[2026-08-23 11:13:06Z] submitted [initial] C4-relabelling -> task 415129dd-23b2-49e0-89e4-fd8e834a3812
+[2026-08-23 12:28:23Z] C4-relabelling finished with COMPLETE
+[2026-08-23 12:28:27Z] note: Aristotle's copy of the book differs from yours in intro.tex, sst.tex, polyregular-pebble.tex, myhill-nerode.tex, krohn-rhodes.tex, rational-relations.tex, logic.tex, mealy.tex, 2dfa.tex, weighted.tex (not synced back — inspect by hand if you care)
+[2026-08-23 12:28:30Z] synced 147 lean files; sorries 14 -> 12
+[2026-08-23 12:28:30Z] committed harvest of 415129dd-23b2-49e0-89e4-fd8e834a3812
+[2026-08-23 12:28:31Z] target C4-relabelling: done
+[2026-08-23 12:28:34Z] submitted [initial] C4-transduction -> task e6c4230a-837b-49bb-84fd-86e918627dac
+[2026-08-23 18:28:36Z] C4-transduction finished with OUT_OF_BUDGET
+[2026-08-23 18:28:41Z] note: Aristotle's copy of the book differs from yours in intro.tex, sst.tex, polyregular-pebble.tex, myhill-nerode.tex, krohn-rhodes.tex, rational-relations.tex, logic.tex, mealy.tex, 2dfa.tex, weighted.tex (not synced back — inspect by hand if you care)
+[2026-08-23 18:28:42Z] synced 160 lean files; sorries 12 -> 12
+[2026-08-23 18:28:43Z] committed harvest of e6c4230a-837b-49bb-84fd-86e918627dac
+[2026-08-23 18:28:46Z] submitted [continue] C4-transduction -> task fa8e8e6d-8fa7-40bf-b832-ecc5414ddd8e
+[2026-08-23 19:29:58Z] C4-transduction finished with COMPLETE
+[2026-08-23 19:30:02Z] note: Aristotle's copy of the book differs from yours in intro.tex, sst.tex, polyregular-pebble.tex, myhill-nerode.tex, krohn-rhodes.tex, rational-relations.tex, logic.tex, mealy.tex, 2dfa.tex, weighted.tex (not synced back — inspect by hand if you care)
+[2026-08-23 19:30:04Z] synced 162 lean files; sorries 12 -> 11
+[2026-08-23 19:30:04Z] committed harvest of fa8e8e6d-8fa7-40bf-b832-ecc5414ddd8e
+[2026-08-23 19:30:05Z] target C4-transduction: done
+[2026-08-23 19:30:07Z] submitted [initial] C4-first-order -> task 0da14218-27b4-4adc-85b1-14bb3980862a
+[2026-08-23 22:54:52Z] C4-first-order finished with COMPLETE
+[2026-08-23 22:54:56Z] note: Aristotle's copy of the book differs from yours in intro.tex, sst.tex, polyregular-pebble.tex, myhill-nerode.tex, krohn-rhodes.tex, rational-relations.tex, logic.tex, mealy.tex, 2dfa.tex, weighted.tex (not synced back — inspect by hand if you care)
+[2026-08-23 22:54:57Z] synced 171 lean files; sorries 11 -> 9
+[2026-08-23 22:54:57Z] committed harvest of 0da14218-27b4-4adc-85b1-14bb3980862a
+[2026-08-23 22:54:58Z] target C4-first-order: done
+[2026-08-23 22:55:00Z] submitted [initial] C4-fo-transductions -> task a77f2289-745d-4f8e-9be2-659ad6a0e6a8
+[2026-08-24 02:55:07Z] C4-fo-transductions finished with COMPLETE_WITH_ERRORS
+[2026-08-24 02:55:12Z] note: Aristotle's copy of the book differs from yours in intro.tex, sst.tex, polyregular-pebble.tex, rational-functions.tex, myhill-nerode.tex, krohn-rhodes.tex, rational-relations.tex, logic.tex, mealy.tex, regular-primes.tex, 2dfa.tex, polyregular-for.tex, weighted.tex (not synced back — inspect by hand if you care)
+[2026-08-24 02:55:13Z] synced 175 lean files; sorries 9 -> 8
+[2026-08-24 02:55:13Z] committed harvest of a77f2289-745d-4f8e-9be2-659ad6a0e6a8
+[2026-08-24 02:55:17Z] submitted [continue] C4-fo-transductions -> task b4ebd3b0-70d6-43f3-a511-bd7ab76d91f3
+[2026-08-24 06:21:07Z] C4-fo-transductions finished with COMPLETE
+[2026-08-24 06:21:11Z] note: Aristotle's copy of the book differs from yours in intro.tex, sst.tex, rational-intro.tex, polyregular-pebble.tex, main.tex, rational-functions.tex, myhill-nerode.tex, krohn-rhodes.tex, rational-relations.tex, logic.tex, mealy.tex, regular-primes.tex, 2dfa.tex, polyregular-for.tex, weighted.tex (not synced back — inspect by hand if you care)
+[2026-08-24 06:21:13Z] synced 188 lean files; sorries 8 -> 8
+[2026-08-24 06:21:13Z] committed harvest of b4ebd3b0-70d6-43f3-a511-bd7ab76d91f3
+[2026-08-24 06:21:16Z] submitted [reattempt] C4-fo-transductions -> task 743b0852-3c5a-418e-b8d3-40da75a917b2
+[2026-08-24 06:36:18Z] C4-fo-transductions finished with CANCELED
+[2026-08-24 06:36:22Z] note: Aristotle's copy of the book differs from yours in intro.tex, sst.tex, rational-intro.tex, polyregular-pebble.tex, main.tex, rational-functions.tex, myhill-nerode.tex, krohn-rhodes.tex, rational-relations.tex, logic.tex, mealy.tex, regular-primes.tex, 2dfa.tex, polyregular-for.tex, weighted.tex (not synced back — inspect by hand if you care)
+[2026-08-24 06:36:24Z] synced 188 lean files; sorries 8 -> 8
+[2026-08-24 06:36:24Z] committed harvest of 743b0852-3c5a-418e-b8d3-40da75a917b2
+[2026-08-24 06:36:24Z] task was canceled — pausing so the driver does not fight you. Resume with: driver.py resume
+[2026-08-24 06:51:25Z] paused (task 743b0852-3c5a-418e-b8d3-40da75a917b2 was canceled by hand) — nothing to do
+[2026-08-24 07:06:23Z] paused (task 743b0852-3c5a-418e-b8d3-40da75a917b2 was canceled by hand) — nothing to do
+[2026-08-24 08:06:35Z] external finished with COMPLETE
+[2026-08-24 08:06:40Z] note: Aristotle's copy of the book differs from yours in intro.tex, sst.tex, rational-intro.tex, polyregular-pebble.tex, main.tex, rational-functions.tex, myhill-nerode.tex, krohn-rhodes.tex, rational-relations.tex, logic.tex, mealy.tex, regular-primes.tex, 2dfa.tex, polyregular-for.tex, weighted.tex (not synced back — inspect by hand if you care)
+[2026-08-24 08:06:41Z] synced 188 lean files; sorries 8 -> 8
+[2026-08-24 08:06:42Z] committed harvest of 7099d7f0-ebf7-4d53-8998-00337a5e34a5
+[2026-08-24 08:06:42Z] unhandled status COMPLETE; clearing current task
+[2026-08-24 08:06:46Z] submitted [initial] C2-snake-step -> task bf8f63c2-810c-4492-9aeb-01d06ed91049
+[2026-08-24 11:30:28Z] C2-snake-step finished with OUT_OF_BUDGET
+[2026-08-24 11:32:14Z] note: Aristotle's copy of the book differs from yours in intro.tex, sst.tex, rational-intro.tex, polyregular-pebble.tex, main.tex, rational-functions.tex, myhill-nerode.tex, krohn-rhodes.tex, rational-relations.tex, logic.tex, mealy.tex, regular-primes.tex, 2dfa.tex, polyregular-for.tex, weighted.tex (not synced back — inspect by hand if you care)
+[2026-08-24 11:32:15Z] synced 195 lean files; sorries 8 -> 8
+[2026-08-24 11:32:16Z] committed harvest of bf8f63c2-810c-4492-9aeb-01d06ed91049
+[2026-08-24 11:32:19Z] submitted [continue] C2-snake-step -> task 8e83d3af-ded0-44c2-bc9d-5113ee96a653
+[2026-08-24 17:02:18Z] C2-snake-step finished with OUT_OF_BUDGET
+[2026-08-24 17:02:24Z] note: Aristotle's copy of the book differs from yours in intro.tex, sst.tex, rational-intro.tex, polyregular-pebble.tex, main.tex, rational-functions.tex, myhill-nerode.tex, krohn-rhodes.tex, rational-relations.tex, logic.tex, mealy.tex, regular-primes.tex, 2dfa.tex, polyregular-for.tex, weighted.tex (not synced back — inspect by hand if you care)
+[2026-08-24 17:02:26Z] synced 200 lean files; sorries 8 -> 8
+[2026-08-24 17:02:26Z] committed harvest of 8e83d3af-ded0-44c2-bc9d-5113ee96a653
+[2026-08-24 17:02:30Z] submitted [continue] C2-snake-step -> task 4e641244-60f9-492c-ace3-a72a373a6996
+[2026-08-24 19:48:18Z] C2-snake-step finished with OUT_OF_BUDGET
+[2026-08-24 19:48:23Z] note: Aristotle's copy of the book differs from yours in intro.tex, sst.tex, rational-intro.tex, polyregular-pebble.tex, main.tex, rational-functions.tex, myhill-nerode.tex, krohn-rhodes.tex, rational-relations.tex, logic.tex, mealy.tex, regular-primes.tex, 2dfa.tex, polyregular-for.tex, weighted.tex (not synced back — inspect by hand if you care)
+[2026-08-24 19:48:25Z] synced 205 lean files; sorries 8 -> 8
+[2026-08-24 19:48:25Z] committed harvest of 4e641244-60f9-492c-ace3-a72a373a6996
+[2026-08-24 19:48:30Z] submitted [continue] C2-snake-step -> task 963cd151-95e7-46b1-bee4-9fa807caf4f8
+[2026-08-25 02:11:13Z] C2-snake-step finished with OUT_OF_BUDGET
+[2026-08-25 02:11:17Z] note: Aristotle's copy of the book differs from yours in intro.tex, sst.tex, rational-intro.tex, polyregular-pebble.tex, main.tex, rational-functions.tex, myhill-nerode.tex, krohn-rhodes.tex, rational-relations.tex, logic.tex, mealy.tex, regular-primes.tex, 2dfa.tex, polyregular-for.tex, weighted.tex (not synced back — inspect by hand if you care)
+[2026-08-25 02:11:20Z] synced 227 lean files; sorries 9 -> 7
+[2026-08-25 02:11:20Z] committed harvest of 9ab9fd08-6c0d-4edd-af32-d1b8c16ba7de
+[2026-08-25 02:11:27Z] submitted [continue] C2-snake-step -> task bfa0f826-ae5d-4511-a96e-ba77e78e1ba3
+[2026-08-25 03:41:45Z] C2-snake-step finished with COMPLETE
+[2026-08-25 03:41:50Z] note: Aristotle's copy of the book differs from yours in intro.tex, sst.tex, rational-intro.tex, polyregular-pebble.tex, main.tex, rational-functions.tex, myhill-nerode.tex, krohn-rhodes.tex, rational-relations.tex, logic.tex, mealy.tex, regular-primes.tex, 2dfa.tex, polyregular-for.tex, weighted.tex (not synced back — inspect by hand if you care)
+[2026-08-25 03:41:53Z] synced 231 lean files; sorries 7 -> 6
+[2026-08-25 03:41:53Z] committed harvest of bfa0f826-ae5d-4511-a96e-ba77e78e1ba3
+[2026-08-25 03:41:55Z] target C2-snake-step: done
+[2026-08-25 03:41:57Z] adopted an externally started task 2a952f59-ce5d-4611-8538-8582d36f8bbe; waiting for it
+[2026-08-26 01:40:50Z] external finished with COMPLETE
+[2026-08-26 01:40:59Z] merged 239 lean files from 2a952f59; sorries 5 -> 5
+[2026-08-26 01:40:59Z] unhandled status COMPLETE; clearing current task
+[2026-08-26 01:41:06Z] submitted [initial] exercises-intro -> task 3917d314-cccd-4cb7-91db-c64b9a2e53d0 in a new project, from b0a312d0
+[2026-08-26 02:47:45Z] could not fetch task 6afc3ec8-4ccb-42c5-b8e6-a4d6b4d46306: AristotleAPIError('Request failed: ') — will retry next tick
+[2026-08-26 03:53:42Z] exercises-partA finished with OUT_OF_BUDGET
+[2026-08-26 03:53:49Z] merged 240 lean files from 6afc3ec8; sorries 5 -> 5
+[2026-08-26 03:53:54Z] submitted [continue] exercises-partA -> task fd9fa871-c814-4fb3-8cc9-62b2580aa974 in a new project, from f0c656d6
+[2026-08-26 05:24:05Z] exercises-partA finished with COMPLETE
+[2026-08-26 05:24:11Z] REVIEW: exercises-partA conflicts with local work
+[2026-08-26 05:24:11Z] merge conflict — paused
+[2026-08-26 05:24:13Z] target exercises-partA: done
+[2026-08-26 05:24:20Z] submitted [initial] exercises-partBC -> task b4fce171-fb9c-463a-96c4-4ad8762ada46 in a new project, from a361636c
+[2026-08-26 05:39:20Z] paused (exercises-partA needs a merge by hand) — nothing to do
+[2026-08-26 05:54:20Z] paused (exercises-partA needs a merge by hand) — nothing to do
+[2026-08-26 06:09:21Z] paused (exercises-partA needs a merge by hand) — nothing to do
+[2026-08-26 06:24:21Z] paused (exercises-partA needs a merge by hand) — nothing to do
+[2026-08-26 06:56:27Z] paused (exercises-partA needs a merge by hand) — nothing to do
+[2026-08-26 07:40:25Z] paused (exercises-partA needs a merge by hand) — nothing to do
+[2026-08-26 08:00:01Z] paused (exercises-partA needs a merge by hand) — nothing to do
+[2026-08-26 08:15:01Z] paused (exercises-partA needs a merge by hand) — nothing to do
+[2026-08-26 08:30:05Z] paused (exercises-partA needs a merge by hand) — nothing to do
+[2026-08-26 08:45:05Z] paused (exercises-partA needs a merge by hand) — nothing to do
+[2026-08-26 09:00:06Z] paused (exercises-partA needs a merge by hand) — nothing to do
+[2026-08-26 09:15:06Z] paused (exercises-partA needs a merge by hand) — nothing to do
+[2026-08-26 09:36:06Z] paused (exercises-partA needs a merge by hand) — nothing to do
+[2026-08-26 09:51:06Z] paused (exercises-partA needs a merge by hand) — nothing to do
+[2026-08-26 10:06:07Z] paused (exercises-partA needs a merge by hand) — nothing to do
+[2026-08-26 10:21:07Z] paused (exercises-partA needs a merge by hand) — nothing to do
+[2026-08-26 10:36:07Z] paused (exercises-partA needs a merge by hand) — nothing to do
+[2026-08-26 10:51:07Z] paused (exercises-partA needs a merge by hand) — nothing to do
+[2026-08-26 11:06:07Z] paused (exercises-partA needs a merge by hand) — nothing to do
+[2026-08-26 11:21:08Z] paused (exercises-partA needs a merge by hand) — nothing to do
+[2026-08-26 11:36:08Z] paused (exercises-partA needs a merge by hand) — nothing to do
+[2026-08-26 11:59:10Z] paused (exercises-partA needs a merge by hand) — nothing to do
+[2026-08-26 12:14:12Z] exercises-partBC finished with OUT_OF_BUDGET
+[2026-08-26 12:14:20Z] REVIEW: exercises-partBC conflicts with local work
+[2026-08-26 12:14:20Z] merge conflict — paused
+[2026-08-26 12:29:20Z] paused (exercises-partBC needs a merge by hand) — nothing to do
+[2026-08-26 12:44:20Z] paused (exercises-partBC needs a merge by hand) — nothing to do
+[2026-08-26 13:30:38Z] could not fetch task c921add0-2f43-48db-9b2f-a1d366ca147d: AristotleAPIError('Request failed: ') — will retry next tick
+[2026-08-26 14:23:50Z] exercises-partBC finished with COMPLETE
+[2026-08-26 14:24:00Z] merged 247 lean files from c921add0; sorries 5 -> 5
+[2026-08-26 14:24:01Z] target exercises-partBC: done
+[2026-08-26 14:24:09Z] submitted [initial] audit-C -> task cb190d55-449e-4b71-b193-4c4cc2481368 in a new project, from dccf6006
+[2026-08-26 15:39:34Z] audit-C finished with OUT_OF_BUDGET
+[2026-08-26 15:39:44Z] merged 247 lean files from cb190d55; sorries 5 -> 5
+[2026-08-26 15:39:50Z] submitted [continue] audit-C -> task f580b0a3-0222-4c02-b75d-7f6a54903b92 in a new project, from 46a103a5
+[2026-08-26 16:55:07Z] audit-C finished with COMPLETE
+[2026-08-26 16:55:16Z] merged 246 lean files from f580b0a3; sorries 5 -> 5
+[2026-08-26 16:55:16Z] REVIEW: audit finished: audit-C
+[2026-08-26 16:55:17Z] target audit-C: done
+[2026-08-26 16:55:28Z] submitted [initial] D1-tools -> task 8aae7726-ca93-4e01-9db7-db5d8101db2e in a new project, from e56fbc74
+[2026-08-26 19:56:01Z] D1-tools finished with OUT_OF_BUDGET
+[2026-08-26 19:56:18Z] merged 259 lean files from 8aae7726; sorries 5 -> 4
+[2026-08-26 19:56:31Z] submitted [continue] D1-tools -> task 8ab5b5d3-5625-43b6-a619-c29c69375b05 in a new project, from 28c70d2d
+[2026-08-26 20:56:41Z] D1-tools finished with COMPLETE
+[2026-08-26 20:56:50Z] merged 261 lean files from 8ab5b5d3; sorries 4 -> 3
+[2026-08-26 20:56:54Z] target D1-tools: done
+[2026-08-26 20:57:07Z] submitted [initial] D1-equivalence -> task 1ffece1e-b8c9-4ab0-b9a5-2b612163f36e in a new project, from d8d7c2c9
+[2026-08-27 01:59:09Z] D1-equivalence finished with OUT_OF_BUDGET
+[2026-08-27 01:59:17Z] merged 268 lean files from 1ffece1e; sorries 3 -> 3
+[2026-08-27 01:59:30Z] submitted [continue] D1-equivalence -> task 12102cae-6e8f-4bef-a173-958527717bd8 in a new project, from c3e81927
+[2026-08-27 02:14:31Z] D1-equivalence finished with CANCELED
+[2026-08-27 02:14:38Z] integration: empty
+[2026-08-27 02:14:38Z] task was canceled — pausing so the driver does not fight you. Resume with: driver.py resume
+[2026-08-27 02:29:39Z] paused (task 12102cae-6e8f-4bef-a173-958527717bd8 was canceled by hand) — nothing to do
+[2026-08-27 02:47:47Z] paused (task 12102cae-6e8f-4bef-a173-958527717bd8 was canceled by hand) — nothing to do
+[2026-08-27 03:02:47Z] paused (task 12102cae-6e8f-4bef-a173-958527717bd8 was canceled by hand) — nothing to do
+[2026-08-27 03:17:48Z] paused (task 12102cae-6e8f-4bef-a173-958527717bd8 was canceled by hand) — nothing to do
+[2026-08-27 03:32:48Z] paused (task 12102cae-6e8f-4bef-a173-958527717bd8 was canceled by hand) — nothing to do
+[2026-08-27 03:47:48Z] paused (task 12102cae-6e8f-4bef-a173-958527717bd8 was canceled by hand) — nothing to do
+[2026-08-27 04:02:48Z] paused (task 12102cae-6e8f-4bef-a173-958527717bd8 was canceled by hand) — nothing to do
+[2026-08-27 04:17:48Z] paused (task 12102cae-6e8f-4bef-a173-958527717bd8 was canceled by hand) — nothing to do
+[2026-08-27 04:32:49Z] paused (task 12102cae-6e8f-4bef-a173-958527717bd8 was canceled by hand) — nothing to do
+[2026-08-27 04:47:49Z] paused (task 12102cae-6e8f-4bef-a173-958527717bd8 was canceled by hand) — nothing to do
+[2026-08-27 07:48:21Z] D2-continuity finished with COMPLETE
+[2026-08-27 07:48:31Z] merged 282 lean files from 3c90dba6; sorries 2 -> 1
+[2026-08-27 07:48:35Z] target D2-continuity: done
+[2026-08-27 07:48:58Z] submitted [initial] D2-pebble-equivalence -> task 1595c0b4-e400-455f-b5b4-c218552a0f9e in a new project, from 189f141b
+[2026-08-27 15:38:08Z] exercises-new finished with OUT_OF_BUDGET
+[2026-08-27 15:38:31Z] merged 303 lean files from 0bc90646; sorries 0 -> 0
+[2026-08-27 15:38:36Z] submitted [continue] exercises-new -> task 9d3dfeb8-cdf0-4f90-bcb8-1413af65aa8f in a new project, from 31fd15b9
+[2026-08-27 18:39:21Z] exercises-new finished with OUT_OF_BUDGET
+[2026-08-27 18:39:30Z] merged 308 lean files from 9d3dfeb8; sorries 0 -> 0
+[2026-08-27 18:39:37Z] submitted [continue] exercises-new -> task b5502230-80d8-4ed1-8c81-6e4a88d5ea54 in a new project, from 07462f26
+[2026-08-27 19:54:48Z] exercises-new finished with COMPLETE
+[2026-08-27 19:54:58Z] merged 310 lean files from b5502230; sorries 0 -> 0
+[2026-08-27 19:55:00Z] target exercises-new: done
+[2026-08-27 19:55:08Z] submitted [initial] audit-final -> task ed4c02b0-54e1-4633-bcd2-442272dcb134 in a new project, from 66ca8080
+[2026-08-27 22:25:32Z] audit-final finished with COMPLETE
+[2026-08-27 22:25:42Z] merged 310 lean files from ed4c02b0; sorries 0 -> 0
+[2026-08-27 22:25:42Z] REVIEW: audit finished: audit-final
+[2026-08-27 22:25:44Z] target audit-final: done
+[2026-08-27 22:25:44Z] queue exhausted: 20/10 targets done. Nothing left to submit.
+[2026-08-28 00:12:36Z] encoding-config-graph finished with COMPLETE
+[2026-08-28 00:13:05Z] merged 314 lean files from 4af39846; sorries 0 -> 0
+[2026-08-28 00:13:07Z] target encoding-config-graph: done
+[2026-08-28 00:13:14Z] submitted [initial] encoding-snake-alphabet -> task 50add482-5d95-485c-8754-c93f665a4699 in a new project, from f6c7d0f4
+[2026-08-28 02:15:04Z] encoding-snake-alphabet finished with OUT_OF_BUDGET
+[2026-08-28 02:15:13Z] merged 321 lean files from 50add482; sorries 0 -> 0
+[2026-08-28 02:15:20Z] submitted [continue] encoding-snake-alphabet -> task 7f6b66ff-9221-430a-a32a-c699cc874415 in a new project, from 2c8018d2
+[2026-08-28 02:45:56Z] could not fetch task 7f6b66ff-9221-430a-a32a-c699cc874415: AristotleAPIError('Request failed: ') — will retry next tick
+[2026-08-28 03:14:40Z] encoding-snake-alphabet finished with COMPLETE_WITH_ERRORS
+[2026-08-28 03:14:50Z] merged 321 lean files from 7f6b66ff; sorries 0 -> 0
+[2026-08-28 03:14:57Z] submitted [continue] encoding-snake-alphabet -> task 8a76b61a-cf79-4ecb-a1de-5da367aae515 in a new project, from 8b6fa12b
+[2026-08-28 06:00:21Z] encoding-snake-alphabet finished with COMPLETE_WITH_ERRORS
+[2026-08-28 06:00:31Z] merged 321 lean files from 4013eee5; sorries 0 -> 0
+[2026-08-28 06:00:37Z] submitted [continue] encoding-snake-alphabet -> task 6983a6d2-566a-4e33-94a0-45b8179f9aa0 in a new project, from 1631ae4c
+[2026-08-28 09:36:50Z] encoding-pebble finished with OUT_OF_BUDGET
+[2026-08-28 09:36:59Z] merged 334 lean files from 61bce92d; sorries 0 -> 0
+[2026-08-28 09:37:10Z] submitted [continue] encoding-pebble -> task 0431c088-3a36-487a-8284-e30b48d6080a in a new project, from bfa5848a
+[2026-08-28 11:43:32Z] encoding-pebble finished with OUT_OF_BUDGET
+[2026-08-28 11:49:14Z] download failed: AristotleAPIError('Request failed: ')
+[2026-08-28 12:33:29Z] encoding-pebble finished with OUT_OF_BUDGET
+[2026-08-28 12:34:09Z] merged 342 lean files from 0431c088; sorries 0 -> 0
+[2026-08-28 12:34:19Z] submitted [continue] encoding-pebble -> task df335f33-2e39-41e0-8c50-f2aa0b3a0ebf in a new project, from ce2693c2
+[2026-08-28 14:37:27Z] encoding-pebble finished with COMPLETE
+[2026-08-28 14:37:42Z] merged 343 lean files from df335f33; sorries 0 -> 0
+[2026-08-28 14:37:43Z] target encoding-pebble: done
+[2026-08-28 14:37:50Z] submitted [initial] exercises-encoding -> task 3b658cc4-4571-4968-a869-15c756e1e1d5 in a new project, from 873f7f58
+[2026-08-28 16:43:14Z] exercises-encoding finished with OUT_OF_BUDGET
+[2026-08-28 16:43:36Z] merged 347 lean files from 3b658cc4; sorries 0 -> 0
+[2026-08-28 16:43:49Z] submitted [continue] exercises-encoding -> task 0b6923eb-4065-4f94-9095-de5c9d9987b5 in a new project, from 75485da6
+[2026-08-28 19:14:28Z] exercises-encoding finished with OUT_OF_BUDGET
+[2026-08-28 19:14:38Z] merged 358 lean files from 0b6923eb; sorries 0 -> 0
+[2026-08-28 19:14:44Z] submitted [continue] exercises-encoding -> task ad990dab-11f4-4cb2-ba4c-2cc67e716ebd in a new project, from d4ddb874
+[2026-08-28 20:29:57Z] exercises-encoding finished with COMPLETE
+[2026-08-28 20:30:06Z] merged 361 lean files from ad990dab; sorries 0 -> 0
+[2026-08-28 20:30:08Z] target exercises-encoding: done
+[2026-08-28 20:30:15Z] submitted [initial] audit-final -> task 3920873c-56cb-42d9-ae09-a24dd86262f1 in a new project, from 16689b19
+[2026-08-28 21:30:23Z] audit-final finished with COMPLETE
+[2026-08-28 21:30:33Z] merged 360 lean files from 3920873c; sorries 0 -> 0
+[2026-08-28 21:30:33Z] REVIEW: audit finished: audit-final
+[2026-08-28 21:30:35Z] target audit-final: done
+[2026-08-28 21:30:35Z] queue exhausted: 23/14 targets done. Nothing left to submit.
+[2026-08-31 03:19:52Z] hyp-forward-for finished with COMPLETE
+[2026-08-31 03:20:01Z] merged 379 lean files from 7e2f74df; sorries 0 -> 0
+[2026-08-31 03:20:02Z] target hyp-forward-for: done
+[2026-08-31 03:20:10Z] submitted [initial] hyp-minimal-bimachine -> task 275d3fd0-c55d-4963-82d8-32b8a32f225f in a new project, from e756bc47
+[2026-08-31 04:20:18Z] hyp-minimal-bimachine finished with COMPLETE
+[2026-08-31 04:20:27Z] merged 379 lean files from 275d3fd0; sorries 0 -> 0
+[2026-08-31 04:20:29Z] target hyp-minimal-bimachine: done
+[2026-08-31 04:20:37Z] submitted [initial] hyp-even-parity -> task 1f89c2cf-a81c-4fe8-8a7d-a1256180d1fd in a new project, from 367ed26f
+[2026-08-31 09:21:41Z] hyp-even-parity finished with COMPLETE
+[2026-08-31 09:21:51Z] merged 380 lean files from 1f89c2cf; sorries 0 -> 0
+[2026-08-31 09:21:52Z] target hyp-even-parity: done
+[2026-08-31 09:22:01Z] submitted [initial] hyp-growth-dichotomy -> task 5035ddde-593a-4b4c-b21e-2c7d510044af in a new project, from 16690ebe
+[2026-08-31 10:55:26Z] hyp-growth-dichotomy finished with COMPLETE
+[2026-08-31 10:56:18Z] merged 382 lean files from 5035ddde; sorries 0 -> 0
+[2026-08-31 10:56:20Z] target hyp-growth-dichotomy: done
+[2026-08-31 10:56:40Z] submitted [initial] hyp-polynomial-ideals -> task fc782431-5e13-4c58-ab03-95b572c2f9af in a new project, from 0ecf8bb6

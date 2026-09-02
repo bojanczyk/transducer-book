@@ -4,20 +4,8 @@
   {{ partial "latex-file-block.html" (dict "file" $titleFile "class" "page-title" "color_map" "transducer-book-color-map") }}
 {{- end }}
 {{ .Content }}
-{{- if .Params.part }}
-  {{- $current := printf "/%s/" .File.ContentBaseName -}}
-  {{- range hugo.Data.book_toc }}
-    {{- if eq .href $current }}
-      {{- with .children }}
-      <nav class="book-toc part-sections" aria-label="Sections in this part">
-        <ol>
-          {{- range . }}
-            {{ partial "book-toc-node.html" (dict "node" . "current" $current) }}
-          {{- end }}
-        </ol>
-      </nav>
-      {{- end }}
-    {{- end }}
-  {{- end }}
-{{- end }}
+{{/* A part's opening page used to end with a list of the part's own sections.
+     The sidebar already carries that list, on this page and on every other, so
+     the second copy said nothing new and pushed the author's opening paragraphs
+     up against a table of contents they had not written. */}}
 {{ end }}

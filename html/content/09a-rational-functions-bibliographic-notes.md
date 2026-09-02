@@ -8,6 +8,6 @@ source = "partBRational/bib-notes.tex"
 \setcounter{mypart}{2}
 \setcounter{section}{4}
 \setcounter{ourexamplecounter}{17}
-% source stamp partBRational/bib-notes.tex:bff27ddd
+% source stamp partBRational/bib-notes.tex:0ce2e402
 \input{../../../partBRational/bib-notes.tex}
 {{< /latex >}}

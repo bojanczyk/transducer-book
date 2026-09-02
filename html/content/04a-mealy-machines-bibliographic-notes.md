@@ -8,6 +8,6 @@ source = "partAMealy/bib-notes.tex"
 \setcounter{mypart}{1}
 \setcounter{section}{2}
 \setcounter{ourexamplecounter}{6}
-% source stamp partAMealy/bib-notes.tex:9aab5506
+% source stamp partAMealy/bib-notes.tex:5fdf58e8
 \input{../../../partAMealy/bib-notes.tex}
 {{< /latex >}}

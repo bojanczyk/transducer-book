@@ -249,3 +249,90 @@ Three of the 65 diverge from the literal exercise, each documented: `exer:ration
 ## Housekeeping
 
 Two leftover files were removed from the top of `transducer-lean/`: `Scratch.lean`, a byte-for-byte duplicate of `RequestProject/PartD/ChildGraphOfRun.lean`, and `--help`, a captured tool output. Neither was part of the Lean library. The LaTeX sources of the book were not touched.
+
+## 2026-09-01 01:21:53Z — hyp-polynomial-ideals stopped: nothing left to do
+
+The last 1 continuation(s) changed no `.lean` file — only prose — so the driver stopped rather than spend the remaining 5 continuation(s) on a finished target.
+
+If you think there was more to do:
+
+    formalize requeue hyp-polynomial-ideals
+
+Its last summary:
+
+Picking up from the previous state, the two hypotheses this target names were already discharged in the repository; this pass verified that end to end from the sources, found nothing to repair, and recorded the check.
+
+**State of `RequestProject/Exercises/Ideals.lean` (verified, not merely reported):**
+
+* `Transducers.Exercises.SortedFromOmegaOutputs` is a **theorem** (a rational function with `Ω(n^k)` outputs has `sortedFun k` as a rational pre- and post-composition), proved from `exists_rational_sorted_of_omega` in `RequestProject/Exercises/IdealsOmega.lean` and the chain-of-loops analysis behind it.
+* `Transducers.Exercises.FactorThroughSortedOfOutputsPolyPos` is a **theorem** (a rational function with `O(n^k)` outputs, `k ≥ 1`, factors as a rational pre- and post-composition of `sortedFun k`), proved from `exists_rational_factor_through_sorted` in `RequestProject/Exercises/IdealsPoly.lean`, resting on the strongly-connected-component/pattern-cover analysis in `RequestProject/Exercises/PatternCover.lean` and `PatternCoverRat.lean`.
+* No declaration of the file takes a hypothesis argument. The single remaining `def … : Prop`, `FactorThroughSortedOfOutputsPoly`, is the faithful rendering of the book's statement at `k = 0`, which is **refuted** by `not_factorThroughSortedOfOutputsPoly` — it is not assumed anywhere; the vacuous faithful rendering of the exercise itself is kept only as a block comment, next to `polynomial_ideals_false_at_zero`.
+
+**Consequently, proved outright:** Exercise `exer:full-ideal` (`full_ideal_iff`), Exercise `exer:all-ideals` (`all_ideals`) and Exercise `exer:decide-same-ideal` (`sameIdeal_iff`, with `sameIdeal_decidable`) are unconditional; Exercise `exer:polynomial-ideals` (`polynomial_ideals`) is proved with the extra hypothesis `1 ≤ k`, which is not in the book and cannot be dropped — the documented divergence, since the exercise is false at `k = 0`. Nothing in the file is left open, and no result depends on a `sorry`.
+
+**Checks run in this pass:** a full `lake build` of `transducer-lean/` from a clean tree succeeds (8414 jobs, no errors); `tools/print_axioms.sh` reports `propext`, `Classical.choice`, `Quot.sound` and nothing else for all 213 aliases of `RequestProject/Labels.lean`; `#print axioms` run directly on `SortedFromOmegaOutputs`, `FactorThroughSortedOfOutputsPolyPos`, `not_factorThroughSortedOfOutputsPoly`, `polynomial_ideals`, `all_ideals` and `sameIdeal_iff` gives the same three axioms for each; `RequestProject/` contains no `sorry` outside block comments, no `axiom`, no `@[implemented_by]` and no `native_decide`; and `tools/gen_labels.py --check`, `tools/decl_files.py --check`, `tools/tex_numbering.py --check` all pass. `Labels.lean`, `EXERCISES.md` and `THEOREMS.md` already carry the correct statuses (no row says "from the hypothesis …" for these four exercises); the only edit made was a short paragraph appended to `THEOREMS.md` recording this verification. Committed and pushed.
+
+Out of scope and untouched, as instructed: `EFSuccSeparation`, `IteratesReduction`, and the undecidability of PCP.
+
+## 2026-09-01 07:55:31Z — hyp-fo-non-elementary was canceled
+
+Task 9f605b14-72d4-40bb-b674-60bd19229731 was canceled, so nothing was integrated for hyp-fo-non-elementary and the run has moved on to the next target.
+
+If you cancelled it because you were doing the work yourself, that run is in a project of its own and this driver cannot see it. Bring it in with:
+
+    driver.py integrate <project-id> --base <commit>
+
+and then `driver.py requeue hyp-fo-non-elementary` if more is still wanted from it.
+
+## 2026-09-01 11:55:21Z — hyp-effective-arithmetic conflicts with local work
+
+The run started from 2a1fe6e8 and its result does not merge cleanly into what the repository holds now — the same files were changed on both sides. Nothing has been lost: the run is on branch `aristotle/1cb9406b`.
+
+    git -C /Users/bojan/Documents/ksiazki/transducer-book-lean/transducer-lean merge aristotle/1cb9406b
+
+## 2026-09-01 15:20:42Z — hyp-effective-section ran out of budget
+
+Budget exhausted after 1 continuation(s). Still containing `sorry`: none detected.
+
+The run has moved on. To give this another go:
+    formalize requeue hyp-effective-section
+
+Its last summary:
+
+## 2026-09-01 16:21:54Z — audit finished: audit-conditionals
+
+Aristotle's audit report follows. Divergences from the book and status corrections are what to look for.
+
+## Closing audit of the *Transducers* formalisation — report
+
+### 1. Build from scratch
+`.lake/` was absent, so this was a genuine cold build (`lake exe cache get && lake build`): **8462 jobs, success, 0 errors, 0 warnings**. After the changes made during the audit the tree builds in **8463 jobs**, again with no errors and no warnings. Five textual occurrences of `sorry` remain in the sources (`PartB/WeightedStatements.lean` ×2, `PartC/Statements.lean` ×2, `PartC/MSOOpen.lean` ×1); all five are inside block comments, so no declaration depends on `sorry`.
+
+### 2–3. Assumptions still standing
+The enumeration was done authoritatively by elaborating `#check @…` for all **213** aliases of `RequestProject/Labels.lean` and reading the hypothesis arguments off the printed types, rather than by grepping. Five aliases take an assumption:
+
+| assumption | used by | account |
+| --- | --- | --- |
+| `Transducers.EffectiveTwoWayBound` (`PartC/EffectiveReg.lean`) | Theorem `thm:decidable-equivalence-regular` | real obstacle, reported by the target that owned it; the missing step is written out as `EffectiveTwoWayWeighted` in `PartC/RegBoundGap.lean` |
+| `Transducers.Exercises.EFSuccSeparation` | `exer:fo-suc` | out of scope (Ehrenfeucht–Fraïssé) |
+| `Transducers.Exercises.IteratesReduction` | `exer:rational-composition-finiteness-undecidable` | out of scope (halting-problem reduction) |
+| `Transducers.Exercises.EffectiveLengthPairsSemilinear` | `exer:decide-rational-colision` item (b) | real obstacle: effective Parikh images / semilinear sets are absent from the project and from Mathlib |
+| `Transducers.Exercises.CanonicalSuffixBimachineExists` | `exer:minimal-bimachine-lexicographic` | the hypothesis is **false** — refuted in the project by `not_canonicalSuffixBimachineExists`; the exercise is therefore counted as formalised but *not proved* |
+
+PCP undecidability is no longer an assumption: it was discharged in an earlier run as `Transducers.PCP.solvable_not_computablePred`. Prop-defs assumed nowhere: `EffectiveTwoWayWeighted`, `FactorThroughSortedOfOutputsPoly` (refuted), `EffectiveWeightedBound` (proved as `effectiveWeightedBound`).
+
+**One assumption outside the sanctioned list was found**: two exercises still took `hrev : ¬ IsRationalFun List.reverse`. It was discharged rather than left standing — new file `RequestProject/Exercises/ReverseNotRational.lean` proves `not_boundedVarRel_reverse` and then `not_isRationalFun_reverse` from `isRationalFun_iff` (Theorem `thm:machine-independent-rational-functions`). The hypothesis was deleted from the argument lists of `exists_not_isRationalFun_unary_compositions_rational` (`Exercises/PartBC.lean`), `not_isRationalFun_mapReverse` and `exists_isRegularFun_not_weighted_precomp` (`Exercises/RegularPrimes.lean`); their conclusions are unchanged.
+
+**Bookkeeping errors found and fixed**: three alias docstrings in `Labels.lean` omitted the hypothesis they carried (`exer:function-that-is-not-rational`, `exer:not-semiring-continuous`, `thm:decidable-equivalence-regular`); `EXERCISES.md` called `exer:not-semiring-continuous` proved while it was conditional, and credited item (a) of `exer:decide-rational-colision` to an assumed PCP undecidability that is now a theorem; the stale addendum list counted `exer:polyregular-unmarked-squaring` as conditional and omitted `exer:not-semiring-continuous`.
+
+### 4. Axioms
+`bash tools/print_axioms.sh` runs `#print axioms` through every one of the 213 aliases: **all depend only on `propext`, `Classical.choice`, `Quot.sound`**. `tools/gen_labels.py --check`, `tools/decl_files.py --check` and `tools/tex_numbering.py --check` all pass. `tools/relabel.py` exits 1 with 28 hits, but every one is a reference to *Sipser's* numbering (Thm 4.11, Cor 4.18, Thm 4.22, Cor 4.23, Thm 5.15) in `Acceptance/`, `PCP/` and `RequestProject.lean`, not to a result of *Transducers*; this is now documented.
+
+### 5–6. Documentation
+`THEOREMS.md`, `EXERCISES.md` and `FORMALISATION.md` are up to date: no status column says "from the hypothesis …" for a hypothesis that is now proved, the `## Status` counts agree with the tables, each file gained a final `## Status (final: the closing audit)` section with the full assumption inventory, and §4 of `FORMALISATION.md` is rewritten as a short *What the formalisation assumes* with the four-row table above.
+
+### Final tally
+* **Numbered results**: **76 proved outright**, **1 conditional** — Theorem `thm:decidable-equivalence-regular`, on `EffectiveTwoWayBound` — 3 not formalised, 20 definitions.
+* **Exercises**: 81 formalised — **77 proved outright**, **3 conditional** (`exer:fo-suc` on `EFSuccSeparation`; `exer:rational-composition-finiteness-undecidable` on `IteratesReduction`; `exer:decide-rational-colision` item (b) on `EffectiveLengthPairsSemilinear`), and **1 formalised but not proved** (`exer:minimal-bimachine-lexicographic`, whose hypothesis is refuted in the project).
+
+All work is committed and pushed.

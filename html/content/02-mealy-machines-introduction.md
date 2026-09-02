@@ -9,6 +9,6 @@ part = true
 \setcounter{mypart}{1}
 \setcounter{section}{0}
 \setcounter{ourexamplecounter}{1}
-% source stamp partAMealy/intro.tex:726bb3eb
+% source stamp partAMealy/intro.tex:3b1299bb
 \input{../../../partAMealy/intro.tex}
 {{< /latex >}}
