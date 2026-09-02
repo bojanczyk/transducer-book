@@ -16,15 +16,16 @@ this to be a *total* procedure and a correct one.
   changes neither behaviour (`Transducers.RegDec.twoWayCodeRel_map`) and
   preserves the length of the input.
 * The two coded transducers have to be compared on a given input, and the equivalence bound has to
-  be computed from the two codes.  The first of these is proved:
-  `Transducers.EffectiveTwoWayEvalEq` in `RequestProject/PartC/TwoWaySimPrimrec.lean`.  The second
-  is the remaining hypothesis `Transducers.EffectiveTwoWayBound` of
-  `RequestProject/PartC/EffectiveReg.lean`, whose mathematical content -- the existence of the
-  equivalence bound -- is proved in `RequestProject/PartC/RegCodeBound.lean`
-  (`Transducers.exists_twoWayCode_bound`).
+  be computed from the two codes.  Both are proved: `Transducers.EffectiveTwoWayEvalEq` in
+  `RequestProject/PartC/TwoWaySimPrimrec.lean`, and `Transducers.effectiveTwoWayBound` in
+  `RequestProject/PartC/RegEffBound.lean` (which discharges the former hypothesis
+  `Transducers.EffectiveTwoWayBound` of `RequestProject/PartC/EffectiveReg.lean`, with the explicit
+  bound `Transducers.RegDec.codeBound`).  The decision procedure below is therefore
+  unconditional.
 -/
 import RequestProject.PartC.EffectiveReg
 import RequestProject.PartC.RegCodeBound
+import RequestProject.PartC.RegEffBound
 import RequestProject.PartB.WeightedDec
 
 namespace Transducers
@@ -118,15 +119,15 @@ lemma computable_regEqB {D : TwoWayCode × TwoWayCode × List ℕ → Bool}
 
 end RegDec
 
-/-- **Theorem `thm:decidable-equivalence-regular`** from the effectivity hypothesis
-`EffectiveTwoWayBound`.  Equivalence is decidable for the two-way transducers computing regular
-functions. -/
-theorem regular_equivalence_decidable_aux (hBound : EffectiveTwoWayBound) :
+/-- **Theorem `thm:decidable-equivalence-regular`.**  Equivalence is decidable for the two-way
+transducers computing regular functions.  Both effectivity ingredients are proved:
+`Transducers.EffectiveTwoWayEvalEq` and `Transducers.effectiveTwoWayBound`. -/
+theorem regular_equivalence_decidable_aux :
     DecidableUnderPromise
       (fun p : TwoWayCode × TwoWayCode => TwoWayCodeTotal p.1 ∧ TwoWayCodeTotal p.2)
       (fun p => twoWayCodeRel p.1 = twoWayCodeRel p.2) := by
   obtain ⟨D, hDcomp, hD⟩ := EffectiveTwoWayEvalEq
-  obtain ⟨N, hNcomp, hN⟩ := hBound
+  obtain ⟨N, hNcomp, hN⟩ := effectiveTwoWayBound
   exact ⟨RegDec.regEqB D N, RegDec.computable_regEqB hDcomp hNcomp,
     fun p hp => RegDec.regEqB_iff hD hN p hp.1 hp.2⟩
 

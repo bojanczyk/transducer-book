@@ -1,29 +1,27 @@
-/- What exactly is missing for the last effectivity hypothesis of Theorem
+/- An alternative route to the last effectivity statement of Theorem
 `thm:decidable-equivalence-regular` of *Transducers* (M. Bojańczyk).
 
-Theorem `thm:decidable-equivalence-regular` is proved in
-`RequestProject/PartC/RegEqDec.lean` from one hypothesis,
-`Transducers.EffectiveTwoWayBound` of `RequestProject/PartC/EffectiveReg.lean`:
-that an equivalence bound can be *computed* from two codes of two-way
-transducers.  That such a bound *exists* is proved
-(`Transducers.exists_twoWayCode_bound`, `RequestProject/PartC/RegCodeBound.lean`);
-what is missing is that it is a computable function of the codes, because the
-book's chain of constructions produces the bound from existentials over abstract
-finite types and so carries no size information.
+This file was written when `Transducers.EffectiveTwoWayBound` of
+`RequestProject/PartC/EffectiveReg.lean` -- that an equivalence bound can be *computed* from two
+codes of two-way transducers -- was still a hypothesis of Theorem
+`thm:decidable-equivalence-regular`.  It is one no longer: it is proved as
+`Transducers.effectiveTwoWayBound` in `RequestProject/PartC/RegEffBound.lean`, with the explicit
+bound `Transducers.RegDec.codeBound`, and the theorem is unconditional.  That proof does not go
+through weighted automata at all; it applies an explicit-rank form of Schützenberger's criterion
+(`Transducers.HankelRank.zero_of_short`) directly to the crossing-sequence decomposition of a
+two-way run.
 
-This file makes that account precise, and machine-checked: it states the *effective form of the
-book's reduction* to weighted automata, `Transducers.EffectiveTwoWayWeighted` -- a computable map
-sending two codes of two-way transducers to two codes of weighted automata over `ℚ` whose values
-agree on an input exactly when the two coded transducers do -- and proves that this one statement
-implies the remaining hypothesis
-(`Transducers.effectiveTwoWayBound_of_effectiveTwoWayWeighted`).  Nothing here is used in the proof
-of a numbered result: the hypothesis of Theorem `thm:decidable-equivalence-regular` is unchanged,
-and `EffectiveTwoWayWeighted` is *not* assumed anywhere.  The point of the file is that the gap is
-exactly one construction, stated in the language of the project's own codes, and that everything
-downstream of it -- the Schützenberger bound as an explicit arithmetic function of a code, its
-primitive recursiveness, and the assembly of the decision procedure -- is already proved
-(`Transducers.wcodeBound`, `Transducers.wcodeEval_eq_of_short` and
-`Transducers.effectiveWeightedBound` in `RequestProject/PartB/WeightedBound.lean`).
+What remains here is the *effective form of the book's own reduction* to weighted automata,
+`Transducers.EffectiveTwoWayWeighted` -- a computable map sending two codes of two-way transducers
+to two codes of weighted automata over `ℚ` whose values agree on an input exactly when the two
+coded transducers do -- together with the proof that this one statement implies
+`Transducers.EffectiveTwoWayBound`
+(`Transducers.effectiveTwoWayBound_of_effectiveTwoWayWeighted`).  It is *not* assumed anywhere, and
+nothing in the project depends on it; it is kept because it records, in the language of the
+project's own codes, what a code-to-code form of the book's argument would have to produce, and
+because everything downstream of it is already proved (`Transducers.wcodeBound`,
+`Transducers.wcodeEval_eq_of_short` and `Transducers.effectiveWeightedBound` in
+`RequestProject/PartB/WeightedBound.lean`).
 
 Producing such a map is the size-explicit form of the two steps of the book's proof that are
 formalised only semantically: the decomposition of a two-way transducer into prime functions
@@ -45,10 +43,12 @@ There is a computable map sending two codes of two-way transducers to two codes
 of weighted automata over `ℚ` which are valid and which, on every input, take
 equal values exactly when the two coded transducers compute the same output.
 
-This is what is missing for `Transducers.EffectiveTwoWayBound`, and it is all that is missing:
-`Transducers.effectiveTwoWayBound_of_effectiveTwoWayWeighted` below derives that hypothesis from
-it.  It is *not* assumed anywhere in the project; it is stated in order to say precisely what a
-proof of Theorem `thm:decidable-equivalence-regular` without hypotheses would need.
+This is the effective form of the book's own reduction, and it implies
+`Transducers.EffectiveTwoWayBound` (`Transducers.effectiveTwoWayBound_of_effectiveTwoWayWeighted`
+below).  It is *not* assumed anywhere in the project, and it is not needed for Theorem
+`thm:decidable-equivalence-regular`, which is proved unconditionally in
+`RequestProject/PartC/RegEffBound.lean` by a different route; it is stated in order to say
+precisely what a code-to-code form of the book's argument would produce.
 
 The statement asks less than the book's construction provides -- the two weighted automata are not
 required to compute the rational encodings of the two outputs, only to separate the same inputs --
@@ -60,8 +60,8 @@ def EffectiveTwoWayWeighted : Prop :=
         ∀ w : List ℕ, (wcodeEval (W c₁ c₂).1 w = wcodeEval (W c₁ c₂).2 w ↔
           twoWayCodeRel c₁ w = twoWayCodeRel c₂ w)
 
-/-- **The remaining hypothesis of Theorem `thm:decidable-equivalence-regular` follows from the
-effective form of the book's reduction.**  Given a computable map from two codes of two-way
+/-- **`Transducers.EffectiveTwoWayBound` follows from the effective form of the book's
+reduction.**  Given a computable map from two codes of two-way
 transducers to two codes of weighted automata separating the same inputs, the equivalence bound is
 computable: it is the sum of the two Schützenberger bounds `Transducers.wcodeBound` of the images,
 which is primitive recursive in the codes. -/

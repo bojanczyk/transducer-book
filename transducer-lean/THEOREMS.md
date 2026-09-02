@@ -23,13 +23,14 @@ So the names and the statuses in the tables below cannot go stale without
 breaking the build.
 
 Of the **100 theorem-like environments** of the book, 20 definitions and 77
-results are formalised, and 3 are not; of the 77, **71 are proved outright** and
-6 are proved from an explicit hypothesis.  **Parts A, B and D are proved in
-full**, and so is Part C apart from Theorem `thm:decidable-equivalence-regular`,
-which is one of the six.  Nothing that is formalised is left unproved: there is
-no `sorry` and no `axiom` anywhere in the project.  The `## Status` section at
-the end gives the counts part by part, the six hypotheses, the three environments
-that are not formalised, and the warnings that `lake build` still emits.
+results are formalised, and 3 are not; **all 77 are proved outright**, and none
+of them takes a hypothesis.  **Parts A, B, C and D are proved in full**: the last
+result that was conditional, Theorem `thm:decidable-equivalence-regular`, became
+unconditional when `Transducers.EffectiveTwoWayBound` was proved
+(`PartC/RegEffBound.lean`).  Nothing that is formalised is left unproved: there
+is no `sorry` and no `axiom` anywhere in the project.  The last `## Status`
+section at the end gives the counts part by part, the three environments that
+are not formalised, and the assumptions that remain in the *exercises*.
 
 ## Layout
 
@@ -99,8 +100,12 @@ RequestProject/
 | `PartC/RegularDef.lean` | the prime regular functions and the regular functions (Definition `def:regular-functions`), moved here unchanged from `PartC/Statements.lean`, together with their elementary closure properties |
 | `PartC/RegCodeSan.lean` | codes of two-way transducers (`TwoWayCode`, `twoWayCodeAut`, `twoWayCodeRel`, `TwoWayCodeTotal`, moved here unchanged from `PartC/Statements.lean`), and the fact that a coded transducer is blind to the letters that do not occur in its table: renaming them does not change the computed relation (`Transducers.RegDec.twoWayCodeRel_map`), which is what makes the equivalence test of Theorem `thm:decidable-equivalence-regular` a finite check |
 | `PartC/RegCodeBound.lean` | the existence of the equivalence bound of Theorem `thm:decidable-equivalence-regular` for two codes (`Transducers.exists_twoWayCode_bound`): the transducer of a code read over the finite alphabets and the finite state set that occur in it, the step-by-step correspondence between its runs and those of the coded transducer, the determinism of two-way transducers (`TwoWay.computes_unique`), and the application of `Transducers.regularFun_eq_of_short` |
-| `PartC/EffectiveReg.lean` | the two effectivity statements used by Theorem `thm:decidable-equivalence-regular`, with their justification: `EffectiveTwoWayEvalEq` is **proved** (in `PartC/TwoWaySimPrimrec.lean`), and `EffectiveTwoWayBound` is the one hypothesis of the theorem that remains |
-| `PartC/RegBoundGap.lean` | what exactly is missing for `EffectiveTwoWayBound`: the effective form of the book's reduction to weighted automata, stated as `Transducers.EffectiveTwoWayWeighted` (a computable map from two codes of two-way transducers to two codes of weighted automata over `ℚ` that separate the same inputs), together with the proof that it implies the hypothesis, `Transducers.effectiveTwoWayBound_of_effectiveTwoWayWeighted`. `EffectiveTwoWayWeighted` is *not* assumed anywhere: the file records the gap, it does not close it and it changes no statement |
+| `PartC/EffectiveReg.lean` | the two effectivity statements used by Theorem `thm:decidable-equivalence-regular`, with their justification.  Both are now **proved**: `EffectiveTwoWayEvalEq` in `PartC/TwoWaySimPrimrec.lean`, and `EffectiveTwoWayBound` in `PartC/RegEffBound.lean` |
+| `Common/HankelRank.lean` | Schützenberger's rank criterion in elementary form: if `f (u ++ v) = ∑ i, g i u * h i v` over a finite index set `ι` and `f` vanishes on every string of length at most `card ι`, then `f` vanishes everywhere (`Transducers.HankelRank.zero_of_short`) |
+| `PartC/RegPos.lean`, `PartC/RegBlock.lean`, `PartC/RegCross.lean`, `PartC/RegProfile.lean`, `PartC/RegVal.lean`, `PartC/RegHankel.lean` | the crossing-sequence decomposition of a run of a two-way transducer: a positional description of runs, runs confined to one side of a cut, the alternating sequence of such runs that a full run decomposes into and the bound `2·|Q|` on its length, the pieces read off each side of the cut, the injective rational value `oval` of an output string, and the resulting Hankel decomposition `oval (f (u ++ v)) = ∑ ι, g ι u * h ι v` over an explicit index set (`Transducers.RegHankel.hankel_decomp`) |
+| `PartC/RegShort.lean` | the explicit equivalence bound for two-way transducers over finite alphabets (`Transducers.RegHankel.twoWay_eq_of_short`): two two-way transducers computing total functions agree everywhere as soon as they agree on the inputs of length at most `idxBound a q₁ + idxBound a q₂`, an arithmetic expression in the size of the alphabet and the numbers of states |
+| `PartC/RegEffBound.lean` | **`Transducers.EffectiveTwoWayBound` proved** (`Transducers.effectiveTwoWayBound`): the letters and states of a code are counted off its table, giving the primitive recursive bound `Transducers.RegDec.codeBound`, and the bookkeeping of `Transducers.RegDec.exists_bound` is repeated with it in place of the abstract bound |
+| `PartC/RegBoundGap.lean` | the effective form of the book's *own* reduction to weighted automata, stated as `Transducers.EffectiveTwoWayWeighted` (a computable map from two codes of two-way transducers to two codes of weighted automata over `ℚ` that separate the same inputs), together with the proof that it implies `EffectiveTwoWayBound`, `Transducers.effectiveTwoWayBound_of_effectiveTwoWayWeighted`.  It was written when `EffectiveTwoWayBound` was still a hypothesis; that hypothesis is now proved by a different route (`PartC/RegEffBound.lean`), so nothing depends on this file, and `EffectiveTwoWayWeighted` is *not* assumed anywhere |
 | `PartC/TwoWaySim.lean`, `PartC/TwoWaySimPrimrec.lean` | the fuel-bounded simulation of a coded two-way transducer on an input string (with the pigeonhole bound `Transducers.RegDec.halt_time_lt_fuel` on the length of a halting run) and the proof that it is primitive recursive, giving `Transducers.EffectiveTwoWayEvalEq` |
 | `PartC/RegEqDec.lean` | the decision procedure of Theorem `thm:decidable-equivalence-regular`: compare the two codes on the strings of length at most the bound over the letters of the two codes together with one fresh letter |
 | `PartC/RatBuild.lean`, `PartC/RatTools.lean`, `PartC/RatSeq.lean` | a bimachine-based builder for rational functions, and the rational functions used by Lemma `lem:regular-closure-properties` and Claim `claim:conditional` (constants, `cons`, letter-to-letter maps, homomorphisms, conditionals on a regular language, and sequential letter-by-letter transducers) |
@@ -389,15 +394,16 @@ false statements and into the list of statements the book has corrected.
 
 * Theorem `thm:undecidable-equivalence-rational-relations` takes the undecidability of the Post
   correspondence problem, `¬ ComputablePred PCP.Solvable`, as an explicit argument.
-* Theorem `thm:decidable-equivalence-regular` takes `Transducers.EffectiveTwoWayBound` as an
-  explicit argument.  See *The conditional result of Part C* below for what that hypothesis
-  says and why it is isolated.  The effectivity hypotheses of Theorems
+* Theorem `thm:decidable-equivalence-regular` used to take `Transducers.EffectiveTwoWayBound` as
+  an explicit argument.  It no longer does: that statement is proved, as
+  `Transducers.effectiveTwoWayBound` of `PartC/RegEffBound.lean`, and the theorem is
+  unconditional.  See *The conditional result of Part C* below, which is kept as the account of
+  what the obstacle was and how it was removed.  The effectivity hypotheses of Theorems
   `thm:equivalence-weighted-automata`, `thm:equivalence-rational-functions`,
-  `thm:zeroness-weighted-automata` and `thm:decide-if-mealy` have been discharged
-  (`Transducers.EffectiveWeightedEvalEq` is a theorem of `PartB/WCodePrimrec.lean`), and so has
-  the first of the two hypotheses of `thm:decidable-equivalence-regular`
-  (`Transducers.EffectiveTwoWayEvalEq`, a theorem of `PartC/TwoWaySimPrimrec.lean`); those four
-  results of Part B are now proved outright.
+  `thm:zeroness-weighted-automata` and `thm:decide-if-mealy` have been discharged as well
+  (`Transducers.EffectiveWeightedEvalEq` is a theorem of `PartB/WCodePrimrec.lean`), as has the
+  other hypothesis of `thm:decidable-equivalence-regular`
+  (`Transducers.EffectiveTwoWayEvalEq`, a theorem of `PartC/TwoWaySimPrimrec.lean`).
 * Lemma `lem:check-if-output-string-of-configuration-graph-belongs-to-L` takes as an explicit
   argument the hypothesis that the two-way transducer computes a *total* function,
   `hM : ∀ w, M.Computes w (f w)`.  The book uses the lemma only for a transducer that
@@ -772,7 +778,7 @@ The proofs are organised as follows.
 | Theorem `thm:regular-functions-are-continuous-and-closed-under-composition` (continuity, composition) | `Transducers.regular_continuous`, `Transducers.regular_comp` | proved (continuity by induction on the decomposition into primes, `ContAux.lean`) | `PartC/Statements.lean` |
 | Lemma `lem:reversal-duplication-continuous` (reversal, duplication) | `Transducers.reverse_duplicate_continuous` | proved (`ContAux.lean`) | `PartC/Statements.lean` |
 | Lemma `lem:map-lifting-continuous` (map lifting) | `Transducers.mapLift_continuous` | proved (Myhill–Nerode, `ContAux.lean`) | `PartC/Statements.lean` |
-| Theorem `thm:decidable-equivalence-regular` (decidable equivalence) | `Transducers.regular_equivalence_decidable`; the book's proof: `Transducers.isWeighted_comp_regular`, `Transducers.isWeighted_comp_mapReverse`, `Transducers.isWeighted_comp_mapDuplicate`, `Transducers.exists_injective_weighted`, `Transducers.regularFun_eq_iff_weighted_eq`, `Transducers.regularFun_eq_iff_weighted_zero`, `Transducers.regularFun_eq_of_short`, `Transducers.exists_twoWayCode_bound` | the mathematical content of the book's proof is **proved** (`WeightedLin.lean`, `WeightedMapLift.lean`, `WeightedRegClosure.lean`): the reduction to zeroness of weighted automata over `ℚ` through the prime decomposition, with the constructions for map reverse (transposition of the matrices of a linear representation, where commutativity of the semiring is used) and map duplicate (Kronecker squares), the injective encoding of output strings by rationals, and the resulting bound reducing equivalence to a finite check. The decidability statement on *codes*, `Transducers.regular_equivalence_decidable`, is **proved from one explicit effectivity hypothesis**, `EffectiveTwoWayBound` of `PartC/EffectiveReg.lean` (`PartC/RegEqDec.lean`): that an equivalence bound can be *computed* from the two codes. The *existence* of that bound is proved (`Transducers.exists_twoWayCode_bound`, `PartC/RegCodeBound.lean`); see *The conditional result of Part C* below for what its computability would need. The other effectivity hypothesis the theorem used to take, `EffectiveTwoWayEvalEq` — a computable equality test for two coded transducers on a given input — is now **proved**, from a fuel-bounded simulation (`PartC/TwoWaySim.lean`, `PartC/TwoWaySimPrimrec.lean`) | `PartC/Statements.lean` |
+| Theorem `thm:decidable-equivalence-regular` (decidable equivalence) | `Transducers.regular_equivalence_decidable`; the book's proof: `Transducers.isWeighted_comp_regular`, `Transducers.isWeighted_comp_mapReverse`, `Transducers.isWeighted_comp_mapDuplicate`, `Transducers.exists_injective_weighted`, `Transducers.regularFun_eq_iff_weighted_eq`, `Transducers.regularFun_eq_iff_weighted_zero`, `Transducers.regularFun_eq_of_short`, `Transducers.exists_twoWayCode_bound`; the effective bound: `Transducers.HankelRank.zero_of_short`, `Transducers.RegHankel.hankel_decomp`, `Transducers.RegHankel.twoWay_eq_of_short`, `Transducers.RegDec.codeBound`, `Transducers.effectiveTwoWayBound` | the mathematical content of the book's proof is **proved** (`WeightedLin.lean`, `WeightedMapLift.lean`, `WeightedRegClosure.lean`): the reduction to zeroness of weighted automata over `ℚ` through the prime decomposition, with the constructions for map reverse (transposition of the matrices of a linear representation, where commutativity of the semiring is used) and map duplicate (Kronecker squares), the injective encoding of output strings by rationals, and the resulting bound reducing equivalence to a finite check. The decidability statement on *codes*, `Transducers.regular_equivalence_decidable`, is **proved outright** (`PartC/RegEqDec.lean`), with no hypothesis. Both effectivity ingredients are theorems: `EffectiveTwoWayEvalEq` — a computable equality test for two coded transducers on a given input — from a fuel-bounded simulation (`PartC/TwoWaySim.lean`, `PartC/TwoWaySimPrimrec.lean`), and `EffectiveTwoWayBound` — a computable equivalence bound — as `Transducers.effectiveTwoWayBound` (`PartC/RegEffBound.lean`), whose explicit bound `Transducers.RegDec.codeBound` comes from the crossing-sequence Hankel decomposition of `PartC/RegHankel.lean` and the rank criterion `Transducers.HankelRank.zero_of_short`, replacing the non-effective `Transducers.exists_twoWayCode_bound` of `PartC/RegCodeBound.lean` | `PartC/Statements.lean` |
 | Conjecture `conj:regular-via-weighted-automata` (regular functions via weighted automata) | — | not formalised: it is an open conjecture of the book, not a result | — |
 | Definition `def:two-way-transducer` (two-way transducer) | `Transducers.TwoWay`, `Transducers.IsTwoWay` | — | `PartC/TwoWayCont.lean` |
 | Theorem `thm:continuity-2dfas` (continuity) | `Transducers.twoWay_continuous` | proved (`TwoWayCont.lean`, from Shepherdson's Theorem in `TwoDFA.lean`) | `PartC/Statements.lean` |
@@ -922,21 +928,18 @@ through the representation — it runs a deterministic automaton for the output
 language inside the transducer and appeals to Shepherdson's Theorem — so the two
 lemmas are proved independently of it and no earlier proof changed.
 
-#### The conditional result of Part C
+#### Theorem `thm:decidable-equivalence-regular`: how it became unconditional
 
-Theorem `thm:decidable-equivalence-regular`, in its form as a decision procedure on codes of two-way
-transducers, is proved from **one explicit effectivity hypothesis**, with everything else discharged
-in full and with no `sorry` anywhere in its dependencies (`#print axioms` reports only `propext`,
-`Classical.choice`, `Quot.sound`).  The unconditional statement is kept, commented out, in
-`PartC/Statements.lean`.
+Theorem `thm:decidable-equivalence-regular`, in its form as a decision procedure on codes of
+two-way transducers, is **proved outright**: it takes no hypothesis, there is no `sorry` anywhere
+in its dependencies, and `#print axioms` reports only `propext`, `Classical.choice`, `Quot.sound`.
 
-The theorem used to take two hypotheses, both stated in `PartC/EffectiveReg.lean`.  The first is
-now a theorem; the second remains.
+It used to take two hypotheses, both stated in `PartC/EffectiveReg.lean`.  Both are now theorems.
 
 * `EffectiveTwoWayEvalEq` — there is a computable procedure which, given two
   codes of two-way transducers and an input, decides whether the two
   transducers have the same outputs on it (correctly at least when both codes
-  describe total functions).  This is now **proved**, in
+  describe total functions).  **Proved** in
   `PartC/TwoWaySimPrimrec.lean`.  A deterministic two-way transducer promised to
   halt cannot repeat a configuration, so its run is shorter than
   `(|w| + 1) * |states of the code| + 1` (`Transducers.RegDec.halt_time_lt_fuel`, by pigeonhole);
@@ -946,39 +949,52 @@ now a theorem; the second remains.
   `Common/PrimrecList.lean` — in particular lookup in the transition table.
 * `EffectiveTwoWayBound` — there is a computable function which, given two
   codes, returns a length bound after which agreement on all shorter inputs
-  forces the two coded transducers to compute the same relation.  **This one is
-  still assumed.**  Only its *computability* is assumed: that such a bound exists is proved, in
-  `PartC/RegCodeBound.lean`, as `Transducers.exists_twoWayCode_bound`.
+  forces the two coded transducers to compute the same relation.  **Proved** in
+  `PartC/RegEffBound.lean`, as `Transducers.effectiveTwoWayBound`, with the explicit bound
+  `Transducers.RegDec.codeBound`.
 
-  The obstacle is *not* a missing `Primrec` lemma.  The chain that produces the bound —
-  `Transducers.isRegularFun_of_isTwoWay` (`PartC/SnakeReg.lean`), then
+  *What the obstacle was.*  Not a missing `Primrec` lemma.  That such a bound *exists* was already
+  proved, in `PartC/RegCodeBound.lean`, as `Transducers.exists_twoWayCode_bound`; but the chain
+  that produces it — `Transducers.isRegularFun_of_isTwoWay` (`PartC/SnakeReg.lean`), then
   `Transducers.isWeighted_comp_regular` and `Transducers.exists_injective_weighted`
   (`PartC/WeightedRegClosure.lean`), then `Transducers.weighted_eq_of_short`
   (`PartB/WeightedZero.lean`) — passes through existentials over abstract finite types
   (`IsRegularFun` is an existential over compositions of primes, `IsWeighted f` is
   `∃ (Q : Type) (_ : Finite Q), …`), none of which carries any size information, so the bound they
   yield is not a function of the two codes at all.  For *weighted* automata the same chain is
-  effective, and the bound is proved computable (`Transducers.effectiveWeightedBound`,
+  effective, and the bound is computable (`Transducers.effectiveWeightedBound`,
   `PartB/WeightedBound.lean`), because a `WCode` *is* a linear representation up to normalisation.
-  What would have to exist here is the corresponding effective form of the book's reduction: a
-  computable map `TwoWayCode → WCode`, with a proof that it produces a valid code and that
-  `Transducers.wcodeEval` of the image decides the equality of the coded relations; the bound would
-  then be `Transducers.wcodeBound` of the two images, and the hypothesis would follow from
-  `Transducers.effectiveWeightedBound`.  Producing that map means re-proving the prime
-  decomposition (Theorem `thm:2dfa-decomposition-into-primes`, the snake lemma of
-  `PartC/Snake*.lean`) and the closure properties of `WeightedRegClosure.lean` in a size-explicit,
-  code-to-code form.  The docstring of `EffectiveTwoWayBound` in `PartC/EffectiveReg.lean` records
-  this in full.
 
-  That account is also machine-checked, in `PartC/RegBoundGap.lean`.  The missing construction is
-  stated there as `Transducers.EffectiveTwoWayWeighted` — there is a computable map sending two
-  codes of two-way transducers to two *valid* codes of weighted automata over `ℚ` whose values on
-  an input are equal exactly when the two coded transducers produce the same output on it — and
-  `Transducers.effectiveTwoWayBound_of_effectiveTwoWayWeighted` proves that this single statement
-  implies `EffectiveTwoWayBound`, the bound being `Transducers.wcodeBound` of the two images added
-  together.  So the gap is exactly one construction, and everything downstream of it is already
-  proved.  `EffectiveTwoWayWeighted` is not assumed anywhere in the project, and Theorem
-  `thm:decidable-equivalence-regular` still takes `EffectiveTwoWayBound`, unchanged.
+  *How it was removed.*  Not by making that chain effective — the effective, code-to-code form of
+  the book's reduction to weighted automata is still only *stated*, as
+  `Transducers.EffectiveTwoWayWeighted` in `PartC/RegBoundGap.lean`, together with the proof
+  `Transducers.effectiveTwoWayBound_of_effectiveTwoWayWeighted` that it would suffice; it is
+  assumed nowhere and nothing depends on it.  The bound is obtained instead by a direct argument
+  that yields a formula.
+
+  - `Common/HankelRank.lean` — Schützenberger's criterion in elementary form: if
+    `f (u ++ v) = ∑ i : ι, g i u * h i v` for a `Fintype ι`, and `f` vanishes on every string of
+    length at most `card ι`, then `f` vanishes everywhere
+    (`Transducers.HankelRank.zero_of_short`).
+  - `PartC/RegPos.lean`, `RegBlock.lean`, `RegCross.lean`, `RegProfile.lean`, `RegVal.lean`,
+    `RegHankel.lean` — the crossing-sequence decomposition of a run of a two-way transducer at a
+    cut of the input.  A run is cut into an alternating sequence of runs confined to one side, the
+    sequence has length at most `2·|Q|` (`Transducers.RegPos.Alt.length_le`), each piece is
+    determined by the crossing data, and the output string is turned into a rational number by the
+    injective `Transducers.RegHankel.oval`.  The result is
+    `Transducers.RegHankel.hankel_decomp`: `oval (f (u ++ v)) = ∑ ι, g ι u * h ι v`, indexed by the
+    letter at the cut, the crossing sequence of states, and two indices into it.
+  - `PartC/RegShort.lean` — that index set has an explicit size
+    (`Transducers.RegHankel.idxBound`), so the criterion applies to the difference of the values of
+    two transducers and gives `Transducers.RegHankel.twoWay_eq_of_short`: two two-way transducers
+    computing total functions over a finite alphabet agree everywhere as soon as they agree on the
+    inputs of length at most `idxBound a q₁ + idxBound a q₂`.
+  - `PartC/RegEffBound.lean` — the letters and the states occurring in a code are at most two per
+    entry of its table, so those three numbers are read off the code lengths; this gives the
+    primitive recursive `Transducers.RegDec.codeBound`, and the bookkeeping of
+    `Transducers.RegDec.exists_bound` (a code read over the finite alphabets that occur in it,
+    and blindness to the letters outside them) is repeated with the explicit bound in place of the
+    abstract one.
 
 Everything else is proved:
 
@@ -1676,8 +1692,8 @@ row in the index above.
 | | Introduction | Part A | Part B | Part C | Part D | total |
 | --- | --- | --- | --- | --- | --- | --- |
 | definitions formalised | 1 | 4 | 7 | 6 | 2 | **20** |
-| results proved outright | 0 | 11 | 26 | 28 | 11 | **76** |
-| results proved from an explicit hypothesis | 0 | 0 | 0 | 1 | 0 | **1** |
+| results proved outright | 0 | 11 | 26 | 29 | 11 | **77** |
+| results proved from an explicit hypothesis | 0 | 0 | 0 | 0 | 0 | **0** |
 | environments not formalised | 0 | 0 | 1 | 1 | 0 | **3** |
 
 *Proved outright* means: the proof is complete, no file it depends on contains a
@@ -1686,32 +1702,27 @@ row in the index above.
 `lem:check-if-output-string-of-configuration-graph-belongs-to-L` is counted here:
 it is proved outright in that sense, but its statement carries the hypothesis
 that the transducer computes a total function, as listed under *Hypotheses that
-the Lean statement adds* above.  **Parts A, B and D are proved in full**, and so is Part C except
-that Theorem `thm:decidable-equivalence-regular` is conditional in the sense
-below.  Part D now includes the five results of Section *Pebble transducers*
+the Lean statement adds* above.  **Parts A, B, C and D are proved in full**: the
+last conditional result, Theorem `thm:decidable-equivalence-regular`, became
+unconditional when `Transducers.EffectiveTwoWayBound` was proved.  Part D now includes the five results of Section *Pebble transducers*
 that are about the string representation of configurations; they used to be the
 only unformalised results of that part.
 
-### The one result proved from an explicit hypothesis
+### No result is proved from a hypothesis
 
-It takes its hypothesis as an ordinary explicit argument of the theorem, so it
-is visible in the statement, and `#print axioms` on the theorem still reports
+Every numbered result that is formalised is proved outright: none of them takes
+a `Prop`-valued assumption as an argument, and `#print axioms` on each reports
 only the three standard axioms.  No `axiom` is declared anywhere in the project.
 
-| result | hypothesis | where the hypothesis is defined |
-| --- | --- | --- |
-| Theorem `thm:decidable-equivalence-regular` | `Transducers.EffectiveTwoWayBound` | `PartC/EffectiveReg.lean` |
+Seven results used to appear in this table, and every one of them is now proved outright.
 
-It says that an equivalence bound for two coded two-way transducers can be
-*computed* from the two codes; that such a bound exists is proved
-(`Transducers.exists_twoWayCode_bound`, `PartC/RegCodeBound.lean`), and *The conditional result of
-Part C* above explains precisely what is missing — a size-explicit, code-to-code form of the
-book's reduction of regular equivalence to weighted zeroness — and why no `Primrec` lemma would
-supply it.  The missing construction is written out as a Lean statement,
-`Transducers.EffectiveTwoWayWeighted` of `PartC/RegBoundGap.lean`, with a proof that it implies
-the hypothesis; that statement is assumed nowhere.
-
-Six further results used to appear in this table, and every one of them is now proved outright.
+* Theorem `thm:decidable-equivalence-regular` took `Transducers.EffectiveTwoWayBound`
+  (`PartC/EffectiveReg.lean`): that an equivalence bound for two coded two-way transducers can be
+  *computed* from the two codes.  That such a bound exists was already proved
+  (`Transducers.exists_twoWayCode_bound`, `PartC/RegCodeBound.lean`), but not as a function of the
+  codes.  It is now proved, as `Transducers.effectiveTwoWayBound` of `PartC/RegEffBound.lean`, with
+  the explicit bound `Transducers.RegDec.codeBound`; see *Theorem
+  `thm:decidable-equivalence-regular`: how it became unconditional* above.
 
 * Theorem `thm:undecidable-equivalence-rational-relations` took
   `¬ ComputablePred Transducers.PCP.Solvable`, the undecidability of the Post correspondence
@@ -2534,10 +2545,13 @@ reports only `propext`, `Classical.choice`, `Quot.sound` for
 outright** and **2 proved from an explicit hypothesis**.  The exercises become
 **75 of the 81 proved outright** and **6 proved from an explicit hypothesis**.
 
-## Status (final: the closing audit)
+## Status (the closing audit)
 
-This section supersedes every earlier `## Status` section and every addendum of
-this file where they disagree.
+This section supersedes every *earlier* `## Status` section and every addendum of
+this file where they disagree.  It is itself superseded, where they disagree, by
+`## Status (final: `EffectiveTwoWayBound` discharged)` at the end of the file:
+the one assumption of a numbered result that this audit records,
+`Transducers.EffectiveTwoWayBound`, has since been **proved**.
 
 **The build.**  `lake build` from scratch, Mathlib included, succeeds: **8463
 jobs**, **no errors**, **no warnings** of any kind (no linter diagnostic and no
@@ -2567,7 +2581,7 @@ theorem that uses it.
 
 | assumption | where defined | used by | account |
 | --- | --- | --- | --- |
-| `Transducers.EffectiveTwoWayBound` | `PartC/EffectiveReg.lean` | Theorem `thm:decidable-equivalence-regular` | a real obstacle: an equivalence bound for two coded two-way transducers has to be *computed* from the two codes.  Its existence is proved (`Transducers.exists_twoWayCode_bound`); what is missing is a size-explicit, code-to-code form of the book's reduction to weighted automata, written out as `Transducers.EffectiveTwoWayWeighted` in `PartC/RegBoundGap.lean` with a proof that it implies the hypothesis.  See *The conditional result of Part C* above |
+| `Transducers.EffectiveTwoWayBound` | `PartC/EffectiveReg.lean` | Theorem `thm:decidable-equivalence-regular` | **since discharged** — see the final `## Status` section.  It was: an equivalence bound for two coded two-way transducers has to be *computed* from the two codes.  It is now proved, as `Transducers.effectiveTwoWayBound` of `PartC/RegEffBound.lean`, and no declaration takes it as an argument |
 | `Transducers.Exercises.EFSuccSeparation` | `Exercises/FOSucc.lean` | Exercise `exer:fo-suc` | the Ehrenfeucht–Fraïssé argument; deliberately out of scope |
 | `Transducers.Exercises.IteratesReduction` | `Exercises/IterateFiniteness.lean` | Exercise `exer:rational-composition-finiteness-undecidable` | the reduction from the halting problem; deliberately out of scope |
 | `Transducers.Exercises.EffectiveLengthPairsSemilinear` | `Exercises/LengthCollision.lean` | Exercise `exer:decide-rational-colision`, item (b) | the effective form of Parikh's theorem: neither Parikh images nor semilinear sets exist in Mathlib or in this project.  The rest of that exercise — the diagonal test on a semilinear set, and its computability — is proved outright |
@@ -2599,3 +2613,76 @@ corrected: the alias docstrings of those two exercises and of Theorem
 `thm:decidable-equivalence-regular` in `RequestProject/Labels.lean`, and the
 index rows of `exer:not-semiring-continuous` and `exer:decide-rational-colision`
 in `EXERCISES.md`.
+
+
+## Status (final: `EffectiveTwoWayBound` discharged)
+
+This section supersedes every earlier `## Status` section of this file where they
+disagree.
+
+**What changed.**  `Transducers.EffectiveTwoWayBound` — the last hypothesis of a
+numbered result anywhere in the project — is no longer assumed.  It is a
+**theorem**, `Transducers.effectiveTwoWayBound` of
+`RequestProject/PartC/RegEffBound.lean`, with exactly the statement it had as a
+`def ... : Prop` (the `def` is kept, unchanged, in `PartC/EffectiveReg.lean`, and
+is now what the theorem proves).  `Transducers.regular_equivalence_decidable` and
+`Transducers.RegDec.regular_equivalence_decidable_aux` no longer take it as an
+argument, and their conclusions are unchanged.  Theorem
+`thm:decidable-equivalence-regular` is therefore **proved outright**.
+
+**How.**  Not through the book's reduction to weighted automata, whose effective
+form (`Transducers.EffectiveTwoWayWeighted`, `PartC/RegBoundGap.lean`) is still
+only stated, but by a direct construction of an explicit bound; the section
+*Theorem `thm:decidable-equivalence-regular`: how it became unconditional* above
+gives the argument, and the new files are
+
+| file | contents |
+| --- | --- |
+| `Common/HankelRank.lean` | Schützenberger's rank criterion in elementary form (`Transducers.HankelRank.zero_of_short`) |
+| `PartC/RegPos.lean` | a positional description of the runs of a two-way transducer |
+| `PartC/RegBlock.lean` | runs confined to one side of a cut of the input |
+| `PartC/RegCross.lean` | the alternating sequence of confined runs that a full run decomposes into, and the bound `2·|Q|` on its length |
+| `PartC/RegProfile.lean` | the pieces of that decomposition read off each side of the cut |
+| `PartC/RegVal.lean` | the injective rational value `oval` of an output string |
+| `PartC/RegHankel.lean` | the Hankel decomposition `oval (f (u ++ v)) = ∑ ι, g ι u * h ι v` over an explicit index set (`Transducers.RegHankel.hankel_decomp`) |
+| `PartC/RegShort.lean` | the explicit equivalence bound for two-way transducers over finite alphabets (`Transducers.RegHankel.twoWay_eq_of_short`) |
+| `PartC/RegEffBound.lean` | the bound as a primitive recursive function of two codes (`Transducers.RegDec.codeBound`), and `Transducers.effectiveTwoWayBound` |
+
+**The numbered results.**  Of the book's 100 theorem-like environments: 20
+definitions formalised, **77 results proved outright**, **none proved from a
+hypothesis**, 3 not formalised (Definition
+`def:rational-recognisable-subsets`, Conjecture
+`conj:regular-via-weighted-automata`, and Theorem
+`nolabel:thm-fo-transduction-into-primes`, which the author withdrew).  Parts A,
+B, C and D are proved in full.
+
+**Every assumption that remains, in the whole project.**  Three, all of them in
+*exercises*, none in a numbered result; each is a `Prop`-valued definition taken
+as an ordinary explicit argument of the exercise that uses it.
+
+| assumption | where defined | used by | account |
+| --- | --- | --- | --- |
+| `Transducers.Exercises.EFSuccSeparation` | `Exercises/FOSucc.lean` | Exercise `exer:fo-suc` | the Ehrenfeucht–Fraïssé argument; deliberately out of scope |
+| `Transducers.Exercises.IteratesReduction` | `Exercises/IterateFiniteness.lean` | Exercise `exer:rational-composition-finiteness-undecidable` | the reduction from the halting problem; deliberately out of scope |
+| `Transducers.Exercises.EffectiveLengthPairsSemilinear` | `Exercises/LengthCollision.lean` | Exercise `exer:decide-rational-colision`, item (b) | the effective form of Parikh's theorem: neither Parikh images nor semilinear sets exist in Mathlib or in this project |
+
+As before, `Transducers.Exercises.CanonicalSuffixBimachineExists`
+(`Exercises/MinimalBimachine.lean`) is still taken as an argument by Exercise
+`exer:minimal-bimachine-lexicographic`, but it is not an open assumption: it is
+**false**, and `Transducers.Exercises.not_canonicalSuffixBimachineExists` proves
+it false.  The `Prop`-valued definitions
+`Transducers.EffectiveTwoWayWeighted` (`PartC/RegBoundGap.lean`) and
+`Transducers.Exercises.FactorThroughSortedOfOutputsPoly` (`Exercises/Ideals.lean`,
+refuted by `not_factorThroughSortedOfOutputsPoly`) are assumed by nothing;
+`Transducers.EffectiveTwoWayBound` (`PartC/EffectiveReg.lean`) and
+`Transducers.EffectiveWeightedBound` (`PartB/Effective.lean`) are assumed by
+nothing either, and both are proved (`Transducers.effectiveTwoWayBound`,
+`Transducers.effectiveWeightedBound`).
+
+**Verification.**  `lake build` succeeds with no errors and no warnings.
+`RequestProject/` contains no `axiom`, no `@[implemented_by]` and no
+`native_decide`; the token `sorry` occurs only inside block comments that record
+statements the project does not make.  `#print axioms
+Transducers.Book.«thm:decidable-equivalence-regular»` reports only `propext`,
+`Classical.choice`, `Quot.sound`, and so does `#print axioms
+Transducers.effectiveTwoWayBound`.
