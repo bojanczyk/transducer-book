@@ -8,7 +8,7 @@ part = true
 % Generated chapter wrapper; source body remains untouched.
 \setcounter{mypart}{4}
 \setcounter{section}{0}
-\setcounter{ourexamplecounter}{32}
+\setcounter{ourexamplecounter}{35}
 % source stamp partDPolyregular/intro.tex:f7f93dbd
 \renewcommand{\exer}[2]{}
 \input{../../../partDPolyregular/intro.tex}

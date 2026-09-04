@@ -17,8 +17,8 @@
         "tex": "menu-04-krohn-rhodes.tex"
       },
       {
-        "href": "/04a-mealy-machines-bibliographic-notes/",
-        "tex": "menu-04a-mealy-machines-bibliographic-notes.tex"
+        "href": "/04z-mealy-machines-references/",
+        "tex": "menu-04z-mealy-machines-references.tex"
       }
     ]
   },
@@ -43,8 +43,8 @@
         "tex": "menu-09-machine-independent.tex"
       },
       {
-        "href": "/09a-rational-functions-bibliographic-notes/",
-        "tex": "menu-09a-rational-functions-bibliographic-notes.tex"
+        "href": "/09z-rational-functions-references/",
+        "tex": "menu-09z-rational-functions-references.tex"
       }
     ]
   },
@@ -69,8 +69,12 @@
         "tex": "menu-14-logic.tex"
       },
       {
-        "href": "/14a-regular-functions-bibliographic-notes/",
-        "tex": "menu-14a-regular-functions-bibliographic-notes.tex"
+        "href": "/14a-combinators/",
+        "tex": "menu-14a-combinators.tex"
+      },
+      {
+        "href": "/14z-regular-functions-references/",
+        "tex": "menu-14z-regular-functions-references.tex"
       }
     ]
   },
@@ -87,8 +91,8 @@
         "tex": "menu-17-pebble-transducers.tex"
       },
       {
-        "href": "/17a-polyregular-functions-bibliographic-notes/",
-        "tex": "menu-17a-polyregular-functions-bibliographic-notes.tex"
+        "href": "/17z-polyregular-functions-references/",
+        "tex": "menu-17z-polyregular-functions-references.tex"
       }
     ]
   }

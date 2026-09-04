@@ -1,4 +1,5 @@
 +++
+aliases = ["/09a-rational-functions-bibliographic-notes/"]
 title = "Rational Functions: References"
 weight = 95
 source = "partBRational/bib-notes.tex"

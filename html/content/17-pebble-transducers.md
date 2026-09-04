@@ -7,7 +7,7 @@ source = "partDPolyregular/pebble.tex"
 % Generated chapter wrapper; source body remains untouched.
 \setcounter{mypart}{4}
 \setcounter{section}{1}
-\setcounter{ourexamplecounter}{37}
+\setcounter{ourexamplecounter}{40}
 % source stamp partDPolyregular/pebble.tex:15df6e78
 \input{../../../partDPolyregular/pebble.tex}
 {{< /latex >}}

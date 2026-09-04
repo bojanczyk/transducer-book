@@ -961,7 +961,7 @@
       ]
     },
     "hyp-iterates-reduction": {
-      "status": "done",
+      "status": "partial",
       "attempts": 1,
       "continues": 0,
       "reattempts": 0,
@@ -970,7 +970,7 @@
       ],
       "started_at": "2026-09-02 03:16:05Z",
       "finished_at": "2026-09-02 08:47:14Z",
-      "note": null,
+      "note": "IteratesReduction is still assumed: the run showed the reduction needs uniform mortality (Hooper's immortality theorem), not halting, and stopped with a precise account rather than a proof",
       "sorries_at_start": 0,
       "runs": [
         {
@@ -983,16 +983,17 @@
       ]
     },
     "C5-types-and-terms": {
-      "status": "running",
-      "attempts": 1,
-      "continues": 0,
+      "status": "done",
+      "attempts": 2,
+      "continues": 1,
       "reattempts": 0,
       "task_ids": [
-        "117ad973-5842-47a7-bd0c-d2c4a3ccdf15"
+        "117ad973-5842-47a7-bd0c-d2c4a3ccdf15",
+        "89fb2e8f-c97d-45f2-b64d-b373a6c62427"
       ],
       "started_at": "2026-09-04 00:47:04Z",
-      "finished_at": null,
-      "note": null,
+      "finished_at": "2026-09-04 04:39:53Z",
+      "note": "stopped after 1 continuation(s) with no .lean change",
       "sorries_at_start": 0,
       "runs": [
         {
@@ -1001,32 +1002,53 @@
           "base": "f92bb01bc5ee5e041ba9e8521a5665b7c8dea62c",
           "kind": "initial",
           "at": "2026-09-04 00:47:04Z"
+        },
+        {
+          "task_id": "89fb2e8f-c97d-45f2-b64d-b373a6c62427",
+          "project_id": "bae3ec3c-7322-4463-ad39-5415bda04ab2",
+          "base": "2f82b85367c511ea80cf3316868e1c3e0d58b1b6",
+          "kind": "continue",
+          "at": "2026-09-04 02:39:22Z"
         }
-      ]
+      ],
+      "idle_continues": 1
     },
     "C5-terms-converse": {
       "status": "pending",
-      "attempts": 0,
+      "attempts": 2,
       "continues": 0,
       "reattempts": 0,
-      "task_ids": [],
-      "started_at": null,
+      "task_ids": [
+        "adb5e1ad-8ebc-44ea-ae57-d454bfe7fd9e",
+        "54f7207b-454d-4300-9d81-89ae6644fd26"
+      ],
+      "started_at": "2026-09-04 04:40:03Z",
       "finished_at": null,
-      "note": null
+      "note": null,
+      "sorries_at_start": 0,
+      "runs": [
+        {
+          "task_id": "adb5e1ad-8ebc-44ea-ae57-d454bfe7fd9e",
+          "project_id": "2a298a71-5c91-472d-ab0e-76f5971cc43c",
+          "base": "2f82b85367c511ea80cf3316868e1c3e0d58b1b6",
+          "kind": "initial",
+          "at": "2026-09-04 04:40:03Z"
+        },
+        {
+          "task_id": "54f7207b-454d-4300-9d81-89ae6644fd26",
+          "project_id": "71168222-9e41-442d-b1ce-a926d92205ae",
+          "base": "2f82b85367c511ea80cf3316868e1c3e0d58b1b6",
+          "kind": "continue",
+          "at": "2026-09-04 06:10:31Z"
+        }
+      ]
     }
   },
-  "current": {
-    "target_id": "C5-types-and-terms",
-    "task_id": "117ad973-5842-47a7-bd0c-d2c4a3ccdf15",
-    "project_id": "d2ac3102-8f36-4440-a728-82e34487766d",
-    "base": "f92bb01bc5ee5e041ba9e8521a5665b7c8dea62c",
-    "submitted_at": "2026-09-04 00:47:04Z",
-    "kind": "initial"
-  },
-  "paused": false,
-  "pause_reason": null,
+  "current": null,
+  "paused": true,
+  "pause_reason": "external could not be integrated",
   "finished_at": null,
-  "ticks": 736,
-  "last_tick": "2026-09-04 01:06:25Z",
-  "review_pending": 0
+  "ticks": 762,
+  "last_tick": "2026-09-04 08:12:22Z",
+  "review_pending": 4
 }

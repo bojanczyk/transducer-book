@@ -1,4 +1,5 @@
 +++
+aliases = ["/04a-mealy-machines-bibliographic-notes/"]
 title = "Mealy Machines: References"
 weight = 45
 source = "partAMealy/bib-notes.tex"

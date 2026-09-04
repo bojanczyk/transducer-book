@@ -614,19 +614,97 @@ def ensure_git(ld: Path) -> None:
     log(f"initialised git repository in {ld}")
 
 
-def commit(ld: Path, message: str) -> bool:
-    # `-- .` keeps this to the directory it was given. Unscoped, a commit made
-    # from the Lean directory would sweep in whatever the author had left
-    # uncommitted in the book's LaTeX.
-    git(ld, "add", "-A", "--", ".")
-    if not git(ld, "diff", "--cached", "--quiet", "--", ".").returncode:
+def commit(ld: Path, message: str, scoped: bool = True) -> bool:
+    """Commit in `ld`. `scoped` keeps it to that directory.
+
+    Scoping matters in the author's own tree, where an unscoped commit made
+    from the Lean directory would sweep in whatever was left uncommitted in the
+    book's LaTeX. It must be off in the throwaway merge worktree: `git commit`
+    with a pathspec re-reads those paths from HEAD, and a base commit carrying
+    a gitlink to a repository that no longer exists then fails with "does not
+    have a commit checked out" — which is how four runs came to be harvested as
+    empty. There we own the whole worktree and want the whole index.
+    """
+    scope = ["--", "."] if scoped else []
+    git(ld, "add", "-A", *scope)
+    if not git(ld, "diff", "--cached", "--quiet", *scope).returncode:
         return False  # nothing staged
-    r = subprocess.run(["git", "-C", str(ld), "commit", "-q", "-F", "-", "--", "."],
+    r = subprocess.run(["git", "-C", str(ld), "commit", "-q", "-F", "-", *scope],
                        input=message, text=True, capture_output=True)
     if r.returncode:
         log(f"git commit failed: {r.stderr.strip()[:300]}")
         return False
     return True
+
+
+def lake_exe(cfg: dict) -> str:
+    return cfg.get("lake") or shutil.which("lake") or str(Path.home() / ".elan/bin/lake")
+
+
+def verify_tree(cfg: dict) -> tuple[bool, str]:
+    """Does the Lean project build, and are its axioms still clean?
+
+    The driver used to record a target as done on the strength of the agent's
+    own report, having never compiled a line of what came back. A run that
+    returned a broken tree, or nothing at all, looked exactly like one that
+    worked, and the mistake surfaced days later when someone built by hand.
+    Nothing is called done until this has passed.
+    """
+    ld = lean_dir(cfg)
+    limit = cfg.get("verify_timeout_s", 5400)
+    try:
+        r = subprocess.run([lake_exe(cfg), "build"], cwd=ld,
+                           capture_output=True, text=True, timeout=limit)
+    except Exception as e:
+        return False, f"could not run `lake build`: {e!r}"
+    if r.returncode:
+        tail = "\n".join((r.stdout + r.stderr).strip().splitlines()[-25:])
+        return False, f"`lake build` failed:\n\n{tail}"
+    script = ld / "tools" / "print_axioms.sh"
+    if script.is_file():
+        try:
+            a = subprocess.run(["bash", str(script)], cwd=ld,
+                               capture_output=True, text=True, timeout=limit)
+        except Exception as e:
+            return False, f"could not run tools/print_axioms.sh: {e!r}"
+        if a.returncode:
+            tail = "\n".join((a.stdout + a.stderr).strip().splitlines()[-25:])
+            return False, f"`tools/print_axioms.sh` failed:\n\n{tail}"
+    return True, ""
+
+
+def sanity_check(cfg: dict) -> list[str]:
+    """What is wrong with the workspace *before* a run is paid for.
+
+    Both entries here are faults that ran undetected for weeks: a glob that
+    silently stopped shipping the book's chapters when they moved into
+    per-part directories, and a gitlink to a repository that no longer existed,
+    which made every harvest fail to commit.
+    """
+    ld, bad = lean_dir(cfg), []
+    book = ld.parent
+    mt = book / "main.tex"
+    if mt.is_file():
+        want = [m.group(1).strip() for m in
+                re.finditer(r"^[^%\n]*\\(?:input|include)\{([^}]*)\}",
+                            mt.read_text(errors="ignore"), re.M)]
+        missing = [w for w in want
+                   if not (book / (w if w.endswith(".tex") else w + ".tex")).is_file()]
+        if missing:
+            bad.append("main.tex includes files that are not on disk: "
+                       + ", ".join(missing[:5]))
+    # from the repository root: `git ls-files` run in a subdirectory lists only
+    # that subdirectory, which is exactly how the gitlink at the root went
+    # unnoticed while it was breaking every harvest
+    root = repo_root(ld)
+    for entry in git(root, "ls-files", "-s").stdout.splitlines():
+        if entry.startswith("160000") and "\t" in entry:
+            sub = entry.split("\t", 1)[1]
+            if not (root / sub / ".git").exists():
+                bad.append(f"the repository records a gitlink at `{sub}` with no "
+                           f"repository there; `git add -A` fails in a worktree and "
+                           f"every harvest would be discarded")
+    return bad
 
 
 def stage_workspace(cfg: dict) -> Path:
@@ -757,15 +835,41 @@ def integrate(cfg: dict, st: dict, src: Path, base: str, branch: str,
         if r.returncode:
             log(f"worktree failed: {r.stderr.strip()[:200]}")
             return "error"
-        git(tree, "checkout", "-b", branch)
+        # `-B`, not `-b`: a previous failed attempt at the same task leaves the
+        # branch behind, and `-b` then fails silently, the commit lands on a
+        # detached HEAD, and the stale branch is merged instead — reported as a
+        # successful merge of nothing.
+        git(tree, "checkout", "-B", branch)
+        # A base commit older than 2026-09-04 carries a gitlink to
+        # `.transducer-lean-src`, a repository that no longer exists; git then
+        # refuses `git add -A` in the worktree with "does not have a commit
+        # checked out" and the whole run would be dropped. Any such dangling
+        # gitlink is irrelevant to what we are merging, so drop it from the
+        # worktree's index before staging.
+        for entry in git(tree, "ls-files", "-s").stdout.splitlines():
+            if entry.startswith("160000") and "\t" in entry:
+                gone = entry.split("\t", 1)[1]
+                if not (tree / gone / ".git").exists():
+                    git(tree, "rm", "--cached", "-q", "--", gone)
+                    log(f"dropped dangling gitlink {gone} from the merge worktree")
         # into the Lean directory of the worktree, not over the whole worktree
         dest = tree / pre if pre else tree
         dest.mkdir(parents=True, exist_ok=True)
         subprocess.run(["rsync", "-a", "--delete", "--exclude", ".lake/",
                         "--exclude", ".git", "--exclude", ".gitignore",
                         f"{src}/", f"{dest}/"], check=True, capture_output=True)
-        if not commit(tree, message):
-            return "empty"          # the run changed nothing
+        if not commit(tree, message, scoped=False):
+            # `commit` returns False both when there was nothing to stage and
+            # when git refused. Those must not be confused: the second means a
+            # run's work is sitting in the worktree and about to be dropped.
+            # A leftover clone inside the repository once made `git add -A`
+            # fail with "does not have a commit checked out", and four runs
+            # were harvested as "empty" and marked done with their work lost.
+            if git(tree, "status", "--porcelain").stdout.strip():
+                log("the run's tree differs from the base but could not be "
+                    "committed — refusing to treat this as an empty run")
+                return "error"
+            return "empty"          # the run really changed nothing
         m = git(ld, "merge", "--no-edit", branch)
         if m.returncode:
             if resolve_aggregates(repo_root(ld), pre):
@@ -846,6 +950,7 @@ def harvest(cfg: dict, st: dict, project, task, target: dict | None,
 
         base = base or (st.get("current") or {}).get("base") or "HEAD"
         branch = f"aristotle/{task.agent_task_id[:8]}"
+        head_before = git(ld, "rev-parse", "HEAD").stdout.strip()
         outcome = integrate(cfg, st, src, base, branch, msg)
         if outcome == "conflict":
             review(cfg, st, f"{tid} conflicts with local work",
@@ -873,10 +978,40 @@ def harvest(cfg: dict, st: dict, project, task, target: dict | None,
                     trec["idle_continues"] = 0
                 elif (st.get("current") or {}).get("kind") == "continue":
                     trec["idle_continues"] = trec.get("idle_continues", 0) + 1
+        if outcome == "error":
+            review(cfg, st, f"{tid} could not be integrated",
+                   f"The run finished and its result was downloaded, but committing it "
+                   f"failed, so nothing was merged and the target has NOT been marked done. "
+                   f"The run is still on Aristotle and can be brought in by hand once the "
+                   f"cause is fixed:\n\n"
+                   f"    driver.py integrate {getattr(project, 'project_id', '<project-id>')} "
+                   f"--base {base}\n\nThe driver log records what git said.")
+            st["paused"] = True
+            st["pause_reason"] = f"{tid} could not be integrated"
+            log("integration failed — paused")
+            return False
         if outcome == "merged":
             log(f"merged {n_lean} lean files from {task.agent_task_id[:8]}; "
                 f"sorries {before} -> {sorry_count(ld)}"
                 f"{'' if lean_touched else '; no .lean change'}")
+            if lean_touched and cfg.get("verify_after_merge", True):
+                log("verifying the merged tree (lake build, then print_axioms)…")
+                ok, why = verify_tree(cfg)
+                if not ok:
+                    review(cfg, st, f"{tid}: the merged tree does not verify",
+                           f"The run was merged and then failed verification, so the "
+                           f"target has NOT been marked done and the queue is stopped.\n\n"
+                           f"{why}\n\nThe merge is commit "
+                           f"{git(ld, 'rev-parse', '--short', 'HEAD').stdout.strip()}; "
+                           f"the tree as it stood before it is {head_before[:8]}, so\n\n"
+                           f"    git -C {repo_root(ld)} reset --hard {head_before[:8]}\n\n"
+                           f"undoes it if the run is not worth repairing. The run itself is "
+                           f"on branch `{branch}`.")
+                    st["paused"] = True
+                    st["pause_reason"] = f"{tid} merged but does not build"
+                    log("verification failed — paused")
+                    return False
+                log("verified: builds clean, axioms unchanged")
         else:
             log(f"integration: {outcome}")
     return True
@@ -895,6 +1030,15 @@ def submit(cfg: dict, st: dict, target: dict, kind: str, extra: str = "") -> boo
     known base commit, so it can be merged rather than written over.
     """
     ld = lean_dir(cfg)
+    problems = sanity_check(cfg)
+    if problems:
+        review(cfg, st, "the workspace is not fit to send",
+               "Nothing was submitted; these would have wasted the run:\n\n  * "
+               + "\n  * ".join(problems))
+        st["paused"] = True
+        st["pause_reason"] = "workspace failed its sanity check"
+        log("sanity check failed — not submitting: " + "; ".join(problems)[:200])
+        return False
     prompt = (build_preamble(target, ld)
               + (extra or target["prompt"])
               + cfg.get("standing_instructions", ""))
@@ -1056,9 +1200,26 @@ def tick(cfg: dict, q: list, st: dict) -> None:
                        f"{rec['reattempts']} time(s), but these still contain `sorry`:\n\n"
                        f"  {', '.join(still)}\n\nThe run has moved on to the next target.\n\n"
                        f"Its closing summary:\n\n{summary}")
-            note_sorry_delta(cfg, st, rec, target)
-            finish_target(st, target["id"], "done",
-                          f"still open: {', '.join(still)}" if still else None)
+            wanted = target.get("discharges", [])
+            live = live_hypotheses(lean_dir(cfg), wanted)
+            if live:
+                # Reported complete, but the assumption it existed to remove is
+                # still taken as an argument. This used to be recorded as done:
+                # that is how hyp-iterates-reduction and C5-types-and-terms were
+                # both marked done having landed nothing at all.
+                review(cfg, st, f"{target['id']} reported complete without its goal",
+                       f"The run finished and was merged, but {', '.join(live)} "
+                       f"{'is' if len(live) == 1 else 'are'} still taken as a hypothesis, "
+                       f"so the target is recorded as partial rather than done.\n\n"
+                       f"    formalize requeue {target['id']}\n\n"
+                       f"Its closing summary:\n\n{summary}")
+                note_sorry_delta(cfg, st, rec, target)
+                finish_target(st, target["id"], "partial",
+                              f"still assumed: {', '.join(live)}")
+            else:
+                note_sorry_delta(cfg, st, rec, target)
+                finish_target(st, target["id"], "done",
+                              f"still open: {', '.join(still)}" if still else None)
 
         elif state in TERMINAL_PARTIAL and target:
             # A partial status means the budget ran out, not that work is left:

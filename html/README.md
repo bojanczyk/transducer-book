@@ -194,8 +194,13 @@ Adding or renaming a chapter means touching all three, plus the page list in
 `build-references.py`, `build-search-index.py` and `build-source-stamps.py` —
 they are three copies of the same order — and a new `content/NN-slug.md`.
 Nothing generates them. A chapter added in the middle of the book takes a slug
-like `04a-…` and a weight between its neighbours' rather than renumbering what
-follows: the numbers are in URLs readers have already been given.
+like `14a-…` and a weight between its neighbours' rather than renumbering what
+follows: the numbers are in URLs readers have already been given. Each part's
+References page is `…z-` for the same reason — it is always last in its part,
+so a chapter inserted before it can take the next free letter without anything
+having to move. When a slug does have to change, give the old one to the new
+page as an `aliases = ["/old-slug/"]` line and hugo leaves a redirect behind at
+the old address.
 
 ### The margin
 

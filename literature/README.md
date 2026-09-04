@@ -345,6 +345,11 @@ BibTeX entries for everything listed here live in the book's bibliography, [../b
   Link: https://doi.org/10.1109/LICS.2013.45  
   PDF: [FiliotReynierServais2013_From_Two-Way_to_One-Way_Finite_State_Transducers.pdf](pdfs/FiliotReynierServais2013_From_Two-Way_to_One-Way_Finite_State_Transducers.pdf)
 
+- **Rajeev Alur, Adam Freilich, and Mukund Raghothaman (2014), _Regular Combinators for String Transformations_.**  
+  The reference for the combinators chapter: a machine-independent syntax for the regular functions in the spirit of regular expressions, built from constant functions by combinators rather than from states. The setting is functions from strings into a monoid. Over a commutative monoid, choice, split sum and iterated sum suffice — the analogues of union, concatenation and Kleene star, but with unambiguous parsing enforced. The main result covers the non-commutative case, which is the string-to-string one: it needs the left-additive versions of split and iterated sum (giving reversal), sum of functions (giving copying), and either function composition or a chained sum.  
+  DOI: https://doi.org/10.1145/2603088.2603151  
+  PDF: [AlurFreilichRaghothaman2014_Regular_Combinators_for_String_Transformations.pdf](pdfs/AlurFreilichRaghothaman2014_Regular_Combinators_for_String_Transformations.pdf) (full version, arXiv:1402.3021, 15 pp., with the proofs and constructions cut from the 10-page proceedings version)
+
 - **Mikołaj Bojańczyk (2014), _Transducers with Origin Information_.**  
   Origin semantics viewpoint that clarifies and unifies regular string transducer models.  
   Link: https://doi.org/10.1007/978-3-662-43951-7_10  
@@ -437,13 +442,14 @@ BibTeX entries for everything listed here live in the book's bibliography, [../b
 
 ## Local PDFs
 
-The 81 PDFs currently stored here are:
+The 82 PDFs currently stored here are:
 
 - [pdfs/AhoHopcroftUllman1969_A_General_Theory_of_Translation.pdf](pdfs/AhoHopcroftUllman1969_A_General_Theory_of_Translation.pdf)
 - [pdfs/AhoUllman1970_A_Characterization_of_Two-Way_Deterministic_Classes_of_Languages.pdf](pdfs/AhoUllman1970_A_Characterization_of_Two-Way_Deterministic_Classes_of_Languages.pdf)
 - [pdfs/AlbertLawrence1985_A_Proof_of_Ehrenfeuchts_Conjecture.pdf](pdfs/AlbertLawrence1985_A_Proof_of_Ehrenfeuchts_Conjecture.pdf)
 - [pdfs/AlurCerny2010_Expressiveness_of_Streaming_String_Transducers.pdf](pdfs/AlurCerny2010_Expressiveness_of_Streaming_String_Transducers.pdf)
 - [pdfs/AlurCerny2011_Streaming_Transducers_for_Algorithmic_Verification_of_Single-Pass_List-Processing_Programs.pdf](pdfs/AlurCerny2011_Streaming_Transducers_for_Algorithmic_Verification_of_Single-Pass_List-Processing_Programs.pdf)
+- [pdfs/AlurFreilichRaghothaman2014_Regular_Combinators_for_String_Transformations.pdf](pdfs/AlurFreilichRaghothaman2014_Regular_Combinators_for_String_Transformations.pdf)
 - [pdfs/Baschenis2017_Untwisting_Two-Way_Transducers_in_Elementary_Time.pdf](pdfs/Baschenis2017_Untwisting_Two-Way_Transducers_in_Elementary_Time.pdf)
 - [pdfs/BealLombardySakarovitch2006_Conjugacy_and_Equivalence_of_Weighted_Automata_and_Functional_Transducers.pdf](pdfs/BealLombardySakarovitch2006_Conjugacy_and_Equivalence_of_Weighted_Automata_and_Functional_Transducers.pdf)
 - [pdfs/Benedikt2017_Polynomial_Automata_Zeroness_and_Applications.pdf](pdfs/Benedikt2017_Polynomial_Automata_Zeroness_and_Applications.pdf)

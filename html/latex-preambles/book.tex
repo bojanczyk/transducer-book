@@ -1,4 +1,4 @@
-% source stamp shared:93cac303 — maintained by build-source-stamps.py; it is what makes editing ../macros.sty, the pictures or the book's numbering recompile every block
+% source stamp shared:60a62d60 — maintained by build-source-stamps.py; it is what makes editing ../macros.sty, the pictures or the book's numbering recompile every block
 % Each extraction job runs in html/.reflowtex-build/HASH, i.e. always exactly
 % three directories below the book repository root, so ../../../ reaches the
 % book's own LaTeX sources (macros.sty, knowledges.tex, main.aux) wherever the
@@ -6,6 +6,13 @@
 % for the web edition: this is the same macros.sty the PDF build uses. Never
 % write an absolute, machine-specific path here.
 \usepackage{../../../macros}
+% main.tex loads two macro files, not one, and a chapter that uses the
+% second — \onetype, \consterm, \concatterm and the rest of the term
+% vocabulary — fails here with hundreds of undefined control sequences
+% while the PDF builds perfectly well. Keep this in step with main.tex's
+% own \usepackage lines; SHARED in build-source-stamps.py lists both, so
+% editing either one recompiles every block.
+\usepackage{../../../transducer-macros}
 \input{../../../knowledges}
 \newcommand{\map}{\mathsf{map}}
 \usepackage{xr-hyper}
