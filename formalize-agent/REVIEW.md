@@ -32,3 +32,17 @@ The run finished and its result was downloaded, but committing it failed, so not
     driver.py integrate 9ee67d37-9104-480e-b3ca-259cf5f56167 --base 258c13d3
 
 The driver log records what git said.
+
+## 2026-09-04 12:15:23Z — C5-terms-converse: the merged tree does not verify
+
+The run was merged and then failed verification, so the target has NOT been marked done and the queue is stopped.
+
+`tools/print_axioms.sh` failed:
+
+
+
+The merge is commit 8954bd0; the tree as it stood before it is 71bb2afe, so
+
+    git -C /Users/bojan/Documents/ksiazki/transducer-book-lean reset --hard 71bb2afe
+
+undoes it if the run is not worth repairing. The run itself is on branch `aristotle/3065ee6d`.

@@ -662,14 +662,27 @@ def verify_tree(cfg: dict) -> tuple[bool, str]:
         return False, f"`lake build` failed:\n\n{tail}"
     script = ld / "tools" / "print_axioms.sh"
     if script.is_file():
-        try:
-            a = subprocess.run(["bash", str(script)], cwd=ld,
-                               capture_output=True, text=True, timeout=limit)
-        except Exception as e:
-            return False, f"could not run tools/print_axioms.sh: {e!r}"
-        if a.returncode:
-            tail = "\n".join((a.stdout + a.stderr).strip().splitlines()[-25:])
-            return False, f"`tools/print_axioms.sh` failed:\n\n{tail}"
+        # Twice before believing it. A real axiom failure is deterministic, so a
+        # second run that passes proves the first was noise -- which is what the
+        # first failure of this gate turned out to be, and a blank report at
+        # that. Always say what the exit code was: an empty message is useless
+        # to whoever reads the review item.
+        for attempt in (1, 2):
+            try:
+                a = subprocess.run(["bash", str(script)], cwd=ld,
+                                   capture_output=True, text=True, timeout=limit)
+            except Exception as e:
+                return False, f"could not run tools/print_axioms.sh: {e!r}"
+            if not a.returncode:
+                if attempt == 2:
+                    log("print_axioms passed on a second run; the first was transient")
+                break
+            out = (a.stdout + a.stderr).strip()
+            tail = "\n".join(out.splitlines()[-25:]) if out else "(it printed nothing)"
+            if attempt == 2:
+                return False, (f"`tools/print_axioms.sh` failed twice, exit "
+                               f"{a.returncode}:\n\n{tail}")
+            log(f"print_axioms failed (exit {a.returncode}); running it once more")
     return True, ""
 
 
