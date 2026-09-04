@@ -1,683 +1,83 @@
-# `EffectiveTwoWayBound` discharged: Theorem `thm:decidable-equivalence-regular` is unconditional
+# Section *Combinators* is complete: the converse of Theorem `thm:regular-terms`
 
-The last hypothesis of a numbered result anywhere in the project,
-`Transducers.EffectiveTwoWayBound` (`RequestProject/PartC/EffectiveReg.lean`),
-is now a **theorem**: `Transducers.effectiveTwoWayBound` in
-`RequestProject/PartC/RegEffBound.lean`, with exactly the statement it had as a
-`def ... : Prop`.  Nothing takes it as an argument any more:
-`Transducers.regular_equivalence_decidable` and
-`Transducers.RegDec.regular_equivalence_decidable_aux` lost their `hBound`
-argument, their conclusions unchanged, and
-`#check @Transducers.Book.«thm:decidable-equivalence-regular»` shows a type with
-no hypotheses.  So **all 77 formalised numbered results are proved outright**,
-and Parts A, B, C and D are complete.
-
-The route is not the book's reduction to weighted automata -- whose effective,
-code-to-code form is still only *stated*, as
-`Transducers.EffectiveTwoWayWeighted` of `PartC/RegBoundGap.lean`, which is
-assumed nowhere and on which nothing depends.  Instead the bound is constructed
-directly, as an arithmetic formula:
-
-* `Common/HankelRank.lean` -- Schützenberger's rank criterion in elementary
-  form: if `f (u ++ v) = ∑ i : ι, g i u * h i v` over a `Fintype ι` and `f`
-  vanishes on all strings of length at most `card ι`, then `f ≡ 0`.
-* `PartC/RegPos.lean`, `RegBlock.lean`, `RegCross.lean`, `RegProfile.lean`,
-  `RegVal.lean`, `RegHankel.lean` -- the crossing-sequence decomposition of a run
-  of a two-way transducer at a cut of the input: a positional description of
-  runs, runs confined to one side, the alternating sequence of such runs that a
-  full run decomposes into (of length at most `2·|Q|`), the pieces read off each
-  side, the injective rational value `oval` of an output string, and the
-  resulting `Transducers.RegHankel.hankel_decomp`.
-* `PartC/RegShort.lean` -- the index set has explicit size
-  `Transducers.RegHankel.idxBound`, so two two-way transducers computing total
-  functions over a finite alphabet agree everywhere as soon as they agree on the
-  inputs of length at most `idxBound a q₁ + idxBound a q₂`
-  (`Transducers.RegHankel.twoWay_eq_of_short`).
-* `PartC/RegEffBound.lean` -- a code lists at most two letters and at most two
-  states per entry, so those numbers are read off its length; this gives the
-  primitive recursive `Transducers.RegDec.codeBound`, and the bookkeeping of
-  `Transducers.RegDec.exists_bound` is repeated with it in place of the abstract
-  bound.
-
-No statement of the book changed, no `sorry`, no `axiom`, no `native_decide`.
-`lake build` succeeds with no errors and no warnings; `tools/gen_labels.py
---check`, `tools/decl_files.py --check` and `tools/tex_numbering.py --check`
-pass; `#print axioms` on the label alias of Theorem
-`thm:decidable-equivalence-regular` and on `Transducers.effectiveTwoWayBound`
-reports only `propext`, `Classical.choice`, `Quot.sound`.
-
-# Sharpening the one remaining effectivity hypothesis
-
-A follow-up run on the same targets.  Nothing changed in the mathematics or in
-any statement of the book; the three effectivity hypotheses discharged above are
-still theorems, and `Transducers.EffectiveTwoWayBound` is still the one
-hypothesis of Theorem `thm:decidable-equivalence-regular`.  What this run added
-is a machine-checked account of what is missing for it, in the new file
-`RequestProject/PartC/RegBoundGap.lean`:
-
-* `Transducers.EffectiveTwoWayWeighted` -- the effective form of the book's
-  reduction: a computable map sending two codes of two-way transducers to two
-  *valid* codes of weighted automata over `ℚ` whose values on an input are equal
-  exactly when the two coded transducers produce the same output on it.
-* `Transducers.effectiveTwoWayBound_of_effectiveTwoWayWeighted` -- that this one
-  statement implies `EffectiveTwoWayBound`, the bound being the sum of the two
-  Schützenberger bounds `Transducers.wcodeBound` of the images, which is
-  primitive recursive in the codes.  So the gap is exactly one construction, and
-  everything downstream of it is already proved.
-
-`EffectiveTwoWayWeighted` is assumed nowhere: no theorem takes it, and the
-argument list of Theorem `thm:decidable-equivalence-regular` is unchanged.
-`lake build`: **8453 jobs, no errors, no warnings**; `tools/print_axioms.sh`
-reports `propext`, `Classical.choice`, `Quot.sound` and nothing else for all 213
-aliases, and the same three for the new theorem; `tools/gen_labels.py --check`,
-`tools/decl_files.py --check` and `tools/tex_numbering.py --check` pass.
-
-# Summary of the run on the effectivity hypotheses blocked on Mathlib's `Primrec` API
-
-The task was to discharge the effectivity hypotheses that were blocked on a gap
-in Mathlib rather than on mathematics, by building the missing `Primrec`
-lemmas.  Three of the four named statements are now theorems; the fourth is left
-in place, with a precise account of why no `Primrec` lemma would discharge it.
-
-* **`Transducers.EffectiveWeightedEvalEq` — proved** (`PartB/WCodePrimrec.lean`).
-  The four numbered results that rested on it,
-  `thm:equivalence-weighted-automata`, `thm:equivalence-rational-functions`,
-  `thm:zeroness-weighted-automata` and `thm:decide-if-mealy`, are **proved
-  outright** and take no hypothesis.
-* **`Transducers.Exercises.ComputableDiagonalTest` — proved**
-  (`Exercises/LengthCollision.lean`, from `Exercises/IntCombPrimrec.lean`).
-* **`Transducers.EffectiveTwoWayEvalEq` — proved**
-  (`PartC/TwoWaySimPrimrec.lean`, new, on the fuel-bounded simulation of
-  `PartC/TwoWaySim.lean`, also new).  A halting run of a deterministic two-way
-  transducer cannot repeat a configuration, so it is shorter than
-  `(|w| + 1) * |states of the code| + 1` (`Transducers.RegDec.halt_time_lt_fuel`,
-  by pigeonhole on `TwoWay.run_inj`); the simulation runs the coded transducer
-  for that many steps and returns the output produced, and is shown primitive
-  recursive.  It needs no rational arithmetic at all — only list operations, in
-  particular lookup in the transition table.
-* **`Transducers.EffectiveTwoWayBound` — still a hypothesis**, and Theorem
-  `thm:decidable-equivalence-regular` still takes it.  It is *not* blocked on
-  Mathlib.  The bound comes from `Transducers.RegDec.exists_bound` →
-  `Transducers.regularFun_eq_of_short` → `Transducers.isRegularFun_of_isTwoWay`
-  (`PartC/SnakeReg.lean`), `Transducers.isWeighted_comp_regular` and
-  `Transducers.exists_injective_weighted` (`PartC/WeightedRegClosure.lean`), and
-  `Transducers.weighted_eq_of_short` (`PartB/WeightedZero.lean`); every step is
-  an existential over an abstract `Finite` type carrying no size information, so
-  the bound is not a function of the codes.  Making it computable needs a
-  size-explicit, code-to-code map `TwoWayCode → WCode` with its correctness
-  proof — after which `Transducers.effectiveWeightedBound` of
-  `PartB/WeightedBound.lean` would finish it.  That means re-proving the prime
-  decomposition and the closure properties of weighted automata in code-to-code
-  form: a large piece of work, out of scope here.  The docstring of the
-  hypothesis and the section *The conditional result of Part C* of `THEOREMS.md`
-  record this.
-
-**The general-purpose library.**  None of it is about transducers.
-`Common/PrimrecArith.lean` supplies the arithmetic of `ℤ` and `ℚ` in Mathlib's
-`Primrec` API (Mathlib supplies the `Primcodable` instances and `Primrec.eq`,
-but no arithmetic on either type at the pinned commit), and
-`Common/PrimrecList.lean` the list operations on top of it — this run added
-`Primrec.list_getLast?`, `Primrec.list_dropLast` and `Primrec.list_lookup`
-there.
-
-**Verification.**  `lake build` from scratch: **8429 jobs, no errors, no
-warnings**.  `#print axioms` reports only `propext`, `Classical.choice`,
-`Quot.sound` for `EffectiveWeightedEvalEq`, `EffectiveTwoWayEvalEq`,
-`effectiveWeightedBound`, `ComputableDiagonalTest`, the four Part B results and
-`regular_equivalence_decidable`.  `tools/gen_labels.py --check`,
-`tools/decl_files.py --check` and `tools/tex_numbering.py --check` pass.
-`RequestProject/` contains no `sorry` outside block comments, no `axiom`, no
-`@[implemented_by]` and no `native_decide`.  `THEOREMS.md`, `EXERCISES.md`,
-`FORMALISATION.md` and `RequestProject/Labels.lean` were brought into line: the
-numbered results now stand at **75 proved outright** and **2 proved from an
-explicit hypothesis** (the undecidability of the Post correspondence problem,
-and `EffectiveTwoWayBound`).
-
-# Summary of the re-verification of the ideals of rational functions
-
-This run added no mathematics: the two remaining hypotheses of
-`RequestProject/Exercises/Ideals.lean` were already discharged, and the run
-checked that state end to end and repaired one stale index entry.
-
-* `Transducers.Exercises.SortedFromOmegaOutputs` and
-  `Transducers.Exercises.FactorThroughSortedOfOutputsPolyPos` are theorems, with
-  the statements they had as hypotheses (the second with the extra `1 ≤ k`, the
-  form without it being refuted by
-  `Transducers.Exercises.not_factorThroughSortedOfOutputsPoly`).  No declaration
-  of the file takes a hypothesis argument, so Exercises `exer:full-ideal`,
-  `exer:polynomial-ideals`, `exer:all-ideals` and `exer:decide-same-ideal` are
-  proved outright, the last two unconditionally.
-* A full `lake build` from the fetched Mathlib cache succeeds: **8414 jobs, no
-  errors, no warnings**.
-* `tools/print_axioms.sh --all` reports `propext`, `Classical.choice`,
-  `Quot.sound` and nothing else for **all 213 aliases** of
-  `RequestProject/Labels.lean`, including the four ideal exercises.
-* `RequestProject/` contains no `sorry` outside block comments, no `axiom`, no
-  `@[implemented_by]` and no `native_decide`.
-* `tools/gen_labels.py --check` and `tools/decl_files.py --check` pass;
-  `tools/tex_numbering.py --check` had flagged three numbers of the dictionary
-  of `LABELS.md` (`def:regular-functions`, `def:polyregular-functions`,
-  `thm:polyregular-functions-are-continuous`) as out of date against
-  `main.aux`, and they were corrected — number column only.  The check now
-  passes.
-* A *Verification of this state* section recording all of the above was appended
-  to `THEOREMS.md`.
-
-# Summary of the closing audit of the project
-
-This run proved no new result; it audited the whole project and brought the
-three index files into their final state.
-
-* **`lake build` from scratch** (run from `transducer-lean/`, with an empty
-  `.lake/build`) succeeds: **8386 jobs, no errors**.  The only diagnostics are
-  **47** Lean linter warnings, all inside auxiliary proofs: 30 ×
-  `automatically included section variable(s) unused` and 17 × `unused
-  variable`.  Both would change the signature of a helper lemma if acted on, so
-  they are left in place and are inventoried file by file in the *The warnings
-  of the build* section of `THEOREMS.md`.  The 13 remaining mechanical warnings
-  (unused `simp` arguments in `Exercises/CompressionMapLift.lean`, which had
-  been added after the previous audit) were removed in this run.
-* **`#print axioms` on every formalised result and every formalised exercise.**
-  `tools/print_axioms.sh`, added in this run, runs `#print axioms` on all 196
-  aliases of `RequestProject/Labels.lean` — 116 for the 97 formalised
-  theorem-like environments of the book, 80 for the 65 formalised exercises —
-  and reports that every one of them depends only on `propext`,
-  `Classical.choice`, `Quot.sound`.  No `sorryAx`, and no other axiom.
-* **No `sorry`, no `axiom`.**  `RequestProject/` contains no `sorry`, no
-  `axiom`, no `@[implemented_by]` and no `native_decide`; the only occurrences of
-  the word `sorry` are inside block comments that preserve a statement the
-  project does not make.  The six results proved from an explicit hypothesis
-  take that hypothesis as an ordinary argument of the theorem.
-* **The divergences from the book were re-read against the LaTeX sources.**
-  Every entry of the *Divergences from the book* section of `THEOREMS.md` still
-  matches the current `.tex` files, and no divergence recorded in a Lean
-  docstring is missing from that section.
-* **The exercises were recounted.**  The sources contain 83 `\exer`
-  environments, two of which are commented out and carry no number in
-  `main.aux`, so the book has **81 exercises**, all with a written solution.
-  **65 are formalised and proved** and **16 are not**; the sixteen, each with the
-  reason it is left out, are tabulated in the new `## Status (closing audit)`
-  section of `EXERCISES.md`.  The earlier counts (63 formalised, 20 not) were
-  stale and are marked as superseded.
-* **`THEOREMS.md`, `EXERCISES.md`, `FORMALISATION.md` and `README.md`** were
-  updated accordingly, and all five bookkeeping scripts in `tools/`
-  (`print_axioms.sh`, `gen_labels.py --check`, `tex_numbering.py --check`,
-  `decl_files.py --check`, `relabel.py`) report no problem.
-* Two leftover files were removed from the top of `transducer-lean/`:
-  `Scratch.lean`, a byte-for-byte duplicate of
-  `RequestProject/PartD/ChildGraphOfRun.lean`, and `--help`, a captured tool
-  output.  Neither was part of the Lean library.
-
-# Summary of the run on the five results of Section *Pebble transducers* about configuration encodings
-
-The five results of `polyregular-pebble.tex` that speak about the string representation of
-configurations are now formalised and proved, and they are part of the index:
-
-* Lemma `lem:reachability-pebble-automaton` -- `Transducers.reachability_pebble_automaton`
-  (`RequestProject/PartD/PebReach.lean`);
-* Claim `claim:reachability-basic-run` -- `Transducers.reachability_basic_run` (same file);
-* Claim `claim:from-child-configuration-graph-to-children` --
-  `Transducers.from_child_configuration_graph_to_children`
-  (`RequestProject/PartD/ChildGraphFor.lean`);
-* Claim `claim:from-configuration-to-child-configuration-graph` --
-  `Transducers.from_configuration_to_child_configuration_graph`
-  (`RequestProject/PartD/CGFor.lean`);
-* Lemma `lem:children-of-configuration-in-pebble-run` --
-  `Transducers.children_of_configuration_in_pebble_run` (same file), the composition of the two
-  claims, as in the book.
-
-The encoding the book describes is a real object in Lean: `Transducers.PebEnc.PairLetter` and
-`Transducers.PebEnc.pairEnc` (the string representation of a pair of configurations, one letter per
-gap of the input), `Transducers.CG.ConfLetter` and `Transducers.CG.confEnc` (a single
-configuration), and `Transducers.CG.CGLetter` with the graph a string over it describes
-(`RequestProject/PartD/ChildGraph.lean`), which is the child configuration graph of the book.
-
-Two divergences are documented on the statements, in `THEOREMS.md` and in `FORMALISATION.md`: the
-book's mso formula `φ(s, t)` is rendered as a regular language of encodings (equivalent by Theorem
-`thm:mso-logic-languages`, and only required to be correct on genuine encodings), and the two
-results about children carry the hypothesis `st.length < k`, which is the case distinction the
-book's own proof begins with.  The Lean route also reaches Claim
-`claim:from-child-configuration-graph-to-children` through Theorem `thm:pebble-are-for` rather than
-by the book's induction on the width of the graph, so the five results are proved after that
-theorem, not before it; nothing is circular, and the two headline theorems keep the proofs they had.
-
-`RequestProject/PartD/ChildExample.lean` exhibits a one-pebble machine whose initial configuration
-has exactly one child, so that the hypothesis the two results about children carry is demonstrably
-satisfiable and they are not vacuously true.
-
-`lake build` succeeds with no errors (8368 jobs), no file of the project contains a `sorry`, and
-`#print axioms` on each of the five reports only `propext`, `Classical.choice`, `Quot.sound`.
-`tools/gen_labels.py --check`, `tools/decl_files.py --check`, `tools/tex_numbering.py --check` and
-`tools/relabel.py` all report no problem.
-
-# Summary of the run on Lemma `lem:output-of-snake-graph-is-regular` (verification pass)
-
-The book's form of Lemma `lem:output-of-snake-graph-is-regular` is in place and complete:
-
-* the book's alphabet `C` of snake letters is `Transducers.SnakeLetter Q B`
-  (`RequestProject/PartC/SnakeAlph.lean`), together with the snake graph a string over it
-  represents, the output of that graph and the width-`k` output function
-  `Transducers.SnakeGraph.snakeOut k`;
-* the lemma itself, in the book's phrasing, is `Transducers.SnakeGraph.snakeOut_isRegular`
-  (`RequestProject/PartC/SnakeAlphReg.lean`); it is derived from
-  `Transducers.boundedWidth_isRegular` (the width-`k` output function of a two-way transducer),
-  which is kept as the general form, and not by repeating the induction on the width;
-* the label `lem:output-of-snake-graph-is-regular` in `RequestProject/Labels.lean` names the
-  book's form, with the general form as `#2`, and `THEOREMS.md` no longer records a divergence
-  in the phrasing -- the only remaining difference from the book is that the Lean statements
-  hold for every `k : ℕ`, not only for `k ∈ {1, …, |Q|}`, which is more general.
-
-This pass re-verified the state of the project: `lake build` succeeds with no errors (8347 jobs),
-the `Snake*` files contain no `sorry`, and `#print axioms` on both
-`Transducers.SnakeGraph.snakeOut_isRegular` and `Transducers.boundedWidth_isRegular` reports only
-`propext`, `Classical.choice`, `Quot.sound`.
-
-As Lean statements the two forms are not literally interchangeable: the book's form is one
-instance of the general one, over the fixed alphabet `SnakeLetter Q B`, so it is the weaker of the
-two.  Mathematically they have the same content, and `THEOREMS.md` explains why (the reachable part
-of a width-`k` run of a two-way transducer is a snake graph of width `k`, encoded letter by
-letter); that converse derivation is not formalised.
-
-# Summary of the audit of the index (Parts A, B and C)
-
-Every numbered result that `THEOREMS.md` records as proved was re-checked mechanically, and the
-index, `EXERCISES.md`, `LABELS.md` and `RequestProject/Labels.lean` were corrected where they were
-wrong.  What the check consists of, and what it found, is written up in `THEOREMS.md`, in the
-section *The audit of this index*.  In brief:
-
-* `lake build` from scratch succeeds (8272 jobs, no errors).  The only `sorry`s in the project are
-  the five statements of Part D that are still open, in `RequestProject/PartD/Statements.lean`.
-* `#print axioms` on all 157 aliases of `RequestProject/Labels.lean` reports `sorryAx` for exactly
-  those five results and for nothing else; every other result, and every formalised exercise,
-  depends only on `propext`, `Classical.choice`, `Quot.sound`.
-* The six deliberately conditional results carry their hypothesis as an explicit first argument,
-  confirmed by `#check`.
-* Every divergence between a Lean statement and the book is collected in one list, *Divergences
-  from the book*.
-* The results of the book are named by their LaTeX `\label` everywhere -- docstrings, tables and
-  prose -- and `tools/` now holds the three scripts that `README.md`, `LABELS.md` and `THEOREMS.md`
-  promise (`gen_labels.py`, `tex_numbering.py`, `relabel.py`), all of which report no problem.
-* Stale claims of the form "not formalised" were re-checked against the Lean environment rather
-  than against their own history, in the index and in the headers of the Lean files alike; the
-  ones that were wrong are listed in *The audit of this index*.
-
-# Summary of changes for the exercises of Parts B and C (continuation)
-
-Continuing the formalisation of the exercises of Parts B and C, the one exercise of
-`rational-relations.tex` that had been left out, Exercise `ex:recognisable-relations`, is now
-formalised and proved in `RequestProject/Exercises/PartBC.lean`, at its place in the chapter (it is
-the last exercise of that chapter).
-
-* `Transducers.Exercises.IsRecognisableRel` renders the book's Definition
-  `def:rational-recognisable-subsets` for the monoid `A* x B*` only -- the general notion, for an
-  arbitrary monoid, is still not part of this formalisation -- in the form the author's solution
-  uses: the inverse image of a subset of a finite monoid under a monoid homomorphism.
-* `Transducers.Exercises.isRecognisableRel_iff_finite_union` is the exercise: a subset of
-  `A* x B*` is recognisable if and only if it is a union of finitely many products of a regular
-  language over the input alphabet with a regular language over the output alphabet.
-
-Exercise `exer:rational-one-letter-input` is formalised and proved as well, at its place in
-`rational-functions.tex`, as `Transducers.Exercises.rationalFun_unary_graph`: the graph of a
-rational function whose input alphabet has one letter is a finite union of sets
-`{ (a^(α+βk), x yᵏ z) | k ∈ ℕ }`.  The proof is the author's: a bimachine computing the function
-exists by Theorem `thm:bimachines`, the runs of its prefix and suffix automata over a one-letter
-alphabet are eventually periodic, and each further period inserts one more group of gaps in the
-middle, producing the same piece of output as the other such groups.  The analysis of the gaps is
-in the new file `RequestProject/Exercises/PartBCUnary.lean`.
-
-The identification of the regular languages with the languages recognised by a homomorphism into a
-finite monoid, which the solution recalls as standard, is proved in
-`RequestProject/Exercises/PartBCAux.lean` (`isRegular_of_wordHom` for one direction, and
-`exists_wordHom_of_isRegular`, through the transition monoid of a dfa, for the other).  The alias
-for the label is in `RequestProject/Labels.lean`, followed by `assert_no_sorry`, and `EXERCISES.md`
-records the exercise as proved.  No numbered result of the main text was touched; the whole project
-builds and the new theorem depends only on `propext`, `Classical.choice`, `Quot.sound`.
-
-# Summary of changes for the exercises of Part A
-
-The twelve exercises of Part A of the book — the seven of `mealy.tex` and the five of
-`krohn-rhodes.tex` — are formalised and proved in the new file
-`RequestProject/Exercises/PartA.lean` (rolled up by `RequestProject/Exercises.lean`), one section per
-chapter, in the order in which the book states them.  Each proof follows the author's own solution,
-which the printed edition does not typeset; the docstrings say where a proof deviates.
-
-Every exercise of Part A carries a LaTeX `\label`, so all of them are referred to by their labels,
-and all of them get an alias in `RequestProject/Labels.lean`, in a new *Exercises* section, each
-followed by `assert_no_sorry`.  The exercises are indexed in the new `EXERCISES.md`, in the style of
-`THEOREMS.md`, which is where they belong since an exercise is not a numbered result;
-`THEOREMS.md` and `README.md` only record that the exercises live elsewhere.
-
-Several exercises are not mathematical statements as they stand ("give an example of…", "is the
-generated subgroup necessarily finite?", "give an algorithm which…").  For those, what is stated is
-the concrete claim that the author's solution establishes — the example works, the answer is no, the
-criterion of the solution is correct and decidable — and the choice is recorded in the docstring and
-in `EXERCISES.md`.  No exercise was left out.
-
-No numbered result of the main text was changed.  The Mealy machine of a dfa, which the solution to
-`exer:regular-complete-mealy` uses, is reused from `PartC/FOMealy.lean` rather than restated.  The
-whole project builds (`lake build`, no errors), the exercise file contains no `sorry`, and each of
-the fifteen exercise declarations depends only on `propext`, `Classical.choice`, `Quot.sound`.
-
-# Summary of changes for run c706a37d-d15c-4e09-a55b-368490936c99
-I reorganised the Lean sources into a directory per part of the book, without changing any definition, statement or proof.
-
-**New layout** (`RequestProject.lean` at the top imports everything):
+The converse direction of Theorem `thm:regular-terms` -- every function that is
+regular under string representation is defined by a regular term -- is now
+proved, and the theorem is stated as the equivalence it is in the book:
 
 ```
-RequestProject/
-  Common.lean   Common/   -- Basic.lean, Aux.lean, RegularAux.lean
-  PartA.lean    PartA/    -- MealyBasic, PrimeClosure, MapLift, FlipFlopClosure,
-                          --  StateTrans, StateTransAperiodic, Statements
-  PartB.lean    PartB/    -- LabAut, Atomize, OutLang, EpsElim, RatComp, RatCont,
-                          --  HomComplement, MealyChar, Typing, LenNormalForm,
-                          --  SeqChar, RationalStatements, WeightedStatements
-  PartC.lean    PartC/    -- Statements, MSO
-  PartD.lean    PartD/    -- Statements
-  Main.lean               -- global options used by the project
+theorem Transducers.regular_iff_regularTerm {A B : Ty} (f : A.Elt → B.Elt) :
+    IsRegularUnderRepr f ↔ IsRegularTermFun f
 ```
 
-Details:
-- Each part has a roll-up file of the same name as its directory, importing that directory's contents; `RequestProject.lean` imports all parts, so `import RequestProject` now pulls in the whole development.
-- Inside a part, the definitions and the statements of the numbered results live in `Statements.lean` (Part B, which has two statement files, uses `RationalStatements.lean` for Sections B.1–B.2 and `WeightedStatements.lean` for Sections B.3–B.4); the other files hold the constructions used in their proofs. The former `PartA.lean`, `PartB1.lean`, `PartB2.lean`, `PartC.lean`, `PartD.lean` became these statement files.
-- Files shared across parts (the basic notions, the list/iteration lemmas, and the auxiliary regular-language facts) moved to `Common/`; `Common/RegularAux.lean` no longer depends on Part A, and the two Part B files that relied on that indirect dependency now import Mealy machines directly.
-- All `import` lines and all file-path references in the file headers were updated accordingly; the lakefile glob was extended so the new root module is built as well.
-- `THEOREMS.md` now has a "Layout" section describing the structure, and its file table was updated to the new paths; `README.md` summarises the structure too. The theorem index itself (names and statuses) is unchanged, and `ARISTOTLE_SUMMARY.md` was left untouched.
+`Transducers.Book.«thm:regular-terms»` is its alias, and `#print axioms` on it
+reports `propext`, `Classical.choice`, `Quot.sound`.  The two directions are
+`Transducers.regularTerm_isRegular` (`«thm:regular-terms#2»`, proved by an
+earlier run) and `Transducers.regularTerm_of_isRegular`
+(`«thm:regular-terms#3»`).
 
-Verified with a full `lake build`: the build completes successfully, and the only warnings are the pre-existing `declaration uses 'sorry'` ones for the results that were already unproved (plus a few pre-existing linter hints). Everything is committed and pushed. Note that file names mentioned in the older parts of `ARISTOTLE_SUMMARY.md` refer to the previous flat layout.
+With it, the ten numbered results of Section *Combinators* that the converse
+goes through are proved outright, each with the same three axioms:
+Lemma `lem:terms-define-string-homomorphisms`, Claim
+`claim:finite-type-bijection-disjoint-units`, Claim
+`claim:finite-domain-regular-list-function`, Lemma
+`lem:terms-define-append-hash`, Claim `claim:bang-definable`, Lemma
+`lem:terms-define-map-reverse-duplicate` (map reverse and map duplicate), Lemma
+`lem:terms-define-flip-flop`, Lemma `lem:terms-define-reversible`, Lemma
+`lem:terms-define-string-representation` and Claim `claim:head`.  No result
+takes a hypothesis, and the project declares no `axiom`.
 
-# Summary of changes for run 7440d7c0-eda0-4913-a593-ba4ea19702b3
-**Status of Part B (rational relations and rational functions)**
+## The route
 
-I re-checked the project as it now stands: the whole thing builds, and I verified each Part B result by tracing the axioms it actually depends on (not just by looking for `sorry` in the statement's own file). Of the 22 numbered Part B results that were formalised as statements, **2 are now proved outright** and the other 20 still rest on at least one `sorry` somewhere in their dependencies. Substantial supporting machinery has been built for several of the remaining ones.
+`Transducers.IsRegularFun` is by definition the closure of
+`Transducers.RegularFam` under composition, and the functions definable by terms
+are closed under composition, so the converse reduces to covering the primes.
 
-**Proved with no `sorry` and no extra axioms** (only `propext`, `Classical.choice`, `Quot.sound`):
-* **Theorem B.4.1** — characterisation of Mealy machines (`Transducers.isMealy_iff`, supporting file `RequestProject/MealyChar.lean`).
-* **Claim B.4.4** — length preservation via typings (`Transducers.lengthPreserving_iff_typing`, supporting file `RequestProject/Typing.lean`).
+* `PartC/CombFinite.lean` -- a function whose domain is a finite type is
+  definable (Claim `claim:finite-domain-regular-list-function`), hence so is a
+  string homomorphism (Lemma `lem:terms-define-string-homomorphisms`).
+* `PartC/CombDerived.lean` -- the derived combinators the book uses without
+  comment, the finite case distinction `Transducers.tfun_finCases`, and the
+  three claims that are about terms alone.
+* `PartC/CombStrFam.lean` -- `Transducers.TermStrFun`, the interface between the
+  primes (functions `A* → B*` for arbitrary finite alphabets) and the terms
+  (which speak about the elements of a `Ty`), together with Lemma
+  `lem:terms-define-append-hash`.
+* `PartC/CombMealyFF.lean`, `PartC/CombMealyRev.lean` -- the two Mealy primes,
+  which with Theorem `thm:rational-primes` (and behind it Theorem
+  `thm:2dfa-decomposition-into-primes` and Theorem `thm:krohn-rhodes`) give all
+  the rational primes.
+* `PartC/CombMapRev.lean` -- map reverse and map duplicate, both instances of
+  the map lifting of a term-definable function.
+* `PartC/CombComplete.lean` -- every regular string-to-string function is
+  definable by terms.
+* `PartC/CombRepr.lean` -- Lemma `lem:terms-define-string-representation` and,
+  from it, the converse.
 
-**Reduced to a small number of remaining gaps** (statement and reduction complete; the named auxiliary steps are still `sorry`):
-* **Theorem B.2.7** (Mealy machines inside the rational functions) — the full argument is written in `RequestProject/PartB1.lean` from Theorem B.4.1; the only thing missing is the step "rational ⇒ continuous", i.e. Theorem B.1.5 specialised to functions.
-* **Theorem B.1.4** (closure under composition, `RequestProject/RatComp.lean`) — the product automaton is defined, its transition set is shown finite and the soundness direction is proved; the completeness direction (every pair of runs is matched by a run of the product) remains.
-* **Theorem B.1.5** (continuity, `RequestProject/RatCont.lean`) — the translation of an atomic nfa with output into an ε-nfa is defined and the two directions of the run correspondence are proved; what remains is the language identity for that ε-nfa, regularity of ε-nfa languages, and the assembly.
-* **Claim B.1.7** (complement of a homomorphism, `RequestProject/HomComplement.lean`) — the explicit 4-state automaton is defined and the basic reachability lemmas are proved; soundness and completeness remain.
-* Atomisation of nfas with output (`RequestProject/Atomize.lean`, an auxiliary normal form used by B.1.4/B.1.5/B.2.4) — the construction and its main chaining lemma are proved; soundness and completeness remain.
-* **Theorem B.4.6** (sequential functions, `RequestProject/SeqChar.lean`) — the intended proof is laid out in full: regularity of the length-mod and suffix languages, sequential transducers and their composition with a dfa, the derivative/state construction and the transducer built from it. Most of these steps are still `sorry`, so this file is currently a skeleton rather than a proof.
+## Divergences from the book
 
-**Still statements only** (no proof work yet): B.1.6, B.2.3, B.2.4, B.2.5, B.2.6, B.3.3–B.3.7, B.4.2, B.4.3, B.4.5, B.4.8, B.4.13. As before, Claims B.4.9–B.4.12 are deliberately not formalised (they are internal steps of the proof of B.4.8).
+Three, all of them in the *route* and none in a statement; they are recorded
+under *Divergences from the book* in `THEOREMS.md` and in the docstrings.
 
-For context: Part A remains proved in full, and Parts C and D are still statements only. No files were changed in this session — I only inspected and verified the current state, and the repository is committed and up to date.
+* Claim `claim:finite-type-bijection-disjoint-units` is deduced *from* Claim
+  `claim:finite-domain-regular-list-function`, the reverse of the book's order.
+  Both are proved.
+* In Lemma `lem:terms-define-reversible` the input alphabet `A` is embedded in
+  `Equiv.Perm (Option A)` by `a ↦ Equiv.swap none (some a)` instead of carrying
+  the book's arbitrary cyclic group structure on `A`.
+* In the product case of Lemma `lem:terms-define-string-representation` the
+  functions that implement the projections under string representation, from the
+  easy direction, replace the book's marking machine.  Claim `claim:head` is
+  proved all the same, it is simply not needed on this route.
 
+## Verification
 
-# Summary of changes for run 6cd41a55-956b-4b84-bd16-32e830e07542
-I continued the induction step of Lemma A.2.5 — no help was needed, and it is now complete, together with the two results that depended on it. Part A of the book is now proved in full, with no `sorry` and no extra axioms (only `propext`, `Classical.choice`, `Quot.sound`).
-
-**Lemma A.2.5** (`Transducers.stateTransTransducer_prime_decomposition` in the new file `RequestProject/StateTrans.lean`): for every pre-automaton, the state transformation transducer is a composition of prime Mealy machines.
-
-The proof follows the book, with one deviation that keeps the input alphabet fixed: instead of deleting the letter `a` from the alphabet, the pre-automaton in which `a` acts as the identity is used, so the two induction parameters are the number of states and the number of letters that do not act as a permutation, ordered lexicographically. The induction step is organised as a chain of stages, each adding one component to an enriched letter `(letter, seen, L, prev, fp, mid)`:
-
-* `L` — the state transformation of the maximal `a`-free suffix of the current prefix, obtained from the map lifting (Lemma A.2.4) of the induction hypothesis for the pre-automaton where `a` acts as the identity;
-* `seen`, `prev`, `fp` — flip-flop machines: whether `a` has occurred before, the delayed value of `L`, and the value stored at the first `a`-position (the first part of the tripartite decomposition);
-* `mid` — the middle part, computed by the induction hypothesis for the smaller state space `P` (the image of the state transformation of `a`);
-* a final letter-to-letter homomorphism recombines the three parts of the tripartite decomposition.
-
-Correctness of the chain (`krStages_eq`) is proved against a specification machine, stage by stage; that the chain consists of primes is `krStages_compClosure`. Theorem A.2.2 (Krohn–Rhodes) was already reduced to Lemma A.2.5, so it is now proved outright.
-
-**Theorem A.2.8** (`Transducers.aperiodic_iff_flipflop_composition`), whose remaining implication "aperiodic ⇒ composition of flip-flops" also depended on this construction, is now proved as well. This needed two additions:
-
-* `RequestProject/FlipFlopClosure.lean` — the flip-flop analogues of the closure properties of compositions of primes (pairing the output with the input, acting on the second component, and the map lifting).
-* `RequestProject/StateTransAperiodic.lean` — the same construction run inside the class of flip-flops. To make the book's remark that "every new machine only uses state transformations that arise from the original machine" precise, the middle pre-automaton is defined to apply only *realisable* transformations (those of the form `strTrans δ w`); this restriction is invisible in the correctness proof, and it is what makes condition (*) of Lemma A.2.11 inherited by both smaller pre-automata. In the induction basis, a pre-automaton that satisfies (*) and all of whose letters are permutations has only identity letters, so its state transformation transducer is a flip-flop.
-
-Also updated: `RequestProject/PartA.lean` now imports the new files (the duplicated definitions were removed from it), and `THEOREMS.md` records the new status — Part A proved in full, Parts B, C, D still statements only.
-
-# Summary of changes for run 68198e05-8a1a-4840-9a79-f65e77faeb5e
-**Status: Part A is proved except for one remaining gap.**
-
-Of the 11 numbered results of Part A (Mealy machines), 10 are now proved in Lean with no `sorry` and no extra axioms (only `propext`, `Classical.choice`, `Quot.sound`). What is left is a single item:
-
-* **the induction step of Lemma A.2.5** (the state transformation transducer of a pre-automaton is a composition of primes). Its induction basis — the case where every letter acts as a permutation — is proved (`stateTransTransducer_prime_of_reversible`); the remaining step is the book's tripartite decomposition of the input into `a`-blocks.
-* Two further statements are reduced to that gap: **Theorem A.2.2 (Krohn–Rhodes)** is proved *from* Lemma A.2.5 (the reduction itself is complete), and of **Theorem A.2.8** the implication "composition of flip-flops ⇒ aperiodic" is proved while the converse, which the book also derives from the Krohn–Rhodes construction, is left open.
-
-So there are exactly two `sorry`s left in Part A (`RequestProject/PartA.lean`): the induction step of Lemma A.2.5 and the forward implication of Theorem A.2.8. Parts B, C, D remain statements only, as before.
-
-**Proved in this session**
-
-* A.1.2 (equivalence of Mealy machines is settled by inputs of bounded length), A.1.3 (closure under composition), A.1.4 (continuity), A.2.4 (map lifting of a decomposition into primes), A.2.6 (reversible machines compose), A.2.9 (pumping characterisation of aperiodicity), A.2.10 (Myhill–Nerode, both directions, via an explicit minimal machine), A.2.11 (aperiodic ⟺ the state transformations stabilise).
-
-**New supporting files**
-
-* `RequestProject/Aux.lean` — list and finite-iteration lemmas.
-* `RequestProject/MealyBasic.lean` — Mealy definitions moved out of `PartA.lean`, plus runs, state transformations, the product machine and the dfa reading a machine's output.
-* `RequestProject/PrimeClosure.lean` — a decomposition into primes can carry a copy of the input in its output (`compClosure_zipInput`, `compClosure_liftSnd`).
-* `RequestProject/MapLift.lean` — the map lifting described position by position, its compatibility with composition, and Lemma A.2.4 (including the reversible case with the cancellation law, realised as a reversible machine, a flip-flop machine and a homomorphism).
-
-**Two corrections to earlier definitions** (documented in the docstrings and in `THEOREMS.md`): `Aperiodic` now says the last letter of `f (u vⁿ w)` is eventually constant as an element of `Option B` (the earlier version was unsatisfiable for letter-to-letter functions), and the derivative used in Myhill–Nerode drops the output produced while reading `w` (otherwise even the identity would have infinitely many derivatives and Lemma A.2.10 would be false).
-
-`THEOREMS.md` now carries a status column for every Part A result. The whole project builds; all work is committed and pushed.
-
-# Summary of changes for run f0cde0fd-974e-4487-bd04-6c7b0abe48bd
-I read the uploaded book (`main.pdf`, *Transducers* by M. Bojańczyk) and produced a Lean 4 formalisation of its numbered results — statements only, with every proof left as `sorry`, as requested (theorems, lemmas, corollaries and claims; exercises and examples excluded).
-
-**What was added**
-
-- `RequestProject/Basic.lean` — shared notions: continuity (Definition .0.1, plus partial and relational variants), prefix/length preservation, aperiodicity, the map lifting (Definition A.2.3), left distance (Definition B.4.7), aperiodic transition functions, and `CompClosure`, the closure of a family of functions under composition (used for all "decomposition into primes" results).
-- `RequestProject/PartA.lean` — Mealy machines, reversible/flip-flop primes, and Theorems A.1.2–A.1.4, A.2.2 (Krohn–Rhodes), A.2.8, Lemmas A.2.4–A.2.6, A.2.10, A.2.11, Claim A.2.9.
-- `RequestProject/PartB1.lean` — nfa with output, rational relations and functions, bimachines; Theorems B.1.4–B.1.6, B.2.3, B.2.6, B.2.7, Lemmas B.2.4, B.2.5, Claim B.1.7.
-- `RequestProject/PartB2.lean` — weighted automata over a semiring; Theorems B.3.3, B.3.4, B.3.6, B.3.7, B.4.1, B.4.2, B.4.6, B.4.8, B.4.13, Lemmas B.3.5, B.4.3, B.4.5, Claim B.4.4, plus sequential and subsequential transducers.
-- `RequestProject/PartC.lean` — regular functions (Definition C.0.14), two-way transducers, streaming string transducers; Theorems C.1.1, C.1.4, C.2.2, C.2.5, C.2.9, C.3.2, Corollaries C.2.7, C.2.8, Lemmas C.1.2, C.1.3, C.2.6, C.2.10, Claim C.2.11.
-- `RequestProject/MSO.lean` — monadic second-order logic over strings (syntax, semantics, first-order fragment, quantifier rank), mso relabellings, mso transductions, k-types; Theorems C.4.1, C.4.4, C.4.8, C.4.11, C.4.16, C.4.17, Lemmas C.4.2, C.4.10, C.4.13, C.4.15, Claim C.4.6.
-- `RequestProject/PartD.lean` — polyregular functions and marked squaring, for-transducers (syntax and semantics) and pebble transducers; Theorems D.0.19, D.1.1, D.2.1, D.2.4, Lemmas D.1.3, D.1.4.
-- `THEOREMS.md` — an index mapping every numbered result of the book to its Lean name, together with the conventions used.
-
-**Conventions and choices** (also documented in the files): strings are `List A` and regularity is Mathlib's `Language.IsRegular`; "problem X is decidable" is stated as the existence of a computable decision procedure on finite descriptions under an explicit promise (`DecidableUnderPromise`), undecidability as `¬ ComputablePred`, and Theorem A.1.2 in the equivalent form of a finite check on inputs of bounded length; the book's extended mso syntax with polynomial types is presented equivalently by families of ordinary mso formulas indexed by the variants of the linear type.
-
-A small number of statements are deliberately not formalised, and each file says so in its header: the internal claims B.4.9–B.4.12, C.2.3, C.2.4, C.2.12, C.4.5, C.4.9, C.4.14, D.2.2, D.2.3, D.2.5–D.2.7, which talk about auxiliary encodings (configuration graphs, branching parts) used only inside the corresponding proofs.
-
-The whole project builds; the only warnings are the expected `declaration uses 'sorry'` for the 64 statements. I also checked the definitions computationally on small examples (Mealy machines, bimachines, sst, two-way and pebble transducers, for-transducers, map lifting, marked squaring) to confirm they behave as the book describes. All work is committed and pushed.
-# Summary of changes for Lemma `lem:for-closed-under-composition` (Part D)
-
-Lemma `lemma:prenex-normal-form` (`Transducers.forTransducer_prenex`) was already proved, in
-`RequestProject/PartD/ForPrenexTop.lean`, and is left unchanged.  Lemma
-`lem:for-closed-under-composition` (`Transducers.forTransducer_comp`) is now proved as well, so
-`RequestProject/PartD/Statements.lean` contains three `sorry`s instead of four, and
-`RequestProject/Labels.lean` records the new status with `assert_no_sorry`.
-
-The proof of the composition follows the book: the inner for-transducer is put into the form of a
-single nest of loops (`Transducers.for_nest_form`), a position of its output is represented by the
-tuple of positions at which the nest produces the corresponding letter, and the outer
-for-transducer is translated over those tuples (`Transducers.tr`, whose correctness
-`Transducers.tr_spec` was already proved).  What this run added is:
-
-* `RequestProject/PartD/ForFree.lean` -- the free position variables of a program
-  (`Transducers.ForProg.freePos`) and the transformation `Transducers.closeProg` making a program
-  closed: every free position variable is bound by an extra loop that runs only at the first
-  position of the input, and the empty input is dealt with by a constant program.  This is what
-  makes the translation applicable at the top level: only a *bound* position variable of the outer
-  program can be represented by a tuple of positions of the inner input.
-* The hypotheses of `Transducers.tr_spec` were correspondingly weakened from all the position
-  variables of the translated program to its free ones, which is what the induction actually
-  needs.
-* `RequestProject/PartD/ForCompTop.lean` -- the assembly.  The composed program first computes two
-  flags saying whether the input has at least one and at least two letters
-  (`Transducers.lenProg`).  On the inputs of length at least two it runs the translation; on the
-  inputs of length at most one, where a nest of loops is of no use, it runs the loop-free
-  simulation `Transducers.shortSim` of the inner transducer in continuation-passing style
-  (`Transducers.cpsFree`), replacing each of its finitely many possible outputs `v` by the constant
-  string that the outer transducer produces on `v`.
-
-`lake build` succeeds with no errors, and `#print axioms` on `Transducers.forTransducer_prenex` and
-on `Transducers.forTransducer_comp` reports only `propext`, `Classical.choice`, `Quot.sound`.
-# Summary of changes for Theorem `thm:pebble-are-for` (Part D)
-
-Theorem `thm:pebble-are-for` (`Transducers.pebble_iff_forTransducer`) -- pebble transducers and
-for-transducers compute the same string-to-string functions -- is now proved.  It was the last
-numbered result of the book left open, so `RequestProject/PartD/Statements.lean` no longer
-contains a `sorry`, no file of the project does, and every alias of `RequestProject/Labels.lean`
-carries `assert_no_sorry`.
-
-From a for-transducer to a pebble transducer, the program is put in prenex form and the nest of
-loops is run with one pebble per loop; that direction was already in the project
-(`Transducers.PebFor.isPebbleTransducer_of_isForTransducer`).  The other direction is proved by
-showing that a pebble transducer computes a polyregular function
-(`Transducers.isPolyregular_of_isPebbleTransducer`), which is a for-transducer by Theorem
-`thm:for-transducers-are-polyregular`.  The book obtains it from the reachability analysis of a
-pebble automaton (Lemma `lem:reachability-pebble-automaton` and the claims inside its proof, which
-are internal steps and are not formalised); here it is proved by induction on the number of
-pebbles, which uses the same idea -- the run above the bottom pebble is a run of a machine with
-one pebble fewer -- but keeps it inside the vocabulary of pebble transducers.  What this run
-added is:
-
-* `RequestProject/PartD/TwoWayTotal.lean` and `RequestProject/PartD/PebbleTwoWay.lean` -- the base
-  case: a one-pebble transducer is a two-way transducer, so it computes a regular function on the
-  inputs on which it halts (`Transducers.PebOne.exists_regularFun_of_pebble_one`).
-* `RequestProject/PartD/SqPad.lean` -- the padded input (a blank on each side), its letters and
-  its polyregularity, and the coordinates of the marked square of a string.
-* `RequestProject/PartD/PebbleSquareIdx.lean`, `PebbleSquareDef.lean`, `PebbleSquareRun.lean`,
-  `PebbleSquareSim.lean` -- the induction step: a `(k+2)`-pebble transducer on `w` is simulated by
-  a `(k+1)`-pebble transducer on the marked square of the padded input
-  (`Transducers.PebSq.sim_computes`).  A stack `[p_1, ..., p_l]` is encoded inside the block
-  `p_1` of the square, so the bottom pebble is remembered by the block and one pebble is saved;
-  the two letters adjacent to it are kept in the state, and the auxiliary phases of the
-  simulating machine walk its topmost pebble to the gap that the encoding requires, using three
-  tests that a pebble transducer can perform on the square (is the gap the marked one of its
-  block, is it the start of a block, does it carry a lower pebble).
-* `RequestProject/PartD/PebblePoly.lean` -- the induction itself, and the conclusion that a
-  pebble transducer computes a polyregular function, marked squaring and padding being
-  polyregular.
-
-`lake build` succeeds with no errors (8321 jobs), and `#print axioms` on
-`Transducers.pebble_iff_forTransducer`, on `Transducers.isPolyregular_of_isPebbleTransducer` and
-on `Transducers.PebSq.sim_computes` reports only `propext`, `Classical.choice`, `Quot.sound`.
-
-## The remaining exercises of the book
-
-This pass closed the gap between the `\exer` entries of the sources and the
-index of `EXERCISES.md`.  No numbered result of the main text was touched: the
-only files changed outside `RequestProject/Exercises/` are
-`RequestProject/Exercises.lean`, `RequestProject/Labels.lean`, `EXERCISES.md`
-and `THEOREMS.md`.
-
-Newly formalised:
-
-* `exer:so-logic` (`Exercises/LogicEx.lean`) -- a language definable in
-  second-order logic and not regular, for the syntax the solution uses.
-* `exer:polyregular-marked-squaring-compression` (`Exercises/Compression.lean`)
-  -- the purely combinatorial statement the solution establishes: `a^(2^n)` has
-  a compression with `n+1` rules and every compression of its marked square has
-  at least `2^n - 1` rules.
-* `exer:2nft`, both halves (`Exercises/TwoNFT.lean`, `Exercises/TwoNFT2.lean`)
-  -- the two nondeterministic two-way models are incomparable
-  (`Transducers.Exercises.exists_isTwoNFT₁_not_isTwoNFT₂` and
-  `Transducers.Exercises.exists_isTwoNFT₂_not_isTwoNFT₁`).
-* `exer:for-transducers-simulate-fo` (`Exercises/ForFO.lean`) -- every
-  first-order sentence is decided by a for-transducer of size linear in the
-  size of the sentence (`Transducers.Exercises.exists_forProg_of_isFO`).
-
-Fifty-eight of the book's eighty-three exercises are now formalised.  The
-twenty-five that are not are listed in `EXERCISES.md`, each with the reason;
-they are the ones about running time or the number of states of a construction,
-the ones resting on theory the project does not have (the maximum cycle mean of
-a weighted graph, Ehrenfeucht-Fraisse games, the growth rates of regular
-languages), the ones going through the string encoding of the configuration
-graph of a two-way transducer, `exer:factoring-through-a-rational-function`
-(whose solution is empty in the sources) and the exercise at
-`rational-functions.tex` line 440 (commented out in the sources).
-`EXERCISES.md` also records a divergence in the solution to
-`exer:2dfa-complexity`: the prime-divisibility construction it proposes gives a
-superpolynomial, not an exponential, lower bound on the length of the shortest
-accepted string in terms of the number of states.
-
-`lake build` succeeds with no errors, there is no `sorry` in
-`RequestProject/Exercises/`, and `#print axioms` on each new declaration
-reports only `propext`, `Classical.choice`, `Quot.sound`.
-
-# Summary of changes for the string representation of the configuration graph (Section C.2)
-
-The book's string encoding of the reachable configuration graph of a two-way
-transducer, which the formalisation had not introduced, is now a real object of
-the project, and the two lemmas the book states about it are proved.
-
-New files, all in `RequestProject/PartC/`:
-
-* `ConfGraph.lean` — the alphabet `C` of the book (`Transducers.CLet`: bipartite
-  graphs on two copies of the state set, edges directed and labelled with output
-  strings, at most one outgoing edge per vertex and it goes to the other copy,
-  plus a special letter for the empty input), the representation
-  `Transducers.TwoWay.enc` of the reachable configuration graph of an input, and
-  the two-way transducer `Transducers.TwoWay.pathTrans` that walks along a
-  represented graph and prints its output string.
-* `ConfGraphRun.lean` — the representation agrees with the run semantics of
-  `TwoWayRun.lean`: `Transducers.TwoWay.computes_enc` and `computes_enc_iff`.
-* `ConfGraphAnnot.lean` — the representation is a letter-to-letter image of the
-  annotation of `TwoWayAnnot.lean`, and the correct annotations form a regular
-  language.
-* `ConfGraphReg.lean` — the book's main observation
-  (`Transducers.twoWay_encLang_isRegular`), Lemma
-  `lem:compute-configuration-graph`
-  (`Transducers.twoWay_isRationalFun_enc`) and Lemma
-  `lem:check-if-output-string-of-configuration-graph-belongs-to-L`
-  (`Transducers.twoWay_encOutputLang_isRegular`, for a transducer that computes
-  a total function, which the statement takes as an explicit hypothesis).
-
-The three results are restated in `PartC/Statements.lean` and aliased in
-`RequestProject/Labels.lean`; `THEOREMS.md`, `FORMALISATION.md` and
-`EXERCISES.md` were updated accordingly.  No existing proof was changed: the
-proof of Theorem `thm:continuity-2dfas` still goes through Shepherdson's
-Theorem, and the two lemmas are proved independently of it.
-
-`lake build` succeeds with no errors, there is no `sorry` in the new files, and
-`#print axioms` on each new numbered result reports only `propext`,
-`Classical.choice`, `Quot.sound`.
-
-# Summary of the run on the four exercises that the missing encoding had blocked
-
-`EXERCISES.md` listed four exercises as not formalised because of the string
-encoding of the configuration graph, or because of a divergence.  All four are
-now formalised and proved, and `EXERCISES.md`, `THEOREMS.md`,
-`FORMALISATION.md` and `RequestProject/Labels.lean` record them.
-
-* `exer:2dfa-unary-output` -- was already proved when this run started
-  (`Transducers.Exercises.isRegularFun_iff_isRationalFun_of_unary_output`,
-  `Exercises/TwoDFAUnary.lean`), on top of the encoding
-  `Transducers.CLet` / `Transducers.TwoWay.enc` of `PartC/ConfGraph.lean`.  So is
-  `exer:2nft-uniformise`, the other exercise the encoding had blocked.  What this
-  run did for them was to bring the prose of `EXERCISES.md` and
-  `FORMALISATION.md`, which still described them as blocked, into agreement with
-  the index.
-* `exer:2dfa-loop-elimination-sipser`
-  (`Transducers.Exercises.exists_terminating_twoDFA_halts`,
-  `Exercises/TwoDFASipser*.lean`) -- the automaton of the book's solution, a
-  depth-first search of the tree of configurations that reach the accepting one,
-  performed by a two-way automaton with `24 * |Q|^2` states that terminates on
-  every input.
-* `exer:regular-compression`
-  (`Transducers.Exercises.compatCompression_of_isRegularFun`,
-  `Exercises/CompressionReg.lean`), with `exer:rational-compression`
-  (`compatCompression_of_isRationalFun`) which it rests on, and Claim
-  `claim:map-compression` (`CompatCompression.mapLift`,
-  `Exercises/CompressionMapLift.lean`).  Both are proved in their *size* half:
-  the book asks for a polynomial time algorithm producing the compression of the
-  image, and this project has no model of running time, so what is stated is
-  that the image of a string with a compression of `n` rules has a compression
-  of at most `C * n ^ k` rules (`Transducers.Exercises.CompatCompression`),
-  exactly as `exer:polyregular-marked-squaring-compression` already was.
-* `exer:2dfa-complexity`
-  (`Transducers.Exercises.exists_twoDFA_shortest_exponential`,
-  `Exercises/TwoDFAExp.lean`).  The note that the author's construction does not
-  prove the claim still stands, and that construction is kept, with the bound it
-  really gives, in `Exercises/TwoDFAComplexity.lean`.  The claim itself is now
-  proved, by a construction the book does not give: over the alphabet
-  `{0, ..., n}` the ruler word `0 1 0 2 0 1 0 ...`, of length `2^(n+1) - 1`, is
-  the unique word satisfying, for each level `j <= n`, the condition that among
-  the letters at least `j` those equal to `j` and those larger than `j`
-  alternate, beginning and ending with `j`
-  (`Exercises/TwoDFARuler.lean`); each condition is checked by a one-way
-  automaton with three states, and a two-way automaton runs the `n+1` passes one
-  after another with `4 * (n+1)` states in total
-  (`Exercises/TwoDFAPass.lean`), so its shortest -- indeed only -- accepted
-  string has length `2^(n+1) - 1`.  The alphabet grows with `n`; the measure of
-  the exercise is the number of states.
-
-Sixty-three of the book's eighty-three exercises are now formalised and proved,
-and twenty are not.  `lake build` succeeds with no errors, there is no `sorry`
-in `RequestProject/Exercises/`, all four bookkeeping scripts of `tools/` report no
-problem, and `#print axioms` on each of the four results above reports only
-`propext`, `Classical.choice`, `Quot.sound`.
+`lake build` succeeds with no errors.  No declaration of the project uses
+`sorry`, `axiom` or `native_decide` -- the only occurrences of `sorry` are
+inside the commented-out records of statements that were withdrawn or corrected,
+which elaborate nothing -- `python3 tools/gen_labels.py --check` agrees with
+`LABELS.md` and the index tables, and the counts in `THEOREMS.md` were
+recomputed: of the 115 environments of the dictionary, 23 definitions and 89
+results are formalised, none from a hypothesis, and 3 environments are not
+formalised (Definition `def:rational-recognisable-subsets`, Claim
+`nolabel:claim-representations-are-a-regular-language`, and the withdrawn
+unnumbered paragraph `nolabel:thm-fo-transduction-into-primes`).
