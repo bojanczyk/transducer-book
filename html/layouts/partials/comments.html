@@ -1,0 +1,167 @@
+{{/* Comments, under the chapter.
+
+     The one part of the site that is not a file. Everything it needs from the
+     server is in static/comments.py, next door in the built site.
+
+     The endpoint is carried by the form's action attribute rather than written
+     into the script, because Hugo's relativeURLs rewriting reaches attributes
+     only and never the inside of a <script> — the same reason search.html and
+     lean-pane.html read the site root off a script tag's src instead of asking
+     relURL for it. As an attribute it comes out as "../comments.py" on a
+     chapter page, which is what makes the site work under a subpath and, as
+     far as anything can, off disk: opened over file:// the fetch simply fails
+     and the section says comments are not available.
+
+     The comment text is put into the page with textContent, never innerHTML.
+     That is the whole of the escaping story, and it is why the server is free
+     to store what the reader actually typed — this is a book about formal
+     languages, and `<` and `&` are things people will want to write. */}}
+<section class="comments" data-page="{{ .File.ContentBaseName }}">
+  <h2>Comments</h2>
+  <ol class="comment-list" hidden></ol>
+  <p class="comment-empty" hidden>No comments on this chapter yet.</p>
+  <form class="comment-form" action="{{ "comments.py" | relURL }}" method="post" hidden>
+    <label class="visually-hidden" for="comment-name">Your name</label>
+    <input id="comment-name" name="name" type="text" maxlength="60"
+           autocomplete="nickname" placeholder="name (optional)">
+    <label class="visually-hidden" for="comment-text">Your comment</label>
+    <textarea id="comment-text" name="text" rows="3" maxlength="4000" required
+              placeholder="A mistake, a question, a better proof…"></textarea>
+    {{/* Hidden from people, offered to bots — see comments.py. Not type=hidden,
+         which a bot skips; an ordinary field moved out of sight and taken out
+         of the tab order, which a bot fills in. */}}
+    <div class="comment-hp" aria-hidden="true">
+      <label for="comment-website">Leave this empty</label>
+      <input id="comment-website" name="website" type="text" tabindex="-1" autocomplete="off">
+    </div>
+    <div class="comment-actions">
+      <button type="submit">Post comment</button>
+      <span class="comment-note" role="status"></span>
+    </div>
+  </form>
+  <p class="comment-note comment-offline" hidden>Comments are not available here.</p>
+</section>
+
+<style>
+  .comments { width: min(100%, var(--reading-width)); margin: 4rem 0 0; padding-top: 1.5rem;
+              border-top: 1px solid color-mix(in srgb, currentColor 15%, transparent);
+              font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; }
+  .comments h2 { margin: 0 0 1.25rem; font-size: 1rem; font-weight: 600; letter-spacing: .02em; opacity: .7; }
+  .comment-list { margin: 0 0 1.75rem; padding: 0; list-style: none; }
+  .comment-list li { margin: 0 0 1.25rem; padding-inline-start: .9rem;
+                     border-inline-start: 2px solid color-mix(in srgb, var(--accent) 30%, transparent); }
+  .comment-who { font-size: .8rem; opacity: .6; }
+  .comment-who b { font-weight: 600; }
+  .comment-body { margin: .2rem 0 0; white-space: pre-wrap; overflow-wrap: anywhere; font-size: .92rem; }
+  .comment-empty, .comment-note { font-size: .82rem; opacity: .55; }
+  .comment-form { display: flex; flex-direction: column; gap: .6rem; }
+  .comment-form input, .comment-form textarea {
+      width: 100%; padding: .5rem .65rem; border-radius: .35rem; font: inherit; font-size: .9rem;
+      color: inherit; background: transparent;
+      border: 1px solid color-mix(in srgb, currentColor 22%, transparent); }
+  .comment-form input { max-width: 18rem; }
+  .comment-form textarea { resize: vertical; min-height: 4.5rem; }
+  .comment-form input:focus, .comment-form textarea:focus { outline: none; border-color: var(--accent); }
+  .comment-actions { display: flex; align-items: center; gap: .75rem; }
+  .comment-form button {
+      padding: .4rem .9rem; border-radius: .3rem; font: inherit; font-size: .85rem; cursor: pointer;
+      color: inherit; background: transparent;
+      border: 1px solid color-mix(in srgb, currentColor 25%, transparent); }
+  .comment-form button:hover:not(:disabled) { color: var(--accent); border-color: color-mix(in srgb, var(--accent) 55%, transparent); }
+  .comment-form button:disabled { opacity: .5; cursor: default; }
+  .comment-note.bad { color: var(--accent); opacity: .9; }
+  .comment-hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+  .visually-hidden { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+                     overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+</style>
+
+<script>
+(function () {
+  var box = document.querySelector('.comments');
+  if (!box) return;
+
+  var form     = box.querySelector('.comment-form'),
+      endpoint = form.getAttribute('action'),
+      page     = box.dataset.page,
+      list     = box.querySelector('.comment-list'),
+      empty    = box.querySelector('.comment-empty'),
+      offline  = box.querySelector('.comment-offline'),
+      note     = box.querySelector('.comment-actions .comment-note'),
+      button   = box.querySelector('button'),
+      name     = box.querySelector('#comment-name'),
+      text     = box.querySelector('#comment-text');
+
+  // The name is the reader's, not the page's: whoever comments on two chapters
+  // should not have to introduce themselves twice.
+  try { name.value = localStorage.getItem('transducer-comment-name') || ''; } catch (e) {}
+
+  function when(iso) {
+    var d = new Date(iso);
+    if (isNaN(d)) return '';
+    return d.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
+  }
+
+  function add(c) {
+    var li = document.createElement('li'),
+        who = document.createElement('div'),
+        b = document.createElement('b'),
+        body = document.createElement('p');
+    b.textContent = c.name || 'anonymous';
+    who.className = 'comment-who';
+    who.appendChild(b);
+    who.appendChild(document.createTextNode(c.at ? ' · ' + when(c.at) : ''));
+    body.className = 'comment-body';
+    body.textContent = c.text;                 // never innerHTML
+    li.appendChild(who);
+    li.appendChild(body);
+    list.appendChild(li);
+    list.hidden = false;
+    empty.hidden = true;
+  }
+
+  function say(message, bad) {
+    note.textContent = message || '';
+    note.classList.toggle('bad', !!bad);
+  }
+
+  fetch(endpoint + '?page=' + encodeURIComponent(page), { headers: { 'Accept': 'application/json' } })
+    .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(function (d) {
+      (d.comments || []).forEach(add);
+      empty.hidden = (d.comments || []).length > 0;
+      form.hidden = false;
+    })
+    .catch(function () {
+      // No endpoint: `hugo server`, or the site opened off disk. Say so once
+      // and leave it — an author previewing a chapter does not need a stack of
+      // red boxes about a script that was never going to be there.
+      offline.hidden = false;
+    });
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (!text.value.trim()) return;
+    button.disabled = true;
+    say('posting…');
+    var body = new URLSearchParams({
+      page: page, name: name.value, text: text.value,
+      website: box.querySelector('#comment-website').value
+    });
+    fetch(endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
+      body: body.toString()
+    })
+      .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
+      .then(function (res) {
+        if (!res.ok) throw new Error(res.d.error || 'that did not work');
+        if (res.d.comment && res.d.comment.text) add(res.d.comment);
+        text.value = '';
+        try { localStorage.setItem('transducer-comment-name', name.value); } catch (e) {}
+        say('posted');
+      })
+      .catch(function (err) { say(err.message || 'that did not work', true); })
+      .finally(function () { button.disabled = false; });
+  });
+})();
+</script>

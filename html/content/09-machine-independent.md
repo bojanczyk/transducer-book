@@ -8,7 +8,7 @@ source = "partBRational/myhill-nerode.tex"
 \setcounter{mypart}{2}
 \setcounter{section}{3}
 \setcounter{ourexamplecounter}{14}
-% source stamp partBRational/myhill-nerode.tex:619fadc7
+% source stamp partBRational/myhill-nerode.tex:ac15a8e3
 \renewcommand{\exer}[2]{}
 \input{../../../partBRational/myhill-nerode.tex}
 {{< /latex >}}
@@ -101,45 +101,6 @@ It remains to explain why four states cannot be improved. Since the output is on
 <div class="exercise" id="exercise-4">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
 \setcounter{mypart}{2}\setcounter{section}{4}\setcounter{theorem}{13}\setcounter{exercise}{3}
-\begin{exercise}
-\label{exer:minimal-bimachine-lexicographic} Consider a different order on bimachines: we  minimise the number of states in the suffix automaton, and we do not care about the prefix automaton. Show that suffix automaton in a minimal machine is unique up to isomorphism.
-\end{exercise}
-{{< /latex >}}
-<details class="solution">
-<summary>Show solution</summary>
-<div class="solution-body">
-{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-\setcounter{mypart}{2}\setcounter{section}{4}\setcounter{theorem}{13}
-\noindent\textbf{Solution.}\quad We follow the proof of \cref{thm:machine-independent-rational-functions}. Throughout, we assume that all states of both automata are reachable, since unreachable states can be removed without changing the function.
-
-    \paragraph*{The suffix automaton.} Let $\sim$ be the equivalence relation from \cref{thm:machine-independent-rational-functions}, which identifies two suffixes $v_1$ and $v_2$ if the outputs $f(wv_1)$ and $f(wv_2)$ are at bounded left distance, for $w$ ranging over all input strings.
-
-    We first observe that the suffix automaton of every bimachine refines $\sim$. Suppose that two suffixes $v_1$ and $v_2$ lead to the same state of the suffix automaton, and consider an input string $wv_i$. In the gaps that are inside $w$, the state of the prefix automaton does not depend on $i$, and neither does the state of the suffix automaton, since it is obtained from the state of $v_i$ by reading the remaining part of $w$ backwards. Therefore the outputs $f(wv_1)$ and $f(wv_2)$ share the pieces produced in these gaps, and they can only differ in the pieces produced in the remaining $|v_i|+1$ gaps. Since each piece has bounded length, this is a bound that does not depend on $w$, and hence $v_1 \sim v_2$. In particular, the suffix automaton has at least as many states as $\sim$ has equivalence classes.
-
-    Conversely, there is a bimachine whose suffix automaton is the automaton of $\sim$-classes.  In the proof of \cref{thm:machine-independent-rational-functions}, the function is decomposed into two steps: a right-to-left automaton which annotates every position with the $\sim$-class of the suffix that follows it, and a subsequential function on the annotated strings. The first step is precisely the automaton of $\sim$-classes, read as a suffix automaton. For the second step, the only thing to check is that the state of the subsequential transducer, after reading an annotated prefix, depends only on the prefix and on the class of the suffix that remains. This is indeed the case, because the earlier annotations can be recovered from the class of the remaining suffix, by prepending the letters of the prefix one by one; recall that $\sim$ is a left congruence. Therefore we can use, as the state of the prefix automaton after reading $u$, the function which maps a class $q$ to the state of the subsequential transducer after reading $u$ annotated according to $q$. This function is updated deterministically from left to right, and together with the class of the suffix it determines the output in the gap.
-
-    Summing up, a bimachine with a minimal suffix automaton has one state per $\sim$-class, and its suffix automaton is the automaton of $\sim$-classes, which is determined by the function alone, and is therefore unique up to isomorphism.
-
-    \paragraph*{The prefix automaton.} In the above discussion we have solved the exercise. Let us now continue and discuss the prefix automaton. Suppose that we refine the order on bimachines: we first minimise the number of states in the suffix automaton, and then we minimise the number of states in the prefix automaton. We will show that a minimal bimachine is unique up to isomorphism, if we make a further assumption: the bimachine is \emph{earliest}, which means that it produces the output as early as possible from left-to-right. 
-
-    From now on the suffix automaton is fixed to be the one above, and we write $[v]$ for the state that it assigns to a suffix $v$. For a prefix $u$ and a state $q$ of the suffix automaton, define
-    \begin{align*}
-    \text{Out}(u,q) \quad \eqdef \quad \text{the longest common prefix of } \setbuild{f(uv)}{$[v]=q$}.
-    \end{align*}
-    In every bimachine, the pieces produced in the gaps inside $u$ depend only on $u$ and $[v]$, and they form a prefix of the output; therefore they form a prefix of $\text{Out}(u,q)$. In other words, $\text{Out}(u,q)$ is the most that a bimachine can produce before it has seen the letters of the suffix, and we call a bimachine \emph{earliest} if it produces exactly this much in every gap. For an earliest bimachine, the output function is determined by the function $f$: the piece produced in the gap that follows a prefix $u = u'a$, when the suffix is in state $q$, must be
-    \begin{align*}
-    \text{Out}(u', a q)^{-1} \cdot \text{Out}(u,q),
-    \end{align*}
-    where $aq$ is the state for the suffixes $av$ with $[v]=q$, and the piece in the first gap must be $\text{Out}(\varepsilon,q)$.
-
-    It remains to choose the states of the prefix automaton, and this is the same Myhill-Nerode construction as in \cref{exer:minimal-sequential}: we identify two prefixes if the pieces described above are the same for them, and for all of their extensions. This is a right congruence, and hence it defines a deterministic automaton, which is determined by $f$ alone; the argument from \cref{exer:minimal-sequential} shows that no earliest bimachine can have fewer states in its prefix automaton, and that one with this many states must be isomorphic to it.
-{{< /latex >}}
-</div>
-</details>
-</div>
-<div class="exercise" id="exercise-5">
-{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-\setcounter{mypart}{2}\setcounter{section}{4}\setcounter{theorem}{13}\setcounter{exercise}{4}
 \begin{exercise}
 \label{exer:non-minimal-automaton} Give an example of a rational function which has two non-isomorphic unambiguous transducers of minimal size (the size is the number of states).
 \end{exercise}

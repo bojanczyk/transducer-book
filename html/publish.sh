@@ -52,12 +52,16 @@ rsync -az --delete ${DRY:+--dry-run} --itemize-changes --stats "$SITE/dist/" "$D
 # because the failure it prevents — every ligature in the book rendered as an
 # empty box — looks like anything but a permissions problem.
 host="${DEST%%:*}"; path="${DEST#*:}"
-ssh -o BatchMode=yes "$host" "chmod -R a+rX $path" || true
+# …and 755 on the comment endpoint, which Apache will serve as a download
+# rather than run without it. Belt to rebuild.sh's braces: this survives a
+# publish made with --no-build, or from a dist/ that arrived some other way.
+ssh -o BatchMode=yes "$host" "chmod -R a+rX $path; chmod 755 $path/comments.py 2>/dev/null" || true
 
 # ── 4. see that it is actually there ────────────────────────────────────────
 echo "== checking $URL"
 fail=0
-for probe in "" "01-introduction/" "search-index.js" "bibliography.js"; do
+for probe in "" "01-introduction/" "search-index.js" "bibliography.js" \
+             "comments.py?page=01-introduction"; do
   code="$(curl -s -A "$UA" -o /dev/null -w '%{http_code}' "$URL$probe" || echo 000)"
   printf '   %-22s %s\n' "${probe:-/}" "$code"
   [ "$code" = 200 ] || fail=1

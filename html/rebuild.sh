@@ -275,4 +275,11 @@ hugo --source "$SITE" --minify --cleanDestinationDir "${HUGO_ARGS[@]+"${HUGO_ARG
 # the text around it looks perfectly fine. Cheap to prevent, very confusing to
 # meet for the first time on a live site.
 chmod -R a+rX "$SITE/dist" "$SITE/static/fonts" 2>/dev/null || true
+
+# The comment endpoint is a program, not a document, and Apache runs it only if
+# it is executable. hugo writes static files with the mode it chooses rather
+# than the one they had, and the a+rX above cannot put the bit back: capital X
+# grants execute to directories and to files that already have it, which is
+# precisely what stops it from turning every .js in dist/ into a program.
+if [ -f "$SITE/dist/comments.py" ]; then chmod 755 "$SITE/dist/comments.py"; fi
 exit $status

@@ -75,10 +75,8 @@ As the alphabet for the string representations,  we use  an eight-letter alphabe
     [\onelement,\onelement,\onelement] \mapsto \myunderbrace{\rightterm\onelement}{``no'' means odd} \qquad [\onelement,\onelement] \mapsto \myunderbrace{\leftterm\onelement}{``yes'' means even}.
     \end{align*}
     The function $f$ is regular under string representation. The transducer $f'$ counts the appearances of the letter $1$ modulo two, and outputs $\leftterm\onelement$ or $\rightterm\onelement$ accordingly. Note that not all input strings over the input alphabet $8$ are representations of the domain, but the transducer $f'$ will still produce some output  for such inputs. However, the input strings which are correctly formatted, i.e.~represent some element of the domain, form a regular language, as witnessed by the following automaton:
-    \begin{center}
-        todo
-    \end{center}
-    \issue{The automaton is missing --- there is a ``todo'' placeholder above.}Therefore, we could improve $f'$ so that it produces the empty string for inputs that are not correctly formatted.
+    \mypic{54}
+Therefore, we could improve $f'$ so that it produces the empty string for inputs that are not correctly formatted.
 \end{myexample}
 
 

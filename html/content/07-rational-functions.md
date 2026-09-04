@@ -9,7 +9,7 @@ source = "partBRational/rational-functions.tex"
 \setcounter{section}{1}
 \setcounter{ourexamplecounter}{8}
 \renewcommand{\exer}[2]{}
-% source stamp partBRational/rational-functions.tex:8c017561
+% source stamp partBRational/rational-functions.tex:d9ca2133
 \input{../../../partBRational/rational-functions.tex}
 {{< /latex >}}
 
@@ -291,7 +291,7 @@ belongs to the range of the function, and different input strings give different
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
 \setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{11}
 \begin{exercise}
-\label{exer:polynomial-ideals} Show that if an ideal contains some function whose range has growth $\Omega(n^k)$, then it contains all functions whose range has growth $\Oo(n^k)$.
+\label{exer:polynomial-ideals} Show that if an ideal contains some function whose range has growth $\Omega(n^k)$ with $k \in \set{1,2,\ldots}$, then it contains all functions whose range has growth $\Oo(n^k)$.
 \end{exercise}
 {{< /latex >}}
 <details class="solution">
@@ -430,7 +430,7 @@ It remains to reduce the halting problem to this property. Given a machine $M$ a
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
 \setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{17}
 \begin{exercise}
-\label{exer:rational-compression} Define a \emph{grammar compression} for a string to be a context-free grammar that generates the string and nothing else. We say that a string-to-string function is \emph{compatible with compression} if there  is a polynomial time algorithm which inputs a grammar compression of an input string and outputs a grammar compression of the corresponding output string. Show that rational functions are compatible with compression.
+\label{exer:rational-compression} Define a \emph{grammar compression} for a string to be a context-free grammar that generates the string and nothing else. We say that a string-to-string function is \emph{compatible with compression} if for every input string with a grammar compression of size $n$, there is a compression of the output string that has size polynomial in $n$\footnote{One could consider a stronger version, where the compressed output can be computed in polynomial time. Our positive reults will ensure the stronger version, and our negative results will exclude the weaker version.} Show that rational functions are compatible with compression.
 \end{exercise}
 {{< /latex >}}
 <details class="solution">

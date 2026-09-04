@@ -4,6 +4,7 @@
   {{ partial "latex-file-block.html" (dict "file" $titleFile "class" "page-title" "color_map" "transducer-book-color-map") }}
 {{- end }}
 {{ .Content }}
+{{ partial "comments.html" . }}
 {{/* A part's opening page used to end with a list of the part's own sections.
      The sidebar already carries that list, on this page and on every other, so
      the second copy said nothing new and pushed the author's opening paragraphs
