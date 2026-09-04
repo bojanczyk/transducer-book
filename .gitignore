@@ -62,3 +62,6 @@ main.pdf
 # macros.sty (\includegraphics[page=#1]{transducer-book-pics}).  Removing it
 # from the repository breaks the compilation of the whole book.
 !transducer-book-pics.pdf
+
+# never track the temporary clone left by the 2026-09 absorption
+.transducer-lean-src/
