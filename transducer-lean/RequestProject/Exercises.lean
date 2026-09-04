@@ -53,6 +53,8 @@ import RequestProject.Exercises.RatInjectiveDec
 import RequestProject.Exercises.MinimalBimachine
 import RequestProject.Exercises.FOSucc
 import RequestProject.Exercises.IterateFiniteness
+import RequestProject.Exercises.IterateExamples
+import RequestProject.Exercises.SequentialCodes
 import RequestProject.Exercises.FONonElementary
 import RequestProject.Exercises.NFAPump
 import RequestProject.Exercises.ForContinuity
