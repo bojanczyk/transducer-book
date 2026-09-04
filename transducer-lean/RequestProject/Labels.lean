@@ -527,12 +527,81 @@ type-to-type functions that a regular term defines. -/
 alias «def:regular-terms#3» := Transducers.IsRegularTermFun
 assert_no_sorry «def:regular-terms#3»
 
-/-- **Theorem `thm:regular-terms`** (regular terms): `Transducers.regularTerm_isRegular`, the easy
-direction -- every function defined by a regular term is regular under string representation.  The
-converse is not formalised yet and is assumed by nothing, so the biconditional of the book is not
-stated. -/
-alias «thm:regular-terms» := Transducers.regularTerm_isRegular
+/-- **Theorem `thm:regular-terms`** (regular terms): `Transducers.regular_iff_regularTerm`, the
+equivalence -- a type-to-type function is regular under string representation if and only if it is
+defined by a regular term. -/
+alias «thm:regular-terms» := Transducers.regular_iff_regularTerm
 assert_no_sorry «thm:regular-terms»
+
+/-- **Theorem `thm:regular-terms`** (regular terms): `Transducers.regularTerm_isRegular`, the easy
+direction -- every function defined by a regular term is regular under string representation. -/
+alias «thm:regular-terms#2» := Transducers.regularTerm_isRegular
+assert_no_sorry «thm:regular-terms#2»
+
+/-- **Theorem `thm:regular-terms`** (regular terms): `Transducers.regularTerm_of_isRegular`, the
+converse direction -- every function that is regular under string representation is defined by a
+regular term. -/
+alias «thm:regular-terms#3» := Transducers.regularTerm_of_isRegular
+assert_no_sorry «thm:regular-terms#3»
+
+/-- **Lemma `lem:terms-define-string-homomorphisms`** (homomorphisms):
+`Transducers.terms_define_string_homomorphisms`. -/
+alias «lem:terms-define-string-homomorphisms» := Transducers.terms_define_string_homomorphisms
+assert_no_sorry «lem:terms-define-string-homomorphisms»
+
+/-- **Claim `claim:finite-type-bijection-disjoint-units`** (finite types are co-products of copies
+of the unit type): `Transducers.finite_type_bijection_disjoint_units`.  It is proved here *from*
+Claim `claim:finite-domain-regular-list-function`, which is the reverse of the book's order; see
+`THEOREMS.md`. -/
+alias «claim:finite-type-bijection-disjoint-units» :=
+  Transducers.finite_type_bijection_disjoint_units
+assert_no_sorry «claim:finite-type-bijection-disjoint-units»
+
+/-- **Claim `claim:finite-domain-regular-list-function`** (functions with a finite domain):
+`Transducers.finite_domain_regular_list_function`. -/
+alias «claim:finite-domain-regular-list-function» :=
+  Transducers.finite_domain_regular_list_function
+assert_no_sorry «claim:finite-domain-regular-list-function»
+
+/-- **Lemma `lem:terms-define-append-hash`** (appending an end-marker):
+`Transducers.terms_define_append_hash`. -/
+alias «lem:terms-define-append-hash» := Transducers.terms_define_append_hash
+assert_no_sorry «lem:terms-define-append-hash»
+
+/-- **Claim `claim:bang-definable`** (the unique function into the unit type):
+`Transducers.bang_definable`. -/
+alias «claim:bang-definable» := Transducers.bang_definable
+assert_no_sorry «claim:bang-definable»
+
+/-- **Lemma `lem:terms-define-map-reverse-duplicate`** (map reverse):
+`Transducers.terms_define_map_reverse`. -/
+alias «lem:terms-define-map-reverse-duplicate» := Transducers.terms_define_map_reverse
+assert_no_sorry «lem:terms-define-map-reverse-duplicate»
+
+/-- **Lemma `lem:terms-define-map-reverse-duplicate`** (map duplicate):
+`Transducers.terms_define_map_duplicate`. -/
+alias «lem:terms-define-map-reverse-duplicate#2» := Transducers.terms_define_map_duplicate
+assert_no_sorry «lem:terms-define-map-reverse-duplicate#2»
+
+/-- **Lemma `lem:terms-define-flip-flop`** (flip-flop Mealy machines):
+`Transducers.terms_define_flip_flop`. -/
+alias «lem:terms-define-flip-flop» := Transducers.terms_define_flip_flop
+assert_no_sorry «lem:terms-define-flip-flop»
+
+/-- **Lemma `lem:terms-define-reversible`** (reversible Mealy machines):
+`Transducers.terms_define_reversible`. -/
+alias «lem:terms-define-reversible» := Transducers.terms_define_reversible
+assert_no_sorry «lem:terms-define-reversible»
+
+/-- **Lemma `lem:terms-define-string-representation`** (the string representation and a one-sided
+inverse are definable by terms): `Transducers.terms_define_string_representation`. -/
+alias «lem:terms-define-string-representation» :=
+  Transducers.terms_define_string_representation
+assert_no_sorry «lem:terms-define-string-representation»
+
+/-- **Claim `claim:head`** (the head of a list): `Transducers.claim_head`. -/
+alias «claim:head» := Transducers.claim_head
+assert_no_sorry «claim:head»
 
 /-- **Lemma `nolabel:lem-distributivity-under-string-representation`** (distributivity):
 `Transducers.Comb.isRegularUnderRepr_distr`, the book's worked example of the induction basis of
@@ -1055,16 +1124,6 @@ above, so that this file accounts for all of them:
 * `conj:regular-via-weighted-automata` (conjecture) -- a conjecture of the book, not a result to formalise;
 * `nolabel:thm-fo-transduction-into-primes` (theorem) -- removed from the formalised theorems at the user's request; its statement is kept, commented out, in `PartC/MSOOpen.lean`;
 * `nolabel:claim-representations-are-a-regular-language` (claim) -- not formalised: the parsing of a representation is done here by the bracket counter of `PartC/CombDepth.lean`, which is what the transducers of the easy direction of Theorem `thm:regular-terms` use instead;
-* `lem:terms-define-string-homomorphisms` (lemma) -- not formalised: part of the converse direction of Theorem `thm:regular-terms`;
-* `claim:finite-type-bijection-disjoint-units` (claim) -- not formalised: part of the converse direction of Theorem `thm:regular-terms`;
-* `claim:finite-domain-regular-list-function` (claim) -- not formalised: part of the converse direction of Theorem `thm:regular-terms`;
-* `lem:terms-define-append-hash` (lemma) -- not formalised: part of the converse direction of Theorem `thm:regular-terms`;
-* `claim:bang-definable` (claim) -- not formalised: part of the converse direction of Theorem `thm:regular-terms`;
-* `lem:terms-define-map-reverse-duplicate` (lemma) -- not formalised: part of the converse direction of Theorem `thm:regular-terms`;
-* `lem:terms-define-flip-flop` (lemma) -- not formalised: part of the converse direction of Theorem `thm:regular-terms`;
-* `lem:terms-define-reversible` (lemma) -- not formalised: part of the converse direction of Theorem `thm:regular-terms`;
-* `lem:terms-define-string-representation` (lemma) -- not formalised: part of the converse direction of Theorem `thm:regular-terms`;
-* `claim:head` (claim) -- not formalised: part of the converse direction of Theorem `thm:regular-terms`;
 -/
 
 end Transducers.Book

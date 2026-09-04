@@ -232,6 +232,14 @@ RequestProject/
 | `PartC/CombAtomPref.lean` | group prefix multiplication is regular under string representation: the mode of the machine holds the running product and the prefix of the current entry that has been read, of which there are finitely many because the group is finite |
 | `PartC/CombCombinators.lean` | pairing, co-pairing and map preserve regularity under string representation |
 | `PartC/CombStatements.lean` | Section *Combinators*: the easy direction of Theorem `thm:regular-terms` (`Transducers.regularTerm_isRegular`), by induction on the term |
+| `PartC/CombFinite.lean` | Claim `claim:finite-domain-regular-list-function` (`Transducers.finite_domain_regular_list_function`) and Lemma `lem:terms-define-string-homomorphisms` (`Transducers.terms_define_string_homomorphisms`), the first step of the converse direction: a function whose domain is a finite type is defined by a term, by induction on the measure `Transducers.Ty.msr` that decreases under the two rearrangements `(X + Y) × A → (A × X) + (A × Y)` and `(X × Y) × A → X × (Y × A)` |
+| `PartC/CombDerived.lean` | the derived combinators the book uses without comment (swapping, the second distributivity, the parallel of two terms, the empty and the singleton list, the concatenation of two lists, the inverse of split `Transducers.tfun_unsplit`, the finite case distinction `Transducers.tfun_finCases`), and the three claims of the section that are about terms alone: Claim `claim:bang-definable`, Claim `claim:head` and Claim `claim:finite-type-bijection-disjoint-units` |
+| `PartC/CombStrFam.lean` | the interface `Transducers.TermStrFun` between the regular string-to-string functions of Definition `def:regular-functions`, whose alphabets are arbitrary finite types, and the terms, which speak about `Ty`s: one naming of the alphabets suffices, the predicate is closed under composition and hence under `CompClosure`.  The easy primes are here too: homomorphisms, string reversal and Lemma `lem:terms-define-append-hash` |
+| `PartC/CombMealyFF.lean` | Lemma `lem:terms-define-flip-flop`: a homomorphism annotates every reset letter with the state it produces, split cuts the string at the annotations, and a finite case distinction applies to each block the homomorphism determined by the state that labels it.  Also `Transducers.Mealy.transport`, the renaming of the alphabets and states of a Mealy machine |
+| `PartC/CombMealyRev.lean` | Lemma `lem:terms-define-reversible`: each letter is paired with the permutation of the state space it induces, group prefix multiplication gives the prefix products, the delay flip-flop machine pairs each with the previous one, and a letter-to-letter map reads off the output.  The group is `Equiv.Perm (Option A) × Equiv.Perm Q`, transported onto the elements of a type by `Equiv.group` |
+| `PartC/CombMapRev.lean` | Lemma `lem:terms-define-map-reverse-duplicate`: both primes are map liftings, and the map lifting of a term-definable function is term-definable (`Transducers.tfun_mapLift`), by split, the function on each block, and the inverse of split |
+| `PartC/CombComplete.lean` | every regular string-to-string function is definable by terms (`Transducers.termStrFun_of_isRegularFun`): the rational primes through Theorem `thm:rational-primes`, the Mealy primes through Lemma `lem:terms-define-flip-flop` and Lemma `lem:terms-define-reversible`, and the two non-rational primes through Lemma `lem:terms-define-map-reverse-duplicate` |
+| `PartC/CombRepr.lean` | Lemma `lem:terms-define-string-representation` and the converse direction of Theorem `thm:regular-terms`: the string representation of a type and a one-sided inverse of it are both definable by terms, and hence a function that is regular under string representation is the composition of the representation, a term for the regular string-to-string function in the middle, and the inverse.  `Transducers.regular_iff_regularTerm` is the equivalence |
 | `PartD/MarkedSquare.lean` | marked squaring and its continuity |
 | `PartD/ForDef.lean` | the syntax and the semantics of the for-transducers, and Definition `def:prenex-normal-form-for-transducers` |
 | `PartD/ForSem.lean` | the semantic toolkit: folds over lists, nests of loops as folds over tuples, the variables and the letters of a program |
@@ -451,6 +459,31 @@ false statements and into the list of statements the book has corrected.
   result and leaves its proof "for a future edition".  It was withdrawn from this
   formalisation at the author's request; the placeholder tag stays because the
   paragraph carries no `\label`.
+
+*Proofs that take a different route from the book's.  The Lean statements are the book's; only
+the argument differs, and both are recorded here because the docstrings refer to them.*
+
+* Claim `claim:finite-type-bijection-disjoint-units` and Claim
+  `claim:finite-domain-regular-list-function` — the book proves the first and deduces the second
+  from it, by reducing a finite domain to a co-product `1 + ⋯ + 1` of copies of the unit type and
+  then using co-pairing.  Here the second is proved directly (`PartC/CombFinite.lean`, by
+  induction on the measure `Transducers.Ty.msr`, which decreases under the two rearrangements the
+  proof performs on a product) and the first is deduced from it (`PartC/CombDerived.lean`): once a
+  function with a finite domain is known to be term-definable, a bijection between two finite
+  types is term-definable in both directions for free.  Both claims are proved; only the
+  dependency between them is inverted.
+* Lemma `lem:terms-define-reversible` — the book puts "an arbitrary group structure, say a cyclic
+  one" on the input alphabet in order to read the input letter back off two consecutive prefix
+  products.  Here the input alphabet `A` is embedded into `Equiv.Perm (Option A)` by
+  `a ↦ Equiv.swap none (some a)`, which is injective because the image of `none` is `some a`, and
+  the group of prefix products is `Equiv.Perm (Option A) × Equiv.Perm Q`.  This plays exactly the
+  role of the cyclic group and avoids choosing a group structure on a bare finite type.
+* Lemma `lem:terms-define-string-representation` — for a product, the book cuts the representation
+  of a pair with a marking machine and Claim `claim:head`.  Here the two functions that implement
+  the projections under string representation, which the *easy* direction of Theorem
+  `thm:regular-terms` already provides (`Transducers.isRegularUnderRepr_fst` and
+  `isRegularUnderRepr_snd`), are used instead.  Claim `claim:head` is proved all the same
+  (`PartC/CombDerived.lean`), it is simply not needed on this route.
 
 ## Index
 
@@ -829,8 +862,19 @@ The proofs are organised as follows.
 | Definition `def:types` (types) | `Transducers.Ty`, `Transducers.Ty.Elt`, `Transducers.Ty.repr` | — | `PartC/CombTypes.lean` |
 | Definition `def:regular-functions-on-types-under-string-representation` (regular under string representation) | `Transducers.IsRegularUnderRepr`, `Transducers.IsRationalUnderRepr` | — | `PartC/CombTypes.lean` |
 | Definition `def:regular-terms` (regular term) | `Transducers.RegTerm`, `Transducers.RegTerm.eval`, `Transducers.IsRegularTermFun` | — | `PartC/CombTerms.lean` |
-| Theorem `thm:regular-terms` (regular terms) | `Transducers.regularTerm_isRegular` | **the easy direction is proved** — every function defined by a regular term is regular under string representation (`CombStatements.lean`, by induction on the term, on the atomic terms of `CombAtomProj.lean`, `CombAtomDistr.lean`, `CombAtomCons.lean`, `CombAtomConcat.lean`, `CombAtomSplit.lean`, `CombAtomReverse.lean`, `CombAtomPref.lean` and the combinators of `CombCombinators.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`).  The converse, that every function regular under string representation is defined by a regular term, is **still open in this formalisation**, and is assumed by nothing: the biconditional itself is therefore not stated | `PartC/CombStatements.lean` |
+| Theorem `thm:regular-terms` (regular terms) | `Transducers.regular_iff_regularTerm`, `Transducers.regularTerm_isRegular`, `Transducers.regularTerm_of_isRegular` | **proved**, as the equivalence `IsRegularUnderRepr f ↔ IsRegularTermFun f` (`Transducers.regular_iff_regularTerm`, `CombRepr.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`).  The easy direction, `Transducers.regularTerm_isRegular` (`CombStatements.lean`), is by induction on the term, on the atomic terms of `CombAtomProj.lean`, `CombAtomDistr.lean`, `CombAtomCons.lean`, `CombAtomConcat.lean`, `CombAtomSplit.lean`, `CombAtomReverse.lean`, `CombAtomPref.lean` and the combinators of `CombCombinators.lean`.  The converse, `Transducers.regularTerm_of_isRegular` (`CombRepr.lean`), composes the term for the string representation and the term for its inverse (Lemma `lem:terms-define-string-representation`) around a term for the regular string-to-string function in the middle, which comes from Lemma `lem:terms-define-append-hash`, Lemma `lem:terms-define-map-reverse-duplicate`, Lemma `lem:terms-define-flip-flop` and Lemma `lem:terms-define-reversible` through the prime decomposition of Theorem `thm:2dfa-decomposition-into-primes` and Theorem `thm:krohn-rhodes` | `PartC/CombStatements.lean`, `PartC/CombRepr.lean` |
 | Lemma `nolabel:lem-distributivity-under-string-representation` (distributivity) | `Transducers.Comb.isRegularUnderRepr_distr` | proved (`CombAtomDistr.lean`), the worked example of the induction basis of Theorem `thm:regular-terms`; the parsing is done by the bracket counter of `CombDepth.lean` rather than by the automaton of the unlabelled claim that follows it in the book | `PartC/CombAtomDistr.lean` |
+| Claim `nolabel:claim-representations-are-a-regular-language` (the representations form a regular language) | — | **not formalised**: the parsing of a representation is done here by the bracket counter of `PartC/CombDepth.lean`, which is what the transducers of the easy direction of Theorem `thm:regular-terms` use instead of this claim | — |
+| Lemma `lem:terms-define-string-homomorphisms` (homomorphisms) | `Transducers.terms_define_string_homomorphisms` | **proved** (`CombFinite.lean`: the map of a function with a finite domain, followed by concatenation; axioms: `propext`, `Classical.choice`, `Quot.sound`) | `PartC/CombFinite.lean` |
+| Claim `claim:finite-type-bijection-disjoint-units` (a finite type is a co-product of copies of the unit type) | `Transducers.finite_type_bijection_disjoint_units` | **proved** (`CombDerived.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`).  It is deduced here **from** Claim `claim:finite-domain-regular-list-function`, which is the reverse of the book's order of the two claims; both are proved, only the dependency between them is inverted (see *Divergences from the book*) | `PartC/CombDerived.lean` |
+| Claim `claim:finite-domain-regular-list-function` (functions with a finite domain) | `Transducers.finite_domain_regular_list_function` | **proved** (`CombFinite.lean`, by induction on a measure of the type; axioms: `propext`, `Classical.choice`, `Quot.sound`) | `PartC/CombFinite.lean` |
+| Lemma `lem:terms-define-append-hash` (appending an end-marker) | `Transducers.terms_define_append_hash` | **proved** (`CombStrFam.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`) | `PartC/CombStrFam.lean` |
+| Claim `claim:bang-definable` (the unique function into the unit type) | `Transducers.bang_definable` | **proved** (`CombDerived.lean`, by induction on the type; axioms: `propext`, `Classical.choice`, `Quot.sound`) | `PartC/CombDerived.lean` |
+| Lemma `lem:terms-define-map-reverse-duplicate` (map reverse and map duplicate) | `Transducers.terms_define_map_reverse`, `Transducers.terms_define_map_duplicate` | **proved** (`CombMapRev.lean`, both through the term `Transducers.tfun_mapLift` for the map lifting of a term-definable function; axioms: `propext`, `Classical.choice`, `Quot.sound`) | `PartC/CombMapRev.lean` |
+| Lemma `lem:terms-define-flip-flop` (flip-flop Mealy machines) | `Transducers.terms_define_flip_flop` | **proved** (`CombMealyFF.lean`, by running the machine with the group prefix product of the two-element flip-flop monoid embedded into a group; axioms: `propext`, `Classical.choice`, `Quot.sound`) | `PartC/CombMealyFF.lean` |
+| Lemma `lem:terms-define-reversible` (reversible Mealy machines) | `Transducers.terms_define_reversible` | **proved** (`CombMealyRev.lean`, by the group prefix product of the state permutations; the group is `Equiv.Perm (Option A) × Equiv.Perm Q` rather than the book's cyclic group on the input alphabet, see *Divergences from the book*; axioms: `propext`, `Classical.choice`, `Quot.sound`) | `PartC/CombMealyRev.lean` |
+| Lemma `lem:terms-define-string-representation` (the string representation and its inverse) | `Transducers.terms_define_string_representation` | **proved** (`CombRepr.lean`, by induction on the type: for every type `A` the representation `A → Sym*` and a one-sided inverse `Sym* → A` are both definable by regular terms; axioms: `propext`, `Classical.choice`, `Quot.sound`) | `PartC/CombRepr.lean` |
+| Claim `claim:head` (the head of a list) | `Transducers.claim_head` | **proved** (`CombDerived.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`).  It is not used on the route taken here for Lemma `lem:terms-define-string-representation`, which reuses the projections of the easy direction instead of the book's marking machine | `PartC/CombDerived.lean` |
 
 Supporting files for Part C: `ContAux.lean` (continuity is closed under
 composition; letter-to-letter maps, reversal, duplication and the map lifting of
@@ -1705,16 +1749,23 @@ below for what the earlier passes had to remove to get there.
 
 ### Counts
 
-The book has **100 theorem-like environments**, listed in the dictionary of
+The book has **115 theorem-like environments**, listed in the dictionary of
 `LABELS.md` and checked against the book's `main.aux`.  Every one of them has a
-row in the index above.
+row in the index above.  The counts below are recomputed from that dictionary
+and from the aliases of `RequestProject/Labels.lean`; earlier passes of this
+file reported 100, which was the size of the dictionary at the time.  The three
+environments that are not formalised are Definition
+`def:rational-recognisable-subsets`, Claim
+`nolabel:claim-representations-are-a-regular-language` and the unnumbered
+paragraph `nolabel:thm-fo-transduction-into-primes`, each with its reason in the
+index above.
 
 | | Introduction | Part A | Part B | Part C | Part D | total |
 | --- | --- | --- | --- | --- | --- | --- |
-| definitions formalised | 1 | 4 | 7 | 6 | 2 | **20** |
-| results proved outright | 0 | 11 | 26 | 29 | 11 | **77** |
+| definitions formalised | 1 | 4 | 7 | 9 | 2 | **23** |
+| results proved outright | 0 | 11 | 26 | 41 | 11 | **89** |
 | results proved from an explicit hypothesis | 0 | 0 | 0 | 0 | 0 | **0** |
-| environments not formalised | 0 | 0 | 1 | 1 | 0 | **3** |
+| environments not formalised | 0 | 0 | 1 | 2 | 0 | **3** |
 
 *Proved outright* means: the proof is complete, no file it depends on contains a
 `sorry`, and `#print axioms` reports only `propext`, `Classical.choice`,
@@ -2820,3 +2871,69 @@ Transducers.Book.«exer:rational-composition-finiteness-undecidable»` reports
 only `propext`, `Classical.choice`, `Quot.sound`, and so do all the new
 declarations above; the exercise still takes `IteratesReduction` as an explicit
 argument, exactly as before.
+
+## Status (Section *Combinators* is complete: the converse of `thm:regular-terms`)
+
+The run that added this section proved the **converse direction of Theorem
+`thm:regular-terms`** -- every function that is regular under string
+representation is defined by a regular term -- and with it the ten results of
+Section *Combinators* that the converse goes through.  Theorem
+`thm:regular-terms` is now stated as the equivalence it is in the book,
+
+```
+theorem Transducers.regular_iff_regularTerm {A B : Ty} (f : A.Elt → B.Elt) :
+    IsRegularUnderRepr f ↔ IsRegularTermFun f
+```
+
+and `Transducers.Book.«thm:regular-terms»` is its alias.
+
+**What is proved.**  All of the following are proved outright, with no
+hypothesis of any kind and with `#print axioms` reporting only `propext`,
+`Classical.choice`, `Quot.sound`:
+
+| label | Lean name | file |
+| --- | --- | --- |
+| `thm:regular-terms` | `Transducers.regular_iff_regularTerm` | `PartC/CombRepr.lean` |
+| `thm:regular-terms` (converse) | `Transducers.regularTerm_of_isRegular` | `PartC/CombRepr.lean` |
+| `lem:terms-define-string-representation` | `Transducers.terms_define_string_representation` | `PartC/CombRepr.lean` |
+| `lem:terms-define-flip-flop` | `Transducers.terms_define_flip_flop` | `PartC/CombMealyFF.lean` |
+| `lem:terms-define-reversible` | `Transducers.terms_define_reversible` | `PartC/CombMealyRev.lean` |
+| `lem:terms-define-map-reverse-duplicate` | `Transducers.terms_define_map_reverse`, `Transducers.terms_define_map_duplicate` | `PartC/CombMapRev.lean` |
+| `lem:terms-define-append-hash` | `Transducers.terms_define_append_hash` | `PartC/CombStrFam.lean` |
+| `lem:terms-define-string-homomorphisms` | `Transducers.terms_define_string_homomorphisms` | `PartC/CombFinite.lean` |
+| `claim:finite-domain-regular-list-function` | `Transducers.finite_domain_regular_list_function` | `PartC/CombFinite.lean` |
+| `claim:finite-type-bijection-disjoint-units` | `Transducers.finite_type_bijection_disjoint_units` | `PartC/CombDerived.lean` |
+| `claim:bang-definable` | `Transducers.bang_definable` | `PartC/CombDerived.lean` |
+| `claim:head` | `Transducers.claim_head` | `PartC/CombDerived.lean` |
+
+**The shape of the argument.**  `Transducers.IsRegularFun` is by definition the
+closure of `Transducers.RegularFam` under composition, and the functions
+definable by terms are closed under composition, so the converse reduces to
+covering the primes.  The bridge between the primes, which are functions
+`A* → B*` for arbitrary finite alphabets, and the terms, which speak about the
+elements of a `Ty`, is the predicate `Transducers.TermStrFun` of
+`PartC/CombStrFam.lean`; naming the alphabets by types in a different way is a
+letter-to-letter renaming, which is covered by Claim
+`claim:finite-domain-regular-list-function`, so one naming suffices.  The
+rational primes are reduced to the Mealy primes by Theorem `thm:rational-primes`
+(itself resting on Theorem `thm:2dfa-decomposition-into-primes` and Theorem
+`thm:krohn-rhodes`), and those are Lemma `lem:terms-define-flip-flop` and Lemma
+`lem:terms-define-reversible`; the two non-rational primes are Lemma
+`lem:terms-define-map-reverse-duplicate`.  That gives
+`Transducers.termStrFun_of_isRegularFun` (`PartC/CombComplete.lean`).  Lemma
+`lem:terms-define-string-representation` then supplies, for every type, a term
+for its string representation and a term for a one-sided inverse of it, and the
+converse is the composition of the three.
+
+**Divergences.**  Three places where the route differs from the book's -- the
+inverted dependency between Claim `claim:finite-type-bijection-disjoint-units`
+and Claim `claim:finite-domain-regular-list-function`, the permutations of
+`Option A` in place of a cyclic group on the input alphabet in Lemma
+`lem:terms-define-reversible`, and the use of the projections of the easy
+direction in place of a marking machine in the product case of Lemma
+`lem:terms-define-string-representation` -- are recorded under *Divergences from
+the book* above.  No statement of the book was changed.
+
+**Verification.**  `lake build` succeeds with no errors; no file added by this
+run contains a `sorry`, an `axiom` or a `native_decide`, and
+`python3 tools/gen_labels.py --check` agrees.
