@@ -643,10 +643,26 @@ def stage_workspace(cfg: dict) -> Path:
     ld = lean_dir(cfg)
     book = ld.parent
     stage = Path(tempfile.mkdtemp(prefix="aristotle-stage-"))
+    mt = book / "main.tex"
+    main_tex = mt.read_text(errors="ignore") if mt.is_file() else ""
     for pat in ("*.tex", "*.sty", "*.bib", "main.aux", "main.bbl"):
         for f in book.glob(pat):
             if f.is_file():
                 shutil.copy2(f, stage / f.name)
+    # The chapters themselves. They used to sit beside main.tex and were caught
+    # by the glob above; since the book was reorganised they live in per-part
+    # directories, and the glob silently stopped shipping any of them — runs
+    # were reading a book with no chapters in it. Take the list from main.tex's
+    # own \input lines rather than guessing at directory names, so a section
+    # added to the book is shipped the moment it is included, and nothing that
+    # is not part of the book (html/, the reflowtex build trees) ever is.
+    for m in re.finditer(r"^[^%\n]*\\(?:input|include)\{([^}]*)\}", main_tex, re.M):
+        rel = m.group(1).strip()
+        src = book / (rel if rel.endswith(".tex") else rel + ".tex")
+        if src.is_file():
+            dst = stage / src.relative_to(book)
+            dst.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(src, dst)
     subprocess.run(["rsync", "-a", "--exclude", ".lake/", "--exclude", ".git/",
                     str(ld), f"{stage}/"], check=True, capture_output=True)
     return stage
