@@ -24,6 +24,13 @@ dictionary and against the index tables.  The numbers are those of the
 sources as of this writing and are recorded only to make the table easy to check
 against the pdf -- nothing in the project refers to a result by its number.
 
+Two rows of Section *Combinators* carry a `nolabel:` tag although they are
+numbered: the lemma that distributivity is regular under string representation
+(C.5.5) and the claim that the representations of the elements of a type form a
+regular language (C.5.6) carry no `\label` in the sources, so the tags are
+placeholders chosen here, and their numbers are read off from the labelled
+environments that surround them rather than from `main.aux`.
+
 The one row with no number is the withdrawn Theorem
 `nolabel:thm-fo-transduction-into-primes`: the book no longer states it as a
 numbered environment, only as an unnumbered paragraph at the end of `logic.tex`,
@@ -152,6 +159,22 @@ generator working from the tables alone would delete them.
 | C.4.15 | lemma | `lem:k-types-properties` | `logic.tex` |
 | C.4.16 | theorem | `thm:fo-rational-functions` | `logic.tex` |
 | (unnumbered) | paragraph | `nolabel:thm-fo-transduction-into-primes` | `logic.tex` |
+| C.5.1 | definition | `def:types` | `combinators.tex` |
+| C.5.2 | definition | `def:regular-functions-on-types-under-string-representation` | `combinators.tex` |
+| C.5.3 | definition | `def:regular-terms` | `combinators.tex` |
+| C.5.4 | theorem | `thm:regular-terms` | `combinators.tex` |
+| C.5.5 | lemma | `nolabel:lem-distributivity-under-string-representation` | `combinators.tex` |
+| C.5.6 | claim | `nolabel:claim-representations-are-a-regular-language` | `combinators.tex` |
+| C.5.7 | lemma | `lem:terms-define-string-homomorphisms` | `combinators.tex` |
+| C.5.8 | claim | `claim:finite-type-bijection-disjoint-units` | `combinators.tex` |
+| C.5.9 | claim | `claim:finite-domain-regular-list-function` | `combinators.tex` |
+| C.5.10 | lemma | `lem:terms-define-append-hash` | `combinators.tex` |
+| C.5.11 | claim | `claim:bang-definable` | `combinators.tex` |
+| C.5.12 | lemma | `lem:terms-define-map-reverse-duplicate` | `combinators.tex` |
+| C.5.13 | lemma | `lem:terms-define-flip-flop` | `combinators.tex` |
+| C.5.14 | lemma | `lem:terms-define-reversible` | `combinators.tex` |
+| C.5.15 | lemma | `lem:terms-define-string-representation` | `combinators.tex` |
+| C.5.16 | claim | `claim:head` | `combinators.tex` |
 | D.0.1 | definition | `def:polyregular-functions` | `polyregular-intro.tex` |
 | D.0.2 | theorem | `thm:polyregular-functions-are-continuous` | `polyregular-intro.tex` |
 | D.1.1 | theorem | `thm:for-transducers-are-polyregular` | `polyregular-for.tex` |
@@ -205,6 +228,8 @@ Sections and subsections:
 | C.4.2 | subsection | *Rational functions in terms of logic* | `logic.tex` |
 | C.4.3 | subsection | *Regular functions in terms of logic* | `logic.tex` |
 | C.4.4 | subsection | *The first-order fragment* | `logic.tex` |
+| C.5 | section | *Combinators* | `combinators.tex` |
+| C.5.1 | subsection | *Regular terms* | `combinators.tex` |
 | D.1 | section | *For-transducers* | `polyregular-for.tex` |
 | D.1.1 | subsection | *Equivalence with polyregular functions* | `polyregular-for.tex` |
 | D.2 | section | *Pebble transducers* | `polyregular-pebble.tex` |

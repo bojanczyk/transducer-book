@@ -48,4 +48,49 @@ theorem isRationalFun_seqEval [Finite A] [Finite B] [Finite Mo] (μ : Mo → A �
     rw [Bimachine.eval_eq_evalFrom]
     exact seqBim_evalFrom μ m₀ ψ m₀ w)
 
+/-! ## Sequential rewritings with a final output -/
+
+/-- A sequential rewriting with a final output: at every letter the block `ψ m a` is produced,
+where `m` is the state of the deterministic automaton `(Mo, μ, ·)` on the prefix that precedes
+the letter, and at the end the block `fin m` is produced, where `m` is the state on the whole
+input. -/
+def seqFinEval (μ : Mo → A → Mo) (ψ : Mo → A → List B) (fin : Mo → List B) :
+    Mo → List A → List B
+  | m, [] => fin m
+  | m, a :: w => ψ m a ++ seqFinEval μ ψ fin (μ m a) w
+
+@[simp] lemma seqFinEval_nil (μ : Mo → A → Mo) (ψ : Mo → A → List B) (fin : Mo → List B)
+    (m : Mo) : seqFinEval μ ψ fin m [] = fin m := rfl
+
+@[simp] lemma seqFinEval_cons (μ : Mo → A → Mo) (ψ : Mo → A → List B) (fin : Mo → List B)
+    (m : Mo) (a : A) (w : List A) :
+    seqFinEval μ ψ fin m (a :: w) = ψ m a ++ seqFinEval μ ψ fin (μ m a) w := rfl
+
+/-- The bimachine computing a sequential rewriting with a final output: the suffix automaton
+remembers the letter that follows the gap, and the final output is produced at the last gap,
+where there is none. -/
+def seqFinBim (μ : Mo → A → Mo) (m₀ : Mo) (ψ : Mo → A → List B) (fin : Mo → List B) :
+    Bimachine A B Mo (Option A) where
+  prefixInit := m₀
+  prefixStep := μ
+  suffixInit := none
+  suffixStep := fun _ a => some a
+  out := fun p s => match s with | none => fin p | some a => ψ p a
+
+lemma seqFinBim_evalFrom (μ : Mo → A → Mo) (m₀ : Mo) (ψ : Mo → A → List B) (fin : Mo → List B)
+    (p : Mo) (w : List A) :
+    (seqFinBim μ m₀ ψ fin).evalFrom p w = seqFinEval μ ψ fin p w := by
+  induction w generalizing p with
+  | nil => simp [seqFinBim]
+  | cons a w ih =>
+      rw [Bimachine.evalFrom_cons', bmSfx_cons, ih]
+      rfl
+
+/-- **A sequential rewriting with a final output is a rational function.** -/
+theorem isRationalFun_seqFinEval [Finite A] [Finite B] [Finite Mo] (μ : Mo → A → Mo) (m₀ : Mo)
+    (ψ : Mo → A → List B) (fin : Mo → List B) : IsRationalFun (seqFinEval μ ψ fin m₀) :=
+  isRationalFun_of_bimachine (seqFinBim μ m₀ ψ fin) (fun w => by
+    rw [Bimachine.eval_eq_evalFrom]
+    exact seqFinBim_evalFrom μ m₀ ψ fin m₀ w)
+
 end Transducers

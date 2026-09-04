@@ -487,6 +487,60 @@ assert_no_sorry «lem:k-types-properties»
 alias «thm:fo-rational-functions» := Transducers.foRelabelling_iff_aperiodicBimachine
 assert_no_sorry «thm:fo-rational-functions»
 
+/-- **Definition `def:types`** (types): `Transducers.Ty`. -/
+alias «def:types» := Transducers.Ty
+assert_no_sorry «def:types»
+
+/-- **Definition `def:types`** (types): `Transducers.Ty.Elt`, the set of elements of a type. -/
+alias «def:types#2» := Transducers.Ty.Elt
+assert_no_sorry «def:types#2»
+
+/-- **Definition `def:types`** (types): `Transducers.Ty.repr`, the string representation of the
+elements of a type, which the book describes in the same place. -/
+alias «def:types#3» := Transducers.Ty.repr
+assert_no_sorry «def:types#3»
+
+/-- **Definition `def:regular-functions-on-types-under-string-representation`** (regular under
+string representation): `Transducers.IsRegularUnderRepr`. -/
+alias «def:regular-functions-on-types-under-string-representation» :=
+  Transducers.IsRegularUnderRepr
+assert_no_sorry «def:regular-functions-on-types-under-string-representation»
+
+/-- **Definition `def:regular-functions-on-types-under-string-representation`** (regular under
+string representation): `Transducers.IsRationalUnderRepr`, the rational variant that the book
+defines in the same breath. -/
+alias «def:regular-functions-on-types-under-string-representation#2» :=
+  Transducers.IsRationalUnderRepr
+assert_no_sorry «def:regular-functions-on-types-under-string-representation#2»
+
+/-- **Definition `def:regular-terms`** (regular term): `Transducers.RegTerm`, the syntax. -/
+alias «def:regular-terms» := Transducers.RegTerm
+assert_no_sorry «def:regular-terms»
+
+/-- **Definition `def:regular-terms`** (regular term): `Transducers.RegTerm.eval`, the
+semantics. -/
+alias «def:regular-terms#2» := Transducers.RegTerm.eval
+assert_no_sorry «def:regular-terms#2»
+
+/-- **Definition `def:regular-terms`** (regular term): `Transducers.IsRegularTermFun`, the
+type-to-type functions that a regular term defines. -/
+alias «def:regular-terms#3» := Transducers.IsRegularTermFun
+assert_no_sorry «def:regular-terms#3»
+
+/-- **Theorem `thm:regular-terms`** (regular terms): `Transducers.regularTerm_isRegular`, the easy
+direction -- every function defined by a regular term is regular under string representation.  The
+converse is not formalised yet and is assumed by nothing, so the biconditional of the book is not
+stated. -/
+alias «thm:regular-terms» := Transducers.regularTerm_isRegular
+assert_no_sorry «thm:regular-terms»
+
+/-- **Lemma `nolabel:lem-distributivity-under-string-representation`** (distributivity):
+`Transducers.Comb.isRegularUnderRepr_distr`, the book's worked example of the induction basis of
+Theorem `thm:regular-terms`. -/
+alias «nolabel:lem-distributivity-under-string-representation» :=
+  Transducers.Comb.isRegularUnderRepr_distr
+assert_no_sorry «nolabel:lem-distributivity-under-string-representation»
+
 /-- **Definition `def:polyregular-functions`** (polyregular functions): `Transducers.IsPolyregular`. -/
 alias «def:polyregular-functions» := Transducers.IsPolyregular
 assert_no_sorry «def:polyregular-functions»
@@ -1000,6 +1054,17 @@ above, so that this file accounts for all of them:
 * `def:rational-recognisable-subsets` (definition) -- not formalised (rational and recognisable subsets of a monoid, which the later sections do not use);
 * `conj:regular-via-weighted-automata` (conjecture) -- a conjecture of the book, not a result to formalise;
 * `nolabel:thm-fo-transduction-into-primes` (theorem) -- removed from the formalised theorems at the user's request; its statement is kept, commented out, in `PartC/MSOOpen.lean`;
+* `nolabel:claim-representations-are-a-regular-language` (claim) -- not formalised: the parsing of a representation is done here by the bracket counter of `PartC/CombDepth.lean`, which is what the transducers of the easy direction of Theorem `thm:regular-terms` use instead;
+* `lem:terms-define-string-homomorphisms` (lemma) -- not formalised: part of the converse direction of Theorem `thm:regular-terms`;
+* `claim:finite-type-bijection-disjoint-units` (claim) -- not formalised: part of the converse direction of Theorem `thm:regular-terms`;
+* `claim:finite-domain-regular-list-function` (claim) -- not formalised: part of the converse direction of Theorem `thm:regular-terms`;
+* `lem:terms-define-append-hash` (lemma) -- not formalised: part of the converse direction of Theorem `thm:regular-terms`;
+* `claim:bang-definable` (claim) -- not formalised: part of the converse direction of Theorem `thm:regular-terms`;
+* `lem:terms-define-map-reverse-duplicate` (lemma) -- not formalised: part of the converse direction of Theorem `thm:regular-terms`;
+* `lem:terms-define-flip-flop` (lemma) -- not formalised: part of the converse direction of Theorem `thm:regular-terms`;
+* `lem:terms-define-reversible` (lemma) -- not formalised: part of the converse direction of Theorem `thm:regular-terms`;
+* `lem:terms-define-string-representation` (lemma) -- not formalised: part of the converse direction of Theorem `thm:regular-terms`;
+* `claim:head` (claim) -- not formalised: part of the converse direction of Theorem `thm:regular-terms`;
 -/
 
 end Transducers.Book
