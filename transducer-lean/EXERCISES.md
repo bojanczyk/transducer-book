@@ -192,7 +192,7 @@ all eleven are aliased in `RequestProject/Labels.lean`.
 | Exercise `exer:rational-injectivity-decidable` (injectivity is decidable) | `rationalFun_injectivity_decidable` (with `rationalFun_injective_iff_exists_inverse`, `exists_rationalFun_inverse_of_injective`, `codeInjective_iff_section_comp_id`) | proved outright; both hypotheses it used to take have since been discharged — `EffectiveWeightedEvalEq` is a theorem of `RequestProject/PartB/WCodePrimrec.lean`, and `EffectiveRationalSection`, the computable form of the Uniformisation Lemma, is a theorem of `RequestProject/Exercises/RatInjectiveDec.lean`, proved from the explicit construction on automata of `RequestProject/Exercises/RatSection.lean` and its primitive recursiveness in `RequestProject/Exercises/RatSectionPrimrec.lean` |
 | Exercise `exer:rational-outpus-of-exactly-linear-size` (a rational function of unbounded output size has exactly linear output size) | `rational_exactly_linear_output` (with `maxOutLen`, `HasLinearRate`) | proved outright; the maximum cycle mean `RationalHasLinearRate` it rests on is a theorem, proved in `Exercises/CycleMean.lean` |
 | Exercise `exer:rational-outpus-of-exactly-linear-size-rational-number` (and the limit is a nonzero rational number) | `rational_exactly_linear_output` | proved outright, by the same theorem; the limit it produces is a positive rational |
-| Exercise `exer:rational-composition-finiteness-undecidable` (finiteness of the iterates is undecidable) | `iterates_finiteness_undecidable` (with `iterates_finite_iff`, `CodeSelfMap`, `CodeIteratesFinite`) | proved from the hypothesis `IteratesReduction` (the reduction from the halting problem) |
+| Exercise `exer:rational-composition-finiteness-undecidable` (finiteness of the iterates is undecidable) | `iterates_finiteness_undecidable` (with `iterates_finite_iff`, `iterates_finite_iff_forall`, `CodeSelfMap`, `CodeIteratesFinite`, `codeIteratesFinite_iff_uniform`) | proved from the hypothesis `IteratesReduction` (the reduction from the halting problem); of that hypothesis everything but the computable map to codes is now proved (`atm_no_bool_decider`, `iteratesReduction_of_atm_reduction`), and `codeIteratesFinite_iff_uniform` says what the missing map would have to achieve — see the addendum at the end of this file |
 | Exercise `exer:rational-compression` (rational functions are compatible with compression) | `compatCompression_of_isRationalFun` (with `CompatCompression`, `bimGaps`, `exists_slp_of_bimachine`) | proved in the size sense of `CompatCompression` (polynomial time is not modelled; see the divergence below) |
 
 ### Regular functions (`regular-primes.tex`)
@@ -1414,7 +1414,7 @@ argument of the theorem, so it is visible in the statement.
 | Exercise | hypothesis | why it is still assumed |
 | --- | --- | --- |
 | `exer:fo-suc` | `Transducers.Exercises.EFSuccSeparation` (`Exercises/FOSucc.lean`) | the Ehrenfeucht–Fraïssé argument; Ehrenfeucht–Fraïssé games are not developed in this project.  Deliberately out of scope |
-| `exer:rational-composition-finiteness-undecidable` | `Transducers.Exercises.IteratesReduction` (`Exercises/IterateFiniteness.lean`) | the reduction from the halting problem, which would have to be carried out on Turing machines.  Deliberately out of scope |
+| `exer:rational-composition-finiteness-undecidable` | `Transducers.Exercises.IteratesReduction` (`Exercises/IterateFiniteness.lean`) | the reduction from the halting problem.  The undecidable set is no longer the obstacle — `Acceptance.ATM` is undecidable outright, and `atm_no_bool_decider` gives it in the form the hypothesis asks for — but the computable map from instances to codes is: see the addendum *The reduction of `exer:rational-composition-finiteness-undecidable`* at the end of this file |
 | `exer:decide-rational-colision`, item (b) | `Transducers.Exercises.EffectiveLengthPairsSemilinear` (`Exercises/LengthCollision.lean`) | the effective form of Parikh's theorem: that a semilinear description of the set of pairs of output lengths can be *computed* from two codes.  Neither Parikh images nor semilinear sets exist in Mathlib or in this project; the rest of the exercise — the diagonal test on a semilinear set and its computability — is proved outright |
 
 **The exercise that is not proved.**
@@ -1460,3 +1460,72 @@ false), `exer:rational-compression`, `exer:regular-compression` and
 compression, running time not being modelled), and `exer:2dfa-complexity` (a
 construction other than the author's, whose own construction gives only a
 superpolynomial bound and is kept beside it).
+
+## Addendum: the reduction of `exer:rational-composition-finiteness-undecidable`
+
+Exercise `exer:rational-composition-finiteness-undecidable` is still proved from
+the hypothesis `Transducers.Exercises.IteratesReduction`, but that hypothesis has
+been cut down to the one thing that is genuinely missing, and its docstring now
+says truthfully what that thing is.  In
+`RequestProject/Exercises/IterateFiniteness.lean`:
+
+* `iterates_finite_iff_forall` and `codeIteratesFinite_iff_uniform` spell the
+  problem out.  A code describes a function on *all* strings over its alphabet,
+  so the set of iterates is finite exactly when one pair `n`, `k` bounds the
+  orbit of *every* string: a uniform bound, not a bound on the orbits of the
+  strings reachable from a distinguished one.
+* `atm_no_bool_decider` discharges the first conjunct of the hypothesis for
+  `H = Acceptance.ATM`: no computable `D : ℕ → Bool` decides the acceptance
+  problem.  This is `Acceptance.atm_not_turingDecidable` read through
+  `Acceptance.turingDecidable_iff_computablePred`.
+* `iteratesReduction_of_atm_reduction` discharges everything else: a computable
+  `red : ℕ → RelCode` whose codes are iterable and whose iterates are finite
+  exactly on `Acceptance.ATM` gives `IteratesReduction`.
+
+`RequestProject/Exercises/IterateExamples.lean`, added in the same run, shows what the problem
+looks like on actual codes.  For `k : ℕ`, `powCode k` is the code of the homomorphism `0 ↦ 0ᵏ`
+over the one-letter alphabet `{0}`; it can be iterated (`codeSelfMap_powCode`), the family is
+computable (`computable_powCode`), and its set of iterates is finite exactly for `k ≤ 1`
+(`codeIteratesFinite_powCode_iff`).  In particular both answers to the problem of the exercise
+occur (`exists_codeSelfMap_iteratesFinite`, `exists_codeSelfMap_not_iteratesFinite`), and
+`exists_computable_iterates_family` provides everything `IteratesReduction` asks for except that
+the set it produces, `{e | e ≤ 1}`, is decidable.
+
+`RequestProject/Exercises/SequentialCodes.lean` supplies the machinery a reduction needs, so
+that what is missing is no longer anything about codes.  A *sequential transducer* over the
+alphabet `{0, …, a-1}` with states `{0, …, m-1}` is a transition function
+`f : ℕ → ℕ → ℕ × List ℕ`; `seqCode m a f` is the corresponding code, `seqMap f` the map on
+strings that it computes, and the file proves
+
+* `codeRel_seqCode` — the relation described by the code is that map on the strings over its
+  alphabet;
+* `codeSelfMap_seqCode` — the code satisfies the promise of the exercise as soon as the strings
+  the transducer writes are strings over its alphabet;
+* `codeIteratesFinite_seqCode_iff` — the set of iterates of the code is finite exactly when
+  `(seqMap f)ⁿ` and `(seqMap f)ⁿ⁺ᵏ` agree on every string over the alphabet, for one pair `n`,
+  `k`;
+* `primrec_seqCode` — the code is primitive recursive in the transducer, so a table that is
+  primitive recursive in a parameter yields a computable family of codes;
+* `not_codeIteratesFinite_tailCode` — a worked example: the two-state transducer that deletes
+  the first letter has `n`-th iterate `w ↦ w.drop n`, so its set of iterates is infinite.  This
+  is the mechanism by which the answer is "no": arbitrarily long strings with arbitrarily long
+  transients.
+
+Putting these together, `iteratesReduction_of_seq_family` states what is left of the hypothesis
+in elementary terms: a family of finite transition tables, primitive recursive in `e`, whose
+states and outputs stay inside their alphabets and whose maps on strings are eventually periodic
+— uniformly in the string — exactly for `e ∈ Acceptance.ATM`, gives `IteratesReduction`.
+
+What remains is the map `red` itself.  Under the encoding of configurations as
+strings, every string is a configuration, so a reduction has to make the machine
+halt from *every* configuration within a bound that does not depend on the
+length of the tape.  The book's sketch — simulate on a tape of length `m` and
+halt when the space runs out — bounds only the runs that begin at an initial
+configuration, and no regular condition on the strings kept alive can restrict
+the iteration to those runs, because the space-time diagrams of a machine are
+not a regular language.  The property that is really needed, uniform mortality,
+is the subject of Hooper's immortality theorem, and its known proofs go through
+aperiodic tilings and the undecidability of the domino problem; that machinery
+is in neither Mathlib nor this project.  The counts of the closing audit are
+unchanged: this exercise is still one of the three proved from an explicit
+hypothesis.

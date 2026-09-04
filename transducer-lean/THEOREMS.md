@@ -2583,7 +2583,7 @@ theorem that uses it.
 | --- | --- | --- | --- |
 | `Transducers.EffectiveTwoWayBound` | `PartC/EffectiveReg.lean` | Theorem `thm:decidable-equivalence-regular` | **since discharged** — see the final `## Status` section.  It was: an equivalence bound for two coded two-way transducers has to be *computed* from the two codes.  It is now proved, as `Transducers.effectiveTwoWayBound` of `PartC/RegEffBound.lean`, and no declaration takes it as an argument |
 | `Transducers.Exercises.EFSuccSeparation` | `Exercises/FOSucc.lean` | Exercise `exer:fo-suc` | the Ehrenfeucht–Fraïssé argument; deliberately out of scope |
-| `Transducers.Exercises.IteratesReduction` | `Exercises/IterateFiniteness.lean` | Exercise `exer:rational-composition-finiteness-undecidable` | the reduction from the halting problem; deliberately out of scope |
+| `Transducers.Exercises.IteratesReduction` | `Exercises/IterateFiniteness.lean` | Exercise `exer:rational-composition-finiteness-undecidable` | the reduction from the halting problem.  Still assumed, but no longer for want of an undecidable set: see the addendum *The reduction of `exer:rational-composition-finiteness-undecidable`* at the end of this file, and the docstring of `IteratesReduction` |
 | `Transducers.Exercises.EffectiveLengthPairsSemilinear` | `Exercises/LengthCollision.lean` | Exercise `exer:decide-rational-colision`, item (b) | the effective form of Parikh's theorem: neither Parikh images nor semilinear sets exist in Mathlib or in this project.  The rest of that exercise — the diagonal test on a semilinear set, and its computability — is proved outright |
 
 One further `Prop`-valued definition is still taken as an argument, but it is not
@@ -2663,7 +2663,7 @@ as an ordinary explicit argument of the exercise that uses it.
 | assumption | where defined | used by | account |
 | --- | --- | --- | --- |
 | `Transducers.Exercises.EFSuccSeparation` | `Exercises/FOSucc.lean` | Exercise `exer:fo-suc` | the Ehrenfeucht–Fraïssé argument; deliberately out of scope |
-| `Transducers.Exercises.IteratesReduction` | `Exercises/IterateFiniteness.lean` | Exercise `exer:rational-composition-finiteness-undecidable` | the reduction from the halting problem; deliberately out of scope |
+| `Transducers.Exercises.IteratesReduction` | `Exercises/IterateFiniteness.lean` | Exercise `exer:rational-composition-finiteness-undecidable` | the reduction from the halting problem.  Still assumed, but no longer for want of an undecidable set: see the addendum *The reduction of `exer:rational-composition-finiteness-undecidable`* at the end of this file, and the docstring of `IteratesReduction` |
 | `Transducers.Exercises.EffectiveLengthPairsSemilinear` | `Exercises/LengthCollision.lean` | Exercise `exer:decide-rational-colision`, item (b) | the effective form of Parikh's theorem: neither Parikh images nor semilinear sets exist in Mathlib or in this project |
 
 As before, `Transducers.Exercises.CanonicalSuffixBimachineExists`
@@ -2686,3 +2686,103 @@ statements the project does not make.  `#print axioms
 Transducers.Book.«thm:decidable-equivalence-regular»` reports only `propext`,
 `Classical.choice`, `Quot.sound`, and so does `#print axioms
 Transducers.effectiveTwoWayBound`.
+
+## Addendum: the reduction of `exer:rational-composition-finiteness-undecidable`
+
+This section records an attempt to discharge
+`Transducers.Exercises.IteratesReduction`
+(`RequestProject/Exercises/IterateFiniteness.lean`), the last hypothesis of
+Exercise `exer:rational-composition-finiteness-undecidable`, now that the
+project has an unconditionally undecidable set (`Acceptance.ATM`, with
+`Acceptance.atm_not_turingDecidable`).  **The hypothesis is still assumed**;
+what changed is that the part of it that is not the reduction is now proved,
+and that the reason the reduction is missing is now stated precisely on the
+statement itself.
+
+**What was added** (all in `RequestProject/Exercises/IterateFiniteness.lean`,
+all proved, no new hypothesis and no `sorry`):
+
+| declaration | statement |
+| --- | --- |
+| `Transducers.Exercises.iterates_finite_iff_forall` | the pointwise form of `iterates_finite_iff`: the set of iterates of `f` is finite exactly when `f^[n] x = f^[n+k] x` for all `x`, with `n` and `k` chosen once and for all |
+| `Transducers.Exercises.codeIteratesFinite_iff_uniform` | the problem of the exercise, spelled out on the strings over the alphabet of the code: one pair `n`, `k` bounding the orbit of *every* string |
+| `Transducers.Exercises.atm_no_bool_decider` | the first conjunct of `IteratesReduction`, for `H = Acceptance.ATM`: no computable `D : ℕ → Bool` decides `ATM`.  This is `Acceptance.atm_not_turingDecidable` read through `Acceptance.turingDecidable_iff_computablePred` and `ComputablePred.computable_iff` |
+| `Transducers.Exercises.iteratesReduction_of_atm_reduction` | everything else: a computable `red : ℕ → RelCode` with `CodeSelfMap (red e)` and `CodeIteratesFinite (red e) ↔ e ∈ ATM` yields `IteratesReduction` |
+| `Transducers.Exercises.codeIteratesFinite_of_output_length_le` | a sufficient condition for the answer to be yes: if the outputs of an iterable code are bounded in length then its set of iterates is finite.  So an infinite set of iterates needs outputs of unbounded length |
+
+So the whole of the hypothesis except the construction of the codes is now a
+theorem, and what remains is exactly the map `red`.
+
+**Why the map is not constructed.**  A code describes a function on *all*
+strings over its alphabet (`CodeWord`), so the map that is iterated is the
+induced map on all of `A*`, and by `codeIteratesFinite_iff_uniform` finiteness
+of the set of iterates asks for a single pair `n`, `k` that works for every
+string at once.  Under the standard encoding of configurations of a Turing
+machine as strings, every string is a configuration, reachable or not, and the
+condition to be reduced to is therefore: the machine halts (or becomes periodic)
+from *every* configuration, within a bound independent of the length of the
+tape.  That is uniform mortality, not halting from an initial configuration; the
+sketch in the book's solution — simulate on a tape of length `m` and halt when
+the space runs out — bounds only the runs that start from an initial
+configuration, and a configuration with arbitrary tape contents and the head in
+an arbitrary place is not on such a run.  The gap cannot be closed by keeping
+alive only the strings that pass some check: the strings alive after `t` steps
+always form a regular set, and a regular set cannot single out the
+configurations reachable from a fixed one, since the valid space-time diagrams
+of a machine are not a regular language in any linear layout of the diagram.  So
+any such check still keeps alive configurations that are not reachable, whose
+orbits then have to be bounded as well, which is the uniform mortality
+requirement over again.
+Constructing families of machines that are uniformly mortal exactly when a given
+machine halts is the content of Hooper's immortality theorem, whose known proofs
+go through aperiodic tilings and the undecidability of the domino problem — the
+same machinery that the corresponding question for length-preserving invertible
+transducers (the order problem for automaton groups) is known to need.  None of
+that is in this project or in Mathlib, and it is a development of its own size.
+The reduction is therefore left as the hypothesis it was, with the reason now
+recorded on `IteratesReduction` itself instead of the incomplete sketch that its
+docstring carried before.
+
+**What the problem looks like on actual codes.**  `RequestProject/Exercises/IterateExamples.lean`
+was added in the same run.  It builds instances of the promise problem of the exercise out of the
+automaton `Transducers.Exercises.funCode` of `RequestProject/Exercises/PartBCPCP.lean`, which
+describes a homomorphism, and proves all of them outright:
+
+| declaration | statement |
+| --- | --- |
+| `Transducers.Exercises.codeSelfMap_funCode` | the code of a homomorphism can be iterated as soon as the homomorphism maps the alphabet of the code into itself |
+| `Transducers.Exercises.powCode` | the code of the homomorphism `0 ↦ 0ᵏ` over the one-letter alphabet `{0}` |
+| `Transducers.Exercises.codeIteratesFinite_powCode_iff` | the set of iterates of `powCode k` is finite exactly for `k ≤ 1`: the map is the identity on nonempty strings for `k = 1` and empties them for `k = 0`, while for `2 ≤ k` the `n`-th iterate sends one letter to `kⁿ` letters |
+| `Transducers.Exercises.exists_codeSelfMap_iteratesFinite`, `Transducers.Exercises.exists_codeSelfMap_not_iteratesFinite` | both answers to the problem occur among the codes that satisfy the promise |
+| `Transducers.Exercises.computable_powCode`, `Transducers.Exercises.exists_computable_iterates_family` | the family is computable, so it provides everything `IteratesReduction` asks for except that the set `{e | e ≤ 1}` that comes out of it is decidable |
+
+The last line is the exact measure of what is missing: producing a computable family of iterable
+codes and deciding the iterate-finiteness of each member is routine, and is done here; producing
+one whose set is *undecidable* is what needs the uniform mortality above.
+
+**The machinery for a reduction.**  `RequestProject/Exercises/SequentialCodes.lean` was added in
+the same run and builds the whole bridge from a finite transition table to an instance of the
+promise problem, so that nothing about codes is missing any more.  A *sequential transducer* over
+the alphabet `{0, …, a-1}` with states `{0, …, m-1}` is a transition function
+`f : ℕ → ℕ → ℕ × List ℕ`, reading the letter `x` in the state `q` writes `(f q x).2` and moves to
+`(f q x).1`.
+
+| declaration | statement |
+| --- | --- |
+| `Transducers.Exercises.seqCode`, `Transducers.Exercises.seqMap` | the code of a sequential transducer, and the map on strings that it computes |
+| `Transducers.Exercises.codeRel_seqCode` | the relation described by the code is that map, on the strings over its alphabet |
+| `Transducers.Exercises.codeSelfMap_seqCode` | the code satisfies the promise of the exercise as soon as the transducer writes strings over its alphabet |
+| `Transducers.Exercises.codeIteratesFinite_seqCode_iff` | the set of iterates of the code is finite exactly when `(seqMap f)ⁿ` and `(seqMap f)ⁿ⁺ᵏ` agree on every string over the alphabet, for one pair `n`, `k` |
+| `Transducers.Exercises.primrec_seqCode` | the code is primitive recursive in the transducer |
+| `Transducers.Exercises.not_codeIteratesFinite_tailCode` | a worked example: the two-state transducer deleting the first letter has `n`-th iterate `w ↦ w.drop n`, so its set of iterates is infinite |
+| `Transducers.Exercises.iteratesReduction_of_seq_family` | what is left of the hypothesis, in elementary terms: a family of transition tables, primitive recursive in `e`, with states and outputs inside their alphabets, whose maps on strings are eventually periodic uniformly in the string exactly for `e ∈ Acceptance.ATM`, gives `IteratesReduction` |
+
+So the hypothesis has been reduced to a statement about finite transition tables and their
+iterated maps on strings, with no automata-theoretic or computability-theoretic residue.  The
+remaining statement is the uniform mortality above, which is Hooper's theorem.
+
+**Verification.**  `lake build` succeeds.  `#print axioms
+Transducers.Book.«exer:rational-composition-finiteness-undecidable»` reports
+only `propext`, `Classical.choice`, `Quot.sound`, and so do all the new
+declarations above; the exercise still takes `IteratesReduction` as an explicit
+argument, exactly as before.
