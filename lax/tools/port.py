@@ -18,8 +18,9 @@ file is copied to `<dest>/<pkg>/Source/X/Y.lean` with these rewrites:
 Inside `namespace <pkg>.Transducers`, a fully qualified `Transducers.foo` still
 resolves (Lean tries every prefix of the current namespace), and so does a
 reference to a dependency's `Transducers.foo` once `open <dep>` is in force;
-the script inserts `open <dep>` after the imports of every ported file when
---dep packages are given.
+the script inserts `open <dep> <dep>.Transducers` after the imports of every
+ported file whose import closure reaches the dependency, when --dep packages
+are given (a bare `foo` of the dependency needs the second `open`).
 
 The list of ported modules is written to <dest>/../ported.txt (the submission root;
 extra files inside a package are rejected by the archive) so that later
@@ -45,6 +46,29 @@ for d in a.dep:
         deps[line.strip()] = pkg
 
 mine = set(a.modules) | set(a.provided)
+
+def imports_of(mod):
+    """The RequestProject modules imported by `mod` (a hand-written --provided
+    module is read at its destination, its imports of ported modules count)."""
+    if mod in a.provided:
+        out = os.path.join(a.dest, a.pkg, "Source", mod + ".lean")
+        if not os.path.exists(out):
+            return list(deps)  # unknown: assume it reaches the dependencies
+        pat = r"^import (?:%s)\.Source\.([\w.]+)$" % "|".join([a.pkg] + sorted(set(deps.values())))
+        return [m.replace(".", "/") for m in re.findall(pat, open(out).read(), flags=re.M)]
+    return [m.replace(".", "/") for m in
+            re.findall(r"^import RequestProject\.([\w.]+)$", open(os.path.join(SRC, mod + ".lean")).read(), flags=re.M)]
+
+_sees = {}
+def sees_dep(mod):
+    """Does the import closure of `mod` reach a module of a --dep package?"""
+    if mod in deps:
+        return True
+    if mod in _sees:
+        return _sees[mod]
+    _sees[mod] = False  # cycles cannot occur, but be safe
+    _sees[mod] = any(sees_dep(m) for m in imports_of(mod))
+    return _sees[mod]
 
 def rewrite_import(m):
     mod = m.group(1)
@@ -82,11 +106,16 @@ for mod in a.modules:
         out_lines.append(line)
     s = "\n".join(out_lines)
     depnames = sorted({p for p in deps.values()})
-    if depnames:
-        # insert `open <dep>` lines after the last import line
+    if depnames and sees_dep(mod):
+        # insert `open <dep> <dep>.Transducers` after the last import line: the
+        # first makes a qualified `Transducers.foo` of the dependency resolve,
+        # the second a bare `foo` (the dependency's root namespace is
+        # `<dep>.Transducers`, and a bare name is not looked up through the
+        # prefixes of an opened namespace).  Only in files whose imports reach
+        # the dependency: `open` of an unknown namespace is an error.
         lines = s.split("\n")
         last = max(i for i, l in enumerate(lines) if l.startswith("import "))
-        lines[last + 1:last + 1] = [f"open {p}" for p in depnames]
+        lines[last + 1:last + 1] = [f"open {p} {p}.Transducers" for p in depnames]
         s = "\n".join(lines)
     out = os.path.join(a.dest, a.pkg, "Source", mod + ".lean")
     os.makedirs(os.path.dirname(out), exist_ok=True)
