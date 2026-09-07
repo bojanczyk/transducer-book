@@ -60,6 +60,11 @@ next session or subagent picks up. Keep this file short and current.
   the same reason (an `open Primrec` inside the package namespace now finds
   only the package's copy). `tools/port.py` now prefixes every root-level
   namespace, not only `Transducers`/`PCP`/`PCPIndex`/`Acceptance`.
+  Second round (replay, 2026-09-07 14:00): the two root-level instances
+  `Int.primcodable` (`PrimrecArith.lean:87`) and `_root_.Rat.primcodable`
+  (`:292`) became `Lax132576Proofs.Int.primcodable` /
+  `Lax132576Proofs.Rat.primcodable` (instances resolve by type, nothing
+  names them).
 
 ## Decisions log
 

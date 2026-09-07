@@ -84,7 +84,7 @@ end Lax132576Proofs.Primrec
 /-! ## The integers -/
 
 /-- The integers are `Primcodable`, with the encoding of `Int.encodable`. -/
-instance Int.primcodable : Primcodable ℤ := Primcodable.ofEquiv ℕ Equiv.intEquivNat
+instance Lax132576Proofs.Int.primcodable : Primcodable ℤ := Primcodable.ofEquiv ℕ Equiv.intEquivNat
 
 open Primrec
 
@@ -289,7 +289,7 @@ theorem rat_encode_decode (n : ℕ) :
     rfl
 
 /-- The rationals are `Primcodable`, with the encoding of `Rat.instEncodable`. -/
-instance _root_.Rat.primcodable : Primcodable ℚ where
+instance Lax132576Proofs.Rat.primcodable : Primcodable ℚ where
   __ := (inferInstance : Encodable ℚ)
   prim := by
     have h : Primrec fun n : ℕ =>
