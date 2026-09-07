@@ -64,7 +64,7 @@ Regenerate a root module:
 Concept packages of later parts require the concept packages of earlier parts;
 proof packages require the earlier proof packages too (the source development
 of Part B uses the Mealy API of Part A). A require pins `(git, rev, subDir)` of
-the dependency's **current archive record** (`lax pull-db`; `~/.lax/lax-database/lax-N/record.json`),
+the dependency's **current archive record** (`lax sync`; `~/.lax/lax-database/lax-N/record.json`),
 so a dependency is submitted as a draft before a dependent pins it, and every
 re-submission of a dependency means repinning and resubmitting the dependents.
 For the local loop, `~/git/lax-submissions/.claude/sibling-overrides.sh` shows

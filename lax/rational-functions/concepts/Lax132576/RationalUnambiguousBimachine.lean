@@ -1,4 +1,4 @@
-import Mathlib.Logic.Basic
+import Mathlib.Data.List.TFAE
 import Lax132576.RationalFunctions
 import Lax132576.Bimachines
 

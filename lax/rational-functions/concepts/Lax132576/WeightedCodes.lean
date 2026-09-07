@@ -60,10 +60,10 @@ def wcodeAut (c : WCode) : LabAut ℕ ℚ ℕ where
     (by intro t; simp [eq_comm])
 
 /-- The function computed by the weighted automaton described by a code. -/
-noncomputable def wcodeEval (c : WCode) : List ℕ → ℚ := (wcodeAut c).wEval
+noncomputable def wcodeEval (c : WCode) : List ℕ → ℚ := wEval (wcodeAut c)
 
 /-- A code is valid if it describes a genuine weighted automaton: every input has
 finitely many accepting runs. -/
-def WCodeValid (c : WCode) : Prop := (wcodeAut c).FinitelyManyRuns
+def WCodeValid (c : WCode) : Prop := FinitelyManyRuns (wcodeAut c)
 
 end Lax132576.WeightedCodes
