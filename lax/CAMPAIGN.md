@@ -3,15 +3,15 @@
 Opened 2026-09-07. One row per submission; the *next leaf* column is what the
 next session or subagent picks up. Keep this file short and current.
 
-| id | folder | concepts | proofs | state (2026-09-07, 15:15) | next leaf |
+| id | folder | concepts | proofs | state (2026-09-07, 16:20) | next leaf |
 |---|---|---|---|---|---|
 | lax-251941 | `pcp-undecidability` | 9 | 6, all discharged | **draft on the archive with content** (9680c6e), replay green | none |
 | lax-765601 | `mealy-machines` | 22 | 13, all discharged | **draft on the archive with content** (cf8ade7), replay green | none |
 | lax-132576 | `rational-functions` | 42 | 29, all discharged; Source = 63 modules | **draft on the archive with content** (972ebef), replay green | none |
-| lax-916827 | `regular-functions` | 29, archive concept check green | Source = 136 modules, `lake build` green; Bridge/Results pending; pins A @ cf8ade7, B @ 972ebef | **concepts-only draft on the archive** (a0fb09b); Source port committed | (1) Bridge + Results (23 theorems; the two `TwoDFA`-free continuity ones and the code-based decidability need the `Primcodable` transport as in S2); (2) `lax build --replay`, commit, resubmit; then S4/S5 pin it |
-| lax-314295 | `mso-transductions` | 25 drafted, not yet built | – | empty draft | after S3's draft: pin Lax765601, Lax132576, Lax916827 into concepts; proofs require Lax916827Proofs as well; port the closure of `PartC/MSO` minus S3's ported.txt — 44 modules, 12k lines |
-| lax-709149 | `regular-combinators` | 4 drafted, not yet built | – | empty draft | after S3's draft: pin Lax132576, Lax916827; port the closure of `PartC/CombStatements` minus S3 — 15 modules, 3.7k lines (needs nothing from S4) |
-| lax-194892 | `polyregular-functions` | 20 drafted, not yet built | – | empty draft | after S4's draft: pin Lax765601, Lax916827, Lax314295 (concepts: `Continuity` from A, `RegularFunctions` from S3; MSO is not used by the concepts); proofs require S3Proofs and S4Proofs; port the closure of `PartD/{Statements,PebReach,ChildGraphFor,CGFor,ChildExample}` minus S3/S4 — 78 modules, 23k lines, of which 7 are `PartC/*` pulled in only through the roll-up import `RequestProject.PartC` in some Part D file: replace that import by the specific modules |
+| lax-916827 | `regular-functions` | 29 | 23, all discharged; Source = 136 modules; replay green (9m36s) | committed; content resubmit running | after the record moves: repin S4/S5/S6 (concepts) and S4/S5 (proofs) to it, submit S4/S5/S6 |
+| lax-314295 | `mso-transductions` | 26, archive concept check green (pinned A @ cf8ade7, B @ 972ebef, C @ a0fb09b) | – | **concepts-only draft on the archive** (b0dca40) | after S3's resubmit: repin C, resubmit; proofs: require Lax916827Proofs as well; port the closure of `PartC/MSO` minus S3's ported.txt — 44 modules, 12k lines; Bridge + Results |
+| lax-709149 | `regular-combinators` | 4, archive concept check green (pinned B @ 972ebef, C @ a0fb09b) | – | **concepts-only draft on the archive** (b0dca40) | after S3's resubmit: repin C, resubmit; proofs: port the closure of `PartC/CombStatements` minus S3 — 15 modules, 3.7k lines; Bridge + Results (1 theorem) |
+| lax-194892 | `polyregular-functions` | 21, archive concept check green (pinned A @ cf8ade7, C @ a0fb09b; the concepts do not use S4) | – | committed (540cf91), not yet submitted | after S3's resubmit: repin C, `lax submit`; proofs require S3Proofs and S4Proofs; port the closure of `PartD/{Statements,PebReach,ChildGraphFor,CGFor,ChildExample}` minus S3/S4 — 78 modules, 23k lines (7 `PartC/*` pulled in only through the roll-up import `RequestProject.PartC`: replace by the specific modules); Bridge + Results |
 | lax-157538 | `transducers-book` | none (umbrella) | none | empty draft | paper folder + markers, after all seven are drafts; lakefiles require all seven concept and proof packages |
 
 ## Source edits (against the epoch mathlib)
@@ -73,6 +73,16 @@ next session or subagent picks up. Keep this file short and current.
   `SnakeChkMain.lean:36` auto-bound `K` → `variable {K : ℕ}`.
   (Warnings: `push_neg` 66 sites, `List.Sublist.cons₂` deprecated in
   `SSTNorm.lean:145`.) No statement changed.
+- S3 Bridge (2026-09-07 16:20, subagent): `toSrcTW`/`ofSrcTW` with one
+  general `computes_iff_of_step` (a source machine whose step is `M.step`
+  under a letter renaming `e`) reused for the configuration-graph alphabet,
+  whose concept `VOut` is a distinct inductive (`cletEquiv`, `enc_toSrc`;
+  Lemmas C.2.3/C.2.4 through `isRationalFun_map`/`isRegular_map`);
+  `TwoWayCode` is the same list type on both sides (`rfl` transports,
+  same `Primcodable`); SST `eval` is `rfl`; `IsSnakePath` is a separate
+  Prop-structure (`isSnakePath_iff` → `snakeOut_eq` via the source's
+  `snakeOutIs_unique`). Bridge imports `Source.PartC.SnakeAlphReg` besides
+  `Statements`.
 - Known ahead (from the port probe of the whole tree, 2026-09-07):
   `Common/PrimrecList.lean` rename `list_drop`/`list_take` to primed names;
   `Common/PrimrecArith.lean:251` `rw` → `simp only` then a `generalize`
