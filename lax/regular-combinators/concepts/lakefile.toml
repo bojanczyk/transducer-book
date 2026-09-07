@@ -19,7 +19,7 @@ subDir = "lax/rational-functions/concepts"
 [[require]]
 name = "Lax916827"
 git = "https://github.com/bojanczyk/transducer-book"
-rev = "a0fb09ba33b4883e7ccab10c9947610040cf56ad"
+rev = "2fb96b21ff6f644e216d6c933869a6b19d87af3b"
 subDir = "lax/regular-functions/concepts"
 
 [[lean_lib]]
