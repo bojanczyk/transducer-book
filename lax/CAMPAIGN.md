@@ -3,7 +3,7 @@
 Opened 2026-09-07. One row per submission; the *next leaf* column is what the
 next session or subagent picks up. Keep this file short and current.
 
-| id | folder | concepts | proofs | state (2026-09-07, 21:10) | next leaf |
+| id | folder | concepts | proofs | state (2026-09-07, 22:00) | next leaf |
 |---|---|---|---|---|---|
 | lax-251941 | `pcp-undecidability` | 9 | 6, all discharged | **draft on the archive with content** (9680c6e), replay green | none |
 | lax-765601 | `mealy-machines` | 22 | 13, all discharged | **draft on the archive with content** (cf8ade7), replay green | none |
@@ -12,7 +12,7 @@ next session or subagent picks up. Keep this file short and current.
 | lax-314295 | `mso-transductions` | 26 | 22, all discharged; Source = 44 modules; replay green | **draft on the archive with content** (8b8f8c6) | none (S6 and S7 pin it) |
 | lax-709149 | `regular-combinators` | 4 | 1, discharged; Source = 15 modules; replay green | **draft on the archive with content** (86f2df5) | none (S7 pins it) |
 | lax-194892 | `polyregular-functions` | 21 | 15, all discharged; Source = 72 modules | **draft on the archive with content** (4bdfaae; the first submission hit the replay time cap, the identical retry passed) | none (S7 pins it) |
-| lax-157538 | `transducers-book` | none (umbrella) | none | paper + 208 markers; pins all seven records (`tools/umbrella-pins.py`); first submit rejected: the archive's sandboxed `biber` cannot exec (PAR binary) → `backend=bibtex` in the umbrella's `macros.sty` (biblatex alphabetic works with bibtex; the book's own sources unchanged); resubmit running | read the verdict; then registration bottom-up (Jan) |
+| lax-157538 | `transducers-book` | none (umbrella) | none | **draft on the archive** (1f59a85): paper 179 pages, 210 marks resolved, pins all seven records; `backend=bibtex` in the umbrella's `macros.sty` (the archive's sandboxed `biber` cannot exec). Warning: the web reflow view was not derived (laxreflow's lualatex pass: `File ended while scanning use of \tikzexternal@…` while reading `partBRational/intro.tex`; the paper itself has no tikz) | registration bottom-up (Jan); the reflow warning (needs laxreflow's transcript / the archive maintainers) |
 
 ## Source edits (against the epoch mathlib)
 
