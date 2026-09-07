@@ -45,7 +45,7 @@ namespace Lax194892.ChildConfigurationGraphs
 
 open Lax194892.PebbleTransducers Lax194892.PebbleConfigurationEncoding
 
-/-! ## The children of a configuration -/
+-- ## The children of a configuration
 
 /-- The stack has height at least `h`; the halting vertex has no height. -/
 def HeightGe {Q : Type} (h : ℕ) : PebbleCfg Q → Prop
@@ -91,7 +91,7 @@ structure IsChildSeq {A B Q : Type} {k : ℕ} (M : Pebble A B Q k) (w : List A) 
   /-- The last child has no successor. -/
   stop : ∀ v, ¬ NextChild M w st (ch m) v
 
-/-! ## String representations -/
+-- ## String representations
 
 /-- A letter of the representation of a configuration: the state, the input letter
 following the gap, and the pebbles in the gap. -/
@@ -132,14 +132,17 @@ structure CGLetter (A Q : Type) (k : ℕ) where
   /-- The incoming edge of `(q, this column)`. -/
   prv : Q → Option (Q × Dir)
 
+open scoped Classical in
 /-- The index at which `v` occurs among the first `m` children, if any. -/
 noncomputable def idxAt {Q : Type} (ch : ℕ → Vtx Q) (m : ℕ) (v : Vtx Q) : Option ℕ :=
   if h : ∃ t, t < m ∧ ch t = v then some (Nat.find h) else none
 
+open scoped Classical in
 /-- The index `t < m` such that `v` is the child following `ch t`, if any. -/
 noncomputable def idxSuccAt {Q : Type} (ch : ℕ → Vtx Q) (m : ℕ) (v : Vtx Q) : Option ℕ :=
   if h : ∃ t, t < m ∧ ch (t + 1) = v then some (Nat.find h) else none
 
+open scoped Classical in
 /-- The representation of the child configuration graph whose children are
 `ch 0, …, ch m`, over an input with `n + 1` gaps carrying the letters `lett` and
 the fixed pebbles `peb`, the moving pebble having the index `nid`. -/
@@ -159,7 +162,7 @@ noncomputable def cgOfChildren {A Q : Type} {k : ℕ} (w : List A) (st : List �
     (ch : ℕ → Vtx Q) (m : ℕ) : List (CGLetter A Q k) :=
   cgOfPath (fun j => w[j]?) (fun j => ann k st j) nid w.length ch m
 
-/-! ## Reading the children off a represented graph -/
+-- ## Reading the children off a represented graph
 
 /-- The vertex that the edge out of `v` leads to, if any. -/
 def succOf {A Q : Type} {k : ℕ} (u : List (CGLetter A Q k)) (v : Vtx Q) : Option (Vtx Q) :=
