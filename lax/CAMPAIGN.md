@@ -3,7 +3,7 @@
 Opened 2026-09-07. One row per submission; the *next leaf* column is what the
 next session or subagent picks up. Keep this file short and current.
 
-| id | folder | concepts | proofs | state (2026-09-07, 15:50) | next leaf |
+| id | folder | concepts | proofs | state (2026-09-07, 21:10) | next leaf |
 |---|---|---|---|---|---|
 | lax-251941 | `pcp-undecidability` | 9 | 6, all discharged | **draft on the archive with content** (9680c6e), replay green | none |
 | lax-765601 | `mealy-machines` | 22 | 13, all discharged | **draft on the archive with content** (cf8ade7), replay green | none |
@@ -11,8 +11,8 @@ next session or subagent picks up. Keep this file short and current.
 | lax-916827 | `regular-functions` | 29 | 23, all discharged; Source = 136 modules; replay green (9m36s) | committed; content resubmit running | after the record moves: repin S4/S5/S6 (concepts) and S4/S5 (proofs) to it, submit S4/S5/S6 |
 | lax-314295 | `mso-transductions` | 26 | 22, all discharged; Source = 44 modules; replay green | **draft on the archive with content** (8b8f8c6) | none (S6 and S7 pin it) |
 | lax-709149 | `regular-combinators` | 4 | 1, discharged; Source = 15 modules; replay green | **draft on the archive with content** (86f2df5) | none (S7 pins it) |
-| lax-194892 | `polyregular-functions` | 21 | 15, all discharged (`lake build` green against the sibling folders); Source = 72 modules; replay not yet run (S4's record has no proofs yet) | committed; **concepts-only draft on the archive** (b4e869b) | after S4's resubmit: repin S4 in proofs, `lax build --replay`, resubmit; paper: markers for Lemma D.2.2 (`exists_regular_reachLang`) and Lemma D.2.5 (`exists_forTransducer_children`) are missing in `pebble.tex` |
-| lax-157538 | `transducers-book` | none (umbrella) | none | empty draft | paper folder + markers, after all seven are drafts; lakefiles require all seven concept and proof packages |
+| lax-194892 | `polyregular-functions` | 21 | 15, all discharged; Source = 72 modules | **draft on the archive with content** (4bdfaae; the first submission hit the replay time cap, the identical retry passed) | none (S7 pins it) |
+| lax-157538 | `transducers-book` | none (umbrella) | none | paper + 208 markers committed; lakefiles pin all seven records (`tools/umbrella-pins.py`); submit running | read the verdict; then registration bottom-up (Jan) |
 
 ## Source edits (against the epoch mathlib)
 
