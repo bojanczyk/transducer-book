@@ -93,7 +93,8 @@ for mod in a.modules:
         m = re.match(r"^namespace (\S+)\s*$", line)
         if m:
             ns = m.group(1)
-            if not stack and ns in ROOT_NS:
+            if not stack and not ns.startswith(a.pkg):
+                # every root-level namespace must carry the package prefix
                 stack.append((ns, True)); out_lines.append(f"namespace {a.pkg}.{ns}"); continue
             stack.append((ns, False)); out_lines.append(line); continue
         m = re.match(r"^end (\S+)\s*$", line)

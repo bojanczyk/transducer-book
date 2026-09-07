@@ -87,6 +87,11 @@ here when the chain is long enough to hurt.
 - A shared inductive type (S0's `Sym`) can be aliased in Source as an
   `abbrev` plus `@[match_pattern] abbrev` constructors, so that the source's
   pattern matches keep working on the concept's type.
+- Every root-level namespace of a Source file must carry the package prefix
+  (the archive checks it on every declaration, `lax build --replay` reports
+  `statements · namespace`). `port.py` now rewrites all of them; a source
+  file that `open`s a mathlib namespace of the same name as a rewritten one
+  (`Primrec`) needs the `open` moved to the top level, before the namespace.
 - Disk is tight on this machine (~10 GB). Build one submission at a time;
   `.lake/build` of a full part is 1–3 GB.
 

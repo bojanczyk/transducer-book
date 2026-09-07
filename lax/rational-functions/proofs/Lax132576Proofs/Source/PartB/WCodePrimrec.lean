@@ -16,6 +16,7 @@ is developed in the general-purpose files `RequestProject/Common/PrimrecArith.le
 import Lax132576Proofs.Source.PartB.WCodeEnum
 import Lax132576Proofs.Source.Common.PrimrecArith
 import Lax132576Proofs.Source.Common.PrimrecList
+open Primrec
 open Lax765601Proofs Lax765601Proofs.Transducers
 
 namespace Lax132576Proofs.Transducers

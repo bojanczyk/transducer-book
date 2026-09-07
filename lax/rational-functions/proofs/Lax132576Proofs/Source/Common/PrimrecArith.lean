@@ -36,7 +36,9 @@ open Encodable
 
 /-! ## The greatest common divisor -/
 
-namespace Primrec
+open Primrec
+
+namespace Lax132576Proofs.Primrec
 
 open Primrec in
 private theorem nat_gcd_aux : Primrec₂ (fun (_ : Unit) (p : ℕ × ℕ) => Nat.gcd p.1 p.2) := by
@@ -77,14 +79,16 @@ theorem nat_dvd : PrimrecRel ((· ∣ ·) : ℕ → ℕ → Prop) :=
     · simp [h]
     · exact (Nat.dvd_iff_mod_eq_zero (m := p.1) (n := p.2)).symm
 
-end Primrec
+end Lax132576Proofs.Primrec
 
 /-! ## The integers -/
 
 /-- The integers are `Primcodable`, with the encoding of `Int.encodable`. -/
 instance Int.primcodable : Primcodable ℤ := Primcodable.ofEquiv ℕ Equiv.intEquivNat
 
-namespace Primrec
+open Primrec
+
+namespace Lax132576Proofs.Primrec
 
 theorem int_encode_ofNat (n : ℕ) : encode (Int.ofNat n) = 2 * n := rfl
 
@@ -220,11 +224,13 @@ theorem int_dvd : PrimrecRel ((· ∣ ·) : ℤ → ℤ → Prop) :=
   (PrimrecRel.comp nat_dvd (int_natAbs.comp fst) (int_natAbs.comp snd)).of_eq fun _ =>
     Int.natAbs_dvd_natAbs
 
-end Primrec
+end Lax132576Proofs.Primrec
 
 /-! ## The rationals -/
 
-namespace Primrec
+open Primrec
+
+namespace Lax132576Proofs.Primrec
 
 /-- The type through which `Rat.instEncodable` encodes the rationals. -/
 private abbrev RatSig := Σ n : ℤ, { d : ℕ // 0 < d ∧ n.natAbs.Coprime d }
@@ -430,4 +436,4 @@ theorem rat_le : PrimrecRel ((· ≤ ·) : ℚ → ℚ → Prop) :=
       (int_mul.comp (rat_num.comp snd) (int_natCast.comp (rat_den.comp fst)))).of_eq
     fun p => (rat_le_iff p.1 p.2).symm
 
-end Primrec
+end Lax132576Proofs.Primrec

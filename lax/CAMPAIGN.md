@@ -52,6 +52,15 @@ next session or subagent picks up. Keep this file short and current.
   `Set.mem_setOf_eq` rewrite; `PartB/CodeRat.lean` (`unattach` normal forms,
   ~7 sites); `PartB/PairWeighted.lean:143,146` auto-bound `K`.
 
+- S2 (archive namespace rule): the source's root-level `namespace Primrec`
+  in `Common/PrimrecList.lean`, `Common/PrimrecArith.lean` became
+  `Lax132576Proofs.Primrec` (every declaration must carry the package prefix),
+  with `open Primrec` placed *before* the namespace so that mathlib's `Primrec`
+  is still open; `PartB/WCodePrimrec.lean` got a top-level `open Primrec` for
+  the same reason (an `open Primrec` inside the package namespace now finds
+  only the package's copy). `tools/port.py` now prefixes every root-level
+  namespace, not only `Transducers`/`PCP`/`PCPIndex`/`Acceptance`.
+
 ## Decisions log
 
 - 2026-09-07 Jan: seven part submissions + umbrella paper; split only the

@@ -10,7 +10,9 @@ arithmetic of `ℤ` and `ℚ`.
 import Mathlib.Computability.Primrec.List
 import Mathlib.Data.List.TakeWhile
 
-namespace Primrec
+open Primrec
+
+namespace Lax132576Proofs.Primrec
 
 variable {α β σ : Type} [Primcodable α] [Primcodable β] [Primcodable σ]
 
@@ -130,4 +132,4 @@ theorem list_lookup [DecidableEq α] [BEq α] [LawfulBEq α] :
     exact hcond.to₂.of_eq fun p x => by by_cases hx : x.1.1 = p.2 <;> simp [hx]
   exact h.to₂.of_eq fun l a => (lookup_eq_foldr a l).symm
 
-end Primrec
+end Lax132576Proofs.Primrec
