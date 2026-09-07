@@ -10,6 +10,9 @@ file is copied to `<dest>/<pkg>/Source/X/Y.lean` with these rewrites:
   import RequestProject.X.Y     -> import <pkg>.Source.X.Y   if X/Y is ported here
                                 -> import <dep>.Source.X.Y   if some --dep package
                                    ports it (recorded in <dep-dest>/../ported.txt)
+  import RequestProject.PartC   -> import <IMP1> ... (--replace-import PartC=IMP1,IMP2: a
+                                   roll-up import becomes the root modules of the
+                                   packages carrying that part; every --dep is then opened)
   namespace Transducers          -> namespace <pkg>.Transducers   (root namespaces only)
   end Transducers                -> end <pkg>.Transducers
   open Transducers               -> open <pkg>.Transducers
@@ -41,6 +44,8 @@ ap.add_argument("--pkg", required=True)
 ap.add_argument("--dest", required=True)
 ap.add_argument("--dep", action="append", default=[], help="PKG=DEST of a dependency proof package")
 ap.add_argument("--provided", action="append", default=[], help="module X/Y written by hand at <dest>/<pkg>/Source/X/Y.lean")
+ap.add_argument("--replace-import", action="append", default=[],
+                help="MOD=IMP1,IMP2: rewrite `import RequestProject.MOD` (a roll-up such as PartC) into `import IMP1` … (root modules of the packages carrying it)")
 ap.add_argument("modules", nargs="+")
 a = ap.parse_args()
 
@@ -51,6 +56,7 @@ for d in a.dep:
         deps.setdefault(line.strip(), pkg)  # first --dep wins (chain order)
 
 mine = set(a.modules) | set(a.provided)
+replace = {k: v.split(",") for k, v in (r.split("=") for r in a.replace_import)}
 
 def imports_of(mod):
     """The RequestProject modules imported by `mod` (a hand-written --provided
@@ -62,13 +68,16 @@ def imports_of(mod):
         pat = r"^import (?:%s)\.Source\.([\w.]+)$" % "|".join([a.pkg] + sorted(set(deps.values())))
         return [m.replace(".", "/") for m in re.findall(pat, open(out).read(), flags=re.M)]
     return [m.replace(".", "/") for m in
-            re.findall(r"^import RequestProject\.([\w.]+)$", open(os.path.join(SRC, mod + ".lean")).read(), flags=re.M)]
+            re.findall(r"^import RequestProject\.([\w.]+)$", open(os.path.join(SRC, mod + ".lean")).read(), flags=re.M)
+            if m not in replace]
 
 _reach = {}
 def deps_reached(mod):
     """The --dep packages whose modules the import closure of `mod` reaches."""
     if mod in deps:
         return {deps[mod]}
+    if mod in a.modules and any(m in replace for m in re.findall(r"^import RequestProject\.([\w.]+)$", open(os.path.join(SRC, mod + ".lean")).read(), flags=re.M)):
+        return set(deps.values())
     if mod in _reach:
         return _reach[mod]
     _reach[mod] = set()  # cycles cannot occur, but be safe
@@ -77,6 +86,8 @@ def deps_reached(mod):
 
 def rewrite_import(m):
     mod = m.group(1)
+    if mod.replace("/", ".") in replace:
+        return "\n".join(f"import {i}" for i in replace[mod.replace("/", ".")])
     if mod in mine:
         return f"import {a.pkg}.Source.{mod.replace('/', '.')}"
     if mod in deps:

@@ -3,15 +3,15 @@
 Opened 2026-09-07. One row per submission; the *next leaf* column is what the
 next session or subagent picks up. Keep this file short and current.
 
-| id | folder | concepts | proofs | state (2026-09-07, 16:20) | next leaf |
+| id | folder | concepts | proofs | state (2026-09-07, 15:50) | next leaf |
 |---|---|---|---|---|---|
 | lax-251941 | `pcp-undecidability` | 9 | 6, all discharged | **draft on the archive with content** (9680c6e), replay green | none |
 | lax-765601 | `mealy-machines` | 22 | 13, all discharged | **draft on the archive with content** (cf8ade7), replay green | none |
 | lax-132576 | `rational-functions` | 42 | 29, all discharged; Source = 63 modules | **draft on the archive with content** (972ebef), replay green | none |
 | lax-916827 | `regular-functions` | 29 | 23, all discharged; Source = 136 modules; replay green (9m36s) | committed; content resubmit running | after the record moves: repin S4/S5/S6 (concepts) and S4/S5 (proofs) to it, submit S4/S5/S6 |
-| lax-314295 | `mso-transductions` | 26, archive concept check green (pinned A @ cf8ade7, B @ 972ebef, C @ a0fb09b) | – | **concepts-only draft on the archive** (b0dca40) | after S3's resubmit: repin C, resubmit; proofs: require Lax916827Proofs as well; port the closure of `PartC/MSO` minus S3's ported.txt — 44 modules, 12k lines; Bridge + Results |
-| lax-709149 | `regular-combinators` | 4, archive concept check green (pinned B @ 972ebef, C @ a0fb09b) | – | **concepts-only draft on the archive** (b0dca40) | after S3's resubmit: repin C, resubmit; proofs: port the closure of `PartC/CombStatements` minus S3 — 15 modules, 3.7k lines; Bridge + Results (1 theorem) |
-| lax-194892 | `polyregular-functions` | 21, archive concept check green (pinned A @ cf8ade7, C @ a0fb09b; the concepts do not use S4) | – | committed (540cf91), not yet submitted | after S3's resubmit: repin C, `lax submit`; proofs require S3Proofs and S4Proofs; port the closure of `PartD/{Statements,PebReach,ChildGraphFor,CGFor,ChildExample}` minus S3/S4 — 78 modules, 23k lines (7 `PartC/*` pulled in only through the roll-up import `RequestProject.PartC`: replace by the specific modules); Bridge + Results |
+| lax-314295 | `mso-transductions` | 26, archive check green (pinned A @ cf8ade7, B @ 972ebef, C @ 2fb96b2) | Source = 44 modules ported (`PartC/MSO` closure minus S3), `lake build` fix loop running (subagent); pins as concepts + the proof packages | **concepts-only draft on the archive** (b0dca40); repinned resubmit (1b02fa6) running | (1) Source build green; (2) Bridge + Results (26 concepts); (3) replay, commit, resubmit; then S6 repins |
+| lax-709149 | `regular-combinators` | 4, archive check green (pinned B @ 972ebef, C @ 2fb96b2) | Source = 15 modules ported (`PartC/CombStatements` closure minus S3), `lake build` fix loop running (subagent) | **concepts-only draft on the archive** (b0dca40); repinned resubmit (1b02fa6) running | (1) Source build green; (2) Bridge + Results (1 theorem); (3) replay, commit, resubmit |
+| lax-194892 | `polyregular-functions` | 21, archive check green (pinned A @ cf8ade7, C @ 2fb96b2) | Source = 72 modules ported (`PartD/{Statements,PebReach,ChildGraphFor,CGFor,ChildExample}` closure minus S3/S4/S5: 70 `PartD/*` + `PartC/{MarkRat,RegWin}`; `PartD/TwoWayTotal`'s roll-up `import RequestProject.PartC` became `import Lax916827Proofs` + `import Lax314295Proofs` via `port.py --replace-import`), not yet built; proofs pin S4 @ 1b02fa6 | committed concepts (540cf91); submit (1b02fa6) running | after S4's Source builds: (1) Source `lake build` green (sibling overrides are in `.lake/package-overrides.json`); (2) Bridge + Results (17 theorem-concepts); (3) replay, commit, submit |
 | lax-157538 | `transducers-book` | none (umbrella) | none | empty draft | paper folder + markers, after all seven are drafts; lakefiles require all seven concept and proof packages |
 
 ## Source edits (against the epoch mathlib)
