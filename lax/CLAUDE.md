@@ -41,8 +41,13 @@ it.
 
     cd <submission>/concepts && lake build          # fast iteration
     cd <submission>/proofs   && lake build
-    lax build --replay <submission>                 # the archive's checks, incl. kernel replay
-    lax submit <submission> --allow-dirty           # submits committed, pushed HEAD as a draft
+    lax submit <submission> --force --allow-dirty   # submits committed, pushed HEAD as a draft,
+                                                    # no local checks: the archive is the verdict
+    lax sync                                        # then read ~/.lax/lax-database/lax-N/build-output.json
+
+`lax build --replay <submission>` runs the archive's checks locally (clones and
+builds every pinned dependency from source, 30–60 min); Jan's call (2026-09-07):
+skip it, the archive repeats it anyway. The local gate is `lake build`.
 
 `lake` is `~/.elan/bin/lake`; builds read mathlib from the warm store, nothing
 is downloaded. Porting a part:
@@ -108,8 +113,9 @@ here when the chain is long enough to hurt.
 ## Working rhythm
 
 Land at every boundary: commit the submission folder (never `build-output.json`,
-`lake-manifest.json`, `.lake/`), push, `lax submit --allow-dirty`, update
-`CAMPAIGN.md`. Subagents get one coherent leaf (one part's Source port, or one
-part's concepts, or one bridge), narrow file ownership, and the gate that
-decides it: `lake build` green, or `lax build --replay` green. The supervisor
-reviews the concrete result before landing.
+`lake-manifest.json`, `.lake/`), push, `lax submit --force --allow-dirty`, `lax
+sync`, update `CAMPAIGN.md`. Subagents get one coherent leaf (one part's Source
+port, or one part's concepts, or one bridge), narrow file ownership, and the
+gate that decides it: `lake build` green (against sibling folders through
+`.lake/package-overrides.json` while the pins are not yet on the archive). The
+supervisor reviews the concrete result before landing.
