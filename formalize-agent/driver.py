@@ -42,6 +42,10 @@ STATE_PATH = HERE / "state.json"
 LOG_DIR = HERE / "logs"
 SUMMARY_DIR = LOG_DIR / "summaries"
 LOG_FILE = LOG_DIR / "driver.log"
+# written while verify_tree runs, so `status` can tell a long rebuild from a corpse
+VERIFY_MARKER = LOG_DIR / "verifying.marker"
+# these only read; they must not block behind a running tick
+READ_ONLY_COMMANDS = {"status"}
 LOCK_PATH = HERE / ".lock"
 REVIEW_PATH = HERE / "REVIEW.md"
 
@@ -652,6 +656,23 @@ def verify_tree(cfg: dict) -> tuple[bool, str]:
     """
     ld = lean_dir(cfg)
     limit = cfg.get("verify_timeout_s", 5400)
+    # A marker outside state.json, which is only written when the tick ends: a
+    # verification that rebuilds most of the project takes the better part of an
+    # hour, during which the tick holds the lock, `last_tick` stays frozen at the
+    # moment the tick began and nothing is logged. That is indistinguishable
+    # from a dead driver unless something says otherwise, so `status` reads this.
+    try:
+        VERIFY_MARKER.parent.mkdir(parents=True, exist_ok=True)
+        VERIFY_MARKER.write_text(ts())
+    except OSError:
+        pass
+    try:
+        return _verify(cfg, ld, limit)
+    finally:
+        VERIFY_MARKER.unlink(missing_ok=True)
+
+
+def _verify(cfg: dict, ld: Path, limit: int) -> tuple[bool, str]:
     try:
         r = subprocess.run([lake_exe(cfg), "build"], cwd=ld,
                            capture_output=True, text=True, timeout=limit)
@@ -1386,6 +1407,15 @@ def cmd_status(args) -> None:
     if cur:
         print(f"running: {cur['target_id']} (task {cur['task_id']}, {cur['kind']}, "
               f"since {cur['submitted_at']})")
+    if VERIFY_MARKER.exists():
+        began = VERIFY_MARKER.read_text().strip()
+        try:
+            mins = (now() - datetime.fromisoformat(
+                began.replace("Z", "+00:00"))).total_seconds() / 60
+            print(f"\nVERIFYING the merged tree since {began} ({mins:.0f} min so far) — "
+                  f"a full rebuild takes the better part of an hour; the driver is not stuck")
+        except Exception:
+            print(f"\nVERIFYING the merged tree since {began}")
     if ld.exists():
         print(f"sorries in the Lean sources: {sorry_count(ld)}")
         # `-- .` so this stays the Lean history, not the book's LaTeX commits
@@ -1519,11 +1549,21 @@ def main() -> None:
 
     # one tick at a time, whatever launchd and the user do concurrently
     LOCK_PATH.touch()
+    # Read-only commands must never wait on the lock. `status` used to take it
+    # like everything else, so while a tick was verifying a merge -- which can
+    # be the better part of an hour -- the one command that would have said so
+    # printed "a tick is already in progress" instead, and the driver was
+    # indistinguishable from a dead one.
+    if args.cmd in READ_ONLY_COMMANDS:
+        args.f(args)
+        return
     with LOCK_PATH.open("w") as lock:
         try:
             fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
         except BlockingIOError:
-            print("a tick is already in progress (the scheduled one, most likely); exiting. This says nothing about whether a task is running on Aristotle — see `driver.py status` for that.")
+            print("a tick is already in progress (the scheduled one, most likely); exiting. "
+                  "This says nothing about whether a task is running on Aristotle — see "
+                  "`driver.py status` for that, which does not wait on the lock.")
             return
         args.f(args)
 
