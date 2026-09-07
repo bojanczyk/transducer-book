@@ -51,15 +51,6 @@
  \usepackage{listings}
 
 % font packages 
-% Lax's web view is serialized from a lualatex run of this document, and the
-% serializer reads Libertine's "Th" ligature glyph as nothing ("This" -> "is"),
-% which fails the archive's text oracle; common ligatures are therefore
-% switched off under lualatex only. The pdflatex PDF is unaffected.
-\usepackage{iftex}
-\ifluatex
-  \usepackage{fontspec}
-  \defaultfontfeatures{Ligatures=NoCommon}
-\fi
 \usepackage{libertine}
 \usepackage{inconsolata}
 
