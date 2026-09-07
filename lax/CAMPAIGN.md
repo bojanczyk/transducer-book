@@ -170,6 +170,28 @@ next session or subagent picks up. Keep this file short and current.
   `Lax132576Proofs.Rat.primcodable` (instances resolve by type, nothing
   names them).
 
+## Part D replay limit (2026-09-07, 19:00–20:30)
+
+The archive rejected the first content submission of `polyregular-functions`
+(commit 9d091e1) with "proofs kernel replay exceeded its time limit" (the cap
+is 20 min of `leanchecker <root>` with `LEAN_NUM_THREADS=2` on a 16 GB,
+4-CPU swapless runner; `leanchecker` replays every module with the root as
+prefix, one task per module, and holds one ~5.6 GB mathlib environment per
+concurrent task). Local measurements, same invocation, 2 threads, unloaded:
+
+| package | modules | root replay | peak RSS | archive |
+|---|---|---|---|---|
+| `Lax916827Proofs` (C §1–3) | 138 | 8m17s | 14.7 GB | passed |
+| `Lax194892Proofs` (D) | 74 | 4m31s | 11.9 GB | rejected on time |
+
+Per module Part D costs ~15 s each (environment import, not kernel work);
+`Results`/`Bridge` 17 s/16 s unloaded; the elaboration profiler at 500 ms
+finds nothing in `Results`. Our own oleans are ≤ 80 MB per package against
+mathlib's 5.7 GB. Nothing local explains the rejection; resubmitted unchanged
+(`--force`). If it fails again identically: systematic — reduce the number of
+modules (merging Source files is the only lever on import overhead) or ask the
+archive maintainers; Jan's call.
+
 ## Decisions log
 
 - 2026-09-07 Jan: seven part submissions + umbrella paper; split only the
