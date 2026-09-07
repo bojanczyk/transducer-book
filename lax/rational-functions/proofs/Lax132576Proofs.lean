@@ -1,3 +1,5 @@
+import Lax132576Proofs.Bridge
+import Lax132576Proofs.Results
 import Lax132576Proofs.Source.Common.PrimrecArith
 import Lax132576Proofs.Source.Common.PrimrecList
 import Lax132576Proofs.Source.Common.RegularAux
