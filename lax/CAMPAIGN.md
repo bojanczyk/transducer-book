@@ -9,7 +9,7 @@ next session or subagent picks up. Keep this file short and current.
 | lax-765601 | `mealy-machines` | 22 | 13, all discharged | **draft on the archive with content** (cf8ade7), replay green | none |
 | lax-132576 | `rational-functions` | 42 | 29, all discharged; Source = 63 modules | **draft on the archive with content** (972ebef), replay green | none |
 | lax-916827 | `regular-functions` | 29 | 23, all discharged; Source = 136 modules; replay green (9m36s) | committed; content resubmit running | after the record moves: repin S4/S5/S6 (concepts) and S4/S5 (proofs) to it, submit S4/S5/S6 |
-| lax-314295 | `mso-transductions` | 26, archive check green (pinned A @ cf8ade7, B @ 972ebef, C @ 2fb96b2) | Source = 44 modules ported (`PartC/MSO` closure minus S3), `lake build` fix loop running (subagent); pins as concepts + the proof packages | **concepts-only draft on the archive** (b0dca40); repinned resubmit (1b02fa6) running | (1) Source build green; (2) Bridge + Results (26 concepts); (3) replay, commit, resubmit; then S6 repins |
+| lax-314295 | `mso-transductions` | 26 | Source = 44 modules, `lake build` green; Bridge/Results pending; pins A @ cf8ade7, B @ 972ebef, C @ 2fb96b2 | **concepts-only draft on the archive** (1b02fa6); Source port committed | (1) Bridge + Results (subagent); (2) replay, commit, resubmit; then S6 repins |
 | lax-709149 | `regular-combinators` | 4 | Source = 15 modules, `lake build` green; Bridge/Results pending; pins B @ 972ebef, C @ 2fb96b2 | **concepts-only draft on the archive** (1b02fa6); Source port committed | (1) Bridge + Results (1 theorem, subagent); (2) replay, commit, resubmit |
 | lax-194892 | `polyregular-functions` | 21, archive check green (pinned A @ cf8ade7, C @ 2fb96b2) | Source = 72 modules ported (`PartD/{Statements,PebReach,ChildGraphFor,CGFor,ChildExample}` closure minus S3/S4/S5: 70 `PartD/*` + `PartC/{MarkRat,RegWin}`; `PartD/TwoWayTotal`'s roll-up `import RequestProject.PartC` became `import Lax916827Proofs` + `import Lax314295Proofs` via `port.py --replace-import`), not yet built; proofs pin S4 @ 1b02fa6 | committed concepts (540cf91); submit (1b02fa6) running | after S4's Source builds: (1) Source `lake build` green (sibling overrides are in `.lake/package-overrides.json`); (2) Bridge + Results (17 theorem-concepts); (3) replay, commit, submit |
 | lax-157538 | `transducers-book` | none (umbrella) | none | empty draft | paper folder + markers, after all seven are drafts; lakefiles require all seven concept and proof packages |
@@ -92,6 +92,29 @@ next session or subagent picks up. Keep this file short and current.
   (`[]`/`x :: l` sit at `List (List A.Elt)` while the lemmas are stated at
   `List (Ty.list A).Elt`; `Ty.Elt` is a non-reducible `def`, so keyed
   matching fails at the epoch). No statement changed.
+- S4 (`mso-transductions`, Part C §4, 44 modules; `lake build` green
+  2026-09-07 16:40, subagent). (i) The `MSO`/`MSOTransduction`/`Mealy`
+  namespaces are split across packages and `open Lax916827Proofs.Transducers.MSO`
+  makes `not`/`and`/`or` ambiguous with `Bool`'s, so the needed names are
+  `export`ed as aliases into this package's namespace: `MSOSubst.lean:36`
+  (the `MSODef` names), `FORel.lean:24` (the `MSOSyntax` names),
+  `MSONorm.lean:82` (`MSOTransduction.selected/labRel/ordRel`),
+  `FOFlipFlop.lean:15` (`Mealy.trans_cons/trans_append`); the source's
+  duplicate `MSO.sat_congr` (declared in both `MSOSubst` and S3's `MSOSyntax`)
+  is written `MSO.sat_congr` at `FORel.lean:423`, `FOHintikka.lean:161,175`;
+  `FOSeg.lean:15` port-inserted `open Lax132576Proofs …` removed (its closure
+  reaches Part A only — `port.py` fixed again, see below). (ii) Cross-package
+  dot notation made explicit at ~110 sites (`MSOSubst`, `ITrans`, `MSONorm`,
+  `FOFlipFlop`, `FOMealy`, `FOPlug`, `FORename`, `FORev`, `FOBimachRelab`,
+  `MSOReg`; `FODefinable.exists_sentence h`, `FODefinable.reverse`).
+  (iii) Epoch drift: `MSOSubst.lean:210` `show (∃ S ⊆ _, _)` needs the binder
+  type; `MarkDelay.lean:138` `Language` membership `change`;
+  `MSONorm.lean:140` `Prod.mk.injEq` at a `def`-level type →
+  `Prod.mk.inj`; `FOTransComp.lean:114,124,133` a `rfl` after `rw`,
+  `:366,373` `Sum.inr.inj h`; `FOTransDup.lean:490,535` `congrArg Sum.inl` /
+  `subst`. No statement changed. Alternative noted by the subagent: an
+  `export` placed inside the *other* package's namespace would restore dot
+  notation, rejected because it declares into another submission's namespace.
 - Known ahead (from the port probe of the whole tree, 2026-09-07):
   `Common/PrimrecList.lean` rename `list_drop`/`list_take` to primed names;
   `Common/PrimrecArith.lean:251` `rw` → `simp only` then a `generalize`
