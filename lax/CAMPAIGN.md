@@ -21,6 +21,30 @@ next session or subagent picks up. Keep this file short and current.
   a hand-written stub with the index-form PCP definitions.
 - S1: none. (Warnings: `push_neg` deprecated in `Common/Aux`, `PartA/StateTrans`,
   `PartA/StateTransAperiodic`.)
+- S2 (`rational-functions`, Part B, 62 modules + stub `Source/PCP/Index.lean`,
+  which takes `Lax251941.PostCorrespondenceIndexUndecidable.not_computablePred_solvable`
+  as `Transducers.PCP.solvable_not_computablePred`; the two `Solvable`s are
+  defeq, `exact` works):
+  `Common/PrimrecList.lean:43,60,63,87,98` and `PartB/WCodePrimrec.lean:65` —
+  `list_drop`/`list_take` renamed `list_drop'`/`list_take'` (mathlib now has
+  them, flipped argument order);
+  `Common/PrimrecArith.lean:251-255` (`decode_rat`) — `rw [decode_ofEquiv,
+  decode_ratSig]` → `simp only`, and the `obtain ⟨h1, h2⟩ := h` (goal depends
+  on `h`) → `revert h; rintro ⟨h1, h2⟩`;
+  `PartB/SubseqAlpha.lean:53` — `rwa [heq] at h` → `exact heq ▸ h` (the
+  set-builder in `h` no longer matches syntactically);
+  `PartB/CodeRat.lean:146,172-173,268,278,335,362` — `rw`/`simp` with
+  `List.map_append`/`List.map_cons` on `List (InA c)`/`List (OutA c)` → `erw`
+  (`List.map` now elaborates at the unfolded subtype while the list is at the
+  `def` `InA c`, so reducible matching fails; `simp` normalises to `unattach`
+  and gets stuck the same way);
+  `PartB/PairWeighted.lean:143,146` — auto-bound `K` made an explicit
+  `{K : ℕ}` binder in `init_pairW`/`final_pairW`.
+  `tools/port.py` fixed: it inserted `open <dep>` into Mathlib-only files
+  (unknown namespace) and `open <dep>` alone does not make a bare `Mealy`,
+  `PrefixPreserving`, … of the dependency resolve — it now inserts
+  `open <dep> <dep>.Transducers` only in files whose import closure reaches the
+  dependency. (Warnings: `push_neg` deprecated, 32 sites.)
 - Known ahead (from the port probe of the whole tree, 2026-09-07):
   `Common/PrimrecList.lean` rename `list_drop`/`list_take` to primed names;
   `Common/PrimrecArith.lean:251` `rw` → `simp only` then a `generalize`
