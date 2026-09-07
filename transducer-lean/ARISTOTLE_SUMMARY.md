@@ -65,3 +65,24 @@ by this run contains a `sorry`, an `axiom` or a `native_decide`.
 `tools/gen_labels.py --check`, `tools/decl_files.py --check` and
 `tools/tex_numbering.py --check` all pass, and `tools/print_axioms.sh` reports
 that all 240 aliases depend only on `propext`, `Classical.choice`, `Quot.sound`.
+
+## Verification pass (re-checked end to end)
+
+The state of Section *Combinators* described above was re-verified from a clean
+build in a later pass:
+
+* `lake build` of the whole project succeeds with no errors and no warnings
+  (8499 jobs).
+* `RequestProject/PartC/CombTerms.lean` contains the only regular-term syntax in
+  the project: `Transducers.RegTerm` has the book's atomic terms (diagonal and
+  co-diagonal among them) and exactly four combinators — composition and the
+  three functoriality combinators — with no `pair`/`copair` constructors, and
+  Claim `claim:pairing-copairing` is a theorem
+  (`Transducers.IsRegularTermFun.pair`, `Transducers.IsRegularTermFun.copair`)
+  rather than an assumption.
+* Theorem `thm:regular-terms` is proved in both directions as
+  `Transducers.regular_iff_regularTerm`.
+* `tools/gen_labels.py --check`, `tools/decl_files.py --check` and
+  `tools/tex_numbering.py --check` all pass, and `tools/print_axioms.sh` reports
+  that all 240 aliases depend only on `propext`, `Classical.choice`,
+  `Quot.sound`.  No `sorry`, `axiom` or `native_decide` occurs in the sources.
