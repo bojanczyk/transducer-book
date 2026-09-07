@@ -1,0 +1,1 @@
+Part B of the book *Transducers* (M. Bojańczyk): rational relations and rational functions, bimachines, weighted automata, decidability of equivalence for rational functions and for weighted automata over the rationals, and the machine-independent characterisations of Mealy machines, sequential, subsequential and rational functions.

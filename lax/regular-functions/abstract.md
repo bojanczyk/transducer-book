@@ -1,0 +1,1 @@
+Sections 1–3 of Part C of the book *Transducers* (M. Bojańczyk): the regular functions as compositions of rational functions with map reverse and map duplicate, their continuity and decidable equivalence, deterministic two-way transducers and their decomposition into primes (the snake lemma), and streaming string transducers.

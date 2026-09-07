@@ -1,0 +1,1 @@
+Part D of the book *Transducers* (M. Bojańczyk): polyregular functions as compositions of regular functions with marked squaring, for-transducers and their prenex normal form, pebble transducers, and the equivalence of the three models.

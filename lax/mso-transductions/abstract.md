@@ -1,0 +1,1 @@
+Section 4 of Part C of the book *Transducers* (M. Bojańczyk): monadic second-order logic on strings, Büchi's theorem, mso relabellings as the rational functions, string-to-string mso transductions as the regular functions, and the first-order fragment with its aperiodic automata and bimachines.

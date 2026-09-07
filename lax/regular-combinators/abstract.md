@@ -1,0 +1,1 @@
+Section 5 of Part C of the book *Transducers* (M. Bojańczyk): types, their string representations, the regular terms, and the fact that every function defined by a regular term is regular under string representation.
