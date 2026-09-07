@@ -3,16 +3,16 @@
 Opened 2026-09-07. One row per submission; the *next leaf* column is what the
 next session or subagent picks up. Keep this file short and current.
 
-| id | folder | concepts | proofs | state (2026-09-07) | next leaf |
+| id | folder | concepts | proofs | state (2026-09-07, 13:00) | next leaf |
 |---|---|---|---|---|---|
-| lax-251941 | `pcp-undecidability` | 9 written, build | Source ported (24 modules, builds); Bridge/Results being written | empty draft on the archive | Bridge + Results, `lax build --replay`, commit, resubmit |
-| lax-765601 | `mealy-machines` | 22 | 13, all discharged | **`lax build --replay` green; committed a2e2a89; empty draft on the archive, content not yet resubmitted** | resubmit once the empty-scaffold submit loop has finished |
-| lax-132576 | `rational-functions` | – | – | empty draft | concepts (PLAN §3 S2), Source port of `PartB/*` + `Common/{PrimrecArith,PrimrecList,PrimrecList2,RegularAux}`, requires lax-765601 and lax-251941 |
-| lax-916827 | `regular-functions` | – | – | empty draft | after S2 |
+| lax-251941 | `pcp-undecidability` | 9 | 6, all discharged | **`lax build --replay` green**; committed cf8ade7; content submit running | none — watch the submit result at https://laxarchive.org/lax-251941/ |
+| lax-765601 | `mealy-machines` | 22 | 13, all discharged | **`lax build --replay` green**; committed a2e2a89; content submit running | none — watch https://laxarchive.org/lax-765601/ |
+| lax-132576 | `rational-functions` | 42 drafted (13 definitions, 29 theorems), **not yet built** | – | empty draft | (1) after the Part A content draft is on the archive: `lax pull-db`, add `[[require]] Lax765601` (git = https://github.com/bojanczyk/transducer-book, rev = record commit, subDir = lax/mealy-machines/concepts) to `concepts/lakefile.toml`, `lax build --only concepts`, fix whatever the drafts get wrong; (2) port `PartB/*` (59 files) + `Common/{PrimrecArith,PrimrecList,PrimrecList2,RegularAux}` with `--dep Lax765601Proofs=mealy-machines/proofs`; the proof package requires Lax765601, Lax765601Proofs, Lax251941 (concepts, for the PCP statement) — `RationalStatements.lean` must lose its import of `PCP.Index` and take `Lax251941.PostCorrespondenceIndexUndecidable.not_computablePred_solvable` through a bridge instead; (3) Bridge + Results (29 theorems; `RelCode`/`WCode` are named structures here, tuples in the source — bridge through `relCodeEquiv`/`wcodeEquiv`, and `DecidableUnderPromise` transports along the `Primrec` equiv) |
+| lax-916827 | `regular-functions` | – | – | empty draft | after S2: concepts per PLAN §3 S3, Source port of `PartC/*` minus `MSO*`, `Mark*`, `FO*`, `Walk*`, `KTypes`, `Comb*`, `MultiDFA`, `SortedEnum`, `RegAut`, `TransEnum`, `RunProbe`, `RunMark`, `FlatIndex`, `RunElts`, `TwoWayMSO` (check each against THEOREMS.md's file table) |
 | lax-314295 | `mso-transductions` | – | – | empty draft | after S3 |
 | lax-709149 | `regular-combinators` | – | – | empty draft | after S3 |
 | lax-194892 | `polyregular-functions` | – | – | empty draft | after S4 |
-| lax-157538 | `transducers-book` | none (umbrella) | none | empty draft | paper folder + markers, after all seven are drafts |
+| lax-157538 | `transducers-book` | none (umbrella) | none | empty draft | paper folder + markers, after all seven are drafts; its lakefiles require all seven concept packages and all seven proof packages |
 
 ## Source edits (against the epoch mathlib)
 
