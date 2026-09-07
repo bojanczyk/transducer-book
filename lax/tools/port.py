@@ -9,7 +9,7 @@ file is copied to `<dest>/<pkg>/Source/X/Y.lean` with these rewrites:
 
   import RequestProject.X.Y     -> import <pkg>.Source.X.Y   if X/Y is ported here
                                 -> import <dep>.Source.X.Y   if some --dep package
-                                   ports it (recorded in <dep-dest>/ported.txt)
+                                   ports it (recorded in <dep-dest>/../ported.txt)
   namespace Transducers          -> namespace <pkg>.Transducers   (root namespaces only)
   end Transducers                -> end <pkg>.Transducers
   open Transducers               -> open <pkg>.Transducers
@@ -21,7 +21,8 @@ reference to a dependency's `Transducers.foo` once `open <dep>` is in force;
 the script inserts `open <dep>` after the imports of every ported file when
 --dep packages are given.
 
-The list of ported modules is written to <dest>/ported.txt so that later
+The list of ported modules is written to <dest>/../ported.txt (the submission root;
+extra files inside a package are rejected by the archive) so that later
 packages can resolve their imports against it.
 """
 import argparse, os, re, sys
@@ -40,7 +41,7 @@ a = ap.parse_args()
 deps = {}  # module -> package
 for d in a.dep:
     pkg, dest = d.split("=")
-    for line in open(os.path.join(dest, "ported.txt")):
+    for line in open(os.path.join(dest, "..", "ported.txt")):
         deps[line.strip()] = pkg
 
 mine = set(a.modules) | set(a.provided)
@@ -61,11 +62,25 @@ for mod in a.modules:
     s = re.sub(r"^import RequestProject\.([\w.]+)$",
                lambda m: rewrite_import(type("M", (), {"group": lambda self, i: m.group(1).replace('.', '/')})()),
                s, flags=re.M)
-    for ns in ROOT_NS:
-        s = re.sub(rf"^namespace {ns}\b", f"namespace {a.pkg}.{ns}", s, flags=re.M)
-        s = re.sub(rf"^end {ns}\s*$", f"end {a.pkg}.{ns}", s, flags=re.M)
-        s = re.sub(rf"^open {ns}\b", f"open {a.pkg}.{ns}", s, flags=re.M)
-        s = re.sub(rf"^open scoped {ns}\b", f"open scoped {a.pkg}.{ns}", s, flags=re.M)
+    # rewrite only root-level namespaces (a nested `namespace PCP` inside
+    # `namespace Transducers` must stay as it is)
+    out_lines, stack = [], []
+    for line in s.split("\n"):
+        m = re.match(r"^namespace (\S+)\s*$", line)
+        if m:
+            ns = m.group(1)
+            if not stack and ns in ROOT_NS:
+                stack.append((ns, True)); out_lines.append(f"namespace {a.pkg}.{ns}"); continue
+            stack.append((ns, False)); out_lines.append(line); continue
+        m = re.match(r"^end (\S+)\s*$", line)
+        if m and stack and stack[-1][0] == m.group(1):
+            ns, rewritten = stack.pop()
+            out_lines.append(f"end {a.pkg}.{ns}" if rewritten else line); continue
+        m = re.match(r"^open (scoped )?(\S+)(.*)$", line)
+        if m and m.group(2) in ROOT_NS and not any(n == m.group(2) for n, _ in stack):
+            out_lines.append(f"open {m.group(1) or ''}{a.pkg}.{m.group(2)}{m.group(3)}"); continue
+        out_lines.append(line)
+    s = "\n".join(out_lines)
     depnames = sorted({p for p in deps.values()})
     if depnames:
         # insert `open <dep>` lines after the last import line
@@ -78,6 +93,6 @@ for mod in a.modules:
     open(out, "w").write(s)
     print("ported", mod, "->", out)
 
-with open(os.path.join(a.dest, "ported.txt"), "w") as f:
+with open(os.path.join(a.dest, "..", "ported.txt"), "w") as f:
     for mod in sorted(mine | set(deps)):
         f.write(mod + "\n")
