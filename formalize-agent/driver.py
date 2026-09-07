@@ -645,6 +645,23 @@ def lake_exe(cfg: dict) -> str:
     return cfg.get("lake") or shutil.which("lake") or str(Path.home() / ".elan/bin/lake")
 
 
+def toolchain_env(cfg: dict) -> dict:
+    """The environment a Lean build needs, which launchd does not provide.
+
+    launchd starts the driver with PATH=/usr/bin:/bin:/usr/sbin:/sbin. `lean`
+    and `lake` live in ~/.elan/bin, so anything invoking them by name -- such as
+    tools/print_axioms.sh -- dies with exit 127. Run by hand from a login shell
+    it works, which is exactly how this was once misread as a transient failure
+    and papered over with a retry; it is not transient, it never once passed
+    under launchd.
+    """
+    env = dict(os.environ)
+    bindir = str(Path(lake_exe(cfg)).parent)
+    if bindir not in env.get("PATH", "").split(os.pathsep):
+        env["PATH"] = bindir + os.pathsep + env.get("PATH", "")
+    return env
+
+
 def verify_tree(cfg: dict) -> tuple[bool, str]:
     """Does the Lean project build, and are its axioms still clean?
 
@@ -674,7 +691,7 @@ def verify_tree(cfg: dict) -> tuple[bool, str]:
 
 def _verify(cfg: dict, ld: Path, limit: int) -> tuple[bool, str]:
     try:
-        r = subprocess.run([lake_exe(cfg), "build"], cwd=ld,
+        r = subprocess.run([lake_exe(cfg), "build"], cwd=ld, env=toolchain_env(cfg),
                            capture_output=True, text=True, timeout=limit)
     except Exception as e:
         return False, f"could not run `lake build`: {e!r}"
@@ -683,14 +700,14 @@ def _verify(cfg: dict, ld: Path, limit: int) -> tuple[bool, str]:
         return False, f"`lake build` failed:\n\n{tail}"
     script = ld / "tools" / "print_axioms.sh"
     if script.is_file():
-        # Twice before believing it. A real axiom failure is deterministic, so a
-        # second run that passes proves the first was noise -- which is what the
-        # first failure of this gate turned out to be, and a blank report at
-        # that. Always say what the exit code was: an empty message is useless
-        # to whoever reads the review item.
+        # Twice before believing it, and always with the exit code: a blank
+        # report is useless to whoever reads the review item. The retry is not
+        # what saved this check -- every failure it ever reported was exit 127,
+        # `lean` missing from launchd's PATH, and was perfectly reproducible.
+        # Reading it as flakiness cost days; see toolchain_env.
         for attempt in (1, 2):
             try:
-                a = subprocess.run(["bash", str(script)], cwd=ld,
+                a = subprocess.run(["bash", str(script)], cwd=ld, env=toolchain_env(cfg),
                                    capture_output=True, text=True, timeout=limit)
             except Exception as e:
                 return False, f"could not run tools/print_axioms.sh: {e!r}"
