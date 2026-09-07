@@ -34,8 +34,8 @@ namespace Transducers
 
 /-! ## Lemma `lem:terms-define-append-hash` -/
 
-/-- **Lemma `lem:terms-define-append-hash`.**  The function `w ↦ w#` that appends a fresh
-end-marker, seen as a function `A* → (A + 1)*`, is definable by a term. -/
+/-- **Lemma `lem:terms-define-append-hash`.**  The function `w ↦ w#` that appends a fresh end
+marker, seen as a function `A* → (A + 1)*`, is definable by a term. -/
 theorem terms_define_append_hash (A : Ty) :
     IsRegularTermFun (A := .list A) (B := .list (.sum A .one))
       (fun l => l.map Sum.inl ++ [Sum.inr ()]) := by

@@ -8,7 +8,15 @@ split and group prefix multiplication -- by composition, pairing, co-pairing and
 syntax and a semantics; the book does not distinguish them, and here the syntax is the inductive
 type `Transducers.RegTerm` and the semantics is `Transducers.RegTerm.eval`.
 
-Two points of the definition need a decision in Lean.
+Three points of the definition need a decision in Lean.
+
+* The book takes the diagonal and the co-diagonal among the atomic terms and the functoriality
+  combinators `f × g`, `f + g`, `f*` among the combinators, and derives pairing and co-pairing
+  from them (Claim `claim:pairing-copairing`).  Here pairing and co-pairing are the constructors
+  `RegTerm.pair` and `RegTerm.copair`, and it is `f × g` and `f + g` that are derived
+  (`Transducers.tfun_prodMap` and `Transducers.tfun_sumMap` of `CombDerived.lean`), the diagonal
+  and the co-diagonal being `pair id id` and `copair id id`.  The two presentations generate the
+  same class of functions.
 
 * Group prefix multiplication is parameterised, the book says, "not just by the underlying set of
   the group, but also its group operation", and the underlying set is required to be a finite type.

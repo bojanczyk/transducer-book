@@ -463,6 +463,16 @@ false statements and into the list of statements the book has corrected.
 *Proofs that take a different route from the book's.  The Lean statements are the book's; only
 the argument differs, and both are recorded here because the docstrings refer to them.*
 
+* Claim `claim:pairing-copairing` — the book takes the diagonal and the co-diagonal among the
+  atomic terms and the functoriality combinators `f × g`, `f + g`, `f*` among the combinators of
+  Definition `def:regular-terms`, and derives pairing and co-pairing from them.  Here the syntax
+  `Transducers.RegTerm` has pairing and co-pairing as constructors instead, so the claim is
+  `Transducers.IsRegularTermFun.pair` and `Transducers.IsRegularTermFun.copair`
+  (`PartC/CombFinite.lean`), and it is the book's combinators that are derived:
+  `Transducers.tfun_prodMap` and `Transducers.tfun_sumMap` (`PartC/CombDerived.lean`), with the
+  diagonal and the co-diagonal the instances `pair id id` and `copair id id`.  The two
+  presentations generate the same class of term-definable functions; only which of the two is
+  taken as primitive differs.
 * Claim `claim:finite-type-bijection-disjoint-units` and Claim
   `claim:finite-domain-regular-list-function` — the book proves the first and deduces the second
   from it, by reducing a finite domain to a co-product `1 + ⋯ + 1` of copies of the unit type and
@@ -866,6 +876,7 @@ The proofs are organised as follows.
 | Lemma `nolabel:lem-distributivity-under-string-representation` (distributivity) | `Transducers.Comb.isRegularUnderRepr_distr` | proved (`CombAtomDistr.lean`), the worked example of the induction basis of Theorem `thm:regular-terms`; the parsing is done by the bracket counter of `CombDepth.lean` rather than by the automaton of the unlabelled claim that follows it in the book | `PartC/CombAtomDistr.lean` |
 | Claim `nolabel:claim-representations-are-a-regular-language` (the representations form a regular language) | — | **not formalised**: the parsing of a representation is done here by the bracket counter of `PartC/CombDepth.lean`, which is what the transducers of the easy direction of Theorem `thm:regular-terms` use instead of this claim | — |
 | Lemma `lem:terms-define-string-homomorphisms` (homomorphisms) | `Transducers.terms_define_string_homomorphisms` | **proved** (`CombFinite.lean`: the map of a function with a finite domain, followed by concatenation; axioms: `propext`, `Classical.choice`, `Quot.sound`) | `PartC/CombFinite.lean` |
+| Claim `claim:pairing-copairing` (pairing and co-pairing) | `Transducers.IsRegularTermFun.pair`, `Transducers.IsRegularTermFun.copair` | **proved** (`CombFinite.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`).  In this project pairing and co-pairing are constructors of the syntax `Transducers.RegTerm` and the book's diagonal, co-diagonal and functoriality combinators `f × g`, `f + g` are derived from them (`Transducers.tfun_prodMap`, `Transducers.tfun_sumMap` of `CombDerived.lean`), which is the reverse of the book's order; the two presentations define the same class of terms (see *Divergences from the book*) | `PartC/CombFinite.lean` |
 | Claim `claim:finite-type-bijection-disjoint-units` (a finite type is a co-product of copies of the unit type) | `Transducers.finite_type_bijection_disjoint_units` | **proved** (`CombDerived.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`).  It is deduced here **from** Claim `claim:finite-domain-regular-list-function`, which is the reverse of the book's order of the two claims; both are proved, only the dependency between them is inverted (see *Divergences from the book*) | `PartC/CombDerived.lean` |
 | Claim `claim:finite-domain-regular-list-function` (functions with a finite domain) | `Transducers.finite_domain_regular_list_function` | **proved** (`CombFinite.lean`, by induction on a measure of the type; axioms: `propext`, `Classical.choice`, `Quot.sound`) | `PartC/CombFinite.lean` |
 | Lemma `lem:terms-define-append-hash` (appending an end-marker) | `Transducers.terms_define_append_hash` | **proved** (`CombStrFam.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`) | `PartC/CombStrFam.lean` |
@@ -1749,11 +1760,14 @@ below for what the earlier passes had to remove to get there.
 
 ### Counts
 
-The book has **115 theorem-like environments**, listed in the dictionary of
+The book has **116 theorem-like environments**, listed in the dictionary of
 `LABELS.md` and checked against the book's `main.aux`.  Every one of them has a
 row in the index above.  The counts below are recomputed from that dictionary
 and from the aliases of `RequestProject/Labels.lean`; earlier passes of this
-file reported 100, which was the size of the dictionary at the time.  The three
+file reported 100 and then 115, which was the size of the dictionary at the
+time -- the 116th environment is Claim `claim:pairing-copairing`, which the
+author has since labelled and which is proved, see the closing status section.
+The three
 environments that are not formalised are Definition
 `def:rational-recognisable-subsets`, Claim
 `nolabel:claim-representations-are-a-regular-language` and the unnumbered
@@ -1763,7 +1777,7 @@ index above.
 | | Introduction | Part A | Part B | Part C | Part D | total |
 | --- | --- | --- | --- | --- | --- | --- |
 | definitions formalised | 1 | 4 | 7 | 9 | 2 | **23** |
-| results proved outright | 0 | 11 | 26 | 41 | 11 | **89** |
+| results proved outright | 0 | 11 | 26 | 42 | 11 | **90** |
 | results proved from an explicit hypothesis | 0 | 0 | 0 | 0 | 0 | **0** |
 | environments not formalised | 0 | 0 | 1 | 2 | 0 | **3** |
 
@@ -2937,3 +2951,62 @@ the book* above.  No statement of the book was changed.
 **Verification.**  `lake build` succeeds with no errors; no file added by this
 run contains a `sorry`, an `axiom` or a `native_decide`, and
 `python3 tools/gen_labels.py --check` agrees.
+
+## Status (two exercises of Part B, and the renumbering of Section *Combinators*)
+
+The run that added this section formalised two exercises -- they are exercises,
+not numbered results, so they are indexed in `EXERCISES.md` and not in the table
+above -- and brought the record of Section *Combinators* back in step with the
+sources, which had been renumbered under it.
+
+**The two exercises.**  Both are proved outright, by the author's own solutions,
+and `#print axioms` reports only `propext`, `Classical.choice`, `Quot.sound`.
+
+| label | Lean name | file |
+| --- | --- | --- |
+| `exer:duplication-not-rational` | `Transducers.Exercises.not_isRationalFun_duplicate_boundedVar` | `Exercises/DuplicateNotRational.lean` |
+| `exer:no-reverse-reversible` | `Transducers.Exercises.rational_primes_no_reverse_reversible` | `Exercises/NoReverseReversible.lean` |
+
+Exercise `exer:duplication-not-rational` asks for the argument that is used for
+string reversal in `Exercises/ReverseNotRational.lean`: the strings `falseⁿ` are
+pairwise inequivalent for the relation `BoundedVarRel` of duplication, so that
+relation has infinite index and Theorem
+`thm:machine-independent-rational-functions` applies.  Its statement was already
+in the project, as the second item of Exercise `exer:non-rational`
+(`Transducers.Exercises.not_isRationalFun_duplicate` of `Exercises/PartBC.lean`,
+by the other argument of the book, that the range is the language of squares);
+that declaration keeps its name and is the first alias of the new label, and the
+proof asked for here is the second.
+
+Exercise `exer:no-reverse-reversible` asks that the right-to-left *reversible*
+Mealy machines be dropped from the list of primes of Theorem
+`thm:rational-primes`.  The shortened list is
+`Transducers.Exercises.PrimeRatNoRevRevFam` -- prime Mealy machines,
+right-to-left *flip-flop* Mealy machines, string homomorphisms and `w ↦ w#` --
+and the theorem says that its compositions are still exactly the rational
+functions.  The construction is the author's: append the separator, run a
+left-to-right reversible machine whose states are the permutations of `Q` to
+label every position with the product of the permutations of the letters before
+it (the separator then carries the product over the whole input), broadcast that
+product leftwards with a right-to-left flip-flop machine, and recover the output
+with a homomorphism, using cancellation in the group of permutations to turn the
+product over the whole input and the product over the prefix into the state
+transformation of the suffix.
+
+**The renumbering.**  Section *Combinators* gained a labelled environment,
+Claim `claim:pairing-copairing` (C.5.8), which shifted the nine numbers after
+it.  `LABELS.md` is updated, and the claim now has a row in the index above and
+an alias in `RequestProject/Labels.lean`: it is
+`Transducers.IsRegularTermFun.pair` and `Transducers.IsRegularTermFun.copair`
+(`PartC/CombFinite.lean`).  In this project pairing and co-pairing are
+constructors of the term syntax and the book's diagonal, co-diagonal and
+functoriality combinators are the derived ones, which is the reverse of the
+book's order; that is recorded under *Divergences from the book* above and in
+the docstring of `PartC/CombTerms.lean`.
+
+**Verification.**  `lake build` succeeds with no errors and no warnings; no file
+added or changed by this run contains a `sorry`, an `axiom` or a
+`native_decide`; `tools/gen_labels.py --check`, `tools/decl_files.py --check`
+and `tools/tex_numbering.py --check` all pass, and `tools/print_axioms.sh`
+reports that all 240 aliases depend only on `propext`, `Classical.choice`,
+`Quot.sound`.
