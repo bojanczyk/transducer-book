@@ -56,13 +56,13 @@ subDir = "lax/regular-functions/proofs"
 [[require]]
 name = "Lax314295"
 git = "https://github.com/bojanczyk/transducer-book"
-rev = "1b02fa63e9ce86a384e91f03fee5dc49a6e1d86b"
+rev = "8b8f8c62ecc4868f7004615a209bae7d46d78d3d"
 subDir = "lax/mso-transductions/concepts"
 
 [[require]]
 name = "Lax314295Proofs"
 git = "https://github.com/bojanczyk/transducer-book"
-rev = "1b02fa63e9ce86a384e91f03fee5dc49a6e1d86b"
+rev = "8b8f8c62ecc4868f7004615a209bae7d46d78d3d"
 subDir = "lax/mso-transductions/proofs"
 
 [[lean_lib]]
