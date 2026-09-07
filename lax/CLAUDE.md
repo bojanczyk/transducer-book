@@ -92,6 +92,16 @@ here when the chain is long enough to hurt.
   `statements · namespace`). `port.py` now rewrites all of them; a source
   file that `open`s a mathlib namespace of the same name as a rewritten one
   (`Primrec`) needs the `open` moved to the top level, before the namespace.
+- Never `lake update` inside a submission: it clones mathlib and friends into
+  `.lake/packages` (7.5 GB). mathlib is reached through the gitignored
+  `.lake/package-overrides.json` that `lax build` writes (path entries into
+  `~/.lax/warm/`); for a fresh proof package before its first `lax build`,
+  copy that file from a sibling. To add or repin a git-pinned Lax package,
+  `lake update <LaxDep> …` names only those packages, but it still clones
+  mathlib and friends into `.lake/packages` next to them (overrides or not):
+  delete those nine folders afterwards (`aesop batteries Cli importGraph
+  LeanSearchClient mathlib plausible proofwidgets Qq`), the build resolves
+  them through the overrides.
 - Disk is tight on this machine (~10 GB). Build one submission at a time;
   `.lake/build` of a full part is 1–3 GB.
 

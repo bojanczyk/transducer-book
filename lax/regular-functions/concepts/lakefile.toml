@@ -19,7 +19,7 @@ subDir = "lax/mealy-machines/concepts"
 [[require]]
 name = "Lax132576"
 git = "https://github.com/bojanczyk/transducer-book"
-rev = "a85bd62e6e1c5fd0f549f9ec4fe29bb93fbf035a"
+rev = "972ebefba92c54889997d65db9028aee76522813"
 subDir = "lax/rational-functions/concepts"
 
 [[lean_lib]]

@@ -3,12 +3,12 @@
 Opened 2026-09-07. One row per submission; the *next leaf* column is what the
 next session or subagent picks up. Keep this file short and current.
 
-| id | folder | concepts | proofs | state (2026-09-07, 14:30) | next leaf |
+| id | folder | concepts | proofs | state (2026-09-07, 15:15) | next leaf |
 |---|---|---|---|---|---|
 | lax-251941 | `pcp-undecidability` | 9 | 6, all discharged | **draft on the archive with content** (9680c6e), replay green | none |
 | lax-765601 | `mealy-machines` | 22 | 13, all discharged | **draft on the archive with content** (cf8ade7), replay green | none |
-| lax-132576 | `rational-functions` | 42, build | 29, all discharged; Source = 63 modules; `lake build` green (a1d3519) | replay + content resubmit running (`scratchpad/s2-chain.log`) | after the record moves: pin it into S3's proofs |
-| lax-916827 | `regular-functions` | 29, build, archive concept check green (pinned A @ cf8ade7, B @ a85bd62) | – | committed; not yet submitted | (1) `lax submit --allow-dirty` (concepts only) so S4–S6 can pin it; (2) proofs lakefile: require Lax765601, Lax765601Proofs, Lax132576, Lax132576Proofs (git pins to the current records) and port the closure of `PartC/Statements`, `PartC/SnakeAlphReg`, `PartC/ConfGraphReg` minus everything in `rational-functions/ported.txt` minus `Acceptance/*`, `PCP/*`, `Sim/*` (S2's Source stubbed `PCP/Index`, so those are unreachable) — 135 modules, ~38k lines, incl. `Common/HankelRank` and the logic files the snake lemma uses (`MSODef`, `MSOSyntax`, `MSOAnnot`, `MSOBuchi`, `RegAut`, `KTypes`, `MarkStr`, `MarkLogic2`, `RunMark`, `RunProbe`); `--dep Lax132576Proofs=rational-functions/proofs` (its ported.txt covers Part A too); (3) Bridge + Results (23 theorems; the two `TwoDFA`-free continuity ones and the code-based decidability need the `Primcodable` transport as in S2) |
+| lax-132576 | `rational-functions` | 42 | 29, all discharged; Source = 63 modules | **draft on the archive with content** (972ebef), replay green | none |
+| lax-916827 | `regular-functions` | 29, archive concept check green | Source = 136 modules, `lake build` green; Bridge/Results pending; pins A @ cf8ade7, B @ 972ebef | **concepts-only draft on the archive** (a0fb09b); Source port committed | (1) Bridge + Results (23 theorems; the two `TwoDFA`-free continuity ones and the code-based decidability need the `Primcodable` transport as in S2); (2) `lax build --replay`, commit, resubmit; then S4/S5 pin it |
 | lax-314295 | `mso-transductions` | 25 drafted, not yet built | – | empty draft | after S3's draft: pin Lax765601, Lax132576, Lax916827 into concepts; proofs require Lax916827Proofs as well; port the closure of `PartC/MSO` minus S3's ported.txt — 44 modules, 12k lines |
 | lax-709149 | `regular-combinators` | 4 drafted, not yet built | – | empty draft | after S3's draft: pin Lax132576, Lax916827; port the closure of `PartC/CombStatements` minus S3 — 15 modules, 3.7k lines (needs nothing from S4) |
 | lax-194892 | `polyregular-functions` | 20 drafted, not yet built | – | empty draft | after S4's draft: pin Lax765601, Lax916827, Lax314295 (concepts: `Continuity` from A, `RegularFunctions` from S3; MSO is not used by the concepts); proofs require S3Proofs and S4Proofs; port the closure of `PartD/{Statements,PebReach,ChildGraphFor,CGFor,ChildExample}` minus S3/S4 — 78 modules, 23k lines, of which 7 are `PartC/*` pulled in only through the roll-up import `RequestProject.PartC` in some Part D file: replace that import by the specific modules |
@@ -45,6 +45,34 @@ next session or subagent picks up. Keep this file short and current.
   `PrefixPreserving`, … of the dependency resolve — it now inserts
   `open <dep> <dep>.Transducers` only in files whose import closure reaches the
   dependency. (Warnings: `push_neg` deprecated, 32 sites.)
+- S3 (`regular-functions`, Part C §1–3, 136 modules = `Common/HankelRank` +
+  135 `PartC/*`; `lake build` green 2026-09-07 15:10, subagent):
+  `port.py` mis-resolution (Part B's `ported.txt` lists Part A's modules
+  too, so `--dep Lax132576Proofs` claimed them) — eight Part A imports
+  rewritten to `Lax765601Proofs.Source.*` (`PartC/KTypes.lean:13`,
+  `RegAut.lean:21`, `SSTDef.lean:11`, `MapLiftAux.lean:12`,
+  `SSTMealyFF.lean:13`, `SSTMealyRev.lean:13`, `SSTNorm.lean:25`,
+  `TwoWayPrecomp.lean:27`) and the inserted `open` line now names every
+  dependency package the file's import closure reaches (`tools/port.py`
+  fixed: first `--dep` in chain order wins, opens for the whole chain up to
+  the furthest package reached);
+  cross-package dot notation (`h.congr`, `a.comp b` on Part B's types with
+  lemmas declared here) made explicit — `PartC/RatTools.lean:35,193`,
+  `ConfGraphReg.lean:170` (`IsRationalRel.congr`), `Statements.lean:73-81`
+  (`Continuous.comp`);
+  `Set.mem_setOf_eq` no longer rewrites `Language` membership
+  (`Language.instMembershipList` ≠ `Set.instMembership`) — `rw [..,
+  Set.mem_setOf_eq, ..]` → `change <unfolded membership>` + remaining
+  rewrites at `ConfGraphAnnot.lean:182` (the "known ahead" `MultiDFA:59`
+  site), `SnakeBase.lean:330,335,522,529`, `MarkStr.lean:217,219`,
+  `RunMark.lean:183,329`, `SnakeForall.lean:89`, `SnakeChkMain.lean:164`;
+  `rw [if_pos (show u ∈ {v | …} from h)]` → `refine (if_pos h).trans ?_`
+  at `SnakeRegTools.lean:48-51`, `SnakeReg.lean:143-145`;
+  `TwoWayRat.lean:66` `simpa [filterMap_homOf_padHom] using hb` → `simp
+  only [..] at hb; exact hb` (`id` unfolded too early);
+  `SnakeChkMain.lean:36` auto-bound `K` → `variable {K : ℕ}`.
+  (Warnings: `push_neg` 66 sites, `List.Sublist.cons₂` deprecated in
+  `SSTNorm.lean:145`.) No statement changed.
 - Known ahead (from the port probe of the whole tree, 2026-09-07):
   `Common/PrimrecList.lean` rename `list_drop`/`list_take` to primed names;
   `Common/PrimrecArith.lean:251` `rw` → `simp only` then a `generalize`
