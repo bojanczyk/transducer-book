@@ -1,4 +1,5 @@
 import Mathlib.Data.Fintype.Basic
+import Mathlib.Tactic.DeriveFintype
 
 /-!
 ---
