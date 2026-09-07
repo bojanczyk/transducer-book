@@ -46,8 +46,11 @@ it.
     lax sync                                        # then read ~/.lax/lax-database/lax-N/build-output.json
 
 `lax build --replay <submission>` runs the archive's checks locally (clones and
-builds every pinned dependency from source, 30–60 min); Jan's call (2026-09-07):
-skip it, the archive repeats it anyway. The local gate is `lake build`.
+builds every pinned dependency from source, 30–60 min). Run it when it tells you
+something the archive would not tell you faster (a first submission of a large
+proof package: the archive caps the kernel replay at 20 min of `leanchecker`
+with 2 threads, and Part D hit that cap); skip it when it is plainly redundant
+(a repin-only resubmit). Jan, 2026-09-07.
 
 `lake` is `~/.elan/bin/lake`; builds read mathlib from the warm store, nothing
 is downloaded. Porting a part:
@@ -117,5 +120,6 @@ Land at every boundary: commit the submission folder (never `build-output.json`,
 sync`, update `CAMPAIGN.md`. Subagents get one coherent leaf (one part's Source
 port, or one part's concepts, or one bridge), narrow file ownership, and the
 gate that decides it: `lake build` green (against sibling folders through
-`.lake/package-overrides.json` while the pins are not yet on the archive). The
-supervisor reviews the concrete result before landing.
+`.lake/package-overrides.json` while the pins are not yet on the archive), or
+`lax build --replay` green for a large first submission. The supervisor
+reviews the concrete result before landing.
