@@ -383,6 +383,10 @@ We can easily choose the string $w$ so that the reversals differ in one of the f
 % exercises about rational functions
 \exerciseheader
 
+\exer{\label{exer:duplication-not-rational} Show that string duplication is not rational.}{
+    Similarly to string reversal, the relation $\sim$ from Theorem~\ref{thm:machine-independent-rational-functions} has infinite index for the duplication function; in fact all strings are pairwise non-equivalent.
+}
+
 \exer{\label{exer:minimal-sequential} We order sequential transducers by the number of states. Show that minimal sequential transducers are unique up to isomorphism.
 } {
     This is the Myhill-Nerode theorem for sequential transducers. The key point, which is also what distinguishes this exercise from the following one, is that the output of each transition is already determined by the function. Indeed, a sequential function is prefix preserving, and therefore the transition which reads the $i$-th letter must produce

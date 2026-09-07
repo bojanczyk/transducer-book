@@ -306,7 +306,10 @@ the composition $f \cdot g$ is rational.}{
 
     This is what makes reversal harmless. Reversing the input string is a bijection on gaps, which swaps the prefix with the suffix. Therefore, the composition of reversal with $g$ is computed by the bimachine that is obtained from the one for $g$ by swapping the prefix and suffix automata, and swapping the two arguments of the output function. This new bimachine produces the same pieces as the original one, but in the opposite order, which is invisible over a one-letter alphabet.
 }
-
+\exer{\label{exer:no-reverse-reversible} Show that in the list of atomic functions from \cref{thm:rational-primes}, the reversal of a reversible Mealy machine is not needed.
+}{
+    Suppose that we want to implement a right-to-left  reversible Mealy machine with states $Q$. We first run normal left-to-right reversible Mealy machine to label each position  with the state transformation of the prefix leading up to that position.  Then we run a right-to-left flip-flop machine to label each position with the state transformation of the entire input string. Then, using cancellation in the group of state permutations, we get get for each position the state transformation of the suffix after that position. Using the state transformation on the suffixes, we can recover the output of the Mealy machine that we wanted to implement.
+}
 
 % \exer{\label{exer:factoring-through-a-rational-function} Consider two rational functions $f$ and $g$, possibly with different input and output alphabets. We say that $f$ factors through $g$ if one can decompose $f$ as 
 % \begin{align*}

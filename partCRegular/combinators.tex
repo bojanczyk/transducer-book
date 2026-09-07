@@ -117,23 +117,26 @@ Apart from the above two examples, all other atomic functions are standard built
         \item[Identity]  $A \xrightarrow {\idterm} A$.
         \item[Projections]  $A \times B \xrightarrow {\fstterm} A$ and $A \times B \xrightarrow {\sndterm} B$.
         \item[Co-projections] $A \xrightarrow {\leftterm} A + B$ and $B \xrightarrow {\rightterm} A + B$.
+        \item[Diagonal and co-diagonal]  $A \xrightarrow {\diagterm} A \times A$ and   $A + A \xrightarrow {\codiagterm} A$.
         \item[Distributivity]  $A \times (B + C) \xrightarrow {\distrterm} (A \times B) + (A \times C)$. 
-        \item[List constructor] $\onetype + A \times A^* \xrightarrow {\consterm} A^*$.
-        \item[List deconstructor]  $A^* \xrightarrow {\unconsterm} \onetype + A \times A^*$.
+        \item[List constructor/deconstructor] $\onetype + A \times A^* \xrightarrow {\consterm} A^*$ and its inverse $\unconsterm$. 
         \item[Reverse]  $A^* \xrightarrow{\reverseterm} A^*$.
         \item[Concatenation] $A^{**} \xrightarrow{\concatterm} A^*$.
         \item[Split] $(A+B)^* \xrightarrow{\splitterm} A^* \times (B \times A^*)^*$.
         \item[Group prefix multiplication] $G^* \xrightarrow{\prefterm} G^*$.
     \end{description}
     
-            \item \label{item:regular-list-functions-combinators} The combinators are:
-    \begin{description}
-        \item[Composition] composition of functions.
-        \item [Pairing]  $A \xrightarrow{(f,g)} B \times C$ for two functions   $A \xrightarrow f B$ and $A \xrightarrow g C$.
-        \item [Co-pairing] $A + B \xrightarrow{\either f g} C$ for two functions  $A \xrightarrow f C$ and $B \xrightarrow g C$.
-        \item [Map] $A^* \xrightarrow{f^*} B^*$ for a function $A \xrightarrow f B$.
-    \end{description}
-        
+            \item \label{item:regular-list-functions-combinators} The combinators are composition of functions, as well as the following functoriality combinators that lift functions along the type constructors:
+        \begin{align*}
+        \frac{ A_1 \xrightarrow {f_1} B_1 \quad A_2 \xrightarrow {f_2} B_2}
+        { A_1 \times A_2 \xrightarrow {f_1 \times f_2} B_1 \times B_2}
+        \qquad 
+                \frac{ A_1 \xrightarrow {f_1} B_1 \quad A_2 \xrightarrow {f_2} B_2}
+        { A_1 + A_2 \xrightarrow {f_1 + f_2} B_1 + B_2}
+        \qquad 
+        \frac { A \xrightarrow f B}
+        { A^* \xrightarrow {f^*} B^*}.
+        \end{align*}
     \end{enumerate}
 \end{definition}
 
@@ -197,7 +200,23 @@ Let us begin with the case of string-to-string homomorphisms, which is easy and 
 \begin{lemma}\label{lem:terms-define-string-homomorphisms}
         Every string-to-string homomorphism is definable by a regular term.
 \end{lemma}
-\begin{proof}
+\begin{proof} We begin by deriving two useful combinators.
+
+    \begin{claim}\label{claim:pairing-copairing}
+        Functions definable by terms are closed under the following combinators, which are called \emph{pairing} and \emph{co-pairing}:
+        \begin{align*}
+        \frac{ A \xrightarrow {f_1} B_1 \quad A \xrightarrow {f_2} B_2}
+        { A \xrightarrow {(f_1,f_2)} B_1 \times B_2}
+        \qquad
+        \frac{ A_1 \xrightarrow {f_1} B \quad A_2 \xrightarrow {f_2} B}
+        { A_1 + A_2 \xrightarrow {\either {f_1} {f_2}} B}.
+        \end{align*}
+    \end{claim}
+    \begin{proof}
+        For pairing, we apply the diagonal followed by  $f_1 \times f_2$.  For co-pairing, we apply $f_1 + f_2$ followed by  co-diagonal.
+    \end{proof}
+
+    We now analyse functions with finite domains.
     We say that a type is of the form $\onetype + \ldots + \onetype$ if it is a co-product of finitely many copies of the unit type.  (As mentioned before, a formal description would need to specify the bracketing, but  all possible bracketings are isomorphic using regular terms.) The following claim shows that such types cover all finite types.
     \begin{claim}\label{claim:finite-type-bijection-disjoint-units}
         Every finite type admits a bijection, which is definable by a regular term, to a type of the form $\onetype + \ldots + \onetype$.
@@ -414,4 +433,42 @@ By projecting away the $\onetype$, removing the outer brackets (which are the fi
 
 \subsection{Rational terms}
 \label{sec:rational-terms}
-In \cref{sec:regular-terms}, we proved that the regular type-to-type functions are exactly those that can be defined by regular terms. In this section, we isolate a fragment which corresponds to the rational and not regular functions. 
+In \cref{def:regular-functions-on-types-under-string-representation}, we defined both rationality and regularity under string representations, but we characterised only the regular functions. We now isolate the fragment that defines the rational functions.  Clearly we need to remove the $\reverseterm$ function, since string reversal is not rational as we have shown in Example \ref{ex:string-reversal-not-rational}. We also need to remove the diagonal since it enables string duplication, which is not rational as we have shown in \cref{exer:duplication-not-rational}. However, once we remove string reversal and  the diagonal (and thus pairing), we need to add some  some  atomic functions and combinators that were previously definable using pairing or the symmetry accorded by list reversal. The following theorem gives the exact characterisation. 
+
+
+
+\begin{theorem}\label{thm:rational-terms}
+    A type-to-type function is rational under string representation if and only if it is defined by the following variant of regular terms: 
+    \begin{enumerate}
+    \item  We keep the same atomic functions and combinators as in \cref{def:regular-terms}, except that we remove  $\reverseterm$ and $\diagterm$  and we add the following:
+        \begin{description}
+        \item[Adjoining units]  $A  \xrightarrow {\appendoneterm} A \times \onetype$ and $A  \xrightarrow {\prependoneterm} \onetype \times A$.
+        \item[Left distributivity]  $(A + B) \times C \xrightarrow {\distlterm} (A \times C) + (B \times C)$. 
+        \item[List deconstructor on the right] $A^* \xrightarrow {\unsnocterm} \onetype + A^* \times A$.
+    \end{description}
+    
+            \item We keep the same combinators as in \cref{def:regular-terms}.
+    \end{enumerate}
+\end{theorem}
+\begin{proof}
+    We simply follow the proof of \cref{thm:regular-terms}, while paying attention to the atomic functions that are used.
+    We use the name \emph{rational terms} for the variant of regular terms described in the theorem.   The proof that all rational terms are rational under string representation is straightforward, and follows the same kind of inductive structure as in the regular case.  For the converse implication, the necessary changes to the proof of \cref{thm:regular-terms} are listed below:
+    \begin{itemize}
+    \item \cref{lem:terms-define-string-homomorphisms}  about string-to-string homomorphisms. In \cref{claim:finite-type-bijection-disjoint-units}, w need to use both kinds of distributivity, but these are now included as atomic functions. Also, after applying distributivity, each type admits a bijection with a disjoint union of products of the form $\onetype \times \cdots \times \onetype$. Each such product admits a bijection with $\onetype$, however the direction $\onetype \to \onetype \times \cdots \times \onetype$ needs to adjoin units (previously it could have been implemented using the diagonal). Also, pairing was used in \cref{claim:finite-domain-regular-list-function}, but again all that was needed was adjoining units.
+    \item \cref{lem:terms-define-append-hash} about appending an endmarker $w \mapsto w\#$. In the proof, we use symmetry (which was available thanks to string reversal) to define a prepending function $w \mapsto \#w$. In the rational case, this is no longer available. However, we can use binary concatenation to do this. Recall the implementation of binary concatenation at the beginning of the proof of \cref{lem:terms-define-map-reverse-duplicate}. That implementation used pairing to implment $\pureterm$, but this can be worked around by adjoining units, implementing $\pureterm$ as
+    \begin{align*}
+    A 
+    \xrightarrow {\appendoneterm}
+    A \times \onetype 
+    \xrightarrow {\idterm \times \emptyterm}
+    A \times A^* 
+    \xrightarrow {\rightterm; \consterm}
+    A^*
+    \end{align*}
+    , but only to adjoin an empty list, and the same effect can obtained by adjoining a unit followed by the combinator $\times$. This way 
+    \item    \cref{lem:terms-define-map-reverse-duplicate} about map reverse and map duplicate. This lemma is no longer needed, since these are not rational. 
+    \item  \cref{lem:terms-define-flip-flop,lem:terms-define-reversible} about flip-flop and reversible Mealy machines did not use string reversal or the diagonal. 
+    \item The right-to-left variants of the prime Mealy machines were previously implemented using string reversal and the left-to-right variants. String reversal is no longer available in the rational case. For reversible Mealy machines, there is nothing to do, since we have shown in \cref{exer:no-reverse-reversible} that right-to-left reversible Mealy machines are not needed in the presence of the other machines. Therefore, we are left with the right-to-left variant of flip-flop Mealy machines.  We can simply do the same proof again in the right-to-left variant. To do this, we need symmetric versions of the atom functions, namely distributivity, the list constructor/deconstructor, and the group prefix multiplication. These are all included in the list of atomic rational functions, except the list constructor, which can be implemented using binary concatenation. 
+\end{itemize}
+
+\end{proof}
