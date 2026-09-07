@@ -103,6 +103,7 @@ We now show that with stack discipline, the model becomes continuous.
 
 
 
+% lax begin Lax194892Proofs.Results.exists_regular_reachLang
     \begin{proof}
         The most natural idea would be to define one-step reachability using a formula $\psi$, and to then express  reachability as a fixpoint, as follows
         \begin{align*}
@@ -155,6 +156,7 @@ As we have remarked at the beginning of the proof of the lemma, every run can be
     \end{proof}
 \end{proof}
 % lax end
+% lax end
 
 
 
@@ -206,6 +208,7 @@ To prove that the computation of a pebble transducer can be produced by a for-tr
 Before proving the lemma, we show how to use it to conclude the proof of the theorem. Functions computed by for-transducers are closed under composition, which was shown in Lemma~\ref{lem:for-closed-under-composition}. They are also closed under the map combinator, which is left as an exercise for the reader. Thanks to these closure properties and the lemma, we can use a for-transducer to output all configurations used in a run: first we output the initial configuration, then we append to it the list of its children, then we append (using map) to each child a list of all of its children, and so on $k$ times, until we have output all configurations in the run. Once we have a list of all configurations, the output string can be produced using a rational function which scans each configuration and outputs the letter (if any) that is produced when its transition is executed. It remains to prove the lemma.
 
 
+% lax begin Lax194892Proofs.Results.exists_forTransducer_children
 \begin{proof}[Proof of Lemma~\ref{lem:children-of-configuration-in-pebble-run}] Fix some $k$-pebble transducer for the rest of the proof.   Suppose that the input is a configuration with stack of height $\ell$. If $\ell =k$, then there is nothing to do, since the stack is already at full height and there can be no children. Suppose now that $\ell < k$. The children of the input configuration can be  described as a directed graph, in which an edge represents a run between two configurations of height $\ell+1$ that are not separated by any configuration of height $\ell +1$. Here is a picture of this graph, in which $\ell=3$.
 \mypic{49}
 The picture also contains additional annotation (in red), which gives us the input string and the positions of pebbles $\set{1,\ldots,\ell}$ that stay fixed throughout the run. We use the name \emph{child configuration graph} for this graph. The child configuration graph can be represented as a string over a fixed finite alphabet, whose length is the same as the input string.  This string contains the red annotation of the input string together with the positions of pebble $\ell+1$ in each child. Using this string representation, it is meaningful to talk about a for-transducer which outputs the child configuration graph.
@@ -239,6 +242,7 @@ Thanks to the above claim, in order to complete the proof of the lemma, it is en
 
 By composing the for-transducers in Claims~\ref{claim:from-configuration-to-child-configuration-graph} and~\ref{claim:from-child-configuration-graph-to-children}, we get a for-transducer which inputs the string representation of a configuration, and outputs the concatenation of the string representations of its children, as required in the lemma.
 \end{proof}
+% lax end
 
 
 

@@ -1,3 +1,5 @@
+import Lax314295Proofs.Bridge
+import Lax314295Proofs.Results
 import Lax314295Proofs.Source.PartC.BlockForm
 import Lax314295Proofs.Source.PartC.BlockPos
 import Lax314295Proofs.Source.PartC.FlatIndex

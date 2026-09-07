@@ -9,8 +9,8 @@ next session or subagent picks up. Keep this file short and current.
 | lax-765601 | `mealy-machines` | 22 | 13, all discharged | **draft on the archive with content** (cf8ade7), replay green | none |
 | lax-132576 | `rational-functions` | 42 | 29, all discharged; Source = 63 modules | **draft on the archive with content** (972ebef), replay green | none |
 | lax-916827 | `regular-functions` | 29 | 23, all discharged; Source = 136 modules; replay green (9m36s) | committed; content resubmit running | after the record moves: repin S4/S5/S6 (concepts) and S4/S5 (proofs) to it, submit S4/S5/S6 |
-| lax-314295 | `mso-transductions` | 26 | Source = 44 modules, `lake build` green; Bridge/Results pending; pins A @ cf8ade7, B @ 972ebef, C @ 2fb96b2 | **concepts-only draft on the archive** (1b02fa6); Source port committed | (1) Bridge + Results (subagent); (2) replay, commit, resubmit; then S6 repins |
-| lax-709149 | `regular-combinators` | 4 | 1, discharged; Source = 15 modules; replay green (22m) | committed; content resubmit running | after the record moves: none (S7 pins it) |
+| lax-314295 | `mso-transductions` | 26 | 22, all discharged; Source = 44 modules; replay green (30m) | committed; content resubmit running | after the record moves: repin S4 in S6's proofs, replay S6, resubmit S6; then S7 |
+| lax-709149 | `regular-combinators` | 4 | 1, discharged; Source = 15 modules; replay green | **draft on the archive with content** (86f2df5) | none (S7 pins it) |
 | lax-194892 | `polyregular-functions` | 21 | 15, all discharged (`lake build` green against the sibling folders); Source = 72 modules; replay not yet run (S4's record has no proofs yet) | committed; **concepts-only draft on the archive** (b4e869b) | after S4's resubmit: repin S4 in proofs, `lax build --replay`, resubmit; paper: markers for Lemma D.2.2 (`exists_regular_reachLang`) and Lemma D.2.5 (`exists_forTransducer_children`) are missing in `pebble.tex` |
 | lax-157538 | `transducers-book` | none (umbrella) | none | empty draft | paper folder + markers, after all seven are drafts; lakefiles require all seven concept and proof packages |
 
@@ -143,6 +143,12 @@ next session or subagent picks up. Keep this file short and current.
   `isForTransducer_map` (letter-to-letter maps are for-transducers via
   `isRationalFun_map` → regular → polyregular → Thm D.1.1); everything else
   `rfl`/`Iff.rfl`.
+- S4 Bridge (2026-09-07 18:30, subagent): the concept's MSO syntax is its
+  own inductive — `toSrc`/`ofSrc` bijection with `sat_toSrc`/`sat_ofSrc` by
+  induction and `isFO_`/`qrank_`/`freeFO_`/`freeSO_` transports; relabellings
+  and transductions `toSrcRel`/`toSrcT` with field transports; `tpEquiv :
+  TpType A k ≃ …` by induction on `k` for the k-types. All ten theorem names
+  the paper's markers expect are used.
 - Known ahead (from the port probe of the whole tree, 2026-09-07):
   `Common/PrimrecList.lean` rename `list_drop`/`list_take` to primed names;
   `Common/PrimrecArith.lean:251` `rw` → `simp only` then a `generalize`
