@@ -86,3 +86,41 @@ build in a later pass:
   `tools/tex_numbering.py --check` all pass, and `tools/print_axioms.sh` reports
   that all 240 aliases depend only on `propext`, `Classical.choice`,
   `Quot.sound`.  No `sorry`, `axiom` or `native_decide` occurs in the sources.
+
+## Theorem `thm:rational-terms` (C.5.18): the rational terms
+
+This run proved Theorem `thm:rational-terms` outright, as the equivalence
+
+```
+theorem Transducers.rational_iff_rationalTerm {A B : Ty} (f : A.Elt → B.Elt) :
+    IsRationalUnderRepr f ↔ IsRatTermFun f
+```
+
+in `RequestProject/PartC/RatRepr.lean`, with the syntax
+`Transducers.RatTerm` in `RequestProject/PartC/RatTerms.lean`: the atomic terms
+and combinators of Definition `def:regular-terms` without reverse and without
+the diagonal, plus adjoining units, left distributivity and the list
+deconstructor on the right.  The two directions are
+`Transducers.ratTerm_isRational` (`RatEasy.lean`) and
+`Transducers.ratTerm_of_isRational` (`RatRepr.lean`), and
+`Transducers.Book.«thm:rational-terms»` is the alias.
+
+New files: `PartC/RatTerms.lean`, `RatFinite.lean`, `RatDerived.lean`,
+`RatStrFam.lean`, `RatAtomA.lean`, `RatAtomB.lean`, `RatAtomC.lean`,
+`RatComb.lean`, `RatEasy.lean`, `RatMealyFF.lean`, `RatMealyRev.lean`,
+`RatComplete.lean`, `RatRepr.lean`.  The section
+*Status (Theorem `thm:rational-terms`: the rational terms)* of `THEOREMS.md`
+records the argument and the three places where the missing atoms had to be
+worked around: the right-to-left flip-flop machine, which is redone in the
+right-to-left direction rather than by reversal; the right-to-left reversible
+machines, which Exercise `exer:no-reverse-reversible` removes from the list of
+primes; and the inverse of the representation of a product, which uses the
+pair-marking machine and two splits instead of pairing.
+
+## Verification
+
+`lake build` succeeds with no errors and no warnings (8512 jobs).  No file added
+or changed by this run contains a `sorry`, an `axiom` or a `native_decide`.
+`tools/gen_labels.py --check`, `tools/decl_files.py --check` and
+`tools/tex_numbering.py --check` all pass, and `tools/print_axioms.sh` reports
+that all 243 aliases depend only on `propext`, `Classical.choice`, `Quot.sound`.

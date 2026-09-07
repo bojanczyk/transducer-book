@@ -240,6 +240,17 @@ RequestProject/
 | `PartC/CombMapRev.lean` | Lemma `lem:terms-define-map-reverse-duplicate`: both primes are map liftings, and the map lifting of a term-definable function is term-definable (`Transducers.tfun_mapLift`), by split, the function on each block, and the inverse of split |
 | `PartC/CombComplete.lean` | every regular string-to-string function is definable by terms (`Transducers.termStrFun_of_isRegularFun`): the rational primes through Theorem `thm:rational-primes`, the Mealy primes through Lemma `lem:terms-define-flip-flop` and Lemma `lem:terms-define-reversible`, and the two non-rational primes through Lemma `lem:terms-define-map-reverse-duplicate` |
 | `PartC/CombRepr.lean` | Lemma `lem:terms-define-string-representation` and the converse direction of Theorem `thm:regular-terms`: the string representation of a type and a one-sided inverse of it are both definable by terms, and hence a function that is regular under string representation is the composition of the representation, a term for the regular string-to-string function in the middle, and the inverse.  `Transducers.regular_iff_regularTerm` is the equivalence |
+| `PartC/RatTerms.lean` | Theorem `thm:rational-terms`: the syntax of the rational terms (`Transducers.RatTerm`), their semantics (`Transducers.RatTerm.eval`), the functions they define (`Transducers.IsRatTermFun`), and the derived combinators composition, `f₁ × f₂`, `f₁ + f₂`, `f*` and co-pairing |
+| `PartC/RatFinite.lean` | the rational analogues of Claim `claim:bang-definable`, Claim `claim:finite-type-bijection-disjoint-units`, Claim `claim:finite-domain-regular-list-function` and Lemma `lem:terms-define-string-homomorphisms`: a function with a finite domain, and a string homomorphism, are definable by rational terms.  Adjoining units replaces the diagonal throughout |
+| `PartC/RatDerived.lean` | the derived rational terms: the empty and the singleton list, binary concatenation `Transducers.rtfun_append` (which replaces the prepending that the regular case got from string reversal), the fixed prefix and suffix, the tail, the map of a renaming, Claim `claim:head`, and the finite case distinction in both coordinates -- `Transducers.rtfun_finCases` through `distr` and `Transducers.rtfun_finCasesR` through `distl` |
+| `PartC/RatStrFam.lean` | Lemma `lem:terms-define-append-hash` for rational terms, and `Transducers.RatTermStrFun`, definability of a string-to-string function by rational terms: closure under composition, the two degenerate alphabets, string homomorphisms and the end-marker prime |
+| `PartC/RatAtomA.lean`, `PartC/RatAtomB.lean`, `PartC/RatAtomC.lean` | the atomic rational terms are rational under string representation: the projections, the co-projections, the co-diagonal, adjoining units, split, concatenation and group prefix multiplication (`RatAtomA.lean`); the list constructor, left distributivity and distributivity, the last two through a machine that emits its tag last and a rotation (`RatAtomB.lean`); and the list deconstructor on the right `Transducers.isRationalUnderRepr_unsnoc`, through a bimachine (`RatAtomC.lean`) |
+| `PartC/RatComb.lean` | the functoriality combinators preserve rationality under string representation.  `f₁ × f₂` is the one that has to be done without pairing: the machine `Transducers.RatComb.pairMarkMach` cuts the representation of a pair into the two tagged blocks `L⟨a⟩` and `R⟨b⟩`, and the map lifting applies to each block the function its tag calls for |
+| `PartC/RatEasy.lean` | the easy direction of Theorem `thm:rational-terms` (`Transducers.ratTerm_isRational`), by induction on the term |
+| `PartC/RatMealyFF.lean` | flip-flop Mealy machines are definable by rational terms, in both reading directions (`Transducers.rat_terms_define_flip_flop`, `Transducers.rat_terms_define_flip_flop_rtl`).  The right-to-left case cannot be reduced to the left-to-right one by reversal; the annotation is put *before* each reset letter, so that the state labelling a block is its last letter, which is what left distributivity and `unsnoc` are for |
+| `PartC/RatMealyRev.lean` | reversible Mealy machines are definable by rational terms (`Transducers.rat_terms_define_reversible`); the construction of `CombMealyRev.lean` uses neither reverse nor the diagonal and is reused verbatim |
+| `PartC/RatComplete.lean` | every rational string-to-string function is definable by a rational term (`Transducers.ratTermStrFun_of_isRationalFun`), through the shortened list of primes of Exercise `exer:no-reverse-reversible`, which is what removes the right-to-left *reversible* machines that the regular case handled by string reversal |
+| `PartC/RatRepr.lean` | the string representation and a one-sided inverse of it are definable by rational terms, and with them the converse direction of Theorem `thm:rational-terms`.  `Transducers.rational_iff_rationalTerm` is the equivalence |
 | `PartD/MarkedSquare.lean` | marked squaring and its continuity |
 | `PartD/ForDef.lean` | the syntax and the semantics of the for-transducers, and Definition `def:prenex-normal-form-for-transducers` |
 | `PartD/ForSem.lean` | the semantic toolkit: folds over lists, nests of loops as folds over tuples, the variables and the letters of a program |
@@ -876,6 +887,7 @@ The proofs are organised as follows.
 | Lemma `lem:terms-define-reversible` (reversible Mealy machines) | `Transducers.terms_define_reversible` | **proved** (`CombMealyRev.lean`, by the group prefix product of the state permutations; the group is `Equiv.Perm (Option A) × Equiv.Perm Q` rather than the book's cyclic group on the input alphabet, see *Divergences from the book*; axioms: `propext`, `Classical.choice`, `Quot.sound`) | `PartC/CombMealyRev.lean` |
 | Lemma `lem:terms-define-string-representation` (the string representation and its inverse) | `Transducers.terms_define_string_representation` | **proved** (`CombRepr.lean`, by induction on the type: for every type `A` the representation `A → Sym*` and a one-sided inverse `Sym* → A` are both definable by regular terms; axioms: `propext`, `Classical.choice`, `Quot.sound`) | `PartC/CombRepr.lean` |
 | Claim `claim:head` (the head of a list) | `Transducers.claim_head` | **proved** (`CombDerived.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`).  It is not used on the route taken here for Lemma `lem:terms-define-string-representation`, which reuses the projections of the easy direction instead of the book's marking machine | `PartC/CombDerived.lean` |
+| Theorem `thm:rational-terms` (rational terms) | `Transducers.rational_iff_rationalTerm`, `Transducers.ratTerm_isRational`, `Transducers.ratTerm_of_isRational` | **proved**, as the equivalence `IsRationalUnderRepr f ↔ IsRatTermFun f` (`Transducers.rational_iff_rationalTerm`, `RatRepr.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`).  The rational terms are `Transducers.RatTerm`: the atomic terms and combinators of Definition `def:regular-terms` without reverse and without the diagonal, together with adjoining units, left distributivity and the list deconstructor on the right.  The easy direction, `Transducers.ratTerm_isRational` (`RatEasy.lean`), is by induction on the term, on the atoms of `RatAtomA.lean`, `RatAtomB.lean`, `RatAtomC.lean` and the combinators of `RatComb.lean`, where `f₁ × f₂` is done by a marking machine rather than by pairing.  The converse, `Transducers.ratTerm_of_isRational` (`RatRepr.lean`), composes the rational term for the string representation and the one for its inverse around a term for the rational string-to-string function in the middle (`RatComplete.lean`), which comes from `Transducers.rat_terms_define_flip_flop`, `rat_terms_define_flip_flop_rtl` (`RatMealyFF.lean`), `rat_terms_define_reversible` (`RatMealyRev.lean`), `ratTermStrFun_homOf` and `ratTermStrFun_sep` (`RatStrFam.lean`) through the shortened prime decomposition of Exercise `exer:no-reverse-reversible` | `PartC/RatTerms.lean`, `PartC/RatEasy.lean`, `PartC/RatRepr.lean` |
 
 Supporting files for Part C: `ContAux.lean` (continuity is closed under
 composition; letter-to-letter maps, reversal, duplication and the map lifting of
@@ -2999,4 +3011,97 @@ added or changed by this run contains a `sorry`, an `axiom` or a
 `native_decide`; `tools/gen_labels.py --check`, `tools/decl_files.py --check`
 and `tools/tex_numbering.py --check` all pass, and `tools/print_axioms.sh`
 reports that all 240 aliases depend only on `propext`, `Classical.choice`,
+`Quot.sound`.
+
+## Status (Theorem `thm:rational-terms`: the rational terms)
+
+The run that added this section proved **Theorem `thm:rational-terms`** (C.5.18)
+outright: a type-to-type function is rational under string representation if and
+only if it is defined by a rational term,
+
+```
+theorem Transducers.rational_iff_rationalTerm {A B : Ty} (f : A.Elt → B.Elt) :
+    IsRationalUnderRepr f ↔ IsRatTermFun f
+```
+
+and `Transducers.Book.«thm:rational-terms»` is its alias.  `#print axioms`
+reports only `propext`, `Classical.choice`, `Quot.sound`, and so do the two
+directions separately.
+
+**The syntax.**  `Transducers.RatTerm` (`PartC/RatTerms.lean`) is the book's
+variant of `Transducers.RegTerm`: the same atomic terms and combinators as
+Definition `def:regular-terms`, minus `reverse` -- string reversal is not
+rational, Example `ex:string-reversal-not-rational` -- and minus the diagonal --
+it gives string duplication, which is not rational, Exercise
+`exer:duplication-not-rational` -- plus the three atoms the theorem adds back:
+adjoining units `A → A × 1` and `A → 1 × A`, left distributivity
+`(A + B) × C → (A × C) + (B × C)`, and the list deconstructor on the right
+`A* → 1 + A* × A`.  Removing the diagonal removes pairing, so
+`Transducers.IsRatTermFun` has `prodMap`, `sumMap`, `map` and `copair`, but no
+`pair`.
+
+**What is proved.**  All of the following are proved outright, with no
+hypothesis of any kind and with `#print axioms` reporting only `propext`,
+`Classical.choice`, `Quot.sound`:
+
+| label | Lean name | file |
+| --- | --- | --- |
+| `thm:rational-terms` | `Transducers.rational_iff_rationalTerm` | `PartC/RatRepr.lean` |
+| `thm:rational-terms` (easy direction) | `Transducers.ratTerm_isRational` | `PartC/RatEasy.lean` |
+| `thm:rational-terms` (converse) | `Transducers.ratTerm_of_isRational` | `PartC/RatRepr.lean` |
+
+**The shape of the argument.**  It is the argument of Theorem
+`thm:regular-terms`, run again with attention to which atoms are used.
+
+* *The easy direction* is an induction on the term.  Each atom is shown to be
+  rational under string representation by a machine of `PartC/CombMach.lean`
+  (`RatAtomA.lean`, `RatAtomB.lean`, `RatAtomC.lean`); the new ones are
+  left distributivity, whose machine emits its tag as its last output letter and
+  is followed by a rotation, and `unsnoc`, which needs a bimachine because
+  whether a letter is inside the last entry of a list is not a left-to-right
+  property.  The functoriality combinators are `RatComb.lean`.
+
+* *The converse* needs, for every type, a rational term for the string
+  representation and one for a one-sided inverse of it, and a rational term for
+  the rational string-to-string function in the middle.  The middle term is
+  `PartC/RatComplete.lean`; the two others are
+  `Transducers.rat_terms_define_string_representation` (`PartC/RatRepr.lean`).
+
+**Where the missing atoms bite, and what replaces them.**
+
+* *Adjoining units* replaces the diagonal in the finite-domain machinery
+  (`RatFinite.lean`): a product of copies of the unit type is reached from `1` by
+  adjoining units rather than by the diagonal.
+* *Binary concatenation* (`Transducers.rtfun_append`, `RatDerived.lean`)
+  replaces the prepending that the regular case obtained from string reversal,
+  which is what Lemma `lem:terms-define-append-hash` used.
+* *Left distributivity* gives the finite case distinction on the **second**
+  coordinate, `Transducers.rtfun_finCasesR`, which is what the right-to-left
+  flip-flop machine needs.
+* *The right-to-left prime Mealy machines* were handled in the regular case by
+  string reversal.  For the reversible ones there is nothing to do: Exercise
+  `exer:no-reverse-reversible` shows they may be dropped from the list of primes,
+  and `PartC/RatComplete.lean` uses that shortened list.  The right-to-left
+  flip-flop machines are done again from scratch, in the right-to-left direction
+  (`Transducers.rat_terms_define_flip_flop_rtl`, `PartC/RatMealyFF.lean`): the
+  annotation puts the state a reset letter produces *before* that letter, with a
+  separator, so that after the split every block carries its state as its **last**
+  letter, which `unsnoc` and `rtfun_finCasesR` then read off.
+* *The inverse of the representation of a product* is the one place where the
+  regular proof cannot be transcribed: it applies to the same input the two
+  functions that implement the two projections and then **pairs** the results.
+  Instead the machine `Transducers.RatComb.pairMarkMach` -- the same one that
+  serves the combinator `f₁ × f₂` -- cuts the representation of a pair into the
+  two tagged blocks `L⟨a⟩` and `R⟨b⟩`; the split of Example `ex:split` turns them
+  into a list of two blocks, the inverse for a co-product turns that into the
+  list `[inl a, inr b]`, and a second split followed by two `head` operations
+  (Claim `claim:head`) reads the pair off it.  No coordinate is ever duplicated.
+* Lemma `lem:terms-define-map-reverse-duplicate` is not needed, as the book says:
+  map reverse and map duplicate are not rational.
+
+**Verification.**  `lake build` succeeds with no errors and no warnings; no file
+added or changed by this run contains a `sorry`, an `axiom` or a
+`native_decide`; `tools/gen_labels.py --check`, `tools/decl_files.py --check`
+and `tools/tex_numbering.py --check` all pass, and `tools/print_axioms.sh`
+reports that all 243 aliases depend only on `propext`, `Classical.choice`,
 `Quot.sound`.

@@ -613,6 +613,22 @@ assert_no_sorry «lem:terms-define-string-representation»
 alias «claim:head» := Transducers.claim_head
 assert_no_sorry «claim:head»
 
+/-- **Theorem `thm:rational-terms`** (rational terms): `Transducers.rational_iff_rationalTerm`, the
+equivalence `IsRationalUnderRepr f ↔ IsRatTermFun f`, where `Transducers.RatTerm` is the syntax of
+the rational terms. -/
+alias «thm:rational-terms» := Transducers.rational_iff_rationalTerm
+assert_no_sorry «thm:rational-terms»
+
+/-- **Theorem `thm:rational-terms`** (rational terms): `Transducers.ratTerm_isRational`, the easy
+direction. -/
+alias «thm:rational-terms#2» := Transducers.ratTerm_isRational
+assert_no_sorry «thm:rational-terms#2»
+
+/-- **Theorem `thm:rational-terms`** (rational terms): `Transducers.ratTerm_of_isRational`, the
+converse direction. -/
+alias «thm:rational-terms#3» := Transducers.ratTerm_of_isRational
+assert_no_sorry «thm:rational-terms#3»
+
 /-- **Lemma `nolabel:lem-distributivity-under-string-representation`** (distributivity):
 `Transducers.Comb.isRegularUnderRepr_distr`, the book's worked example of the induction basis of
 Theorem `thm:regular-terms`. -/

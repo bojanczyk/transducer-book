@@ -176,6 +176,7 @@ generator working from the tables alone would delete them.
 | C.5.15 | lemma | `lem:terms-define-reversible` | `combinators.tex` |
 | C.5.16 | lemma | `lem:terms-define-string-representation` | `combinators.tex` |
 | C.5.17 | claim | `claim:head` | `combinators.tex` |
+| C.5.18 | theorem | `thm:rational-terms` | `combinators.tex` |
 | D.0.1 | definition | `def:polyregular-functions` | `polyregular-intro.tex` |
 | D.0.2 | theorem | `thm:polyregular-functions-are-continuous` | `polyregular-intro.tex` |
 | D.1.1 | theorem | `thm:for-transducers-are-polyregular` | `polyregular-for.tex` |
@@ -231,6 +232,7 @@ Sections and subsections:
 | C.4.4 | subsection | *The first-order fragment* | `logic.tex` |
 | C.5 | section | *Combinators* | `combinators.tex` |
 | C.5.1 | subsection | *Regular terms* | `combinators.tex` |
+| C.5.2 | subsection | *Rational terms* | `combinators.tex` |
 | D.1 | section | *For-transducers* | `polyregular-for.tex` |
 | D.1.1 | subsection | *Equivalence with polyregular functions* | `polyregular-for.tex` |
 | D.2 | section | *Pebble transducers* | `polyregular-pebble.tex` |
