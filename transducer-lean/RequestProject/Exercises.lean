@@ -19,6 +19,8 @@ import RequestProject.Exercises.RatInjective
 import RequestProject.Exercises.KrohnRhodes
 import RequestProject.Exercises.MyhillNerode
 import RequestProject.Exercises.ReverseNotRational
+import RequestProject.Exercises.DuplicateNotRational
+import RequestProject.Exercises.NoReverseReversible
 import RequestProject.Exercises.RegularPrimes
 import RequestProject.Exercises.TwoDFAEx
 import RequestProject.Exercises.TwoDFAUnary

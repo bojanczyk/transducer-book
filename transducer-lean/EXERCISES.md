@@ -36,6 +36,8 @@ RequestProject/
     MyhillNerode.lean           -- the exercises of myhill-nerode.tex
     RegularPrimes.lean          -- further exercises of regular-primes.tex
     ReverseNotRational.lean     -- string reversal is not a rational function
+    DuplicateNotRational.lean   -- string duplication is not a rational function
+    NoReverseReversible.lean    -- the reversal of a reversible Mealy machine is not a prime
     TwoDFAEx.lean               -- the exercises of 2dfa.tex
     TwoDFALoop.lean             -- loop elimination for two-way transducers
     TwoDFAPass.lean             -- a two-way automaton that performs a sequence of one-way passes
@@ -67,6 +69,8 @@ RequestProject/
 | `Exercises/MyhillNerode.lean` | the exercises of `myhill-nerode.tex` that are formalised: the uniqueness of the minimal sequential transducer, the failure of uniqueness for subsequential transducers, and the failure of uniqueness for bimachines |
 | `Exercises/RegularPrimes.lean` | the exercise of `regular-primes.tex` on the semiring of weighted functions: a regular function that is not obtained by precomposing a weighted function |
 | `Exercises/ReverseNotRational.lean` | Example `ex:string-reversal-not-rational` of the main text, that string reversal over a two-letter alphabet is not rational (`Transducers.Exercises.not_isRationalFun_reverse`), by the author's argument through Theorem `thm:machine-independent-rational-functions`: the strings `falseⁿ` are pairwise inequivalent for the relation `BoundedVarRel` of reversal (`Transducers.Exercises.not_boundedVarRel_reverse`), so that relation has infinite index.  Exercises `exer:function-that-is-not-rational` and `exer:not-semiring-continuous` used to take this as an explicit hypothesis and are now unconditional |
+| `Exercises/DuplicateNotRational.lean` | Exercise `exer:duplication-not-rational`, that string duplication over a two-letter alphabet is not rational, by the argument the author gives for it: the strings `falseⁿ` are pairwise inequivalent for the relation `BoundedVarRel` of duplication (`Transducers.Exercises.not_boundedVarRel_duplicate`), so that relation has infinite index and Theorem `thm:machine-independent-rational-functions` applies (`Transducers.Exercises.not_isRationalFun_duplicate_boundedVar`).  The statement is the one already proved, by the other argument of the book, as `Transducers.Exercises.not_isRationalFun_duplicate` in `Exercises/PartBC.lean` |
+| `Exercises/NoReverseReversible.lean` | Exercise `exer:no-reverse-reversible`, that the right-to-left reversible Mealy machines can be dropped from the list of primes of Theorem `thm:rational-primes` (`Transducers.Exercises.rational_primes_no_reverse_reversible`, with the shortened list `Transducers.Exercises.PrimeRatNoRevRevFam`): the author's decomposition of a right-to-left reversible machine into the separator `w ↦ w#`, a left-to-right reversible machine over the permutations of the states, a right-to-left flip-flop machine that broadcasts the transformation of the whole input, and a homomorphism that cancels the prefix out of it |
 | `Exercises/TwoDFAEx.lean` | the exercise of `2dfa.tex` on Boolean combinations: the languages of deterministic two-way automata are closed under complement, union and intersection |
 | `Exercises/TwoDFALoop.lean` | loop elimination: the set of inputs on which a deterministic two-way transducer terminates is a regular language |
 | `Exercises/TwoDFAPass.lean` | a two-way deterministic automaton that performs a fixed sequence of left-to-right passes, one one-way automaton after another, rewinding between two passes: the transition function, the count of its states (the *sum* of the numbers of states of the passes, plus one rewinding state per pass) and the characterisation of its language as the non-empty inputs on which every pass accepts |
@@ -182,6 +186,7 @@ all eleven are aliased in `RequestProject/Labels.lean`.
 | Exercise `exer:decide-rational-colision` (equal outputs, outputs of equal length) | `rationalFun_collision_undecidable` (item (a)), `rationalFun_equal_length_decidable` (item (b), with `meetsDiag`, `meetsZ`) | item (a) proved outright (the undecidability of PCP it used to assume is now the theorem `Transducers.PCP.solvable_not_computablePred`); item (b) proved from the hypothesis `EffectiveLengthPairsSemilinear`, an effective form of Parikh's theorem |
 | Exercise `exer:rational-one-letter-input` (rational functions on a one-letter input alphabet) | `rationalFun_unary_graph` | proved |
 | Exercise `exer:function-that-is-not-rational` (not rational, yet rational after every rational function into `1*`) | `exists_not_isRationalFun_unary_compositions_rational` | proved outright; that reversal is not rational (Example `ex:string-reversal-not-rational` of the main text), which this used to assume, is now the theorem `not_isRationalFun_reverse` of `Exercises/ReverseNotRational.lean` |
+| Exercise `exer:no-reverse-reversible` (the reversal of a reversible Mealy machine is not needed among the primes) | `rational_primes_no_reverse_reversible` (with `PrimeRatNoRevRevFam`, `compClosure_noRevRev_rtlReversible`) | proved |
 | Exercise `exer:some-ideals` (two families of ideals of rational functions) | `IsIdeal`, `isIdeal_rangeAtMost`, `isIdeal_outputsPoly` | proved |
 | Exercise `exer:finite-range-ideals` (the ideals whose functions have finite range) | `ideal_mem_of_ncard_le`, `finite_range_ideal_classification` | proved |
 | Exercise `exer:full-ideal` (the ideal of all rational functions) | `full_ideal_iff` (with `IsIdeal`, `SuperPolyOutputs`, `isRationalFun_id`) | proved; the loop analysis of the solution is `Exercises/RegularGrowth.lean` and `Exercises/RationalGrowth.lean`, and `IdentityFromSuperPolyOutputs` is now a theorem |
@@ -206,6 +211,7 @@ all eleven are aliased in `RequestProject/Labels.lean`.
 
 | Book | Lean | Status |
 | --- | --- | --- |
+| Exercise `exer:duplication-not-rational` (string duplication is not rational) | `not_isRationalFun_duplicate`, `not_isRationalFun_duplicate_boundedVar` (with `not_boundedVarRel_duplicate`) | proved, twice.  The statement is `not_isRationalFun_duplicate` of `Exercises/PartBC.lean`, which is also the second item of Exercise `exer:non-rational` and is proved there by the range argument; `not_isRationalFun_duplicate_boundedVar` of `Exercises/DuplicateNotRational.lean` is the same statement by the argument the author gives for *this* exercise, through the relation `BoundedVarRel` of Theorem `thm:machine-independent-rational-functions` |
 | Exercise `exer:minimal-sequential` (minimal sequential transducers are unique up to isomorphism) | `minimal_sequential_unique` (with `residOf`, `canonSeq`, `MinimalFor`, `SeqIso`) | proved |
 | Exercise `exer:minimal-subsequential` (minimal subsequential transducers are not unique) | `minimal_subsequential_not_unique` | proved |
 | Exercise `exer:non-minimal-bimachine` (minimal bimachines are not unique) | `minimal_bimachine_not_unique` | proved |
@@ -1563,3 +1569,62 @@ aperiodic tilings and the undecidability of the domino problem; that machinery
 is in neither Mathlib nor this project.  The counts of the closing audit are
 unchanged: this exercise is still one of the three proved from an explicit
 hypothesis.
+
+## Status (`exer:duplication-not-rational` and `exer:no-reverse-reversible`)
+
+Two exercises of Part B were added to the book and are now formalised, both by
+the author's own solutions, both proved outright, and both with `#print axioms`
+reporting only `propext`, `Classical.choice`, `Quot.sound`.
+
+* **`exer:duplication-not-rational`** (`myhill-nerode.tex`), that string
+  duplication is not rational.  The solution asked for is the one already used
+  for string reversal: the relation `∼` of Theorem
+  `thm:machine-independent-rational-functions` --
+  `Transducers.BoundedVarRel` -- has infinite index, and in fact no two distinct
+  strings are related.  It is enough to see this for the strings `falseⁿ` over
+  the two-letter alphabet `Bool`: extending `falseⁱ` and `falseʲ` with `i < j`
+  on the left by `true^{K+1}` gives two outputs whose longest common prefix ends
+  at position `K+1+i`, where the first has the `true` that opens its second copy
+  and the second is still inside `falseʲ`, so their left distance exceeds `K`.
+  That is `Transducers.Exercises.not_boundedVarRel_duplicate`, and
+  `Transducers.Exercises.not_isRationalFun_duplicate_boundedVar` concludes
+  (`Exercises/DuplicateNotRational.lean`).  Two letters are needed: over a
+  one-letter alphabet duplication is the homomorphism `a ↦ aa`.
+
+  The *statement* was already in the project, since duplication is also the
+  second item of Exercise `exer:non-rational`, proved there by the other
+  argument of the book (the range is the language of squares, which is not
+  regular).  That declaration,
+  `Transducers.Exercises.not_isRationalFun_duplicate` of
+  `Exercises/PartBC.lean`, is left exactly as it was and is the first alias of
+  the new label; the proof by the relation `∼` is the second.
+
+* **`exer:no-reverse-reversible`** (`rational-functions.tex`), that the reversal
+  of a reversible Mealy machine is not needed among the atomic functions of
+  Theorem `thm:rational-primes`.  The shortened list is
+  `Transducers.Exercises.PrimeRatNoRevRevFam`: prime Mealy machines,
+  right-to-left *flip-flop* Mealy machines, string homomorphisms, and `w ↦ w#`.
+  `Transducers.Exercises.rational_primes_no_reverse_reversible` says that a
+  string-to-string function is rational if and only if it is a composition of
+  functions from that list; the direction that matters is
+  `Transducers.Exercises.compClosure_noRevRev_rtlReversible`, which decomposes a
+  right-to-left reversible machine with states `Q` into four steps, exactly as
+  the solution does:
+
+  1. `w ↦ w#`;
+  2. a left-to-right reversible Mealy machine whose states are the permutations
+     of `Q` (`labMealy`), which labels every position with the product of the
+     permutations of the letters before it, and the separator with the product
+     over the whole input;
+  3. a right-to-left flip-flop machine (`bcastMealy`), which copies the label of
+     the separator -- the transformation of the whole input -- to every
+     position;
+  4. a homomorphism (`outHom`), which by cancellation in the group of
+     permutations turns the product over the whole input and the product over
+     the prefix up to and including a position into the transformation of the
+     suffix after it, and reads the wanted output letter off that.
+
+  One point of orientation: `Transducers.Mealy.trans` composes on the left, so
+  the product `p a₁ * ⋯ * p aᵢ` used here is the transformation of the *reverse*
+  of the prefix, which is what a right-to-left machine applies to it
+  (`Transducers.Exercises.rtlProd_apply`).

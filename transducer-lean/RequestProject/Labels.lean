@@ -549,6 +549,16 @@ assert_no_sorry «thm:regular-terms#3»
 alias «lem:terms-define-string-homomorphisms» := Transducers.terms_define_string_homomorphisms
 assert_no_sorry «lem:terms-define-string-homomorphisms»
 
+/-- **Claim `claim:pairing-copairing`** (pairing): `Transducers.IsRegularTermFun.pair`.  Pairing
+and co-pairing are constructors of the term syntax here, and the book's diagonal, co-diagonal and
+functoriality combinators are derived from them; see `THEOREMS.md`. -/
+alias «claim:pairing-copairing» := Transducers.IsRegularTermFun.pair
+assert_no_sorry «claim:pairing-copairing»
+
+/-- **Claim `claim:pairing-copairing`** (co-pairing): `Transducers.IsRegularTermFun.copair`. -/
+alias «claim:pairing-copairing#2» := Transducers.IsRegularTermFun.copair
+assert_no_sorry «claim:pairing-copairing#2»
+
 /-- **Claim `claim:finite-type-bijection-disjoint-units`** (finite types are co-products of copies
 of the unit type): `Transducers.finite_type_bijection_disjoint_units`.  It is proved here *from*
 Claim `claim:finite-domain-regular-list-function`, which is the reverse of the book's order; see
@@ -882,6 +892,11 @@ alias «exer:function-that-is-not-rational» :=
   Transducers.Exercises.exists_not_isRationalFun_unary_compositions_rational
 assert_no_sorry «exer:function-that-is-not-rational»
 
+/-- **Exercise `exer:no-reverse-reversible`** (the reversal of a reversible Mealy machine is not needed among the primes of Theorem `thm:rational-primes`): `Transducers.Exercises.rational_primes_no_reverse_reversible`, the rational functions are still exactly the compositions of the shortened list `Transducers.Exercises.PrimeRatNoRevRevFam`. -/
+alias «exer:no-reverse-reversible» :=
+  Transducers.Exercises.rational_primes_no_reverse_reversible
+assert_no_sorry «exer:no-reverse-reversible»
+
 /-- **Exercise `exer:some-ideals`** (first item, the functions with a range of size at most `k`): `Transducers.Exercises.isIdeal_rangeAtMost`. -/
 alias «exer:some-ideals» := Transducers.Exercises.isIdeal_rangeAtMost
 assert_no_sorry «exer:some-ideals»
@@ -919,6 +934,15 @@ assert_no_sorry «exer:simple-decomposition-example-2»
 alias «exer:rational-compression» :=
   Transducers.Exercises.compatCompression_of_isRationalFun
 assert_no_sorry «exer:rational-compression»
+
+/-- **Exercise `exer:duplication-not-rational`** (string duplication is not rational): `Transducers.Exercises.not_isRationalFun_duplicate`, which is also the second item of Exercise `exer:non-rational` and is proved there by the range argument. -/
+alias «exer:duplication-not-rational» := Transducers.Exercises.not_isRationalFun_duplicate
+assert_no_sorry «exer:duplication-not-rational»
+
+/-- **Exercise `exer:duplication-not-rational`** (string duplication is not rational, by the argument the author gives for this exercise): `Transducers.Exercises.not_isRationalFun_duplicate_boundedVar`, through the relation `BoundedVarRel` of Theorem `thm:machine-independent-rational-functions`. -/
+alias «exer:duplication-not-rational#2» :=
+  Transducers.Exercises.not_isRationalFun_duplicate_boundedVar
+assert_no_sorry «exer:duplication-not-rational#2»
 
 /-- **Exercise `exer:minimal-sequential`** (minimal sequential transducers are unique up to isomorphism): `Transducers.Exercises.minimal_sequential_unique`. -/
 alias «exer:minimal-sequential» := Transducers.Exercises.minimal_sequential_unique

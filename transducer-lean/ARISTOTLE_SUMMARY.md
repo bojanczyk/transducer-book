@@ -1,83 +1,68 @@
-# Section *Combinators* is complete: the converse of Theorem `thm:regular-terms`
+# Two exercises of Part B, and the renumbering of Section *Combinators*
 
-The converse direction of Theorem `thm:regular-terms` -- every function that is
-regular under string representation is defined by a regular term -- is now
-proved, and the theorem is stated as the equivalence it is in the book:
+## The two exercises
 
-```
-theorem Transducers.regular_iff_regularTerm {A B : Ty} (f : A.Elt → B.Elt) :
-    IsRegularUnderRepr f ↔ IsRegularTermFun f
-```
+Both are proved outright, by the author's own solutions, and `#print axioms`
+reports only `propext`, `Classical.choice`, `Quot.sound` for each.
 
-`Transducers.Book.«thm:regular-terms»` is its alias, and `#print axioms` on it
-reports `propext`, `Classical.choice`, `Quot.sound`.  The two directions are
-`Transducers.regularTerm_isRegular` (`«thm:regular-terms#2»`, proved by an
-earlier run) and `Transducers.regularTerm_of_isRegular`
-(`«thm:regular-terms#3»`).
+* **Exercise `exer:duplication-not-rational`** (`myhill-nerode.tex`) — string
+  duplication is not rational, by the argument that is used for string reversal
+  in `RequestProject/Exercises/ReverseNotRational.lean`: the relation `∼` of
+  Theorem `thm:machine-independent-rational-functions`
+  (`Transducers.BoundedVarRel`) has infinite index, and no two distinct strings
+  are related.  The new file is
+  `RequestProject/Exercises/DuplicateNotRational.lean`, with
+  `Transducers.Exercises.not_boundedVarRel_duplicate` and
+  `Transducers.Exercises.not_isRationalFun_duplicate_boundedVar`.
 
-With it, the ten numbered results of Section *Combinators* that the converse
-goes through are proved outright, each with the same three axioms:
-Lemma `lem:terms-define-string-homomorphisms`, Claim
-`claim:finite-type-bijection-disjoint-units`, Claim
-`claim:finite-domain-regular-list-function`, Lemma
-`lem:terms-define-append-hash`, Claim `claim:bang-definable`, Lemma
-`lem:terms-define-map-reverse-duplicate` (map reverse and map duplicate), Lemma
-`lem:terms-define-flip-flop`, Lemma `lem:terms-define-reversible`, Lemma
-`lem:terms-define-string-representation` and Claim `claim:head`.  No result
-takes a hypothesis, and the project declares no `axiom`.
+  The statement was already in the project: duplication is also the second item
+  of Exercise `exer:non-rational`, proved there by the other argument of the
+  book, so `Transducers.Exercises.not_isRationalFun_duplicate` already existed
+  in `Exercises/PartBC.lean`.  It is left exactly as it was and is the first
+  alias of the new label; the proof by the relation `∼` is the second alias.
 
-## The route
+* **Exercise `exer:no-reverse-reversible`** (`rational-functions.tex`) — the
+  reversal of a reversible Mealy machine is not needed among the primes of
+  Theorem `thm:rational-primes`.  The new file is
+  `RequestProject/Exercises/NoReverseReversible.lean`;
+  `Transducers.Exercises.rational_primes_no_reverse_reversible` states that a
+  string-to-string function is rational if and only if it is a composition of
+  functions from the shortened list
+  `Transducers.Exercises.PrimeRatNoRevRevFam` — prime Mealy machines,
+  right-to-left *flip-flop* Mealy machines, string homomorphisms and `w ↦ w#`.
 
-`Transducers.IsRegularFun` is by definition the closure of
-`Transducers.RegularFam` under composition, and the functions definable by terms
-are closed under composition, so the converse reduces to covering the primes.
+  The construction is the author's: append the separator; run a left-to-right
+  reversible machine over `Equiv.Perm Q` labelling every position with the
+  product of the permutations of the letters before it, and the separator with
+  the product over the whole input; broadcast that product leftwards with a
+  right-to-left flip-flop machine; and recover the output letter with a
+  homomorphism, by cancellation in the group of permutations.
 
-* `PartC/CombFinite.lean` -- a function whose domain is a finite type is
-  definable (Claim `claim:finite-domain-regular-list-function`), hence so is a
-  string homomorphism (Lemma `lem:terms-define-string-homomorphisms`).
-* `PartC/CombDerived.lean` -- the derived combinators the book uses without
-  comment, the finite case distinction `Transducers.tfun_finCases`, and the
-  three claims that are about terms alone.
-* `PartC/CombStrFam.lean` -- `Transducers.TermStrFun`, the interface between the
-  primes (functions `A* → B*` for arbitrary finite alphabets) and the terms
-  (which speak about the elements of a `Ty`), together with Lemma
-  `lem:terms-define-append-hash`.
-* `PartC/CombMealyFF.lean`, `PartC/CombMealyRev.lean` -- the two Mealy primes,
-  which with Theorem `thm:rational-primes` (and behind it Theorem
-  `thm:2dfa-decomposition-into-primes` and Theorem `thm:krohn-rhodes`) give all
-  the rational primes.
-* `PartC/CombMapRev.lean` -- map reverse and map duplicate, both instances of
-  the map lifting of a term-definable function.
-* `PartC/CombComplete.lean` -- every regular string-to-string function is
-  definable by terms.
-* `PartC/CombRepr.lean` -- Lemma `lem:terms-define-string-representation` and,
-  from it, the converse.
+## The renumbering of Section *Combinators*
 
-## Divergences from the book
+The section gained a labelled environment, Claim `claim:pairing-copairing`
+(C.5.8), which shifted the nine numbers after it.  `LABELS.md` is updated, the
+claim has a row in the index of `THEOREMS.md` and an alias in
+`RequestProject/Labels.lean`, and it is proved:
+`Transducers.IsRegularTermFun.pair` and `Transducers.IsRegularTermFun.copair`
+of `PartC/CombFinite.lean`.
 
-Three, all of them in the *route* and none in a statement; they are recorded
-under *Divergences from the book* in `THEOREMS.md` and in the docstrings.
+In this project pairing and co-pairing are constructors of the term syntax and
+the book's diagonal, co-diagonal and functoriality combinators are derived from
+them (`Transducers.tfun_prodMap`, `Transducers.tfun_sumMap`), which is the
+reverse of the book's order; the two presentations define the same class of
+terms.  The divergence is recorded in `THEOREMS.md` and in the docstring of
+`PartC/CombTerms.lean`.
 
-* Claim `claim:finite-type-bijection-disjoint-units` is deduced *from* Claim
-  `claim:finite-domain-regular-list-function`, the reverse of the book's order.
-  Both are proved.
-* In Lemma `lem:terms-define-reversible` the input alphabet `A` is embedded in
-  `Equiv.Perm (Option A)` by `a ↦ Equiv.swap none (some a)` instead of carrying
-  the book's arbitrary cyclic group structure on `A`.
-* In the product case of Lemma `lem:terms-define-string-representation` the
-  functions that implement the projections under string representation, from the
-  easy direction, replace the book's marking machine.  Claim `claim:head` is
-  proved all the same, it is simply not needed on this route.
+`tools/decl_files.py --check` also failed before this run, for an unrelated
+reason: a line of the docstring of `Transducers.terms_define_append_hash` began
+with the word `end-marker`, which the script reads as the end of a namespace, so
+it could not find the declaration.  The docstring is reworded.
 
 ## Verification
 
-`lake build` succeeds with no errors.  No declaration of the project uses
-`sorry`, `axiom` or `native_decide` -- the only occurrences of `sorry` are
-inside the commented-out records of statements that were withdrawn or corrected,
-which elaborate nothing -- `python3 tools/gen_labels.py --check` agrees with
-`LABELS.md` and the index tables, and the counts in `THEOREMS.md` were
-recomputed: of the 115 environments of the dictionary, 23 definitions and 89
-results are formalised, none from a hypothesis, and 3 environments are not
-formalised (Definition `def:rational-recognisable-subsets`, Claim
-`nolabel:claim-representations-are-a-regular-language`, and the withdrawn
-unnumbered paragraph `nolabel:thm-fo-transduction-into-primes`).
+`lake build` succeeds with no errors and no warnings.  No file added or changed
+by this run contains a `sorry`, an `axiom` or a `native_decide`.
+`tools/gen_labels.py --check`, `tools/decl_files.py --check` and
+`tools/tex_numbering.py --check` all pass, and `tools/print_axioms.sh` reports
+that all 240 aliases depend only on `propext`, `Classical.choice`, `Quot.sound`.
