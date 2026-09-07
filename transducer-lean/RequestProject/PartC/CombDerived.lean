@@ -80,18 +80,18 @@ lemma tfun_swap (A B : Ty) :
   (tfun_snd A B).pair (tfun_fst A B)
 
 /-- Two terms applied in parallel to the two coordinates of a product; the book writes it
-`f × g`. -/
+`f × g`.  This is the functoriality combinator of Definition `def:regular-terms`. -/
 lemma tfun_prodMap {A B C D : Ty} {f : A.Elt → C.Elt} {g : B.Elt → D.Elt}
     (hf : IsRegularTermFun f) (hg : IsRegularTermFun g) :
     IsRegularTermFun (A := .prod A B) (B := .prod C D) (fun p => (f p.1, g p.2)) :=
-  ((tfun_fst A B).comp hf).pair ((tfun_snd A B).comp hg)
+  hf.prodMap hg
 
-/-- Two terms applied to the two summands of a co-product. -/
+/-- Two terms applied to the two summands of a co-product; the book writes it `f + g`.  This is
+the functoriality combinator of Definition `def:regular-terms`. -/
 lemma tfun_sumMap {A B C D : Ty} {f : A.Elt → C.Elt} {g : B.Elt → D.Elt}
     (hf : IsRegularTermFun f) (hg : IsRegularTermFun g) :
     IsRegularTermFun (A := .sum A B) (B := .sum C D) (fun x => Sum.map f g x) :=
-  ((hf.comp (tfun_inl C D)).copair (hg.comp (tfun_inr C D))).congr
-    (fun x => by cases x <;> rfl)
+  hf.sumMap hg
 
 /-- The second form of distributivity, `(A + B) × C → (A × C) + (B × C)`, which the book derives
 from the first one using `swap`. -/

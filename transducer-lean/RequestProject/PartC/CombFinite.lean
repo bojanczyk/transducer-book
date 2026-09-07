@@ -27,21 +27,50 @@ namespace Transducers
 
 /-! ## The combinators, for the functions defined by a regular term -/
 
-lemma IsRegularTermFun.pair {A B C : Ty} {f : A.Elt → B.Elt} {g : A.Elt → C.Elt}
+/-- The functoriality combinator `f₁ × f₂` of Definition `def:regular-terms`, as a statement about
+the functions that a term defines. -/
+lemma IsRegularTermFun.prodMap {A₁ A₂ B₁ B₂ : Ty} {f : A₁.Elt → B₁.Elt} {g : A₂.Elt → B₂.Elt}
     (hf : IsRegularTermFun f) (hg : IsRegularTermFun g) :
-    IsRegularTermFun (A := A) (B := Ty.prod B C) (fun a => (f a, g a)) := by
+    IsRegularTermFun (A := Ty.prod A₁ A₂) (B := Ty.prod B₁ B₂) (fun p => (f p.1, g p.2)) := by
   obtain ⟨s, hs⟩ := hf
   obtain ⟨t, ht⟩ := hg
-  exact ⟨s.pair t, by funext a; rw [show (s.pair t).eval a = (s.eval a, t.eval a) from rfl, hs, ht]⟩
+  exact ⟨s.prodMap t, by
+    funext p
+    rw [show (s.prodMap t).eval p = (s.eval p.1, t.eval p.2) from rfl, hs, ht]⟩
 
-lemma IsRegularTermFun.copair {A B C : Ty} {f : A.Elt → C.Elt} {g : B.Elt → C.Elt}
+/-- The functoriality combinator `f₁ + f₂` of Definition `def:regular-terms`, as a statement about
+the functions that a term defines. -/
+lemma IsRegularTermFun.sumMap {A₁ A₂ B₁ B₂ : Ty} {f : A₁.Elt → B₁.Elt} {g : A₂.Elt → B₂.Elt}
     (hf : IsRegularTermFun f) (hg : IsRegularTermFun g) :
-    IsRegularTermFun (A := Ty.sum A B) (B := C) (Sum.elim f g) := by
+    IsRegularTermFun (A := Ty.sum A₁ A₂) (B := Ty.sum B₁ B₂) (fun x => Sum.map f g x) := by
   obtain ⟨s, hs⟩ := hf
   obtain ⟨t, ht⟩ := hg
-  refine ⟨s.copair t, ?_⟩
-  funext x
-  rw [show (s.copair t).eval x = Sum.elim s.eval t.eval x from rfl, hs, ht]
+  exact ⟨s.sumMap t, by
+    funext x
+    rw [show (s.sumMap t).eval x = Sum.map s.eval t.eval x from rfl, hs, ht]⟩
+
+/-- The diagonal `A → A × A`, an atomic term. -/
+lemma tfun_diag (A : Ty) : IsRegularTermFun (A := A) (B := Ty.prod A A) (fun a => (a, a)) :=
+  IsRegularTermFun.of_term (RegTerm.diag A)
+
+/-- The co-diagonal `A + A → A`, an atomic term. -/
+lemma tfun_codiag (A : Ty) :
+    IsRegularTermFun (A := Ty.sum A A) (B := A) (fun x => Sum.elim (fun a => a) (fun a => a) x) :=
+  IsRegularTermFun.of_term (RegTerm.codiag A)
+
+/-- **Claim `claim:pairing-copairing`** (pairing).  The functions defined by regular terms are
+closed under pairing: the diagonal followed by `f₁ × f₂`. -/
+theorem IsRegularTermFun.pair {A B C : Ty} {f : A.Elt → B.Elt} {g : A.Elt → C.Elt}
+    (hf : IsRegularTermFun f) (hg : IsRegularTermFun g) :
+    IsRegularTermFun (A := A) (B := Ty.prod B C) (fun a => (f a, g a)) :=
+  ((tfun_diag A).comp (hf.prodMap hg)).congr (fun _ => rfl)
+
+/-- **Claim `claim:pairing-copairing`** (co-pairing).  The functions defined by regular terms are
+closed under co-pairing: `f₁ + f₂` followed by the co-diagonal. -/
+theorem IsRegularTermFun.copair {A B C : Ty} {f : A.Elt → C.Elt} {g : B.Elt → C.Elt}
+    (hf : IsRegularTermFun f) (hg : IsRegularTermFun g) :
+    IsRegularTermFun (A := Ty.sum A B) (B := C) (Sum.elim f g) :=
+  ((hf.sumMap hg).comp (tfun_codiag C)).congr (fun x => by cases x <;> rfl)
 
 lemma IsRegularTermFun.mapList {A B : Ty} {f : A.Elt → B.Elt} (hf : IsRegularTermFun f) :
     IsRegularTermFun (A := Ty.list A) (B := Ty.list B) (fun l => l.map f) := by

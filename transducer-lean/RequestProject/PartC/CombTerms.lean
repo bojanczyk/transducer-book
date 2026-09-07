@@ -3,20 +3,14 @@ Regular terms (Definition `def:regular-terms`) of Section *Combinators* of *Tran
 (M. Bojańczyk).
 
 A regular term is an expression built from the atomic terms -- identity, the two projections, the
-two co-projections, distributivity, the list constructor and deconstructor, reverse, concatenation,
-split and group prefix multiplication -- by composition, pairing, co-pairing and map.  Terms have a
-syntax and a semantics; the book does not distinguish them, and here the syntax is the inductive
-type `Transducers.RegTerm` and the semantics is `Transducers.RegTerm.eval`.
+two co-projections, the diagonal and the co-diagonal, distributivity, the list constructor and
+deconstructor, reverse, concatenation, split and group prefix multiplication -- by composition and
+the three functoriality combinators `f × g`, `f + g` and `f*`, which lift functions along the type
+constructors.  Terms have a syntax and a semantics; the book does not distinguish them, and here
+the syntax is the inductive type `Transducers.RegTerm` and the semantics is
+`Transducers.RegTerm.eval`.
 
-Three points of the definition need a decision in Lean.
-
-* The book takes the diagonal and the co-diagonal among the atomic terms and the functoriality
-  combinators `f × g`, `f + g`, `f*` among the combinators, and derives pairing and co-pairing
-  from them (Claim `claim:pairing-copairing`).  Here pairing and co-pairing are the constructors
-  `RegTerm.pair` and `RegTerm.copair`, and it is `f × g` and `f + g` that are derived
-  (`Transducers.tfun_prodMap` and `Transducers.tfun_sumMap` of `CombDerived.lean`), the diagonal
-  and the co-diagonal being `pair id id` and `copair id id`.  The two presentations generate the
-  same class of functions.
+Two points of the definition need a decision in Lean.
 
 * Group prefix multiplication is parameterised, the book says, "not just by the underlying set of
   the group, but also its group operation", and the underlying set is required to be a finite type.
@@ -71,6 +65,10 @@ inductive RegTerm : Ty → Ty → Type
   | inl (A B : Ty) : RegTerm A (.sum A B)
   /-- Right co-projection `B → A + B`. -/
   | inr (A B : Ty) : RegTerm B (.sum A B)
+  /-- Diagonal `A → A × A`. -/
+  | diag (A : Ty) : RegTerm A (.prod A A)
+  /-- Co-diagonal `A + A → A`. -/
+  | codiag (A : Ty) : RegTerm (.sum A A) A
   /-- Distributivity `A × (B + C) → (A × B) + (A × C)`. -/
   | distr (A B C : Ty) : RegTerm (.prod A (.sum B C)) (.sum (.prod A B) (.prod A C))
   /-- The list constructor `1 + A × A* → A*`. -/
@@ -87,11 +85,13 @@ inductive RegTerm : Ty → Ty → Type
   | pref (G : Ty) (grp : Group G.Elt) (hfin : Finite G.Elt) : RegTerm (.list G) (.list G)
   /-- Composition. -/
   | comp {A B C : Ty} : RegTerm A B → RegTerm B C → RegTerm A C
-  /-- Pairing. -/
-  | pair {A B C : Ty} : RegTerm A B → RegTerm A C → RegTerm A (.prod B C)
-  /-- Co-pairing. -/
-  | copair {A B C : Ty} : RegTerm A C → RegTerm B C → RegTerm (.sum A B) C
-  /-- Map. -/
+  /-- Functoriality for products: `f₁ × f₂`. -/
+  | prodMap {A₁ A₂ B₁ B₂ : Ty} :
+      RegTerm A₁ B₁ → RegTerm A₂ B₂ → RegTerm (.prod A₁ A₂) (.prod B₁ B₂)
+  /-- Functoriality for co-products: `f₁ + f₂`. -/
+  | sumMap {A₁ A₂ B₁ B₂ : Ty} :
+      RegTerm A₁ B₁ → RegTerm A₂ B₂ → RegTerm (.sum A₁ A₂) (.sum B₁ B₂)
+  /-- Functoriality for lists: `f*`. -/
   | map {A B : Ty} : RegTerm A B → RegTerm (.list A) (.list B)
 
 /-- The semantics of a regular term: the type-to-type function that it defines. -/
@@ -101,6 +101,8 @@ def RegTerm.eval : {A B : Ty} → RegTerm A B → A.Elt → B.Elt
   | _, _, .snd _ _ => fun x => x.2
   | _, _, .inl _ _ => fun x => Sum.inl x
   | _, _, .inr _ _ => fun x => Sum.inr x
+  | _, _, .diag _ => fun x => (x, x)
+  | _, _, .codiag _ => fun x => Sum.elim (fun a => a) (fun a => a) x
   | _, _, .distr _ _ _ => fun x =>
       Sum.elim (fun b => Sum.inl (x.1, b)) (fun c => Sum.inr (x.1, c)) x.2
   | _, _, .cons _ => fun x => Sum.elim (fun _ => []) (fun p => p.1 :: p.2) x
@@ -112,8 +114,8 @@ def RegTerm.eval : {A B : Ty} → RegTerm A B → A.Elt → B.Elt
   | _, _, .split _ _ => fun l => splitList l
   | _, _, .pref _ grp _ => fun l => @prefixProd _ (@Group.toDivisionMonoid _ grp).toMonoid l
   | _, _, .comp s t => fun x => t.eval (s.eval x)
-  | _, _, .pair s t => fun x => (s.eval x, t.eval x)
-  | _, _, .copair s t => fun x => Sum.elim s.eval t.eval x
+  | _, _, .prodMap s t => fun p => (s.eval p.1, t.eval p.2)
+  | _, _, .sumMap s t => fun x => Sum.map s.eval t.eval x
   | _, _, .map t => fun l => l.map t.eval
 
 /-- A type-to-type function is *defined by a regular term* if it is the semantics of one. -/

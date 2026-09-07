@@ -550,12 +550,12 @@ alias «lem:terms-define-string-homomorphisms» := Transducers.terms_define_stri
 assert_no_sorry «lem:terms-define-string-homomorphisms»
 
 /-- **Claim `claim:pairing-copairing`** (pairing): `Transducers.IsRegularTermFun.pair`.  Pairing
-and co-pairing are constructors of the term syntax here, and the book's diagonal, co-diagonal and
-functoriality combinators are derived from them; see `THEOREMS.md`. -/
+is the diagonal followed by `f₁ × f₂`, as in the book. -/
 alias «claim:pairing-copairing» := Transducers.IsRegularTermFun.pair
 assert_no_sorry «claim:pairing-copairing»
 
-/-- **Claim `claim:pairing-copairing`** (co-pairing): `Transducers.IsRegularTermFun.copair`. -/
+/-- **Claim `claim:pairing-copairing`** (co-pairing): `Transducers.IsRegularTermFun.copair`.
+Co-pairing is `f₁ + f₂` followed by the co-diagonal, as in the book. -/
 alias «claim:pairing-copairing#2» := Transducers.IsRegularTermFun.copair
 assert_no_sorry «claim:pairing-copairing#2»
 

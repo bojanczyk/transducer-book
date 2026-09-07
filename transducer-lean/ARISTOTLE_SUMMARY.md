@@ -47,12 +47,11 @@ claim has a row in the index of `THEOREMS.md` and an alias in
 `Transducers.IsRegularTermFun.pair` and `Transducers.IsRegularTermFun.copair`
 of `PartC/CombFinite.lean`.
 
-In this project pairing and co-pairing are constructors of the term syntax and
-the book's diagonal, co-diagonal and functoriality combinators are derived from
-them (`Transducers.tfun_prodMap`, `Transducers.tfun_sumMap`), which is the
-reverse of the book's order; the two presentations define the same class of
-terms.  The divergence is recorded in `THEOREMS.md` and in the docstring of
-`PartC/CombTerms.lean`.
+The syntax `Transducers.RegTerm` of `PartC/CombTerms.lean` follows the book's
+list: the diagonal and the co-diagonal are atomic terms, the combinators are
+composition and the three functoriality combinators `f × g`, `f + g` and `f*`
+(`Transducers.IsRegularTermFun.prodMap`, `sumMap`, `mapList`), and pairing and
+co-pairing are derived from them, which is the claim.
 
 `tools/decl_files.py --check` also failed before this run, for an unrelated
 reason: a line of the docstring of `Transducers.terms_define_append_hash` began
