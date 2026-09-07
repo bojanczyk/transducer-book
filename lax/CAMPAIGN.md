@@ -10,7 +10,7 @@ next session or subagent picks up. Keep this file short and current.
 | lax-132576 | `rational-functions` | 42 | 29, all discharged; Source = 63 modules | **draft on the archive with content** (972ebef), replay green | none |
 | lax-916827 | `regular-functions` | 29 | 23, all discharged; Source = 136 modules; replay green (9m36s) | committed; content resubmit running | after the record moves: repin S4/S5/S6 (concepts) and S4/S5 (proofs) to it, submit S4/S5/S6 |
 | lax-314295 | `mso-transductions` | 26, archive check green (pinned A @ cf8ade7, B @ 972ebef, C @ 2fb96b2) | Source = 44 modules ported (`PartC/MSO` closure minus S3), `lake build` fix loop running (subagent); pins as concepts + the proof packages | **concepts-only draft on the archive** (b0dca40); repinned resubmit (1b02fa6) running | (1) Source build green; (2) Bridge + Results (26 concepts); (3) replay, commit, resubmit; then S6 repins |
-| lax-709149 | `regular-combinators` | 4, archive check green (pinned B @ 972ebef, C @ 2fb96b2) | Source = 15 modules ported (`PartC/CombStatements` closure minus S3), `lake build` fix loop running (subagent) | **concepts-only draft on the archive** (b0dca40); repinned resubmit (1b02fa6) running | (1) Source build green; (2) Bridge + Results (1 theorem); (3) replay, commit, resubmit |
+| lax-709149 | `regular-combinators` | 4 | Source = 15 modules, `lake build` green; Bridge/Results pending; pins B @ 972ebef, C @ 2fb96b2 | **concepts-only draft on the archive** (1b02fa6); Source port committed | (1) Bridge + Results (1 theorem, subagent); (2) replay, commit, resubmit |
 | lax-194892 | `polyregular-functions` | 21, archive check green (pinned A @ cf8ade7, C @ 2fb96b2) | Source = 72 modules ported (`PartD/{Statements,PebReach,ChildGraphFor,CGFor,ChildExample}` closure minus S3/S4/S5: 70 `PartD/*` + `PartC/{MarkRat,RegWin}`; `PartD/TwoWayTotal`'s roll-up `import RequestProject.PartC` became `import Lax916827Proofs` + `import Lax314295Proofs` via `port.py --replace-import`), not yet built; proofs pin S4 @ 1b02fa6 | committed concepts (540cf91); submit (1b02fa6) running | after S4's Source builds: (1) Source `lake build` green (sibling overrides are in `.lake/package-overrides.json`); (2) Bridge + Results (17 theorem-concepts); (3) replay, commit, submit |
 | lax-157538 | `transducers-book` | none (umbrella) | none | empty draft | paper folder + markers, after all seven are drafts; lakefiles require all seven concept and proof packages |
 
@@ -83,6 +83,15 @@ next session or subagent picks up. Keep this file short and current.
   Prop-structure (`isSnakePath_iff` → `snakeOut_eq` via the source's
   `snakeOutIs_unique`). Bridge imports `Source.PartC.SnakeAlphReg` besides
   `Statements`.
+- S5 (`regular-combinators`, Part C §5, 15 modules; `lake build` green
+  2026-09-07 15:55, subagent): `CombDepth.lean:141` stale `omega` after a
+  `simp at this` that now closes the goal; `CombCombinators.lean:136`
+  cross-package dot notation `h.congr` → `IsRationalRel.congr h`;
+  `CombAtomConcat.lean:199,202,215,217` and
+  `CombAtomSplit.lean:321,324,326,348,351,353,354` — `rw`/`simp` → `erw`
+  (`[]`/`x :: l` sit at `List (List A.Elt)` while the lemmas are stated at
+  `List (Ty.list A).Elt`; `Ty.Elt` is a non-reducible `def`, so keyed
+  matching fails at the epoch). No statement changed.
 - Known ahead (from the port probe of the whole tree, 2026-09-07):
   `Common/PrimrecList.lean` rename `list_drop`/`list_take` to primed names;
   `Common/PrimrecArith.lean:251` `rw` → `simp only` then a `generalize`
