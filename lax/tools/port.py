@@ -22,9 +22,10 @@ Inside `namespace <pkg>.Transducers`, a fully qualified `Transducers.foo` still
 resolves (Lean tries every prefix of the current namespace), and so does a
 reference to a dependency's `Transducers.foo` once `open <dep>` is in force;
 the script inserts `open <dep> <dep>.Transducers` after the imports of every
-ported file, for each --dep package its import closure reaches (a bare `foo`
-of the dependency needs the second `open`; opening a namespace that no import
-declares is an error, hence per file).
+ported file, for each --dep package its import closure reaches, following the
+dependencies' own imports (a bare `foo` of the dependency needs the second
+`open`; opening a namespace that no import declares is an error, hence per
+file and exact).
 
 A dependency's ported.txt lists its own modules *and* those of its own
 dependencies, so give the --dep packages in chain order (earliest part first):
@@ -71,11 +72,20 @@ def imports_of(mod):
             re.findall(r"^import RequestProject\.([\w.]+)$", open(os.path.join(SRC, mod + ".lean")).read(), flags=re.M)
             if m not in replace]
 
+depdest = {d.split("=")[0]: d.split("=")[1] for d in a.dep}
 _reach = {}
 def deps_reached(mod):
-    """The --dep packages whose modules the import closure of `mod` reaches."""
+    """The --dep packages whose modules the import closure of `mod` reaches,
+    following the dependency's own (already rewritten) imports."""
     if mod in deps:
-        return {deps[mod]}
+        if mod in _reach:
+            return _reach[mod]
+        _reach[mod] = {deps[mod]}
+        f = os.path.join(depdest[deps[mod]], deps[mod], "Source", mod + ".lean")
+        if os.path.exists(f):
+            for pkg, m in re.findall(r"^import (Lax\w+Proofs)\.Source\.([\w.]+)$", open(f).read(), flags=re.M):
+                _reach[mod] |= deps_reached(m.replace(".", "/"))
+        return _reach[mod]
     if mod in a.modules and any(m in replace for m in re.findall(r"^import RequestProject\.([\w.]+)$", open(os.path.join(SRC, mod + ".lean")).read(), flags=re.M)):
         return set(deps.values())
     if mod in _reach:
@@ -122,11 +132,8 @@ for mod in a.modules:
             out_lines.append(f"open {m.group(1) or ''}{a.pkg}.{m.group(2)}{m.group(3)}"); continue
         out_lines.append(line)
     s = "\n".join(out_lines)
-    # a later package of the chain requires the earlier ones, so reaching it
-    # reaches (and may use bare names of) every earlier one as well
     deporder = [d.split("=")[0] for d in a.dep]
-    reached = [i for i, p in enumerate(deporder) if p in deps_reached(mod)]
-    depnames = deporder[:max(reached) + 1] if reached else []
+    depnames = [p for p in deporder if p in deps_reached(mod)]
     if depnames:
         # insert `open <dep> <dep>.Transducers` after the last import line: the
         # first makes a qualified `Transducers.foo` of the dependency resolve,
