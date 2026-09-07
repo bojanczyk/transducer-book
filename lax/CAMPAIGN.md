@@ -10,7 +10,7 @@ next session or subagent picks up. Keep this file short and current.
 | lax-132576 | `rational-functions` | 42 | 29, all discharged; Source = 63 modules | **draft on the archive with content** (972ebef), replay green | none |
 | lax-916827 | `regular-functions` | 29 | 23, all discharged; Source = 136 modules; replay green (9m36s) | committed; content resubmit running | after the record moves: repin S4/S5/S6 (concepts) and S4/S5 (proofs) to it, submit S4/S5/S6 |
 | lax-314295 | `mso-transductions` | 26 | Source = 44 modules, `lake build` green; Bridge/Results pending; pins A @ cf8ade7, B @ 972ebef, C @ 2fb96b2 | **concepts-only draft on the archive** (1b02fa6); Source port committed | (1) Bridge + Results (subagent); (2) replay, commit, resubmit; then S6 repins |
-| lax-709149 | `regular-combinators` | 4 | Source = 15 modules, `lake build` green; Bridge/Results pending; pins B @ 972ebef, C @ 2fb96b2 | **concepts-only draft on the archive** (1b02fa6); Source port committed | (1) Bridge + Results (1 theorem, subagent); (2) replay, commit, resubmit |
+| lax-709149 | `regular-combinators` | 4 | 1, discharged; Source = 15 modules; replay green (22m) | committed; content resubmit running | after the record moves: none (S7 pins it) |
 | lax-194892 | `polyregular-functions` | 21, archive check green (pinned A @ cf8ade7, C @ 2fb96b2) | Source = 72 modules ported (`PartD/{Statements,PebReach,ChildGraphFor,CGFor,ChildExample}` closure minus S3/S4/S5: 70 `PartD/*` + `PartC/{MarkRat,RegWin}`; `PartD/TwoWayTotal`'s roll-up `import RequestProject.PartC` became `import Lax916827Proofs` + `import Lax314295Proofs` via `port.py --replace-import`), not yet built; proofs pin S4 @ 1b02fa6 | committed concepts (540cf91); submit (1b02fa6) running | after S4's Source builds: (1) Source `lake build` green (sibling overrides are in `.lake/package-overrides.json`); (2) Bridge + Results (17 theorem-concepts); (3) replay, commit, submit |
 | lax-157538 | `transducers-book` | none (umbrella) | none | empty draft | paper folder + markers, after all seven are drafts; lakefiles require all seven concept and proof packages |
 
@@ -115,6 +115,13 @@ next session or subagent picks up. Keep this file short and current.
   `subst`. No statement changed. Alternative noted by the subagent: an
   `export` placed inside the *other* package's namespace would restore dot
   notation, rejected because it declares into another submission's namespace.
+- S5 Bridge (2026-09-07 17:00, subagent): `Ty`, `Ty.Elt`, `Sym8`, `joinSep`,
+  `Ty.repr`, `RegTerm`, `eval` are separate copies — `tyEquiv`, `eltEquiv`
+  by recursion on the type, `symEquiv`, `repr_toSrc`, `toSrcTerm` with
+  `eval_toSrcTerm` (the `pref` case transports the group along
+  `(eltEquiv G).symm.group`), `isRegularFun_conj`, then `isRegularUnderRepr_iff`
+  / `isRationalUnderRepr_iff` through S3's and S2's bridges. `Ty.Elt`
+  keyed matching handled with `show`.
 - Known ahead (from the port probe of the whole tree, 2026-09-07):
   `Common/PrimrecList.lean` rename `list_drop`/`list_take` to primed names;
   `Common/PrimrecArith.lean:251` `rw` → `simp only` then a `generalize`

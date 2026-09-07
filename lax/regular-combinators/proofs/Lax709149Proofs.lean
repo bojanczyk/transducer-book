@@ -1,3 +1,5 @@
+import Lax709149Proofs.Bridge
+import Lax709149Proofs.Results
 import Lax709149Proofs.Source.PartC.CombAtomConcat
 import Lax709149Proofs.Source.PartC.CombAtomCons
 import Lax709149Proofs.Source.PartC.CombAtomDistr
