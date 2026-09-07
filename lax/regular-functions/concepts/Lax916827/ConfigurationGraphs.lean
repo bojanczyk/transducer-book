@@ -77,14 +77,14 @@ def transOut (M : TwoWay A B Q) (l : Option A) (q : Q) (r : Option A) : List B :
 
 /-- The output strings occurring in the transition function. -/
 def OutLabels (M : TwoWay A B Q) : Set (List B) :=
-  Set.range (fun p : Option A × Q × Option A => M.transOut p.1 p.2.1 p.2.2)
+  Set.range (fun p : Option A × Q × Option A => transOut M p.1 p.2.1 p.2.2)
 
 /-- The finite set of edge labels: the output strings of the transitions. -/
 abbrev Lab (M : TwoWay A B Q) : Type := {o : List B // o ∈ OutLabels M}
 
 /-- The label of the edge produced by a transition. -/
 def labOf (M : TwoWay A B Q) (l : Option A) (q : Q) (r : Option A) : Lab M :=
-  ⟨M.transOut l q r, ⟨(l, q, r), rfl⟩⟩
+  ⟨transOut M l q r, ⟨(l, q, r), rfl⟩⟩
 
 /-- The outgoing edge recorded, in the direction `d`, for the state `q` at a gap
 with adjacent letters `l` and `r`: the left copy of a slice records the
