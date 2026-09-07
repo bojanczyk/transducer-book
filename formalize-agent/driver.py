@@ -28,8 +28,10 @@ import json
 import os
 import re
 import shutil
+import signal
 import subprocess
 import sys
+import time
 import tarfile
 import tempfile
 from datetime import datetime, timedelta, timezone
@@ -645,6 +647,37 @@ def lake_exe(cfg: dict) -> str:
     return cfg.get("lake") or shutil.which("lake") or str(Path.home() / ".elan/bin/lake")
 
 
+def run_capped(cmd: list[str], cwd: Path, env: dict, wall_s: int):
+    """Run `cmd` under a *wall-clock* cap, returning (rc, output). rc None = timed out.
+
+    subprocess's own `timeout` is measured on a monotonic clock, which on macOS
+    stops while the machine is asleep. On a laptop that sleeps, a ninety-minute
+    cap is ninety minutes of *awake* time and can block for half a day -- which
+    is exactly what happened: a build ran 2h14m of wall time against a 90 minute
+    limit that had not yet expired, with the queue stalled behind it.
+
+    The child gets its own process group, because killing `lake` alone leaves it
+    to restart the `lean` worker it was waiting on.
+    """
+    deadline = time.time() + wall_s
+    proc = subprocess.Popen(cmd, cwd=cwd, env=env, text=True,
+                            stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                            start_new_session=True)
+    while True:
+        try:
+            out, err = proc.communicate(timeout=30)
+            return proc.returncode, out + err
+        except subprocess.TimeoutExpired:
+            if time.time() < deadline:
+                continue
+            try:
+                os.killpg(os.getpgid(proc.pid), signal.SIGKILL)
+            except OSError:
+                proc.kill()
+            out, err = proc.communicate()
+            return None, out + err
+
+
 def toolchain_env(cfg: dict) -> dict:
     """The environment a Lean build needs, which launchd does not provide.
 
@@ -691,12 +724,15 @@ def verify_tree(cfg: dict) -> tuple[bool, str]:
 
 def _verify(cfg: dict, ld: Path, limit: int) -> tuple[bool, str]:
     try:
-        r = subprocess.run([lake_exe(cfg), "build"], cwd=ld, env=toolchain_env(cfg),
-                           capture_output=True, text=True, timeout=limit)
+        rc, out = run_capped([lake_exe(cfg), "build"], ld, toolchain_env(cfg), limit)
     except Exception as e:
         return False, f"could not run `lake build`: {e!r}"
-    if r.returncode:
-        tail = "\n".join((r.stdout + r.stderr).strip().splitlines()[-25:])
+    if rc is None:
+        tail = "\n".join(out.strip().splitlines()[-25:]) or "(it printed nothing)"
+        return False, (f"`lake build` was still running after {limit // 60} minutes of "
+                       f"wall-clock time and was killed. The last thing it said:\n\n{tail}")
+    if rc:
+        tail = "\n".join(out.strip().splitlines()[-25:]) or "(it printed nothing)"
         return False, f"`lake build` failed:\n\n{tail}"
     script = ld / "tools" / "print_axioms.sh"
     if script.is_file():
