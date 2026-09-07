@@ -11,7 +11,7 @@ next session or subagent picks up. Keep this file short and current.
 | lax-916827 | `regular-functions` | 29 | 23, all discharged; Source = 136 modules; replay green (9m36s) | committed; content resubmit running | after the record moves: repin S4/S5/S6 (concepts) and S4/S5 (proofs) to it, submit S4/S5/S6 |
 | lax-314295 | `mso-transductions` | 26 | Source = 44 modules, `lake build` green; Bridge/Results pending; pins A @ cf8ade7, B @ 972ebef, C @ 2fb96b2 | **concepts-only draft on the archive** (1b02fa6); Source port committed | (1) Bridge + Results (subagent); (2) replay, commit, resubmit; then S6 repins |
 | lax-709149 | `regular-combinators` | 4 | 1, discharged; Source = 15 modules; replay green (22m) | committed; content resubmit running | after the record moves: none (S7 pins it) |
-| lax-194892 | `polyregular-functions` | 21, archive check green (pinned A @ cf8ade7, C @ 2fb96b2) | Source = 72 modules ported (`PartD/{Statements,PebReach,ChildGraphFor,CGFor,ChildExample}` closure minus S3/S4/S5: 70 `PartD/*` + `PartC/{MarkRat,RegWin}`; `PartD/TwoWayTotal`'s roll-up `import RequestProject.PartC` became `import Lax916827Proofs` + `import Lax314295Proofs` via `port.py --replace-import`), not yet built; proofs pin S4 @ 1b02fa6 | committed concepts (540cf91); submit (1b02fa6) running | after S4's Source builds: (1) Source `lake build` green (sibling overrides are in `.lake/package-overrides.json`); (2) Bridge + Results (17 theorem-concepts); (3) replay, commit, submit |
+| lax-194892 | `polyregular-functions` | 21 | Source = 72 modules, `lake build` green; Bridge/Results pending; pins A @ cf8ade7, B @ 972ebef, C @ 2fb96b2, S4 @ 1b02fa6 (to be repinned to S4's record with proofs) | **concepts-only draft on the archive** (b4e869b); Source port committed | (1) Bridge + Results (subagent, `lake build` gate); (2) after S4's resubmit: repin S4, replay, commit, submit |
 | lax-157538 | `transducers-book` | none (umbrella) | none | empty draft | paper folder + markers, after all seven are drafts; lakefiles require all seven concept and proof packages |
 
 ## Source edits (against the epoch mathlib)
@@ -122,6 +122,19 @@ next session or subagent picks up. Keep this file short and current.
   `(eltEquiv G).symm.group`), `isRegularFun_conj`, then `isRegularUnderRepr_iff`
   / `isRationalUnderRepr_iff` through S3's and S2's bridges. `Ty.Elt`
   keyed matching handled with `show`.
+- S6 (`polyregular-functions`, Part D, 72 modules; `lake build` green
+  2026-09-07 17:20, subagent): `PartC/RegWin.lean:21` port-inserted `open
+  Lax132576Proofs …` removed (closure reaches A and C §1–3 only), `:25`
+  `open Lax916827Proofs.Transducers.RegAut` (split namespace);
+  `PartD/TwoWayTotal.lean:28` `open Lax916827Proofs.Transducers.TwoWay`
+  (split namespace; its roll-up `import RequestProject.PartC` became the
+  root modules of S3 and S4, nothing further needed);
+  `PartD/ForSem.lean:331,340` `_root_.Transducers.ForTest.…` →
+  `_root_.Lax194892Proofs.Transducers.ForTest.…` (prefix rule);
+  `PartD/CGSem.lean:228,241,419,533` `Set.mem_setOf_eq` on `Language`
+  membership → `erw`; `PartD/Statements.lean:58-63` `Continuous.comp/congr`
+  (Part C's, on Part A's `Continuous`; the bare name resolves to mathlib's
+  root `Continuous.comp`) fully qualified. No statement changed.
 - Known ahead (from the port probe of the whole tree, 2026-09-07):
   `Common/PrimrecList.lean` rename `list_drop`/`list_take` to primed names;
   `Common/PrimrecArith.lean:251` `rw` → `simp only` then a `generalize`
