@@ -11,7 +11,7 @@ next session or subagent picks up. Keep this file short and current.
 | lax-916827 | `regular-functions` | 29 | 23, all discharged; Source = 136 modules; replay green (9m36s) | committed; content resubmit running | after the record moves: repin S4/S5/S6 (concepts) and S4/S5 (proofs) to it, submit S4/S5/S6 |
 | lax-314295 | `mso-transductions` | 26 | Source = 44 modules, `lake build` green; Bridge/Results pending; pins A @ cf8ade7, B @ 972ebef, C @ 2fb96b2 | **concepts-only draft on the archive** (1b02fa6); Source port committed | (1) Bridge + Results (subagent); (2) replay, commit, resubmit; then S6 repins |
 | lax-709149 | `regular-combinators` | 4 | 1, discharged; Source = 15 modules; replay green (22m) | committed; content resubmit running | after the record moves: none (S7 pins it) |
-| lax-194892 | `polyregular-functions` | 21 | Source = 72 modules, `lake build` green; Bridge/Results pending; pins A @ cf8ade7, B @ 972ebef, C @ 2fb96b2, S4 @ 1b02fa6 (to be repinned to S4's record with proofs) | **concepts-only draft on the archive** (b4e869b); Source port committed | (1) Bridge + Results (subagent, `lake build` gate); (2) after S4's resubmit: repin S4, replay, commit, submit |
+| lax-194892 | `polyregular-functions` | 21 | 15, all discharged (`lake build` green against the sibling folders); Source = 72 modules; replay not yet run (S4's record has no proofs yet) | committed; **concepts-only draft on the archive** (b4e869b) | after S4's resubmit: repin S4 in proofs, `lax build --replay`, resubmit; paper: markers for Lemma D.2.2 (`exists_regular_reachLang`) and Lemma D.2.5 (`exists_forTransducer_children`) are missing in `pebble.tex` |
 | lax-157538 | `transducers-book` | none (umbrella) | none | empty draft | paper folder + markers, after all seven are drafts; lakefiles require all seven concept and proof packages |
 
 ## Source edits (against the epoch mathlib)
@@ -135,6 +135,14 @@ next session or subagent picks up. Keep this file short and current.
   membership → `erw`; `PartD/Statements.lean:58-63` `Continuous.comp/congr`
   (Part C's, on Part A's `Continuous`; the bare name resolves to mathlib's
   root `Continuous.comp`) fully qualified. No statement changed.
+- S6 Bridge (2026-09-07 17:45, subagent): `ForTest`/`ForProg`,
+  `PebbleAction`/`Pebble`/`PebbleCfg`, `CGLetter` are the distinct types —
+  `toSrc`/`ofSrc` with round trips, `exec_toSrcProg` by induction on the
+  program, `reaches_toSrcPeb`/`computes_toSrcPeb`, `cgLetterEquiv` with the
+  transport of `CGPath`/`cgOut`/`CGOutIs` along the letter bijection,
+  `isForTransducer_map` (letter-to-letter maps are for-transducers via
+  `isRationalFun_map` → regular → polyregular → Thm D.1.1); everything else
+  `rfl`/`Iff.rfl`.
 - Known ahead (from the port probe of the whole tree, 2026-09-07):
   `Common/PrimrecList.lean` rename `list_drop`/`list_take` to primed names;
   `Common/PrimrecArith.lean:251` `rw` → `simp only` then a `generalize`

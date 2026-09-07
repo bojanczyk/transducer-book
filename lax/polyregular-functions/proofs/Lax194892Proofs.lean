@@ -1,3 +1,5 @@
+import Lax194892Proofs.Bridge
+import Lax194892Proofs.Results
 import Lax194892Proofs.Source.PartC.MarkRat
 import Lax194892Proofs.Source.PartC.RegWin
 import Lax194892Proofs.Source.PartD.CGAtom
