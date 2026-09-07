@@ -18,6 +18,16 @@
 
 % commuting diagrams
 \usepackage{tikz-cd}
+% Lax's web view is derived with lualatex and tikz externalization; a tikz-cd
+% diagram inside a macro argument (the exercise solutions) cannot be
+% externalized, so externalization is switched off around every tikzcd.
+% Under plain pdflatex the two commands are no-ops.
+\providecommand\tikzexternaldisable{}
+\providecommand\tikzexternalenable{}
+\let\lax@tikzcd\tikzcd
+\let\lax@endtikzcd\endtikzcd
+\def\tikzcd{\tikzexternaldisable\lax@tikzcd}
+\def\endtikzcd{\lax@endtikzcd\tikzexternalenable}
 % allows multline
 \newcommand{\txt}[1]{\begin{tabular}{c}#1\end{tabular}}
 
