@@ -1,0 +1,20 @@
+name = "Lax132576"
+defaultTargets = ["Lax132576"]
+
+[leanOptions]
+autoImplicit = false
+
+[[require]]
+name = "mathlib"
+git = "https://github.com/leanprover-community/mathlib4"
+rev = "c5ea00351c28e24afc9f0f84379aa41082b1188f"
+
+# Part A of the book: continuity, Mealy machines, primes, aperiodicity (lax-765601)
+[[require]]
+name = "Lax765601"
+git = "https://github.com/bojanczyk/transducer-book"
+rev = "cf8ade7b9a07bf575705db4ddc28bd90b2c6cb74"
+subDir = "lax/mealy-machines/concepts"
+
+[[lean_lib]]
+name = "Lax132576"
