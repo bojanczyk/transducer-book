@@ -71,6 +71,7 @@ RequestProject/
 | `Exercises/ReverseNotRational.lean` | Example `ex:string-reversal-not-rational` of the main text, that string reversal over a two-letter alphabet is not rational (`Transducers.Exercises.not_isRationalFun_reverse`), by the author's argument through Theorem `thm:machine-independent-rational-functions`: the strings `falseⁿ` are pairwise inequivalent for the relation `BoundedVarRel` of reversal (`Transducers.Exercises.not_boundedVarRel_reverse`), so that relation has infinite index.  Exercises `exer:function-that-is-not-rational` and `exer:not-semiring-continuous` used to take this as an explicit hypothesis and are now unconditional |
 | `Exercises/DuplicateNotRational.lean` | Exercise `exer:duplication-not-rational`, that string duplication over a two-letter alphabet is not rational, by the argument the author gives for it: the strings `falseⁿ` are pairwise inequivalent for the relation `BoundedVarRel` of duplication (`Transducers.Exercises.not_boundedVarRel_duplicate`), so that relation has infinite index and Theorem `thm:machine-independent-rational-functions` applies (`Transducers.Exercises.not_isRationalFun_duplicate_boundedVar`).  The statement is the one already proved, by the other argument of the book, as `Transducers.Exercises.not_isRationalFun_duplicate` in `Exercises/PartBC.lean` |
 | `Exercises/NoReverseReversible.lean` | Exercise `exer:no-reverse-reversible`, that the right-to-left reversible Mealy machines can be dropped from the list of primes of Theorem `thm:rational-primes` (`Transducers.Exercises.rational_primes_no_reverse_reversible`, with the shortened list `Transducers.Exercises.PrimeRatNoRevRevFam`): the author's decomposition of a right-to-left reversible machine into the separator `w ↦ w#`, a left-to-right reversible machine over the permutations of the states, a right-to-left flip-flop machine that broadcasts the transformation of the whole input, and a homomorphism that cancels the prefix out of it |
+| `Exercises/CombinatorsEx.lean` | the four exercises of `combinators.tex`: the conditional construction for regular and for rational terms (`regTerm_ite`, `ratTerm_ite`), the replacement of the general identity by its special case at the unit type and its removal altogether (`regTerm_id_replaceable`), the bijectivity of group prefix multiplication together with a regular term for its inverse (`pref_bijective`), and an explicit regular term of type `A* → (A × A)*` for the windows of size two (`regTerm_windows_two`, `windowsTwoTerm`) |
 | `Exercises/TwoDFAEx.lean` | the exercise of `2dfa.tex` on Boolean combinations: the languages of deterministic two-way automata are closed under complement, union and intersection |
 | `Exercises/TwoDFALoop.lean` | loop elimination: the set of inputs on which a deterministic two-way transducer terminates is a regular language |
 | `Exercises/TwoDFAPass.lean` | a two-way deterministic automaton that performs a fixed sequence of left-to-right passes, one one-way automaton after another, rewinding between two passes: the transition function, the count of its states (the *sum* of the numbers of states of the passes, plus one rewinding state per pass) and the characterisation of its language as the non-empty inputs on which every pass accepts |
@@ -257,6 +258,15 @@ all eleven are aliased in `RequestProject/Labels.lean`.
 | Exercise `exer:fo-non-elementary` (first-order sentences of non-elementary succinctness) | `fo_non_elementary` (with `expTower`, `lenOrder`, `expTower_le_lenOrder`) | proved |
 | Exercise `exer:so-logic` (second-order logic defines a non-regular language) | `exists_SO_lang_not_isRegular` (with `SO`, `SO.Sat`, `SO.lang`) | proved |
 | Exercise `exer:fo-suc` (first-order logic with successor only is strictly weaker) | `fo_succ_strictly_weaker` (with `sepLang`, `sepLang_foDefinable`, `FOSuccDefinable`) | proved from the hypothesis `EFSuccSeparation` (the Ehrenfeucht–Fraïssé argument) |
+
+### Combinators (`combinators.tex`)
+
+| Book | Lean | Status |
+| --- | --- | --- |
+| Exercise `exer:if-then-else` (the conditional construction, for regular and for rational terms) | `regTerm_ite`, `ratTerm_ite` (with `boolTy`, `condFun`) | proved |
+| Exercise `exer:identity-function-replacement` (the general identity may be replaced by its special case at `1`, and is not needed at all) | `regTerm_id_replaceable` (with `IdOnlyOne`, `IdFree`, `elimId`, `idOneTerm`, `idTermOf`) | proved |
+| Exercise `exer:group-prefix-multiplication-isomorphism` (group prefix multiplication is an isomorphism) | `pref_bijective` (with `unprefixProd`) | proved |
+| Exercise `exer:windows-of-size-two` (a regular term of type `A* → (A × A)*` for the windows of size two) | `regTerm_windows_two` (with `windowsTwo`, `windowsTwoTerm`) | proved |
 
 ### Polyregular functions, introduction (`polyregular-intro.tex`)
 
@@ -1628,3 +1638,58 @@ reporting only `propext`, `Classical.choice`, `Quot.sound`.
   the product `p a₁ * ⋯ * p aᵢ` used here is the transformation of the *reverse*
   of the prefix, which is what a right-to-left machine applies to it
   (`Transducers.Exercises.rtlProd_apply`).
+
+## Status (the four exercises of Section *Combinators*)
+
+The four exercises of `combinators.tex` that are constructions in the term
+language are now formalised, in `RequestProject/Exercises/CombinatorsEx.lean`,
+and all four are proved outright.
+
+* **`exer:if-then-else`.**  `regTerm_ite` is the author's composition
+  `A → A × (1+1) → (A × 1) + (A × 1) → A + A → B`: pairing with the test,
+  distributivity, the two projections, the co-pairing of the two branches.  The
+  Booleans are `boolTy = 1 + 1`, with `Sum.inl ()` read as *true*, and the
+  conditional itself is `condFun`.  `ratTerm_ite` is the same statement for
+  rational terms, by the author's indirect argument, since pairing is not
+  available there: by Theorem `thm:rational-terms` the functions defined by
+  rational terms are exactly those that are rational under string
+  representation, the set of representations that the test sends to the
+  representation of *true* is a regular language (rational relations are
+  continuous, Theorem `thm:continuity-rational-relations`), and the rational
+  functions are closed under a case distinction over a regular language
+  (`Transducers.isRationalFun_ite_lang`).
+
+* **`exer:identity-function-replacement`.**  Both halves are proved, in one
+  statement: `regTerm_id_replaceable` gives, for every regular term, one term
+  with the same semantics in which the identity atom is used only at the unit
+  type (`IdOnlyOne`) and one in which it does not occur at all (`IdFree`).  The
+  rewriting is `elimId`, which replaces `id A` by `idTermOf A`; `idTermOf` lifts
+  the identity along the three functoriality combinators from `idOneTerm`, the
+  author's `1 → 1 + 1 → 1`, which itself uses no identity atom.  The two
+  predicates are defined by recursion on the term, so nothing of the term
+  language had to be restated.
+
+* **`exer:group-prefix-multiplication-isomorphism`.**  `pref_bijective` says
+  that the semantics of `RegTerm.pref` is bijective and exhibits a regular term
+  for the inverse.  The inverse is the author's: with the output `[g₁,…,gₙ]` and
+  `g₀` the unit, the `i`-th input letter is `gᵢ₋₁⁻¹ gᵢ`; as a function that is
+  `unprefixProd`, the windows of size two of the list with the unit prepended,
+  followed by `(x, y) ↦ x⁻¹ y`, which is definable because the underlying type
+  of the group is finite (`finite_domain_regular_list_function`).
+
+* **`exer:windows-of-size-two`.**  The term is exhibited: `windowsTwoTerm A` is
+  a closed expression of the syntax, and `regTerm_windows_two` says that it
+  computes `windowsTwo` — the function `l ↦ l.zip l.tail`, so that
+  `[1,2,3,4] ↦ [(1,2),(2,3),(3,4)]`.  The route is the author's: map
+  `a ↦ [L a, R a]`, concatenate, split at the letters of the right summand, keep
+  the second component, drop its last entry, and take the head of each block.
+  Exhibiting a term rather than proving `IsRegularTermFun` meant writing out the
+  terms behind the derived combinators that the route uses (`bangTerm`,
+  `nilTerm`, `pureTerm`, `appendTerm`, `inventTerm`, `headTerm`, `tailTerm`,
+  `dropLastTerm`, `dupTerm`), each with its semantics; they are in the same
+  file.
+
+`lake build` succeeds; the file contains no `sorry`, no `axiom` and no
+`native_decide`; `#print axioms` on the four statements reports only `propext`,
+`Classical.choice` and `Quot.sound`, and `tools/gen_labels.py --check`,
+`tools/decl_files.py --check` and `tools/tex_numbering.py --check` pass.

@@ -309,6 +309,7 @@ RequestProject/
 | `Exercises/CompressionSLP.lean`, `Exercises/CompressionRat.lean`, `Exercises/CompressionMapLift.lean`, `Exercises/CompressionReg.lean` | Exercises `exer:rational-compression` and `exer:regular-compression`: operations on grammar compressions, the rational case through a bimachine, Claim `claim:map-compression`, and the induction over the composition tree |
 | `Exercises/RegularGrowth.lean`, `Exercises/RationalGrowth.lean` | the loop analysis of a deterministic automaton and the growth gap theorem for regular languages (`Transducers.Exercises.regular_growth_dichotomy`), and its transport to rational functions (`Transducers.Exercises.rationalFun_growth_dichotomy`, `Transducers.Exercises.rationalFun_loop_of_superPoly`, `Transducers.Exercises.exists_rational_bool_identity_of_superPoly`).  This is the analysis that the solutions of the exercises on the ideals of rational functions rest on; see the addendum at the end of this file |
 | `Exercises/CycleMean.lean` | the maximum cycle mean of an nfa with output: every cycle through a productive state has (output length)/(input length) at most the largest such ratio `p/q` over the cycles with at most `|Q|` transitions (`Transducers.Exercises.CycleMean.cycle_bound`), every path between a reachable and a co-reachable state obeys the same bound up to an additive constant (`Transducers.Exercises.CycleMean.path_bound`), and hence the output length of a rational function on the inputs of length at most `n` is `(p/q)·n` up to an additive constant (`Transducers.Exercises.CycleMean.exists_linear_rate`).  This is the analysis that the exercises on functions of exactly linear output size rest on; see the addendum at the end of this file |
+| `Exercises/CombinatorsEx.lean` | the four exercises of Section *Combinators* (`combinators.tex`): the conditional construction for regular and for rational terms, the elimination of the identity atom, the bijectivity of group prefix multiplication together with a regular term for its inverse, and an explicit regular term for the windows of size two — indexed in `EXERCISES.md`, not here |
 | `Exercises/ChainWords.lean`, `Exercises/SortedPattern.lean`, `Exercises/IdealsOmega.lean` | the `Ω(n^k)` half of the solution of Exercise `exer:polynomial-ideals`: the words produced by a chain of `k` loops, the rational bijection between such a word and a sorted word, and the two rational functions that put `Transducers.Exercises.sortedFun k` among the pre- and post-compositions of a rational function with `Ω(n^k)` outputs (`Transducers.Exercises.exists_rational_sorted_of_omega`) |
 | `Exercises/PatternCover.lean`, `Exercises/PatternCoverRat.lean`, `Exercises/IdealsPoly.lean` | the `O(n^k)` half: the analysis of the strongly connected components of an automaton with no ambiguous cycle and no chain of `k+1` loops, which covers its language by finitely many `k`-patterns (`Transducers.Exercises.RegGrowth.exists_pattern_cover`), the rational realisation of a finite family of `k`-patterns, and the factorisation of a rational function with `O(n^k)` outputs, `k ≥ 1`, through `sortedFun k` (`Transducers.Exercises.exists_rational_factor_through_sorted`) |
 | `Exercises/ForwardPrenex.lean`, `Exercises/ForwardComp.lean`, `Exercises/ForwardStep.lean` | Exercise `exer:forward-for-transducer`: the forward prenex normal form (the two designated positions are the first and the second, so that no last-to-first loop is introduced), the closure of the forward for-transducers under composition, and the fact that the one-step transducer of the enumeration is rational in the first-to-last direction because it is order preserving, hence a bimachine |
@@ -3105,3 +3106,32 @@ added or changed by this run contains a `sorry`, an `axiom` or a
 and `tools/tex_numbering.py --check` all pass, and `tools/print_axioms.sh`
 reports that all 243 aliases depend only on `propext`, `Classical.choice`,
 `Quot.sound`.
+
+## Status (the four exercises of Section *Combinators*)
+
+The run that added this section formalised the four exercises of Section
+*Combinators* (`combinators.tex`) that are constructions in the term language of
+Definition `def:regular-terms`.  They are exercises, not numbered results, so
+they are indexed in `EXERCISES.md`; they are listed here only because they are
+the whole of that run.  All four are **proved outright**, with no hypothesis of
+any kind, in `RequestProject/Exercises/CombinatorsEx.lean`:
+
+| label | Lean name |
+| --- | --- |
+| `exer:if-then-else` | `Transducers.Exercises.regTerm_ite`, `Transducers.Exercises.ratTerm_ite` |
+| `exer:identity-function-replacement` | `Transducers.Exercises.regTerm_id_replaceable` |
+| `exer:group-prefix-multiplication-isomorphism` | `Transducers.Exercises.pref_bijective` |
+| `exer:windows-of-size-two` | `Transducers.Exercises.regTerm_windows_two` |
+
+Nothing of the term language was restated: the file uses `Transducers.Ty`,
+`Transducers.RegTerm` and `Transducers.RegTerm.eval` of `PartC/CombTerms.lean`,
+`Transducers.RatTerm` of `PartC/RatTerms.lean`, the derived combinators of
+`PartC/CombDerived.lean`, and the two characterisations
+`Transducers.regular_iff_regularTerm` and
+`Transducers.rational_iff_rationalTerm`.
+
+**Verification.**  `lake build` succeeds with no errors; the file added by this
+run contains no `sorry`, no `axiom` and no `native_decide`;
+`tools/gen_labels.py --check`, `tools/decl_files.py --check` and
+`tools/tex_numbering.py --check` all pass, and `tools/print_axioms.sh` reports
+that all 248 aliases depend only on `propext`, `Classical.choice`, `Quot.sound`.
