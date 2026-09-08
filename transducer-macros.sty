@@ -1,6 +1,12 @@
-\usepackage{bbm}
+% doublestroke rather than bbm, which has no outline font at all — TeX Live
+% ships bbm10.mf and bbm10.tfm but no bbm10.pfb, so lualatex embeds it as a
+% Type 3 bitmap. That prints, but the web edition converts the fonts a block
+% actually uses into web fonts, and a bitmap is not something it can convert:
+% every \onetype came out as an empty box. dsrom10 is Type 1, the glyph is
+% the same to the eye, and the PDF stops carrying a bitmap font too.
+\usepackage{dsfont}
 
-\newcommand{\onetype}{\mathbbm 1}
+\newcommand{\onetype}{\mathds 1}
 \newcommand{\onelement}{1}
 
 \newcommand{\rightterm}{\mathsf{Right}}

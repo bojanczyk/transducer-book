@@ -472,3 +472,188 @@ In \cref{def:regular-functions-on-types-under-string-representation}, we defined
 \end{itemize}
 
 \end{proof}
+
+
+\exerciseheader
+
+\exer{\label{exer:if-then-else} Recall that we think of the type $\onetype + \onetype$ as representing Booleans. Show that functions definable by regular (or rational) terms are closed under the following conditional construction
+\begin{align*}
+a \in A \mapsto 
+\begin{cases}
+    f_1(a) & \text{if $f(a)$ is true} \\
+    f_2(a) & \text{if $f(a)$ is false}
+\end{cases}
+\qquad \text{ where }
+A \xrightarrow f \onetype + \onetype
+\text{ and }
+A \xrightarrow {f_1,f_2} B.
+\end{align*}
+} { For regular terms, we use the following composition:
+\begin{align*}
+A \xrightarrow{(\idterm, f)} A \times (\onetype + \onetype)  \xrightarrow{\distrterm} (A \times \onetype) + (A \times \onetype) \xrightarrow {\fstterm \times \fstterm} A + A \xrightarrow {\either {f_1} {f_2}} B.
+\end{align*}
+For rational terms we cannot use the pairing in the first step. However, we can an indirect solution: by \cref{thm:rational-terms}, the functions defined by rational terms are exactly those that are rational under string representaiton, and the latter class of functions is closed under the conditional construction.
+}
+
+
+\exer{\label{exer:identity-function-replacement}Show that the general version $A \xrightarrow \idterm A$ of the identity function can be replaced by its special case of $A = \onetype$, and the expressive power of the regular terms is not affected. In fact, even the special case is not needed. }{
+ By induction on the structure of the type $A$, we can lift the identity function from $\onetype$ to arbitrary types. We can implement the identity function on $\onetype$ as follows:
+\begin{align*}
+\onetype \xrightarrow{\rightterm} \onetype + \onetype  \xrightarrow{\codiagterm} \onetype.
+\end{align*}
+}
+
+
+
+\exer{\label{exer:group-prefix-multiplication-isomorphism}Show that group prefix multiplication is an isomorphism.}
+{ 
+    Suppose that the output is 
+    \begin{align*}
+    [g_1,\ldots,g_n].
+    \end{align*}
+    Then the $i$-th element of the input is $g_{i-1}^{-1} g_i$, with the convention that $g_0$ is the identity element of the group.  The inverse is definable by a regular term. A curious question: is whether every bijective regular function has a regular inverse. 
+}
+
+\exer{\label{exer:windows-of-size-two} Write a regular term of type $A^* \to (A \times A)^*$ which outputs all windows of size two in the input list, as in the following example 
+\begin{align*}
+[1,2,3,4] \mapsto [(1,2),(2,3),(3,4)].
+\end{align*}
+}{ 
+    Consider a function 
+    \begin{align*}
+    A &\xrightarrow f (A+A)^* \\
+    a & \mapsto [\leftterm a, \rightterm a].
+    \end{align*}
+If we apply $f^*$ followed by $\concatterm$, then the output looks like this 
+\begin{align*}
+[\leftterm 1, \rightterm 1, \leftterm 2, \rightterm 2, \leftterm 3, \rightterm 3, \leftterm 4, \rightterm 4].
+\end{align*}
+We now apply $\splitterm$ to this output, which yields a value like this
+\begin{align*}
+([\leftterm 1],[(\rightterm 1, [\leftterm 2]), (\rightterm 2, [\leftterm 3]), (\rightterm 3, [\leftterm 4]), (\rightterm 4, [])]).
+\end{align*}
+Now project to the second coordinate, giving a value like this: 
+\begin{align*}
+[(\rightterm 1, [\leftterm 2]), (\rightterm 2, [\leftterm 3]), (\rightterm 3, [\leftterm 4]), (\rightterm 4, [])].
+\end{align*}
+Remove the last list element, and apply $(\idterm, \headterm)^*$, leading to the correct output.
+}
+
+
+
+
+
+\knowledgeconfigure{quotation=false}% tikzcd "..." labels need catcode-12 quotes inside \exer
+
+\exer{\label{exer:natural-identity} Consider a family of functions 
+\begin{align*}
+A \xrightarrow {f_A} A \qquad \text{for each type $A$},
+\end{align*}
+which is natural in the sense that the diagram
+\[
+\begin{tikzcd}[ampersand replacement=\&]
+A \arrow[r, "f_A"] \arrow[d, "g"'] \& A \arrow[d, "g"] \\
+B \arrow[r, "f_B"'] \& B
+\end{tikzcd}
+\]
+commutes for every function $g: A \to B$. Show that each $f_A$ must be the identity function on $A$.
+}
+{
+    We do not even need to compare the functions for different types $A$. Consider some type $A$  and a function $f : A\to A$ 
+    which is natural in the sense that $f;g = g;f$ holds for every function $g : A \to A$. We will show that $f$ must be the identity function. Indeed, let $a \in A$ and take a function $g$ which maps all elements to $a$. Then we have 
+    \begin{align*}
+       a \quad  \stackrel{\text{definition of $g$}} = \quad    
+       g(f(a))
+       \quad  \stackrel{\text{naturality}} = \quad 
+        f(g(a)) 
+      \quad  \stackrel{\text{definition of $g$}} = \quad   
+        f(a) .
+    \end{align*}
+}
+
+Let us continue the discussion of naturality. For the purposes of these exercises, define a \emph{functor} to be an expression  that is built from a type variable $A$ by using the type constructors from \cref{def:types}, such as the following expressions \begin{align*}
+F(A) = A^* \qquad \text{or} \qquad   G(A) =  \onetype + A \times A^*.
+\end{align*}
+A functor can be applied to both types and to functions. For example, if we apply the functor $G$ above to some function $f : A \to B$, then we get a function
+\begin{align*}
+    \onetype + A \times A^* \xrightarrow {G(f)} \onetype + B \times B^*.
+\end{align*}
+Suppose that we have two functors $F$ and $G$ and a family of functions 
+\begin{align*}
+F(A) \xrightarrow {f_A} G(A) \qquad \text{for every type $A$}.
+\end{align*}
+We say that the family is a \emph{natural transformation} if for every function $g : A \to B$ the following diagram commutes:
+\[
+\begin{tikzcd}[ampersand replacement=\&]
+F(A) \arrow[r, "f_A"] \arrow[d, "G(g)"'] \& G(A) \arrow[d, "G(g)"] \\
+F(B) \arrow[r, "f_B"'] \& G(B)
+\end{tikzcd}
+\]
+
+
+
+\exer{ \label{exer:head-operation-natural} Show that there is no natural transformation of type $A^* \to A$. In particular, the   $\headterm$ operation from \cref{claim:head} is not  a natural transformation.
+}{
+    Take any type $A$ and apply $f_A$ to the empty list, yielding some $a \in A$.  Take now any type $B$ that has at least two elements, e.g.~$B = \onetype + \onetype$, 
+    and consider two functions 
+    \begin{align*}
+    A \xrightarrow {g_1, g_2} B
+    \end{align*}
+    which have different outputs when applied to $a$. (Such a functions can always be found, and even they can be defined by regular or even rational terms.) From naturality, we would need to have 
+    \begin{align*}
+    g_1(f_A([])) = f_B((g_1)^*([])) = f_B([]) = f_B((g_2)^*([])) = g_2(f_A([])),
+    \end{align*}
+     a contradiction.
+}
+
+
+\exer{\label{exer:natural-list-function} Show that there are uncountably many natural transformations of type $A^* \to A^*$.
+}{
+    Choose some function 
+    \begin{align*}
+     \set{1,2,\ldots} \xrightarrow \alpha  \set{1,2,\ldots}^*
+     \quad \text{such that $\alpha(n)$ uses only letters from $\set{1,\ldots,n}$},
+    \end{align*}
+    which can be done in uncountably many ways. To this function we will associate a natural transformation, which is different for each choice of $\alpha$, thus proving part (b). The idea is that $\alpha$ tells us how the output list is constructed from the input list, by telling which input list element will be used for which output list element. Having fixed $\alpha$, define a family of functions as follows. The empty list is mapped to itself, and nonempty lists are mapped as follows:
+    \begin{align*}
+   [a_1,\ldots,a_n] \quad \stackrel{f_A} \mapsto \quad  [a_{\alpha(1)},\ldots,a_{\alpha(n)}].
+    \end{align*}
+    One can check that this family is natural, and that different choices of $\alpha$ lead to different families, thus proving part (b). One can, in fact, shown that all natural transformations arise in this way. Indeed, take some natural transformation. To define $\alpha$, we check what this natural transformation does for some infinite type $A$. Take such a type, and consider the output of $f_A$ on a non-repeating list $[a_1,\ldots,a_n]$. By naturality, the output list can only contain elements from the input list, and the pattern in which these elements appear can be used to define $\alpha(n)$. 
+}
+
+\exer{\label{exer:natural-transformations-from-A}  Show that all natural transformations of type $A \to A^*$ are regular (i.e.~regular for each type). }{
+    By similar reasoning as in the previous exercise, one can show that such a natrual transformation is uniquely determined by the length of the output list, and it must simply repeat the input element that many times. 
+}
+
+
+
+\exer{\label{exer:natural-transformations-from-regular-terms} The notion of natural transformation is easily extended to functors that use multiple type variables. With the exception of group prefix multiplicaiton, the atomic functions in \cref{def:regular-terms}  are indexed by types, and hence they can potentially be natural transformations. Show that they are indeed natural transformations. 
+}{
+ A routine inspection.
+}
+
+\exer{\label{exer:natural-transformations-list-free} Consider a natural transformation, possibly with more than one type parameter, where the domain functor does not use the list constructor. Show that such a natural transformation is definable by a regular term. \footnote{As a corollary, we could more succinctly say that the atomic functions in \cref{def:regular-terms} are all natural transformations, as well as the functions that have lists in their domain, which are group prefix multiplication, $\reverseterm, \consterm, \unconsterm, \concatterm$ and $\splitterm$.}
+}{
+    Suppose first that the domain type is a product 
+    \begin{align*}
+    F(A_1,\ldots,A_n) = A_{i_1} \times \cdots \times A_{i_k},
+    \end{align*}
+    in which the types might be repeated.  By a similar analysis to to the one in \cref{exer:natural-list-function}, we can show that the natural transformation constructs the output in some fixed shape, with pointers to the input types (if a type variable appears multiple times in the input type, then the pointer must choose which one to use). For example, if we consider a natural transformation of type
+    \begin{align*}
+    A \times A \times B \to ((A+B)^* \times A)^* + A,
+    \end{align*}
+    then the outer $+$ must always be resolved in the same way, every output element from $B$ must be replaced by the input element from $B$, and every output element from $A$ must be replaced by either the first or the second input element from $A$, with the choice not depending on the type or input value.
+
+    Let us now consider the general case. One can easily show that a natural transformation are closed under composition. Since distributivity is a natural transformation it follows that if we have  a natural transformation with domain 
+    \begin{align*}
+    A \times (B + C),
+    \end{align*}
+    then precomposing it with distributivity must yield a natural transformation with domain
+    \begin{align*}
+    A \times B + A \times C.
+    \end{align*}
+    As a result, we can use distributivity to reduce the domain of a natural transformation to a disjoint union of products of types. If the input type is a disjoint union, then the natural transformation is necessarily obtained by combining two natural transformations, one for each summand. Therefore, we can reduce to the case of a natural transformation whose domain is a product of type variables, which we have already analysed.
+}
+
+
+\knowledgeconfigure{quotation=true}
