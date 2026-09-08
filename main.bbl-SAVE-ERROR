@@ -65,6 +65,56 @@
       \verb https://doi.org/10.4230/LIPIcs.FSTTCS.2010.1
       \endverb
     \endentry
+    \entry{alurFreilichRaghothaman2014}{inproceedings}{}{}
+      \name{author}{3}{}{%
+        {{hash=29db5b94c11f4e678669998ac7867043}{%
+           family={Alur},
+           familyi={A\bibinitperiod},
+           given={Rajeev},
+           giveni={R\bibinitperiod}}}%
+        {{hash=23bbb4c6b320556413755deaf43cada2}{%
+           family={Freilich},
+           familyi={F\bibinitperiod},
+           given={Adam},
+           giveni={A\bibinitperiod}}}%
+        {{hash=bbb784f797cfdf00501e4654aa5cb465}{%
+           family={Raghothaman},
+           familyi={R\bibinitperiod},
+           given={Mukund},
+           giveni={M\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {ACM}%
+      }
+      \strng{namehash}{61fcf9c84750798bfbf0c3f73f745150}
+      \strng{fullhash}{61fcf9c84750798bfbf0c3f73f745150}
+      \strng{fullhashraw}{61fcf9c84750798bfbf0c3f73f745150}
+      \strng{bibnamehash}{61fcf9c84750798bfbf0c3f73f745150}
+      \strng{authorbibnamehash}{61fcf9c84750798bfbf0c3f73f745150}
+      \strng{authornamehash}{61fcf9c84750798bfbf0c3f73f745150}
+      \strng{authorfullhash}{61fcf9c84750798bfbf0c3f73f745150}
+      \strng{authorfullhashraw}{61fcf9c84750798bfbf0c3f73f745150}
+      \field{labelalpha}{AFR14}
+      \field{sortinit}{A}
+      \field{sortinithash}{2f401846e2029bad6b3ecc16d50031e2}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{CSL-LICS 2014}
+      \field{note}{A full version, with the proofs and constructions omitted for space, is available as arXiv:1402.3021}
+      \field{title}{Regular Combinators for String Transformations}
+      \field{year}{2014}
+      \field{pages}{9:1\bibrangedash 9:10}
+      \range{pages}{-1}
+      \verb{doi}
+      \verb 10.1145/2603088.2603151
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.1145/2603088.2603151
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1145/2603088.2603151
+      \endverb
+    \endentry
     \entry{AhoHopcroftUllman1969}{article}{}{}
       \name{author}{3}{}{%
         {{hash=87e9142329f09390b038692270dc2168}{%

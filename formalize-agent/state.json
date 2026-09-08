@@ -39,7 +39,12 @@
     "hyp-two-way-bound",
     "hyp-iterates-reduction",
     "C5-types-and-terms",
-    "C5-terms-converse"
+    "C5-terms-converse",
+    "exercises-two-new",
+    "C5-restructure",
+    "C5-rational-terms",
+    "C5-exercises-terms",
+    "C5-exercises-natural"
   ],
   "targets": {
     "B-effectivity-conditional": {
@@ -1014,7 +1019,7 @@
       "idle_continues": 1
     },
     "C5-terms-converse": {
-      "status": "running",
+      "status": "done",
       "attempts": 3,
       "continues": 0,
       "reattempts": 0,
@@ -1024,7 +1029,7 @@
         "3065ee6d-20e3-4e7b-b228-a1160e52fa60"
       ],
       "started_at": "2026-09-04 04:40:03Z",
-      "finished_at": null,
+      "finished_at": "2026-09-04 13:16:58Z",
       "note": null,
       "sorries_at_start": 0,
       "runs": [
@@ -1051,20 +1056,129 @@
         }
       ],
       "idle_continues": 0
+    },
+    "exercises-two-new": {
+      "status": "done",
+      "attempts": 1,
+      "continues": 0,
+      "reattempts": 0,
+      "task_ids": [
+        "0c343c7c-b28f-4354-99a9-31a70dd87d48"
+      ],
+      "started_at": "2026-09-07 06:04:06Z",
+      "finished_at": "2026-09-07 09:56:23Z",
+      "note": null,
+      "sorries_at_start": 0,
+      "runs": [
+        {
+          "task_id": "0c343c7c-b28f-4354-99a9-31a70dd87d48",
+          "project_id": "c0622a94-0e6d-4901-a09a-14f40952ec53",
+          "base": "3e563f3fe920a44623f8625ee1053167595a0e63",
+          "kind": "initial",
+          "at": "2026-09-07 06:04:06Z"
+        }
+      ],
+      "idle_continues": 0
+    },
+    "C5-restructure": {
+      "status": "done",
+      "attempts": 2,
+      "continues": 1,
+      "reattempts": 0,
+      "task_ids": [
+        "a99576a5-5598-4f81-8ac3-591bb4a90a19",
+        "d975a5e7-0f19-4b0f-8551-bbdc8c64c25f"
+      ],
+      "started_at": "2026-09-07 09:56:31Z",
+      "finished_at": "2026-09-07 19:48:44Z",
+      "note": "stopped after 1 continuation(s) with no .lean change",
+      "sorries_at_start": 0,
+      "runs": [
+        {
+          "task_id": "a99576a5-5598-4f81-8ac3-591bb4a90a19",
+          "project_id": "9ec93bd8-06dd-47ba-afc3-b82e2e1fba6c",
+          "base": "02ca98aca217b97fbf43ef276dcc4e3b9aed5881",
+          "kind": "initial",
+          "at": "2026-09-07 09:56:31Z"
+        },
+        {
+          "task_id": "d975a5e7-0f19-4b0f-8551-bbdc8c64c25f",
+          "project_id": "371bc837-2473-43cf-a08d-c6416c640429",
+          "base": "6da809f58b288110174d98b84738b483544d0b87",
+          "kind": "continue",
+          "at": "2026-09-07 14:01:37Z"
+        }
+      ],
+      "idle_continues": 1
+    },
+    "C5-rational-terms": {
+      "status": "done",
+      "attempts": 1,
+      "continues": 0,
+      "reattempts": 0,
+      "task_ids": [
+        "03901865-608e-4c0c-b9be-a53791741870"
+      ],
+      "started_at": "2026-09-07 19:49:01Z",
+      "finished_at": "2026-09-08 00:15:56Z",
+      "note": null,
+      "sorries_at_start": 0,
+      "runs": [
+        {
+          "task_id": "03901865-608e-4c0c-b9be-a53791741870",
+          "project_id": "84801f13-d4a5-450d-8009-262f4c989a15",
+          "base": "8a17f6829d5122529fb6297302fbc95b701d87a5",
+          "kind": "initial",
+          "at": "2026-09-07 19:49:01Z"
+        }
+      ],
+      "idle_continues": 0
+    },
+    "C5-exercises-terms": {
+      "status": "running",
+      "attempts": 1,
+      "continues": 0,
+      "reattempts": 0,
+      "task_ids": [
+        "0fcd23fa-bf62-425e-857f-b27d6fbf2ef5"
+      ],
+      "started_at": "2026-09-08 01:09:07Z",
+      "finished_at": null,
+      "note": null,
+      "sorries_at_start": 0,
+      "runs": [
+        {
+          "task_id": "0fcd23fa-bf62-425e-857f-b27d6fbf2ef5",
+          "project_id": "98246616-2e2d-4114-992e-a39710e62092",
+          "base": "6967ceb2214bd88e79e8e6a1afba5c72d30ef734",
+          "kind": "initial",
+          "at": "2026-09-08 01:09:07Z"
+        }
+      ]
+    },
+    "C5-exercises-natural": {
+      "status": "pending",
+      "attempts": 0,
+      "continues": 0,
+      "reattempts": 0,
+      "task_ids": [],
+      "started_at": null,
+      "finished_at": null,
+      "note": null
     }
   },
   "current": {
-    "target_id": "C5-terms-converse",
-    "task_id": "3065ee6d-20e3-4e7b-b228-a1160e52fa60",
-    "project_id": "978f91d6-f514-45fa-b6cf-6cfd76a5ce47",
-    "base": "71bb2afe64135ee2942b9ee6d1d7e96dd310d59b",
-    "submitted_at": "2026-09-04 08:16:42Z",
+    "target_id": "C5-exercises-terms",
+    "task_id": "0fcd23fa-bf62-425e-857f-b27d6fbf2ef5",
+    "project_id": "98246616-2e2d-4114-992e-a39710e62092",
+    "base": "6967ceb2214bd88e79e8e6a1afba5c72d30ef734",
+    "submitted_at": "2026-09-08 01:09:07Z",
     "kind": "initial"
   },
-  "paused": true,
-  "pause_reason": "C5-terms-converse merged but does not build",
+  "paused": false,
+  "pause_reason": null,
   "finished_at": null,
-  "ticks": 774,
-  "last_tick": "2026-09-04 13:15:24Z",
-  "review_pending": 5
+  "ticks": 879,
+  "last_tick": "2026-09-08 01:32:41Z",
+  "review_pending": 8
 }

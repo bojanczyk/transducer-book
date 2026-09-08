@@ -4,6 +4,7 @@ weight = 110
 source = "partCRegular/regular-primes.tex"
 +++
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp dc100cb4
 % Generated chapter wrapper; source body remains untouched.
 \setcounter{mypart}{3}
 \setcounter{section}{0}
@@ -17,6 +18,7 @@ source = "partCRegular/regular-primes.tex"
 <div class="exercises">
 <div class="exercise" id="exercise-1">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp dc100cb4
 \setcounter{mypart}{3}\setcounter{section}{1}\setcounter{theorem}{5}\setcounter{exercise}{0}
 \begin{exercise}
 \label{exer:two-letter-alphabet-suffices}In  Definition~\ref{def:regular-functions}, we use map reverse and map duplicate over arbitrary alphabets of the form $A + 1$. Show that the definition remains the same if we only consider $A$ with two letters.
@@ -26,6 +28,7 @@ source = "partCRegular/regular-primes.tex"
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp dc100cb4
 \setcounter{mypart}{3}\setcounter{section}{1}\setcounter{theorem}{5}
 \noindent\textbf{Solution.}\quad One inclusion is immediate, since a two-letter alphabet is a special case. For the converse inclusion, we show how map reverse and map duplicate for an arbitrary alphabet $A$ can be simulated using their two-letter counterparts, together with rational functions.
 
@@ -48,6 +51,7 @@ source = "partCRegular/regular-primes.tex"
 </div>
 <div class="exercise" id="exercise-2">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp dc100cb4
 \setcounter{mypart}{3}\setcounter{section}{1}\setcounter{theorem}{5}\setcounter{exercise}{1}
 \begin{exercise}
 \label{exer:not-semiring-continuous} Show that weighted automata over arbitrary semirings are not closed under pre-composition with regular functions.
@@ -57,6 +61,7 @@ source = "partCRegular/regular-primes.tex"
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp dc100cb4
 \setcounter{mypart}{3}\setcounter{section}{1}\setcounter{theorem}{5}
 \noindent\textbf{Solution.}\quad By \cref{thm:characterisation-rational-functions-weighted-automata}, a function is rational if and only if weighted automata are closed under pre-composition with it. Therefore, it is enough to show that there exists a regular function which is not rational. The string reverse function is regular, but not rational as we have shown in Example \ref{ex:string-reversal-not-rational}.
 {{< /latex >}}

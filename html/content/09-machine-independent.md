@@ -4,11 +4,12 @@ weight = 90
 source = "partBRational/myhill-nerode.tex"
 +++
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp ef840534
 % Generated chapter wrapper; source body remains untouched.
 \setcounter{mypart}{2}
 \setcounter{section}{3}
 \setcounter{ourexamplecounter}{14}
-% source stamp partBRational/myhill-nerode.tex:ac15a8e3
+% source stamp partBRational/myhill-nerode.tex:97bd514b
 \renewcommand{\exer}[2]{}
 \input{../../../partBRational/myhill-nerode.tex}
 {{< /latex >}}
@@ -17,7 +18,27 @@ source = "partBRational/myhill-nerode.tex"
 <div class="exercises">
 <div class="exercise" id="exercise-1">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp ef840534
 \setcounter{mypart}{2}\setcounter{section}{4}\setcounter{theorem}{13}\setcounter{exercise}{0}
+\begin{exercise}
+\label{exer:duplication-not-rational} Show that string duplication is not rational.
+\end{exercise}
+{{< /latex >}}
+<details class="solution">
+<summary>Show solution</summary>
+<div class="solution-body">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp ef840534
+\setcounter{mypart}{2}\setcounter{section}{4}\setcounter{theorem}{13}
+\noindent\textbf{Solution.}\quad Similarly to string reversal, the relation $\sim$ from Theorem~\ref{thm:machine-independent-rational-functions} has infinite index for the duplication function; in fact all strings are pairwise non-equivalent.
+{{< /latex >}}
+</div>
+</details>
+</div>
+<div class="exercise" id="exercise-2">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp ef840534
+\setcounter{mypart}{2}\setcounter{section}{4}\setcounter{theorem}{13}\setcounter{exercise}{1}
 \begin{exercise}
 \label{exer:minimal-sequential} We order sequential transducers by the number of states. Show that minimal sequential transducers are unique up to isomorphism.
 \end{exercise}
@@ -26,6 +47,7 @@ source = "partBRational/myhill-nerode.tex"
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp ef840534
 \setcounter{mypart}{2}\setcounter{section}{4}\setcounter{theorem}{13}
 \noindent\textbf{Solution.}\quad This is the Myhill-Nerode theorem for sequential transducers. The key point, which is also what distinguishes this exercise from the following one, is that the output of each transition is already determined by the function. Indeed, a sequential function is prefix preserving, and therefore the transition which reads the $i$-th letter must produce
     \begin{align*}
@@ -48,9 +70,10 @@ source = "partBRational/myhill-nerode.tex"
 </div>
 </details>
 </div>
-<div class="exercise" id="exercise-2">
+<div class="exercise" id="exercise-3">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-\setcounter{mypart}{2}\setcounter{section}{4}\setcounter{theorem}{13}\setcounter{exercise}{1}
+% context stamp ef840534
+\setcounter{mypart}{2}\setcounter{section}{4}\setcounter{theorem}{13}\setcounter{exercise}{2}
 \begin{exercise}
 \label{exer:minimal-subsequential} We order subsequential transducers by the number of states. Show that minimal subsequential transducers are not unique up to isomorphism.
 \end{exercise}
@@ -59,6 +82,7 @@ source = "partBRational/myhill-nerode.tex"
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp ef840534
 \setcounter{mypart}{2}\setcounter{section}{4}\setcounter{theorem}{13}
 \noindent\textbf{Solution.}\quad The end-of-input function makes it possible to produce the same output either while reading the input, or at the very end, and the state structure does not resolve this ambiguity. Consider the function over a one-letter input alphabet defined by
     \begin{align*}
@@ -73,9 +97,10 @@ source = "partBRational/myhill-nerode.tex"
 </div>
 </details>
 </div>
-<div class="exercise" id="exercise-3">
+<div class="exercise" id="exercise-4">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-\setcounter{mypart}{2}\setcounter{section}{4}\setcounter{theorem}{13}\setcounter{exercise}{2}
+% context stamp ef840534
+\setcounter{mypart}{2}\setcounter{section}{4}\setcounter{theorem}{13}\setcounter{exercise}{3}
 \begin{exercise}
 \label{exer:non-minimal-bimachine} Consider bimachines ordered by the number of states in the suffix automaton.  Show that  minimal bimachines are not unique up to isomorphism.
 \end{exercise}
@@ -84,6 +109,7 @@ source = "partBRational/myhill-nerode.tex"
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp ef840534
 \setcounter{mypart}{2}\setcounter{section}{4}\setcounter{theorem}{13}
 \noindent\textbf{Solution.}\quad This is already true for languages, i.e.~for functions of type
 \begin{align*}
@@ -98,9 +124,10 @@ It remains to explain why four states cannot be improved. Since the output is on
 </div>
 </details>
 </div>
-<div class="exercise" id="exercise-4">
+<div class="exercise" id="exercise-5">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-\setcounter{mypart}{2}\setcounter{section}{4}\setcounter{theorem}{13}\setcounter{exercise}{3}
+% context stamp ef840534
+\setcounter{mypart}{2}\setcounter{section}{4}\setcounter{theorem}{13}\setcounter{exercise}{4}
 \begin{exercise}
 \label{exer:non-minimal-automaton} Give an example of a rational function which has two non-isomorphic unambiguous transducers of minimal size (the size is the number of states).
 \end{exercise}
@@ -109,6 +136,7 @@ It remains to explain why four states cannot be improved. Since the output is on
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp ef840534
 \setcounter{mypart}{2}\setcounter{section}{4}\setcounter{theorem}{13}
 \noindent\textbf{Solution.}\quad The parity function from \cref{exer:non-minimal-bimachine} can be used, i.e.~the function which maps $a^n$ to the one-letter string that says if $n$ is even. We first observe that in every transducer for this function, all cycles that appear in accepting runs have empty output: repeating such a cycle would give the unique accepting run of a longer input string, and its output would have more than one letter. Therefore the output letter is produced in a bounded part of the run, which can be at its beginning or at its end, and this is where the two transducers differ.
 

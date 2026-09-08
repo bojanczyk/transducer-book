@@ -5,6 +5,7 @@ source = "partDPolyregular/intro.tex"
 part = true
 +++
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 01ab3343
 % Generated chapter wrapper; source body remains untouched.
 \setcounter{mypart}{4}
 \setcounter{section}{0}
@@ -18,6 +19,7 @@ part = true
 <div class="exercises">
 <div class="exercise" id="exercise-1">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 01ab3343
 \setcounter{mypart}{4}\setcounter{section}{0}\setcounter{theorem}{2}\setcounter{exercise}{0}
 \begin{exercise}
 \label{exer:polyregular-marked-squaring-compression} Show that marked squaring is not   compatible with compression, as defined in~\cref{exer:rational-compression}.
@@ -27,6 +29,7 @@ part = true
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 01ab3343
 \setcounter{mypart}{4}\setcounter{section}{0}\setcounter{theorem}{2}
 \noindent\textbf{Solution.}\quad Suppose that the input to marked squaring is the string $a^N$ with $N = 2^n$, which has a grammar compression of size linear in $n$, obtained by repeated doubling. We will show that the output of marked squaring has no grammar compression of size subexponential in $n$. The crucial observation is that the distances between consecutive underlined letters in the output take exponentially many values, while a grammar can only produce a linear number of such distances.
 
@@ -47,6 +50,7 @@ Indeed, the output of marked squaring on $a^N$ is the concatenation of the strin
 </div>
 <div class="exercise" id="exercise-2">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 01ab3343
 \setcounter{mypart}{4}\setcounter{section}{0}\setcounter{theorem}{3}\setcounter{exercise}{1}
 \begin{exercise}
 \label{exer:polyregular-unmarked-squaring} Suppose that we replace marked squaring with the (unmarked) squaring operation from \cref{exer:squaring-continuous}. Show that the resulting class of functions  is a strict subset of the polyregular functions.
@@ -56,6 +60,7 @@ Indeed, the output of marked squaring on $a^N$ is the concatenation of the strin
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 01ab3343
 \setcounter{mypart}{4}\setcounter{section}{0}\setcounter{theorem}{3}
 \noindent\textbf{Solution.}\quad (Unmarked) squaring is compatible with compression. Indeed, given a grammar compression of $w$, the length $|w|$ is computed in polynomial time, as a number with polynomially many bits, and a grammar for $w^{|w|}$ is obtained by adding $\Oo(\log |w|)$ rules that double the string, together with a bounded number of extra rules for the remaining copies, according to the binary representation of $|w|$. Therefore the resulting class of functions would be compatible with compression, while polyregular functions are not, by \cref{exer:polyregular-marked-squaring-compression}. The result would continue to hold if we added map lifting to the closure properties, while still keeping the squaring operation unmarked. This is because map lifting preserves compatibility with compression, as we have shown in the solution to \cref{exer:regular-compression}.
 {{< /latex >}}

@@ -128,18 +128,37 @@ which changes the key and nothing else:
 
 - `% source stamp intro.tex:8a3f2b1c` inside the chapter's own block, so
   editing that chapter recompiles that chapter;
+- `% context stamp 4d9e0f21` at the top of every block on a page, covering what
+  that page is shown from elsewhere: the numbers of the labels it `\ref`s and
+  the `main.bbl` entries it cites. A `\ref` is typeset as whatever number the
+  continuous build gave it, and a chapter showing last week's numbering is stale
+  in the same silent way as one whose text is out of date;
 - one stamp in `latex-preambles/book.tex`, which is part of *every* block's key
   by construction, covering what every block reads through the preamble:
-  `../macros.sty`, `../knowledges.tex`, the picture file — and the numbers in
-  `../main.aux`, since a `\ref` is typeset as whatever number the continuous
-  build gave it, and a chapter showing last week's numbering is stale in the
-  same silent way.
+  `../macros.sty`, `../transducer-macros.sty`, `../knowledges.tex` and the
+  picture file.
 
 Only the *numbers* are taken from `main.aux`, not the whole file: page numbers
-move whenever anything above them grows, and recompiling the whole book because
-a paragraph got longer would make every build a cold one. Expect a cold build
-whenever a numbered result is added or removed, though — that really does
-change what other chapters print.
+move whenever anything above them grows, and recompiling a chapter because a
+paragraph above it got longer would make every build a cold one. `main.bbl` is
+read the same way, entry by entry.
+
+The numbers being per page rather than shared is the point, and it was not the
+original arrangement. Hashing every label in the book into the shared stamp is
+simpler and equally correct, and it is what this did until 2026-09-08 — but the
+theorem and example counters run through the whole book, so inserting one
+theorem in Part A renumbers everything after it, and *every build after any
+insertion was a cold build of all 229 blocks*. Chapters barely refer to each
+other: of the labels referenced anywhere, 116 are used by exactly one chapter
+and only four by more than three. Per page, renumbering `thm:rational-primes`
+recompiles the five chapters that mention it.
+
+One thing still renumbers everything, and it is not the cache's doing:
+`ourexamplecounter` is never reset, so `build-references.py` writes a running
+start value into every page and adding an example in Part A changes the
+`\setcounter` line of every page after it. Those pages then differ in their own
+text and recompile for that reason. Only per-chapter example numbering would
+change that, and it would change what the printed book prints.
 
 Copying the chapters into `content/` so that reflowtex could hash them would
 also have worked, and was rejected: there is deliberately one copy of the

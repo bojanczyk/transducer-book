@@ -5,6 +5,7 @@ source = "partCRegular/intro.tex"
 part = true
 +++
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 7d4c7c8b
 % Generated chapter wrapper; source body remains untouched.
 \setcounter{mypart}{3}
 \setcounter{section}{0}
@@ -18,6 +19,7 @@ part = true
 <div class="exercises">
 <div class="exercise" id="exercise-1">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 7d4c7c8b
 \setcounter{mypart}{3}\setcounter{section}{0}\setcounter{theorem}{1}\setcounter{exercise}{0}
 \begin{exercise}
 \label{exer:regular-compression} Show that regular functions are compatible with compression, as defined in~\cref{exer:rational-compression}.
@@ -27,6 +29,7 @@ part = true
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 7d4c7c8b
 \setcounter{mypart}{3}\setcounter{section}{0}\setcounter{theorem}{1}
 \noindent\textbf{Solution.}\quad Functions compatible with compression are clearly closed under composition, and contain all rational functions by \cref{exer:rational-compression}. It remains to show that both map reverse and map duplicate are compatible with compression.  It is easy to see that both reverse and duplicate (without map) are compatible with compression, and thus it remains to show the following claim. 
 \begin{claim}\label{claim:map-compression}

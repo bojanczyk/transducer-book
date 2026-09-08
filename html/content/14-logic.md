@@ -4,6 +4,7 @@ weight = 140
 source = "partCRegular/logic.tex"
 +++
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp fd5dea9c
 % Generated chapter wrapper; source body remains untouched.
 \setcounter{mypart}{3}
 \setcounter{section}{3}
@@ -17,6 +18,7 @@ source = "partCRegular/logic.tex"
 <div class="exercises">
 <div class="exercise" id="exercise-1">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp fd5dea9c
 \setcounter{mypart}{3}\setcounter{section}{4}\setcounter{theorem}{16}\setcounter{exercise}{0}
 \begin{exercise}
 \label{exer:mealy-as-restricted-mso-relabelling}Show that a function $f : A^* \to B^*$ is computed by a Mealy machine if and only if it is definable by an \mso relabelling with the following additional restrictions imposed on Definition~\ref{def:mso-relabeling}:
@@ -31,6 +33,7 @@ source = "partCRegular/logic.tex"
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp fd5dea9c
 \setcounter{mypart}{3}\setcounter{section}{4}\setcounter{theorem}{16}
 \noindent\textbf{Solution.}\quad Consider first a function computed by a Mealy machine. As the set of formulas we take one formula $\varphi_t(x)$ for each transition $t$, which says that transition $t$ is used in position $x$; this can be written in \mso as in Claim~\ref{claim:transition-formula}. Since the machine is deterministic, exactly one of these formulas is true in each position, as required in the definition of an \mso relabelling. The three additional restrictions are satisfied: a Mealy machine maps the empty string to the empty string; the output map, which sends $\varphi_t$ to the output letter of the transition $t$, produces one-letter strings; and the formulas depend only on the past, because the transition used in a position is determined by the prefix up to and including this position.
 
@@ -45,6 +48,7 @@ source = "partCRegular/logic.tex"
 </div>
 <div class="exercise" id="exercise-2">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp fd5dea9c
 \setcounter{mypart}{3}\setcounter{section}{4}\setcounter{theorem}{16}\setcounter{exercise}{1}
 \begin{exercise}
 \label{exer:fo-non-elementary}
@@ -62,6 +66,7 @@ Consider first-order formulas that define languages. Show that for every $n \in 
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp fd5dea9c
 \setcounter{mypart}{3}\setcounter{section}{4}\setcounter{theorem}{16}
 \noindent\textbf{Solution.}\quad By induction on  $n \in \set{0,1,\ldots}$ define the \emph{strings of order $n$} as follows. If $n=0$ then there is only one such string and it is empty. Consider now $n>0$ and let 
     \begin{align*}
@@ -100,6 +105,7 @@ Consider first-order formulas that define languages. Show that for every $n \in 
 </div>
 <div class="exercise" id="exercise-3">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp fd5dea9c
 \setcounter{mypart}{3}\setcounter{section}{4}\setcounter{theorem}{17}\setcounter{exercise}{2}
 \begin{exercise}
 \label{exer:so-logic}
@@ -110,6 +116,7 @@ In \mso, set quantification is restricted to sets of positions. In full second-o
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp fd5dea9c
 \setcounter{mypart}{3}\setcounter{section}{4}\setcounter{theorem}{17}
 \noindent\textbf{Solution.}\quad Consider the language $\setbuild{a^nb^n}{$n \geq 0$}$, which is not regular. It is defined by a formula of second-order logic which says that: (a) every position labelled $a$ is before every position labelled $b$; and (b) there is a binary relation $R$ on positions which is the graph of a bijection between the $a$-positions and the $b$-positions. The first condition is first-order. The second one uses a quantifier over a set of pairs of positions, and says that every pair in $R$ consists of an $a$-position and a $b$-position, that every $a$-position appears in exactly one pair, and that every $b$-position appears in exactly one pair; all of this is first-order, once the relation $R$ is available. Such a bijection exists if and only if the two sets have the same size, and hence the formula defines the language above.
 {{< /latex >}}
@@ -118,6 +125,7 @@ In \mso, set quantification is restricted to sets of positions. In full second-o
 </div>
 <div class="exercise" id="exercise-4">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp fd5dea9c
 \setcounter{mypart}{3}\setcounter{section}{4}\setcounter{theorem}{17}\setcounter{exercise}{3}
 \begin{exercise}
 \label{exer:fo-suc}
@@ -128,6 +136,7 @@ In \mso, set quantification is restricted to sets of positions. In full second-o
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp fd5dea9c
 \setcounter{mypart}{3}\setcounter{section}{4}\setcounter{theorem}{17}
 \noindent\textbf{Solution.}\quad The separating language is
 \begin{align*}

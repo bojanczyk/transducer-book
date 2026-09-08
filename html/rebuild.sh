@@ -181,6 +181,32 @@ if [ ! -f "$SNAP/main.aux" ]; then
   echo "         resolve. Build the PDF, then re-run." >&2
 fi
 
+# ── 1c. the bibliography must actually be there ─────────────────────────────
+# Fatal, not a warning, because an empty main.bbl is the one broken input that
+# produces a site nobody would look at twice: every citation in every chapter
+# renders as nothing, and the pages are otherwise perfect. LaTeX does not mind —
+# latex-preambles/book.tex \InputIfFileExists's this file, and an empty one is a
+# file — so nothing upstream complains either.
+#
+# It happens when biber fails, and biber fails silently: it is a PAR::Packer
+# executable that unpacks itself under $TMPDIR, macOS sweeps /var/folders, and a
+# half-swept cache leaves it unable to load its own Unicode tables. It then dies
+# with no message, exits 25, and truncates main.bbl to nothing. ../.latexmkrc
+# pins that cache under ~/.cache so it should not recur; this is the check that
+# catches it if it does, or if biber was simply never run.
+if [ ! -s "$BOOK/main.bbl" ]; then
+  echo >&2
+  echo "error: $BOOK/main.bbl is missing or empty, so every citation in the" >&2
+  echo "       book would come out blank. Refusing to build the site from it." >&2
+  echo >&2
+  echo "       cd $BOOK && biber main" >&2
+  echo >&2
+  echo "       If that fails without saying why, delete biber's unpacked cache" >&2
+  echo "       and let it rebuild:  rm -rf \"\$TMPDIR\"/par-*" >&2
+  echo >&2
+  exit 1
+fi
+
 # ── 2. per-chapter counters, cross-checked against main.aux ─────────────────
 "$PYTHON" "$SITE/build-references.py" --write
 

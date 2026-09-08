@@ -4,6 +4,7 @@ weight = 60
 source = "partBRational/rational-relations.tex"
 +++
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 8e5e828c
 % Generated chapter wrapper; source body remains untouched.
 \setcounter{mypart}{2}
 \setcounter{section}{0}
@@ -17,6 +18,7 @@ source = "partBRational/rational-relations.tex"
 <div class="exercises">
 <div class="exercise" id="exercise-1">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 8e5e828c
 \setcounter{mypart}{2}\setcounter{section}{1}\setcounter{theorem}{7}\setcounter{exercise}{0}
 \begin{exercise}
 \label{exer:regular-languages-for-rational-relations}
@@ -32,6 +34,7 @@ Show that for every rational relation $R \subseteq A^* \times B^*$, the followin
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 8e5e828c
 \setcounter{mypart}{2}\setcounter{section}{1}\setcounter{theorem}{7}
 \noindent\textbf{Solution.}\quad For the domain, we use continuity from Theorem~\ref{thm:continuity-rational-relations}: the domain is the inverse image of the regular language $B^*$. A more direct argument is that an automaton for the domain is obtained from the automaton with output by erasing the output part of every transition. The range is handled in the same way, using the symmetry of rational relations with respect to input and output.
 
@@ -44,6 +47,7 @@ Show that for every rational relation $R \subseteq A^* \times B^*$, the followin
 </div>
 <div class="exercise" id="exercise-2">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 8e5e828c
 \setcounter{mypart}{2}\setcounter{section}{1}\setcounter{theorem}{7}\setcounter{exercise}{1}
 \begin{exercise}
 \label{exer:non-regular-languages-for-rational-relations}
@@ -54,6 +58,7 @@ Show that for some rational relation $R \subseteq A^* \times B^*$, the set of in
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 8e5e828c
 \setcounter{mypart}{2}\setcounter{section}{1}\setcounter{theorem}{7}
 \noindent\textbf{Solution.}\quad The crucial idea is to  find two rational functions for which the following language is non-regular:
 \begin{align*}
@@ -66,6 +71,7 @@ Once we have found them, the relation is simply the union of the two functions, 
 </div>
 <div class="exercise" id="exercise-3">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 8e5e828c
 \setcounter{mypart}{2}\setcounter{section}{1}\setcounter{theorem}{7}\setcounter{exercise}{2}
 \begin{exercise}
 \label{exer:rational-relations-not-closed-under-intersection} Show that rational relations are not closed under intersection.
@@ -75,6 +81,7 @@ Once we have found them, the relation is simply the union of the two functions, 
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 8e5e828c
 \setcounter{mypart}{2}\setcounter{section}{1}\setcounter{theorem}{7}
 \noindent\textbf{Solution.}\quad Consider the two relations
     \begin{align*}
@@ -93,6 +100,7 @@ Once we have found them, the relation is simply the union of the two functions, 
 </div>
 <div class="exercise" id="exercise-4">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 8e5e828c
 \setcounter{mypart}{2}\setcounter{section}{1}\setcounter{theorem}{7}\setcounter{exercise}{3}
 \begin{exercise}
 \label{exer:rational-relations-intersection-undecidable} Show that it is undecidable if two rational relations have nonempty intersection.
@@ -102,6 +110,7 @@ Once we have found them, the relation is simply the union of the two functions, 
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 8e5e828c
 \setcounter{mypart}{2}\setcounter{section}{1}\setcounter{theorem}{7}
 \noindent\textbf{Solution.}\quad We reduce from the Post Correspondence Problem, as in the proof of Theorem~\ref{thm:undecidable-equivalence-rational-relations}, except that this time we do not need to complement the homomorphisms. Consider two homomorphisms $g,h : A^* \to B^*$, and view each of them as a relation, e.g.
     \begin{align*}
@@ -114,6 +123,7 @@ Once we have found them, the relation is simply the union of the two functions, 
 </div>
 <div class="exercise" id="exercise-5">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 8e5e828c
 \setcounter{mypart}{2}\setcounter{section}{1}\setcounter{theorem}{7}\setcounter{exercise}{4}
 \begin{exercise}
 \label{exer:rational-output-size} Show that the following conditions are equivalent for a rational relation:
@@ -127,6 +137,7 @@ Once we have found them, the relation is simply the union of the two functions, 
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 8e5e828c
 \setcounter{mypart}{2}\setcounter{section}{1}\setcounter{theorem}{7}
 \noindent\textbf{Solution.}\quad The implication from the second condition to the first one is immediate, since there are finitely many strings of bounded length.
 
@@ -141,6 +152,7 @@ Once we have found them, the relation is simply the union of the two functions, 
 </div>
 <div class="exercise" id="exercise-6">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 8e5e828c
 \setcounter{mypart}{2}\setcounter{section}{1}\setcounter{theorem}{7}\setcounter{exercise}{5}
 \begin{exercise}
 \label{ex:recognisable-relations}Show that the recognisable subsets of $A^* \times B^*$ are exactly the unions of finitely many products of regular languages, i.e.~unions of the form 
@@ -154,6 +166,7 @@ where each $K_i$ is a regular language over the input alphabet and each $L_i$ is
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 8e5e828c
 \setcounter{mypart}{2}\setcounter{section}{1}\setcounter{theorem}{7}
 \noindent\textbf{Solution.}\quad We use the standard reformulation of recognisability: a subset of a monoid is recognisable if and only if it is the inverse image $h^{-1}(F)$ of some subset $F$, under some monoid homomorphism $h$ into a finite monoid. (Given a congruence of finite index, take the quotient monoid; conversely, the equivalence which identifies elements with the same image under $h$ is a congruence of finite index.)
 

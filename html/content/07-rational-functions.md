@@ -4,12 +4,13 @@ weight = 70
 source = "partBRational/rational-functions.tex"
 +++
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 70e555db
 % Generated chapter wrapper; source body remains untouched.
 \setcounter{mypart}{2}
 \setcounter{section}{1}
 \setcounter{ourexamplecounter}{8}
 \renewcommand{\exer}[2]{}
-% source stamp partBRational/rational-functions.tex:d9ca2133
+% source stamp partBRational/rational-functions.tex:8234788c
 \input{../../../partBRational/rational-functions.tex}
 {{< /latex >}}
 
@@ -17,6 +18,7 @@ source = "partBRational/rational-functions.tex"
 <div class="exercises">
 <div class="exercise" id="exercise-1">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 70e555db
 \setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{0}
 \begin{exercise}
 \label{exer:examples-of-rational-fun}
@@ -27,6 +29,7 @@ Represent the following functions as rational functions, and as bimachines: (a) 
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 70e555db
 \setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}
 \noindent\textbf{Solution.}\quad (a) As a rational function, we use two copies of the automaton which tracks the parity of the number of input letters that have been read so far. In the first copy, every transition copies its input letter to the output, and the accepting states are those with even parity; in the second copy, every transition has empty output, and the accepting states are those with odd parity. Putting the two copies side by side gives an unambiguous automaton, since the parity of the input length decides which copy is used. As a bimachine, we use the parity automaton for both the prefix and the suffix automata, except that the suffix automaton also stores the first letter of the suffix. The parity of the input length is the sum of the two parities, and hence it is known in every gap. The output in a gap is the first letter of the suffix if the total parity is even, and the empty string otherwise.
 
@@ -39,6 +42,7 @@ Represent the following functions as rational functions, and as bimachines: (a) 
 </div>
 <div class="exercise" id="exercise-2">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 70e555db
 \setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{1}
 \begin{exercise}
 \label{exer:rational-outpus-of-exactly-linear-size} Show that if a rational function has unbounded output size, then it has exactly linear output size in the following sense: the limit 
@@ -52,6 +56,7 @@ is defined and nonzero.
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 70e555db
 \setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}
 \noindent\textbf{Solution.}\quad We use nondeterministic transducers, and we assume that every state is reachable from an initial state, and can reach an accepting state. Call the \emph{ratio} of a run the length of its output string divided by the length of its input string. We claim that the limit in the exercise is qual to 
 \begin{align*}
@@ -64,6 +69,7 @@ where $\rho$ ranges over runs that are cycles (same source and target state) wit
 </div>
 <div class="exercise" id="exercise-3">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 70e555db
 \setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{2}
 \begin{exercise}
 \label{exer:rational-outpus-of-exactly-linear-size-rational-number} Show that the limit in the previous exercise is a rational number.
@@ -73,6 +79,7 @@ where $\rho$ ranges over runs that are cycles (same source and target state) wit
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 70e555db
 \setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}
 \noindent\textbf{Solution.}\quad As we have shown in the solution to the previous exercise, the supremal ratio is attained by a simple cycle.
 {{< /latex >}}
@@ -81,6 +88,7 @@ where $\rho$ ranges over runs that are cycles (same source and target state) wit
 </div>
 <div class="exercise" id="exercise-4">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 70e555db
 \setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{3}
 \begin{exercise}
 \label{exer:non-rational}
@@ -91,6 +99,7 @@ Prove that the following functions are not rational, over an alphabet with at le
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 70e555db
 \setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}
 \noindent\textbf{Solution.}\quad (a) This function is not continuous, and hence it is not rational by Theorem~\ref{thm:continuity-rational-relations}. Consider the inverse image of the regular language $a^*$, i.e.~the set of input strings whose first half uses the letter $a$ only. If we intersect this inverse image with the regular language $a^*b^*$, then we get
     \begin{align*}
@@ -109,6 +118,7 @@ Prove that the following functions are not rational, over an alphabet with at le
 </div>
 <div class="exercise" id="exercise-5">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 70e555db
 \setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{4}
 \begin{exercise}
 \label{exer:decide-unambiguous} Show that one can decide unambiguity for a given \nfa that recognises a language (not a function or relation).
@@ -118,6 +128,7 @@ Prove that the following functions are not rational, over an alphabet with at le
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 70e555db
 \setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}
 \noindent\textbf{Solution.}\quad We can assume that the automaton has no transitions with empty input, since these can be eliminated in the usual way. Under this assumption, the automaton is ambiguous if and only if some input string admits two accepting runs which use different transitions in some position. This is tested by a product construction. Consider the automaton whose states are triples
     \begin{align*}
@@ -130,6 +141,7 @@ Prove that the following functions are not rational, over an alphabet with at le
 </div>
 <div class="exercise" id="exercise-6">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 70e555db
 \setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{5}
 \begin{exercise}
 \label{exer:decide-rational-colision} Are the following problems about two rational functions decidable: (a) is there some input string where both outputs are equal? (b) is there some input string where both outputs have the same length?
@@ -139,6 +151,7 @@ Prove that the following functions are not rational, over an alphabet with at le
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 70e555db
 \setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}
 \noindent\textbf{Solution.}\quad The first problem generalises PCP and is hence undecidable. (Some care is needed with the empty input string, on which two homomorphisms always agree; this is repaired by modifying the two rational functions so that they disagree on the empty input, which is possible because a rational function treats the empty input separately.) The second problem is decidable, since it can be solved using Parikh images: the pairs
     \begin{align*}
@@ -151,6 +164,7 @@ Prove that the following functions are not rational, over an alphabet with at le
 </div>
 <div class="exercise" id="exercise-7">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 70e555db
 \setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{6}
 \begin{exercise}
 \label{exer:rational-one-letter-input} Consider a rational function where the input alphabet has only one letter $a$. Show that the graph of the function is a finite union \begin{align*}
@@ -163,6 +177,7 @@ where the coefficients  $\alpha_i,\beta_i$ are natural numbers and strings $x_i,
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 70e555db
 \setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}
 \noindent\textbf{Solution.}\quad Consider a bimachine that computes the function, which exists by Theorem~\ref{thm:bimachines}. Over a one-letter input alphabet, the prefix and suffix automata are deterministic automata with a one-letter alphabet, and therefore their runs are eventually periodic: there is a threshold $\lambda$ and a period $\pi$, which we can choose to be the same for both automata, such that for every $i \geq \lambda$ and for both automata, the state after reading $a^i$ is the same as the state after reading $a^{i+\pi}$.
 
@@ -177,6 +192,7 @@ where the coefficients  $\alpha_i,\beta_i$ are natural numbers and strings $x_i,
 </div>
 <div class="exercise" id="exercise-8">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 70e555db
 \setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{7}
 \begin{exercise}
 \label{exer:function-that-is-not-rational} Show that there is a function
@@ -194,6 +210,7 @@ the composition $f \cdot g$ is rational.
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 70e555db
 \setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}
 \noindent\textbf{Solution.}\quad Take $f$ to be the string reversal function, which is not rational by Example~\ref{ex:string-reversal-not-rational}. Let
     \begin{align*}
@@ -208,7 +225,27 @@ the composition $f \cdot g$ is rational.
 </div>
 <div class="exercise" id="exercise-9">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 70e555db
 \setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{8}
+\begin{exercise}
+\label{exer:no-reverse-reversible} Show that in the list of atomic functions from \cref{thm:rational-primes}, the reversal of a reversible Mealy machine is not needed.
+\end{exercise}
+{{< /latex >}}
+<details class="solution">
+<summary>Show solution</summary>
+<div class="solution-body">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 70e555db
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}
+\noindent\textbf{Solution.}\quad Suppose that we want to implement a right-to-left  reversible Mealy machine with states $Q$. We first run normal left-to-right reversible Mealy machine to label each position  with the state transformation of the prefix leading up to that position.  Then we run a right-to-left flip-flop machine to label each position with the state transformation of the entire input string. Then, using cancellation in the group of state permutations, we get get for each position the state transformation of the suffix after that position. Using the state transformation on the suffixes, we can recover the output of the Mealy machine that we wanted to implement.
+{{< /latex >}}
+</div>
+</details>
+</div>
+<div class="exercise" id="exercise-10">
+{{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 70e555db
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{9}
 \begin{exercise}
 \label{exer:some-ideals} 
 Show that the following are ideals: 
@@ -222,6 +259,7 @@ Show that the following are ideals:
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 70e555db
 \setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}
 \noindent\textbf{Solution.}\quad Observe that the ideal in the second item for $k=0$ describes the class of rational functions with finitely many outputs.
 
@@ -230,9 +268,10 @@ Pre-composing or post-composing with rational functions (or any functions) canno
 </div>
 </details>
 </div>
-<div class="exercise" id="exercise-10">
+<div class="exercise" id="exercise-11">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{9}
+% context stamp 70e555db
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{10}
 \begin{exercise}
 \label{exer:finite-range-ideals} Consider an ideal where all functions have finite range. Show that the ideal is equal to one of the ideals from the first item in \cref{exer:some-ideals}, or to the ideal $\Oo(n^0)$ from the second item.
 \end{exercise}
@@ -241,6 +280,7 @@ Pre-composing or post-composing with rational functions (or any functions) canno
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 70e555db
 \setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}
 \noindent\textbf{Solution.}\quad Suppose that the ideal contains a rational function $f$ with distinct outputs
     \begin{align*}
@@ -253,9 +293,10 @@ Pre-composing or post-composing with rational functions (or any functions) canno
 </div>
 </details>
 </div>
-<div class="exercise" id="exercise-11">
+<div class="exercise" id="exercise-12">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{10}
+% context stamp 70e555db
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{11}
 \begin{exercise}
 \label{exer:full-ideal} Show that an ideal contains all rational functions if and only if it contains some function whose range is a regular language with super-polynomial growth. (The growth rate of a language is a function that maps an input length $n$ to the number of strings in the language that have length at most $n$.)
 \end{exercise}
@@ -264,6 +305,7 @@ Pre-composing or post-composing with rational functions (or any functions) canno
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 70e555db
 \setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}
 \noindent\textbf{Solution.}\quad By  the analysis from \cref{exer:polynomial-image-growth-decidable},  a regular language has super-polynomial growth if and only if an automaton recognising it contains a pattern of the form 
 \[
@@ -287,9 +329,10 @@ belongs to the range of the function, and different input strings give different
 </div>
 </details>
 </div>
-<div class="exercise" id="exercise-12">
+<div class="exercise" id="exercise-13">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{11}
+% context stamp 70e555db
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{12}
 \begin{exercise}
 \label{exer:polynomial-ideals} Show that if an ideal contains some function whose range has growth $\Omega(n^k)$ with $k \in \set{1,2,\ldots}$, then it contains all functions whose range has growth $\Oo(n^k)$.
 \end{exercise}
@@ -298,6 +341,7 @@ belongs to the range of the function, and different input strings give different
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 70e555db
 \setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}
 \noindent\textbf{Solution.}\quad Define a $k$-pattern in an automaton that recognises a language (not a function or relation) to be a sequence of states and runs as in the following diagram:
 \[
@@ -330,9 +374,10 @@ Finally, it remains to show that  if an ideal contains the function $f_k$, then 
 </div>
 </details>
 </div>
-<div class="exercise" id="exercise-13">
+<div class="exercise" id="exercise-14">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{12}
+% context stamp 70e555db
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{13}
 \begin{exercise}
 \label{exer:all-ideals} Show that the ideals from the previous exercise are all the ideals, i.e.~all possible  ideals are: ``range of size at most $k$'', ``range has growth rate $\Oo(n^k)$'', ``range has polynomial growth'',  and ``all rational functions'', where $k \in \set{0,1,2,\ldots}$.
 \end{exercise}
@@ -341,15 +386,17 @@ Finally, it remains to show that  if an ideal contains the function $f_k$, then 
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 70e555db
 \setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}
 \noindent\textbf{Solution.}\quad Let us begin by clarifying an edge case in the statement. When $k=0$, then the ideal ``range has size at most $k$'' is the empty ideal (since functions have at least one output), and the ideal ``range has growth rate $\Oo(n^k)$'' is the ideal of functions with finitely many outputs.  Indeed, by \cref{exer:finite-range-ideals}, all ideals with functions of finite range are either of the form ``range of size at most $k$'' or ``range has growth rate $\Oo(n^0)$''. By \cref{exer:full-ideal}, all ideals that contain a function with super-polynomial growth are equal to the ideal of all rational functions. Finally, consider an ideal in which every function has a range of polynomial growth, and which contains at least one function with an infinite range. If there is a largest $k$ such that some function in the ideal has range of growth $\Omega(n^k)$, then by \cref{exer:polynomial-ideals} the ideal is exactly the ideal of functions with growth $\Oo(n^k)$. Otherwise the ideal contains, for every $k$, some function of growth $\Omega(n^k)$, and hence, again by \cref{exer:polynomial-ideals}, it is the union of the ideals $\Oo(n^k)$ over all $k$, i.e.~the ideal of functions whose range has polynomial growth.
 {{< /latex >}}
 </div>
 </details>
 </div>
-<div class="exercise" id="exercise-14">
+<div class="exercise" id="exercise-15">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{13}
+% context stamp 70e555db
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{14}
 \begin{exercise}
 \label{exer:decide-same-ideal} Show that it is decidable if two rational functions generate the same ideal (the ideal generated by a function is the last ideal that contains it).
 \end{exercise}
@@ -358,15 +405,17 @@ Finally, it remains to show that  if an ideal contains the function $f_k$, then 
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 70e555db
 \setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}
 \noindent\textbf{Solution.}\quad By \cref{exer:all-ideals}, the ideal generated by a function is determined by its range: if the range is finite, then the ideal is ``range of size at most $k$'' where $k$ is the size of the range; and otherwise the ideal is determined by the growth rate of the range. (The growth rate alone is not enough, since all functions with a finite range have the same growth rate.) The size of the range, and its growth rate, can both be computed by looking for the patterns from the previous exercises in the automaton for the range of the function.
 {{< /latex >}}
 </div>
 </details>
 </div>
-<div class="exercise" id="exercise-15">
+<div class="exercise" id="exercise-16">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{14}
+% context stamp 70e555db
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{15}
 \begin{exercise}
 \label{exer:surjective-rational-function}Show that if  a rational function $f : A^* \to B^*$ is surjective, then it has a one-sided inverse, i.e.~a rational function $g : B^* \to A^*$ such that $g \cdot f$ is the identity on $B^*$.
 \end{exercise}
@@ -375,6 +424,7 @@ Finally, it remains to show that  if an ideal contains the function $f_k$, then 
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 70e555db
 \setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}
 \noindent\textbf{Solution.}\quad Rational relations are symmetric with respect to input and output: swapping the input and output labels on the transitions of a nondeterministic automaton with output gives an automaton for the inverse relation. Therefore, the inverse relation
     \begin{align*}
@@ -385,9 +435,10 @@ Finally, it remains to show that  if an ideal contains the function $f_k$, then 
 </div>
 </details>
 </div>
-<div class="exercise" id="exercise-16">
+<div class="exercise" id="exercise-17">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{15}
+% context stamp 70e555db
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{16}
 \begin{exercise}
 \label{exer:rational-injectivity-decidable}Show that the following problem is decidable: given a rational function $f$, we want to know if it is injective, i.e.~different input strings are mapped to different output strings.
 \end{exercise}
@@ -396,15 +447,17 @@ Finally, it remains to show that  if an ideal contains the function $f_k$, then 
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 70e555db
 \setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}
 \noindent\textbf{Solution.}\quad Consider the inverse relation of $f$, which is rational. It need not be total, since $f$ need not be surjective, but its domain is the range of $f$, which is a regular language, and hence we can make the relation total by adding a default output for the strings outside the range. By the Uniformisation Lemma~\ref{lem:uniformisation}, this relation contains a rational function $g$, which satisfies $f(g(v)) = v$ for every $v$ in the range of $f$. The function $f$ is injective if and only if $g$ inverts it on the other side as well, i.e.~if and only if the composition $f \cdot g$, which first applies $f$ and then $g$, is the identity on $A^*$. Indeed, if $f$ is injective, then $g(f(w))$ has the same image under $f$ as $w$, and hence it must be equal to $w$; conversely, a function which has a left inverse is injective. By Theorem~\ref{thm:equivalence-rational-functions}, it can be decided if $f \cdot g$ is the identity.
 {{< /latex >}}
 </div>
 </details>
 </div>
-<div class="exercise" id="exercise-17">
+<div class="exercise" id="exercise-18">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{16}
+% context stamp 70e555db
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{17}
 \begin{exercise}
 \label{exer:rational-composition-finiteness-undecidable}Show that the following problem is undecidable: given a rational function $f : A^* \to A^*$, we want to know if it generates finitely many functions under composition, i.e.~if the following set is finite:
 \begin{align*}
@@ -416,6 +469,7 @@ Finally, it remains to show that  if an ideal contains the function $f_k$, then 
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 70e555db
 \setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}
 \noindent\textbf{Solution.}\quad Encode a configuration of a Turing machine as a string which contains the contents of the tape, with the current state inserted at the position of the head. For a fixed Turing machine, the function which maps a configuration to the next one is rational: a bimachine copies the input string, except in the two positions next to the state, which it rewrites according to the transition function. (On strings that do not encode a configuration, the function can do anything, say leave the string unchanged.) The $n$-th iterate of this function maps a configuration to the configuration after $n$ steps.
 
@@ -426,9 +480,10 @@ It remains to reduce the halting problem to this property. Given a machine $M$ a
 </div>
 </details>
 </div>
-<div class="exercise" id="exercise-18">
+<div class="exercise" id="exercise-19">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{17}
+% context stamp 70e555db
+\setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}\setcounter{exercise}{18}
 \begin{exercise}
 \label{exer:rational-compression} Define a \emph{grammar compression} for a string to be a context-free grammar that generates the string and nothing else. We say that a string-to-string function is \emph{compatible with compression} if for every input string with a grammar compression of size $n$, there is a compression of the output string that has size polynomial in $n$\footnote{One could consider a stronger version, where the compressed output can be computed in polynomial time. Our positive reults will ensure the stronger version, and our negative results will exclude the weaker version.} Show that rational functions are compatible with compression.
 \end{exercise}
@@ -437,6 +492,7 @@ It remains to reduce the halting problem to this property. Given a machine $M$ a
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 70e555db
 \setcounter{mypart}{2}\setcounter{section}{2}\setcounter{theorem}{7}
 \noindent\textbf{Solution.}\quad This follows from a stronger result: for a context-free language $L \subseteq A^*$ and a rational relation $R \subseteq A^* \times B^*$, the image
 \begin{align*}

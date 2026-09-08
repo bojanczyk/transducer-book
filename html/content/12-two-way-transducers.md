@@ -4,6 +4,7 @@ weight = 120
 source = "partCRegular/2dfa.tex"
 +++
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp c6d20a76
 % Generated chapter wrapper; source body remains untouched.
 \setcounter{mypart}{3}
 \setcounter{section}{1}
@@ -17,6 +18,7 @@ source = "partCRegular/2dfa.tex"
 <div class="exercises">
 <div class="exercise" id="exercise-1">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp c6d20a76
 \setcounter{mypart}{3}\setcounter{section}{2}\setcounter{theorem}{12}\setcounter{exercise}{0}
 \begin{exercise}
 \label{exer:2dfa-unary-output} Show that if the output alphabet is unary (one letter), then regular functions are exactly the same as rational functions.
@@ -26,6 +28,7 @@ source = "partCRegular/2dfa.tex"
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp c6d20a76
 \setcounter{mypart}{3}\setcounter{section}{2}\setcounter{theorem}{12}
 \noindent\textbf{Solution.}\quad One inclusion is immediate, since rational functions are regular. For the other one, consider a two-way transducer, and recall from \cref{lem:compute-configuration-graph} that the function which maps an input string to the string representation of its reachable configuration graph is rational. In that representation, each input position carries one slice of the graph, and the slice determines the output strings of the transitions that are performed while the head is in that position; there are boundedly many of them, since the reachable configuration graph is a path that crosses each position at most once per state.
 
@@ -36,6 +39,7 @@ Therefore, we can post-compose the rational function above with the letter-to-le
 </div>
 <div class="exercise" id="exercise-2">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp c6d20a76
 \setcounter{mypart}{3}\setcounter{section}{2}\setcounter{theorem}{12}\setcounter{exercise}{1}
 \begin{exercise}
 \label{exer:2dfa-boolean} Consider  languages (not functions) recognised by two-way deterministic automata. Show that this class is closed under Boolean combinations: union, intersection and complement. Furthermore, all constructions are polynomial in the automaton size.
@@ -45,6 +49,7 @@ Therefore, we can post-compose the rational function above with the letter-to-le
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp c6d20a76
 \setcounter{mypart}{3}\setcounter{section}{2}\setcounter{theorem}{12}
 \noindent\textbf{Solution.}\quad As discussed in this book, a two-way automaton must eventually output ``yes'' or ``no''. This makes complementation trivial: just swap the outputs, without changing the number of states. For intersection: first run the first automaton, and if it outputs ``yes'', then return the head to the beginning of the input and run the second automaton, returning its output; otherwise output ``no''. Returning to the beginning of the input costs one extra state, which walks left until it falls off the input, and hence the number of states is the sum of the two, plus a constant. For union, the construction is the same, except that the second automaton is run when the first one outputs ``no''. (Alternatively, union is obtained from intersection and complementation, again without leaving the polynomial regime.)
 {{< /latex >}}
@@ -53,6 +58,7 @@ Therefore, we can post-compose the rational function above with the letter-to-le
 </div>
 <div class="exercise" id="exercise-3">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp c6d20a76
 \setcounter{mypart}{3}\setcounter{section}{2}\setcounter{theorem}{12}\setcounter{exercise}{2}
 \begin{exercise}
 \label{exer:2dfa-complexity} Consider  languages (not functions) recognised by two-way deterministic automata. Show that the shortest accepted string might be exponential in the automaton size.
@@ -62,6 +68,7 @@ Therefore, we can post-compose the rational function above with the letter-to-le
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp c6d20a76
 \setcounter{mypart}{3}\setcounter{section}{2}\setcounter{theorem}{12}
 \noindent\textbf{Solution.}\quad In \cref{exer:2dfa-boolean}, we showed that intersection can be achieved with a number of states that is the sum of the two automata. Therefore, one can write a deterministic two-way automaton which checks if the input length is divisible by each of the prime numbers $p_1,\ldots,p_n$, so that the number of states is proportional to the sum of the prime numbers. Checking divisibility by $p_i$ needs $p_i$ states in a single left-to-right pass. The shortest accepted string has length
 \begin{align*}
@@ -74,6 +81,7 @@ which is exponential in $p_1 + \cdots + p_n$, and hence exponential in the numbe
 </div>
 <div class="exercise" id="exercise-4">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp c6d20a76
 \setcounter{mypart}{3}\setcounter{section}{2}\setcounter{theorem}{12}\setcounter{exercise}{3}
 \begin{exercise}
 \label{exer:2dfa-loop-elimination} Consider a deterministic two-way transducer which is not required to terminate, i.e.~on some inputs it can loop forever. Show that the set of input strings where it terminates is a regular language.
@@ -83,6 +91,7 @@ which is exponential in $p_1 + \cdots + p_n$, and hence exponential in the numbe
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp c6d20a76
 \setcounter{mypart}{3}\setcounter{section}{2}\setcounter{theorem}{12}
 \noindent\textbf{Solution.}\quad We use the representation  of the configuration graph from the proof of \cref{thm:continuity-2dfas}: an input string is described by the string over the alphabet $C$ in which each position carries the corresponding column of the configuration graph. As observed in the proof of \cref{lem:compute-configuration-graph}, the strings over $C$ that arise this way form a regular language, and the function which maps an input string to the representation of its configuration graph is rational.
 
@@ -93,6 +102,7 @@ The transducer terminates on an input string if and only if the graph of that st
 </div>
 <div class="exercise" id="exercise-5">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp c6d20a76
 \setcounter{mypart}{3}\setcounter{section}{2}\setcounter{theorem}{12}\setcounter{exercise}{4}
 \begin{exercise}
 \label{exer:2dfa-loop-elimination-sipser} Improve the solution to the previous exercise, so that the regular language is polynomial, in terms of a deterministic two-way automaton that recognises it. (Hint: use a depth-first search on the run graph, but with a special trick.)
@@ -102,6 +112,7 @@ The transducer terminates on an input string if and only if the graph of that st
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp c6d20a76
 \setcounter{mypart}{3}\setcounter{section}{2}\setcounter{theorem}{12}
 \noindent\textbf{Solution.}\quad Without loss of generality we assume that the transducer halts in a fixed configuration, where the head is at the left end of the input string and the state is a fixed final state.
     Consider the configuration graph of the two-way transducer on some input string. This is a directed graph, in which every vertex has out-degree one or zero by determinism. We want to check if the unique initial configuration can reach the unique final configuration. If we look at the configurations that can reach the unique final configuration, then the corresponding part of the graph is a tree, since it does not contain cycles. This part of the graph can be explored by depth-first search, starting in the unique final configuration. If the search finds the initial configuration, one should accept, otherwise one should reject.
@@ -113,6 +124,7 @@ The transducer terminates on an input string if and only if the graph of that st
 </div>
 <div class="exercise" id="exercise-6">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp c6d20a76
 \setcounter{mypart}{3}\setcounter{section}{2}\setcounter{theorem}{12}\setcounter{exercise}{5}
 \begin{exercise}
 \label{exer:regular-outpus-of-exactly-linear-size} Show that if a regular function has unbounded output size, then it has exactly linear output size in the following sense: the limit 
@@ -126,6 +138,7 @@ is defined, nonzero, and a rational number.
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp c6d20a76
 \setcounter{mypart}{3}\setcounter{section}{2}\setcounter{theorem}{12}
 \noindent\textbf{Solution.}\quad The size of the output and regularity are not affected  once all letters in the output are replaced by a single letter $a$. Thus, the problem reduces to the case of unary output, in which case regular functions coincide with rational functions by \cref{exer:2dfa-unary-output}, and the exercise was solved for rational functions in \cref{exer:rational-outpus-of-exactly-linear-size}.
 {{< /latex >}}
@@ -134,6 +147,7 @@ is defined, nonzero, and a rational number.
 </div>
 <div class="exercise" id="exercise-7">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp c6d20a76
 \setcounter{mypart}{3}\setcounter{section}{2}\setcounter{theorem}{12}\setcounter{exercise}{6}
 \begin{exercise}
 \label{exer:2nft} One can imagine two nondeterministic variants of a two-way transducer, in which more than one output string can be generated: 
@@ -148,6 +162,7 @@ Show that these models are incomparable in expressive power.
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp c6d20a76
 \setcounter{mypart}{3}\setcounter{section}{2}\setcounter{theorem}{12}
 \noindent\textbf{Solution.}\quad The first model is not contained in the second one, since the first model can have infinitely many output strings for a given input string, while the second one cannot. There is another rather silly reason why the second model is weaker, which is that the second model has to produce at least one output. However, this can be seen as mistake in the formalisation of the second model, which is rectified as follows: once the new input string is guessed, there is a regular language that describes which guesses are valid, and the transducer is only applied to valid guesses. This way, the second model can produce no output for a given input string, if all guesses are invalid.
 
@@ -165,6 +180,7 @@ To see why it cannot be computed by the first model, consider a transducer of th
 </div>
 <div class="exercise" id="exercise-8">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp c6d20a76
 \setcounter{mypart}{3}\setcounter{section}{2}\setcounter{theorem}{12}\setcounter{exercise}{7}
 \begin{exercise}
 \label{exer:2nft-uniformise} 
@@ -175,6 +191,7 @@ Consider the two models from the previous exercise. Show that both can be unifor
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp c6d20a76
 \setcounter{mypart}{3}\setcounter{section}{2}\setcounter{theorem}{12}
 \noindent\textbf{Solution.}\quad We begin with the first model. As in the proof of \cref{thm:continuity-2dfas}, a run of the transducer on an input string is presented by slicing its configuration graph, i.e.~by a string over the alphabet $C$ in which each input position carries the part of the run that crosses it. The pairs
 \begin{align*}

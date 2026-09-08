@@ -4,6 +4,7 @@ weight = 40
 source = "partAMealy/krohn-rhodes.tex"
 +++
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp e24d43d0
 % Generated chapter wrapper; source body remains untouched.
 \setcounter{mypart}{1}
 \setcounter{section}{1}
@@ -17,6 +18,7 @@ source = "partAMealy/krohn-rhodes.tex"
 <div class="exercises">
 <div class="exercise" id="exercise-1">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp e24d43d0
 \setcounter{mypart}{1}\setcounter{section}{2}\setcounter{theorem}{11}\setcounter{exercise}{0}
 \begin{exercise}
 \label{exer:simple-decomposition-example}
@@ -31,6 +33,7 @@ source = "partAMealy/krohn-rhodes.tex"
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp e24d43d0
 \setcounter{mypart}{1}\setcounter{section}{2}\setcounter{theorem}{11}
 \noindent\textbf{Solution.}\quad The natural machine for this function is not a flip-flop. Its states are $A+1$, and they store the first input letter, with the extra state used before the first letter has been read. The state transformation of a letter $a$ maps the extra state to $a$ and leaves all other states unchanged, which is neither the identity nor a constant. The remedy is to first find out which position is the first one, using a separate machine.
 
@@ -43,6 +46,7 @@ source = "partAMealy/krohn-rhodes.tex"
 </div>
 <div class="exercise" id="exercise-2">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp e24d43d0
 \setcounter{mypart}{1}\setcounter{section}{2}\setcounter{theorem}{11}\setcounter{exercise}{1}
 \begin{exercise}
 \label{exer:simple-decomposition-example-2}
@@ -53,6 +57,7 @@ source = "partAMealy/krohn-rhodes.tex"
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp e24d43d0
 \setcounter{mypart}{1}\setcounter{section}{2}\setcounter{theorem}{11}
 \noindent\textbf{Solution.}\quad We use the same argument as for the delay function. We assume that the input alphabet has at least two letters, since otherwise the function is the identity, which is reversible. By Lemma~\ref{lem:reversible-composition}, a composition of reversible machines is again a reversible machine, and therefore it is enough to rule out a single reversible machine. Suppose that some reversible machine computes the function, and let $a$ and $b$ be two different input letters. The state transformation of $a$ is a permutation of a finite set, and hence it has finite order, i.e.~there is some $k \geq 1$ such that reading $a^k$ leads from the initial state back to the initial state. Consequently, the machine is in the initial state just before reading the last letter of both input strings
     \begin{align*}
@@ -65,6 +70,7 @@ source = "partAMealy/krohn-rhodes.tex"
 </div>
 <div class="exercise" id="exercise-3">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp e24d43d0
 \setcounter{mypart}{1}\setcounter{section}{2}\setcounter{theorem}{11}\setcounter{exercise}{2}
 \begin{exercise}
 \label{exer:flip-flop-from-sequential-composition} Show that every flip-flop machine can be obtained as a sequential composition of two-state flip-flop machines.
@@ -74,6 +80,7 @@ source = "partAMealy/krohn-rhodes.tex"
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp e24d43d0
 \setcounter{mypart}{1}\setcounter{section}{2}\setcounter{theorem}{11}
 \noindent\textbf{Solution.}\quad In a flip-flop machine, the state after reading an input string is determined by the last letter which has a constant state transformation: the state is the value of that constant, or the initial state if there is no such letter. In particular, the state can be tracked one bit at a time.
 
@@ -90,6 +97,7 @@ source = "partAMealy/krohn-rhodes.tex"
 </div>
 <div class="exercise" id="exercise-4">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp e24d43d0
 \setcounter{mypart}{1}\setcounter{section}{2}\setcounter{theorem}{11}\setcounter{exercise}{3}
 \begin{exercise}
 \label{exer:delay-not-flip-flop-composition} Show that the delay function from Example~\ref{ex:delay} is not  a composition of reversible Mealy machines.
@@ -99,6 +107,7 @@ source = "partAMealy/krohn-rhodes.tex"
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp e24d43d0
 \setcounter{mypart}{1}\setcounter{section}{2}\setcounter{theorem}{11}
 \noindent\textbf{Solution.}\quad By Lemma~\ref{lem:reversible-composition}, a composition of reversible Mealy machines is again a reversible Mealy machine, and therefore it is enough to show that the delay function is not computed by a single reversible machine. Suppose that it is, and let $a$ be some input letter. The state transformation of $a$ is a permutation of a finite set, and hence it has finite order, i.e.~there is some $k \geq 1$ such that reading $a^k$ leads from the initial state back to the initial state. Consequently, the machine is in the initial state just before reading the last letter of both input strings
     \begin{align*}
@@ -111,6 +120,7 @@ source = "partAMealy/krohn-rhodes.tex"
 </div>
 <div class="exercise" id="exercise-5">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp e24d43d0
 \setcounter{mypart}{1}\setcounter{section}{2}\setcounter{theorem}{11}\setcounter{exercise}{4}
 \begin{exercise}
 \label{exer:alternating-not-flip-flop-composition} Show that the function from Example~\ref{ex:alternating-a-b} is not  a composition of flip-flop Mealy machines.
@@ -120,6 +130,7 @@ source = "partAMealy/krohn-rhodes.tex"
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp e24d43d0
 \setcounter{mypart}{1}\setcounter{section}{2}\setcounter{theorem}{11}
 \noindent\textbf{Solution.}\quad By Theorem~\ref{thm:aperiodic-mealy}, the compositions of flip-flop machines are exactly the aperiodic functions, and hence it is enough to observe that this function is not aperiodic. Take $u$ and $w$ to be empty and $v = a$ in Definition~\ref{def:aperiodic-mealy}. The last letter of the output for the input string $a^n$ is $a$ or $b$, depending on the parity of $n$, and hence it does not stabilise for large $n$. This is the same argument as the one for the parity function in Example~\ref{ex:size-threshold-3}.
 {{< /latex >}}
@@ -128,6 +139,7 @@ source = "partAMealy/krohn-rhodes.tex"
 </div>
 <div class="exercise" id="exercise-6">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp e24d43d0
 \setcounter{mypart}{1}\setcounter{section}{2}\setcounter{theorem}{11}\setcounter{exercise}{5}
 \begin{exercise}
 \label{exer:invertible-mealy-is-reversible} Is every invertible Mealy machine, as defined in Exercise~\ref{exer:invertible}, necessarily reversible? The other way round?
@@ -137,6 +149,7 @@ source = "partAMealy/krohn-rhodes.tex"
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp e24d43d0
 \setcounter{mypart}{1}\setcounter{section}{2}\setcounter{theorem}{11}
 \noindent\textbf{Solution.}\quad Neither implication holds. The reason is that the two notions constrain different parts of the transition function: invertibility is about the output letters, while reversibility is about the target states.
 
@@ -149,6 +162,7 @@ source = "partAMealy/krohn-rhodes.tex"
 </div>
 <div class="exercise" id="exercise-7">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp e24d43d0
 \setcounter{mypart}{1}\setcounter{section}{2}\setcounter{theorem}{11}\setcounter{exercise}{6}
 \begin{exercise}
 \label{ex:map-lifting-continuous} Show that if $f : A^* \to B^*$ is continuous, then the same is true for its map lifting.
@@ -158,6 +172,7 @@ source = "partAMealy/krohn-rhodes.tex"
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp e24d43d0
 \setcounter{mypart}{1}\setcounter{section}{2}\setcounter{theorem}{11}
 \noindent\textbf{Solution.}\quad Let $\Bb$ be an automaton which recognises a regular language over the output alphabet of the map lifting; we want to show that the inverse image of this language is regular. Consider an input string
     \begin{align*}

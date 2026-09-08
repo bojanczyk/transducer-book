@@ -104,6 +104,15 @@ def exercises_in(path):
     return out, "".join(body)
 
 
+# build-source-stamps.py puts one of these at the top of every block on a page,
+# after this script has run (rebuild.sh orders them that way). This script
+# regenerates the exercise section wholesale, so it would otherwise report every
+# stamped page as drifted for ever, and strip on every build what the stamper
+# had just written. Ignored when deciding whether a page has drifted: if nothing
+# else moved, the page is left alone and keeps its stamps.
+CONTEXT = re.compile(r"^% context stamp [^\n]*\n", re.M)
+
+
 def read_page(md):
     """The bits of a content page this script needs, or None if it has no chapter."""
     text = md.read_text(errors="ignore")
@@ -200,7 +209,7 @@ def main():
         solved += sum(1 for _, s in items if s)
         n_sol = sum(1 for _, s in items if s)
         print(f"  {md.name:42s} {len(items):2d} exercise(s), {n_sol} with a solution")
-        if want != page["text"]:
+        if CONTEXT.sub("", want) != CONTEXT.sub("", page["text"]):
             drifted += 1
             if args.write:
                 md.write_text(want)

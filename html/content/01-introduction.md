@@ -5,6 +5,7 @@ source = "intro.tex"
 +++
 
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 507c470a
 % Generated chapter wrapper; source body remains untouched.
 \setcounter{mypart}{0}
 \setcounter{section}{0}
@@ -18,6 +19,7 @@ source = "intro.tex"
 <div class="exercises">
 <div class="exercise" id="exercise-1">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 507c470a
 \setcounter{mypart}{0}\setcounter{section}{0}\setcounter{theorem}{1}\setcounter{exercise}{0}
 \begin{exercise}
 \label{exer:reverse-continuous} Show continuity for the reversal function $a_1 \cdots a_n \mapsto a_n \cdots a_1$.
@@ -27,6 +29,7 @@ source = "intro.tex"
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 507c470a
 \setcounter{mypart}{0}\setcounter{section}{0}\setcounter{theorem}{1}
 \noindent\textbf{Solution.}\quad Given a deterministic automaton for the output language, we can construct a nondeterministic automaton for the inverse image, by reversing the arrows in the automaton, and swapping the initial and accepting states.
     
@@ -43,6 +46,7 @@ source = "intro.tex"
 </div>
 <div class="exercise" id="exercise-2">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 507c470a
 \setcounter{mypart}{0}\setcounter{section}{0}\setcounter{theorem}{1}\setcounter{exercise}{1}
 \begin{exercise}
 \label{exer:duplication-continuous} Show continuity for  the duplication\footnote{We use the name duplication for the function because the output length is double the input length. This clashes with the notation $ww = w^2$ which seems to suggest squaring. The reason for the clash is that string concatenation is traditionally written in  multiplicative notation, while additive notation is used for string lengths. For us, the more important one will be string length. This notation clash would be resolved by additve notation for strings, which is done for example in Haskell, where the concatenation operator is called \texttt{++}.  Nevertheless, we stay with the standard multiplicative notation for string concatenation.
@@ -53,6 +57,7 @@ source = "intro.tex"
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 507c470a
 \setcounter{mypart}{0}\setcounter{section}{0}\setcounter{theorem}{1}
 \noindent\textbf{Solution.}\quad We use the monoid approach that was discussed in the solution to Exercise~\ref{exer:reverse-continuous}. Consider a regular language $L \subseteq A^*$. To see that its inverse image, under duplication, is regular, we use the same monoid homomorphism as for $L$, but we change the accepting set to be the set of elements $m$ such that $mm \in F$. This way, the inverse image of the new accepting set is exactly the inverse image of $L$ under duplication.
 {{< /latex >}}
@@ -61,6 +66,7 @@ source = "intro.tex"
 </div>
 <div class="exercise" id="exercise-3">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 507c470a
 \setcounter{mypart}{0}\setcounter{section}{0}\setcounter{theorem}{1}\setcounter{exercise}{2}
 \begin{exercise}
 \label{exer:squaring-continuous} Show continuity for the squaring\footnote{Similarly to the duplication function, the notation $w^{|w|}$ suggest exponentiation, but we call it squaring because of the output length.} function $w \mapsto w^{|w|}$.
@@ -70,6 +76,7 @@ source = "intro.tex"
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 507c470a
 \setcounter{mypart}{0}\setcounter{section}{0}\setcounter{theorem}{1}
 \noindent\textbf{Solution.}\quad Suppose that the original language $L$ is recognised by a monoid homomorphism
     \begin{align*}
@@ -99,6 +106,7 @@ source = "intro.tex"
 </div>
 <div class="exercise" id="exercise-4">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 507c470a
 \setcounter{mypart}{0}\setcounter{section}{0}\setcounter{theorem}{1}\setcounter{exercise}{3}
 \begin{exercise}
 \label{exer:factorial-continuous} Show continuity for the factorial function $w \mapsto w^{|w|!}$.
@@ -108,6 +116,7 @@ source = "intro.tex"
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 507c470a
 \setcounter{mypart}{0}\setcounter{section}{0}\setcounter{theorem}{1}
 \noindent\textbf{Solution.}\quad We use a similar construction as in the monoid solution to the previous exercise.  Let $h$ and $g$ be as in that solution. We define a deterministic finite automaton for the inverse image, where the  state space is 
 \begin{align*}
@@ -120,6 +129,7 @@ The first two coordinates are updated as in the previous exercise, while the thi
 </div>
 <div class="exercise" id="exercise-5">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 507c470a
 \setcounter{mypart}{0}\setcounter{section}{0}\setcounter{theorem}{1}\setcounter{exercise}{4}
 \begin{exercise}
 \label{exer:factorial-power-continuous}Let $g : \Nat \to \Nat$ be any non-decreasing function, possiby non-computable.  Show that the function $
@@ -132,6 +142,7 @@ is continuous.
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 507c470a
 \setcounter{mypart}{0}\setcounter{section}{0}\setcounter{theorem}{1}
 \noindent\textbf{Solution.}\quad The main observation is the following claim, which says that factorial powers in a monoid must necessarily stabilise.  
     \begin{claim}
@@ -151,6 +162,7 @@ is continuous.
 </div>
 <div class="exercise" id="exercise-6">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 507c470a
 \setcounter{mypart}{0}\setcounter{section}{0}\setcounter{theorem}{2}\setcounter{exercise}{5}
 \begin{exercise}
 \label{ex:continuity-for-finite-images}Consider a string-to-string function  with finitely many output values. Show that this function is continuous if and only if the inverse image of each output value is regular.
@@ -160,6 +172,7 @@ is continuous.
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 507c470a
 \setcounter{mypart}{0}\setcounter{section}{0}\setcounter{theorem}{2}
 \noindent\textbf{Solution.}\quad The ``only if'' direction is immediate from the definition of continuity, since the inverse image of a singleton set is the inverse image of a regular language. For the ``if'' direction, we use the fact that every regular language can be expressed as a finite union of singleton sets, and that regular languages are closed under finite unions. Therefore, if the inverse image of each output value is regular, then the inverse image of any regular language will also be regular.
 {{< /latex >}}
@@ -168,6 +181,7 @@ is continuous.
 </div>
 <div class="exercise" id="exercise-7">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 507c470a
 \setcounter{mypart}{0}\setcounter{section}{0}\setcounter{theorem}{2}\setcounter{exercise}{6}
 \begin{exercise}
 \label{exer:finite-images-assumption-necessary}Show that the assumption on finitely many output values in \cref{ex:continuity-for-finite-images} is necessary.
@@ -177,6 +191,7 @@ is continuous.
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 507c470a
 \setcounter{mypart}{0}\setcounter{section}{0}\setcounter{theorem}{2}
 \noindent\textbf{Solution.}\quad Otherwise, every injective string-to-string function would be continuous, since images of singletons would also be singletons and hence regular. Clearly not all injective functions are continuous, since every function can be made injective by adding a copy of the input string to the output, after some  separator symbol.
 {{< /latex >}}
@@ -185,6 +200,7 @@ is continuous.
 </div>
 <div class="exercise" id="exercise-8">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 507c470a
 \setcounter{mypart}{0}\setcounter{section}{0}\setcounter{theorem}{2}\setcounter{exercise}{7}
 \begin{exercise}
 \label{exer:middle-letter-not-continuous}Consider a function which has an empty output for inputs of even length, and otherwise outputs the (one-letter string consisting of) the letter in the middle of the input string. Show that this function is not continuous when the alphabet has at least two letters.
@@ -194,6 +210,7 @@ is continuous.
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 507c470a
 \setcounter{mypart}{0}\setcounter{section}{0}\setcounter{theorem}{2}
 \noindent\textbf{Solution.}\quad For a letter $a$ in the alphabet, the inverse image of the regular language $\set{a}$ is the set of strings of odd length whose middle letter is $a$. This language is not regular, since it is not recognised by any finite automaton, which can be proved using the pumping lemma.
 {{< /latex >}}
@@ -202,6 +219,7 @@ is continuous.
 </div>
 <div class="exercise" id="exercise-9">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 507c470a
 \setcounter{mypart}{0}\setcounter{section}{0}\setcounter{theorem}{2}\setcounter{exercise}{8}
 \begin{exercise}
 \label{ex:distance}For words over an alphabet $A$, define the distance  between two  strings $w,w'$ to be zero if they are equal, and otherwise to be
@@ -215,6 +233,7 @@ is continuous.
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 507c470a
 \setcounter{mypart}{0}\setcounter{section}{0}\setcounter{theorem}{2}
 \noindent\textbf{Solution.}\quad The distance is symmetric and zero if and only if the two strings are equal. The only thing to check is the triangle inequality. We will show a stronger inequality, where $\max$ is used instead of $+$ (which is called an ultrametric):
        \begin{align*}
@@ -231,6 +250,7 @@ is continuous.
 </div>
 <div class="exercise" id="exercise-10">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 507c470a
 \setcounter{mypart}{0}\setcounter{section}{0}\setcounter{theorem}{2}\setcounter{exercise}{9}
 \begin{exercise}
 \label{exer:all-functions-continuous-for-metric} Show that all string-to-string functions are continuous with respect to the distance from \cref{ex:distance}.
@@ -240,6 +260,7 @@ is continuous.
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 507c470a
 \setcounter{mypart}{0}\setcounter{section}{0}\setcounter{theorem}{2}
 \noindent\textbf{Solution.}\quad Continuity means that for every input string $w \in A^*$ and every $\varepsilon > 0$, there is some $\delta > 0$ such that for all input strings at distance at most $\delta$ from $w$, the output is at distance at most $\epsilon$ from $w$. This is true, because there is a \dfa whose language is the singleton $\set{w}$, and the distance from $w$ to any other string is at least $\delta = 1/n$, where $n$ is the number of states in the \dfa. All input strings at distance $< \delta$ will be mapped to exactly $f(w)$, because $w$ is the only such string.  
 
@@ -251,6 +272,7 @@ is continuous.
 </div>
 <div class="exercise" id="exercise-11">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 507c470a
 \setcounter{mypart}{0}\setcounter{section}{0}\setcounter{theorem}{2}\setcounter{exercise}{10}
 \begin{exercise}
 \label{exer:continuous-iff-uniformly-continuous} Show that the continuous functions, in the sense of Definition~\ref{def:continuity}, are exactly the uniformly continuous functions with respect to the above metric.
@@ -260,6 +282,7 @@ is continuous.
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 507c470a
 \setcounter{mypart}{0}\setcounter{section}{0}\setcounter{theorem}{2}
 \noindent\textbf{Solution.}\quad Uniform continuity means that for every $\varepsilon > 0$, there is some $\delta > 0$ such that for all input strings $w,w'$ at distance at most $\delta$, the outputs are at distance at most $\epsilon$. This means that for every $n \in \Nat$ (think of $1/\varepsilon$) there is some $m\in \Nat$  (think of $1/\delta$) such that if input strings cannot be distinguished by automata with at most $m$ states, then the corresponding output strings cannot be distinguished by automata with at most $n$ states.  This is the same as continuity in the sense of Definition~\ref{def:continuity}, because there are finitely many automata with a given number of states (and a given alphabet).
 {{< /latex >}}

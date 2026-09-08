@@ -4,6 +4,7 @@ weight = 160
 source = "partDPolyregular/for.tex"
 +++
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 1dfa572b
 % Generated chapter wrapper; source body remains untouched.
 \setcounter{mypart}{4}
 \setcounter{section}{0}
@@ -17,6 +18,7 @@ source = "partDPolyregular/for.tex"
 <div class="exercises">
 <div class="exercise" id="exercise-1">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 1dfa572b
 \setcounter{mypart}{4}\setcounter{section}{1}\setcounter{theorem}{4}\setcounter{exercise}{0}
 \begin{exercise}
 \label{exer:for-transducers-simulate-fo}  Consider a first-order formula that defines a language. 
@@ -27,6 +29,7 @@ Show that the same language, viewed as a string-to-string function with outputs 
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 1dfa572b
 \setcounter{mypart}{4}\setcounter{section}{1}\setcounter{theorem}{4}
 \noindent\textbf{Solution.}\quad The translation replaces quantifiers by for loops, and the truth values of subformulas by Boolean variables. For a subformula $\exists x\, \psi$, we use a Boolean variable which is set to false, and then a loop over all positions $x$, which sets the variable to true whenever the translation of $\psi$ evaluates to true; a universal quantifier is treated dually. The atomic formulas -- the order and equality tests on positions, and the tests on labels -- are available directly in the syntax of for-transducers, and the Boolean connectives are available in the conditions. Finally, after the outermost loop, the epilogue outputs ``yes'' or ``no'', depending on the Boolean variable for the whole formula.
 
@@ -37,6 +40,7 @@ The size is polynomial, and in fact linear: each quantifier of the formula contr
 </div>
 <div class="exercise" id="exercise-2">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 1dfa572b
 \setcounter{mypart}{4}\setcounter{section}{1}\setcounter{theorem}{4}\setcounter{exercise}{1}
 \begin{exercise}
 \label{exer:for-transducer-continuity-nonelementary} Show that there is no algorithm that runs in elementary time and solves the following computational version of  continuity of  for-transducers:
@@ -50,6 +54,7 @@ The size is polynomial, and in fact linear: each quantifier of the formula contr
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 1dfa572b
 \setcounter{mypart}{4}\setcounter{section}{1}\setcounter{theorem}{4}
 \noindent\textbf{Solution.}\quad Already the size of the output \nfa can be non-elementary, and hence no algorithm can produce it in elementary time. Indeed, consider a first-order sentence $\varphi$ as in \cref{exer:fo-non-elementary}, of size polynomial in $n$, whose language contains exactly one string, of length at least $\exp(n)$. By \cref{exer:for-transducers-simulate-fo}, there is a for-transducer $f_\varphi$, of size polynomial in $\varphi$, which outputs ``yes'' or ``no'' according to $\varphi$. Apply the hypothetical algorithm to $f_\varphi$ and to the one-state \nfa which accepts the language $\set{\text{yes}}$. The answer is an \nfa for the language of $\varphi$. An \nfa whose language contains a string of length $\ell$ and no longer string must have more than $\ell$ states, since otherwise the accepting run would repeat a state and could be pumped. Therefore the answer has at least $\exp(n)$ states, which is not elementary in the size of the input.
 {{< /latex >}}
@@ -58,6 +63,7 @@ The size is polynomial, and in fact linear: each quantifier of the formula contr
 </div>
 <div class="exercise" id="exercise-3">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 1dfa572b
 \setcounter{mypart}{4}\setcounter{section}{1}\setcounter{theorem}{4}\setcounter{exercise}{2}
 \begin{exercise}
 \label{exer:forward-for-transducer} A \emph{forward for-transducer} is a for-transducer in which all loops are of the first-to-last kind. Show that the functions computed by forward for-transducers are exactly the composition closure of marked squaring and rational (not regular) functions.
@@ -67,6 +73,7 @@ The size is polynomial, and in fact linear: each quantifier of the formula contr
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp 1dfa572b
 \setcounter{mypart}{4}\setcounter{section}{1}\setcounter{theorem}{4}
 \noindent\textbf{Solution.}\quad Both inclusions follow the proof of \cref{thm:for-transducers-are-polyregular}, with an eye on the direction of the loops.
 

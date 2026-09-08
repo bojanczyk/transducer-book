@@ -5,6 +5,7 @@ source = "partAMealy/intro.tex"
 part = true
 +++
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
+% context stamp d6ceeada
 % Generated chapter wrapper; source body remains untouched.
 \setcounter{mypart}{1}
 \setcounter{section}{0}
