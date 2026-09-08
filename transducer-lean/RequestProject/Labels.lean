@@ -1091,6 +1091,26 @@ alias «exer:regular-outpus-of-exactly-linear-size» :=
   Transducers.Exercises.regular_exactly_linear_output
 assert_no_sorry «exer:regular-outpus-of-exactly-linear-size»
 
+/-- **Exercise `exer:if-then-else`** (the functions defined by regular terms are closed under the conditional): `Transducers.Exercises.regTerm_ite`, by the author's composition of pairing, distributivity, the projections and co-pairing. -/
+alias «exer:if-then-else» := Transducers.Exercises.regTerm_ite
+assert_no_sorry «exer:if-then-else»
+
+/-- **Exercise `exer:if-then-else`** (the same for the functions defined by rational terms): `Transducers.Exercises.ratTerm_ite`, by the author's indirect argument through Theorem `thm:rational-terms` and closure of the rational functions under a case distinction over a regular language. -/
+alias «exer:if-then-else#2» := Transducers.Exercises.ratTerm_ite
+assert_no_sorry «exer:if-then-else#2»
+
+/-- **Exercise `exer:identity-function-replacement`** (the general identity may be replaced by its special case at the unit type, and is in fact not needed at all): `Transducers.Exercises.regTerm_id_replaceable`, which gives for every term one with the same semantics using the identity only at `1` (`Transducers.Exercises.IdOnlyOne`) and one using it nowhere (`Transducers.Exercises.IdFree`). -/
+alias «exer:identity-function-replacement» := Transducers.Exercises.regTerm_id_replaceable
+assert_no_sorry «exer:identity-function-replacement»
+
+/-- **Exercise `exer:group-prefix-multiplication-isomorphism`** (group prefix multiplication is an isomorphism): `Transducers.Exercises.pref_bijective`, with the author's inverse `Transducers.Exercises.unprefixProd`, itself defined by a regular term. -/
+alias «exer:group-prefix-multiplication-isomorphism» := Transducers.Exercises.pref_bijective
+assert_no_sorry «exer:group-prefix-multiplication-isomorphism»
+
+/-- **Exercise `exer:windows-of-size-two`** (a regular term for the windows of size two): `Transducers.Exercises.regTerm_windows_two`, that the exhibited term `Transducers.Exercises.windowsTwoTerm` computes `Transducers.Exercises.windowsTwo`. -/
+alias «exer:windows-of-size-two» := Transducers.Exercises.regTerm_windows_two
+assert_no_sorry «exer:windows-of-size-two»
+
 /-! ## Exercises proved from an explicit hypothesis -/
 
 /-- **Exercise `exer:full-ideal`** (the ideal of all rational functions): `Transducers.Exercises.full_ideal_iff`, proved outright. -/
