@@ -309,6 +309,7 @@ RequestProject/
 | `Exercises/CompressionSLP.lean`, `Exercises/CompressionRat.lean`, `Exercises/CompressionMapLift.lean`, `Exercises/CompressionReg.lean` | Exercises `exer:rational-compression` and `exer:regular-compression`: operations on grammar compressions, the rational case through a bimachine, Claim `claim:map-compression`, and the induction over the composition tree |
 | `Exercises/RegularGrowth.lean`, `Exercises/RationalGrowth.lean` | the loop analysis of a deterministic automaton and the growth gap theorem for regular languages (`Transducers.Exercises.regular_growth_dichotomy`), and its transport to rational functions (`Transducers.Exercises.rationalFun_growth_dichotomy`, `Transducers.Exercises.rationalFun_loop_of_superPoly`, `Transducers.Exercises.exists_rational_bool_identity_of_superPoly`).  This is the analysis that the solutions of the exercises on the ideals of rational functions rest on; see the addendum at the end of this file |
 | `Exercises/CycleMean.lean` | the maximum cycle mean of an nfa with output: every cycle through a productive state has (output length)/(input length) at most the largest such ratio `p/q` over the cycles with at most `|Q|` transitions (`Transducers.Exercises.CycleMean.cycle_bound`), every path between a reachable and a co-reachable state obeys the same bound up to an additive constant (`Transducers.Exercises.CycleMean.path_bound`), and hence the output length of a rational function on the inputs of length at most `n` is `(p/q)·n` up to an additive constant (`Transducers.Exercises.CycleMean.exists_linear_rate`).  This is the analysis that the exercises on functions of exactly linear output size rest on; see the addendum at the end of this file |
+| `Exercises/CombNatural.lean`, `Exercises/CombNaturalAtoms.lean`, `Exercises/CombNaturalFree.lean` | naturality for the type functors of Definition `def:types` and the six exercises of Section *Combinators* about natural transformations: the definition itself (`Transducers.Exercises.TyFun`, `Transducers.Exercises.IsNatural`), a natural family `A → A` is the identity, there is no natural transformation `A* → A`, there are uncountably many of type `A* → A*`, every one of type `A → A*` is regular, the atomic functions of Definition `def:regular-terms` are natural, and a natural transformation with a list-free domain is definable by a regular term — indexed in `EXERCISES.md`, not here |
 | `Exercises/CombinatorsEx.lean` | the four exercises of Section *Combinators* (`combinators.tex`): the conditional construction for regular and for rational terms, the elimination of the identity atom, the bijectivity of group prefix multiplication together with a regular term for its inverse, and an explicit regular term for the windows of size two — indexed in `EXERCISES.md`, not here |
 | `Exercises/ChainWords.lean`, `Exercises/SortedPattern.lean`, `Exercises/IdealsOmega.lean` | the `Ω(n^k)` half of the solution of Exercise `exer:polynomial-ideals`: the words produced by a chain of `k` loops, the rational bijection between such a word and a sorted word, and the two rational functions that put `Transducers.Exercises.sortedFun k` among the pre- and post-compositions of a rational function with `Ω(n^k)` outputs (`Transducers.Exercises.exists_rational_sorted_of_omega`) |
 | `Exercises/PatternCover.lean`, `Exercises/PatternCoverRat.lean`, `Exercises/IdealsPoly.lean` | the `O(n^k)` half: the analysis of the strongly connected components of an automaton with no ambiguous cycle and no chain of `k+1` loops, which covers its language by finitely many `k`-patterns (`Transducers.Exercises.RegGrowth.exists_pattern_cover`), the rational realisation of a finite family of `k`-patterns, and the factorisation of a rational function with `O(n^k)` outputs, `k ≥ 1`, through `sortedFun k` (`Transducers.Exercises.exists_rational_factor_through_sorted`) |
@@ -3093,7 +3094,7 @@ hypothesis of any kind and with `#print axioms` reporting only `propext`,
   functions that implement the two projections and then **pairs** the results.
   Instead the machine `Transducers.RatComb.pairMarkMach` -- the same one that
   serves the combinator `f₁ × f₂` -- cuts the representation of a pair into the
-  two tagged blocks `L⟨a⟩` and `R⟨b⟩`; the split of Example `ex:split` turns them
+  two tagged blocks `L⟨a⟩` and `R⟨b⟩`; the split of Example `ex:block` turns them
   into a list of two blocks, the inverse for a co-product turns that into the
   list `[inl a, inr b]`, and a second split followed by two `head` operations
   (Claim `claim:head`) reads the pair off it.  No coordinate is ever duplicated.
@@ -3135,3 +3136,57 @@ run contains no `sorry`, no `axiom` and no `native_decide`;
 `tools/gen_labels.py --check`, `tools/decl_files.py --check` and
 `tools/tex_numbering.py --check` all pass, and `tools/print_axioms.sh` reports
 that all 248 aliases depend only on `propext`, `Classical.choice`, `Quot.sound`.
+
+## Status (the six exercises of Section *Combinators* about natural transformations)
+
+The run that added this section formalised the six exercises of Section
+*Combinators* (`combinators.tex`) that are about **natural transformations**.
+They are exercises, not numbered results, so they are indexed in
+`EXERCISES.md`; they are listed here only because they are the whole of that
+run.  All six are **proved outright**, with no hypothesis of any kind, in
+`RequestProject/Exercises/CombNatural.lean`,
+`RequestProject/Exercises/CombNaturalAtoms.lean` and
+`RequestProject/Exercises/CombNaturalFree.lean`:
+
+| label | Lean name |
+| --- | --- |
+| `exer:natural-identity` | `Transducers.Exercises.natural_id_eq_id` |
+| `exer:head-operation-natural` | `Transducers.Exercises.no_natural_head`, `Transducers.Exercises.not_natural_head_of_claim` |
+| `exer:natural-list-function` | `Transducers.Exercises.uncountably_many_natural_list` |
+| `exer:natural-transformations-from-A` | `Transducers.Exercises.natural_toList_regular`, `Transducers.Exercises.natural_toList_eq_replicate` |
+| `exer:natural-transformations-from-regular-terms` | `Transducers.Exercises.regTerm_atomics_natural` |
+| `exer:natural-transformations-list-free` | `Transducers.Exercises.natural_listFree_regularTerm`, `Transducers.Exercises.natural_listFree_regular` |
+
+The project had no notion of naturality, and Exercise `exer:natural-identity`
+is where the book fixes one, so the run defines it once and uses it throughout:
+`Transducers.Exercises.TyFun` is the syntax of a functor — an expression built
+from type variables `var i` by the constructors of Definition `def:types` —
+`TyFun.app` and `TyFun.map` are its actions on types and on families of
+functions, and `Transducers.Exercises.IsNatural F G f` says that the square of
+the book commutes for a family `f` indexed by a valuation `ℕ → Ty` of the
+variables.  Variables are indexed by `ℕ` rather than by `Fin n` so that a single
+definition covers the several-variable functors that Exercise
+`exer:natural-transformations-from-regular-terms` and Exercise
+`exer:natural-transformations-list-free` need; the head of `CombNatural.lean`
+records the choice and its consequences, and `EXERCISES.md` describes each
+proof.  Nothing of the term language was restated: the files use
+`Transducers.Ty`, `Transducers.RegTerm`, `Transducers.RegTerm.eval`, the derived
+combinators of `PartC/CombDerived.lean` (in particular the finite case
+distinction `Transducers.tfun_finCases'`) and the easy direction of Theorem
+`thm:regular-terms`.
+
+**A relabelling in the book.**  The example that introduces the atomic function
+`(A+B)* → A* × (B × A*)*` is now Example `ex:block` in `combinators.tex`, and
+is called *Block*; the docstrings of `PartC/CombTerms.lean`,
+`PartC/CombDerived.lean`, `PartC/CombMapRev.lean`, `PartC/CombMealyFF.lean`,
+`PartC/CombRepr.lean`, `PartC/RatRepr.lean` and this file referred to it by its
+older label ex:split (no backticks here, since it is no longer a label), which no longer exists in the sources and which
+`tools/gen_labels.py --check` therefore rejected.  They now say `ex:block`.  The
+Lean names (`RegTerm.split`, `splitList`, …) are unchanged.
+
+**Verification.**  `lake build` succeeds with no errors; the three files added
+by this run contain no `sorry`, no `axiom` and no `native_decide`;
+`tools/gen_labels.py --check`, `tools/decl_files.py --check` and
+`tools/tex_numbering.py --check` all pass, and `tools/print_axioms.sh` reports
+that all 257 aliases, the nine new ones included, depend only on `propext`,
+`Classical.choice` and `Quot.sound`.

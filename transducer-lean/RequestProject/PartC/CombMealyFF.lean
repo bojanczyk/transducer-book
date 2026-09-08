@@ -8,7 +8,7 @@ reset letter with the state that it produces,
 
     `A* → (A + Q)*`,
 
-and the split function of Example `ex:split` cuts the annotated string at those annotations,
+and the split function of Example `ex:block` cuts the annotated string at those annotations,
 giving an element of `A* × (Q × A*)*`.  Each block then carries the state that the machine is in
 while reading it -- the state cannot change inside a block, because a block contains a reset letter
 only as its last letter -- so the output of the machine on a block is a homomorphic image of it,

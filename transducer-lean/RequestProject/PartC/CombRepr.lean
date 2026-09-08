@@ -16,7 +16,7 @@ was proved in `CombComplete.lean`:
   case distinction suffice;
 * for a list, the marking machine of `CombMark.lean` replaces the top-level commas of the
   representation by a fresh separator and deletes the outer brackets, and then the split function
-  of Example `ex:split` cuts the string into the representations of the entries.  A separator is
+  of Example `ex:block` cuts the string into the representations of the entries.  A separator is
   prepended first, by a term, so that the first entry is also a block of the split -- with that,
   the empty list and a one-element list are treated by the same term.
 

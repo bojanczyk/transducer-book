@@ -183,7 +183,7 @@ lemma tfun_consFixed (A : Ty) (a : A.Elt) :
 
 /-! ## The inverse of split -/
 
-/-- The inverse of the split function of Example `ex:split`: the concatenation of all the entries
+/-- The inverse of the split function of Example `ex:block`: the concatenation of all the entries
 in the left-to-right order. -/
 def unsplitList {A B : Type} (p : List A × List (B × List A)) : List (A ⊕ B) :=
   p.1.map Sum.inl ++ (p.2.map (fun q => Sum.inr q.1 :: q.2.map Sum.inl)).flatten

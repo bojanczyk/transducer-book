@@ -1111,6 +1111,45 @@ assert_no_sorry «exer:group-prefix-multiplication-isomorphism»
 alias «exer:windows-of-size-two» := Transducers.Exercises.regTerm_windows_two
 assert_no_sorry «exer:windows-of-size-two»
 
+/-- **Exercise `exer:natural-identity`** (a natural family `A → A` is the identity at every type): `Transducers.Exercises.natural_id_eq_id`, for the notion of naturality of `Transducers.Exercises.IsNatural`, which this exercise fixes and which the other exercises about natural transformations use. -/
+alias «exer:natural-identity» := Transducers.Exercises.natural_id_eq_id
+assert_no_sorry «exer:natural-identity»
+
+/-- **Exercise `exer:head-operation-natural`** (there is no natural transformation `A* → A`, so the `head` of Claim `claim:head` is not one): `Transducers.Exercises.no_natural_head`. -/
+alias «exer:head-operation-natural» := Transducers.Exercises.no_natural_head
+assert_no_sorry «exer:head-operation-natural»
+
+/-- **Exercise `exer:head-operation-natural`** (there is no natural transformation `A* → A`, so the `head` of Claim `claim:head` is not one): `Transducers.Exercises.not_natural_head_of_claim`, the second half. -/
+alias «exer:head-operation-natural#2» := Transducers.Exercises.not_natural_head_of_claim
+assert_no_sorry «exer:head-operation-natural#2»
+
+/-- **Exercise `exer:natural-list-function`** (there are uncountably many natural transformations `A* → A*`): `Transducers.Exercises.uncountably_many_natural_list`. -/
+alias «exer:natural-list-function» := Transducers.Exercises.uncountably_many_natural_list
+assert_no_sorry «exer:natural-list-function»
+
+/-- **Exercise `exer:natural-transformations-from-A`** (every natural transformation `A → A*` is regular at each type): `Transducers.Exercises.natural_toList_regular`. -/
+alias «exer:natural-transformations-from-A» := Transducers.Exercises.natural_toList_regular
+assert_no_sorry «exer:natural-transformations-from-A»
+
+/-- **Exercise `exer:natural-transformations-from-A`** (every natural transformation `A → A*` is regular at each type): `Transducers.Exercises.natural_toList_eq_replicate`, the classification behind it. -/
+alias «exer:natural-transformations-from-A#2» := Transducers.Exercises.natural_toList_eq_replicate
+assert_no_sorry «exer:natural-transformations-from-A#2»
+
+/-- **Exercise `exer:natural-transformations-from-regular-terms`** (the atomic functions of Definition `def:regular-terms`, group prefix multiplication aside, are natural transformations of functors in several type variables): `Transducers.Exercises.regTerm_atomics_natural`. -/
+alias «exer:natural-transformations-from-regular-terms» :=
+  Transducers.Exercises.regTerm_atomics_natural
+assert_no_sorry «exer:natural-transformations-from-regular-terms»
+
+/-- **Exercise `exer:natural-transformations-list-free`** (a natural transformation whose domain functor does not use the list constructor is definable by a regular term): `Transducers.Exercises.natural_listFree_regularTerm`. -/
+alias «exer:natural-transformations-list-free» :=
+  Transducers.Exercises.natural_listFree_regularTerm
+assert_no_sorry «exer:natural-transformations-list-free»
+
+/-- **Exercise `exer:natural-transformations-list-free`** (a natural transformation whose domain functor does not use the list constructor is definable by a regular term): `Transducers.Exercises.natural_listFree_regular`, the same statement under string representation. -/
+alias «exer:natural-transformations-list-free#2» :=
+  Transducers.Exercises.natural_listFree_regular
+assert_no_sorry «exer:natural-transformations-list-free#2»
+
 /-! ## Exercises proved from an explicit hypothesis -/
 
 /-- **Exercise `exer:full-ideal`** (the ideal of all rational functions): `Transducers.Exercises.full_ideal_iff`, proved outright. -/
