@@ -692,6 +692,26 @@ assert_no_sorry «claim:from-configuration-to-child-configuration-graph»
 alias «claim:from-child-configuration-graph-to-children» := Transducers.from_child_configuration_graph_to_children
 assert_no_sorry «claim:from-child-configuration-graph-to-children»
 
+/-- **Definition `def:polyregular-terms`** (polyregular terms): `Transducers.PolyTerm`. -/
+alias «def:polyregular-terms» := Transducers.PolyTerm
+assert_no_sorry «def:polyregular-terms»
+
+/-- **Definition `def:polyregular-terms`** (polyregular terms): `Transducers.PolyTerm.eval`. -/
+alias «def:polyregular-terms#2» := Transducers.PolyTerm.eval
+assert_no_sorry «def:polyregular-terms#2»
+
+/-- **Definition `def:polyregular-terms`** (polyregular terms): `Transducers.IsPolyregularTermFun`. -/
+alias «def:polyregular-terms#3» := Transducers.IsPolyregularTermFun
+assert_no_sorry «def:polyregular-terms#3»
+
+/-- **Definition `def:polyregular-terms`** (polyregular terms): `Transducers.splitsList`. -/
+alias «def:polyregular-terms#4» := Transducers.splitsList
+assert_no_sorry «def:polyregular-terms#4»
+
+/-- **Theorem `thm:polyregular-terms`** (polyregular = polyregular terms): `Transducers.polyregular_iff_polyregularTerm`. -/
+alias «thm:polyregular-terms» := Transducers.polyregular_iff_polyregularTerm
+assert_no_sorry «thm:polyregular-terms»
+
 /-! ## Exercises
 
 The exercises of the book are not numbered results, so they are indexed in

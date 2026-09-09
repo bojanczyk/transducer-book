@@ -190,6 +190,8 @@ generator working from the tables alone would delete them.
 | D.2.5 | lemma | `lem:children-of-configuration-in-pebble-run` | `polyregular-pebble.tex` |
 | D.2.6 | claim | `claim:from-configuration-to-child-configuration-graph` | `polyregular-pebble.tex` |
 | D.2.7 | claim | `claim:from-child-configuration-graph-to-children` | `polyregular-pebble.tex` |
+| D.3.1 | definition | `def:polyregular-terms` | `higher-order.tex` |
+| D.3.2 | theorem | `thm:polyregular-terms` | `higher-order.tex` |
 
 Sections and subsections:
 
@@ -238,3 +240,4 @@ Sections and subsections:
 | D.2 | section | *Pebble transducers* | `polyregular-pebble.tex` |
 | D.2.1 | subsection | *Continuity* | `polyregular-pebble.tex` |
 | D.2.2 | subsection | *Equivalence with for-transducers* | `polyregular-pebble.tex` |
+| D.3 | section | *A functional programming language* | `higher-order.tex` |

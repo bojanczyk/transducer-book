@@ -291,6 +291,14 @@ RequestProject/
 | `PartD/PebbleSquareSim.lean` | the simulation theorem: the simulating machine produces the same output on the marked square as the simulated one on the input (`Transducers.PebSq.sim_computes`) |
 | `PartD/PebblePoly.lean` | the hard direction of Theorem `thm:pebble-are-for`: by induction on the number of pebbles, a pebble transducer computes a polyregular function (`Transducers.isPolyregular_of_isPebbleTransducer`) |
 | `PartD/Statements.lean` | Part D: polyregular functions, for-transducers, pebble transducers |
+| `PartD/PolyTerms.lean` | Definition `def:polyregular-terms`: the new atomic function `Transducers.splitsList`, the syntax `Transducers.PolyTerm` of the polyregular terms (the constructors of `Transducers.RegTerm` and one more), their semantics, the type-to-type functions `Transducers.IsPolyregularTermFun` they define, and the embedding of the regular terms |
+| `PartD/PolyPerSplit.lean` | applying a regular function to every copy of the input with a prefix underlined (`Transducers.perSplit`) is polyregular: the marked square of the input with a marker in front, read through a letter map, is the list of the copies, and the map lifting applies the function to each of them |
+| `PartD/PolyMapLift.lean` | the map lifting of a polyregular function is polyregular; the one new case is marked squaring (`Transducers.isPolyregular_mapLift_markedSquare`), which is a computation over all the cuts of the input keeping, in each copy, the block in which the cut falls |
+| `PartD/PolySum.lean` | the sum of two polyregular functions, case distinction over a regular language and concatenation, for the polyregular functions; the sum of marked squaring with the identity is obtained from the map lifting of marked squaring, by cutting the two summands into blocks in two different ways |
+| `PartD/PolyRepr.lean` | polyregular under string representation (`Transducers.IsPolyregularUnderRepr`) and the combinators of Definition `def:regular-terms` -- pairing, co-pairing and map -- for it |
+| `PartD/PolySplitsAtom.lean` | the new atomic function is polyregular under string representation: the top-level commas of the representation are marked, a separator and a sentinel are appended, and the computation over all the cuts of that string emits one pair per cut that falls between two entries |
+| `PartD/PolyTermEasy.lean` | the right-to-left inclusion of Theorem `thm:polyregular-terms`: every function defined by a polyregular term is polyregular under string representation |
+| `PartD/PolyTermComplete.lean` | the left-to-right inclusion of Theorem `thm:polyregular-terms`: marked squaring is definable from `split` (the exercise the book leaves to the reader), and the prime decomposition of Definition `def:polyregular-functions` then gives a polyregular term for every polyregular function |
 | `PartD/PebEnc.lean` | the string representation of a pair of configurations of a pebble transducer (`Transducers.PebEnc.PairLetter`, `Transducers.PebEnc.pairEnc`) and reachability along runs that never pop below a fixed height (`Transducers.Pebble.RestrReaches`, `Transducers.Pebble.BalancedRun`) |
 | `PartD/PebReachAut.lean`, `PartD/PebReachRun.lean`, `PartD/PebReachSim.lean` | the pebble automaton that reads the string representation of a pair of configurations, rebuilds the source stack bottom-up and simulates the machine, and its correctness (`Transducers.PebReach.reachAut_answers_iff`) |
 | `PartD/PebReach.lean` | Lemma `lem:reachability-pebble-automaton` and Claim `claim:reachability-basic-run` |
@@ -1699,6 +1707,8 @@ among the primes.
 | Lemma `lem:children-of-configuration-in-pebble-run` (the children of a configuration) | `Transducers.children_of_configuration_in_pebble_run` | proved (composition of the two claims below) | `PartD/CGFor.lean` |
 | Claim `claim:from-configuration-to-child-configuration-graph` (configuration to child configuration graph) | `Transducers.from_configuration_to_child_configuration_graph` | proved (`ChildSem.lean`, `ChildReach.lean`, `CGLang.lean`, `CGAtom.lean`, `CGSem.lean`) | `PartD/CGFor.lean` |
 | Claim `claim:from-child-configuration-graph-to-children` (child configuration graph to children) | `Transducers.from_child_configuration_graph_to_children` | proved (`ChildGraph.lean`, `ChildPath.lean`, `ChildGraphAut.lean`, `ChildGraphRun.lean`) | `PartD/ChildGraphFor.lean` |
+| Definition `def:polyregular-terms` (polyregular terms) | `Transducers.PolyTerm`, `Transducers.PolyTerm.eval`, `Transducers.IsPolyregularTermFun`, `Transducers.splitsList` | — | `PartD/PolyTerms.lean` |
+| Theorem `thm:polyregular-terms` (polyregular = polyregular terms) | `Transducers.polyregular_iff_polyregularTerm` | proved (`PolyTermEasy.lean` and `PolyTermComplete.lean`) | `PartD/Statements.lean` |
 
 Supporting files for Part D: `MarkedSquare.lean` (marked squaring and the
 right-to-left automaton showing that it is continuous), the thirteen
@@ -1707,6 +1717,8 @@ the semantics of the for-transducers, the prenex form of Lemma
 `lemma:prenex-normal-form`, and the composition of two for-transducers of Lemma
 `lem:for-closed-under-composition`, the five `Poly*.lean` files that carry the
 right-to-left inclusion of Theorem `thm:for-transducers-are-polyregular`, the
+eight `Poly*.lean` files listed in the table of files above that carry Theorem
+`thm:polyregular-terms`, the
 nine `Pebble*.lean` files that carry Theorem `thm:pebble-are-continuous`, and
 the files that carry Theorem `thm:pebble-are-for`: `PebbleForDef.lean`,
 `PebbleForRun.lean`, `PebbleForNest.lean` and `PebbleForTop.lean` for the easy
@@ -1764,13 +1776,15 @@ below for what the earlier passes had to remove to get there.
 
 ### Counts
 
-The book has **116 theorem-like environments**, listed in the dictionary of
+The book has **118 theorem-like environments**, listed in the dictionary of
 `LABELS.md` and checked against the book's `main.aux`.  Every one of them has a
 row in the index above.  The counts below are recomputed from that dictionary
 and from the aliases of `RequestProject/Labels.lean`; earlier passes of this
-file reported 100 and then 115, which was the size of the dictionary at the
-time -- the 116th environment is Claim `claim:pairing-copairing`, which the
-author has since labelled and which is proved, see the closing status section.
+file reported 100, then 115 and then 116, which was the size of the dictionary
+at the time -- the 116th environment is Claim `claim:pairing-copairing`, which
+the author has since labelled and which is proved, and the last two are
+Definition `def:polyregular-terms` and Theorem `thm:polyregular-terms` of
+Section D.3, added by the run whose status section closes this file.
 The three
 environments that are not formalised are Definition
 `def:rational-recognisable-subsets`, Claim
@@ -1780,8 +1794,8 @@ index above.
 
 | | Introduction | Part A | Part B | Part C | Part D | total |
 | --- | --- | --- | --- | --- | --- | --- |
-| definitions formalised | 1 | 4 | 7 | 9 | 2 | **23** |
-| results proved outright | 0 | 11 | 26 | 42 | 11 | **90** |
+| definitions formalised | 1 | 4 | 7 | 9 | 3 | **24** |
+| results proved outright | 0 | 11 | 26 | 42 | 12 | **91** |
 | results proved from an explicit hypothesis | 0 | 0 | 0 | 0 | 0 | **0** |
 | environments not formalised | 0 | 0 | 1 | 2 | 0 | **3** |
 
@@ -3189,4 +3203,103 @@ by this run contain no `sorry`, no `axiom` and no `native_decide`;
 `tools/gen_labels.py --check`, `tools/decl_files.py --check` and
 `tools/tex_numbering.py --check` all pass, and `tools/print_axioms.sh` reports
 that all 257 aliases, the nine new ones included, depend only on `propext`,
+`Classical.choice` and `Quot.sound`.
+
+## Status (Section *A functional programming language*: the polyregular terms)
+
+The run that added this section formalised Section D.3 of the book, which is
+Definition `def:polyregular-terms` and Theorem `thm:polyregular-terms`.  Both
+are **proved outright**, with no hypothesis of any kind; `#print axioms` reports
+only `propext`, `Classical.choice`, `Quot.sound` for the theorem and for each of
+its two directions separately.
+
+```
+theorem Transducers.polyregular_iff_polyregularTerm {A B : Ty} (f : A.Elt → B.Elt) :
+    IsPolyregularUnderRepr f ↔ IsPolyregularTermFun f
+```
+
+and `Transducers.Book.«thm:polyregular-terms»` is its alias.
+
+**The syntax.**  A polyregular term *is* a regular term with one more atomic
+function, so `Transducers.PolyTerm` (`PartD/PolyTerms.lean`) repeats the
+constructors of `Transducers.RegTerm` of `PartC/CombTerms.lean` and adds
+`splits : A* → (A* × A*)*`, whose semantics is `Transducers.splitsList`:
+
+```
+def Transducers.splitsList {X : Type} (l : List X) : List (List X × List X) :=
+  (List.range (l.length + 1)).reverse.map (fun i => (l.take i, l.drop i))
+```
+
+— the pairs in the order of *decreasing* prefix, as in the book.  The syntax is
+repeated rather than reused as a parameter so that a polyregular term is a
+single inductive type; `Transducers.PolyTerm.ofReg` embeds the regular terms
+into the polyregular ones and `Transducers.PolyTerm.eval_ofReg` says that the
+embedding preserves the semantics, so nothing of Part C is duplicated at the
+level of proofs.  `Transducers.IsPolyregularTermFun f` says that some polyregular
+term evaluates to `f`, and `Transducers.IsPolyregularUnderRepr`
+(`PartD/PolyRepr.lean`) is Definition
+`def:regular-functions-on-types-under-string-representation` with "regular"
+replaced by "polyregular".
+
+**What is proved.**  All of the following are proved outright:
+
+| label | Lean name | file |
+| --- | --- | --- |
+| `thm:polyregular-terms` | `Transducers.polyregular_iff_polyregularTerm` | `PartD/Statements.lean` |
+| `thm:polyregular-terms` (easy direction) | `Transducers.polyregularTerm_isPolyregular` | `PartD/PolyTermEasy.lean` |
+| `thm:polyregular-terms` (converse) | `Transducers.polyregularTerm_of_isPolyregular` | `PartD/PolyTermComplete.lean` |
+
+**The shape of the argument.**  It is the book's, made explicit.
+
+* *The easy direction* is an induction on the term.  The old atomic functions
+  are regular, hence polyregular, and the combinators preserve polyregularity:
+  pairing, co-pairing and map are the three proofs of
+  `PartC/CombCombinators.lean` run again (`PartD/PolyRepr.lean`), which needs
+  concatenation, case distinction over a regular language and the map lifting
+  for the polyregular functions.  The map lifting is `PartD/PolyMapLift.lean`
+  and the other two are `PartD/PolySum.lean`.
+* *The new atomic function* is polyregular under string representation
+  (`PartD/PolySplitsAtom.lean`).  The book's one-line proof — a for-transducer
+  can use an outermost loop to mark the comma separating prefix from suffix — is
+  rendered by `Transducers.perSplit` (`PartD/PolyPerSplit.lean`): applying a
+  regular function to every copy of the input in which a prefix is underlined is
+  polyregular, because the marked square of the input with a marker in front is,
+  after a letter map, exactly the list of those copies, so that the map lifting
+  of Part A applies the function to each of them.  For the atom itself the
+  string that is run over is the representation with its top-level commas marked
+  (the machine of `PartC/CombMark.lean`), followed by a separator and a
+  sentinel; the copies that describe a cut between two entries are recognised by
+  a four-state automaton, and a sequential rewriting turns such a copy into the
+  string of the corresponding pair.
+* *The converse* goes through the prime decomposition of Definition
+  `def:polyregular-functions`.  The step the book leaves to the reader is
+  `Transducers.isPolyregularTermFun_markedSquare` (`PartD/PolyTermComplete.lean`):
+  marked squaring is the composition of `split`, reverse, tail,
+  `map (map inl × map inr)`, `map append` and `concat`, which is the book's own
+  worked example of the new atom, with the reverse and the tail correcting for
+  the order of `splitsList` and for its extra pair.  The rest is Theorem
+  `thm:regular-terms` applied to the rational primes and the machinery of
+  `PartC/CombStrFam.lean`, repeated for the polyregular terms.
+
+**Two constructions worth naming.**  Both are about marked squaring in a
+context, and both are new here.
+
+* `Transducers.isPolyregular_mapLift_markedSquare`: the map lifting of marked
+  squaring is a computation over all the ways of cutting the *whole* input into
+  a prefix and a suffix; on each copy, a regular function keeps the block in
+  which the cut falls, and nothing at all if the cut is at a separator or before
+  the first letter.
+* `Transducers.sumLeftPoly_markedSquare`: the sum of marked squaring with the
+  identity, needed to run the induction on the primes through the sum of two
+  polyregular functions, follows from the map lifting of marked squaring by
+  cutting the input into blocks in two different ways, depending on the colour
+  of its letters: one block for the summand that is squared, and one-letter
+  blocks for the summand that is left alone, since marked squaring does not
+  change a one-letter block.
+
+**Verification.**  `lake build` succeeds with no errors; the eight files added
+by this run contain no `sorry`, no `axiom` and no `native_decide`;
+`tools/gen_labels.py --check`, `tools/decl_files.py --check` and
+`tools/tex_numbering.py --check` all pass, and `tools/print_axioms.sh` reports
+that all 262 aliases, the five new ones included, depend only on `propext`,
 `Classical.choice` and `Quot.sound`.

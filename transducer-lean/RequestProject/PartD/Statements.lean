@@ -30,6 +30,7 @@ import RequestProject.PartD.PolyFor
 import RequestProject.PartD.PebbleReg
 import RequestProject.PartD.PebblePoly
 import RequestProject.PartD.PebbleForTop
+import RequestProject.PartD.PolyTermComplete
 
 namespace Transducers
 
@@ -90,6 +91,25 @@ for-transducers are closed under composition. -/
 theorem forTransducer_comp {A B C : Type} {f : List A → List B} {g : List B → List C}
     (hf : IsForTransducer f) (hg : IsForTransducer g) : IsForTransducer (g ∘ f) :=
   forTransducer_comp_aux hf hg
+
+/-! ## A functional programming language
+
+Definition `def:polyregular-terms` -- the syntax `Transducers.PolyTerm` of the polyregular terms,
+their semantics `Transducers.PolyTerm.eval`, the type-to-type functions
+`Transducers.IsPolyregularTermFun` that they define, and the new atomic function
+`Transducers.splitsList` -- is in `RequestProject/PartD/PolyTerms.lean`, and the notion of a
+type-to-type function that is polyregular under string representation,
+`Transducers.IsPolyregularUnderRepr`, is in `RequestProject/PartD/PolyRepr.lean`, so that the
+constructions proving the theorem below can be developed before it is stated.  The two directions
+of the theorem are `Transducers.polyregularTerm_isPolyregular`
+(`RequestProject/PartD/PolyTermEasy.lean`) and `Transducers.polyregularTerm_of_isPolyregular`
+(`RequestProject/PartD/PolyTermComplete.lean`). -/
+
+/-- **Theorem `thm:polyregular-terms`.**  A type-to-type function is polyregular under string
+representation if and only if it is defined by some polyregular term. -/
+theorem polyregular_iff_polyregularTerm {A B : Ty} (f : A.Elt → B.Elt) :
+    IsPolyregularUnderRepr f ↔ IsPolyregularTermFun f :=
+  ⟨polyregularTerm_of_isPolyregular, polyregularTerm_isPolyregular⟩
 
 /-! ## Pebble transducers
 

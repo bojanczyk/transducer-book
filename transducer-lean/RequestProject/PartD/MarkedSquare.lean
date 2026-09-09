@@ -45,6 +45,15 @@ lemma markedSquare_eq_msBlocks (w : List A) : markedSquare A w = msBlocks [] w :
 
 @[simp] lemma msBlocks_nil (x : List A) : msBlocks x [] = [] := by simp [msBlocks]
 
+/-- Marked squaring commutes with a letter-to-letter renaming. -/
+lemma markedSquare_map {B : Type} (h : A → B) (w : List A) :
+    markedSquare B (w.map h) = (markedSquare A w).map (Sum.map h h) := by
+  simp [markedSquare, List.map_flatten, List.map_map, Function.comp_def, ← List.map_take,
+    ← List.map_drop]
+
+@[simp] lemma markedSquare_singleton (a : A) : markedSquare A [a] = [Sum.inl a] := by
+  simp [markedSquare]
+
 lemma msBlocks_cons (x : List A) (a : A) (y : List A) :
     msBlocks x (a :: y)
       = ((x ++ [a]).map Sum.inl ++ y.map Sum.inr) ++ msBlocks (x ++ [a]) y := by
