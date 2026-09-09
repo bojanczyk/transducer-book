@@ -6,7 +6,7 @@ definable by regular terms.
 Both are instances of the *map lifting* `Transducers.mapLift` of Definition `def:map-lifting`,
 which applies a function to every block of a string over `A + 1` delimited by the separator.  The
 book's construction is exactly the one available to a term: split the string at the separators
-(the atomic term of Example `ex:split`), apply the function to the first block and to the block of
+(the atomic term of Example `ex:block`), apply the function to the first block and to the block of
 every pair, and put the string back together with the inverse of split -- the inverse being the
 derived term `Transducers.tfun_unsplit` of `CombDerived.lean`.  Reversal of a block is the atomic
 reverse, and duplication of a block is `(id, id); binconc`.

@@ -33,7 +33,7 @@ namespace Transducers
 entries of the input.  This is the semantics of group prefix multiplication. -/
 def prefixProd {M : Type} [Monoid M] (l : List M) : List M := (l.scanl (· * ·) 1).tail
 
-/-- The split function of Example `ex:split`: the input list is cut at its entries from `B`, and
+/-- The split function of Example `ex:block`: the input list is cut at its entries from `B`, and
 the output is the block of entries from `A` before the first cut, together with the list of the
 cutting entries, each with the block of entries from `A` that follows it. -/
 def splitList {A B : Type} : List (A ⊕ B) → List A × List (B × List A)

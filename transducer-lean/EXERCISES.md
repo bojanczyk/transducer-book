@@ -71,6 +71,9 @@ RequestProject/
 | `Exercises/ReverseNotRational.lean` | Example `ex:string-reversal-not-rational` of the main text, that string reversal over a two-letter alphabet is not rational (`Transducers.Exercises.not_isRationalFun_reverse`), by the author's argument through Theorem `thm:machine-independent-rational-functions`: the strings `falseⁿ` are pairwise inequivalent for the relation `BoundedVarRel` of reversal (`Transducers.Exercises.not_boundedVarRel_reverse`), so that relation has infinite index.  Exercises `exer:function-that-is-not-rational` and `exer:not-semiring-continuous` used to take this as an explicit hypothesis and are now unconditional |
 | `Exercises/DuplicateNotRational.lean` | Exercise `exer:duplication-not-rational`, that string duplication over a two-letter alphabet is not rational, by the argument the author gives for it: the strings `falseⁿ` are pairwise inequivalent for the relation `BoundedVarRel` of duplication (`Transducers.Exercises.not_boundedVarRel_duplicate`), so that relation has infinite index and Theorem `thm:machine-independent-rational-functions` applies (`Transducers.Exercises.not_isRationalFun_duplicate_boundedVar`).  The statement is the one already proved, by the other argument of the book, as `Transducers.Exercises.not_isRationalFun_duplicate` in `Exercises/PartBC.lean` |
 | `Exercises/NoReverseReversible.lean` | Exercise `exer:no-reverse-reversible`, that the right-to-left reversible Mealy machines can be dropped from the list of primes of Theorem `thm:rational-primes` (`Transducers.Exercises.rational_primes_no_reverse_reversible`, with the shortened list `Transducers.Exercises.PrimeRatNoRevRevFam`): the author's decomposition of a right-to-left reversible machine into the separator `w ↦ w#`, a left-to-right reversible machine over the permutations of the states, a right-to-left flip-flop machine that broadcasts the transformation of the whole input, and a homomorphism that cancels the prefix out of it |
+| `Exercises/CombNatural.lean` | naturality for the type functors of Definition `def:types` (`TyFun`, `TyFun.app`, `TyFun.map`, `IsNatural`), and the first three exercises of `combinators.tex` about it: a natural family `A → A` is the identity (`natural_id_eq_id`), there is no natural transformation `A* → A` (`no_natural_head`, `not_natural_head_of_claim`), there are uncountably many natural transformations `A* → A*` (`uncountably_many_natural_list`), and every natural transformation `A → A*` repeats its argument a fixed number of times and is therefore regular (`natural_toList_eq_replicate`, `natural_toList_regularTerm`, `natural_toList_regular`) |
+| `Exercises/CombNaturalAtoms.lean` | Exercise `exer:natural-transformations-from-regular-terms`: the atomic functions of Definition `def:regular-terms`, group prefix multiplication aside, are natural transformations between functors in several type variables (`regTerm_atomics_natural`) |
+| `Exercises/CombNaturalFree.lean` | Exercise `exer:natural-transformations-list-free`: a natural transformation whose domain functor does not use the list constructor is definable by a regular term (`natural_listFree_regularTerm`), by way of the generic element of a list-free functor (`TyFun.posTy`, `TyFun.gen`, `TyFun.sel`, `TyFun.map_gen`) and the definability of the shape-with-pointers it produces (`tfun_sel`, `tfun_gen`, `tfun_mapOf`) |
 | `Exercises/CombinatorsEx.lean` | the four exercises of `combinators.tex`: the conditional construction for regular and for rational terms (`regTerm_ite`, `ratTerm_ite`), the replacement of the general identity by its special case at the unit type and its removal altogether (`regTerm_id_replaceable`), the bijectivity of group prefix multiplication together with a regular term for its inverse (`pref_bijective`), and an explicit regular term of type `A* → (A × A)*` for the windows of size two (`regTerm_windows_two`, `windowsTwoTerm`) |
 | `Exercises/TwoDFAEx.lean` | the exercise of `2dfa.tex` on Boolean combinations: the languages of deterministic two-way automata are closed under complement, union and intersection |
 | `Exercises/TwoDFALoop.lean` | loop elimination: the set of inputs on which a deterministic two-way transducer terminates is a regular language |
@@ -267,6 +270,12 @@ all eleven are aliased in `RequestProject/Labels.lean`.
 | Exercise `exer:identity-function-replacement` (the general identity may be replaced by its special case at `1`, and is not needed at all) | `regTerm_id_replaceable` (with `IdOnlyOne`, `IdFree`, `elimId`, `idOneTerm`, `idTermOf`) | proved |
 | Exercise `exer:group-prefix-multiplication-isomorphism` (group prefix multiplication is an isomorphism) | `pref_bijective` (with `unprefixProd`) | proved |
 | Exercise `exer:windows-of-size-two` (a regular term of type `A* → (A × A)*` for the windows of size two) | `regTerm_windows_two` (with `windowsTwo`, `windowsTwoTerm`) | proved |
+| Exercise `exer:natural-identity` (a natural family `A → A` is the identity at every type) | `natural_id_eq_id` (with `TyFun`, `TyFun.app`, `TyFun.map`, `IsNatural`) | proved |
+| Exercise `exer:head-operation-natural` (there is no natural transformation `A* → A`, so the `head` of Claim `claim:head` is not one) | `no_natural_head`, `not_natural_head_of_claim` | proved |
+| Exercise `exer:natural-list-function` (there are uncountably many natural transformations `A* → A*`) | `uncountably_many_natural_list` (with `lenSelect`, `lenSelect_natural`) | proved |
+| Exercise `exer:natural-transformations-from-A` (every natural transformation `A → A*` is regular at each type) | `natural_toList_regular`, `natural_toList_eq_replicate`, `natural_toList_regularTerm` | proved |
+| Exercise `exer:natural-transformations-from-regular-terms` (the atomic functions of Definition `def:regular-terms`, group prefix multiplication aside, are natural transformations of functors in several type variables) | `regTerm_atomics_natural` (with `natural_id`, `natural_fst`, `natural_snd`, `natural_inl`, `natural_inr`, `natural_diag`, `natural_codiag`, `natural_distr`, `natural_cons`, `natural_uncons`, `natural_reverse`, `natural_concat`, `natural_split`) | proved |
+| Exercise `exer:natural-transformations-list-free` (a natural transformation whose domain functor does not use the list constructor is definable by a regular term) | `natural_listFree_regularTerm`, `natural_listFree_regular` (with `TyFun.ListFree`, `TyFun.posTy`, `TyFun.gen`, `TyFun.sel`, `TyFun.map_gen`, `tfun_sel`, `tfun_gen`, `tfun_mapOf`) | proved |
 
 ### Polyregular functions, introduction (`polyregular-intro.tex`)
 
@@ -1691,5 +1700,86 @@ and all four are proved outright.
 
 `lake build` succeeds; the file contains no `sorry`, no `axiom` and no
 `native_decide`; `#print axioms` on the four statements reports only `propext`,
+`Classical.choice` and `Quot.sound`, and `tools/gen_labels.py --check`,
+`tools/decl_files.py --check` and `tools/tex_numbering.py --check` pass.
+
+## Status (the six exercises of Section *Combinators* about natural transformations)
+
+The six exercises of `combinators.tex` that are about *natural transformations*
+are now formalised, in `RequestProject/Exercises/CombNatural.lean`,
+`RequestProject/Exercises/CombNaturalAtoms.lean` and
+`RequestProject/Exercises/CombNaturalFree.lean`, and all six are proved
+outright.
+
+The project had no notion of naturality, so `CombNatural.lean` defines one, and
+the other two files use it.  A *functor* is `Transducers.Exercises.TyFun`, the
+syntax of an expression built from type variables `var i` by the constructors of
+Definition `def:types`; a valuation of the variables is a function `ℕ → Ty`,
+`TyFun.app` is the type a functor denotes under one, and `TyFun.map` is its
+action on a family of functions.  A family of functions indexed by a valuation,
+`f : ∀ A : ℕ → Ty, (F.app A).Elt → (G.app A).Elt`, is natural
+(`Transducers.Exercises.IsNatural`) when `G.map g (f A x) = f B (F.map g x)` for
+every valuation `A`, `B`, every family `g` and every `x`, which is the square
+the book draws.  Variables are indexed by `ℕ` rather than by `Fin n` so that one
+definition serves every arity, as Exercise
+`exer:natural-transformations-from-regular-terms` requires; the head of the file
+records that choice and its consequences in full.
+
+* **`exer:natural-identity`.**  `natural_id_eq_id`, by the author's argument:
+  the naturality square for the constant function with value `a` reads
+  `a = g (f a) = f (g a) = f a`.
+
+* **`exer:head-operation-natural`.**  `no_natural_head`, again the author's
+  argument: the value on the empty list, pushed into `1 + 1` by the two constant
+  functions, would make the two elements of `1 + 1` equal.
+  `not_natural_head_of_claim` is the second half of the exercise, that the
+  `head` of Claim `claim:head` is in particular not natural.
+
+* **`exer:natural-list-function`.**  `uncountably_many_natural_list` says that
+  the natural transformations of type `A* → A*` are not a countable set.  The
+  witnesses are the author's transformations for the maps `α` that send `n`
+  either to `[1,…,n]` or to the empty list: `lenSelect b` keeps the input list
+  or erases it according to the Boolean that `b` attaches to its length, which
+  is natural because the length is preserved by any relabelling, and different
+  `b` give different transformations.  The exercise's stronger claim that *every*
+  natural transformation `A* → A*` arises from such an `α` is not formalised;
+  only the uncountability it is stated for is.
+
+* **`exer:natural-transformations-from-A`.**  `natural_toList_eq_replicate` is
+  the classification the author sketches -- such a transformation repeats its
+  argument as many times as there are entries in its value at the unit type --
+  and `natural_toList_regularTerm`, `natural_toList_regular` are the regularity
+  the exercise asks for, the second under string representation, through the
+  easy direction of Theorem `thm:regular-terms`.
+
+* **`exer:natural-transformations-from-regular-terms`.**  `regTerm_atomics_natural`
+  collects the thirteen naturality statements, one for each atomic function of
+  Definition `def:regular-terms` other than group prefix multiplication, which
+  the book leaves out as well because it is parameterised by a group and not by
+  a type.  The functions are the ones the project already evaluates
+  `Transducers.RegTerm` to, so this is naturality of the term semantics itself
+  and not of a fresh copy of it; the only case that is not a case distinction is
+  the block function of Example `ex:block`, whose commutation with a relabelling
+  is `splitList_map`.
+
+* **`exer:natural-transformations-list-free`.**  `natural_listFree_regularTerm`:
+  a natural transformation whose domain functor is list-free is definable by a
+  regular term, at every valuation, with an arbitrary codomain functor and any
+  number of type variables; `natural_listFree_regular` restates it under string
+  representation.  The proof is the author's "fixed shape with pointers to the
+  input", organised so that no normal form of the domain is needed: `TyFun.posTy
+  F i` is the (finite) type of positions of the variable `i` in `F`, `TyFun.gen`
+  replaces every leaf of an element by its own position, `TyFun.sel` reads the
+  entry at a position, and `TyFun.map_gen` says that the two recover the element.
+  Naturality then gives `f A x = G.map (fun i q => F.sel i q x) (f E (F.gen x))`
+  for the generic valuation `E`; for a fixed value of `f E (F.gen x)` the right
+  side is definable (`tfun_mapOf`, by induction on the codomain, a list being a
+  fixed finite list of terms), and the value itself ranges over the finite type
+  `F(E)`, so the dependence on `x` is the finite case distinction
+  `Transducers.tfun_finCases'`.  The author's reduction by distributivity to a
+  disjoint union of products is thereby avoided.
+
+`lake build` succeeds; the three files contain no `sorry`, no `axiom` and no
+`native_decide`; `#print axioms` on the six statements reports only `propext`,
 `Classical.choice` and `Quot.sound`, and `tools/gen_labels.py --check`,
 `tools/decl_files.py --check` and `tools/tex_numbering.py --check` pass.

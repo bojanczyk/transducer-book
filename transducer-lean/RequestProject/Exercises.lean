@@ -71,3 +71,6 @@ import RequestProject.Exercises.IntComb
 import RequestProject.Exercises.IntCombPrimrec
 import RequestProject.Exercises.LengthCollision
 import RequestProject.Exercises.CombinatorsEx
+import RequestProject.Exercises.CombNatural
+import RequestProject.Exercises.CombNaturalAtoms
+import RequestProject.Exercises.CombNaturalFree

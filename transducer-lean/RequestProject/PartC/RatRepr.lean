@@ -14,7 +14,7 @@ argument goes through unchanged; for a product it does not, because it applies t
 the two functions that implement the two projections, and then pairs the results.  Instead the
 machine `Transducers.RatComb.pairMarkMach`, which already serves the combinator `f₁ × f₂`, cuts
 the representation of a pair into the two tagged blocks `L⟨a⟩` and `R⟨b⟩`; the split of Example
-`ex:split` turns them into a list of two blocks, the inverse of a co-product -- which is available
+`ex:block` turns them into a list of two blocks, the inverse of a co-product -- which is available
 -- turns that into the list `[inl a, inr b]`, and a second split, followed by two `head`
 operations, reads the pair off it.  No coordinate is ever duplicated, which is what the rational
 terms must not be able to do.
@@ -118,7 +118,7 @@ lemma sumInv_repr_right {A B : Ty} {invA : List SymTy.Elt → A.Elt}
 
 /-! ## The inverse for a product -/
 
-/-- Reading a pair off the list `[inl a, inr b]`: the split of Example `ex:split` separates the
+/-- Reading a pair off the list `[inl a, inr b]`: the split of Example `ex:block` separates the
 two entries, and two `head` operations pick them out. -/
 lemma rtfun_pairOfSumList (A B : Ty) :
     IsRatTermFun (A := .list (.sum A B)) (B := .prod A B)
