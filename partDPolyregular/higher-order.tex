@@ -333,7 +333,25 @@ It remains to prove \cref{lem:reduction-strategy-lemma}.
 
     \paragraph*{Termination.} Let $\Bb$ be the closure of $\Aa$ under subtypes; this is again a finite set of types. As we observed in the proof of \cref{cor:normalisation-of-terms-with-resource-bounds}, a reduction step introduces no types other than subtypes of types that are already present. Therefore, if $t$ is consistent with the resource bound $(\Aa,h)$, then all types appearing in $t$, and in all of its reducts, belong to $\Bb$. The height, on the other hand, will grow during the reduction, and the lengths of the lists inside $t$ are not bounded by the resource bound at all. This is why the argument below is arranged so that neither of these two quantities enters the final estimate.
 
-    The proof is the majorant method, i.e.~a step-counting version of Tait's reducibility argument. To each term we assign a \emph{majorant}, which bounds the number of steps needed to normalise the term, and also, hereditarily, the same information about everything that can be extracted from its normal form. For a type $A$, the set $\Maj(A)$ of majorants of type $A$ is defined by induction on $A$, together with a \emph{cost} function $\Maj(A) \to \Nat$ which is written $\mu \mapsto |\mu|$:
+    The proof is the majorant method, i.e.~a step-counting version of Tait's reducibility argument. To each term we assign a \emph{majorant}, which is meant to be a witness for termination in a bounded number of steps.  A majorant is more then a   number, and the set of possible majorants depends on the type as follows. 
+    
+    \begin{definition}\label{def:majorants}
+        [Majorants] For each type $A$, the set  of \emph{majorants} for type $A$ is defined by induction on $A$ as follows:
+        \begin{itemize}
+            \item Majorants for  $\onetype$ are natural numbers;
+            \item Majorants for $A \times B$ or $A + B$ are pairs (majorant for $A$, majorant for $B$);
+            \item Majorants for $A^*$ are majorants for $A$;
+            \item Majorants for $A \to B$ are pairs (natural number, $\varphi$), where $\varphi$ is a function
+            \begin{align*}
+            \text{majorants for $A$} \xrightarrow \varphi \text{majorants for $B$}.
+            \end{align*}
+            that is monotone. When talking about monotonicity, we use the order on natural numbers, the coordinatewise order on pairs, and the pointwise order on functions.
+        \end{itemize}
+        Each majorant $\mu$ has a cost, denoted by $|\mu|$, which is the maximal natural number that appears in it.
+    \end{definition}
+
+
+    . which bounds the number of steps needed to normalise the term, and also, hereditarily, the same information about everything that can be extracted from its normal form. For a type $A$, the set $\Maj(A)$ of majorants of type $A$ is defined by induction on $A$, together with a \emph{cost} function $\Maj(A) \to \Nat$ which is written $\mu \mapsto |\mu|$:
     \begin{align*}
     \Maj(\onetype) &= \Nat  &  |m| &= m\\
     \Maj(A \times B) = \Maj(A + B) &= \Maj(A) \times \Maj(B) &  |(\mu,\nu)| &= \max(|\mu|,|\nu|)\\
@@ -342,11 +360,7 @@ It remains to prove \cref{lem:reduction-strategy-lemma}.
     \end{align*}
     where $[\Maj(A) \to \Maj(B)]$ denotes the set of monotone functions. Each $\Maj(A)$ is ordered coordinatewise, and pointwise in the case of the function space; a straightforward induction on the type shows that every two majorants $\mu,\nu \in \Maj(A)$ have a least upper bound $\mu \vee \nu$, and that the cost function is monotone. We also write $\mu + r$ for the majorant obtained from $\mu$ by adding $r$ to each of the numbers that appear in it; this operation is monotone and satisfies $|\mu + r| = |\mu| + r$.
 
-    We now define what it means for a majorant $\mu \in \Maj(A)$ to \emph{majorise} a term $t : A$, which need not be closed. The definition is by induction on the type. In every case we require
-    \begin{align*}
-    \steps(t) \le |\mu|,
-    \end{align*}
-    which in particular asserts that $t$ has a normal form. Apart from this, we require the following for \emph{every} term $s$ that is reachable from $t$ by steps of the strategy, i.e.~such that $t \Rightarrow^* s$:
+    We now define what it means for a majorant $\mu \in \Maj(A)$ to \emph{majorise} a term $t : A$, which need not be closed. The definition is by induction on the type. In every case we require that if a term is majorised by $\mu$, then it our strategy will normalise it in at most $|\mu|$ steps.  Apart from this, we require the following for \emph{every} term $s$ that is reachable from $t$ by steps of the strategy, i.e.~such that $t \Rightarrow^* s$:
     \begin{description}
         \item[unit] if $A = \onetype$, nothing more;
         \item[product] if $A = B \times C$ and $\mu = (\mu_B,\mu_C)$ and $s = (b,c)$, then $b$ is majorised by $\mu_B$ and $c$ by $\mu_C$;
@@ -361,7 +375,18 @@ It remains to prove \cref{lem:reduction-strategy-lemma}.
     \begin{enumerate}
         \item \label{item:majorant-monotone} \textbf{Monotonicity.} If $\mu$ majorises $t$ and $\mu \le \mu'$, then $\mu'$ majorises $t$. This is a routine induction on the type, using monotonicity of the cost function and of the majorants of arrow type.
         \item \label{item:majorant-reduction} \textbf{Forward closure.} If $t \Rightarrow t'$ and $\mu$ majorises $t$, then $\mu$ majorises $t'$. This holds by construction: $\steps(t') = \steps(t) - 1 \le |\mu|$ because the strategy is deterministic, and every reduct of $t'$ is a reduct of $t$, so the remaining conditions are inherited verbatim.
-        \item \label{item:majorant-neutral} \textbf{Neutral terms.} If $x$ is a variable, and the terms $u_1,\ldots,u_r$ are majorised by $\nu_1,\ldots,\nu_r$, then $x\ u_1 \cdots u_r$ is majorised by any majorant whose cost is at least $|\nu_1| + \cdots + |\nu_r|$ and which is above the majorants required by the arrow item; such a majorant exists, and can be chosen monotonically in the $\nu_i$, since a term whose head is a variable stays neutral under reduction, so that the conditions in the product, co-product and list items are vacuous for it. In particular, every variable of type $A$ is majorised by some $\iota_A \in \Maj(A)$.
+        \item \label{item:majorant-neutral} \textbf{Neutral terms.} Call a term \emph{neutral} if it is of the form $g\ u_1 \cdots u_r$ where the head $g$ is a variable, or an atomic function which is \emph{stuck}, in the sense that neither the term nor any of its reducts, applied to any further arguments, ever has a redex at its root. For a type $A$ and a number $m$, define $\top_A(m) \in \Maj(A)$ by induction on the type:
+        \begin{align*}
+        \top_{\onetype}(m) &= m &  \top_{A \times B}(m) = \top_{A+B}(m) &= \big(\top_A(m), \top_B(m)\big)\\
+        \top_{A^*}(m) &= \top_A(m) & \top_{A \to B}(m) &= \big(m, \ \nu \mapsto \top_B(m + |\nu|)\big).
+        \end{align*}
+        An induction on the type shows that $\top_A(m)$ is a majorant, that it is monotone in $m$, and that $|\top_A(m)| = m$. We claim that if $t$ is neutral, with arguments $u_1,\ldots,u_r$ majorised by $\nu_1,\ldots,\nu_r$, then $t$ is majorised by
+        \begin{align*}
+        \top_A(|\nu_1| + \cdots + |\nu_r|),
+        \end{align*}
+        where $A$ is the type of $t$. This is proved by induction on the type $A$. Reduction does not change the head of a neutral term, so every reduct of $t$ has the form $g\ u_1' \cdots u_r'$ with $u_i \Rightarrow^* u_i'$. Consequently no reduct of $t$ is a pair, a list, or of the form $\leftterm\ b$ or $\rightterm\ b$, and the product, co-product and list items hold vacuously; and $\steps(t) = \max_i \steps(u_i) \le \max_i |\nu_i|$, which gives the cost condition. For the arrow item, a reduct of $t$ applied to a further argument $u$ majorised by $\nu$ is again neutral, with arguments majorised by $\nu_1,\ldots,\nu_r,\nu$, so the induction assumption, applied to the smaller type, yields the required majorant $\top_C(|\nu_1| + \cdots + |\nu_r| + |\nu|)$. Taking $r = 0$ we get that every variable of type $A$ is majorised by $\iota_A = \top_A(0)$.
+
+        It should be stressed that $\top_A(m)$ majorises \emph{neutral} terms only, and is not a generic majorant for terms of type $A$ that normalise within $m$ steps: no such generic majorant exists. Enlarging the cost of a majorant of arrow type does not turn it into a majorant of more terms, because it is the function part, and not the cost, which controls what the term does to its arguments.
     \end{enumerate}
     What we do \emph{not} get for free is the converse of item~\ref{item:majorant-reduction}, the head expansion property: if $\mu$ majorises $b[x \mapsto u]$, then $\mu+1$ majorises $(\lambda x.b)\, u$. \issue{This is the one step of the termination argument that is not routine, and it should be checked carefully before the proof goes into the book. The difficulty is the interaction between the parallel strategy and substitution: the reducts of $(\lambda x.b)u$ are the reducts of $b[x \mapsto u]$, which is what we want, but in the arrow item we must compare $((\lambda x.b)u)\,w$ with $(b[x \mapsto u])\,w$, and one step of the strategy reduces the argument $w$ at the same time as the head redex. The standard remedy is to prove the substitution lemma for parallel reduction ($b \Rightarrow b'$ and $u \Rightarrow u'$ imply $b[x \mapsto u] \Rightarrow b'[x \mapsto u']$) and to sequentialise application spines in the strategy, so that in an application whose function part is not yet normal only the function part is reduced. Everything else in this proof is independent of how this point is settled.} We take this property for granted below; it is the standard bookkeeping of the majorant method, and it is the only place where the parallel character of the strategy has to be reconciled with substitution.
 
@@ -369,19 +394,23 @@ It remains to prove \cref{lem:reduction-strategy-lemma}.
         Every atomic function is majorised by some majorant.
     \end{claim}
     \begin{proof}
-        We give two representative cases; the remaining atomic functions are treated in the same way. Both cases use the following observation. Suppose that a term of the form $g\ u$ is not a redex, and will not become one until the reduct of $u$ acquires the shape required by the reduction rule for $g$. As long as this has not happened, the outermost redexes of $g\ u$ are exactly the outermost redexes of $u$, and therefore the first steps of the strategy applied to $g\ u$ are the steps of the strategy applied to $u$. In particular, if $u$ is majorised by $\mu$ and the required shape appears after $j \le |\mu|$ steps, then, by item~\ref{item:majorant-reduction} above, the parts of the $j$-th reduct of $u$ are still majorised by the corresponding parts of $\mu$, and they normalise in at most $|\mu| - j$ further steps.
+        We give two representative cases; the remaining atomic functions are treated in the same way. Both cases use the following observation. Let $g$ be an atomic function, let $r$ be the number of arguments required by its reduction rule, and consider a term
+        \begin{align*}
+        g\ u_1 \cdots u_r.
+        \end{align*}
+        The head $g$ is a constant, and so it contains no redexes; and none of the terms $g\ u_1 \cdots u_i$ with $i < r$ is a redex either, since the rule for $g$ requires all $r$ arguments. Therefore, as long as the arguments have not acquired the shape required by the rule, so that there is no redex at the root, the outermost redexes of the term are exactly the outermost redexes of the arguments $u_1,\ldots,u_r$, and the strategy reduces all of the arguments in parallel. This is the only reason why the strategy cannot descend into the head; it would be false for a term $t\ u$ with an arbitrary $t$, and indeed in the case of $\mapterm$ below the first argument is reduced at the same time as the second one. In particular, if the arguments are majorised by $\mu_1,\ldots,\mu_r$, and the required shape appears after $j$ steps, then $j \le \max_i |\mu_i|$, and by item~\ref{item:majorant-reduction} the $j$-th reducts of the arguments are still majorised by $\mu_1,\ldots,\mu_r$, and normalise in at most $\max_i |\mu_i| - j$ further steps. If the required shape never appears, then the term is stuck, and item~\ref{item:majorant-neutral} applies to it.
 
         Consider first $\fstterm : A \times B \to A$, and let $u$ be majorised by $\mu = (\mu_A,\mu_B)$. If the normal form of $u$ is not a pair, then $\fstterm\ u$ is neutral, and item~\ref{item:majorant-neutral} applies. Otherwise, after $j \le |\mu|$ steps the reduct of $u$ becomes a pair $(a,b)$, where $a$ is majorised by $\mu_A$ and satisfies $\steps(a) \le |\mu| - j$. The next step contracts $\fstterm\ (a,b)$ into $a$, and the reduction continues inside $a$. Altogether
         \begin{align*}
         \steps(\fstterm\ u) \ \le \ j + 1 + (|\mu| - j) \ = \ |\mu| + 1,
         \end{align*}
-        and $\fstterm\ u$ is majorised by $\mu_A + (|\mu|+1)$, joined with the majorant supplied by item~\ref{item:majorant-neutral}. Since this assignment is monotone in $\mu$, it is the function part of a majorant of $\fstterm$.
+        and $\fstterm\ u$ is majorised by $(\mu_A + (|\mu|+1)) \vee \top_A(|\mu|+1)$. The first component of the join takes care of the reduction inside $a$ once the contraction has happened, and the second one of the reducts $\fstterm\ u'$ that precede it; the two branches of the case distinction are joined so that the assignment is defined for every $\mu$. Since it is monotone in $\mu$, it is the function part of a majorant of $\fstterm$.
 
         Consider now $\mapterm : (A \to B) \to A^* \to B^*$, let $f$ be majorised by $(m,F)$ and let $\ell$ be majorised by $\rho$. Reasoning as above, after $j \le |\rho|$ steps the reduct of $\ell$ becomes a list $[a_1,\ldots,a_q]$ whose entries are all majorised by $\rho$, while $f$ has become a term $f'$ that is still majorised by $(m,F)$. One further step contracts the redex into
         \begin{align*}
         [f'(a_1),\ldots,f'(a_q)],
         \end{align*}
-        and by the arrow item every entry of this list is majorised by $F(\rho)$. The entries are now reduced in parallel, so the whole list is majorised by $F(\rho) + (|\rho|+1)$. Note that the number $q$ of entries has played no role whatsoever: this is the list item at work. Since the assignment $((m,F),\rho) \mapsto F(\rho) + (|\rho|+1)$ is monotone in both arguments, it gives the required majorant of $\mapterm$.
+        and by the arrow item every entry of this list is majorised by $F(\rho)$. The entries are now reduced in parallel, so the whole list is majorised by $(F(\rho) + (|\rho|+1)) \vee \top_{B^*}(m + |\rho| + 1)$, the second component of the join again covering the reducts that precede the contraction, and the case where the reduct of $\ell$ never becomes a list at all. Note that the number $q$ of entries has played no role whatsoever: this is the list item at work. Since the assignment $((m,F),\rho) \mapsto F(\rho) + (|\rho|+1)$ is monotone in both arguments, it gives the required majorant of $\mapterm$.
     \end{proof}
 
     \begin{claim}\label{claim:every-term-majorised}
@@ -431,3 +460,117 @@ It remains to prove \cref{lem:reduction-strategy-lemma}.
 
     Summing up, one step of the strategy is computed by a for-transducer, whose loops are nested to depth three, composed with a rational annotating function. By \cref{thm:for-transducers-are-polyregular} this function is polyregular, which completes the proof of the one-step item, and with it the proof of the lemma.
 \end{proof}
+
+\subsection{A second proof, using logical relations}
+\label{sec:logical-relations}
+
+The proof of \cref{thm:higher-order-terms} given above is a normalisation argument: we bounded the
+resources of a term, showed that terms with a fixed resource bound are parsed by a finite
+automaton, that one step of a reduction strategy is a polyregular function of the string
+representation, and that the strategy terminates; the normal form of a term of arrow-free type is
+then a value. There is a second proof, which replaces the normalisation by its semantic
+counterpart, namely a \emph{logical relation}. Instead of reducing a term until nothing higher-order
+is left, we prove by induction on the term that its value is polyregular \emph{in a sense that makes
+sense at every type, including the arrow types}, and then observe that at arrow-free types this
+sense is ordinary polyregularity.
+
+The idea of a logical relation is to say what it means for an object of higher-order type to be
+polyregular, by recursion on the type, in such a way that the statement is preserved by application.
+There is one complication, which is that a term is interpreted only relative to a valuation of its
+free variables, and the free variables range over inputs and not over fixed elements. We therefore
+define the relation not for single elements but for \emph{families} of them, indexed by an
+arrow-free type which we call the parameter and which plays the role of the free variables.
+
+\begin{definition}[The logical relation]\label{def:logical-relation}
+    Let $H$ be a higher-order type and let $P$ be an arrow-free type, called the \emph{parameter}.
+    For a family $g : P \to H$ we define the property $\mathrm{Rel}_H^P(g)$, pronounced ``$g$ is
+    polyregular with parameter $P$'', by induction on $H$:
+    \begin{description}
+        \item[Unit] $\mathrm{Rel}_{\onetype}^P(g)$ always holds.
+        \item[Product] $\mathrm{Rel}_{A \times B}^P(g)$ holds if both components of $g$ are related.
+        \item[Co-product] $\mathrm{Rel}_{A + B}^P(g)$ holds if the tag
+        \begin{align*}
+        p \in P \quad \mapsto \quad \text{the side of $A+B$ on which $g(p)$ lies} \quad \in \onetype + \onetype
+        \end{align*}
+        is a polyregular function, and $g$ agrees with a related family on each of the two sides.
+        \item[List] $\mathrm{Rel}_{A^*}^P(g)$ holds if there are an arrow-free type $Q$ of
+        \emph{indices}, a polyregular function $\ell : P \to Q^*$, and a family
+        $e : P \times Q \to A$ with $\mathrm{Rel}_A^{P \times Q}(e)$, such that
+        \begin{align*}
+        g(p) \quad = \quad [\, e(p,q) \ \mid \ q \in \ell(p) \,] \qquad \text{for every } p \in P.
+        \end{align*}
+        In words: the list is produced by a polyregular list of indices, and its entries are
+        computed uniformly from the parameter and the index.
+        \item[Arrow] $\mathrm{Rel}_{A \to B}^P(g)$ holds if for every arrow-free type $Q$, every
+        polyregular change of parameter $r : Q \to P$ and every family $a : Q \to A$ with
+        $\mathrm{Rel}_A^Q(a)$, the family $q \mapsto g(r(q))(a(q))$ satisfies
+        $\mathrm{Rel}_B^Q$.
+    \end{description}
+\end{definition}
+
+The arrow clause is the usual one for logical relations, with the quantification over $Q$ and $r$
+making it a Kripke logical relation; the quantification is what allows the relation to survive
+going under a $\lambda$, where a new free variable, and hence a larger parameter, appears. The
+list clause is the one that carries the polyregular content, and it is worth pausing on: it does
+\emph{not} say that $g$ is a polyregular function into lists, which would be false at higher types,
+but that the list is indexed by a polyregular list, with a uniform rule for the entries. This is
+the semantic shadow of the fact that a polyregular function produces its output by nested loops
+ranging over positions of the input.
+
+\begin{lemma}\label{lem:logical-relation-closure}
+    The relation of \cref{def:logical-relation} has the following four properties.
+    \begin{enumerate}
+        \item\label{item:rel-reindex} \emph{Reindexing.} If $\mathrm{Rel}_H^P(g)$ and
+        $r : Q \to P$ is polyregular, then $\mathrm{Rel}_H^Q(g \circ r)$.
+        \item\label{item:rel-const} \emph{Constants.} Every higher-order type has an element whose
+        constant family is related.
+        \item\label{item:rel-glue} \emph{Gluing.} The relation is closed under a case distinction
+        driven by a polyregular tag $P \to \onetype + \onetype$.
+        \item\label{item:rel-arrow-free} \emph{Arrow-free types.} If $H$ is arrow-free, then
+        $\mathrm{Rel}_H^P(g)$ holds if and only if $g$ is a polyregular function under string
+        representation.
+    \end{enumerate}
+\end{lemma}
+
+Item~\ref{item:rel-arrow-free} is the one that makes the argument work, and it is the only place
+where the two sides of the theorem meet: the relation is not merely implied by polyregularity at
+arrow-free types, it is equivalent to it. The proof of the implication from left to right unfolds
+the list clause and uses the fact that a map whose body may consult the parameter is polyregular,
+which is the higher-order analogue of a for-loop nested inside another.
+
+\begin{lemma}[Fundamental lemma]\label{lem:fundamental-lemma}
+    Let $t$ be a higher-order polyregular term with free variables of types $\Gamma$, using only
+    the reduced set of atomic functions of \cref{lem:fewer-atomic}. If a family of valuations of
+    $\Gamma$ with parameter $P$ is related componentwise, then the family of values of $t$ is
+    related.
+\end{lemma}
+
+\begin{proof}
+    Induction on $t$. A variable is immediate. An abstraction is exactly the arrow clause, and an
+    application is exactly its converse; this is where reindexing is used, since the argument of an
+    application may live over a larger parameter. It remains to check the atomic functions, one by
+    one. The projections, the co-projections and $\unconsterm$ are routine manipulations of the
+    product, co-product and list clauses; $\mathtt{either}$ is gluing, item~\ref{item:rel-glue};
+    and $\splitterm$ and $\multterm$ are polyregular functions between arrow-free types, so
+    item~\ref{item:rel-arrow-free} applies to them directly.
+
+    Two of the atomic functions carry the content. For $\mapterm$, the body is a function that may
+    itself consult the parameter, so the list produced by the map has to be indexed by the same
+    indices as the input list, with the entries computed by the body from the parameter and the
+    index; this is where the map with a parameter is needed. For $\concatterm$, the input is a
+    list of lists, so it comes with two levels of indices, and the point is that these can be
+    combined into a single polyregular list of indices for the concatenation.
+\end{proof}
+
+\cref{thm:higher-order-terms} follows. Given a term defining a function $f : A \to B$ between
+arrow-free types, take the parameter to be $A$ itself and apply the fundamental lemma to the
+identity family, which is related by item~\ref{item:rel-arrow-free} because the identity is
+polyregular. The value of the term is then a related family at the arrow-free type $B$, and
+item~\ref{item:rel-arrow-free} again turns this into the statement that $f$ is polyregular.
+
+Neither proof is shorter than the other, and the normalisation proof says more, since it exhibits
+an algorithm which computes the normal form. The logical relation, on the other hand, never
+mentions reduction, resource bounds or the parsing of terms, and it is the proof that a proof
+assistant finds comfortable: it is the one carried out in the formalisation of this book, where it
+replaces \crefrange{def:resource-bound}{claim:every-term-majorised} by
+\cref{def:logical-relation,lem:logical-relation-closure,lem:fundamental-lemma}.
