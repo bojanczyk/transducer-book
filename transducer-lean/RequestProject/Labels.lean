@@ -712,6 +712,50 @@ assert_no_sorry «def:polyregular-terms#4»
 alias «thm:polyregular-terms» := Transducers.polyregular_iff_polyregularTerm
 assert_no_sorry «thm:polyregular-terms»
 
+/-- **Definition `def:higher-order-types`** (higher-order types): `Transducers.HTy`. -/
+alias «def:higher-order-types» := Transducers.HTy
+assert_no_sorry «def:higher-order-types»
+
+/-- **Definition `def:higher-order-types`** (higher-order types): `Transducers.HTy.Sem`. -/
+alias «def:higher-order-types#2» := Transducers.HTy.Sem
+assert_no_sorry «def:higher-order-types#2»
+
+/-- **Definition `def:higher-order-types`** (higher-order types): `Transducers.HTy.ArrowFree`. -/
+alias «def:higher-order-types#3» := Transducers.HTy.ArrowFree
+assert_no_sorry «def:higher-order-types#3»
+
+/-- **Definition `def:higher-order-terms`** (higher-order polyregular terms): `Transducers.HAtom`. -/
+alias «def:higher-order-terms» := Transducers.HAtom
+assert_no_sorry «def:higher-order-terms»
+
+/-- **Definition `def:higher-order-terms`** (higher-order polyregular terms): `Transducers.HTerm`. -/
+alias «def:higher-order-terms#2» := Transducers.HTerm
+assert_no_sorry «def:higher-order-terms#2»
+
+/-- **Definition `def:higher-order-terms`** (higher-order polyregular terms): `Transducers.HTerm.eval`. -/
+alias «def:higher-order-terms#3» := Transducers.HTerm.eval
+assert_no_sorry «def:higher-order-terms#3»
+
+/-- **Definition `def:higher-order-terms`** (higher-order polyregular terms): `Transducers.IsHigherOrderTermFun`. -/
+alias «def:higher-order-terms#4» := Transducers.IsHigherOrderTermFun
+assert_no_sorry «def:higher-order-terms#4»
+
+/-- **Lemma `lem:fewer-atomic`** (the reduced set of atomic functions): `Transducers.exists_small_higherOrderTerm`. -/
+alias «lem:fewer-atomic» := Transducers.exists_small_higherOrderTerm
+assert_no_sorry «lem:fewer-atomic»
+
+/-- **Theorem `thm:higher-order-terms`** (polyregular = higher-order terms): `Transducers.polyregular_iff_higherOrderTerm`. -/
+alias «thm:higher-order-terms» := Transducers.polyregular_iff_higherOrderTerm
+assert_no_sorry «thm:higher-order-terms»
+
+/-- **Definition `def:resource-bound`** (resource bound): `Transducers.ResourceBound`. -/
+alias «def:resource-bound» := Transducers.ResourceBound
+assert_no_sorry «def:resource-bound»
+
+/-- **Definition `def:resource-bound`** (resource bound): `Transducers.ResourceBound.Consistent`. -/
+alias «def:resource-bound#2» := Transducers.ResourceBound.Consistent
+assert_no_sorry «def:resource-bound#2»
+
 /-! ## Exercises
 
 The exercises of the book are not numbered results, so they are indexed in
@@ -1243,6 +1287,13 @@ above, so that this file accounts for all of them:
 * `conj:regular-via-weighted-automata` (conjecture) -- a conjecture of the book, not a result to formalise;
 * `nolabel:thm-fo-transduction-into-primes` (theorem) -- removed from the formalised theorems at the user's request; its statement is kept, commented out, in `PartC/MSOOpen.lean`;
 * `nolabel:claim-representations-are-a-regular-language` (claim) -- not formalised: the parsing of a representation is done here by the bracket counter of `PartC/CombDepth.lean`, which is what the transducers of the easy direction of Theorem `thm:regular-terms` use instead;
+* `claim:parsing-is-regular-with-resource-bounds` (lemma) -- not formalised: a step of the same normalisation proof;
+* `lem:reduction-strategy-lemma` (lemma) -- not formalised: a step of the same normalisation proof;
+* `cor:normalisation-of-terms-with-resource-bounds` (corollary) -- not formalised: a step of the same normalisation proof;
+* `lem:normal-forms-of-arrow-free-terms` (lemma) -- not formalised: a step of the same normalisation proof;
+* `def:majorants` (definition) -- not formalised: a step of the same normalisation proof;
+* `claim:atomic-functions-majorised` (claim) -- not formalised: a step of the same normalisation proof;
+* `claim:every-term-majorised` (claim) -- not formalised: a step of the same normalisation proof;
 -/
 
 end Transducers.Book

@@ -31,6 +31,10 @@ import RequestProject.PartD.PebbleReg
 import RequestProject.PartD.PebblePoly
 import RequestProject.PartD.PebbleForTop
 import RequestProject.PartD.PolyTermComplete
+import RequestProject.PartD.HOEasy
+import RequestProject.PartD.HOFund
+import RequestProject.PartD.HOFewer
+import RequestProject.PartD.HOBound
 
 namespace Transducers
 
@@ -110,6 +114,46 @@ representation if and only if it is defined by some polyregular term. -/
 theorem polyregular_iff_polyregularTerm {A B : Ty} (f : A.Elt → B.Elt) :
     IsPolyregularUnderRepr f ↔ IsPolyregularTermFun f :=
   ⟨polyregularTerm_of_isPolyregular, polyregularTerm_isPolyregular⟩
+
+/-! ### Higher-order terms
+
+Definition `def:higher-order-types` (`Transducers.HTy`, with its semantics `Transducers.HTy.Sem`
+and the arrow-free types `Transducers.HTy.ArrowFree`) and Definition `def:higher-order-terms` (the
+syntax `Transducers.HTerm`, its semantics `Transducers.HTerm.eval` and the type-to-type functions
+`Transducers.IsHigherOrderTermFun` that the closed terms define) are in
+`RequestProject/PartD/HOSyntax.lean`, so that the constructions proving the theorem below can be
+developed before it is stated.  Lemma `lem:fewer-atomic` is
+`Transducers.exists_small_higherOrderTerm` (`RequestProject/PartD/HOFewer.lean`), and the two
+directions of the theorem are `Transducers.isHigherOrderTermFun_of_isPolyregularTermFun`
+(`RequestProject/PartD/HOEasy.lean`) and
+`Transducers.isPolyregularUnderRepr_of_smallHigherOrderTermFun`
+(`RequestProject/PartD/HOFund.lean`), the latter applied to the term with the reduced set of
+atomic functions that Lemma `lem:fewer-atomic` provides.
+
+The hard direction is not proved along the route of the book -- normalisation with resource bounds,
+Definition `def:resource-bound` to Claim `claim:every-term-majorised`, which is not formalised --
+but by a Kripke logical relation over the polyregular functions (`Transducers.Rel`,
+`RequestProject/PartD/HORel.lean`): a term of arrow type is related to a family of functions when
+it maps related arguments to related results, uniformly in a parameter, and at an arrow-free type
+being related to a family means that the family is polyregular under string representation.  The
+fundamental lemma `Transducers.HTerm.rel_eval` then says that every term is related to its own
+semantics, which at an arrow-free type is exactly the statement of the theorem.  The deviation is
+recorded in `THEOREMS.md`.  Of the machinery of that route, only Definition
+`def:resource-bound` is formalised (`Transducers.ResourceBound`,
+`RequestProject/PartD/HOBound.lean`); the seven results the book proves about resource bounds are
+not. -/
+
+/-- **Theorem `thm:higher-order-terms`.**  A function between two arrow-free types is polyregular
+if and only if it is defined by a higher-order term.  Arrow-freeness is expressed here by taking
+the two types in `Transducers.Ty`, the types of Definition `def:types`, which are the arrow-free
+higher-order types (`Transducers.HTy.exists_ofTy`); polyregularity of a function between types is,
+as in Theorem `thm:polyregular-terms`, polyregularity under string representation. -/
+theorem polyregular_iff_higherOrderTerm {A B : Ty} (f : A.Elt → B.Elt) :
+    IsPolyregularUnderRepr f ↔ IsHigherOrderTermFun f :=
+  ⟨fun h => isHigherOrderTermFun_of_isPolyregularTermFun
+      ((polyregular_iff_polyregularTerm f).mp h),
+    fun h => isPolyregularUnderRepr_of_smallHigherOrderTermFun
+      (isSmallHigherOrderTermFun_of_isHigherOrderTermFun h)⟩
 
 /-! ## Pebble transducers
 

@@ -192,6 +192,18 @@ generator working from the tables alone would delete them.
 | D.2.7 | claim | `claim:from-child-configuration-graph-to-children` | `polyregular-pebble.tex` |
 | D.3.1 | definition | `def:polyregular-terms` | `higher-order.tex` |
 | D.3.2 | theorem | `thm:polyregular-terms` | `higher-order.tex` |
+| D.3.3 | definition | `def:higher-order-types` | `higher-order.tex` |
+| D.3.4 | definition | `def:higher-order-terms` | `higher-order.tex` |
+| D.3.5 | lemma | `lem:fewer-atomic` | `higher-order.tex` |
+| D.3.6 | theorem | `thm:higher-order-terms` | `higher-order.tex` |
+| D.3.7 | definition | `def:resource-bound` | `higher-order.tex` |
+| D.3.8 | lemma | `claim:parsing-is-regular-with-resource-bounds` | `higher-order.tex` |
+| D.3.9 | lemma | `lem:reduction-strategy-lemma` | `higher-order.tex` |
+| D.3.10 | corollary | `cor:normalisation-of-terms-with-resource-bounds` | `higher-order.tex` |
+| D.3.11 | lemma | `lem:normal-forms-of-arrow-free-terms` | `higher-order.tex` |
+| D.3.12 | definition | `def:majorants` | `higher-order.tex` |
+| D.3.13 | claim | `claim:atomic-functions-majorised` | `higher-order.tex` |
+| D.3.14 | claim | `claim:every-term-majorised` | `higher-order.tex` |
 
 Sections and subsections:
 
@@ -241,3 +253,5 @@ Sections and subsections:
 | D.2.1 | subsection | *Continuity* | `polyregular-pebble.tex` |
 | D.2.2 | subsection | *Equivalence with for-transducers* | `polyregular-pebble.tex` |
 | D.3 | section | *A functional programming language* | `higher-order.tex` |
+| D.3.1 | subsection | *Higher-order polyregular terms* | `higher-order.tex` |
+| D.3.2 | subsection | *Expressive completeness* | `higher-order.tex` |

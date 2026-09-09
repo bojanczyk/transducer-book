@@ -299,6 +299,14 @@ RequestProject/
 | `PartD/PolySplitsAtom.lean` | the new atomic function is polyregular under string representation: the top-level commas of the representation are marked, a separator and a sentinel are appended, and the computation over all the cuts of that string emits one pair per cut that falls between two entries |
 | `PartD/PolyTermEasy.lean` | the right-to-left inclusion of Theorem `thm:polyregular-terms`: every function defined by a polyregular term is polyregular under string representation |
 | `PartD/PolyTermComplete.lean` | the left-to-right inclusion of Theorem `thm:polyregular-terms`: marked squaring is definable from `split` (the exercise the book leaves to the reader), and the prime decomposition of Definition `def:polyregular-functions` then gives a polyregular term for every polyregular function |
+| `PartD/HOSyntax.lean` | Definition `def:higher-order-types` (the types `Transducers.HTy`, their semantics, the arrow-free ones, and the embedding of the types of Definition `def:types`) and Definition `def:higher-order-terms` (the atomic functions `Transducers.HAtom`, the terms `Transducers.HTerm` in De Bruijn form, their semantics, and the functions `Transducers.IsHigherOrderTermFun` that closed terms define) |
+| `PartD/HOPoly.lean` | the closure properties of the polyregular functions between types that the logical relation needs, the main one being `Transducers.IsPolyregularUnderRepr.mapParam`: mapping a polyregular function that also reads a parameter over a list is polyregular |
+| `PartD/HORel.lean` | the Kripke logical relation `Transducers.Rel` between a higher-order type and the families of values of that type indexed by a parameter, and its adequacy at arrow-free types (`Transducers.Rel.iff_polyregular`) |
+| `PartD/HOFund.lean` | the fundamental lemma `Transducers.HTerm.rel_eval` — every term with the reduced set of atomic functions is related to its own semantics — and hence the hard direction of Theorem `thm:higher-order-terms` for such terms |
+| `PartD/HOEasy.lean` | the easy direction of Theorem `thm:higher-order-terms`: the translation `Transducers.HTerm.ofPolyTerm` of a polyregular term into a higher-order term |
+| `PartD/HOFewerAux.lean` | the list identities behind Lemma `lem:fewer-atomic`: reversing a list, the two components of the block split and the prefix products, each computed by running over the cuts of the input |
+| `PartD/HOFewer.lean` | Lemma `lem:fewer-atomic`: the terms defining `id`, `diag`, `codiag`, `distr`, `cons`, reverse, the block split and group prefix multiplication from the reduced set of atomic functions, and the replacement `Transducers.HTerm.toSmall` of every atomic function of a term by its definition |
+| `PartD/HOBound.lean` | Definition `def:resource-bound`: the height of a term, the types that appear in it, the resource bounds `Transducers.ResourceBound` and consistency with one; the seven results the book proves about resource bounds belong to its normalisation proof and are not formalised |
 | `PartD/PebEnc.lean` | the string representation of a pair of configurations of a pebble transducer (`Transducers.PebEnc.PairLetter`, `Transducers.PebEnc.pairEnc`) and reachability along runs that never pop below a fixed height (`Transducers.Pebble.RestrReaches`, `Transducers.Pebble.BalancedRun`) |
 | `PartD/PebReachAut.lean`, `PartD/PebReachRun.lean`, `PartD/PebReachSim.lean` | the pebble automaton that reads the string representation of a pair of configurations, rebuilds the source stack bottom-up and simulates the machine, and its correctness (`Transducers.PebReach.reachAut_answers_iff`) |
 | `PartD/PebReach.lean` | Lemma `lem:reachability-pebble-automaton` and Claim `claim:reachability-basic-run` |
@@ -1709,6 +1717,18 @@ among the primes.
 | Claim `claim:from-child-configuration-graph-to-children` (child configuration graph to children) | `Transducers.from_child_configuration_graph_to_children` | proved (`ChildGraph.lean`, `ChildPath.lean`, `ChildGraphAut.lean`, `ChildGraphRun.lean`) | `PartD/ChildGraphFor.lean` |
 | Definition `def:polyregular-terms` (polyregular terms) | `Transducers.PolyTerm`, `Transducers.PolyTerm.eval`, `Transducers.IsPolyregularTermFun`, `Transducers.splitsList` | — | `PartD/PolyTerms.lean` |
 | Theorem `thm:polyregular-terms` (polyregular = polyregular terms) | `Transducers.polyregular_iff_polyregularTerm` | proved (`PolyTermEasy.lean` and `PolyTermComplete.lean`) | `PartD/Statements.lean` |
+| Definition `def:higher-order-types` (higher-order types) | `Transducers.HTy`, `Transducers.HTy.Sem`, `Transducers.HTy.ArrowFree` | — | `PartD/HOSyntax.lean` |
+| Definition `def:higher-order-terms` (higher-order polyregular terms) | `Transducers.HAtom`, `Transducers.HTerm`, `Transducers.HTerm.eval`, `Transducers.IsHigherOrderTermFun` | — | `PartD/HOSyntax.lean` |
+| Lemma `lem:fewer-atomic` (the reduced set of atomic functions) | `Transducers.exists_small_higherOrderTerm` | proved (`HOFewerAux.lean` and `HOFewer.lean`) | `PartD/HOFewer.lean` |
+| Theorem `thm:higher-order-terms` (polyregular = higher-order terms) | `Transducers.polyregular_iff_higherOrderTerm` | proved (`HOEasy.lean` for the easy direction; `HOPoly.lean`, `HORel.lean`, `HOFund.lean` and `HOFewer.lean` for the converse) | `PartD/Statements.lean` |
+| Definition `def:resource-bound` (resource bound) | `Transducers.ResourceBound`, `Transducers.ResourceBound.Consistent` | — | `PartD/HOBound.lean` |
+| Lemma `claim:parsing-is-regular-with-resource-bounds` (parsing terms with a resource bound) | — | not formalised: a step of the book's normalisation proof, which this formalisation replaces (as above) | — |
+| Lemma `lem:reduction-strategy-lemma` (the reduction strategy) | — | not formalised: a step of the book's normalisation proof, which this formalisation replaces (as above) | — |
+| Corollary `cor:normalisation-of-terms-with-resource-bounds` (normalisation with a resource bound) | — | not formalised: a step of the book's normalisation proof, which this formalisation replaces (as above) | — |
+| Lemma `lem:normal-forms-of-arrow-free-terms` (normal forms of arrow-free terms) | — | not formalised: a step of the book's normalisation proof, which this formalisation replaces (as above) | — |
+| Definition `def:majorants` (majorants) | — | not formalised: a step of the book's normalisation proof, which this formalisation replaces (as above) | — |
+| Claim `claim:atomic-functions-majorised` (the atomic functions are majorised) | — | not formalised: a step of the book's normalisation proof, which this formalisation replaces (as above) | — |
+| Claim `claim:every-term-majorised` (every term is majorised) | — | not formalised: a step of the book's normalisation proof, which this formalisation replaces (as above) | — |
 
 Supporting files for Part D: `MarkedSquare.lean` (marked squaring and the
 right-to-left automaton showing that it is continuous), the thirteen
@@ -3303,3 +3323,127 @@ by this run contain no `sorry`, no `axiom` and no `native_decide`;
 `tools/tex_numbering.py --check` all pass, and `tools/print_axioms.sh` reports
 that all 262 aliases, the five new ones included, depend only on `propext`,
 `Classical.choice` and `Quot.sound`.
+
+## Status (Section D.3: the higher-order terms)
+
+This section supersedes the earlier `## Status` sections of this file where they
+disagree, and records the run that formalised the second half of Section
+*A functional programming language*.
+
+**What was added.**  Five numbered results of the book, all **proved outright**:
+
+| result | Lean name | file |
+| --- | --- | --- |
+| Definition `def:higher-order-types` | `Transducers.HTy`, `Transducers.HTy.Sem`, `Transducers.HTy.ArrowFree` | `PartD/HOSyntax.lean` |
+| Definition `def:higher-order-terms` | `Transducers.HAtom`, `Transducers.HTerm`, `Transducers.HTerm.eval`, `Transducers.IsHigherOrderTermFun` | `PartD/HOSyntax.lean` |
+| Lemma `lem:fewer-atomic` | `Transducers.exists_small_higherOrderTerm` | `PartD/HOFewer.lean` |
+| Theorem `thm:higher-order-terms` | `Transducers.polyregular_iff_higherOrderTerm` | `PartD/Statements.lean` |
+| Definition `def:resource-bound` | `Transducers.ResourceBound`, `Transducers.ResourceBound.Consistent` | `PartD/HOBound.lean` |
+
+together with the eight files `PartD/HOSyntax.lean`, `PartD/HOPoly.lean`,
+`PartD/HORel.lean`, `PartD/HOFund.lean`, `PartD/HOEasy.lean`,
+`PartD/HOFewerAux.lean`, `PartD/HOFewer.lean` and `PartD/HOBound.lean`, which are
+listed in the table of files above.
+
+**How Theorem `thm:higher-order-terms` is proved.**  The easy direction is the
+translation of a polyregular term of Definition `def:polyregular-terms` into a
+higher-order term (`Transducers.HTerm.ofPolyTerm`, `PartD/HOEasy.lean`), so that
+it composes with Theorem `thm:polyregular-terms`.
+
+The converse — that the higher-order features buy no expressive power — is
+**not** proved along the route of the book, and this is the one deviation of
+this run.  The book normalises a term under a resource bound (Definition
+`def:resource-bound` through Claim `claim:every-term-majorised`) and reads the
+polyregular function off the normal form.  Here the converse is proved instead
+by a **Kripke logical relation over the polyregular functions**,
+`Transducers.Rel` (`PartD/HORel.lean`):
+
+* a value of an arrow-free type, indexed by a parameter type `P`, is related to
+  itself exactly when the resulting function `P → A` is polyregular under string
+  representation (`Transducers.Rel.iff_polyregular`);
+* a family of functions of type `A → B` is related when, after reindexing along
+  any polyregular change of parameter, it takes related arguments to related
+  results — the Kripke, or parameter-indexed, clause, which is what makes the
+  relation survive abstraction;
+* the fundamental lemma `Transducers.HTerm.rel_eval` (`PartD/HOFund.lean`) then
+  says that every term with the reduced set of atomic functions of Lemma
+  `lem:fewer-atomic` is related to its own semantics, by induction on the term,
+  and at an arrow-free type this is exactly the conclusion of the theorem.
+
+The step of the induction that carries the mathematics is the atomic function
+`map`: mapping over a list a function that also reads a parameter has to be
+polyregular, which is `Transducers.IsPolyregularUnderRepr.mapParam`
+(`PartD/HOPoly.lean`), built from the atomic function `split` of Definition
+`def:polyregular-terms` by distributing the parameter over the entries of the
+list.  Lemma `lem:fewer-atomic` is what lets the induction consider only ten
+atomic functions.
+
+The consequence for the index above is that the seven environments of the book
+that belong to the normalisation proof — Lemma
+`claim:parsing-is-regular-with-resource-bounds`, Lemma
+`lem:reduction-strategy-lemma`, Corollary
+`cor:normalisation-of-terms-with-resource-bounds`, Lemma
+`lem:normal-forms-of-arrow-free-terms`, Definition `def:majorants`, Claim
+`claim:atomic-functions-majorised` and Claim `claim:every-term-majorised` — are
+**not formalised**.  They are steps of a proof that this formalisation does not
+carry out, not results it fails to establish: the theorem they lead to is
+proved.  Definition `def:resource-bound` itself *is* formalised
+(`PartD/HOBound.lean`), together with the height of a term, the types that
+appear in it and the observation that every term is consistent with some
+resource bound; what is missing is everything the book then proves about
+resource bounds, which rests on a reduction relation with capture-avoiding
+substitution, on a string representation of terms over a fifteen-letter
+alphabet, and on a strong normalisation argument by majorants.  Each of those is
+a development in its own right, and none of them is needed for the theorem as
+proved here — that is the precise reason they are absent, not a partial proof
+left open.
+
+**Three renderings that had to be chosen.**  All three are recorded in the
+docstring of `PartD/HOSyntax.lean` as well.
+
+* *Variables.*  The book fixes a set of variables, each hard-wired with a type.
+  The formalisation uses De Bruijn indices throughout (`Transducers.HVar`, with
+  a context `Γ : List HTy`), which is the standard intrinsically typed
+  presentation of the same language; the terms of the empty context are the
+  closed terms of the book.
+* *List terms.*  The book's constructor takes `n` terms at once and builds
+  `[a₁,…,aₙ]`; here the same terms are the cons-chains of
+  `Transducers.HTerm.nil` and `Transducers.HTerm.cons`.
+* *Group types.*  The atomic functions `pref` and `mult` are available for
+  arrow-free group types only: for a type `G` of Definition `def:types` with a
+  finite group structure on the set it represents.  A group structure on a set
+  of functions has no meaning in the book, where the group is always a concrete
+  finite group; every other atomic function is available at all higher-order
+  types.
+
+**Two labels the sources of this copy do not have.**  The book refers, in the
+paragraph before Lemma `lem:fewer-atomic`, to two exercises: one that eliminates
+the block split of Example `ex:block` from the atomic functions, and one that
+replaces group prefix multiplication by the product of a list.  Neither label is
+defined in the LaTeX sources or in `main.aux` available here, so the two terms
+that solve them (`Transducers.HTerm.blockSplitTerm` and
+`Transducers.HTerm.prefTerm`, both in `PartD/HOFewer.lean`) are documented by
+what they say rather than by a label.
+
+**Counts.**  The dictionary of `LABELS.md` now has **132** theorem-like
+environments, the twelve of this section included.  Of them, 27 definitions are
+formalised, **94 results are proved outright**, **none is proved from a
+hypothesis**, and 11 are not formalised: the three of the earlier status
+sections (Definition `def:rational-recognisable-subsets`, Conjecture
+`conj:regular-via-weighted-automata`, Claim
+`nolabel:claim-representations-are-a-regular-language`), the withdrawn Theorem
+`nolabel:thm-fo-transduction-into-primes`, and the seven steps of the book's
+normalisation proof listed above.
+
+**Verification.**  `lake build` succeeds with no errors.  The eight files added
+by this run contain no `sorry`, no `axiom` and no `native_decide`;
+`tools/gen_labels.py --check`, `tools/decl_files.py --check` and
+`tools/tex_numbering.py --check` all pass.  `#print axioms` on
+`Transducers.polyregular_iff_higherOrderTerm`,
+`Transducers.exists_small_higherOrderTerm`,
+`Transducers.isHigherOrderTermFun_of_isPolyregularTermFun`,
+`Transducers.isPolyregularUnderRepr_of_smallHigherOrderTermFun` and
+`Transducers.HTerm.rel_eval` reports only `propext`, `Classical.choice`,
+`Quot.sound`, and `tools/print_axioms.sh` reports that all 273 aliases of
+`RequestProject/Labels.lean`, the eleven new ones included, depend only on those
+three.
