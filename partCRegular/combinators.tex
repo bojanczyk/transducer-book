@@ -84,16 +84,16 @@ Therefore, we could improve $f'$ so that it produces the empty string for inputs
 \label{sec:regular-terms}
 As we mentioned earlier in this section, when defining type-to-type functions, we would like to work directly on the types instead of using string representations as is done in \cref{def:regular-functions-on-types-under-string-representation}. This is the purpose of the following definition, in which type-to-type functions are built by applying four standard combinators to certain atomic functions. We begin by describing two atomic functions that are not completely standard. 
 
-\begin{myexample}[Split]\label{ex:split}
-    For types $A$ and $B$, the split function 
+\begin{myexample}[Block]\label{ex:block}
+    For types $A$ and $B$, the function 
     \begin{align*}
-    (A + B)^* \xrightarrow{\splitterm} A^* \times (B \times A^*)^*
+    (A + B)^* \xrightarrow{\blockterm} A^* \times (B \times A^*)^*
     \end{align*}
-    splits the input list according to appearances of elements from $B$, as illustrated in the following example where elements of $A$ are letters and elements of $B$ are red digits:
+    groups the list into blocks according to appearances of elements from $B$, as illustrated in the following example where elements of $A$ are letters and elements of $B$ are red digits:
     \begin{align*}
     [a,b,c,\red 1,d,e,\red 2,\red 3,f,g,h] \mapsto ([a,b,c],[(\red 1,[d,e]),(\red 2,[]), (\red 3,[f,g,h])]).
     \end{align*}
-    A defining property of the split function is that it is a bijection, and its inverse is the concatenation of all its entries in the left-to-right order. 
+    A defining property of the $\blockterm$ function is that it is a bijection, and its inverse is the concatenation of all its entries in the left-to-right order. 
 \end{myexample}
 
 \begin{myexample}[Group prefix multiplication]
@@ -122,7 +122,7 @@ Apart from the above two examples, all other atomic functions are standard built
         \item[List constructor/deconstructor] $\onetype + A \times A^* \xrightarrow {\consterm} A^*$ and its inverse $\unconsterm$. 
         \item[Reverse]  $A^* \xrightarrow{\reverseterm} A^*$.
         \item[Concatenation] $A^{**} \xrightarrow{\concatterm} A^*$.
-        \item[Split] $(A+B)^* \xrightarrow{\splitterm} A^* \times (B \times A^*)^*$.
+        \item[Block] $(A+B)^* \xrightarrow{\blockterm} A^* \times (B \times A^*)^*$.
         \item[Group prefix multiplication] $G^* \xrightarrow{\prefterm} G^*$.
     \end{description}
     
@@ -162,7 +162,7 @@ This is a straightforward induction on the structure of the term. The induction 
 \end{lemma}
 \begin{proof}
     The input, if correctly formatted, has one of the forms $(a, \leftterm b)$ or $(a, \rightterm c)$, where $a$ is a string representation of some element in $A$, and similarly for $b$ and $c$.      The transducer that implements the distributivity function first checks if the input is correctly formatted, and then checks if it uses the left or right variant, and finally outputs the corresponding output. In all of these steps, we use the fact that parsing can be implemented by a finite automaton, as stated in the following claim, which is proved by a straightforward induction on the structure of the type. 
-        \begin{claim}
+        \begin{claim}\label{claim:parsing-is-regular}
         For every type $A$, the following is a regular language
         \begin{align*}
         \setbuild{ w \in 8^*}{$w$ represents an element of $A$}.
@@ -290,7 +290,7 @@ By combining the above two claims, we see that if $A$ and $B$ are finite types, 
     \begin{align*}
     f \times g = ((\fstterm;f),(\sndterm;g)).
     \end{align*}
-    Finally, we define the inverse of $\splitterm$, which is a form of concatenation that was discussed earlier in Example~\ref{ex:split}. This inverse is the composition of 
+    Finally, we define the inverse of $\blockterm$, which is a form of concatenation that was discussed earlier in Example~\ref{ex:block}. This inverse is the composition of 
     \begin{align*}
     A^* \times (B \times A^*)^* \xrightarrow{\leftterm \times (\rightterm \times \leftterm^*)^*} (A+B)^* \times ((A+B)^* \times (A+B)^*)^*
     \end{align*}
@@ -306,9 +306,9 @@ By combining the above two claims, we see that if $A$ and $B$ are finite types, 
     \end{align*}
     The term for map reverse is the following composition:
     \begin{align*}
-    (A + \onetype)^* \xrightarrow{\splitterm} A^* \times (\onetype \times A^*)^* \xrightarrow{(\reverseterm \times (\idterm \times \reverseterm)^*)} A^* \times (\onetype \times A^*)^*,
+    (A + \onetype)^* \xrightarrow{\blockterm} A^* \times (\onetype \times A^*)^* \xrightarrow{(\reverseterm \times (\idterm \times \reverseterm)^*)} A^* \times (\onetype \times A^*)^*,
     \end{align*}
-    followed by the inverse of $\splitterm$. In the presence of these helper functions, map duplicate is defined in the same way as map reverse, except that we use $(\idterm,\idterm);\binconcterm$ instead of string reversal.
+    followed by the inverse of $\blockterm$. In the presence of these helper functions, map duplicate is defined in the same way as map reverse, except that we use $(\idterm,\idterm);\binconcterm$ instead of string reversal.
 \end{proof}
 
 \begin{lemma}\label{lem:terms-define-flip-flop}
@@ -320,15 +320,15 @@ By combining the above two claims, we see that if $A$ and $B$ are finite types, 
     A^* \xrightarrow f B^*
     \end{align*}
     with states $Q$. We assume that the states are a finite type. 
-    The input alphabet partitions into two parts: the identity letters which leave the state unchanged, and the reset letters which reset the state to a fixed state. To define this function using a term, we will split the input string according to appearances of the reset letters. The exact construction has several steps, which are described below.
+    The input alphabet partitions into two parts: the identity letters which leave the state unchanged, and the reset letters which reset the state to a fixed state. To define this function using a term, we will group  the input into blocks string according to appearances of the reset letters. The exact construction has several steps, which are described below.
 
     \begin{enumerate}
-        \item Before splitting along the reset letters, we will need to annotate them with the states that they produce. This is implemented by a string-to-string homomorphism  
+        \item Before grouping into blocks along the reset letters, we will need to annotate them with the states that they produce. This is implemented by a string-to-string homomorphism  
         \begin{align*}
         A^* \xrightarrow h (A+Q)^*
         \end{align*}
         in which the identity letters are left unchanged, and each  reset letter $a$ is replaced by the two-letter string $aq$ where $q$  is the state  after reading $a$.  
-        \item In the second step, we apply $\splitterm$ to  the output of the first step in order to split along the states, thus yielding an element of
+        \item In the second step, we apply $\blockterm$ to  the output of the first step in order to group into blocks along the states, thus yielding an element of
         \begin{align*}
          (w_0, [(q_1,w_1),\ldots,(q_n,w_n)]) \in  A^* \times (Q \times A^*)^*.
         \end{align*}
@@ -404,8 +404,8 @@ is the identity on $A$.
     \begin{align*}
     8^* \xrightarrow f (8 + \onetype)^*
     \end{align*}
-    which identifies the separating comma between $a$ and $b$ (there might be other commas in the representations of $a$ and $b$), and writes it using a fresh symbol. This function is defined by a term, since we have already proved expressive completeness for terms in the case of string-to-string functions. Apply the function $f$, followed by split, leading to an element of the type
-\begin{align}\label{eq:split-product-unrepresentation}
+    which identifies the separating comma between $a$ and $b$ (there might be other commas in the representations of $a$ and $b$), and writes it using a fresh symbol. This function is defined by a term, since we have already proved expressive completeness for terms in the case of string-to-string functions. Apply the function $f$, followed by $\blockterm$, leading to an element of the type
+\begin{align}\label{eq:block-product-unrepresentation}
     8^* \times (\onetype \times 8^*)^*.
 \end{align}
 We know that if the original input was correctly formatted, then the list on the second coordinate will have exactly one element. We will now extract it using a version of the head operation.
@@ -423,7 +423,7 @@ We know that if the original input was correctly formatted, then the list on the
    \headterm =  \unconsterm; \either  \inventterm \fstterm
     \end{align*}
 \end{proof}
-By applying $\headterm$  to the second coordinate in~\eqref{eq:split-product-unrepresentation}, we get an element of 
+By applying $\headterm$  to the second coordinate in~\eqref{eq:block-product-unrepresentation}, we get an element of 
 \begin{align*}
 8^* \times (\onetype \times 8^*).
 \end{align*}
@@ -528,7 +528,7 @@ If we apply $f^*$ followed by $\concatterm$, then the output looks like this
 \begin{align*}
 [\leftterm 1, \rightterm 1, \leftterm 2, \rightterm 2, \leftterm 3, \rightterm 3, \leftterm 4, \rightterm 4].
 \end{align*}
-We now apply $\splitterm$ to this output, which yields a value like this
+We now apply $\blockterm$ to this output, which yields a value like this
 \begin{align*}
 ([\leftterm 1],[(\rightterm 1, [\leftterm 2]), (\rightterm 2, [\leftterm 3]), (\rightterm 3, [\leftterm 4]), (\rightterm 4, [])]).
 \end{align*}
@@ -632,7 +632,7 @@ F(B) \arrow[r, "f_B"'] \& G(B)
  A routine inspection.
 }
 
-\exer{\label{exer:natural-transformations-list-free} Consider a natural transformation, possibly with more than one type parameter, where the domain functor does not use the list constructor. Show that such a natural transformation is definable by a regular term. \footnote{As a corollary, we could more succinctly say that the atomic functions in \cref{def:regular-terms} are all natural transformations, as well as the functions that have lists in their domain, which are group prefix multiplication, $\reverseterm, \consterm, \unconsterm, \concatterm$ and $\splitterm$.}
+\exer{\label{exer:natural-transformations-list-free} Consider a natural transformation, possibly with more than one type parameter, where the domain functor does not use the list constructor. Show that such a natural transformation is definable by a regular term. \footnote{As a corollary, we could more succinctly say that the atomic functions in \cref{def:regular-terms} are all natural transformations, as well as the functions that have lists in their domain, which are group prefix multiplication, $\reverseterm, \consterm, \unconsterm, \concatterm$ and $\blockterm$.}
 }{
     Suppose first that the domain type is a product 
     \begin{align*}
