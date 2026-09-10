@@ -756,6 +756,26 @@ assert_no_sorry «def:resource-bound»
 alias «def:resource-bound#2» := Transducers.ResourceBound.Consistent
 assert_no_sorry «def:resource-bound#2»
 
+/-- **Lemma `lem:normal-forms-of-arrow-free-terms`** (normal forms of arrow-free terms): `Transducers.normal_iff_isValue`. -/
+alias «lem:normal-forms-of-arrow-free-terms» := Transducers.normal_iff_isValue
+assert_no_sorry «lem:normal-forms-of-arrow-free-terms»
+
+/-- **Definition `def:majorants`** (majorants): `Transducers.Maj`. -/
+alias «def:majorants» := Transducers.Maj
+assert_no_sorry «def:majorants»
+
+/-- **Definition `def:majorants`** (majorants): `Transducers.Maj.cost`. -/
+alias «def:majorants#2» := Transducers.Maj.cost
+assert_no_sorry «def:majorants#2»
+
+/-- **Definition `def:majorants`** (majorants): `Transducers.Maj.le`. -/
+alias «def:majorants#3» := Transducers.Maj.le
+assert_no_sorry «def:majorants#3»
+
+/-- **Definition `def:majorants`** (majorants): `Transducers.Maj.IsMono`. -/
+alias «def:majorants#4» := Transducers.Maj.IsMono
+assert_no_sorry «def:majorants#4»
+
 /-! ## Exercises
 
 The exercises of the book are not numbered results, so they are indexed in
@@ -1290,8 +1310,6 @@ above, so that this file accounts for all of them:
 * `claim:parsing-is-regular-with-resource-bounds` (lemma) -- not formalised: a step of the same normalisation proof;
 * `lem:reduction-strategy-lemma` (lemma) -- not formalised: a step of the same normalisation proof;
 * `cor:normalisation-of-terms-with-resource-bounds` (corollary) -- not formalised: a step of the same normalisation proof;
-* `lem:normal-forms-of-arrow-free-terms` (lemma) -- not formalised: a step of the same normalisation proof;
-* `def:majorants` (definition) -- not formalised: a step of the same normalisation proof;
 * `claim:atomic-functions-majorised` (claim) -- not formalised: a step of the same normalisation proof;
 * `claim:every-term-majorised` (claim) -- not formalised: a step of the same normalisation proof;
 -/
