@@ -35,6 +35,7 @@ import RequestProject.PartD.HOEasy
 import RequestProject.PartD.HOFund
 import RequestProject.PartD.HOFewer
 import RequestProject.PartD.HOBound
+import RequestProject.PartD.HOMaj
 
 namespace Transducers
 
@@ -138,10 +139,20 @@ it maps related arguments to related results, uniformly in a parameter, and at a
 being related to a family means that the family is polyregular under string representation.  The
 fundamental lemma `Transducers.HTerm.rel_eval` then says that every term is related to its own
 semantics, which at an arrow-free type is exactly the statement of the theorem.  The deviation is
-recorded in `THEOREMS.md`.  Of the machinery of that route, only Definition
-`def:resource-bound` is formalised (`Transducers.ResourceBound`,
-`RequestProject/PartD/HOBound.lean`); the seven results the book proves about resource bounds are
-not. -/
+recorded in `THEOREMS.md`.
+
+Parts of the machinery of the book's own route are formalised none the less, since each is worth
+having on its own.  The β-rule and the reduction rules of Figure `fig:reduction-rules` are
+`Transducers.HStep` (`RequestProject/PartD/HORed.lean`), which comes with substitution for the
+terms and with the book's observation that a step changes neither the type nor the semantics of a
+term; Definition `def:resource-bound` is `Transducers.ResourceBound`
+(`RequestProject/PartD/HOBound.lean`); Lemma `lem:normal-forms-of-arrow-free-terms` is
+`Transducers.normal_iff_isValue` (`RequestProject/PartD/HONormal.lean`); and Definition
+`def:majorants` is `Transducers.Maj` (`RequestProject/PartD/HOMaj.lean`).  The five remaining
+results of that route -- Lemma `claim:parsing-is-regular-with-resource-bounds`, Lemma
+`lem:reduction-strategy-lemma`, Corollary `cor:normalisation-of-terms-with-resource-bounds`, Claim
+`claim:atomic-functions-majorised` and Claim `claim:every-term-majorised` -- are not formalised;
+`THEOREMS.md` says what stands in the way of each. -/
 
 /-- **Theorem `thm:higher-order-terms`.**  A function between two arrow-free types is polyregular
 if and only if it is defined by a higher-order term.  Arrow-freeness is expressed here by taking

@@ -124,3 +124,53 @@ or changed by this run contains a `sorry`, an `axiom` or a `native_decide`.
 `tools/gen_labels.py --check`, `tools/decl_files.py --check` and
 `tools/tex_numbering.py --check` all pass, and `tools/print_axioms.sh` reports
 that all 243 aliases depend only on `propext`, `Classical.choice`, `Quot.sound`.
+
+## Section D.3: the reduction rules, normal forms and majorants
+
+This run went back to the machinery of the book's own proof of Theorem
+`thm:higher-order-terms` — the normalisation argument with resource bounds — and
+formalised the part of it that could be landed.  Three new files.
+
+* **`PartD/HORed.lean`** — substitution for the intrinsically typed De Bruijn
+  terms of `PartD/HOSyntax.lean` (`Transducers.HTerm.rename`,
+  `Transducers.HTerm.subst`, `Transducers.HTerm.subst1`), and the one-step
+  reduction `Transducers.HStep`: the β-rule, the rules of Figure
+  `fig:reduction-rules` for the reduced set of atomic functions of Lemma
+  `lem:fewer-atomic`, and the congruence rules.  The book's observation that a
+  reduction step changes neither the type nor the semantics of a term is
+  `Transducers.HStep.eval_eq`.
+
+* **`PartD/HONormal.lean`** — **Lemma `lem:normal-forms-of-arrow-free-terms`**,
+  proved outright as `Transducers.normal_iff_isValue`: a closed term of the
+  reduced language whose type is arrow-free is in normal form if and only if it
+  is built from the value constructors.  The book's "inspection of the shapes of
+  closed terms in normal form" is `Transducers.HTerm.Shape`.
+
+* **`PartD/HOMaj.lean`** — **Definition `def:majorants`**: the majorants
+  `Transducers.Maj` of a type, their order, their cost, least upper bounds, the
+  operation `μ + r` and the majorants `⊤_A(m)`, with everything the book asserts
+  about them proved.  The monotonicity the book requires of a majorant of arrow
+  type is the separate predicate `Transducers.Maj.IsMono`, so that the set and
+  the order on it are not defined by a mutual recursion.
+
+Five environments of Section D.3 remain unformalised — Lemma
+`claim:parsing-is-regular-with-resource-bounds`, Lemma
+`lem:reduction-strategy-lemma`, Corollary
+`cor:normalisation-of-terms-with-resource-bounds`, Claim
+`claim:atomic-functions-majorised` and Claim `claim:every-term-majorised`.  The
+section *Status (Section D.3: the reduction rules, normal forms and majorants)*
+of `THEOREMS.md` says precisely what stands in the way of each; in short, the
+first needs a string representation of terms over the fifteen-letter alphabet
+`F` with a unique-readability argument, the second needs that representation
+*and* rests on a head expansion property that the book itself marks as unproved,
+and the other three depend on those two.  None of them is needed for Theorem
+`thm:higher-order-terms`, which remains proved by the logical relation of
+`PartD/HORel.lean`.
+
+## Verification
+
+`lake build` succeeds with no errors and no warnings (8535 jobs).  No file added
+or changed by this run contains a `sorry`, an `axiom` or a `native_decide`.
+`tools/gen_labels.py --check`, `tools/decl_files.py --check` and
+`tools/tex_numbering.py --check` all pass, and `tools/print_axioms.sh` reports
+that all 278 aliases depend only on `propext`, `Classical.choice`, `Quot.sound`.

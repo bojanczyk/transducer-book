@@ -5,13 +5,15 @@ A resource bound is a finite set of types together with a height bound, and a cl
 consistent with it when its height is at most the bound and every type that appears in it belongs
 to the set.  The book introduces resource bounds in order to parse terms with a finite automaton,
 and then uses them to control the reduction of terms; the proof of Theorem `thm:higher-order-terms`
-formalised here goes by the logical relation of `RequestProject/PartD/HORel.lean` instead, so the
-results that the book proves *about* resource bounds -- Lemma
-`claim:parsing-is-regular-with-resource-bounds`, Lemma `lem:reduction-strategy-lemma`, Corollary
-`cor:normalisation-of-terms-with-resource-bounds`, Lemma `lem:normal-forms-of-arrow-free-terms`,
-Definition `def:majorants`, Claim `claim:atomic-functions-majorised` and Claim
-`claim:every-term-majorised` -- are not formalised.  The definition itself is, together with the
-observation that it is not vacuous: every closed term is consistent with some resource bound.
+formalised here goes by the logical relation of `RequestProject/PartD/HORel.lean` instead.  The
+definition itself is formalised, together with the observation that it is not vacuous -- every
+closed term is consistent with some resource bound -- and so are the reduction rules
+(`RequestProject/PartD/HORed.lean`), Lemma `lem:normal-forms-of-arrow-free-terms`
+(`RequestProject/PartD/HONormal.lean`) and Definition `def:majorants`
+(`RequestProject/PartD/HOMaj.lean`).  The five remaining results of the book's normalisation proof
+-- Lemma `claim:parsing-is-regular-with-resource-bounds`, Lemma `lem:reduction-strategy-lemma`,
+Corollary `cor:normalisation-of-terms-with-resource-bounds`, Claim
+`claim:atomic-functions-majorised` and Claim `claim:every-term-majorised` -- are not formalised.
 
 Two remarks on the rendering.
 
