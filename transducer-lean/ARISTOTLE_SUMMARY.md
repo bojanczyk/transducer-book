@@ -174,3 +174,58 @@ or changed by this run contains a `sorry`, an `axiom` or a `native_decide`.
 `tools/gen_labels.py --check`, `tools/decl_files.py --check` and
 `tools/tex_numbering.py --check` all pass, and `tools/print_axioms.sh` reports
 that all 278 aliases depend only on `propext`, `Classical.choice`, `Quot.sound`.
+
+## Section D.3: parsing terms with a resource bound
+
+This run formalised **Lemma `claim:parsing-is-regular-with-resource-bounds`**,
+the first of the five steps of the book's normalisation proof that were still
+missing, and the general-purpose closure properties of regular languages that it
+needs.  Three new files.
+
+* **`Common/RegLangClosure.lean`** — a general-purpose library, nothing in it
+  about transducers.  Mathlib has the Myhill-Nerode theorem and closure of
+  `Language.IsRegular` under complement, union and intersection, but not under
+  concatenation or the Kleene star; `Transducers.isRegular_mul` and
+  `Transducers.isRegular_kstar` prove those, and `isRegular_singleton`,
+  `isRegular_zero`, `isRegular_of_subset_finite`, `isRegular_union`,
+  `isRegular_biUnion_finset`, `isRegular_concat` and `isRegular_prop_and` are
+  the small change that goes with them.  Each proof computes the left quotient
+  of the compound language from a bounded amount of information about the
+  prefix, and Myhill-Nerode does the rest.
+
+* **`PartD/HOStr.lean`** — the alphabet `Transducers.HSym` and the string
+  representation `Transducers.HTerm.repr`.  The book's fifteen letters had to be
+  extended in two places, both documented in the file and in `THEOREMS.md`: the
+  book's alphabet names none of the atomic functions, and the syntax used here
+  builds a list term one entry at a time, so application, `nil` and `cons` get
+  prefix letters of their own.
+
+* **`PartD/HOParse.lean`** — **Lemma
+  `claim:parsing-is-regular-with-resource-bounds`**, proved outright as
+  `Transducers.parsing_isRegular_of_resourceBound`, by the book's induction on
+  the height.  The step is `Transducers.termLang_succ`, which reads a cons-chain
+  as a Kleene star -- the one place where the star is needed, a list term having
+  the height of its entries plus one, so that its tail does not have smaller
+  height.
+
+Four environments of Section D.3 remain unformalised: Lemma
+`lem:reduction-strategy-lemma`, Corollary
+`cor:normalisation-of-terms-with-resource-bounds`, Claim
+`claim:atomic-functions-majorised` and Claim `claim:every-term-majorised`.  The
+section *Status (Section D.3: parsing terms with a resource bound)* of
+`THEOREMS.md` says what stands in the way of each; in short, all four rest on
+the outermost parallel reduction strategy of Lemma
+`lem:reduction-strategy-lemma`, whose termination proof in the book is
+incomplete — the head expansion property is taken for granted there, in a marked
+`\issue` — and whose one-step item asks for a for-transducer that performs one
+parallel step of β-reduction on the string representation.  None of the four is
+needed for Theorem `thm:higher-order-terms`, which is proved by the logical
+relation of `PartD/HORel.lean`.
+
+## Verification
+
+`lake build` succeeds with no errors (8538 jobs).  No file added or changed by
+this run contains a `sorry`, an `axiom` or a `native_decide`.
+`tools/gen_labels.py --check`, `tools/decl_files.py --check` and
+`tools/tex_numbering.py --check` all pass, and `tools/print_axioms.sh` reports
+that all 279 aliases depend only on `propext`, `Classical.choice`, `Quot.sound`.

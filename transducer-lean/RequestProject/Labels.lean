@@ -756,6 +756,10 @@ assert_no_sorry «def:resource-bound»
 alias «def:resource-bound#2» := Transducers.ResourceBound.Consistent
 assert_no_sorry «def:resource-bound#2»
 
+/-- **Lemma `claim:parsing-is-regular-with-resource-bounds`** (parsing terms with a resource bound): `Transducers.parsing_isRegular_of_resourceBound`. -/
+alias «claim:parsing-is-regular-with-resource-bounds» := Transducers.parsing_isRegular_of_resourceBound
+assert_no_sorry «claim:parsing-is-regular-with-resource-bounds»
+
 /-- **Lemma `lem:normal-forms-of-arrow-free-terms`** (normal forms of arrow-free terms): `Transducers.normal_iff_isValue`. -/
 alias «lem:normal-forms-of-arrow-free-terms» := Transducers.normal_iff_isValue
 assert_no_sorry «lem:normal-forms-of-arrow-free-terms»
@@ -1307,7 +1311,6 @@ above, so that this file accounts for all of them:
 * `conj:regular-via-weighted-automata` (conjecture) -- a conjecture of the book, not a result to formalise;
 * `nolabel:thm-fo-transduction-into-primes` (theorem) -- removed from the formalised theorems at the user's request; its statement is kept, commented out, in `PartC/MSOOpen.lean`;
 * `nolabel:claim-representations-are-a-regular-language` (claim) -- not formalised: the parsing of a representation is done here by the bracket counter of `PartC/CombDepth.lean`, which is what the transducers of the easy direction of Theorem `thm:regular-terms` use instead;
-* `claim:parsing-is-regular-with-resource-bounds` (lemma) -- not formalised: a step of the same normalisation proof;
 * `lem:reduction-strategy-lemma` (lemma) -- not formalised: a step of the same normalisation proof;
 * `cor:normalisation-of-terms-with-resource-bounds` (corollary) -- not formalised: a step of the same normalisation proof;
 * `claim:atomic-functions-majorised` (claim) -- not formalised: a step of the same normalisation proof;

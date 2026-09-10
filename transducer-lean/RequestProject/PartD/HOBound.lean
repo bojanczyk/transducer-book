@@ -10,10 +10,12 @@ definition itself is formalised, together with the observation that it is not va
 closed term is consistent with some resource bound -- and so are the reduction rules
 (`RequestProject/PartD/HORed.lean`), Lemma `lem:normal-forms-of-arrow-free-terms`
 (`RequestProject/PartD/HONormal.lean`) and Definition `def:majorants`
-(`RequestProject/PartD/HOMaj.lean`).  The five remaining results of the book's normalisation proof
--- Lemma `claim:parsing-is-regular-with-resource-bounds`, Lemma `lem:reduction-strategy-lemma`,
-Corollary `cor:normalisation-of-terms-with-resource-bounds`, Claim
-`claim:atomic-functions-majorised` and Claim `claim:every-term-majorised` -- are not formalised.
+(`RequestProject/PartD/HOMaj.lean`) and Lemma `claim:parsing-is-regular-with-resource-bounds`
+(`RequestProject/PartD/HOStr.lean` and `RequestProject/PartD/HOParse.lean`).  The four remaining
+results of the book's normalisation proof -- Lemma `lem:reduction-strategy-lemma`, Corollary
+`cor:normalisation-of-terms-with-resource-bounds`, Claim `claim:atomic-functions-majorised` and
+Claim `claim:every-term-majorised` -- are not formalised; `THEOREMS.md` says what stands in the way
+of each.
 
 Two remarks on the rendering.
 

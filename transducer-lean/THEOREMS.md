@@ -59,6 +59,7 @@ RequestProject/
 | `Common/Basic.lean` | continuity, prefix/length preservation, aperiodicity, map lifting, left distance, closure under composition |
 | `Common/Aux.lean` | auxiliary lemmas on lists and on iterating a function on a finite set |
 | `Common/RegularAux.lean` | regularity of the auxiliary languages used in Part B |
+| `Common/RegLangClosure.lean` | a general-purpose library, nothing in it about transducers: the closure properties of the regular languages that a regular expression needs and that Mathlib does not have — a finite language, a finite union, a concatenation and a Kleene star of regular languages is regular — all by the Myhill-Nerode criterion |
 | `Common/PrimrecArith.lean` | a general-purpose library, nothing in it about transducers: the arithmetic of `ℤ` and of `ℚ` in Mathlib's `Primrec` API — `Nat.gcd`, coprimality and divisibility on `ℕ`; `Int.toNat`, `Int.natAbs`, the cast `ℕ → ℤ`, addition, negation, subtraction, multiplication, `≤`, `<`, `Int.gcd` and divisibility on `ℤ`; the numerator and the denominator of a rational, `mkRat`, addition, negation, subtraction, multiplication, the casts from `ℤ` and `ℕ`, and `≤` on `ℚ` (equality on both types is then Mathlib's `Primrec.eq`, the types being `DecidableEq` and `Primcodable`) |
 | `Common/PrimrecList.lean` | a general-purpose library: the list operations that the effectivity proofs are built from — `List.filter`, `List.drop`, `List.take`, membership, `List.isPrefixOf`, `List.getLast?`, `List.dropLast`, and lookup in an association list |
 | `Exercises/Intro.lean`, `Exercises/IntroAux.lean` | the exercises of the introduction and the auxiliary facts their solutions take for granted — see `EXERCISES.md` |
@@ -307,6 +308,8 @@ RequestProject/
 | `PartD/HOFewerAux.lean` | the list identities behind Lemma `lem:fewer-atomic`: reversing a list, the two components of the block split and the prefix products, each computed by running over the cuts of the input |
 | `PartD/HOFewer.lean` | Lemma `lem:fewer-atomic`: the terms defining `id`, `diag`, `codiag`, `distr`, `cons`, reverse, the block split and group prefix multiplication from the reduced set of atomic functions, and the replacement `Transducers.HTerm.toSmall` of every atomic function of a term by its definition |
 | `PartD/HOBound.lean` | Definition `def:resource-bound`: the height of a term, the types that appear in it, the resource bounds `Transducers.ResourceBound` and consistency with one |
+| `PartD/HOStr.lean` | the alphabet `Transducers.HSym` and the string representation `Transducers.HTerm.repr` of a higher-order term, with the two places where the book's fifteen-letter alphabet had to be extended |
+| `PartD/HOParse.lean` | Lemma `claim:parsing-is-regular-with-resource-bounds`: the languages `Transducers.termLang` of the induction on the height, the equation `Transducers.termLang_succ` that reads a list term as a Kleene star, and the regularity of the representations of the terms consistent with a resource bound |
 | `PartD/HORed.lean` | substitution for the higher-order terms (renaming, substitution, `Transducers.HTerm.subst1`), the one-step reduction `Transducers.HStep` -- the β-rule and the rules of Figure `fig:reduction-rules` -- and the book's observation that a step changes neither the type nor the semantics of a term (`Transducers.HStep.eval_eq`) |
 | `PartD/HONormal.lean` | Lemma `lem:normal-forms-of-arrow-free-terms`: the value terms `Transducers.HTerm.IsValue`, the classification `Transducers.HTerm.Shape` of the closed terms in normal form -- a value, an abstraction, or an atomic function with too few arguments -- and the equivalence `Transducers.normal_iff_isValue` |
 | `PartD/HOMaj.lean` | Definition `def:majorants`: the majorants `Transducers.Maj` of a type, their order, their cost, the monotonicity `Transducers.Maj.IsMono` that the book requires of them, least upper bounds, the operation `μ + r` and the majorants `⊤_A(m)` |
@@ -1725,7 +1728,7 @@ among the primes.
 | Lemma `lem:fewer-atomic` (the reduced set of atomic functions) | `Transducers.exists_small_higherOrderTerm` | proved (`HOFewerAux.lean` and `HOFewer.lean`) | `PartD/HOFewer.lean` |
 | Theorem `thm:higher-order-terms` (polyregular = higher-order terms) | `Transducers.polyregular_iff_higherOrderTerm` | proved (`HOEasy.lean` for the easy direction; `HOPoly.lean`, `HORel.lean`, `HOFund.lean` and `HOFewer.lean` for the converse) | `PartD/Statements.lean` |
 | Definition `def:resource-bound` (resource bound) | `Transducers.ResourceBound`, `Transducers.ResourceBound.Consistent` | — | `PartD/HOBound.lean` |
-| Lemma `claim:parsing-is-regular-with-resource-bounds` (parsing terms with a resource bound) | — | not formalised: a step of the book's normalisation proof, which this formalisation replaces (as above) | — |
+| Lemma `claim:parsing-is-regular-with-resource-bounds` (parsing terms with a resource bound) | `Transducers.parsing_isRegular_of_resourceBound` | **proved** (`HOStr.lean` for the string representation, `HOParse.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`), by the book's induction on the height, with the closure properties of `Common/RegLangClosure.lean` | `PartD/HOParse.lean` |
 | Lemma `lem:reduction-strategy-lemma` (the reduction strategy) | — | not formalised: a step of the book's normalisation proof, which this formalisation replaces (as above) | — |
 | Corollary `cor:normalisation-of-terms-with-resource-bounds` (normalisation with a resource bound) | — | not formalised: a step of the book's normalisation proof, which this formalisation replaces (as above) | — |
 | Lemma `lem:normal-forms-of-arrow-free-terms` (normal forms of arrow-free terms) | `Transducers.normal_iff_isValue` | proved (`HORed.lean` for the reduction rules, `HONormal.lean`) | `PartD/HONormal.lean` |
@@ -3582,3 +3585,133 @@ by this run contain no `sorry`, no `axiom` and no `native_decide`;
 `propext`, `Classical.choice`, `Quot.sound`, and `tools/print_axioms.sh` reports
 that all 278 aliases of `RequestProject/Labels.lean`, the five new ones
 included, depend only on those three.
+
+## Status (Section D.3: parsing terms with a resource bound)
+
+This section supersedes the previous ones where they disagree.  It records the
+run that formalised **Lemma `claim:parsing-is-regular-with-resource-bounds`**,
+the first of the five steps of the book's normalisation proof that were still
+missing.
+
+**What was added.**  Three files.
+
+| file | contents |
+| --- | --- |
+| `Common/RegLangClosure.lean` | the closure properties of the regular languages that a regular expression needs, and that Mathlib does not have |
+| `PartD/HOStr.lean` | the alphabet `Transducers.HSym` and the string representation `Transducers.HTerm.repr` of a higher-order term |
+| `PartD/HOParse.lean` | Lemma `claim:parsing-is-regular-with-resource-bounds` |
+
+**The closure properties.**  Mathlib has the Myhill-Nerode theorem
+(`Language.isRegular_iff_finite_range_leftQuotient`) and closure under
+complement, union and intersection, but not under concatenation or the Kleene
+star.  `Transducers.isRegular_mul` and `Transducers.isRegular_kstar` prove those
+two, and `Transducers.isRegular_singleton`, `Transducers.isRegular_zero`,
+`Transducers.isRegular_of_subset_finite`, `Transducers.isRegular_union`,
+`Transducers.isRegular_biUnion_finset`, `Transducers.isRegular_concat` and
+`Transducers.isRegular_prop_and` are the small change that goes with them.  Each
+proof is the same computation: the left quotient of the compound language at a
+word `x` is written as a fixed function of a bounded amount of information about
+`x` — for `L * M`, the pair consisting of the left quotient of `L` at `x` and
+the *set* of left quotients of `M` at the suffixes of `x` that `L` can reach;
+for `L∗`, the set of left quotients of `L` at the suffixes of `x` that `L∗` can
+reach, together with the truth value of `x ∈ L∗` — and the Myhill-Nerode
+criterion then bounds the number of left quotients.  The file is
+general-purpose: there is nothing about transducers in it.
+
+**The string representation.**  `Transducers.HTerm.repr` writes a term over the
+finite alphabet `Transducers.HSym`.  Two deviations from the book's fifteen
+letters were necessary, and both are recorded in the docstring of
+`PartD/HOStr.lean`.
+
+* The book's alphabet has no letter for `fst`, `snd`, `uncons`, `concat`,
+  `split`, `mult`, `map` or `either`, and a term cannot be written without
+  naming the atomic function it uses; `HSym` therefore has one letter for each
+  of the eighteen atomic functions of `Transducers.HAtom`.  A letter names the
+  atomic function only and not the types it is instantiated at, so the
+  representation is not injective across types, and the two atomic functions
+  that carry a group structure are written without it.  This costs nothing: the
+  lemma is about the *set* of strings that represent a consistent term, that is,
+  about the image of the representation.
+* Application, `nil` and `cons` are each written with a letter of their own, in
+  prefix position, because the syntax of `PartD/HOSyntax.lean` builds a list term
+  one entry at a time and `cons` may be applied to a term of list type that is
+  not a list term.  The cons-chain `cons a₁ (⋯ (cons aₚ nil))`, which is the
+  book's list term `[a₁,…,aₚ]`, is written `⟨cons⟩ a₁ ⋯ ⟨cons⟩ aₚ ⟨nil⟩`.  Pairs,
+  the unit term and the types are written as in the book, always with
+  parentheses.
+
+**Lemma `claim:parsing-is-regular-with-resource-bounds` is proved outright**, as
+
+```
+theorem Transducers.parsing_isRegular_of_resourceBound (R : ResourceBound) :
+    Language.IsRegular
+      {w : List HSym | ∃ (H : HTy) (t : HTerm [] H), R.Consistent t ∧ t.repr = w}
+```
+
+by the book's induction on the height.  `Transducers.termLang 𝒜 Γ n A` is the
+language of the representations of the terms of type `A` in the context `Γ`
+whose height is at most `n` and whose types are all in `𝒜`, and
+`Transducers.termLang_isRegular` proves all of them regular by induction on `n`,
+uniformly in `Γ` and `A`: no finiteness of the set of contexts is needed,
+because each step uses only finitely many languages of the previous level.  The
+step is the equality `Transducers.termLang_succ`,
+
+```
+termLang 𝒜 Γ (n+1) A = (consEntry 𝒜 Γ n A)∗ * headLang 𝒜 Γ n A,
+```
+
+where `headLang` collects the terms that are not a `cons` — a variable, an
+atomic function, an application whose function part has one of the finitely many
+types of `𝒜`, or the constructor that belongs to the type — and all of whose
+immediate subterms therefore have height at most `n`.  The star is the one place
+where it is needed: a cons-chain has the height of the book's list term, one
+more than the heights of its entries, so its tail does *not* have smaller height
+and the recursion cannot go through it.  The finitely many types over which the
+application case ranges are exactly the arrow types of `𝒜`, which is where the
+resource bound earns its keep, and the language of a resource bound is the union
+over the finitely many types of `𝒜` of the languages of the closed terms of that
+type.
+
+**What is still not formalised, and why.**  Four environments of the book, all
+of them steps of the normalisation proof; the obstacle is the same as before for
+each, minus the string representation, which now exists.
+
+* Lemma `lem:reduction-strategy-lemma` — the outermost parallel strategy, with
+  its termination item and its one-step item.  The termination item is the
+  majorant argument, and the book's own proof of it is incomplete: the head
+  expansion property (`μ` majorises `b[x ↦ u]` implies `μ+1` majorises
+  `(λx.b) u`) is taken for granted there, in a marked `\issue`, with the remark
+  that the interaction between the parallel strategy and substitution has to be
+  settled before the proof goes into the book.  Settling it needs the
+  substitution lemma for parallel reduction and a sequentialisation of
+  application spines, and the claims below then have to be redone for whatever
+  strategy comes out of that.  The one-step item asks for a for-transducer that
+  performs, on the string representation, one parallel step of β-reduction with
+  De Bruijn index arithmetic and of every rule of Figure `fig:reduction-rules`.
+* Corollary `cor:normalisation-of-terms-with-resource-bounds` — an immediate
+  consequence of the previous lemma, and unavailable for that reason alone.
+* Claim `claim:atomic-functions-majorised` and Claim `claim:every-term-majorised`
+  — the two steps of the majorant argument.  Both are stated in terms of the
+  relation "`μ` majorises `t`", which is defined from the outermost parallel
+  strategy and the step count `steps(t)`, so they presuppose the strategy of
+  Lemma `lem:reduction-strategy-lemma`; and Claim `claim:every-term-majorised`
+  uses the head expansion property that the book leaves unproved.
+
+None of the four is needed for Theorem `thm:higher-order-terms`, which is proved
+by the logical relation of `PartD/HORel.lean`.
+
+**Counts.**  The dictionary of `LABELS.md` has **132** theorem-like
+environments.  Of them, **28 definitions are formalised**, **96 results are
+proved outright**, **none is proved from a hypothesis**, and **8 are not
+formalised**: Definition `def:rational-recognisable-subsets`, Conjecture
+`conj:regular-via-weighted-automata`, Claim
+`nolabel:claim-representations-are-a-regular-language`, the withdrawn Theorem
+`nolabel:thm-fo-transduction-into-primes`, and the four steps of the
+normalisation proof listed above.
+
+**Verification.**  `lake build` succeeds with no errors.  The three files added
+by this run contain no `sorry`, no `axiom` and no `native_decide`;
+`tools/gen_labels.py --check`, `tools/decl_files.py --check` and
+`tools/tex_numbering.py --check` all pass, and `tools/print_axioms.sh` reports
+that all 279 aliases of `RequestProject/Labels.lean`, the new one included,
+depend only on `propext`, `Classical.choice`, `Quot.sound`.
