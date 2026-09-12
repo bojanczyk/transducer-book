@@ -574,3 +574,234 @@ mentions reduction, resource bounds or the parsing of terms, and it is the proof
 assistant finds comfortable: it is the one carried out in the formalisation of this book, where it
 replaces \crefrange{def:resource-bound}{claim:every-term-majorised} by
 \cref{def:logical-relation,lem:logical-relation-closure,lem:fundamental-lemma}.
+
+
+
+\subsection{Logical relations again}
+
+\newcommand{\logrel}[1]{\xrightarrow[\text{rel}]{#1}}
+
+\begin{definition}
+    [Good functions] Consider a function of type  $Q \to A$, where: 
+    \begin{itemize}
+        \item the domain $Q$, which is called the \emph{parameter type}, is a arrow-free;
+        \item the co-domain $A$ is any higher-order type.
+    \end{itemize}
+ This  function  is called \emph{good} if it satisfies the following conditions, which are defined by induction on the structure of the output type.
+    \begin{itemize}
+        \item The unique function of type $Q \to \onetype$ is a good.
+        
+        \item Good functions with an output product type $A_1 \times A_2$ are compositions 
+        \begin{align*}
+        Q \xrightarrow f Q_1+Q_2 \xrightarrow {\rho_1 + \rho_2} A_1 \times A_2
+        \end{align*}
+        for some polyregular $f$ and  good $\rho_1$ and $\rho_2$. Similarly we define functions with outputs that are co-products or lists, with the compositions being 
+                \begin{align*}
+        Q \xrightarrow f Q_1+Q_2 \xrightarrow {\rho_1 + \rho_2} A_1 + A_2 \qquad 
+        Q \xrightarrow f  P^* \xrightarrow {\rho^*} B^*.
+        \end{align*}
+        \item For a functional output type, a function 
+        \begin{align*}
+        Q \xrightarrow \rho (A \to B)
+        \end{align*}
+        is  good if for every 
+        \begin{itemize}
+            \item arrow-free type $P$ called the \emph{new parameters};
+            \item polyregular function $P \xrightarrow r Q$ called the \emph{change of parameters};
+            \item good $P \xrightarrow \sigma A$,
+        \end{itemize}
+        the following function of type $Q \to B$ is good
+        \begin{align*}
+            p \in P \quad \mapsto \quad  \rho(r(p)) \text{ applied to } \sigma(p).
+        \end{align*}
+    \end{itemize}
+\end{definition}
+
+
+
+The main technical result is the following lemma, which says that each higher-order polyregular term defines a logical relation, assuming that the free variables are described by logical relations.
+\begin{lemma}[Fundamental Lemma]\label{lem:fundamental-lemma-of-logical-relations}    Let
+    \begin{itemize}
+        \item $a : A$ be a higher-order polyregular term;
+        \item $Q$ be an arrow-free type, called the \emph{parameter type};
+        \item for each free variable $x : A_x$ of the term $a$, let $Q \xrightarrow {\rho_x} A_x$ be good.
+    \end{itemize}
+Then the following function of type $Q \to A$ is good:
+    \begin{align*}
+    q \in Q \quad \mapsto \quad \text{semantics of $a$ at the valuation given by $x \mapsto \rho_x(q)$.}
+    \end{align*}
+\end{lemma}
+
+Before proving the Fundamental Lemma, we use it to prove \cref{thm:higher-order-terms}. 
+
+\begin{proof}[Proof of \cref{thm:higher-order-terms} using the Fundamental Lemma.] We begin with the following observation about good functions between arrow-free types.
+\begin{lemma}\label{lem:logical-relations-with-arrow-free-outputs-are-polyregular} If $Q$ and $A$ are arrow-free, then the good functions of type $Q \to A$ are exactly the polyregular ones.
+\end{lemma}
+\begin{proof}
+    Straightforward induction on the structure of the output type $A$.
+\end{proof}
+Let us now prove \cref{thm:higher-order-terms}. We want to show that if 
+\begin{align*}
+A \xrightarrow f B
+\end{align*}
+is a function between arrow-free types, then 
+    \begin{align*}
+    \text{$f$ is polyregular}
+    \quad \Leftrightarrow \quad
+    \text{$f$ is defined by a closed higher-order polyregular term}    \end{align*}
+    We have already shown the  implication $\Rightarrow$, so we are left with $\Leftarrow$. Suppose that $f$ is defined  by a  closed higher-order polyregular term $t$. Let $x : A$ be a variable, and consider the applicaiton term $t(x) : B$. Apply the Fundamental Lemma to this term, the arrow-free type $Q=A$ and  the identity  function $\rho_x$, which is good by \cref{lem:logical-relations-with-arrow-free-outputs-are-polyregular}.  From the conclusion, we see that  
+    \begin{align*}
+    a \in A \quad \mapsto \quad \text{semantics of $t(x)$  at the valuation given by  $x \mapsto a$},
+    \end{align*}
+    which is the function $f$ itself, 
+    is  good, and thus polyregular by \cref{lem:logical-relations-with-arrow-free-outputs-are-polyregular}. 
+\end{proof}
+
+It remains to prove the Fundamental Lemma. 
+
+
+\newcommand{\fundlemlogrel}[2]{\sem{#1}_{#2}}
+
+\begin{proof}
+We use the notation 
+\begin{align*}
+Q \xrightarrow{{\fundlemlogrel{a}{\bar \rho}}} A
+\end{align*}
+for the function in the conclusion of the Fundamental Lemma, where $a$ is the term in the assumption, and $\bar \rho$ is the family of good functions for the free variables. This function is defined as follows by induction on the structure of the term $a$.
+\paragraph*{Variable.}  When the term $x$ is a variable, then  $ \fundlemlogrel{x}{\bar\rho}$ is the function $\rho_x$ from the assumption, which is good by assumption.
+\paragraph*{Pair.} Let us define the good function for pair term $(a,b)$ under some valuations $\bar \rho$.   Define $\bar \rho_a$ and $\bar \rho_b$ to be the restrictions of $\bar \rho$ to the free variables of $a$ and $b$ respectively. 
+The good function $\fundlemlogrel{(a,b)}{\bar \rho}$ is then defined to be the (component-wise) pairing 
+\begin{align*}
+q \in Q \mapsto (\fundlemlogrel{a}{\bar \rho_a}(q), \fundlemlogrel{b}{\bar \rho_b}(q)),
+\end{align*}
+and good functions are easily seen to be closed under pairing, essentially by definition.
+\paragraph*{Application.}  The case of application is defined in the same way as pairing, except that we use component-wise application: 
+\begin{align*}
+q \in Q \mapsto \fundlemlogrel{f}{\bar \rho_f}(q) \text{ applied to } \fundlemlogrel{a}{\bar \rho_a}(q).
+\end{align*} To prove that this is good, we use the defining  property  of the good function $\fundlemlogrel{f}{\bar \rho_f}$ applied to new  parameters $P=Q$, a change of parameters that is the identity, and the good function $\fundlemlogrel{a}{\bar \rho_a}$.
+\paragraph*{Abstraction.} When proving the case of abstraction, we will use the following claim.  
+\begin{claim}\label{claim:logical-relations-closed-under-precomposition}
+    Good functions are closed under pre-composition with polyregular functions.
+\end{claim}
+\begin{proof}
+    Induction on the structure of the output type. For the unit type there is nothing to do, and for product, co-product and list types the claim follows from the definition of good functions for such types, where the composition begins with a polyregular function. The final case is the arrow type. By recalling the definition in an arrow type $A \to B$, we need to show that 
+    \begin{align*}
+        \forall P \xrightarrow r Q \ \forall P \xrightarrow \sigma A \qquad
+            p \in P \ \mapsto \  \rho(r(p)) \text{ applied to } \sigma(p) \quad \text{is good}.
+        \end{align*}
+    To prove the claim, we need to show that if the above condition is true for $\rho$, then it remains true after $\rho$ has been pre-composed with a polyregular function $s$. This is ineed true, since $r$ is quantified universally, and thus it also covers the case of functions that are post-composed with $s$.
+\end{proof}
+
+For an abstraction, the  function $\fundlemlogrel{\lambda x.b}{\bar \rho}$ is defined as 
+
+\begin{align*}
+q \in Q \quad \mapsto \quad \Big(\, a \in A \ \mapsto \ \text{semantics of $b$ at the valuation $\bar \rho(q)$ extended by $x \mapsto a$} \,\Big),
+\end{align*}
+where $A$ is the type of the bound variable, so that the abstraction has type $A \to B$ and $b$ has
+type $B$. In words: at the argument $q$ we fix the free variables of $\lambda x . b$ according to
+$\bar \rho(q)$ and leave $x$ free, which leaves a function of type $A \to B$.
+
+It remains to check that this function is good. By the definition of good functions at the arrow
+type $A \to B$, we must show that for every arrow-free type $P$, every polyregular function
+$P \xrightarrow r Q$ and every good function $P \xrightarrow \sigma A$, the function
+\begin{align*}
+p \in P \quad \mapsto \quad \fundlemlogrel{\lambda x . b}{\bar \rho}(r(p)) \text{ applied to } \sigma(p)
+\end{align*}
+is good. Unravelling the definition above, its value at $p$ is the semantics of $b$ at the
+valuation which maps the free variables of $\lambda x . b$ according to $\bar \rho(r(p))$, and maps
+$x$ to $\sigma(p)$. This is exactly
+\begin{align*}
+P \xrightarrow{\ \fundlemlogrel{b}{\bar \rho \circ r, \ \sigma}\ } B,
+\end{align*}
+the function supplied by the induction hypothesis for the subterm $b$, taken with the parameter
+$P$ instead of $Q$ -- which is allowed, since the Fundamental Lemma quantifies over the parameter
+universally -- with the functions $\rho_1 \circ r, \ldots, \rho_n \circ r$ for the free variables
+of $\lambda x . b$, and with $\sigma$ for the variable $x$.
+
+The induction hypothesis applies to these, because each $\rho_i \circ r$ is good by
+\cref{claim:logical-relations-closed-under-precomposition}, being a good function pre-composed
+with a polyregular one, and $\sigma$ is good by assumption. It therefore tells us that the
+displayed function is good, which is what we had to show.
+
+It is worth noting where the two quantifiers of the arrow type were used. The good function
+$\sigma$ became the interpretation of the newly bound variable $x$, and the change of parameters
+$r$ is what allowed the interpretations $\bar \rho$ of the variables that were already free to be
+transported from $Q$ to the new parameter $P$. Without the quantification over $r$, the induction
+hypothesis for $b$ would be unavailable, since its free variables would still be interpreted over
+the old parameter.
+
+
+
+
+
+\paragraph*{The list constructor.}  We are now left with the atomic functions. We begin by discussing a simple case of an atomic function, which is the list constructor
+\begin{align*}
+\onetype + A \times A^* \xrightarrow \consterm A^*.
+\end{align*}
+This term has no free variables, and therefore the conclusion of the Fundamental Lemma in this case says that every arrow-free $Q$, the constant function  of type
+\begin{align*}
+q \in Q \quad \mapsto \quad \consterm 
+\end{align*}
+is good. By unfolding the definition of good functions for  $A \times A^* \to A^*$, this means that for every arrow-free  type $P$, every  polyregular change of parameters $r : P \to Q$ and every good $\sigma : P \to A$, 
+the function 
+\begin{align*}
+p \in P \quad \mapsto \consterm (\sigma(p))
+\end{align*}
+is good. (The change of parameters is not used, since our original good function ignored the parameter from $Q$.) In other words, we need to show that the composition 
+\begin{align*}
+P \xrightarrow \sigma \onetype + A \times A^* \xrightarrow \consterm A^*
+\end{align*}
+is good. By unfolding the definition of a good  function $\sigma$, we easily show  that $\sigma$ is equal to a composition
+\begin{align*}
+P \xrightarrow f  P_1 + P_2 \times P_3^* \xrightarrow { \sigma_1 + \sigma_2 \times \sigma_3^*} \onetype + A \times A^* 
+\end{align*}
+for some polyregular function $f$ and some  good functions 
+\begin{align*}
+P_1 \xrightarrow {\sigma_1} \onetype \qquad 
+P_2 \xrightarrow {\sigma_2} A \qquad 
+P_3 \xrightarrow {\sigma_3} A.
+\end{align*}
+We can ensure that the first good function is the identity on $\onetype$, and the other two good functions $\sigma_2$ and $\sigma_3$ are the same,  by using the co-pairing 
+\begin{align*}
+P_2 + P_3 \xrightarrow {\either {\sigma_2} {\sigma_3}} A.
+\end{align*}
+(An argument similar to the one used in the proof of \cref{claim:closure-properties-of-logical-relations} shows that such a co-pairing is good.)
+Summing up, if we write $\rho$ for the above co-pairing and $R$ for its domain, we need to show that the following composition is good:
+\begin{align*}
+P \xrightarrow f  \onetype + R \times R^* \xrightarrow { \idterm + \rho \times \rho^*} \onetype + A \times A^* \xrightarrow \consterm A^*.
+\end{align*}
+The atomic function $\consterm$ is natural in the sense that it commutes with $\rho$, and therefore the above composition is the same as
+\begin{align*}
+P \xrightarrow f  \onetype + R \times R^* \xrightarrow \consterm R^* \xrightarrow {\rho^*} A^*
+\end{align*}
+This is a composition of two polyregular functions on arrow-free types, namely $f$ and $\consterm$, followed by the functor $*$ applied to a logical relation. Therefore, this composition is  a logical relation by \cref{claim:closure-properties-of-logical-relations}.
+
+
+\paragraph*{Atomic functions with arrow-free domains.} Let us now generalise the above arguments to  all atomic functions except for $\mathtt{either}$ and $\mapterm$.    (The two exceptions input functions, and thus they are treated a bit specially.) Each such atomic function has  shape 
+\begin{align*}
+F(A_1,\ldots,A_n) \xrightarrow f G(A_1,\ldots,A_n),
+\end{align*}
+and where the domain and co-domain are expressions that are constructed from types $A_1,\ldots,A_n$ using the arrow-free type constructors $\onetype, +, \times$ and $*$. (It is a bit misleading to say that $f$ does not input functions, since the type parameters $A_i$ could have arrows, but the idea is that all arrows in the domain come from  the parameters.)
+Similarly the the case of the list constructor, proving the conclusion  of the Fundamental Lemma in this case means that for every logical relation 
+\begin{align*}
+P \xrightarrow \rho F(A_1,\ldots,A_n),
+\end{align*}
+the composition $\rho; f$ is a logical relation.  Also similarly to the case of the list constructor, $\rho$ can be decomposed as 
+\begin{align*}
+P \xrightarrow g  F(P_1,\ldots,P_n) \xrightarrow {F(\rho_1,\ldots,\rho_n)} F(A_1,\ldots,A_n)
+\end{align*}
+for some polyregular function $g$ and logical relations
+\begin{align*}
+P_1 \xrightarrow {\rho_1} A_1 
+\quad \cdots \quad 
+P_n \xrightarrow {\rho_n} A_n. 
+\end{align*}
+The argument using co-pairing that we used for the list constructors is also used here, since a variable $A_i$ can be used several times in the expression $F(A_1,\ldots,A_n)$, and hence we need to use co-pairing to ensure that all appearances of $A_i$ are treated with the same set $P_i$ and the same logical relation. All  atomic functions under consideration are natural, which means that the composition $\rho;f$ is equal to
+\begin{align*}
+P \xrightarrow g  F(P_1,\ldots,P_n) \xrightarrow {f'} G(P_1,\ldots,P_n)  \xrightarrow {G(\rho_1,\ldots,\rho_n)} G(A_1,\ldots,A_n),
+\end{align*}
+where $f'$ is the variant of the atomic function $f$ that uses parameters $P_1,\ldots,P_n$ instead of $A_1,\ldots,A_n$.  As in the case of the list constructor, this is a composition of two polyregular functions on arrow-free types, followed by the combinators applied to logical relations, and hence it is a logical relation.
+
+
+
+\end{proof}
