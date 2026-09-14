@@ -300,8 +300,7 @@ lemma computes_comp {m k : ℕ} {f : List.Vector ℕ k →. ℕ} {g : Fin k → 
   refine ⟨?_, ?_⟩
   · -- the convergent case
     intro z hz
-    simp only [Part.bind_eq_bind, Part.mem_bind_iff] at hz
-    obtain ⟨w, hw, hzf⟩ := hz
+    obtain ⟨w, hw, hzf⟩ := Part.mem_bind_iff.mp hz
     have hdom : ∀ (t : ℕ) (ht : t < k), (g ⟨t, ht⟩ (vargs m s)).Dom :=
       fun t ht => Part.dom_iff_mem.mpr ⟨_, mem_mOfFn hw ⟨t, ht⟩⟩
     obtain ⟨u1, u2, u3, hr1, hr2, hr3, ha, hb, hc, hd⟩ := prefix_run hdom
@@ -385,8 +384,7 @@ lemma computes_comp {m k : ℕ} {f : List.Vector ℕ k →. ℕ} {g : Fin k → 
         obtain ⟨z, hz⟩ := Part.dom_iff_mem.mp hdf
         refine ⟨z, ?_⟩
         show z ∈ (List.Vector.mOfFn fun i => g i (vargs m s)) >>= f
-        simp only [Part.bind_eq_bind, Part.mem_bind_iff]
-        refine ⟨vargs k u3, ?_, hz⟩
+        refine Part.mem_bind_iff.mpr ⟨vargs k u3, ?_, hz⟩
         rw [hvk]
         exact mOfFn_mem (fun i => by
           have h1 := hYc_mem (i : ℕ) i.isLt (hdom (i : ℕ) i.isLt)

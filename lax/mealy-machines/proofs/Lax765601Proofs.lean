@@ -1,6 +1,6 @@
 import Lax765601Proofs.Bridge
 import Lax765601Proofs.Results
-import Lax765601Proofs.Source.Common.Aux
+import Lax765601Proofs.Source.Common.Auxiliary
 import Lax765601Proofs.Source.Common.Basic
 import Lax765601Proofs.Source.PartA.FlipFlopClosure
 import Lax765601Proofs.Source.PartA.MapLift
