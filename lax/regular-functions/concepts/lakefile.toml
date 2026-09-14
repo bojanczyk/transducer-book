@@ -13,13 +13,13 @@ rev = "db584cd6d46c92f209a44c0f1c829460d327499d"
 [[require]]
 name = "Lax765601"
 git = "https://github.com/bojanczyk/transducer-book"
-rev = "cf8ade7b9a07bf575705db4ddc28bd90b2c6cb74"
+rev = "698046795518e5e5f92c6371d3953a5abe91cbf2"
 subDir = "lax/mealy-machines/concepts"
 
 [[require]]
 name = "Lax132576"
 git = "https://github.com/bojanczyk/transducer-book"
-rev = "972ebefba92c54889997d65db9028aee76522813"
+rev = "0257c908fdd3bbd85cb9a5924ecd483760ca8eb6"
 subDir = "lax/rational-functions/concepts"
 
 [[lean_lib]]
