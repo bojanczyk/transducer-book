@@ -20,8 +20,8 @@ The epoch moved to v4.33.0 (mathlib `db584cd6`) on 2026-09-13 and v4.30.0
 closed. The eight submissions are drafts, so the port is in place: same ids,
 same issues, same package names; every pin moved (manifest `leanVersion`
 and `mathlibVersion`, both `lean-toolchain` files, both lakefiles' mathlib
-`rev`, `tools/umbrella-pins.py`), the Lean fixed in the proof packages only,
-no statement changed, no concept file touched. Prepared without submit
+`rev`, `tools/umbrella-pins.py`), the Lean fixed in the proof packages, no
+statement changed, one concept file touched (S5's `Sym8`, below). Prepared without submit
 rights: resubmission is bottom-up with a repin at every step
 (`tools/repin.py`, then `tools/umbrella-pins.py` for the umbrella), as in
 "Cross-submission requires" of CLAUDE.md. Local loop: `lax doctor --env
