@@ -3,16 +3,16 @@
 Opened 2026-09-07. One row per submission; the *next leaf* column is what the
 next session or subagent picks up. Keep this file short and current.
 
-| id | folder | concepts | proofs | state (2026-09-07, 23:00; v4.33.0 port green locally 2026-09-14, see below) | next leaf |
+| id | folder | concepts | proofs | state (2026-09-14; all eight resubmitted at v4.33.0) | next leaf |
 |---|---|---|---|---|---|
-| lax-251941 | `pcp-undecidability` | 9 | 6, all discharged | **draft on the archive with content** (9680c6e), replay green | none |
-| lax-765601 | `mealy-machines` | 22 | 13, all discharged | **draft on the archive with content** (cf8ade7), replay green | none |
-| lax-132576 | `rational-functions` | 42 | 29, all discharged; Source = 63 modules | **draft on the archive with content** (972ebef), replay green | none |
-| lax-916827 | `regular-functions` | 29 | 23, all discharged; Source = 136 modules; replay green (9m36s) | committed; content resubmit running | after the record moves: repin S4/S5/S6 (concepts) and S4/S5 (proofs) to it, submit S4/S5/S6 |
-| lax-314295 | `mso-transductions` | 26 | 22, all discharged; Source = 44 modules; replay green | **draft on the archive with content** (8b8f8c6) | none (S6 and S7 pin it) |
-| lax-709149 | `regular-combinators` | 4 | 1, discharged; Source = 15 modules; replay green | **draft on the archive with content** (86f2df5) | none (S7 pins it) |
-| lax-194892 | `polyregular-functions` | 21 | 15, all discharged; Source = 72 modules | **draft on the archive with content** (4bdfaae; the first submission hit the replay time cap, the identical retry passed) | none (S7 pins it) |
-| lax-157538 | `transducers-book` | none (umbrella) | none | **draft on the archive** (7a3dd76): paper 179 pages, 210 marks resolved, pins all seven records; `backend=bibtex` (the archive's sandboxed `biber` cannot exec) and tikz externalization off around `tikzcd` (made the reflow's lualatex pass succeed) in the umbrella's `macros.sty`. Remaining warning: `paper · web-oracle`, the reflow stream diverges from the PDF text at similarity 0.9800 (< 0.98), first at the preface's "This book" read as "is book" — not the Th ligature (disabling ligatures under lualatex changed nothing, reverted) | registration bottom-up (Jan); the web-oracle warning needs laxreflow's own transcript (archive maintainers) |
+| lax-251941 | `pcp-undecidability` | 9 | 6, all discharged | **draft on the archive at v4.33.0** (6980467) | none |
+| lax-765601 | `mealy-machines` | 22 | 13, all discharged | **draft on the archive at v4.33.0** (6980467) | none |
+| lax-132576 | `rational-functions` | 42 | 29, all discharged; Source = 63 modules | **draft on the archive at v4.33.0** (0257c90) | none |
+| lax-916827 | `regular-functions` | 29 | 23, all discharged; Source = 136 modules; replay green (9m36s) | **draft on the archive at v4.33.0** (2649bf2) | none |
+| lax-314295 | `mso-transductions` | 26 | 22, all discharged; Source = 44 modules; replay green | **draft on the archive at v4.33.0** (baffefb) | none (S6 and S7 pin it) |
+| lax-709149 | `regular-combinators` | 4 | 1, discharged; Source = 15 modules; replay green | **draft on the archive at v4.33.0** (baffefb) | none (S7 pins it) |
+| lax-194892 | `polyregular-functions` | 21 | 15, all discharged; Source = 72 modules | **draft on the archive at v4.33.0** (e563124) | none (S7 pins it) |
+| lax-157538 | `transducers-book` | none (umbrella) | none | **draft on the archive at v4.33.0** (ab3f15c): paper 179 pages, 210 marks resolved, pins all seven records; `backend=bibtex` (the archive's sandboxed `biber` cannot exec) and tikz externalization off around `tikzcd` (made the reflow's lualatex pass succeed) in the umbrella's `macros.sty`. The v4.30 `paper · web-oracle` warning (reflow similarity 0.9800) did not recur at this submission | registration bottom-up (Jan) |
 
 ## v4.33.0 port (2026-09-14)
 
