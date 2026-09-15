@@ -91,6 +91,10 @@
         "tex": "menu-17-pebble-transducers.tex"
       },
       {
+        "href": "/17a-higher-order/",
+        "tex": "menu-17a-higher-order.tex"
+      },
+      {
         "href": "/17z-polyregular-functions-references/",
         "tex": "menu-17z-polyregular-functions-references.tex"
       }

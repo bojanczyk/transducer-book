@@ -29,8 +29,7 @@ This file formalises all three.
   separate definition because the parameters here are *higher-order* types, which is exactly what
   the Fundamental Lemma needs and what the type functors of Part C cannot express.
 
-* `Transducers.IsNaturalTransformation` is the Definition of a natural transformation of the book,
-  which carries no `\label` there and is therefore not aliased in `RequestProject/Labels.lean`: for
+* `Transducers.IsNaturalTransformation` is Definition `def:natural-transformation` of the book: for
   all functions `ρᵢ : Aᵢ → Bᵢ`, which are required to be neither good nor polyregular, the square
   of the definition commutes.
 
@@ -188,7 +187,7 @@ theorem HTyFun.mapTy_mapElt :
 valuation of the type variables by higher-order types, whose domain and co-domain are expressions
 built from the variables by the arrow-free type constructors, is a *natural transformation* if the
 square of the book commutes for every family of functions `ρᵢ : Aᵢ → Bᵢ`, which are required to be
-neither good nor polyregular.  This definition carries no `\label` in the book. -/
+neither good nor polyregular.  This is Definition `def:natural-transformation`. -/
 def IsNaturalTransformation (F G : HTyFun)
     (f : ∀ A : ℕ → HTy, (F.app A).Sem → (G.app A).Sem) : Prop :=
   ∀ (A B : ℕ → HTy) (r : ∀ i, (A i).Sem → (B i).Sem) (x : (F.app A).Sem),

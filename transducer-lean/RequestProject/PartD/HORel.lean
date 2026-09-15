@@ -37,8 +37,10 @@ instantiating the fundamental lemma at the identity family.
 
 Two of these are numbered results of the book: `Transducers.Rel.iff_polyregular` is Lemma
 `lem:good-functions-are-polyregular-at-arrow-free-types`, and `Transducers.Rel.reindex` is Claim
-`claim:logical-relations-closed-under-precomposition`.  The definition of a good function itself
-carries no `\label` in the book, so it is not aliased in `RequestProject/Labels.lean`.
+`claim:logical-relations-closed-under-precomposition`.  The definition of a good function itself is
+Definition `def:good-function`, and `Transducers.HTerm.rel_eval` of
+`RequestProject/PartD/HOFund.lean` is the second item of Lemma `lem:fundamental-lemma`, whose first
+item is `Transducers.Rel.iff_polyregular` below.
 -/
 import RequestProject.PartD.HOPoly
 import RequestProject.PartD.HOSyntax

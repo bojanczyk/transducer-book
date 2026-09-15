@@ -1723,8 +1723,11 @@ among the primes.
 | Lemma `lem:fewer-atomic` (the reduced set of atomic functions) | `Transducers.exists_small_higherOrderTerm` | proved (`HOFewerAux.lean` and `HOFewer.lean`) | `PartD/HOFewer.lean` |
 | Theorem `thm:higher-order-terms` (polyregular = higher-order terms) | `Transducers.polyregular_iff_higherOrderTerm` | proved (`HOEasy.lean` for the easy direction; `HOPoly.lean`, `HORel.lean`, `HOFund.lean` and `HOFewer.lean` for the converse) | `PartD/Statements.lean` |
 | The Fundamental Lemma and the good functions (no `\label` in the book) | `Transducers.Rel`, `Transducers.HTerm.rel_eval` | proved (`HOPoly.lean`, `HORel.lean`, `HOFund.lean`); no alias, since neither environment carries a `\label` | `PartD/HORel.lean`, `PartD/HOFund.lean` |
+| Lemma `lem:fundamental-lemma` (the Fundamental Lemma) | `Transducers.Rel.iff_polyregular` (item 1), `Transducers.HTerm.rel_eval` (item 2) | proved (`HORel.lean`, `HOFund.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`).  The subset of functions the lemma asserts one can identify is `Transducers.Rel`, Definition `def:good-function` | `PartD/HORel.lean`, `PartD/HOFund.lean` |
+| Definition `def:good-function` (good functions) | `Transducers.Rel` | proved (`HORel.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`) | `PartD/HORel.lean` |
 | Lemma `lem:good-functions-are-polyregular-at-arrow-free-types` (good = polyregular at arrow-free types) | `Transducers.Rel.iff_polyregular` | proved (`HOPoly.lean`, `HORel.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`) | `PartD/HORel.lean` |
 | Claim `claim:logical-relations-closed-under-precomposition` (good functions are closed under pre-composition with polyregular ones) | `Transducers.Rel.reindex` | proved (`HORel.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`) | `PartD/HORel.lean` |
+| Definition `def:natural-transformation` (natural transformations) | `Transducers.IsNaturalTransformation` | proved (`HONat.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`) | `PartD/HONat.lean` |
 | Natural transformations (no `\label` in the book) | `Transducers.HTyFun`, `Transducers.IsNaturalTransformation` | — | `PartD/HONat.lean` |
 | Claim `claim:atomic-functions-are-natural-transformations` (the atomic functions are natural) | `Transducers.atoms_are_natural` | proved (`HONat.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`) | `PartD/HONat.lean` |
 | Claim `claim:functors-applied-to-good` (the shape of a good function into a functor) | `Transducers.good_of_functor_applied` | proved (`HORel.lean`, `HONat.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`) | `PartD/HONat.lean` |
@@ -3365,8 +3368,11 @@ parameters `r : P → Q` and a good `σ : P → A`.
 | --- | --- | --- |
 | the Fundamental Lemma (no `\label`) | `Transducers.HTerm.rel_eval` | `PartD/HOFund.lean` |
 | the good functions (no `\label`) | `Transducers.Rel` | `PartD/HORel.lean` |
+| Lemma `lem:fundamental-lemma` | `Transducers.Rel.iff_polyregular`, `Transducers.HTerm.rel_eval` | `PartD/HORel.lean`, `PartD/HOFund.lean` |
+| Definition `def:good-function` | `Transducers.Rel` | `PartD/HORel.lean` |
 | Lemma `lem:good-functions-are-polyregular-at-arrow-free-types` | `Transducers.Rel.iff_polyregular` | `PartD/HORel.lean` |
 | Claim `claim:logical-relations-closed-under-precomposition` | `Transducers.Rel.reindex` | `PartD/HORel.lean` |
+| Definition `def:natural-transformation` | `Transducers.IsNaturalTransformation` | `PartD/HONat.lean` |
 | a natural transformation (no `\label`) | `Transducers.HTyFun`, `Transducers.IsNaturalTransformation` | `PartD/HONat.lean` |
 | Claim `claim:atomic-functions-are-natural-transformations` | `Transducers.atoms_are_natural` | `PartD/HONat.lean` |
 | Claim `claim:functors-applied-to-good` | `Transducers.good_of_functor_applied` | `PartD/HONat.lean` |

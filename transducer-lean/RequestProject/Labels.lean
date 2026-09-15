@@ -748,6 +748,29 @@ assert_no_sorry «lem:fewer-atomic»
 alias «thm:higher-order-terms» := Transducers.polyregular_iff_higherOrderTerm
 assert_no_sorry «thm:higher-order-terms»
 
+/-- **Lemma `lem:fundamental-lemma`** (the Fundamental Lemma).  The lemma asserts that a subset of
+the functions `Q → A` can be identified -- the *good* functions, `Transducers.Rel`, aliased as
+Definition `def:good-function` -- with two properties.  Its two items are formalised separately:
+this alias is item 1, that good and polyregular coincide at an arrow-free output type
+(`Transducers.Rel.iff_polyregular`, which the book also states on its own as Lemma
+`lem:good-functions-are-polyregular-at-arrow-free-types`), and `#2` is item 2, that the
+parametrised denotation of a term sends good values of the free variables to a good value. -/
+alias «lem:fundamental-lemma» := Transducers.Rel.iff_polyregular
+assert_no_sorry «lem:fundamental-lemma»
+
+/-- **Lemma `lem:fundamental-lemma`** (item 2, the induction on terms): `Transducers.HTerm.rel_eval`. -/
+alias «lem:fundamental-lemma#2» := Transducers.HTerm.rel_eval
+assert_no_sorry «lem:fundamental-lemma#2»
+
+/-- **Definition `def:good-function`** (good functions): `Transducers.Rel`.  `Rel A P g` says that
+the family `g : P → A`, for an arrow-free parameter `P` and a higher-order type `A`, is good.  The
+clauses agree with the book's: at a product the book asks for a decomposition
+`Q → Q₁ × Q₂ → A₁ × A₂` through a polyregular map and two good functions, which is equivalent to
+the componentwise condition used here -- one way by composing with the projections and
+`Transducers.Rel.reindex`, the other by taking the diagonal, which is polyregular. -/
+alias «def:good-function» := Transducers.Rel
+assert_no_sorry «def:good-function»
+
 /-- **Lemma `lem:good-functions-are-polyregular-at-arrow-free-types`** (good = polyregular at arrow-free types): `Transducers.Rel.iff_polyregular`. -/
 alias «lem:good-functions-are-polyregular-at-arrow-free-types» := Transducers.Rel.iff_polyregular
 assert_no_sorry «lem:good-functions-are-polyregular-at-arrow-free-types»
@@ -755,6 +778,13 @@ assert_no_sorry «lem:good-functions-are-polyregular-at-arrow-free-types»
 /-- **Claim `claim:logical-relations-closed-under-precomposition`** (good functions are closed under pre-composition with polyregular ones): `Transducers.Rel.reindex`. -/
 alias «claim:logical-relations-closed-under-precomposition» := Transducers.Rel.reindex
 assert_no_sorry «claim:logical-relations-closed-under-precomposition»
+
+/-- **Definition `def:natural-transformation`** (natural transformations):
+`Transducers.IsNaturalTransformation`.  As in the book, the type expressions may use several
+variables and are built with the arrow-free constructors, and the functions `ρᵢ` along which the
+square must commute are arbitrary -- neither good nor polyregular. -/
+alias «def:natural-transformation» := Transducers.IsNaturalTransformation
+assert_no_sorry «def:natural-transformation»
 
 /-- **Claim `claim:atomic-functions-are-natural-transformations`** (the atomic functions are natural): `Transducers.atoms_are_natural`. -/
 alias «claim:atomic-functions-are-natural-transformations» := Transducers.atoms_are_natural

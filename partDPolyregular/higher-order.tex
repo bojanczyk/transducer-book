@@ -175,7 +175,7 @@ Higher-order polyregular terms can define functions of higher-order types for wh
     where the types $A$ and $B$ are arrow-free, i.e.~constructed without using the arrow type constructor. Then $f$ is polyregular if and only if it can be defined by a higher-order polyregular term which is closed (i.e.~has no free variables).
 \end{theorem}
 
-One implication of the theorem is clear: the higher-order programming language was defined as an extension of polyregular terms, and therefore it is at least as expressive by definition. The difficult part is the converse implication: the higher-order features do not increase the expressiveness. To prove the difficult implication, we will use an unusual semantics for higher-order polyregular terms, which is based on a technique from the $\lambda$-calculus that is called \emph{logical relations}. (We avoid this name, since we use both logics and relations in other ways, and we use the non-descriptive name of \emph{good functions} below.)
+One implication of the theorem is clear: the higher-order programming language was defined as an extension of polyregular terms, and therefore it is at least as expressive by definition. The difficult part is the converse implication: the higher-order features do not increase the expressiveness. To prove the difficult implication, we will use an unusual semantics for higher-order polyregular terms, which is based on a technique from the $\lambda$-calculus that is called \emph{logical relations}. 
 
 \newcommand{\semparam}[2]{\sem{#1}_{#2}}
 For the rest of this section, we use the name \emph{term} for higher-order polyregular terms. When defining the semantics of our programming language, we assigned to each term  $a : A$ a denotation, which was a function 
@@ -191,9 +191,9 @@ This new parameterised denotation is  defined to be  pointwise lifting of the or
 \begin{align*}
 \sem a_Q \myunderbrace{(\rho_1,\ldots,\rho_n)}{the values for free variables} \myoverbrace{(q)}{the parameter} = \sem{a}(\rho_1(q),\ldots,\rho_n(q)).
 \end{align*}
-At first sight, this  seems to be a mere obfuscation of the original semantics. However, the new definition  will enable us to find an invariant that will be used to remove the higher-order features of  higher-order polyregular terms.  This invariant is postulated in the following lemma.
+At first sight, this  seems to be a mere obfuscation of the original semantics. However, the new definition  will enable us to find an invariant that will be used to remove the higher-order features of  higher-order polyregular terms.  This invariant is postulated in the following lemma. It is usually called logical relaitons, but  since we use both logics and relations in other ways, and we use the non-descriptive name of \emph{good functions} below.
 
-\begin{lemma}[Fundamental Lemma] For every arrow-free type $Q$ and higher-order type $A$, one can identify  a subset of the functions of type $Q \to A$, called the \emph{good functions}, such that:
+\begin{lemma}[Fundamental Lemma] \label{lem:fundamental-lemma} For every arrow-free type $Q$ and higher-order type $A$, one can identify  a subset of the functions of type $Q \to A$, called the \emph{good functions}, such that:
 \begin{enumerate}
     \item When $A$ is arrow-free, good functions  are exactly the polyregular ones.
     \item  Consider the parametrised denotation  $\sem a_Q$ of a higher-order polyregular term with $n$ free variables. If the parameterized values $\rho_1,\ldots,\rho_n$ for the free variables are good, then the same is true for $\sem a_Q (\rho_1,\ldots,\rho_n)$.
@@ -212,7 +212,7 @@ Before proving the Fundamental Lemma, we use it prove \cref{thm:higher-order-ter
 It remains to prove the Fundamental Lemma. We begin by defining the notion of good functions of type $Q \to A$. This is done by induction on the structure of the type $A$. Although unsurprising at first glance, the fact that we are able to pull off such an induction is the whole point of the parametric approach.  Indeed, if we want to analyse a higher-order term of type $A \to B$, the argument $A$ might be constructed using other higher-order types that are possibly more complex than both $A$ and $B$, and thus there does not seem to be any obvious way to appeal to induction. As it turns out, the presence of a parameter set $Q$ will allow us to do precisely that, by putting the complexity of the argument into the parameter set, without having to consider more complex types than $A$ or $B$.
 
 \begin{definition}
-    [Good functions] \ 
+    [Good functions]\label{def:good-function}\ 
     \begin{itemize}
         \item \textbf{Unit.} The unique function of type $Q \to \onetype$ is good.
         
@@ -392,7 +392,7 @@ F(A_1,\ldots,A_n) \xrightarrow {f_{A_1,\ldots,A_n}} G(A_1,\ldots,A_n)
 \end{align*}
 which is indexed by some type parameters $A_1,\ldots,A_n$ (for our system, there are at most three parameters), in which the inputs and outputs are expressions constructed from the type parameters using the arrow-free type constructors. Furthermore, each of the atomic functions will turn out to be natural in the following sense.
 
-\begin{definition}[Natural transformation]
+\begin{definition}[Natural transformation] \label{def:natural-transformation}
     Consider a family of functions
     \begin{align*}
 F(A_1,\ldots,A_n) \xrightarrow {f_{A_1,\ldots,A_n}} G(A_1,\ldots,A_n) \qquad \text{for every types $A_1,\ldots,A_n$},
