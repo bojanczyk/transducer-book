@@ -14,33 +14,469 @@
 
 In this section, we present a functional programming language that defines exactly the polyregular functions. This language grows out of the term based approach from \cref{sec:regular-list-functions}, but thanks to the extra expressive power of polyregular functions, the language can be equipped with programming constructions that make it quite usable.
 
-Before presenting the full programming language, we begin with a minimal adjustment of the term based approach from \cref{sec:regular-list-functions} to cover polyregular functions. This adjustment  is to add one new atomic function, which can be  seen as a kind of for loop that iterates over all splits of an input list.
+\subsection{Polyregular terms}
+\label{sec:polyregular-terms}
+Before presenting the full programming language, we begin with a minimal adjustment to the term based approach from \cref{sec:regular-list-functions} which enables us to cover polyregular functions. This adjustment  is to add one new atomic function, which can be  seen as a kind of loop that iterates over all splits of an input list.
 
 \begin{definition}[Polyregular terms]\label{def:polyregular-terms}
-    A \emph{polyregular term} is a term built using the atomic functions and combinators from \cref{def:regular-terms}, extended one more atomic function:
+    A \emph{polyregular term} is a term built using the atomic functions and combinators from \cref{def:regular-terms}, extended by one additional atomic function:
     \begin{align*}
     A^*  & \xrightarrow{\splitterm} (A^* \times A^*)^* \\
     [a_1,\ldots,a_n] & \mapsto \myunderbrace{[([a_1,\ldots,a_{n}],[]),  ([a_1,\ldots,a_{n-1}],[a_n]), \ldots , ([],[a_1,\ldots,a_{n}])]}{the input list is split into (prefix, suffix) pairs in all possible ways, \\ with the prefix getting shorter as we move to the right}.
 \end{align*}
 \end{definition}
 
-As we will show in a moment without much difficulty,  the polyregular terms define exactly the polyregular funtions.  We begin, however, with two examples that illustrate the new atomic function.
 
-
-\begin{myexample} Marked squaring can be defined by the composition
+\begin{myexample}[Split and marked square] \label{ex:split-and-marked-square} The split function is essentially the type-to-type version of the string-to-string function for marked squaring that is the basis of polyregular function. Since strings over a finite alphabet are a special case of types, we can try to recover marked squaring. This is done as follows. We begin with the composition
     \begin{align*}
 A^* 
 \xrightarrow \splitterm 
 (A^* \times A^*)^* 
-\xrightarrow {(\leftterm^* + \rightterm^*)^*}
-((A+A)^* \times (A+A)^*
-\xrightarrow {\binconcterm^*} 
-(A+A)^{**},
+\xrightarrow {(\leftterm^* \times \rightterm^*)^*}
+((A+A)^* \times (A+A)^*)^*
+\xrightarrow {\binconcterm^*}.
+(A+A)^{**}
 \end{align*}
-followed by $\concatterm$ to flatten the output. 
+Then we reverse the list, remove the first item, and apply  $\concatterm$ to flatten it. The converse simulation also holds: if we think of the split function as a string-to-string function, under string representation of types, then it is polyregular.  In fact, it can be obtained by applying marked squaring to the (string representation of the) input list, followed by a rational function that erases some of the extraneous annotation. 
 \end{myexample}
 
-\begin{myexample}\label{ex:reverse-from-split}  Reverse  can be implemented as follows.  Suppose that the input list is 
+
+In the exercises we show  $\blockterm$ and $\reverseterm$  become  redundant in the presence of $\splitterm$, and the group prefix multiplication function can be simplified (although not altogether eliminated) so that its type is $G^* \to G$ and not $G^* \to G^*$. We now show that the polyregular terms define exactly the polyregular functions. The functions in question are type-to-type functions, with the notion of polyregularity being defined using string representations as in \cref{def:polyregular-functions}. 
+
+
+
+
+
+\begin{theorem}  \label{thm:polyregular-terms} A type-to-type function is polyregular under string representation  if and only if it can be defined by a polyregular term.
+\end{theorem}
+\begin{proof}
+    Both implications are easy to show. 
+    For the right-to-left implication: the combinators are easily seen to preserve polyregularity, the old atomic functions are regular and thus also polyregular, and the polyregularity of split was argued in Example \ref{ex:split-and-marked-square}. For the left-to-right implication, we use the definition of polyregular functions in terms of compositions of primes from \cref{def:polyregular-functions}; in this case it is enough to show that marked squaring can be expressed using $\splitterm$, which was also argued in Example \ref{ex:split-and-marked-square}.
+\end{proof}
+
+
+
+
+
+
+
+
+
+
+
+\subsection{Higher-order polyregular terms}
+\label{sec:syntax-and-semantics-of-higher-order-terms}
+
+The system from \cref{thm:polyregular-terms} is only a minor variation on the system of combinators from \cref{sec:regular-list-functions}, and is essentially a warm-up for the real contribution of this section, which is a kind of functional programming language. 
+
+Functional programming languages are based on the $\lambda$-calculus, where the  basic computational mechanism  is substitution:  a variable is replaced by its argument. Since a variable can appear multiple times, such substitution can lead to super-linear output size. For example, the squaring operation from \cref{exer:squaring-continuous}, which had quadratic output size, can be implemented by the following  code, which replaces each list element by the list itself:
+\begin{align*}
+\lambda x. \concatterm\ ( \mapterm\ (\lambda y. x)\  x).
+\end{align*}
+Because of the super-linear output size, we avoided substitution in the previous parts of this book, which were about functions with linear output size.
+Now, in the presence of polynomial size, we can  embrace substitution. This is what we do in this section: we define a functional programming language which defines exactly the polyregular functions. 
+
+Like essentially all functional programming languages, our language will have higher-order functions, so that  functions can input other functions, or even more complicated objects. For example, a legitimate type in our language will be 
+\begin{align*}
+\myunderbrace{(\onetype^* \to (\onetype + \onetype))}{inputs are functions from natural numbers to Booleans} \to \onetype + \onetype.
+\end{align*}
+ The functions can be themselves nested with the other type constructors, e.g.~we have a type for lists of functions as in the above type.  The corresponding set of types is defined below.
+
+
+
+
+
+\begin{definition}
+    [Higher-order types] \label{def:higher-order-types}  The \emph{higher-order types} are defined by extending the grammar of types in \cref{def:types} with an arrow constructor $A \to B$. 
+\end{definition}
+
+As was the case in \cref{sec:regular-list-functions}, each type represents a set. For the arrow constructor $A \to B$, the represented set consists of total functions from the set represented by $A$ to the set represented by $B$. (Our programs will be always-terminating, which is why we use total functions.) By abuse of notation, we use the same symbol for a type and the set that it represents.
+
+
+Our programming language is the extension of the polyregular terms with the mechanics of the  $\lambda$-calculus, namely variables, application and abstraction. We use a variant of Church style typing, where each variable comes hard-wired with a type, and therefore each term has a unique type, which can be inferred by a bottom-up analysis. For the rest of this section, we assume that there is some set of variables, each one with an associated higher-order type, such that each higher-order type has infinitely many variables. The syntax of the programming language is defined below.
+\begin{definition}[Higher-order polyregular terms]
+    \label{def:higher-order-terms}
+    The syntax of \emph{higher-order  polyregular terms} is  defined by induction as follows:
+        \begin{description}
+            \item[atomic functions and combinators:] we keep all atomic functions and combinatosrs of the polyregular terms, which are now also allowed for higher-order types; 
+             \item[variable:]        each variable is a higher-order polyregular term of corresponding type;
+            \item [application] if $f : A \to B$ and $a : A$ are higher-order polyregular, then so is $f(a) : B$;
+            \item [abstraction] if $b : B$ is a higher-order polyregular term and $x : A$ is a variable, then $\lambda x. b : A \to B$ is a  higher-order polyregular term.
+        \end{description}
+\end{definition}
+
+The semantics of the programming language is defined in the expected way. For a term $a : A$ that has free variables  $x_1 : A_1, \ldots, x_n : A_n$,  its semantics $\sem a$ is the  function  of type 
+\begin{align*}
+ {A_1} \times \cdots \times  {A_n} \to A
+\end{align*}
+which is defined by induction on the structure of the term in the expected way.  Later in this section, we will show that the higher-order polyregular terms define exactly the polyregular functions in those cases where they can be compared: the inputs and outputs are arrow-free types.
+
+
+
+
+\paragraph*{An alternative syntax.} The definition of higher-order polyregular terms from \cref{def:higher-order-terms} was phrased as an extension of the polyregular terms. However, if we were to build the programming language from scratch, without some legacy language that is built on atomic functions and combinators, we would be more likely to design a different syntax, such as the one in the following lemma.  In the lemma below, $\multterm$ is the function that multiplies elements in a group, and $\mapterm$ as well as $\mathtt{either}$ are defined as in Haskell.
+
+
+\begin{lemma}\label{lem:fewer-atomic}
+    The expressive power of the higher-order polyregular terms is  not changed if we do the following three modifications (all need to be done together): 
+    \begin{itemize}
+        \item remove the combinators;
+        \item add term constructors for the arrow-free type constructors: 
+        \begin{align*}
+        1 : \onetype \quad (a,b) : A \times B \quad \leftterm a, \rightterm b : A+B \quad [a_1,\ldots,a_n] : A^*;
+        \end{align*}
+        \item have the following atomic functions:
+            \begin{align*}
+            \fstterm : &\  A \times B  \to A \\
+            \sndterm : &\  A \times B  \to B \\
+            \unconsterm : &\  A^* \to \onetype + A \times A^*\\
+            \concatterm : &\ A^{**} \to A^* \\
+            \splitterm : &\ A^* \to (A^* \times A^*)^*  \\
+            \multterm : &\  G^* \to G  \\
+        \mapterm  : &\   (A \to B) \to A^* \to B^* \\
+        \mathtt{either}  : &\  (A \to C) \to (B \to C) \to (A+B) \to C.
+        \end{align*}
+    \end{itemize}
+\end{lemma}
+\begin{proof} Let us prove one of the implications in the lemma, which is that the modified version is at least as expressive as the original one from \cref{def:higher-order-terms}. The other implication is left as an exercise for the reader. The combinators can be implemented using the term constructors: 
+    \begin{align*}
+    f_1; f_2 & =  \lambda x. f_2 (f_1 x)\\
+    f_1 \times f_2 & =  \lambda x. (f_1 (\fstterm x), f_2 (\sndterm x))\\
+    f_1 + f_2 & =  \lambda x. \either (\lambda y. \leftterm\ (f_1\ y))\ (\lambda z. \rightterm\ (f_2\ z))\ x \\
+    f^* & = \mapterm f 
+    \end{align*}
+    Therefore, it remains to show that all of the atomic polyregular functions can be implemented using the modified syntax. In \cref{exer:reverse-from-split} we show that $\reverseterm$ is redundant, in \cref{exer:block-from-split} we do the same for $\blockterm$, and in \cref{exer:pref-from-mult} we show that the group prefix operation can be replaced by the $\multterm$. The other missing atomic functions are implemented as follows:
+         \begin{align*}
+        \idterm  &=  \lambda x.x \\
+        \diagterm  & = \lambda x. (x,x) \\
+        \codiagterm & = \either (\lambda x.x) (\lambda x.x) \\
+        \distrterm & = \lambda x.\  \either 
+        (\lambda y. \leftterm\ (\fstterm\ x, y))\  
+        (\lambda y. \rightterm\ (\fstterm\ x, y))\ 
+        (\sndterm\ x) \\
+        \consterm  & = \either (\lambda y. [])\ 
+        (\lambda y. \concatterm [ [\fstterm y], \sndterm y] ) .
+    \end{align*}
+\end{proof}
+
+
+\subsection{Expressive completeness}
+\label{sec:expressive-completeness}
+Higher-order polyregular terms can define functions of higher-order types for which we have no notion of polyregularity. However, we now show that for functions between arrow-free types, the higher-order polyregular terms define exactly the polyregular functions. In other words, the higher-order features do not create any new expressivity, at least as long as we care about functions between arrow-free types. 
+
+
+
+
+\begin{theorem}\label{thm:higher-order-terms}
+    Consider a function 
+    \begin{align*}
+    A \xrightarrow f B
+    \end{align*}
+    where the types $A$ and $B$ are arrow-free, i.e.~constructed without using the arrow type constructor. Then $f$ is polyregular if and only if it can be defined by a higher-order polyregular term which is closed (i.e.~has no free variables).
+\end{theorem}
+
+One implication of the theorem is clear: the higher-order programming language was defined as an extension of polyregular terms, and therefore it is at least as expressive by definition. The difficult part is the converse implication: the higher-order features do not increase the expressiveness. To prove the difficult implication, we will use an unusual semantics for higher-order polyregular terms, which is based on a technique from the $\lambda$-calculus that is called \emph{logical relations}. (We avoid this name, since we use both logics and relations in other ways, and we use the non-descriptive name of \emph{good functions} below.)
+
+\newcommand{\semparam}[2]{\sem{#1}_{#2}}
+For the rest of this section, we use the name \emph{term} for higher-order polyregular terms. When defining the semantics of our programming language, we assigned to each term  $a : A$ a denotation, which was a function 
+\begin{align*}
+\myunderbrace{{A_1} \times \cdots \times {A_n}}{values for the free variables} \xrightarrow {\sem a } {A}.
+\end{align*}
+
+However, in the proof of \cref{thm:higher-order-terms} we will use a more elaborate denotation, which will be parametrised by an arrow-free type $Q$. In this more elaborate approach, the denotation of a  term is not a single value, but a family of values indexed by parameter set $Q$, and the same is done for the free variables. Therefore, the denotation of a term $a$ under parameters $Q$ is a function 
+\begin{align*}
+(Q \to A_1)\times \cdots \times (Q \to A_n) \xrightarrow{\semparam a Q} {Q \to A}.
+\end{align*}
+This new parameterised denotation is  defined to be  pointwise lifting of the original one: 
+\begin{align*}
+\sem a_Q \myunderbrace{(\rho_1,\ldots,\rho_n)}{the values for free variables} \myoverbrace{(q)}{the parameter} = \sem{a}(\rho_1(q),\ldots,\rho_n(q)).
+\end{align*}
+At first sight, this  seems to be a mere obfuscation of the original semantics. However, the new definition  will enable us to find an invariant that will be used to remove the higher-order features of  higher-order polyregular terms.  This invariant is postulated in the following lemma.
+
+\begin{lemma}[Fundamental Lemma] For every arrow-free type $Q$ and higher-order type $A$, one can identify  a subset of the functions of type $Q \to A$, called the \emph{good functions}, such that:
+\begin{enumerate}
+    \item When $A$ is arrow-free, good functions  are exactly the polyregular ones.
+    \item  Consider the parametrised denotation  $\sem a_Q$ of a higher-order polyregular term with $n$ free variables. If the parameterized values $\rho_1,\ldots,\rho_n$ for the free variables are good, then the same is true for $\sem a_Q (\rho_1,\ldots,\rho_n)$.
+\end{enumerate}
+\end{lemma}
+
+Before proving the Fundamental Lemma, we use it prove \cref{thm:higher-order-terms}. 
+\begin{proof}[Proof of \cref{thm:higher-order-terms} using the Fundamental Lemma.]  As we have explained before, we only need to show that if a function between arrow-free types is defined by a closed higher-order polyregular term, then it is polyregular.  Suppose that $f$ is a closed higher-order polyregular term, whose type is $A \to B$ for some arrow-free types $A$ and $B$. Choose a variable $x : A$, let the parameter set be $A$ itself, and  consider the parametrised denotation $\sem{f(x)}_A$ of the application term $f(x)$. We apply this denotation to the identity function on the set $A$, which is good by the first item of the Fundamental Lemma. By the second item, 
+    \begin{align*}
+   A \xrightarrow{\sem{f(x)}_A \idterm}B
+    \end{align*}
+    is good, and thus polyregular by the first item.  This function is the same as the usual denotation $\sem f$.
+\end{proof}
+
+
+It remains to prove the Fundamental Lemma. We begin by defining the notion of good functions of type $Q \to A$. This is done by induction on the structure of the type $A$. Although unsurprising at first glance, the fact that we are able to pull off such an induction is the whole point of the parametric approach.  Indeed, if we want to analyse a higher-order term of type $A \to B$, the argument $A$ might be constructed using other higher-order types that are possibly more complex than both $A$ and $B$, and thus there does not seem to be any obvious way to appeal to induction. As it turns out, the presence of a parameter set $Q$ will allow us to do precisely that, by putting the complexity of the argument into the parameter set, without having to consider more complex types than $A$ or $B$.
+
+\begin{definition}
+    [Good functions] \ 
+    \begin{itemize}
+        \item \textbf{Unit.} The unique function of type $Q \to \onetype$ is good.
+        
+        \item \textbf{Types other than arrow.} Good functions with an output product type $A_1 \times A_2$ are exactly the compositions 
+        \begin{align*}
+        Q \xrightarrow f Q_1 \times Q_2 \xrightarrow {\rho_1 \times \rho_2} A_1 \times A_2
+        \end{align*}
+        for some arrow-free types $Q_1$ and $Q_2$, some polyregular $f$, and some good $\rho_1$ and $\rho_2$. Similarly we define functions with outputs that are co-products or lists, with the compositions being 
+                \begin{align*}
+        Q \xrightarrow f Q_1+Q_2 \xrightarrow {\rho_1 + \rho_2} A_1 + A_2 \qquad 
+        Q \xrightarrow f  P^* \xrightarrow {\rho^*} A^*,
+        \end{align*}
+        where the new parameter types $Q_1,Q_2$ and $P$ are again required to be arrow-free.
+        \item \textbf{Arrow types.} For an arrow output type, a function 
+        \begin{align*}
+        Q \xrightarrow \rho (A \to B)
+        \end{align*}
+        is  good if for every 
+        \begin{itemize}
+            \item arrow-free type $P$ called the \emph{new parameters};
+            \item polyregular function $P \xrightarrow r Q$ called the \emph{change of parameters};
+            \item good $P \xrightarrow \sigma A$,
+        \end{itemize}
+        the following function is good
+        \begin{align*}
+            p \in P \quad \mapsto \quad  \rho(r(p)) \text{ applied to } \sigma(p).
+        \end{align*}
+    \end{itemize}
+\end{definition}
+
+We begin with the first item of the Fundamental Lemma.
+\begin{lemma}\label{lem:good-functions-are-polyregular-at-arrow-free-types}
+    If $Q$ and $A$ are arrow-free, then good functions of type $Q \to A$ are exactly the polyregular ones.
+\end{lemma}
+\begin{proof}
+    A simple induction on the structure of $A$. When $A$ is the unit type, there is nothing to do. Suppose that the output type is a list type  $A^*$, in which case the good functions are those of the form 
+    \begin{align*}
+    Q \xrightarrow f  P^* \xrightarrow {\rho^*} A^*.
+    \end{align*}
+    For the implication good-to-polyregular, we apply the induction assumption to the good function $\rho$, and use the fact that polyregular functions are closed under composition and map. For the converse implication, we put the entire polyregular function into $f$, with $P=A$ and $\rho$ being the identity function on $A$. The product and co-product cases are similar.
+\end{proof}
+
+The crux of the matter is the second item of the Fundamental Lemma, which says that semantics of higher order polyregular terms are consistent with good functions. This is proved by induction on the structure of the term.
+
+
+\newcommand{\fundlemlogrel}[2]{\sem{#1}_{#2}}
+
+
+
+\paragraph*{Variables.} The case of variables is immediate, since $\semparam x Q \rho$ is the same as $\rho$, and thus good by assumption. 
+
+\paragraph*{Application.} Consider now the parameterised denotation of an application term
+ \begin{align*}
+Q \xrightarrow{\semparam{f(a)}Q  (\rho_1,\ldots,\rho_n)} B,
+\end{align*} 
+where $f$ is a term of type $A \to B$ and $a$ is a term of type $A$. We want to show that this denotation is a good function. The subterms $f$ and $a$ do not need to use all free variables; without loss of generality we assume that $f$ uses some prefix of the free variables and $a$ uses some suffix. By induction assumption, we know that 
+\begin{align*}
+\semparam f Q (\rho_1,\ldots,\rho_i) \qquad 
+\semparam a Q (\rho_j,\ldots,\rho_n)
+\end{align*}
+are good functions. The function corresponding to $f$ has an arrow type, and thus we can use the definition of good functions at arrow types, with the parameter change being the identity and the argument being the denotation of $a$, to conclude that the following function is good: 
+\begin{align*}
+q \in Q \quad \mapsto \quad (\semparam f Q (\rho_1,\ldots,\rho_i)) (q) \text{ applied to argument } (\semparam a Q (\rho_j,\ldots,\rho_n)) (q).
+\end{align*}
+This function is exactly the parameterised denotation of $f(a)$, and thus we are done.
+
+\paragraph*{Abstraction.} Consider now the parameterised denotation of an abstraction term 
+\begin{align*}
+Q \xrightarrow{\semparam{\lambda x : A.b}Q (\rho_1,\ldots,\rho_n)}{A \to B}
+\end{align*}
+We want to prove that this is a good function. 
+By unfolding the definition of the above denotation and the definition of good functions at arrow types, we need to show that for every arrow-free type $P$, every polyregular change of parameters $r : P \to Q$ and every good function $\sigma : P \rightarrow  A$, the following function is good:
+\begin{align*}
+p \in P \quad \mapsto \quad \sem b (\rho_1(r(p)),\ldots,\rho_n(r(p)), \sigma(p)).
+\end{align*}
+This function is the same as $\semparam b P$ applied to parameterised valuations $\rho_1 \circ r, \ldots, \rho_n \circ r$ and $\sigma$. If we could show that these values are good, then we could use the induction assumption of the Fundamental Lemma for $b$ to conclude. The value $\sigma$ is good by assumption, and the values $\rho_i \circ r$ are good by the following claim, which says that good functions are closed under pre-composition with polyregular functions.
+\begin{claim}\label{claim:logical-relations-closed-under-precomposition}
+    Good functions are closed under pre-composition with polyregular ones.
+\end{claim}
+\begin{proof}
+    Induction on the structure of the output type. For the unit type there is nothing to do, and for product, co-product and list types the claim follows from the definition of good functions for such types, where the composition begins with a polyregular function. The final case is the arrow type. By recalling the definition in an arrow type $A \to B$, we need to show that 
+    \begin{align*}
+        \forall P \xrightarrow r Q \ \forall P \xrightarrow \sigma A \qquad
+            p \in P \ \mapsto \  \rho(r(p)) \text{ applied to } \sigma(p) \quad \text{is good}.
+        \end{align*}
+    To prove the claim, we need to show that if the above condition is true for $\rho$, then it remains true after $\rho$ has been pre-composed with a polyregular function $s$. This is indeed true, since $r$ is quantified universally, and thus it can consume the part of $\rho$ that begins with $s$. 
+\end{proof}
+
+
+\paragraph*{Combinators.} We now show the induction step for combinators. 
+We only deal with the combinator $f^*$ for lists, with the other combinators being similar. Consider the parameterised denotation 
+\begin{align*}
+Q \xrightarrow{\semparam {f^*} Q (\rho_1,\ldots,\rho_n)}{A^* \to B^*},
+\end{align*}
+which by definition is the function 
+\begin{description}
+    \item [Type] $Q \to (A^* \to B^*)$;
+    \item [Input 1] $q \in Q$;
+    \item [Input 2] $[a_1,\ldots,a_m] \in A^*$;
+    \item [Output] list where the $i$-th entry is $\sem f (\rho_1(q),\ldots,\rho_n(q))(a_i)$.
+\end{description}
+We want to show that this function is good. Since the output type $A^* \to B^*$ is an arrow type, the definition of good functions says that we need to show that for  every polyregular change of parameters $r : P \to Q$ and every good function $\sigma : P \to A^*$, the following is  good:
+\begin{description}
+    \item [Type] $P \to B^*$;
+    \item [Input] $p \in P$ where   $[a_1,\ldots,a_m]$ is defined to be $\sigma(p)$;
+    \item [Output] list where the $i$-th entry is $\sem f (\rho_1(r(p)),\ldots,\rho_n(r(p)))(a_i)$.
+\end{description}
+By definition of good functions,  $\sigma$ is a composition
+\begin{align*}
+P \xrightarrow h R^* \xrightarrow {\tau^*} A^* \qquad \text{for some polyregular $h$ and good $\tau$}.
+\end{align*}
+Therefore, we need to show that the following  is good:
+\begin{description}
+    \item [Type] $P \to B^*$;
+    \item [Input] $p \in P$ where   $[c_1,\ldots,c_m] \in R^*$ is defined to be $h(p)$;
+    \item [Output] list where the $i$-th entry is $\sem f (\rho_1(r(p)),\ldots,\rho_n(r(p)))(\tau(c_i))$.
+\end{description}
+This is the same as composition of the polyregular function 
+\begin{align*}
+p \in P  \quad \mapsto \quad [(p,c_1),\ldots,(p,c_m)]
+\end{align*}
+followed by the  list combinator applied to the following function
+\begin{description}
+    \item [Type] $P \times R \to B$;
+    \item [Input] $(p,c) \in P \times R$;
+    \item [Output]  $\sem f (\rho_1(r(p)),\ldots,\rho_n(r(p)))(\tau(c))$.
+\end{description}
+In the output above, we use parameterised values which are obtained from $\rho_1,\ldots,\rho_n$ and $\tau$ by pre-composition with polyregular functions. Therefore, the above function is good by induction assumption and \cref{claim:logical-relations-closed-under-precomposition}. This completes the proof for the list combinator. 
+
+
+
+
+\paragraph*{The list constructor.}  We are now left with the atomic functions. We begin by discussing a simple case of an atomic function, which is the list constructor
+\begin{align*}
+\onetype + A \times A^* \xrightarrow \consterm A^*.
+\end{align*}
+This term has no free variables, and therefore the conclusion of the Fundamental Lemma in this case says that for every arrow-free $Q$, the constant function  of type
+\begin{align*}
+q \in Q \quad \mapsto \quad \consterm 
+\end{align*}
+is good. By unfolding the definition of good functions for  $\onetype + A \times A^* \to A^*$, this means that for every arrow-free parameter type $P$, every polyregular change of parameters $f : P \to Q$ and every good $\sigma : P \to \onetype + A \times A^*$, 
+the function 
+\begin{align*}
+p \in P \quad \mapsto \consterm (\sigma(p))
+\end{align*}
+is good. (The change of parameters is not used, since our original good function ignored the parameter from $Q$.) In other words, we need to show that the composition 
+\begin{align*}
+P \xrightarrow \sigma \onetype + A \times A^* \xrightarrow \consterm A^*
+\end{align*}
+is good. By using the definition of a good  functions, we can show $\sigma$ is a composition
+\begin{align*}
+P \xrightarrow g  P_1 + P_2 \times P_3^* \xrightarrow { \sigma_1 + \sigma_2 \times \sigma_3^*} \onetype + A \times A^* 
+\end{align*}
+for some polyregular function $g$ and some  good functions 
+\begin{align*}
+P_1 \xrightarrow {\sigma_1} \onetype \qquad 
+P_2 \xrightarrow {\sigma_2} A \qquad 
+P_3 \xrightarrow {\sigma_3} A.
+\end{align*}
+We can ensure that the first good function is the identity on $\onetype$, and the other two good functions $\sigma_2$ and $\sigma_3$ are the same,  by using the co-pairing 
+\begin{align*}
+P_2 + P_3 \xrightarrow {\either {\sigma_2} {\sigma_3}} A,
+\end{align*}
+which is easily seen to be good. Summing up, if we write $\rho$ for the above co-pairing and $R$ for its domain, we need to show that the following composition is good:
+\begin{align*}
+P \xrightarrow g  \onetype + R \times R^* \xrightarrow { \idterm + \rho \times \rho^*} \onetype + A \times A^* \xrightarrow \consterm A^*.
+\end{align*}
+The atomic function $\consterm$ is natural in the sense that it commutes with $\rho$, and therefore the above composition is the same as
+\begin{align*}
+P \xrightarrow g  \onetype + R \times R^* \xrightarrow \consterm R^* \xrightarrow {\rho^*} A^*
+\end{align*}
+This is a composition of two polyregular functions on arrow-free types, namely $g$ and $\consterm$, followed by the list combinator applied to a good function. Therefore, it is good by the definition of good functions at a list type. This completes the proof of the induction basis for the atomic function $\consterm$.
+
+The proof for the remaining atomic functions is similar. The first observation is that each atomic function is not a single function, but a family of functions 
+\begin{align*}
+F(A_1,\ldots,A_n) \xrightarrow {f_{A_1,\ldots,A_n}} G(A_1,\ldots,A_n)
+\end{align*}
+which is indexed by some type parameters $A_1,\ldots,A_n$ (for our system, there are at most three parameters), in which the inputs and outputs are expressions constructed from the type parameters using the arrow-free type constructors. Furthermore, each of the atomic functions will turn out to be natural in the following sense.
+
+\begin{definition}[Natural transformation]
+    Consider a family of functions
+    \begin{align*}
+F(A_1,\ldots,A_n) \xrightarrow {f_{A_1,\ldots,A_n}} G(A_1,\ldots,A_n) \qquad \text{for every types $A_1,\ldots,A_n$},
+\end{align*}
+where the input and output types are expressions constructed from the type parameters using the arrow-free type constructors. This family is called a \emph{natural transformation} if for every functions
+\begin{align*}
+A_1 \xrightarrow{ \rho_1} B_1 \quad \cdots \quad 
+A_n \xrightarrow{ \rho_n} B_n,
+\end{align*}
+which are not required to be good or polyregular,  the following diagram commutes
+\[
+\begin{tikzcd}
+[column sep=huge]
+F(A_1,\ldots,A_n)
+\arrow[r,"{f_{A_1,\ldots,A_n}}"] 
+\arrow[d,"{F(\rho_1,\ldots,\rho_n)}"']
+ & G(A_1,\ldots,A_n) 
+ \arrow[d,"{G(\rho_1,\ldots,\rho_n)}"] 
+\\
+F(B_1,\ldots,B_n)
+ \arrow[r,"{f_{B_1,\ldots,B_n}}"'] 
+& G(B_1,\ldots,B_n),
+\end{tikzcd}
+\]
+where $F$ and $G$ are lifted from types to functions in the expected way.
+\end{definition}
+
+\begin{claim}\label{claim:atomic-functions-are-natural-transformations}
+    All atomic functions in the polyregular system are natural transformations.
+\end{claim}
+\begin{proof}
+    Routine inspection.
+\end{proof}
+The second ingredient is the following claim, which is a generalisation of the argument we used for the list constructor about the shape of good functions at types constructed from arrow-free type constructors.
+
+\begin{claim}\label{claim:functors-applied-to-good}
+    Let $F(A_1,\ldots,A_n)$ be an expression that is built using the arrow-free type constructors $\onetype, +, \times$ and $*$, and let $A_1,\ldots,A_n$ be higher-order types. A function 
+    \begin{align*}
+    P \xrightarrow \rho F(A_1,\ldots,A_n)
+    \end{align*}
+    is good if and only if it can be described as  a composition
+    \begin{align*}
+    P \xrightarrow f F(P_1,\ldots,P_n) \xrightarrow {F(\rho_1,\ldots,\rho_n)} F(A_1,\ldots,A_n)
+    \end{align*}
+    for some polyregular function $f$ and good functions $P_i \xrightarrow {\rho_i} A_i$.
+\end{claim}
+
+Using the above claims, we can now prove that for each atomic function, the corresponding parametrised denotation is good. Consider an  atomic function 
+\begin{align*}
+F(A_1,\ldots,A_n) \xrightarrow {f_{A_1,\ldots,A_n}} G(A_1,\ldots,A_n),
+\end{align*}
+where the domain and co-domain are expressions built using the arrow-free type constructors. 
+Similarly to the case of the list constructor, proving that the parametrised denotation $\semparam {f_{A_1,\ldots,A_n}} Q$ is good means showing that composing the non-parametrised denotation $\sem {f_{A_1,\ldots,A_n}}$ with a good function of type 
+\begin{align*}
+P \xrightarrow \rho F(A_1,\ldots,A_n)
+\end{align*}
+yields a good function. By the above two claims such a composition is described by the following commuting diagram
+\[
+\begin{tikzcd}
+[column sep=huge]
+P 
+\ar[r,"f"]
+\ar[dr,"{\rho}"', bend right=15]
+& 
+F(P_1,\ldots,P_n)
+\arrow[r,"{f_{P_1,\ldots,P_n}}"] 
+\arrow[d,"{F(\rho_1,\ldots,\rho_n)}"']
+ & G(P_1,\ldots,P_n) 
+ \arrow[d,"{G(\rho_1,\ldots,\rho_n)}"] 
+\\
+& F(A_1,\ldots,A_n)
+ \arrow[r,"{f_{A_1,\ldots,A_n}}"'] 
+& G(A_1,\ldots,A_n).
+\end{tikzcd}
+\]
+The upper path in the above diagram consists of a composition of two polyregular functions on arrow-free types, followed by the output expression applied to some good functions. Therefore, it is good by \cref{claim:functors-applied-to-good}. This completes the proof of the Fundamental Lemma, and thus also the proof of \cref{thm:higher-order-terms}.
+
+
+
+\exerciseheader
+
+\exer{\label{exer:reverse-from-split}Show that $\reverseterm$ can be implemented by a polyregular term that does not use it.}
+{
+     Suppose that the input list is 
     \begin{align*}
     [a_1,\ldots,a_n] \in A^*.
     \end{align*}
@@ -53,755 +489,13 @@ followed by $\concatterm$ to flatten the output.
     [[], [a_n], [a_{n-1}], \ldots, [a_1]] \in (A^*)^*.
     \end{align*}
     Applying $\concatterm$ to this result yields the final output.
-\end{myexample}
+}
 
-In the exercises we show that also $\blockterm$ becomes redundant in the presence of $\splitterm$, and the group prefix multiplication function can be simplified (although not altogether eliminated).
-We now show that the polyregular terms define exactly the polyregular functions. The functions in question are type-to-type functions, with the notion of polyregularity being defined using string representations as in \cref{def:polyregular-functions}. 
+\exer{\label{exer:block-from-split}Show that $\blockterm$ can be implemented by a polyregular term that does not use it (or reverse).}
+{
 
-\begin{theorem}  \label{thm:polyregular-terms} A type-to-type function is polyregular under string representation  if and only if it can be defined by a polyregular term.
-\end{theorem}
-\begin{proof}
-    The right-to-left implication is easy to show: the combinators are easily seen to preserve polyregularity, the old atomic functions are regular and thus also polyregular, and the new atomic function is easily seen to be polyregular (a for-transducer can have an outermmost loop which marks the comma in the input string which separates the prefix from the suffix). For the left-to-right implication, we use the definition of polyregular functions in terms of compositions of primes from \cref{def:polyregular-functions}; in this case it is enough to show that map squaring can be expressed using $\splitterm$. This is an easy exercise, which we leave to the reader.
-\end{proof}
+}
 
-
-
-
-
-\subsection{Higher-order polyregular terms}
-\label{sec:syntax-and-semantics-of-higher-order-terms}
-
-The system from \cref{thm:polyregular-terms} is only a minor variation on the system of combinators from \cref{sec:regular-list-functions}, and is essentially a warm-up for the real contribution of this section, which is a kind of functional programming language. 
-
-Functional programming languages are based on the $\lambda$-calculus, and the basic computational mechanism in the $\lambda$-calculus is substitution, which replaces a variable by its argument. Since a variable can appear multiple times, such substitution can lead to quadratic growth. For example, the squaring operation from \cref{exer:squaring-continuous} can be implemented by the following  code, which replaces each list element by the list itself:
-\begin{align*}
-\lambda x. \concatterm\ ( \mapterm\ (\lambda y. x)\  x)
-\end{align*}
-Because of the non-linear outputs, we could not have substitution in the system of combinators from \cref{sec:regular-list-functions}, which was designed to capture the regular functions that have linear growth. However, in the polyregular setting, we can embrace substitution. This is what we do in this section: we define a functional programming language which defines exactly the polyregular functions. 
-
-Like essentially all functional programming languages, our language will have higher-order functions, so that  functions can input other functions, or even more complicated objects. For example, a legitimate type in our language will be 
-\begin{align*}
-(\onetype^* \to (\onetype + \onetype)) \to \onetype + \onetype,
-\end{align*}
-which describes a function that inputs a subset of the natural numbers and outputs a Boolean. The functions can be themeselves nested with the other type constructors, e.g.~we have a type for lists of functions as in the above type.  The corresonding set of types is defined below.
-
-
-
-
-
-\begin{definition}
-    [Higher-order types] \label{def:higher-order-types}  The \emph{higher-order types} are defined by extending the grammar of types in \cref{def:types}  an arrow constructor $A \to B$. 
-\end{definition}
-
-As was the case in \cref{sec:regular-list-functions}, each type represents a set. For the arrow constructor $A \to B$, the represented set consists of total functions from the set represented by $A$ to the set represented by $B$. By abuse of notation, we use the same symbol for a type and the set that it represents.
-
-
-We now describe the syntax of our programming language. Essentially, this is the extension of the polyregular terms with the mechanics of the  $\lambda$-calculus. We use a variant of Church style typing, where each variable comes hard-wired with a type, and therefore each term has a unique type, which can be inferred by a bottom-up analysis. For the rest of this section, we assume that there is some set of variables, each one with an associated higher-order type, such that each higher-order type has infinitely many variables. 
-\begin{definition}
-    [Higher-order polyregular terms] 
-    \label{def:higher-order-terms}
-    The \emph{higher-order  polyregular terms} and their associated types  are defined by induction as follows (for brevity, in the definition we use the name ``term'' meaning higher-order polyregular term):
-        \begin{description}
-            \item[variable:]        each variable is a term of corresponding type;
-            \item [application] if $f : A \to B$ and $a : A$ are terms, then $f(a) : B$ is a term;
-        \item[atomic functions:] we keep the    atomic polyregular functions\footnote{In fact, only the subset listed in \cref{lem:fewer-atomic} is enough.}, which are  now also allowed for higher-order types, 
-            % \begin{align*}
-            % \fstterm : &\  A \times B  \to A \\
-            % \sndterm : &\  A \times B  \to B \\
-            % \unconsterm : &\  A^* \to \onetype + A \times A^*\\
-            % \concatterm : &\ A^* \to A \\
-            % \splitterm : &\ A^* \to (A^* \times A^*)^*  \\
-            % \multterm : &\  G^* \to G 
-            % \end{align*}
-        we add two extra atomic functions:
-        \begin{align*}
-        \mapterm & : (A \to B) \to A^* \to B^* \\
-        \mathtt{either}  & : (A \to C) \to (B \to C) \to (A+B) \to C
-        \end{align*}
-                \item[unit:] there is a unit term $1 : \onetype$;
-            \item[pairs:] if $a : A$ and $b : B$ are terms, then so is $(a,b) : A \times B$;
-            % \item [co-pairs:]
-            % \ 
-            % \begin{enumerate}
-            %     \item if $a  : A$ is a term and $B$ is a type, then  $\leftterm a : A + B$ is term;
-            %     \item if $b  : B$ is a term and $A$ is a type, then  $\rightterm b : A + B$ is term;
-            % \end{enumerate}
-            \item [lists] if $a_1,\ldots,a_n : A$ are terms, then $[a_1,\ldots,a_n] : A^*$ is a term;
-            \item [abstraction] if $b : B$ is a term and $x : A$ is a variable, then $\lambda x. b : A \to B$ is a term.
-        \end{description}
-\end{definition}
-
- Observe that we no longer need the four combinators from \cref{sec:regular-list-functions}, since composition is a special case of abstraction, map and co-pairing have become  atomic functions, and pairing is now a term constructor. We think of the last four items in the above definition, i.e.~unit, pairing, lists and abstraction, as term constructors for the corresponding type constructors. We also think of the atomic functions $\leftterm$ and $\rightterm$ as term constructors for the co-product type, even though they are not explicitly listed since they happen to be already present as atomic polyregular functions. 
-  
- \paragraph*{Semantics.} If a higher-order polyregular  term of type $A$ is closed, i.e.~has no free variables, then its semantics is an element of  (the set represented by) $A$. To define the semantics formally, we proceed by induction on the structure of the term, which involves taking care of terms with free variables. 
-  For a term of type $A$ which has  has free variables of types $A_1,\ldots,A_n$,  its semantics is the  function  of type 
-\begin{align*}
- {A_1} \times \cdots \times  {A_n} \to A
-\end{align*}
-which inputs values for the free variables and returns the result of the term. This function is defined in the expected way by induction on the structure of the term.  
-
-
-\paragraph*{Redundant atomic functions.} Some of the other atomic functions  become redundant in the presence of the new features of higher-order polyregular terms, such as: 
-         \begin{align*}
-        \idterm  &=  \lambda x.x \\
-        \diagterm  & = \lambda x. (x,x) \\
-        \codiagterm & = \either (\lambda x.x) (\lambda x.x) \\
-        \distrterm & = \lambda x.\  \either 
-        (\lambda y. \leftterm\ (\fstterm\ x, y))\  
-        (\lambda y. \rightterm\ (\fstterm\ x, y))\ 
-        (\sndterm\ x) \\
-        \consterm  & = \either (\lambda y. [])\ 
-        (\lambda y. \concatterm [ [\fstterm y], \sndterm y]] ) 
-    \end{align*}
-We have also removed the reverse function in Example~\ref{ex:reverse-from-split}, and the block function in~\cref{exer:polyregular-terms-eliminate-block}. Finally, in 
-\cref{exer:polyregular-terms-simplify-group}, we show that the group prefix multiplication can be replaced by a simpler function 
-\begin{align*}
-G^* \xrightarrow {\multterm} G
-\end{align*}
-which computes the group product of all elements in the input list (in other words, this is the last letter of the group prefix multiplication, or the group identity if the input list is empty).
-The following lemma summarises these results, by listing the remaining atomic functions. 
-
-
-\begin{lemma}\label{lem:fewer-atomic}
-    The expressive power the higher-order polyregular terms is  not changed if the set of atomic functions is restricted to the   co-projections (which are now called term constructors) and the following atomic functions:
-    \begin{align*}
-            \fstterm : &\  A \times B  \to A \\
-            \sndterm : &\  A \times B  \to B \\
-            \unconsterm : &\  A^* \to \onetype + A \times A^*\\
-            \concatterm : &\ A^* \to A \\
-            \splitterm : &\ A^* \to (A^* \times A^*)^*  \\
-            \multterm : &\  G^* \to G  \\
-        \mapterm  : &\   (A \to B) \to A^* \to B^* \\
-        \mathtt{either}  : &\  (A \to C) \to (B \to C) \to (A+B) \to C
-        \end{align*}
-\end{lemma}
-
-
-
-\subsection{Expressive completeness}
-\label{sec:expressive-completeness}
-We now state the main result of this section, which is that the higher-order polyregular  terms define exactly the polyregular functions. To compare the two notions, we need to talk about string-to-string functions, or the slightly more general case of functions between types that are arrow-free, since only such functions have a defined notion of  polyregularity.
-
-
-
-
-
-\begin{theorem}\label{thm:higher-order-terms}
-    Consider a function 
-    \begin{align*}
-    A \xrightarrow f B
-    \end{align*}
-    where the types $A$ and $B$ are arrow-free, i.e.~constructed without using the arrow type constructor. Then $f$ is polyregular if and only if it can be defined by a higher-order term.
-\end{theorem}
-
-    The left-to-right implication is immediate, since the higher-order polyregular terms were designed as an extension of the polyregular terms from \cref{def:polyregular-terms}. The hard direction is the converse implication, which says that the higher-order features do not add expressive power, at least as long as we define functions between arrow-free types. 
-    
-
-    For the rest of this section, we will say ``term'' instead of ``higher-order polyregular term'' for brevity. We also assume that the set of atomic functions is the reduced set from \cref{lem:fewer-atomic}. 
-
-        \newcommand{\reduces}{\rightsquigarrow}
-
-            \begin{figure}
-                \begin{align*}
-            \fstterm (a,b) & \reduces a\\
-            \sndterm (a,b) & \reduces b\\
-            \unconsterm [] & \reduces \leftterm 1\\
-            \unconsterm [a_1,\ldots,a_n] & \reduces \rightterm (a_1, [a_2,\ldots,a_n])\\
-            \concatterm [\ell_1,\ldots,\ell_n] & \reduces \ell \quad \text{(see the caption for restrictions)}  \\
-            \splitterm [a_1,\ldots,a_n] & \reduces [([a_1,\ldots,a_n],[]),  ([a_1,\ldots,a_{n-1}],[a_n]), \ldots , ([],[a_1,\ldots,a_{n}])] \\
-            \multterm [g_1,\ldots,g_n] & \reduces g
-            \quad \text{(see the caption for restrictions)}  \\
-        \mapterm f [a_1,\ldots,a_n] & \reduces [f(a_1),\ldots,f(a_n)]\\
-        \either f g \ \leftterm\ a & \reduces f(a)\\
-        \either f g \ \rightterm\ b & \reduces g(b)
-        \end{align*}
-    \caption{
-    \label{fig:reduction-rules}    
-    Reduction rules for the atomic functions. Let us explain the restrictions for the rules for $\concatterm$ and $\multterm$.
-        In the reduction rule for $\concatterm$, the terms $\ell_1,\ldots,\ell_n$ must be list terms, which means that each one is a list of terms (but the list elements are not restricted in any way). The ouput  term $\ell$ is then their concatenation.  In the reduction rule for $\multterm$, the terms $g_1,\ldots,g_n$ must be group values, which means that they  must be constructed by the term constructors for $\onetype$, products and co-products (in particular, each group element has a unique representation as a term). The output term $g$ is then required to be the value the represents the group multiplication of the inputs.
-    }
-    \end{figure}
-
-
-    \paragraph*{Reduction.} Our proof of the difficult direction will be based on evaluating terms via $\beta$-reduction. The main reduction rule is 
-    \begin{align*}
-    (\lambda x. a)(b) \reduces  \myunderbrace{a[x \mapsto b]}{term $a$ with free occurrences of variable $x$ replaced by term $b$},
-    \end{align*}
-    which substitutes the variable $x$ for the argument. Apart from this rule, we have reductio rules for the atomic functions, which are listed in \cref{fig:reduction-rules}. Finally, all reduction rules can be applied to subterms. This gives us a notion of one-step reduction between terms, which we denote by $a \reduces b$. It is easy to see that one-step reduction changes neither the type nor the semantics of a term. A term is said to be in \emph{normal form} if no reduction rules can be applied to it. A classical result of the $\lambda$-calculus is that the normal form is unique if it exists, but we will not need to prove this. 
-
-    \paragraph*{String representation.} To implement reduction by polyregular functions, we will use string representations of terms. We will only be interest in terms which are closed. In order to avoid special letters for variables, we use the following convention, which is based on De Bruijn indices: in an abstraction we do not give the name to a variable but only its type, and when referencing a variable we only say how many steps up in the syntax tree the variable is defined. The number of steps is represented by repetitions of an arrow $\uparrow$. Here are two examples of this representation:
-    \begin{align*}
-   \lambda x : A. x \quad & \text{is represented by } \lambda : A.  \uparrow\\
-   \lambda x: A.\ \lambda y: B.\ x \quad & \text{is represented by } \lambda : A. \lambda : B.\  \uparrow \uparrow 
-    \end{align*}
-    Under this representation, every closed term can be written as an alphabet which contains the eight lettters used in string representations of regular terms from \cref{sec:regular-list-functions}, plus the following letter:
-    \begin{align*}
-    \myunderbrace{\lambda\ :}{a single \\ letter}
-    \quad \uparrow \quad  \myunderbrace{\onetype \quad  + \quad \times \quad * \quad \rightarrow }{needed to write types}.
-    \end{align*}
-    We will call this alphabet $F$, because it is finite and has fifteen letters (which is $F$ in hexadecimal). Summing up, each closed term can be represented by a string over the alphabet $F$, and we will call this string the \emph{string representation} of the term. This representation is unique, as long as we write the types in a unique way, which can be done by always using parentheses. 
-    
-    \paragraph*{Parsing.} In order to parse closed terms using a finite automaton, we will impose  bounds on the types that appear in a term (i.e.~are used by subterms of it) and the height of the term (which is the height of the syntax tree, with the height of a list term being one plus the maximal height of the list elements).  Here is a formal definition.
-
-    \begin{definition}[Resource bound]\label{def:resource-bound}
-        A \emph{resource bound} is a pair consisting of a finite set $\Aa$ of types and a height bound $h \in \set{1,2,\ldots}$. A closed term is said to be \emph{consistent} with the resource bound  if its height is at most $h$ and all types that appear in the term are in $\Aa$.
-    \end{definition}
-
-
-
-
-    \begin{lemma}\label{claim:parsing-is-regular-with-resource-bounds}
-        For every resource bound $(\Aa,h)$, the following is a regular language
-        \begin{align*}
-        \setbuild{ w \in F^*}{$w$ is the string representation of a term \\ that  is consistent with the resource bound $(\Aa,h)$}.
-        \end{align*}
-    \end{lemma}
-    \begin{proof}
-        Straightforward induction on the height.
-    \end{proof}
-
-    So far, the resource bounds are just a syntactic device which is used to enable parsing. However, they will also have an important semantic role in our approach, since resource bounds will allow us to control the reduction of terms.
-
-    \paragraph*{Reduction strategy.}  A \emph{redex} in a term is defined to be a node in the syntax tree where a reduction can be applied.
-    A \emph{reduction strategy} is a function which assigns to each term a set of non-overlapping redexes in it. A reduction strategy is can be used to transform terms: we take all redexes given by the reduction strategy, and reduce them in parallel.  
-
-    \begin{lemma}\label{lem:reduction-strategy-lemma}
-    There is a reduction strategy which has the following properties:
-    \begin{enumerate}
-        \item \textbf{Termination.} For every resource bound $(\Aa,h)$ there is some  $k \in \set{1,2,\ldots}$ such every  term consistent with $(\Aa,h)$ normalises after at most $k$ steps of the strategy.
-        \item \textbf{One-step.}  For every resource bound $(\Aa,h)$, there is some polyregular function $f$ such that the following diagram commutes:
-\[
-\begin{tikzcd}[column sep=3cm]
-\text{closed terms consistent with $(\Aa,h)$}
-\ar[d, "\text{string representation}"']
-\ar[r, "\text{one step of the strategy}"] 
-&
-\text{closed terms} 
-\ar[d, "\text{string representation}"]
-\\
-F^*
-\ar[r,"f"'] & F^*.
-\end{tikzcd}
-\]
-    \end{enumerate}
-    \end{lemma}
-
-
-        Before proving the lemma, we use it complete the proof of \cref{thm:higher-order-terms}.
-        
-\begin{proof}[Proof of \cref{thm:higher-order-terms} using \cref{lem:reduction-strategy-lemma}]
-    We have already shown that every polyregular function can be defined by a higher-order term. Let us now prove the converse implication.          The essential idea is to compute the output $f(a)$ by first writing a string representation of the term $f(a)$, and then reducing this term until normal form is reached. The reduction strategy from \cref{lem:reduction-strategy-lemma}  is used to prove the following corollary, which says that terms of given resource bounds can be normalised using a polyregular function.
-    \begin{corollary}\label{cor:normalisation-of-terms-with-resource-bounds}
-        For every resource bound there is a polyregular function, which computes the normal form for terms consistent with the resource bound (both input and output are given in string representations).
-    \end{corollary}
-    \begin{proof}
-        The termination item in \cref{lem:reduction-strategy-lemma} gives a bound on the number of reduction steps needed to reach normal form. The one-step item in the lemma says that each step can be computed by a polyregular function. There is one minor item that needs to be addressed: the resource bounds might change during the reduction. However, each reduction step can at most double the height of a term (up to an additive constant), and the only new types that can appear are subtypes of types that were already in the term. Therefore, if $k$ is the bound from the termination lemma, then there exist resource bounds 
-        \begin{align*}
-        (\Aa_1,h_1),\ldots, (\Aa_k,h_k),
-        \end{align*}
-        such before applying the $i$-th step of the  reduction strategy, the term is consistent with $(\Aa_i,h_i)$, and after $k$ steps it is in normal form. Therefore, each step can be computed by a polyregular function, and the composition of these $k$ functions is also polyregular.
-    \end{proof}
-
-Using the above corollary, we can now complete the proof of \cref{thm:higher-order-terms}. Indeed, suppose that $f$ is a term of type $A \to B$ where both $A$ and $B$ are arrow-free. Because the input and output types are arrow-free, we will be able to use the following observation about normal forms of terms.
-
-\begin{lemma}\label{lem:normal-forms-of-arrow-free-terms}
-    Consider a closed term whose type is arrow-free. Then this term is in normal form if and only if it is built using the value constructors $(a,b)$, $[a_1,\ldots,a_n]$, $\leftterm a$ and $\rightterm b$, and $1$.
-\end{lemma}
-\begin{proof}
-    An inspection of the shapes of closed terms in normal form. 
-\end{proof}
-
-Suppose that we have an input $a \in A$. We can view the application $f(a)$ as a term, in which the source code of $f$ is followed by a term that describes $a$. This application has resource bounds that depend only on the term $f$ and the input type $A$. Therefore, we can apply \cref{cor:normalisation-of-terms-with-resource-bounds} to compute the normal form of the term $f(a)$ using a polyregular function.  By \cref{lem:normal-forms-of-arrow-free-terms}, this normal form is the same a string representation of the output value. Hence, the function $f$ is polyregular under string representations, which completes the proof of \cref{thm:higher-order-terms}. 
-\end{proof}
-It remains to prove \cref{lem:reduction-strategy-lemma}.
-
-
-\newcommand{\ordof}{\mathsf{ord}}
-\newcommand{\steps}{\mathsf{steps}}
-\newcommand{\Maj}{\mathcal M}
-
-\begin{proof}[Proof of \cref{lem:reduction-strategy-lemma}]
-    We use the \emph{outermost} strategy: the redexes selected in a term are those which are not proper subterms of other redexes. Of two nested redexes the inner one is not outermost, and therefore the selected redexes are pairwise non-overlapping, as required of a reduction strategy. We write
-    \begin{align*}
-    t \Rightarrow t'
-    \end{align*}
-    for one step of this strategy, i.e.~for the result of contracting all outermost redexes of $t$ in parallel. Since a term which is not in normal form contains a redex, and hence also an outermost one, the step $t \Rightarrow t'$ is available precisely when $t$ is not in normal form. The strategy is deterministic, and therefore each term $t$ has a unique maximal sequence
-    \begin{align*}
-    t = t_0 \Rightarrow t_1 \Rightarrow t_2 \Rightarrow \cdots;
-    \end{align*}
-    we write $\steps(t) \in \set{0,1,\ldots} \cup \set \infty$ for its length. In this notation, the termination item in the lemma says that $\steps(t) \le k$ holds for all terms $t$ that are consistent with the resource bound. We prove the two items of the lemma separately.
-
-    \paragraph*{Termination.} Let $\Bb$ be the closure of $\Aa$ under subtypes; this is again a finite set of types. As we observed in the proof of \cref{cor:normalisation-of-terms-with-resource-bounds}, a reduction step introduces no types other than subtypes of types that are already present. Therefore, if $t$ is consistent with the resource bound $(\Aa,h)$, then all types appearing in $t$, and in all of its reducts, belong to $\Bb$. The height, on the other hand, will grow during the reduction, and the lengths of the lists inside $t$ are not bounded by the resource bound at all. This is why the argument below is arranged so that neither of these two quantities enters the final estimate.
-
-    The proof is the majorant method, i.e.~a step-counting version of Tait's reducibility argument. To each term we assign a \emph{majorant}, which is meant to be a witness for termination in a bounded number of steps.  A majorant is more then a   number, and the set of possible majorants depends on the type as follows. 
-    
-    \begin{definition}\label{def:majorants}
-        [Majorants] For each type $A$, the set  of \emph{majorants} for type $A$ is defined by induction on $A$ as follows:
-        \begin{itemize}
-            \item Majorants for  $\onetype$ are natural numbers;
-            \item Majorants for $A \times B$ or $A + B$ are pairs (majorant for $A$, majorant for $B$);
-            \item Majorants for $A^*$ are majorants for $A$;
-            \item Majorants for $A \to B$ are pairs (natural number, $\varphi$), where $\varphi$ is a function
-            \begin{align*}
-            \text{majorants for $A$} \xrightarrow \varphi \text{majorants for $B$}.
-            \end{align*}
-            that is monotone. When talking about monotonicity, we use the order on natural numbers, the coordinatewise order on pairs, and the pointwise order on functions.
-        \end{itemize}
-        Each majorant $\mu$ has a cost, denoted by $|\mu|$, which is the maximal natural number that appears in it.
-    \end{definition}
-
-
-    . which bounds the number of steps needed to normalise the term, and also, hereditarily, the same information about everything that can be extracted from its normal form. For a type $A$, the set $\Maj(A)$ of majorants of type $A$ is defined by induction on $A$, together with a \emph{cost} function $\Maj(A) \to \Nat$ which is written $\mu \mapsto |\mu|$:
-    \begin{align*}
-    \Maj(\onetype) &= \Nat  &  |m| &= m\\
-    \Maj(A \times B) = \Maj(A + B) &= \Maj(A) \times \Maj(B) &  |(\mu,\nu)| &= \max(|\mu|,|\nu|)\\
-    \Maj(A^*) &= \Maj(A)  & & \\
-    \Maj(A \to B) &= \Nat \times [\Maj(A) \to \Maj(B)] & |(m,F)| &= m,
-    \end{align*}
-    where $[\Maj(A) \to \Maj(B)]$ denotes the set of monotone functions. Each $\Maj(A)$ is ordered coordinatewise, and pointwise in the case of the function space; a straightforward induction on the type shows that every two majorants $\mu,\nu \in \Maj(A)$ have a least upper bound $\mu \vee \nu$, and that the cost function is monotone. We also write $\mu + r$ for the majorant obtained from $\mu$ by adding $r$ to each of the numbers that appear in it; this operation is monotone and satisfies $|\mu + r| = |\mu| + r$.
-
-    We now define what it means for a majorant $\mu \in \Maj(A)$ to \emph{majorise} a term $t : A$, which need not be closed. The definition is by induction on the type. In every case we require that if a term is majorised by $\mu$, then it our strategy will normalise it in at most $|\mu|$ steps.  Apart from this, we require the following for \emph{every} term $s$ that is reachable from $t$ by steps of the strategy, i.e.~such that $t \Rightarrow^* s$:
-    \begin{description}
-        \item[unit] if $A = \onetype$, nothing more;
-        \item[product] if $A = B \times C$ and $\mu = (\mu_B,\mu_C)$ and $s = (b,c)$, then $b$ is majorised by $\mu_B$ and $c$ by $\mu_C$;
-        \item[co-product] if $A = B + C$ and $\mu = (\mu_B,\mu_C)$ and $s = \leftterm\ b$, then $b$ is majorised by $\mu_B$, and symmetrically for $\rightterm$;
-        \item[list] if $A = B^*$ and $s = [b_1,\ldots,b_p]$, then \emph{every} entry $b_i$ is majorised by $\mu$;
-        \item[arrow] if $A = B \to C$ and $\mu = (m,F)$, then for every term $u : B$ and every majorant $\nu$ of $u$, the term $s\ u$ is majorised by $F(\nu)$.
-    \end{description}
-    Quantifying over the reducts $s$, rather than only over $t$ itself, costs us nothing and buys the closure property that we need below.
-    The conditions on $v$ are stated conditionally, so that they are vacuous for the terms whose normal form is headed by a free variable; such terms are called \emph{neutral} below. The list item is the heart of the matter: a list is charged the maximum of the majorants of its entries, and not their sum. This is what the parallel strategy buys us, and it is the reason why the final bound will not depend on the lengths of the lists.
-
-    We record three properties of this notion.
-    \begin{enumerate}
-        \item \label{item:majorant-monotone} \textbf{Monotonicity.} If $\mu$ majorises $t$ and $\mu \le \mu'$, then $\mu'$ majorises $t$. This is a routine induction on the type, using monotonicity of the cost function and of the majorants of arrow type.
-        \item \label{item:majorant-reduction} \textbf{Forward closure.} If $t \Rightarrow t'$ and $\mu$ majorises $t$, then $\mu$ majorises $t'$. This holds by construction: $\steps(t') = \steps(t) - 1 \le |\mu|$ because the strategy is deterministic, and every reduct of $t'$ is a reduct of $t$, so the remaining conditions are inherited verbatim.
-        \item \label{item:majorant-neutral} \textbf{Neutral terms.} Call a term \emph{neutral} if it is of the form $g\ u_1 \cdots u_r$ where the head $g$ is a variable, or an atomic function which is \emph{stuck}, in the sense that neither the term nor any of its reducts, applied to any further arguments, ever has a redex at its root. For a type $A$ and a number $m$, define $\top_A(m) \in \Maj(A)$ by induction on the type:
-        \begin{align*}
-        \top_{\onetype}(m) &= m &  \top_{A \times B}(m) = \top_{A+B}(m) &= \big(\top_A(m), \top_B(m)\big)\\
-        \top_{A^*}(m) &= \top_A(m) & \top_{A \to B}(m) &= \big(m, \ \nu \mapsto \top_B(m + |\nu|)\big).
-        \end{align*}
-        An induction on the type shows that $\top_A(m)$ is a majorant, that it is monotone in $m$, and that $|\top_A(m)| = m$. We claim that if $t$ is neutral, with arguments $u_1,\ldots,u_r$ majorised by $\nu_1,\ldots,\nu_r$, then $t$ is majorised by
-        \begin{align*}
-        \top_A(|\nu_1| + \cdots + |\nu_r|),
-        \end{align*}
-        where $A$ is the type of $t$. This is proved by induction on the type $A$. Reduction does not change the head of a neutral term, so every reduct of $t$ has the form $g\ u_1' \cdots u_r'$ with $u_i \Rightarrow^* u_i'$. Consequently no reduct of $t$ is a pair, a list, or of the form $\leftterm\ b$ or $\rightterm\ b$, and the product, co-product and list items hold vacuously; and $\steps(t) = \max_i \steps(u_i) \le \max_i |\nu_i|$, which gives the cost condition. For the arrow item, a reduct of $t$ applied to a further argument $u$ majorised by $\nu$ is again neutral, with arguments majorised by $\nu_1,\ldots,\nu_r,\nu$, so the induction assumption, applied to the smaller type, yields the required majorant $\top_C(|\nu_1| + \cdots + |\nu_r| + |\nu|)$. Taking $r = 0$ we get that every variable of type $A$ is majorised by $\iota_A = \top_A(0)$.
-
-        It should be stressed that $\top_A(m)$ majorises \emph{neutral} terms only, and is not a generic majorant for terms of type $A$ that normalise within $m$ steps: no such generic majorant exists. Enlarging the cost of a majorant of arrow type does not turn it into a majorant of more terms, because it is the function part, and not the cost, which controls what the term does to its arguments.
-    \end{enumerate}
-    What we do \emph{not} get for free is the converse of item~\ref{item:majorant-reduction}, the head expansion property: if $\mu$ majorises $b[x \mapsto u]$, then $\mu+1$ majorises $(\lambda x.b)\, u$. \issue{This is the one step of the termination argument that is not routine, and it should be checked carefully before the proof goes into the book. The difficulty is the interaction between the parallel strategy and substitution: the reducts of $(\lambda x.b)u$ are the reducts of $b[x \mapsto u]$, which is what we want, but in the arrow item we must compare $((\lambda x.b)u)\,w$ with $(b[x \mapsto u])\,w$, and one step of the strategy reduces the argument $w$ at the same time as the head redex. The standard remedy is to prove the substitution lemma for parallel reduction ($b \Rightarrow b'$ and $u \Rightarrow u'$ imply $b[x \mapsto u] \Rightarrow b'[x \mapsto u']$) and to sequentialise application spines in the strategy, so that in an application whose function part is not yet normal only the function part is reduced. Everything else in this proof is independent of how this point is settled.} We take this property for granted below; it is the standard bookkeeping of the majorant method, and it is the only place where the parallel character of the strategy has to be reconciled with substitution.
-
-    \begin{claim}\label{claim:atomic-functions-majorised}
-        Every atomic function is majorised by some majorant.
-    \end{claim}
-    \begin{proof}
-        We give two representative cases; the remaining atomic functions are treated in the same way. Both cases use the following observation. Let $g$ be an atomic function, let $r$ be the number of arguments required by its reduction rule, and consider a term
-        \begin{align*}
-        g\ u_1 \cdots u_r.
-        \end{align*}
-        The head $g$ is a constant, and so it contains no redexes; and none of the terms $g\ u_1 \cdots u_i$ with $i < r$ is a redex either, since the rule for $g$ requires all $r$ arguments. Therefore, as long as the arguments have not acquired the shape required by the rule, so that there is no redex at the root, the outermost redexes of the term are exactly the outermost redexes of the arguments $u_1,\ldots,u_r$, and the strategy reduces all of the arguments in parallel. This is the only reason why the strategy cannot descend into the head; it would be false for a term $t\ u$ with an arbitrary $t$, and indeed in the case of $\mapterm$ below the first argument is reduced at the same time as the second one. In particular, if the arguments are majorised by $\mu_1,\ldots,\mu_r$, and the required shape appears after $j$ steps, then $j \le \max_i |\mu_i|$, and by item~\ref{item:majorant-reduction} the $j$-th reducts of the arguments are still majorised by $\mu_1,\ldots,\mu_r$, and normalise in at most $\max_i |\mu_i| - j$ further steps. If the required shape never appears, then the term is stuck, and item~\ref{item:majorant-neutral} applies to it.
-
-        Consider first $\fstterm : A \times B \to A$, and let $u$ be majorised by $\mu = (\mu_A,\mu_B)$. If the normal form of $u$ is not a pair, then $\fstterm\ u$ is neutral, and item~\ref{item:majorant-neutral} applies. Otherwise, after $j \le |\mu|$ steps the reduct of $u$ becomes a pair $(a,b)$, where $a$ is majorised by $\mu_A$ and satisfies $\steps(a) \le |\mu| - j$. The next step contracts $\fstterm\ (a,b)$ into $a$, and the reduction continues inside $a$. Altogether
-        \begin{align*}
-        \steps(\fstterm\ u) \ \le \ j + 1 + (|\mu| - j) \ = \ |\mu| + 1,
-        \end{align*}
-        and $\fstterm\ u$ is majorised by $(\mu_A + (|\mu|+1)) \vee \top_A(|\mu|+1)$. The first component of the join takes care of the reduction inside $a$ once the contraction has happened, and the second one of the reducts $\fstterm\ u'$ that precede it; the two branches of the case distinction are joined so that the assignment is defined for every $\mu$. Since it is monotone in $\mu$, it is the function part of a majorant of $\fstterm$.
-
-        Consider now $\mapterm : (A \to B) \to A^* \to B^*$, let $f$ be majorised by $(m,F)$ and let $\ell$ be majorised by $\rho$. Reasoning as above, after $j \le |\rho|$ steps the reduct of $\ell$ becomes a list $[a_1,\ldots,a_q]$ whose entries are all majorised by $\rho$, while $f$ has become a term $f'$ that is still majorised by $(m,F)$. One further step contracts the redex into
-        \begin{align*}
-        [f'(a_1),\ldots,f'(a_q)],
-        \end{align*}
-        and by the arrow item every entry of this list is majorised by $F(\rho)$. The entries are now reduced in parallel, so the whole list is majorised by $(F(\rho) + (|\rho|+1)) \vee \top_{B^*}(m + |\rho| + 1)$, the second component of the join again covering the reducts that precede the contraction, and the case where the reduct of $\ell$ never becomes a list at all. Note that the number $q$ of entries has played no role whatsoever: this is the list item at work. Since the assignment $((m,F),\rho) \mapsto F(\rho) + (|\rho|+1)$ is monotone in both arguments, it gives the required majorant of $\mapterm$.
-    \end{proof}
-
-    \begin{claim}\label{claim:every-term-majorised}
-        For every term $t : A$ with free variables $x_1 : A_1, \ldots, x_q : A_q$ there is a monotone function
-        \begin{align*}
-        \Phi_t : \Maj(A_1) \times \cdots \times \Maj(A_q) \to \Maj(A)
-        \end{align*}
-        such that $\Phi_t(\nu_1,\ldots,\nu_q)$ majorises $t[x_1 \mapsto u_1, \ldots, x_q \mapsto u_q]$ whenever each $u_i$ is majorised by $\nu_i$.
-    \end{claim}
-    \begin{proof}
-        Induction on the structure of $t$. For a variable, $\Phi_t$ is the corresponding projection. For an atomic function, $\Phi_t$ is the constant given by \cref{claim:atomic-functions-majorised}. For a pair $(a,b)$, we take the pair of the majorants given by the induction assumption, which is legitimate because the outermost redexes of $(a,b)$ are those of $a$ together with those of $b$, so that the two components are normalised in parallel. For a list $[a_1,\ldots,a_p]$, we take the join of the majorants of the entries, for the same reason. For an application $f(a)$, we apply the function part of the majorant of $f$ to the majorant of $a$, which is exactly what the arrow item provides. Finally, consider an abstraction $\lambda x.b$, where $x : B$ and $b : C$, and let $\Psi$ be the monotone function given for $b$ by the induction assumption, with $x$ among its arguments. For a majorant $\nu$ of a term $u : B$ we have $(\lambda x. b) u \Rightarrow b[x \mapsto u]$, so the head expansion property stated above shows that $(\lambda x.b)u$ is majorised by $\Psi(\ldots,\nu)+1$. We may therefore take
-        \begin{align*}
-        \Phi_{\lambda x. b}(\ldots) \ = \ \big(\ |\Psi(\ldots,\iota_B)| \ , \ \nu \mapsto \Psi(\ldots,\nu)+1\ \big),
-        \end{align*}
-        where the first coordinate is justified by the fact that the reduction of $\lambda x.b$ is the reduction of its body $b$ with $x$ left as a free variable, and a variable is majorised by $\iota_B$.
-    \end{proof}
-
-    It remains to observe that, for terms of bounded height with types in $\Bb$, the majorants given by \cref{claim:every-term-majorised} can be chosen uniformly. For $j \in \set{0,1,\ldots}$ and types $A_1,\ldots,A_q,A$ in $\Bb$, define
-    \begin{align*}
-    \Phi^j_{A_1,\ldots,A_q,A} : \Maj(A_1) \times \cdots \times \Maj(A_q) \to \Maj(A)
-    \end{align*}
-    by induction on $j$, as the join of the finitely many monotone functions that are obtained by applying to the functions $\Phi^{j-1}$ one of the constructions used in the proof of \cref{claim:every-term-majorised}, together with $\Phi^{j-1}$ itself. Here it is important that the number of these constructions is finite, which is the case because $\Bb$ is finite, and because for lists the construction is a join, so that all list lengths $p$ give the same function. Since a finite join of monotone functions is monotone, and $\Phi^{j-1} \le \Phi^{j}$, an induction on $j$ shows that
-    \begin{align*}
-    \Phi_t \ \le \ \Phi^j_{A_1,\ldots,A_q,A}
-    \end{align*}
-    holds for every term $t$ of height at most $j$ whose types are in $\Bb$. Apply this to a closed term $t$ that is consistent with the resource bound $(\Aa,h)$: such a term has height at most $h$ and types in $\Bb$, and therefore it is majorised by $\Phi^h_A \in \Maj(A)$, where $A \in \Bb$ is its type. Consequently
-    \begin{align*}
-    \steps(t) \ \le \ k \qquad \text{where} \qquad k \ = \ \max \setbuild{|\Phi^h_A|}{$A \in \Bb$},
-    \end{align*}
-    and the maximum is over a finite set. This completes the proof of the termination item. Let us stress where the two unbounded parameters went: the lengths of the lists disappeared in the list item, and the growth of the height during the reduction was never used, because the majorant of a term is computed once, from its original syntax, and is preserved by reduction.
-
-    \paragraph*{One step.} Fix a resource bound $(\Aa,h)$. We describe a polyregular function which, given the string representation of a closed term $t$ that is consistent with $(\Aa,h)$, outputs the string representation of the term $t'$ with $t \Rightarrow t'$. On inputs which are not such representations the function may do anything, since the diagram in the lemma constrains it only on the representations; by \cref{claim:parsing-is-regular-with-resource-bounds} these form a regular language, so we may as well output the empty string on the remaining inputs. We use for-transducers, which compute exactly the polyregular functions by \cref{thm:for-transducers-are-polyregular}.
-
-    The first observation is that a bounded amount of information about the syntax tree is available in a regular way. Since the height of $t$ is at most $h$, the list of ancestors of a position in the syntax tree has length at most $h$, and therefore it is a bounded object which can be stored in the state of a finite automaton. Combining this with \cref{claim:parsing-is-regular-with-resource-bounds}, we see that there is a rational function which annotates each letter of the input with: the list of the ancestors of the corresponding node together with their types; the number of $\lambda$'s among these ancestors; and a flag which says whether the position begins an outermost redex and, if so, which reduction rule applies to it. The only point that deserves a comment is that being a redex is a regular property of a node: for all rules except those for $\concatterm$ and $\multterm$ it is determined by the first letter of the argument, and for these two rules it amounts to checking that the argument is a list of list terms, respectively a list of group values, which is again a regular property. Being \emph{outermost} then means that no ancestor is a redex, and the ancestors are bounded in number. Since rational functions are polyregular, and polyregular functions are closed under composition, we may assume from now on that the input comes with this annotation.
-
-    The second observation is that the selected redexes occupy pairwise disjoint intervals of the input, since they are pairwise non-overlapping subtrees. Consequently, the output is obtained from the input by replacing, for each selected redex, the interval that it occupies by the string representation of its contractum, and leaving all remaining letters unchanged. This is implemented by a for-transducer whose outer loop ranges over the positions $x$ of the input. If $x$ lies inside a selected redex but does not begin one, nothing is output. If $x$ lies outside all selected redexes, the letter at $x$ is output. If $x$ begins a selected redex, we output the contractum of that redex, using the annotation to see which rule applies. It remains to describe, for each rule, how the contractum is produced; in each case this is done by loops nested inside the outer loop, so the result is again a for-transducer.
-
-    For the rules of $\fstterm$, $\sndterm$, $\unconsterm$ and $\either$, the contractum is obtained from the redex by copying one or two of its parts and inserting a bounded number of letters, which is done by a single inner loop that ranges over the interval of the redex and outputs, or does not output, the current letter, depending on the annotation. The rule for $\concatterm$ is of the same kind: the inner loop copies the interval of the argument, suppressing the brackets of the inner lists. The rule for $\multterm$ is slightly different, because the output does not appear in the input: here an inner loop ranges over the entries of the argument list and, using Boolean variables to store an element of the finite group $G$, computes the product of the entries; a bounded case distinction on the resulting element then outputs its string representation, which is a fixed string. The rule for $\mapterm$ needs two nested loops: the outer of the two ranges over the entries $a_i$ of the argument list, and for each of them the inner one first copies the interval of $f$ and then the interval of $a_i$. The rule for $\splitterm$ is handled in the same way, and is the reason why a single loop would not suffice: the outer of the two loops ranges over the positions at which the input list is cut, and the inner one copies first the prefix and then the suffix determined by the cut. This is exactly the pattern of the for-transducer for marked squaring in Example~\ref{ex:marked-squaring-for-transducer}, and it is where the quadratic growth of polyregular functions is used.
-
-    We are left with the $\beta$-rule, which is the only rule that involves substitution. Let the selected redex be $(\lambda : A.\ a)\ b$. Its contractum is the term $a$ in which every occurrence of the variable bound by this $\lambda$ is replaced by $b$. Because we use De Bruijn indices, this requires some bounded arithmetic on the indices, which are all at most $h$ and hence can be kept in the state:
-    \begin{itemize}
-        \item an occurrence $\uparrow^r$ inside $a$ refers to the variable bound by our $\lambda$ exactly when $r$ is one plus the number of $\lambda$'s strictly between the occurrence and our $\lambda$, a number which the annotation provides;
-        \item an occurrence with a larger $r$ refers to a $\lambda$ above the redex, and since our $\lambda$ disappears, such an occurrence has to be rewritten as $\uparrow^{r-1}$;
-        \item when a copy of $b$ is placed under some number $s \le h$ of additional $\lambda$'s, the indices of the free variables of $b$ have to be increased by $s$.
-    \end{itemize}
-    All three operations replace a letter by a letter, with the replacement determined by the annotation, so they are performed on the fly. The contractum is therefore produced by two nested loops: the outer one ranges over the interval of $a$ and outputs the current letter, unless this letter begins an occurrence of the bound variable, in which case the inner one copies the interval of $b$ with the indices shifted as described above.
-
-    Summing up, one step of the strategy is computed by a for-transducer, whose loops are nested to depth three, composed with a rational annotating function. By \cref{thm:for-transducers-are-polyregular} this function is polyregular, which completes the proof of the one-step item, and with it the proof of the lemma.
-\end{proof}
-
-\subsection{A second proof, using logical relations}
-\label{sec:logical-relations}
-
-The proof of \cref{thm:higher-order-terms} given above is a normalisation argument: we bounded the
-resources of a term, showed that terms with a fixed resource bound are parsed by a finite
-automaton, that one step of a reduction strategy is a polyregular function of the string
-representation, and that the strategy terminates; the normal form of a term of arrow-free type is
-then a value. There is a second proof, which replaces the normalisation by its semantic
-counterpart, namely a \emph{logical relation}. Instead of reducing a term until nothing higher-order
-is left, we prove by induction on the term that its value is polyregular \emph{in a sense that makes
-sense at every type, including the arrow types}, and then observe that at arrow-free types this
-sense is ordinary polyregularity.
-
-The idea of a logical relation is to say what it means for an object of higher-order type to be
-polyregular, by recursion on the type, in such a way that the statement is preserved by application.
-There is one complication, which is that a term is interpreted only relative to a valuation of its
-free variables, and the free variables range over inputs and not over fixed elements. We therefore
-define the relation not for single elements but for \emph{families} of them, indexed by an
-arrow-free type which we call the parameter and which plays the role of the free variables.
-
-\begin{definition}[The logical relation]\label{def:logical-relation}
-    Let $H$ be a higher-order type and let $P$ be an arrow-free type, called the \emph{parameter}.
-    For a family $g : P \to H$ we define the property $\mathrm{Rel}_H^P(g)$, pronounced ``$g$ is
-    polyregular with parameter $P$'', by induction on $H$:
-    \begin{description}
-        \item[Unit] $\mathrm{Rel}_{\onetype}^P(g)$ always holds.
-        \item[Product] $\mathrm{Rel}_{A \times B}^P(g)$ holds if both components of $g$ are related.
-        \item[Co-product] $\mathrm{Rel}_{A + B}^P(g)$ holds if the tag
-        \begin{align*}
-        p \in P \quad \mapsto \quad \text{the side of $A+B$ on which $g(p)$ lies} \quad \in \onetype + \onetype
-        \end{align*}
-        is a polyregular function, and $g$ agrees with a related family on each of the two sides.
-        \item[List] $\mathrm{Rel}_{A^*}^P(g)$ holds if there are an arrow-free type $Q$ of
-        \emph{indices}, a polyregular function $\ell : P \to Q^*$, and a family
-        $e : P \times Q \to A$ with $\mathrm{Rel}_A^{P \times Q}(e)$, such that
-        \begin{align*}
-        g(p) \quad = \quad [\, e(p,q) \ \mid \ q \in \ell(p) \,] \qquad \text{for every } p \in P.
-        \end{align*}
-        In words: the list is produced by a polyregular list of indices, and its entries are
-        computed uniformly from the parameter and the index.
-        \item[Arrow] $\mathrm{Rel}_{A \to B}^P(g)$ holds if for every arrow-free type $Q$, every
-        polyregular change of parameter $r : Q \to P$ and every family $a : Q \to A$ with
-        $\mathrm{Rel}_A^Q(a)$, the family $q \mapsto g(r(q))(a(q))$ satisfies
-        $\mathrm{Rel}_B^Q$.
-    \end{description}
-\end{definition}
-
-The arrow clause is the usual one for logical relations, with the quantification over $Q$ and $r$
-making it a Kripke logical relation; the quantification is what allows the relation to survive
-going under a $\lambda$, where a new free variable, and hence a larger parameter, appears. The
-list clause is the one that carries the polyregular content, and it is worth pausing on: it does
-\emph{not} say that $g$ is a polyregular function into lists, which would be false at higher types,
-but that the list is indexed by a polyregular list, with a uniform rule for the entries. This is
-the semantic shadow of the fact that a polyregular function produces its output by nested loops
-ranging over positions of the input.
-
-\begin{lemma}\label{lem:logical-relation-closure}
-    The relation of \cref{def:logical-relation} has the following four properties.
-    \begin{enumerate}
-        \item\label{item:rel-reindex} \emph{Reindexing.} If $\mathrm{Rel}_H^P(g)$ and
-        $r : Q \to P$ is polyregular, then $\mathrm{Rel}_H^Q(g \circ r)$.
-        \item\label{item:rel-const} \emph{Constants.} Every higher-order type has an element whose
-        constant family is related.
-        \item\label{item:rel-glue} \emph{Gluing.} The relation is closed under a case distinction
-        driven by a polyregular tag $P \to \onetype + \onetype$.
-        \item\label{item:rel-arrow-free} \emph{Arrow-free types.} If $H$ is arrow-free, then
-        $\mathrm{Rel}_H^P(g)$ holds if and only if $g$ is a polyregular function under string
-        representation.
-    \end{enumerate}
-\end{lemma}
-
-Item~\ref{item:rel-arrow-free} is the one that makes the argument work, and it is the only place
-where the two sides of the theorem meet: the relation is not merely implied by polyregularity at
-arrow-free types, it is equivalent to it. The proof of the implication from left to right unfolds
-the list clause and uses the fact that a map whose body may consult the parameter is polyregular,
-which is the higher-order analogue of a for-loop nested inside another.
-
-\begin{lemma}[Fundamental lemma]\label{lem:fundamental-lemma}
-    Let $t$ be a higher-order polyregular term with free variables of types $\Gamma$, using only
-    the reduced set of atomic functions of \cref{lem:fewer-atomic}. If a family of valuations of
-    $\Gamma$ with parameter $P$ is related componentwise, then the family of values of $t$ is
-    related.
-\end{lemma}
-
-\begin{proof}
-    Induction on $t$. A variable is immediate. An abstraction is exactly the arrow clause, and an
-    application is exactly its converse; this is where reindexing is used, since the argument of an
-    application may live over a larger parameter. It remains to check the atomic functions, one by
-    one. The projections, the co-projections and $\unconsterm$ are routine manipulations of the
-    product, co-product and list clauses; $\mathtt{either}$ is gluing, item~\ref{item:rel-glue};
-    and $\splitterm$ and $\multterm$ are polyregular functions between arrow-free types, so
-    item~\ref{item:rel-arrow-free} applies to them directly.
-
-    Two of the atomic functions carry the content. For $\mapterm$, the body is a function that may
-    itself consult the parameter, so the list produced by the map has to be indexed by the same
-    indices as the input list, with the entries computed by the body from the parameter and the
-    index; this is where the map with a parameter is needed. For $\concatterm$, the input is a
-    list of lists, so it comes with two levels of indices, and the point is that these can be
-    combined into a single polyregular list of indices for the concatenation.
-\end{proof}
-
-\cref{thm:higher-order-terms} follows. Given a term defining a function $f : A \to B$ between
-arrow-free types, take the parameter to be $A$ itself and apply the fundamental lemma to the
-identity family, which is related by item~\ref{item:rel-arrow-free} because the identity is
-polyregular. The value of the term is then a related family at the arrow-free type $B$, and
-item~\ref{item:rel-arrow-free} again turns this into the statement that $f$ is polyregular.
-
-Neither proof is shorter than the other, and the normalisation proof says more, since it exhibits
-an algorithm which computes the normal form. The logical relation, on the other hand, never
-mentions reduction, resource bounds or the parsing of terms, and it is the proof that a proof
-assistant finds comfortable: it is the one carried out in the formalisation of this book, where it
-replaces \crefrange{def:resource-bound}{claim:every-term-majorised} by
-\cref{def:logical-relation,lem:logical-relation-closure,lem:fundamental-lemma}.
-
-
-
-\subsection{Logical relations again}
-
-\newcommand{\logrel}[1]{\xrightarrow[\text{rel}]{#1}}
-
-\begin{definition}
-    [Good functions] Consider a function of type  $Q \to A$, where: 
-    \begin{itemize}
-        \item the domain $Q$, which is called the \emph{parameter type}, is a arrow-free;
-        \item the co-domain $A$ is any higher-order type.
-    \end{itemize}
- This  function  is called \emph{good} if it satisfies the following conditions, which are defined by induction on the structure of the output type.
-    \begin{itemize}
-        \item The unique function of type $Q \to \onetype$ is a good.
-        
-        \item Good functions with an output product type $A_1 \times A_2$ are compositions 
-        \begin{align*}
-        Q \xrightarrow f Q_1+Q_2 \xrightarrow {\rho_1 + \rho_2} A_1 \times A_2
-        \end{align*}
-        for some polyregular $f$ and  good $\rho_1$ and $\rho_2$. Similarly we define functions with outputs that are co-products or lists, with the compositions being 
-                \begin{align*}
-        Q \xrightarrow f Q_1+Q_2 \xrightarrow {\rho_1 + \rho_2} A_1 + A_2 \qquad 
-        Q \xrightarrow f  P^* \xrightarrow {\rho^*} B^*.
-        \end{align*}
-        \item For a functional output type, a function 
-        \begin{align*}
-        Q \xrightarrow \rho (A \to B)
-        \end{align*}
-        is  good if for every 
-        \begin{itemize}
-            \item arrow-free type $P$ called the \emph{new parameters};
-            \item polyregular function $P \xrightarrow r Q$ called the \emph{change of parameters};
-            \item good $P \xrightarrow \sigma A$,
-        \end{itemize}
-        the following function of type $Q \to B$ is good
-        \begin{align*}
-            p \in P \quad \mapsto \quad  \rho(r(p)) \text{ applied to } \sigma(p).
-        \end{align*}
-    \end{itemize}
-\end{definition}
-
-
-
-The main technical result is the following lemma, which says that each higher-order polyregular term defines a logical relation, assuming that the free variables are described by logical relations.
-\begin{lemma}[Fundamental Lemma]\label{lem:fundamental-lemma-of-logical-relations}    Let
-    \begin{itemize}
-        \item $a : A$ be a higher-order polyregular term;
-        \item $Q$ be an arrow-free type, called the \emph{parameter type};
-        \item for each free variable $x : A_x$ of the term $a$, let $Q \xrightarrow {\rho_x} A_x$ be good.
-    \end{itemize}
-Then the following function of type $Q \to A$ is good:
-    \begin{align*}
-    q \in Q \quad \mapsto \quad \text{semantics of $a$ at the valuation given by $x \mapsto \rho_x(q)$.}
-    \end{align*}
-\end{lemma}
-
-Before proving the Fundamental Lemma, we use it to prove \cref{thm:higher-order-terms}. 
-
-\begin{proof}[Proof of \cref{thm:higher-order-terms} using the Fundamental Lemma.] We begin with the following observation about good functions between arrow-free types.
-\begin{lemma}\label{lem:logical-relations-with-arrow-free-outputs-are-polyregular} If $Q$ and $A$ are arrow-free, then the good functions of type $Q \to A$ are exactly the polyregular ones.
-\end{lemma}
-\begin{proof}
-    Straightforward induction on the structure of the output type $A$.
-\end{proof}
-Let us now prove \cref{thm:higher-order-terms}. We want to show that if 
-\begin{align*}
-A \xrightarrow f B
-\end{align*}
-is a function between arrow-free types, then 
-    \begin{align*}
-    \text{$f$ is polyregular}
-    \quad \Leftrightarrow \quad
-    \text{$f$ is defined by a closed higher-order polyregular term}    \end{align*}
-    We have already shown the  implication $\Rightarrow$, so we are left with $\Leftarrow$. Suppose that $f$ is defined  by a  closed higher-order polyregular term $t$. Let $x : A$ be a variable, and consider the applicaiton term $t(x) : B$. Apply the Fundamental Lemma to this term, the arrow-free type $Q=A$ and  the identity  function $\rho_x$, which is good by \cref{lem:logical-relations-with-arrow-free-outputs-are-polyregular}.  From the conclusion, we see that  
-    \begin{align*}
-    a \in A \quad \mapsto \quad \text{semantics of $t(x)$  at the valuation given by  $x \mapsto a$},
-    \end{align*}
-    which is the function $f$ itself, 
-    is  good, and thus polyregular by \cref{lem:logical-relations-with-arrow-free-outputs-are-polyregular}. 
-\end{proof}
-
-It remains to prove the Fundamental Lemma. 
-
-
-\newcommand{\fundlemlogrel}[2]{\sem{#1}_{#2}}
-
-\begin{proof}
-We use the notation 
-\begin{align*}
-Q \xrightarrow{{\fundlemlogrel{a}{\bar \rho}}} A
-\end{align*}
-for the function in the conclusion of the Fundamental Lemma, where $a$ is the term in the assumption, and $\bar \rho$ is the family of good functions for the free variables. This function is defined as follows by induction on the structure of the term $a$.
-\paragraph*{Variable.}  When the term $x$ is a variable, then  $ \fundlemlogrel{x}{\bar\rho}$ is the function $\rho_x$ from the assumption, which is good by assumption.
-\paragraph*{Pair.} Let us define the good function for pair term $(a,b)$ under some valuations $\bar \rho$.   Define $\bar \rho_a$ and $\bar \rho_b$ to be the restrictions of $\bar \rho$ to the free variables of $a$ and $b$ respectively. 
-The good function $\fundlemlogrel{(a,b)}{\bar \rho}$ is then defined to be the (component-wise) pairing 
-\begin{align*}
-q \in Q \mapsto (\fundlemlogrel{a}{\bar \rho_a}(q), \fundlemlogrel{b}{\bar \rho_b}(q)),
-\end{align*}
-and good functions are easily seen to be closed under pairing, essentially by definition.
-\paragraph*{Application.}  The case of application is defined in the same way as pairing, except that we use component-wise application: 
-\begin{align*}
-q \in Q \mapsto \fundlemlogrel{f}{\bar \rho_f}(q) \text{ applied to } \fundlemlogrel{a}{\bar \rho_a}(q).
-\end{align*} To prove that this is good, we use the defining  property  of the good function $\fundlemlogrel{f}{\bar \rho_f}$ applied to new  parameters $P=Q$, a change of parameters that is the identity, and the good function $\fundlemlogrel{a}{\bar \rho_a}$.
-\paragraph*{Abstraction.} When proving the case of abstraction, we will use the following claim.  
-\begin{claim}\label{claim:logical-relations-closed-under-precomposition}
-    Good functions are closed under pre-composition with polyregular functions.
-\end{claim}
-\begin{proof}
-    Induction on the structure of the output type. For the unit type there is nothing to do, and for product, co-product and list types the claim follows from the definition of good functions for such types, where the composition begins with a polyregular function. The final case is the arrow type. By recalling the definition in an arrow type $A \to B$, we need to show that 
-    \begin{align*}
-        \forall P \xrightarrow r Q \ \forall P \xrightarrow \sigma A \qquad
-            p \in P \ \mapsto \  \rho(r(p)) \text{ applied to } \sigma(p) \quad \text{is good}.
-        \end{align*}
-    To prove the claim, we need to show that if the above condition is true for $\rho$, then it remains true after $\rho$ has been pre-composed with a polyregular function $s$. This is ineed true, since $r$ is quantified universally, and thus it also covers the case of functions that are post-composed with $s$.
-\end{proof}
-
-For an abstraction, the  function $\fundlemlogrel{\lambda x.b}{\bar \rho}$ is defined as 
-
-\begin{align*}
-q \in Q \quad \mapsto \quad \Big(\, a \in A \ \mapsto \ \text{semantics of $b$ at the valuation $\bar \rho(q)$ extended by $x \mapsto a$} \,\Big),
-\end{align*}
-where $A$ is the type of the bound variable, so that the abstraction has type $A \to B$ and $b$ has
-type $B$. In words: at the argument $q$ we fix the free variables of $\lambda x . b$ according to
-$\bar \rho(q)$ and leave $x$ free, which leaves a function of type $A \to B$.
-
-It remains to check that this function is good. By the definition of good functions at the arrow
-type $A \to B$, we must show that for every arrow-free type $P$, every polyregular function
-$P \xrightarrow r Q$ and every good function $P \xrightarrow \sigma A$, the function
-\begin{align*}
-p \in P \quad \mapsto \quad \fundlemlogrel{\lambda x . b}{\bar \rho}(r(p)) \text{ applied to } \sigma(p)
-\end{align*}
-is good. Unravelling the definition above, its value at $p$ is the semantics of $b$ at the
-valuation which maps the free variables of $\lambda x . b$ according to $\bar \rho(r(p))$, and maps
-$x$ to $\sigma(p)$. This is exactly
-\begin{align*}
-P \xrightarrow{\ \fundlemlogrel{b}{\bar \rho \circ r, \ \sigma}\ } B,
-\end{align*}
-the function supplied by the induction hypothesis for the subterm $b$, taken with the parameter
-$P$ instead of $Q$ -- which is allowed, since the Fundamental Lemma quantifies over the parameter
-universally -- with the functions $\rho_1 \circ r, \ldots, \rho_n \circ r$ for the free variables
-of $\lambda x . b$, and with $\sigma$ for the variable $x$.
-
-The induction hypothesis applies to these, because each $\rho_i \circ r$ is good by
-\cref{claim:logical-relations-closed-under-precomposition}, being a good function pre-composed
-with a polyregular one, and $\sigma$ is good by assumption. It therefore tells us that the
-displayed function is good, which is what we had to show.
-
-It is worth noting where the two quantifiers of the arrow type were used. The good function
-$\sigma$ became the interpretation of the newly bound variable $x$, and the change of parameters
-$r$ is what allowed the interpretations $\bar \rho$ of the variables that were already free to be
-transported from $Q$ to the new parameter $P$. Without the quantification over $r$, the induction
-hypothesis for $b$ would be unavailable, since its free variables would still be interpreted over
-the old parameter.
-
-
-
-
-
-\paragraph*{The list constructor.}  We are now left with the atomic functions. We begin by discussing a simple case of an atomic function, which is the list constructor
-\begin{align*}
-\onetype + A \times A^* \xrightarrow \consterm A^*.
-\end{align*}
-This term has no free variables, and therefore the conclusion of the Fundamental Lemma in this case says that every arrow-free $Q$, the constant function  of type
-\begin{align*}
-q \in Q \quad \mapsto \quad \consterm 
-\end{align*}
-is good. By unfolding the definition of good functions for  $A \times A^* \to A^*$, this means that for every arrow-free  type $P$, every  polyregular change of parameters $r : P \to Q$ and every good $\sigma : P \to A$, 
-the function 
-\begin{align*}
-p \in P \quad \mapsto \consterm (\sigma(p))
-\end{align*}
-is good. (The change of parameters is not used, since our original good function ignored the parameter from $Q$.) In other words, we need to show that the composition 
-\begin{align*}
-P \xrightarrow \sigma \onetype + A \times A^* \xrightarrow \consterm A^*
-\end{align*}
-is good. By unfolding the definition of a good  function $\sigma$, we easily show  that $\sigma$ is equal to a composition
-\begin{align*}
-P \xrightarrow f  P_1 + P_2 \times P_3^* \xrightarrow { \sigma_1 + \sigma_2 \times \sigma_3^*} \onetype + A \times A^* 
-\end{align*}
-for some polyregular function $f$ and some  good functions 
-\begin{align*}
-P_1 \xrightarrow {\sigma_1} \onetype \qquad 
-P_2 \xrightarrow {\sigma_2} A \qquad 
-P_3 \xrightarrow {\sigma_3} A.
-\end{align*}
-We can ensure that the first good function is the identity on $\onetype$, and the other two good functions $\sigma_2$ and $\sigma_3$ are the same,  by using the co-pairing 
-\begin{align*}
-P_2 + P_3 \xrightarrow {\either {\sigma_2} {\sigma_3}} A.
-\end{align*}
-(An argument similar to the one used in the proof of \cref{claim:closure-properties-of-logical-relations} shows that such a co-pairing is good.)
-Summing up, if we write $\rho$ for the above co-pairing and $R$ for its domain, we need to show that the following composition is good:
-\begin{align*}
-P \xrightarrow f  \onetype + R \times R^* \xrightarrow { \idterm + \rho \times \rho^*} \onetype + A \times A^* \xrightarrow \consterm A^*.
-\end{align*}
-The atomic function $\consterm$ is natural in the sense that it commutes with $\rho$, and therefore the above composition is the same as
-\begin{align*}
-P \xrightarrow f  \onetype + R \times R^* \xrightarrow \consterm R^* \xrightarrow {\rho^*} A^*
-\end{align*}
-This is a composition of two polyregular functions on arrow-free types, namely $f$ and $\consterm$, followed by the functor $*$ applied to a logical relation. Therefore, this composition is  a logical relation by \cref{claim:closure-properties-of-logical-relations}.
-
-
-\paragraph*{Atomic functions with arrow-free domains.} Let us now generalise the above arguments to  all atomic functions except for $\mathtt{either}$ and $\mapterm$.    (The two exceptions input functions, and thus they are treated a bit specially.) Each such atomic function has  shape 
-\begin{align*}
-F(A_1,\ldots,A_n) \xrightarrow f G(A_1,\ldots,A_n),
-\end{align*}
-and where the domain and co-domain are expressions that are constructed from types $A_1,\ldots,A_n$ using the arrow-free type constructors $\onetype, +, \times$ and $*$. (It is a bit misleading to say that $f$ does not input functions, since the type parameters $A_i$ could have arrows, but the idea is that all arrows in the domain come from  the parameters.)
-Similarly the the case of the list constructor, proving the conclusion  of the Fundamental Lemma in this case means that for every logical relation 
-\begin{align*}
-P \xrightarrow \rho F(A_1,\ldots,A_n),
-\end{align*}
-the composition $\rho; f$ is a logical relation.  Also similarly to the case of the list constructor, $\rho$ can be decomposed as 
-\begin{align*}
-P \xrightarrow g  F(P_1,\ldots,P_n) \xrightarrow {F(\rho_1,\ldots,\rho_n)} F(A_1,\ldots,A_n)
-\end{align*}
-for some polyregular function $g$ and logical relations
-\begin{align*}
-P_1 \xrightarrow {\rho_1} A_1 
-\quad \cdots \quad 
-P_n \xrightarrow {\rho_n} A_n. 
-\end{align*}
-The argument using co-pairing that we used for the list constructors is also used here, since a variable $A_i$ can be used several times in the expression $F(A_1,\ldots,A_n)$, and hence we need to use co-pairing to ensure that all appearances of $A_i$ are treated with the same set $P_i$ and the same logical relation. All  atomic functions under consideration are natural, which means that the composition $\rho;f$ is equal to
-\begin{align*}
-P \xrightarrow g  F(P_1,\ldots,P_n) \xrightarrow {f'} G(P_1,\ldots,P_n)  \xrightarrow {G(\rho_1,\ldots,\rho_n)} G(A_1,\ldots,A_n),
-\end{align*}
-where $f'$ is the variant of the atomic function $f$ that uses parameters $P_1,\ldots,P_n$ instead of $A_1,\ldots,A_n$.  As in the case of the list constructor, this is a composition of two polyregular functions on arrow-free types, followed by the combinators applied to logical relations, and hence it is a logical relation.
-
-
-
-\end{proof}
+\exer{\label{exer:pref-from-mult} Show that the expressive power of the polyregular terms is not changed if the group prefix operation of type $G^* \to G^*$ is changed by the $\multterm$ operation of type $G^* \to G$.}{
+7
+}
