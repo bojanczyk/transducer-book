@@ -200,6 +200,33 @@ def doc_comments(text):
     return out
 
 
+def locate(name, locations):
+    """Where a fully-qualified Lean name is declared.
+
+    `locations` is keyed by the name as written after `theorem`, which carries
+    whatever namespace prefix the file spells out and no more, so a lookup has
+    to try the dotted suffixes of the full name. Longest first, and *only* on
+    dot boundaries: matching on the last component alone made
+    `Transducers.Rel.reindex` resolve to `RelEnv.reindex`, and
+    `Transducers.IsRegularTermFun.copair` to `IsRegularUnderRepr.copair` -- one
+    of five declarations ending in `.copair` -- because the loser was simply
+    whichever file sorted first. The state shown was right in both cases and
+    only the source link was wrong, which is exactly the kind of error nobody
+    reports.
+    """
+    parts = name.split(".")
+    for i in range(len(parts)):
+        hit = locations.get(".".join(parts[i:]))
+        if hit:
+            return hit
+    # Last resort, for the reverse case: the file may write `Rel.reindex` inside
+    # a namespace while the name we were given is the bare `reindex`. Only when
+    # it picks out one declaration -- guessing between several is the bug above.
+    tail = parts[-1]
+    cand = [v for k, v in locations.items() if k.split(".")[-1] == tail]
+    return cand[0] if len(cand) == 1 else None
+
+
 def span_of(name, decl_line, starts, lines, rel, doc_before):
     """Where a declaration begins and ends, comment included."""
     after = [x for x in starts if x > decl_line]
@@ -505,9 +532,7 @@ def build():
         # compiler checks, so prefer it to the docstrings, which nothing checks.
         for name, claim in registry.get(key, []):
             st, w = state_of(name, bodies, witness)
-            loc = locations.get(name) or locations.get(name.split(".")[-1]) or \
-                  next((v for k2, v in locations.items()
-                        if k2.split(".")[-1] == name.split(".")[-1]), None)
+            loc = locate(name, locations)
             d = {"name": name, "state": st, **(loc or {"file": None, "line": None}),
                  **({"rests_on": w} if w else {})}
             # the registry asserts a status at compile time; if our own reading of
@@ -529,9 +554,7 @@ def build():
             if n.split(".")[-1] in seen:
                 continue
             st, w = state_of(n, bodies, witness)
-            loc = locations.get(n) or locations.get(n.split(".")[-1]) or \
-                  next((v for k2, v in locations.items()
-                        if k2.split(".")[-1] == n.split(".")[-1]), None)
+            loc = locate(n, locations)
             decls.append({"name": n, "state": st,
                           **(loc or {"file": None, "line": None}),
                           **({"rests_on": w} if w else {}), "from": "THEOREMS.md",
@@ -631,6 +654,32 @@ def report(book, lean, md, entries):
         for k in orphan_md:
             print(f"   {k:44s} -> {md[k]['names'][0]}")
         problems += len(orphan_md)
+
+    # A source link that points at a file which does not declare the thing. The
+    # map is right about *what* is proved and wrong only about where to look, so
+    # nothing downstream fails and nobody notices: six links pointed at the
+    # wrong file for months, one of them at an `Exercises/` file for a Part D
+    # definition. Cheap to check, so check it.
+    misplaced = []
+    for key, decls in sorted(entries.items()):
+        for d in decls.get("lean", []):
+            f, name = d.get("file"), d.get("name", "")
+            if not f or not name:
+                continue
+            txt = (LEAN / f).read_text(errors="ignore") if (LEAN / f).exists() else ""
+            parts = name.split(".")
+            if not any(re.search(rf"^\s*(?:@\[[^\]]*\]\s*)?"
+                                 rf"(?:private\s+|protected\s+|noncomputable\s+|partial\s+)*"
+                                 rf"(?:theorem|lemma|def|abbrev|instance|structure|inductive|class)"
+                                 rf"\s+{re.escape('.'.join(parts[i:]))}\b", txt, re.M)
+                       for i in range(len(parts))):
+                misplaced.append((key, name, f))
+    if misplaced:
+        print(f"\nsource link points at a file that does not declare it "
+              f"({len(misplaced)}):")
+        for lab, name, f in misplaced:
+            print(f"   {lab:44s} {name} -> {f}")
+        problems += len(misplaced)
 
     disagree = []
     for key in sorted(set(lean) & set(md)):
