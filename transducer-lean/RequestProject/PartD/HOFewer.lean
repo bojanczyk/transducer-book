@@ -13,12 +13,13 @@ book refers to, and all three run over the cuts of the input list, using the new
 `split` of Definition `def:polyregular-terms`:
 
 * `reverse` keeps the first entry of the suffix of every cut, taken in the order in which `split`
-  produces the cuts -- the prefix getting shorter -- which reverses the list (Example
-  `ex:reverse-from-split`);
+  produces the cuts -- the prefix getting shorter -- which reverses the list (Exercise
+  `exer:reverse-from-split`);
 * the block split keeps, for every cut whose suffix begins with an entry `b` from `B`, the pair of
   `b` with the block of entries from `A` that follows it, and that block is itself computed by
-  running over the cuts of the remaining list;
-* group prefix multiplication takes the product of every non-empty prefix.
+  running over the cuts of the remaining list (Exercise `exer:block-from-split`);
+* group prefix multiplication takes the product of every non-empty prefix (Exercise
+  `exer:pref-from-mult`).
 
 The identities that these computations satisfy are proved in `RequestProject/PartD/HOFewerAux.lean`.
 -/
@@ -74,7 +75,7 @@ def headAsListTerm (Γ : List HTy) (A : HTy) : HTerm Γ (.arrow (.list A) (.list
   funext l
   cases l <;> rfl
 
-/-- **Example `ex:reverse-from-split`.**  `reverse = λl. concat (map (λz. headAsList (snd z))
+/-- **Exercise `exer:reverse-from-split`.**  `reverse = λl. concat (map (λz. headAsList (snd z))
 (split l))`. -/
 def reverseTerm (Γ : List HTy) (A : HTy) : HTerm Γ (.arrow (.list A) (.list A)) :=
   .lam
@@ -198,9 +199,8 @@ set_option maxHeartbeats 1000000 in
   | nil => simp
   | cons x rest => cases x <;> simp
 
-/-- **The block split of Example `ex:block`**, which the book removes from the atomic functions in
-an exercise; that exercise carries a label the sources of this copy of the book do not define, so
-it is referred to here by what it says. -/
+/-- **Exercise `exer:block-from-split`.**  The block split of Example `ex:block`, which the book
+removes from the atomic functions in that exercise. -/
 def blockSplitTerm :
     HTerm Γ (.arrow (.list (.sum A B)) (.prod (.list A) (.list (.prod B (.list A))))) :=
   .lam (.pair ((twiTerm _ A B).app (.var .zero)) ((bsTerm _ A B).app (.var .zero)))
@@ -221,10 +221,8 @@ section Pref
 
 variable (Γ : List HTy) (G : Ty) (grp : Group G.Elt) (hfin : Finite G.Elt)
 
-/-- **Group prefix multiplication, from the product of a list**: the prefix products are the
-products of the non-empty prefixes.  This is the exercise the book refers to when it replaces
-group prefix multiplication by `mult`; that exercise carries a label the sources of this copy of
-the book do not define. -/
+/-- **Exercise `exer:pref-from-mult`.**  Group prefix multiplication, from the product of a list:
+the prefix products are the products of the non-empty prefixes. -/
 def prefTerm : HTerm Γ (.arrow (.list (HTy.ofTy G)) (.list (HTy.ofTy G))) :=
   .lam
     ((HTerm.atom (.concat (HTy.ofTy G))).app

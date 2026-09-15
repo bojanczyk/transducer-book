@@ -307,12 +307,7 @@ RequestProject/
 | `PartD/HOEasy.lean` | the easy direction of Theorem `thm:higher-order-terms`: the translation `Transducers.HTerm.ofPolyTerm` of a polyregular term into a higher-order term |
 | `PartD/HOFewerAux.lean` | the list identities behind Lemma `lem:fewer-atomic`: reversing a list, the two components of the block split and the prefix products, each computed by running over the cuts of the input |
 | `PartD/HOFewer.lean` | Lemma `lem:fewer-atomic`: the terms defining `id`, `diag`, `codiag`, `distr`, `cons`, reverse, the block split and group prefix multiplication from the reduced set of atomic functions, and the replacement `Transducers.HTerm.toSmall` of every atomic function of a term by its definition |
-| `PartD/HOBound.lean` | Definition `def:resource-bound`: the height of a term, the types that appear in it, the resource bounds `Transducers.ResourceBound` and consistency with one |
-| `PartD/HOStr.lean` | the alphabet `Transducers.HSym` and the string representation `Transducers.HTerm.repr` of a higher-order term, with the two places where the book's fifteen-letter alphabet had to be extended |
-| `PartD/HOParse.lean` | Lemma `claim:parsing-is-regular-with-resource-bounds`: the languages `Transducers.termLang` of the induction on the height, the equation `Transducers.termLang_succ` that reads a list term as a Kleene star, and the regularity of the representations of the terms consistent with a resource bound |
-| `PartD/HORed.lean` | substitution for the higher-order terms (renaming, substitution, `Transducers.HTerm.subst1`), the one-step reduction `Transducers.HStep` -- the β-rule and the rules of Figure `fig:reduction-rules` -- and the book's observation that a step changes neither the type nor the semantics of a term (`Transducers.HStep.eval_eq`) |
-| `PartD/HONormal.lean` | Lemma `lem:normal-forms-of-arrow-free-terms`: the value terms `Transducers.HTerm.IsValue`, the classification `Transducers.HTerm.Shape` of the closed terms in normal form -- a value, an abstraction, or an atomic function with too few arguments -- and the equivalence `Transducers.normal_iff_isValue` |
-| `PartD/HOMaj.lean` | Definition `def:majorants`: the majorants `Transducers.Maj` of a type, their order, their cost, the monotonicity `Transducers.Maj.IsMono` that the book requires of them, least upper bounds, the operation `μ + r` and the majorants `⊤_A(m)` |
+| `PartD/HONat.lean` | the arrow-free type functors `Transducers.HTyFun` with higher-order parameters and their liftings, the definition `Transducers.IsNaturalTransformation` of a natural transformation (which carries no `\label` in the book), Claim `claim:atomic-functions-are-natural-transformations` and Claim `claim:functors-applied-to-good` |
 | `PartD/PebEnc.lean` | the string representation of a pair of configurations of a pebble transducer (`Transducers.PebEnc.PairLetter`, `Transducers.PebEnc.pairEnc`) and reachability along runs that never pop below a fixed height (`Transducers.Pebble.RestrReaches`, `Transducers.Pebble.BalancedRun`) |
 | `PartD/PebReachAut.lean`, `PartD/PebReachRun.lean`, `PartD/PebReachSim.lean` | the pebble automaton that reads the string representation of a pair of configurations, rebuilds the source stack bottom-up and simulates the machine, and its correctness (`Transducers.PebReach.reachAut_answers_iff`) |
 | `PartD/PebReach.lean` | Lemma `lem:reachability-pebble-automaton` and Claim `claim:reachability-basic-run` |
@@ -1727,14 +1722,12 @@ among the primes.
 | Definition `def:higher-order-terms` (higher-order polyregular terms) | `Transducers.HAtom`, `Transducers.HTerm`, `Transducers.HTerm.eval`, `Transducers.IsHigherOrderTermFun` | — | `PartD/HOSyntax.lean` |
 | Lemma `lem:fewer-atomic` (the reduced set of atomic functions) | `Transducers.exists_small_higherOrderTerm` | proved (`HOFewerAux.lean` and `HOFewer.lean`) | `PartD/HOFewer.lean` |
 | Theorem `thm:higher-order-terms` (polyregular = higher-order terms) | `Transducers.polyregular_iff_higherOrderTerm` | proved (`HOEasy.lean` for the easy direction; `HOPoly.lean`, `HORel.lean`, `HOFund.lean` and `HOFewer.lean` for the converse) | `PartD/Statements.lean` |
-| Definition `def:resource-bound` (resource bound) | `Transducers.ResourceBound`, `Transducers.ResourceBound.Consistent` | — | `PartD/HOBound.lean` |
-| Lemma `claim:parsing-is-regular-with-resource-bounds` (parsing terms with a resource bound) | `Transducers.parsing_isRegular_of_resourceBound` | **proved** (`HOStr.lean` for the string representation, `HOParse.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`), by the book's induction on the height, with the closure properties of `Common/RegLangClosure.lean` | `PartD/HOParse.lean` |
-| Lemma `lem:reduction-strategy-lemma` (the reduction strategy) | — | not formalised: a step of the book's normalisation proof, which this formalisation replaces (as above) | — |
-| Corollary `cor:normalisation-of-terms-with-resource-bounds` (normalisation with a resource bound) | — | not formalised: a step of the book's normalisation proof, which this formalisation replaces (as above) | — |
-| Lemma `lem:normal-forms-of-arrow-free-terms` (normal forms of arrow-free terms) | `Transducers.normal_iff_isValue` | proved (`HORed.lean` for the reduction rules, `HONormal.lean`) | `PartD/HONormal.lean` |
-| Definition `def:majorants` (majorants) | `Transducers.Maj`, `Transducers.Maj.cost`, `Transducers.Maj.le`, `Transducers.Maj.IsMono` | — | `PartD/HOMaj.lean` |
-| Claim `claim:atomic-functions-majorised` (the atomic functions are majorised) | — | not formalised: a step of the book's normalisation proof, which this formalisation replaces (as above) | — |
-| Claim `claim:every-term-majorised` (every term is majorised) | — | not formalised: a step of the book's normalisation proof, which this formalisation replaces (as above) | — |
+| The Fundamental Lemma and the good functions (no `\label` in the book) | `Transducers.Rel`, `Transducers.HTerm.rel_eval` | proved (`HOPoly.lean`, `HORel.lean`, `HOFund.lean`); no alias, since neither environment carries a `\label` | `PartD/HORel.lean`, `PartD/HOFund.lean` |
+| Lemma `lem:good-functions-are-polyregular-at-arrow-free-types` (good = polyregular at arrow-free types) | `Transducers.Rel.iff_polyregular` | proved (`HOPoly.lean`, `HORel.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`) | `PartD/HORel.lean` |
+| Claim `claim:logical-relations-closed-under-precomposition` (good functions are closed under pre-composition with polyregular ones) | `Transducers.Rel.reindex` | proved (`HORel.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`) | `PartD/HORel.lean` |
+| Natural transformations (no `\label` in the book) | `Transducers.HTyFun`, `Transducers.IsNaturalTransformation` | — | `PartD/HONat.lean` |
+| Claim `claim:atomic-functions-are-natural-transformations` (the atomic functions are natural) | `Transducers.atoms_are_natural` | proved (`HONat.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`) | `PartD/HONat.lean` |
+| Claim `claim:functors-applied-to-good` (the shape of a good function into a functor) | `Transducers.good_of_functor_applied` | proved (`HORel.lean`, `HONat.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`) | `PartD/HONat.lean` |
 
 Supporting files for Part D: `MarkedSquare.lean` (marked squaring and the
 right-to-left automaton showing that it is continuous), the thirteen
@@ -3329,389 +3322,126 @@ by this run contain no `sorry`, no `axiom` and no `native_decide`;
 `tools/tex_numbering.py --check` all pass, and `tools/print_axioms.sh` reports
 that all 262 aliases, the five new ones included, depend only on `propext`,
 `Classical.choice` and `Quot.sound`.
+## Status (Section D.3 as the book now stands: the good functions, naturality and the three exercises)
 
-## Status (Section D.3: the higher-order terms)
+This section supersedes every earlier `## Status` section of this file where they
+disagree.  Section *A functional programming language* has been rewritten by the
+author: the normalisation proof of Theorem `thm:higher-order-terms` is gone from
+the book, replaced wholesale by the *good functions* argument, which is the one
+this formalisation was already using.  Three earlier status sections of this
+file described that normalisation proof and the eight labels it carried; the
+labels no longer exist in the sources, so those sections are removed with them,
+and what is still true of that run is recorded here.
 
-This section supersedes the earlier `## Status` sections of this file where they
-disagree, and records the run that formalised the second half of Section
-*A functional programming language*.
+**The eight labels that are gone.**  The eight labels of the normalisation
+proof -- the definition of a resource bound, the claim that the terms consistent
+with one are parsed by a finite automaton, the reduction-strategy lemma, the
+corollary that normalises a term with a resource bound, the lemma on the normal
+forms of arrow-free terms, the definition of majorants, and the two claims that
+the atomic functions and then every term are majorised -- are no longer labels of
+the book, so `tools/tex_numbering.py --check` failed on all eight.  Their rows in
+`LABELS.md` and in the index above, and their aliases in
+`RequestProject/Labels.lean`, are removed, and this file no longer names them:
+`tools/gen_labels.py --check` rejects a label that the book does not have.  The
+Lean that rendered them was the machinery of the book's old route and formalises
+no result of the book any more, so it is deleted rather than left to compile: the
+six files `PartD/HOBound.lean` (the resource bounds), `PartD/HOStr.lean` (the
+string representation of a term), `PartD/HOParse.lean` (the regularity of the
+language of the terms consistent with a resource bound), `PartD/HORed.lean`
+(substitution and the one-step reduction), `PartD/HONormal.lean` (normal forms)
+and `PartD/HOMaj.lean` (majorants).  Nothing on the live path used them; the only
+file that imported them was `PartD/Statements.lean`, whose imports are updated.
+`Common/RegLangClosure.lean` is kept: it is a general-purpose library about
+regular languages, with nothing in it about transducers or about the deleted
+route.
 
-**What was added.**  Five numbered results of the book, all **proved outright**:
+**What the book now states, and where it is.**  Section D.3 is proved by the
+good functions of the Fundamental Lemma, and the formalisation's `Transducers.Rel`
+is exactly that class, in the Kripke form in which the book states it at arrow
+types -- an arrow-free type `P` of new parameters, a polyregular change of
+parameters `r : P → Q` and a good `σ : P → A`.
 
 | result | Lean name | file |
 | --- | --- | --- |
-| Definition `def:higher-order-types` | `Transducers.HTy`, `Transducers.HTy.Sem`, `Transducers.HTy.ArrowFree` | `PartD/HOSyntax.lean` |
-| Definition `def:higher-order-terms` | `Transducers.HAtom`, `Transducers.HTerm`, `Transducers.HTerm.eval`, `Transducers.IsHigherOrderTermFun` | `PartD/HOSyntax.lean` |
-| Lemma `lem:fewer-atomic` | `Transducers.exists_small_higherOrderTerm` | `PartD/HOFewer.lean` |
-| Theorem `thm:higher-order-terms` | `Transducers.polyregular_iff_higherOrderTerm` | `PartD/Statements.lean` |
-| Definition `def:resource-bound` | `Transducers.ResourceBound`, `Transducers.ResourceBound.Consistent` | `PartD/HOBound.lean` |
+| the Fundamental Lemma (no `\label`) | `Transducers.HTerm.rel_eval` | `PartD/HOFund.lean` |
+| the good functions (no `\label`) | `Transducers.Rel` | `PartD/HORel.lean` |
+| Lemma `lem:good-functions-are-polyregular-at-arrow-free-types` | `Transducers.Rel.iff_polyregular` | `PartD/HORel.lean` |
+| Claim `claim:logical-relations-closed-under-precomposition` | `Transducers.Rel.reindex` | `PartD/HORel.lean` |
+| a natural transformation (no `\label`) | `Transducers.HTyFun`, `Transducers.IsNaturalTransformation` | `PartD/HONat.lean` |
+| Claim `claim:atomic-functions-are-natural-transformations` | `Transducers.atoms_are_natural` | `PartD/HONat.lean` |
+| Claim `claim:functors-applied-to-good` | `Transducers.good_of_functor_applied` | `PartD/HONat.lean` |
 
-together with the eight files `PartD/HOSyntax.lean`, `PartD/HOPoly.lean`,
-`PartD/HORel.lean`, `PartD/HOFund.lean`, `PartD/HOEasy.lean`,
-`PartD/HOFewerAux.lean`, `PartD/HOFewer.lean` and `PartD/HOBound.lean`, which are
-listed in the table of files above.
+The first two rows and the fifth carry **no `\label` in the book** -- the
+Fundamental Lemma, the definition of the good functions and the definition of a
+natural transformation are all unlabelled environments -- so they have no alias
+in `RequestProject/Labels.lean`, and no placeholder tag is invented for them.
+The other four are aliased, and `Transducers.HTerm.rel_eval` and
+`Transducers.polyregular_iff_higherOrderTerm` keep the statements they had.
 
-**How Theorem `thm:higher-order-terms` is proved.**  The easy direction is the
-translation of a polyregular term of Definition `def:polyregular-terms` into a
-higher-order term (`Transducers.HTerm.ofPolyTerm`, `PartD/HOEasy.lean`), so that
-it composes with Theorem `thm:polyregular-terms`.
+**The new file `PartD/HONat.lean`.**  The book's definition of a natural
+transformation is about families of functions `F(A₁,…,Aₙ) → G(A₁,…,Aₙ)` whose
+domain and co-domain are expressions built from type parameters by the
+arrow-free type constructors.  `Transducers.HTyFun` is the syntax of such an
+expression -- type variables `var i` indexed by `ℕ`, a leaf `const C` for a fixed
+arrow-free type, and `1`, `×`, `+`, `*` -- `HTyFun.app` applies it to a valuation
+`ℕ → HTy` of the variables by *higher-order* types, and `HTyFun.map` is the
+lifting `F(ρ₁,…,ρₙ)`.  `Transducers.IsNaturalTransformation F G f` is the
+commuting square, for functions `ρᵢ` that are required to be neither good nor
+polyregular.  This mirrors `Transducers.Exercises.TyFun` of
+`Exercises/CombNatural.lean`, the same notion for the exercises of Section
+*Combinators*, and follows its convention of `ℕ`-indexed variables and valuations;
+it is a separate definition because the parameters here are higher-order types,
+which the Part C version cannot express.  The leaf `const C` is what lets the two
+atomic functions that are families over a fixed group type, `pref` and `mult`,
+be covered by the claim.
 
-The converse — that the higher-order features buy no expressive power — is
-**not** proved along the route of the book, and this is the one deviation of
-this run.  The book normalises a term under a resource bound (Definition
-`def:resource-bound` through Claim `claim:every-term-majorised`) and reads the
-polyregular function off the normal form.  Here the converse is proved instead
-by a **Kripke logical relation over the polyregular functions**,
-`Transducers.Rel` (`PartD/HORel.lean`):
+`Transducers.atoms_are_natural` states naturality for each atomic function of
+`Transducers.HAtom` whose type has that shape -- all of them except `map` and
+`either`, whose arguments are functions, so that the book's definition does not
+apply to them; the book treats those two in the combinator case of the
+Fundamental Lemma instead.  `Transducers.good_of_functor_applied` is the
+equivalence of the claim: a good function into `F(A₁,…,Aₙ)` is exactly a
+polyregular function into `F(P₁,…,Pₙ)` followed by the lifting of good functions
+`Pᵢ → Aᵢ`.  Its proof is the book's induction on `F`; the step where two
+factorisations have to be merged into one uses the co-pairing of good functions
+(`Transducers.Rel.copair`, from `Transducers.Rel.glue` and
+`Transducers.Rel.reindex`), which is the step the book performs by hand in the
+case of the list constructor.
 
-* a value of an arrow-free type, indexed by a parameter type `P`, is related to
-  itself exactly when the resulting function `P → A` is polyregular under string
-  representation (`Transducers.Rel.iff_polyregular`);
-* a family of functions of type `A → B` is related when, after reindexing along
-  any polyregular change of parameter, it takes related arguments to related
-  results — the Kripke, or parameter-indexed, clause, which is what makes the
-  relation survive abstraction;
-* the fundamental lemma `Transducers.HTerm.rel_eval` (`PartD/HOFund.lean`) then
-  says that every term with the reduced set of atomic functions of Lemma
-  `lem:fewer-atomic` is related to its own semantics, by induction on the term,
-  and at an arrow-free type this is exactly the conclusion of the theorem.
+**The three exercises.**  `higher-order.tex` now labels the three exercises that
+Lemma `lem:fewer-atomic` refers to, and each says that one atomic function
+dropped by that lemma is definable from the ten that remain.  They are stated in
+`RequestProject/Exercises/HOAtomsFromSplit.lean` and listed in `EXERCISES.md`;
+all three are proved outright, from the terms of `PartD/HOFewer.lean` that the
+proof of Lemma `lem:fewer-atomic` already used:
 
-The step of the induction that carries the mathematics is the atomic function
-`map`: mapping over a list a function that also reads a parameter has to be
-polyregular, which is `Transducers.IsPolyregularUnderRepr.mapParam`
-(`PartD/HOPoly.lean`), built from the atomic function `split` of Definition
-`def:polyregular-terms` by distributing the parameter over the entries of the
-list.  Lemma `lem:fewer-atomic` is what lets the induction consider only ten
-atomic functions.
-
-The consequence for the index above is that the seven environments of the book
-that belong to the normalisation proof — Lemma
-`claim:parsing-is-regular-with-resource-bounds`, Lemma
-`lem:reduction-strategy-lemma`, Corollary
-`cor:normalisation-of-terms-with-resource-bounds`, Lemma
-`lem:normal-forms-of-arrow-free-terms`, Definition `def:majorants`, Claim
-`claim:atomic-functions-majorised` and Claim `claim:every-term-majorised` — are
-**not formalised**.  They are steps of a proof that this formalisation does not
-carry out, not results it fails to establish: the theorem they lead to is
-proved.  Definition `def:resource-bound` itself *is* formalised
-(`PartD/HOBound.lean`), together with the height of a term, the types that
-appear in it and the observation that every term is consistent with some
-resource bound; what is missing is everything the book then proves about
-resource bounds, which rests on a reduction relation with capture-avoiding
-substitution, on a string representation of terms over a fifteen-letter
-alphabet, and on a strong normalisation argument by majorants.  Each of those is
-a development in its own right, and none of them is needed for the theorem as
-proved here — that is the precise reason they are absent, not a partial proof
-left open.
-
-**Three renderings that had to be chosen.**  All three are recorded in the
-docstring of `PartD/HOSyntax.lean` as well.
-
-* *Variables.*  The book fixes a set of variables, each hard-wired with a type.
-  The formalisation uses De Bruijn indices throughout (`Transducers.HVar`, with
-  a context `Γ : List HTy`), which is the standard intrinsically typed
-  presentation of the same language; the terms of the empty context are the
-  closed terms of the book.
-* *List terms.*  The book's constructor takes `n` terms at once and builds
-  `[a₁,…,aₙ]`; here the same terms are the cons-chains of
-  `Transducers.HTerm.nil` and `Transducers.HTerm.cons`.
-* *Group types.*  The atomic functions `pref` and `mult` are available for
-  arrow-free group types only: for a type `G` of Definition `def:types` with a
-  finite group structure on the set it represents.  A group structure on a set
-  of functions has no meaning in the book, where the group is always a concrete
-  finite group; every other atomic function is available at all higher-order
-  types.
-
-**Two labels the sources of this copy do not have.**  The book refers, in the
-paragraph before Lemma `lem:fewer-atomic`, to two exercises: one that eliminates
-the block split of Example `ex:block` from the atomic functions, and one that
-replaces group prefix multiplication by the product of a list.  Neither label is
-defined in the LaTeX sources or in `main.aux` available here, so the two terms
-that solve them (`Transducers.HTerm.blockSplitTerm` and
-`Transducers.HTerm.prefTerm`, both in `PartD/HOFewer.lean`) are documented by
-what they say rather than by a label.
-
-**Counts.**  The dictionary of `LABELS.md` now has **132** theorem-like
-environments, the twelve of this section included.  Of them, 27 definitions are
-formalised, **94 results are proved outright**, **none is proved from a
-hypothesis**, and 11 are not formalised: the three of the earlier status
-sections (Definition `def:rational-recognisable-subsets`, Conjecture
-`conj:regular-via-weighted-automata`, Claim
-`nolabel:claim-representations-are-a-regular-language`), the withdrawn Theorem
-`nolabel:thm-fo-transduction-into-primes`, and the seven steps of the book's
-normalisation proof listed above.
-
-**Verification.**  `lake build` succeeds with no errors.  The eight files added
-by this run contain no `sorry`, no `axiom` and no `native_decide`;
-`tools/gen_labels.py --check`, `tools/decl_files.py --check` and
-`tools/tex_numbering.py --check` all pass.  `#print axioms` on
-`Transducers.polyregular_iff_higherOrderTerm`,
-`Transducers.exists_small_higherOrderTerm`,
-`Transducers.isHigherOrderTermFun_of_isPolyregularTermFun`,
-`Transducers.isPolyregularUnderRepr_of_smallHigherOrderTermFun` and
-`Transducers.HTerm.rel_eval` reports only `propext`, `Classical.choice`,
-`Quot.sound`, and `tools/print_axioms.sh` reports that all 273 aliases of
-`RequestProject/Labels.lean`, the eleven new ones included, depend only on those
-three.
-
-## Status (Section D.3: the reduction rules, normal forms and majorants)
-
-This section supersedes the previous one where they disagree.  It records the
-run that went back to the machinery of the book's own proof of Theorem
-`thm:higher-order-terms` — the normalisation argument with resource bounds — and
-formalised the part of it that could be landed.
-
-**What was added.**  Three files.
-
-| file | contents |
+| exercise | Lean name |
 | --- | --- |
-| `PartD/HORed.lean` | substitution for the higher-order terms and the one-step reduction `Transducers.HStep` |
-| `PartD/HONormal.lean` | Lemma `lem:normal-forms-of-arrow-free-terms` |
-| `PartD/HOMaj.lean` | Definition `def:majorants` |
+| `exer:reverse-from-split` | `Transducers.Exercises.reverse_from_split` |
+| `exer:block-from-split` | `Transducers.Exercises.block_from_split` |
+| `exer:pref-from-mult` | `Transducers.Exercises.pref_from_mult` |
 
-**The reduction rules.**  `Transducers.HStep` is the reduction of Section
-*Expressive completeness*: the β-rule, the rules of Figure `fig:reduction-rules`
-for the reduced set of atomic functions of Lemma `lem:fewer-atomic` (which the
-book fixes for the whole of that section), and the congruence rules that let a
-rule be applied to a subterm.  The β-rule needs capture-avoiding substitution,
-which for the intrinsically typed De Bruijn terms of `PartD/HOSyntax.lean` is
-the usual pair of recursions — `Transducers.HTerm.rename` and
-`Transducers.HTerm.subst`, with `Transducers.HTerm.subst1` for the β-rule.  The
-book's observation that a reduction step changes neither the type nor the
-semantics of a term is `Transducers.HStep.eval_eq`; the type is preserved by
-construction, `HStep` relating two terms of the same type in the same context.
+The book phrases them for polyregular terms; they are stated here for the
+higher-order terms with the reduced set of atomic functions, which is the
+setting in which the book appeals to them.  The references in `PartD/HOFewer.lean` and
+`PartD/HOFewerAux.lean` to the old label of the first of them, which the book has
+since renamed, are updated to `exer:reverse-from-split`.
 
-Two conventions in rendering Figure `fig:reduction-rules`, both recorded in the
-docstring of `PartD/HORed.lean`.  A rule whose premise is that an argument *is*
-a list term — those for `concat`, `split` and `map` — is stated for an argument
-of the form `Transducers.HTerm.mkList l`, the cons-chain built from a Lean list
-of terms; the rules for `uncons` look only at the head constructor of their
-argument, which is what the book's `uncons []` and `uncons [a₁,…,aₙ]` say.  The
-group values that the rule for `mult` requires are
-`Transducers.HTerm.ofValue G v`, the term that represents the element `v` of an
-arrow-free type, which is the book's remark that each group element has a unique
-representation as a term.
-
-**Lemma `lem:normal-forms-of-arrow-free-terms` is proved outright**, as
-
-```
-theorem Transducers.normal_iff_isValue {H : HTy} (hH : H.ArrowFree)
-    (t : HTerm [] H) (hsm : t.Small) : t.Normal ↔ t.IsValue
-```
-
-The hypothesis `hsm` is the standing assumption of Section *Expressive
-completeness* that the atomic functions are the reduced set of Lemma
-`lem:fewer-atomic`.  It cannot be dropped: an atomic function outside that set
-has no reduction rule, so `diag a` would be a closed normal term of product type
-that is not a pair.  The book proves the lemma by "an inspection of the shapes
-of closed terms in normal form", and that inspection is
-`Transducers.HTerm.Shape`: a closed term of the reduced language in normal form
-is a value, an abstraction, or an atomic function applied to fewer arguments
-than its rule requires, and the last two have arrow type.  `Shape` records the
-classification hereditarily in the value cases, which is what makes the
-induction go through — the argument of `concat`, of `split`, of `map` and of
-`mult` has to be recognised as a list term entry by entry before the rule
-applies to it, and the argument of `mult` as a list of group values.
-
-One point of Lean technique is worth recording, since it shapes the file.  The
-type index of the rule for `mult` is `HTy.ofTy G`, which is not a type
-constructor applied to arguments, so `cases` on a hypothesis `HStep t t'` fails
-whenever the type of `t` *is* given by a constructor: the equation
-`HTy.one = HTy.ofTy G` cannot be solved.  The reduction rules are therefore
-inverted through `Transducers.HTerm.HeadCoproj`, a predicate on the head of a
-term, rather than by a case distinction on its type.
-
-**Definition `def:majorants` is formalised.**  `Transducers.Maj A` is the set of
-majorants of a type, with `Transducers.Maj.le` for the order,
-`Transducers.Maj.cost` for `|μ|`, `Transducers.Maj.join` for `μ ∨ ν`,
-`Transducers.Maj.add` for `μ + r` and `Transducers.Maj.top` for `⊤_A(m)`.  The
-monotonicity that the book requires of a majorant of arrow type is carried by
-the separate predicate `Transducers.Maj.IsMono`, so that the underlying set and
-the order on it are not defined by a mutual recursion; the book's `Maj A` is the
-sub-collection that `IsMono` cuts out, and nothing is lost.  Everything the book
-asserts about these data is proved: the order is a preorder, the cost function
-is monotone, every two majorants have a least upper bound, `|μ + r| = |μ| + r`,
-and `⊤_A(m)` is a majorant, is monotone in `m` and has cost `m`.
-
-**What is still not formalised, and why.**  Five environments of the book, all
-of them steps of the normalisation proof:
-
-* Lemma `claim:parsing-is-regular-with-resource-bounds` — that the string
-  representations of the terms consistent with a resource bound form a regular
-  language.  This needs a string representation of closed terms over the
-  fifteen-letter alphabet `F` of the book, written with De Bruijn indices and
-  with parenthesised types, and a unique-readability argument for it: the
-  language has to be identified with the one built, by induction on the height
-  bound, from finite unions, concatenations and a Kleene star for list terms.
-  Neither the representation nor the parsing argument is present here.
-* Lemma `lem:reduction-strategy-lemma` — the outermost parallel strategy, with
-  its termination item and its one-step item.  Both halves are out of reach at
-  present.  The termination item is the majorant argument, and the book's own
-  proof of it is incomplete: the head expansion property (`μ` majorises
-  `b[x ↦ u]` implies `μ+1` majorises `(λx.b) u`) is taken for granted there, in
-  a marked `\issue`, with the remark that the interaction between the parallel
-  strategy and substitution has to be settled before the proof goes into the
-  book.  The one-step item asks for a for-transducer that performs one parallel
-  step of β-reduction, and of every rule of Figure `fig:reduction-rules`, on the
-  string representation of a term; it depends on the representation that the
-  previous item is about.
-* Corollary `cor:normalisation-of-terms-with-resource-bounds` — an immediate
-  consequence of the previous lemma, and unavailable for that reason alone.
-* Claim `claim:atomic-functions-majorised` and Claim `claim:every-term-majorised`
-  — the two steps of the majorant argument.  Both are stated in terms of the
-  relation "`μ` majorises `t`", which is defined from the outermost parallel
-  strategy and the step count `steps(t)`, so they presuppose the strategy of
-  Lemma `lem:reduction-strategy-lemma`; and Claim `claim:every-term-majorised`
-  uses the head expansion property that the book leaves unproved.
-
-None of the five is needed for Theorem `thm:higher-order-terms`, which is proved
-by the logical relation of `PartD/HORel.lean`; they are steps of the book's
-alternative route, and the two items above are what stands in the way of each.
-
-**Counts.**  The dictionary of `LABELS.md` has **132** theorem-like
-environments.  Of them, **28 definitions are formalised**, **95 results are
-proved outright**, **none is proved from a hypothesis**, and **9 are not
-formalised**: Definition `def:rational-recognisable-subsets`, Conjecture
+**Counts.**  The dictionary of `LABELS.md` has **128** theorem-like environments,
+the eight removed ones gone and the four new ones of Section D.3 included.  Of
+them, **26 definitions are formalised**, **98 results are proved outright**,
+**none is proved from a hypothesis**, and **4 are not formalised**: Definition
+`def:rational-recognisable-subsets`, Conjecture
 `conj:regular-via-weighted-automata`, Claim
-`nolabel:claim-representations-are-a-regular-language`, the withdrawn Theorem
-`nolabel:thm-fo-transduction-into-primes`, and the five steps of the
-normalisation proof listed above.
+`nolabel:claim-representations-are-a-regular-language` and the withdrawn Theorem
+`nolabel:thm-fo-transduction-into-primes`.  Three numbered environments of
+Section D.3 -- the Fundamental Lemma, the good functions and the definition of a
+natural transformation -- are formalised but carry no label, so they are not in
+the dictionary at all.
 
-**Verification.**  `lake build` succeeds with no errors.  The three files added
-by this run contain no `sorry`, no `axiom` and no `native_decide`;
-`tools/gen_labels.py --check`, `tools/decl_files.py --check` and
-`tools/tex_numbering.py --check` all pass.  `#print axioms` on
-`Transducers.normal_iff_isValue` and on `Transducers.HStep.eval_eq` reports only
-`propext`, `Classical.choice`, `Quot.sound`, and `tools/print_axioms.sh` reports
-that all 278 aliases of `RequestProject/Labels.lean`, the five new ones
-included, depend only on those three.
-
-## Status (Section D.3: parsing terms with a resource bound)
-
-This section supersedes the previous ones where they disagree.  It records the
-run that formalised **Lemma `claim:parsing-is-regular-with-resource-bounds`**,
-the first of the five steps of the book's normalisation proof that were still
-missing.
-
-**What was added.**  Three files.
-
-| file | contents |
-| --- | --- |
-| `Common/RegLangClosure.lean` | the closure properties of the regular languages that a regular expression needs, and that Mathlib does not have |
-| `PartD/HOStr.lean` | the alphabet `Transducers.HSym` and the string representation `Transducers.HTerm.repr` of a higher-order term |
-| `PartD/HOParse.lean` | Lemma `claim:parsing-is-regular-with-resource-bounds` |
-
-**The closure properties.**  Mathlib has the Myhill-Nerode theorem
-(`Language.isRegular_iff_finite_range_leftQuotient`) and closure under
-complement, union and intersection, but not under concatenation or the Kleene
-star.  `Transducers.isRegular_mul` and `Transducers.isRegular_kstar` prove those
-two, and `Transducers.isRegular_singleton`, `Transducers.isRegular_zero`,
-`Transducers.isRegular_of_subset_finite`, `Transducers.isRegular_union`,
-`Transducers.isRegular_biUnion_finset`, `Transducers.isRegular_concat` and
-`Transducers.isRegular_prop_and` are the small change that goes with them.  Each
-proof is the same computation: the left quotient of the compound language at a
-word `x` is written as a fixed function of a bounded amount of information about
-`x` — for `L * M`, the pair consisting of the left quotient of `L` at `x` and
-the *set* of left quotients of `M` at the suffixes of `x` that `L` can reach;
-for `L∗`, the set of left quotients of `L` at the suffixes of `x` that `L∗` can
-reach, together with the truth value of `x ∈ L∗` — and the Myhill-Nerode
-criterion then bounds the number of left quotients.  The file is
-general-purpose: there is nothing about transducers in it.
-
-**The string representation.**  `Transducers.HTerm.repr` writes a term over the
-finite alphabet `Transducers.HSym`.  Two deviations from the book's fifteen
-letters were necessary, and both are recorded in the docstring of
-`PartD/HOStr.lean`.
-
-* The book's alphabet has no letter for `fst`, `snd`, `uncons`, `concat`,
-  `split`, `mult`, `map` or `either`, and a term cannot be written without
-  naming the atomic function it uses; `HSym` therefore has one letter for each
-  of the eighteen atomic functions of `Transducers.HAtom`.  A letter names the
-  atomic function only and not the types it is instantiated at, so the
-  representation is not injective across types, and the two atomic functions
-  that carry a group structure are written without it.  This costs nothing: the
-  lemma is about the *set* of strings that represent a consistent term, that is,
-  about the image of the representation.
-* Application, `nil` and `cons` are each written with a letter of their own, in
-  prefix position, because the syntax of `PartD/HOSyntax.lean` builds a list term
-  one entry at a time and `cons` may be applied to a term of list type that is
-  not a list term.  The cons-chain `cons a₁ (⋯ (cons aₚ nil))`, which is the
-  book's list term `[a₁,…,aₚ]`, is written `⟨cons⟩ a₁ ⋯ ⟨cons⟩ aₚ ⟨nil⟩`.  Pairs,
-  the unit term and the types are written as in the book, always with
-  parentheses.
-
-**Lemma `claim:parsing-is-regular-with-resource-bounds` is proved outright**, as
-
-```
-theorem Transducers.parsing_isRegular_of_resourceBound (R : ResourceBound) :
-    Language.IsRegular
-      {w : List HSym | ∃ (H : HTy) (t : HTerm [] H), R.Consistent t ∧ t.repr = w}
-```
-
-by the book's induction on the height.  `Transducers.termLang 𝒜 Γ n A` is the
-language of the representations of the terms of type `A` in the context `Γ`
-whose height is at most `n` and whose types are all in `𝒜`, and
-`Transducers.termLang_isRegular` proves all of them regular by induction on `n`,
-uniformly in `Γ` and `A`: no finiteness of the set of contexts is needed,
-because each step uses only finitely many languages of the previous level.  The
-step is the equality `Transducers.termLang_succ`,
-
-```
-termLang 𝒜 Γ (n+1) A = (consEntry 𝒜 Γ n A)∗ * headLang 𝒜 Γ n A,
-```
-
-where `headLang` collects the terms that are not a `cons` — a variable, an
-atomic function, an application whose function part has one of the finitely many
-types of `𝒜`, or the constructor that belongs to the type — and all of whose
-immediate subterms therefore have height at most `n`.  The star is the one place
-where it is needed: a cons-chain has the height of the book's list term, one
-more than the heights of its entries, so its tail does *not* have smaller height
-and the recursion cannot go through it.  The finitely many types over which the
-application case ranges are exactly the arrow types of `𝒜`, which is where the
-resource bound earns its keep, and the language of a resource bound is the union
-over the finitely many types of `𝒜` of the languages of the closed terms of that
-type.
-
-**What is still not formalised, and why.**  Four environments of the book, all
-of them steps of the normalisation proof; the obstacle is the same as before for
-each, minus the string representation, which now exists.
-
-* Lemma `lem:reduction-strategy-lemma` — the outermost parallel strategy, with
-  its termination item and its one-step item.  The termination item is the
-  majorant argument, and the book's own proof of it is incomplete: the head
-  expansion property (`μ` majorises `b[x ↦ u]` implies `μ+1` majorises
-  `(λx.b) u`) is taken for granted there, in a marked `\issue`, with the remark
-  that the interaction between the parallel strategy and substitution has to be
-  settled before the proof goes into the book.  Settling it needs the
-  substitution lemma for parallel reduction and a sequentialisation of
-  application spines, and the claims below then have to be redone for whatever
-  strategy comes out of that.  The one-step item asks for a for-transducer that
-  performs, on the string representation, one parallel step of β-reduction with
-  De Bruijn index arithmetic and of every rule of Figure `fig:reduction-rules`.
-* Corollary `cor:normalisation-of-terms-with-resource-bounds` — an immediate
-  consequence of the previous lemma, and unavailable for that reason alone.
-* Claim `claim:atomic-functions-majorised` and Claim `claim:every-term-majorised`
-  — the two steps of the majorant argument.  Both are stated in terms of the
-  relation "`μ` majorises `t`", which is defined from the outermost parallel
-  strategy and the step count `steps(t)`, so they presuppose the strategy of
-  Lemma `lem:reduction-strategy-lemma`; and Claim `claim:every-term-majorised`
-  uses the head expansion property that the book leaves unproved.
-
-None of the four is needed for Theorem `thm:higher-order-terms`, which is proved
-by the logical relation of `PartD/HORel.lean`.
-
-**Counts.**  The dictionary of `LABELS.md` has **132** theorem-like
-environments.  Of them, **28 definitions are formalised**, **96 results are
-proved outright**, **none is proved from a hypothesis**, and **8 are not
-formalised**: Definition `def:rational-recognisable-subsets`, Conjecture
-`conj:regular-via-weighted-automata`, Claim
-`nolabel:claim-representations-are-a-regular-language`, the withdrawn Theorem
-`nolabel:thm-fo-transduction-into-primes`, and the four steps of the
-normalisation proof listed above.
-
-**Verification.**  `lake build` succeeds with no errors.  The three files added
-by this run contain no `sorry`, no `axiom` and no `native_decide`;
+**Verification.**  `lake build` succeeds with no errors.  The two files added by
+this run contain no `sorry`, no `axiom` and no `native_decide`;
 `tools/gen_labels.py --check`, `tools/decl_files.py --check` and
 `tools/tex_numbering.py --check` all pass, and `tools/print_axioms.sh` reports
-that all 279 aliases of `RequestProject/Labels.lean`, the new one included,
-depend only on `propext`, `Classical.choice`, `Quot.sound`.
+that every alias of `RequestProject/Labels.lean` depends only on `propext`,
+`Classical.choice`, `Quot.sound`.

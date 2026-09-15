@@ -15,10 +15,11 @@ amount of information about `x`, and the criterion then bounds the number of lef
 * `Transducers.isRegular_singleton`, `Transducers.isRegular_zero`,
   `Transducers.isRegular_biUnion_finset` -- singletons, the empty language, and a finite union.
 
-These are used by Lemma `claim:parsing-is-regular-with-resource-bounds`
-(`RequestProject/PartD/HOParse.lean`), where the language of the string representations of the
-terms consistent with a resource bound is built up, by induction on the height, out of finite
-languages, unions, concatenations and one star.
+Nothing in the project uses them at present: they were written for the parsing step of the
+normalisation proof of Theorem `thm:higher-order-terms`, which the book has since replaced by the
+good-functions argument, so the file that used them is gone.  They are kept because they are a
+self-contained addition to what Mathlib has about regular languages, and are stated for arbitrary
+languages over a finite alphabet.
 
 Unions are written as set-builders rather than with `∪` and `⋃`, because `Language α` carries its
 own algebraic structure and the `Set` operations do not apply to it directly.

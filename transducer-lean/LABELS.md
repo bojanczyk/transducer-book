@@ -31,6 +31,17 @@ regular language (C.5.6) carry no `\label` in the sources, so the tags are
 placeholders chosen here, and their numbers are read off from the labelled
 environments that surround them rather than from `main.aux`.
 
+Three numbered environments of Section *A functional programming language* are
+missing from the dictionary, and the numbers D.3.7, D.3.8 and D.3.11 are
+therefore skipped: the Fundamental Lemma (D.3.7), the definition of the *good
+functions* (D.3.8) and the definition of a *natural transformation* (D.3.11)
+carry no `\label` in the sources, so they have no name to be referred to by and
+no alias in `RequestProject/Labels.lean`.  All three are formalised --
+`Transducers.HTerm.rel_eval` (`PartD/HOFund.lean`), `Transducers.Rel`
+(`PartD/HORel.lean`) and `Transducers.IsNaturalTransformation`
+(`PartD/HONat.lean`) -- and `THEOREMS.md` records them; no placeholder tag is
+invented for them.
+
 The one row with no number is the withdrawn Theorem
 `nolabel:thm-fo-transduction-into-primes`: the book no longer states it as a
 numbered environment, only as an unnumbered paragraph at the end of `logic.tex`,
@@ -196,14 +207,10 @@ generator working from the tables alone would delete them.
 | D.3.4 | definition | `def:higher-order-terms` | `higher-order.tex` |
 | D.3.5 | lemma | `lem:fewer-atomic` | `higher-order.tex` |
 | D.3.6 | theorem | `thm:higher-order-terms` | `higher-order.tex` |
-| D.3.7 | definition | `def:resource-bound` | `higher-order.tex` |
-| D.3.8 | lemma | `claim:parsing-is-regular-with-resource-bounds` | `higher-order.tex` |
-| D.3.9 | lemma | `lem:reduction-strategy-lemma` | `higher-order.tex` |
-| D.3.10 | corollary | `cor:normalisation-of-terms-with-resource-bounds` | `higher-order.tex` |
-| D.3.11 | lemma | `lem:normal-forms-of-arrow-free-terms` | `higher-order.tex` |
-| D.3.12 | definition | `def:majorants` | `higher-order.tex` |
-| D.3.13 | claim | `claim:atomic-functions-majorised` | `higher-order.tex` |
-| D.3.14 | claim | `claim:every-term-majorised` | `higher-order.tex` |
+| D.3.9 | lemma | `lem:good-functions-are-polyregular-at-arrow-free-types` | `higher-order.tex` |
+| D.3.10 | claim | `claim:logical-relations-closed-under-precomposition` | `higher-order.tex` |
+| D.3.12 | claim | `claim:atomic-functions-are-natural-transformations` | `higher-order.tex` |
+| D.3.13 | claim | `claim:functors-applied-to-good` | `higher-order.tex` |
 
 Sections and subsections:
 
@@ -253,5 +260,6 @@ Sections and subsections:
 | D.2.1 | subsection | *Continuity* | `polyregular-pebble.tex` |
 | D.2.2 | subsection | *Equivalence with for-transducers* | `polyregular-pebble.tex` |
 | D.3 | section | *A functional programming language* | `higher-order.tex` |
-| D.3.1 | subsection | *Higher-order polyregular terms* | `higher-order.tex` |
-| D.3.2 | subsection | *Expressive completeness* | `higher-order.tex` |
+| D.3.1 | subsection | *Polyregular terms* | `higher-order.tex` |
+| D.3.2 | subsection | *Higher-order polyregular terms* | `higher-order.tex` |
+| D.3.3 | subsection | *Expressive completeness* | `higher-order.tex` |

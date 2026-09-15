@@ -5,12 +5,11 @@ Part D, Section *A functional programming language*: the combinatorial identitie
 Lemma `lem:fewer-atomic` says that the atomic functions `id`, `diag`, `codiag`, `distr`, `cons`,
 `reverse`, the block split of Example `ex:block` and group prefix multiplication are redundant in
 the presence of the higher-order features.  For the first five the book gives the defining terms,
-and they are immediate; the last three are Example `ex:reverse-from-split` and the two exercises
-the book refers to -- eliminating the block split, and replacing group prefix multiplication by the
-product of a list -- whose labels the sources of this copy of the book do not define; each of them
-computes its output by running over all the ways of cutting the input list into a prefix and a
-suffix.  This file proves the three identities that those computations rest on, as statements
-about lists:
+and they are immediate; the last three are the three exercises the book refers to -- Exercise
+`exer:reverse-from-split`, Exercise `exer:block-from-split` and Exercise `exer:pref-from-mult` --
+and each of them computes its output by running over all the ways of cutting the input list into a
+prefix and a suffix.  This file proves the three identities that those computations rest on, as
+statements about lists:
 
 * `Transducers.flatten_headAsList_splits` -- reversing a list;
 * `Transducers.twiFun_eq` and `Transducers.bsFun_eq` -- the two components of the block split, the
@@ -82,7 +81,7 @@ theorem flatten_headAsList_splitsRev (l : List X) :
       rw [flatten_map_splitsRev_cons (fun z => headAsList z.2) a l]
       simpa using ih
 
-/-- **Example `ex:reverse-from-split`.**  Running over the cuts of a list in the order of the
+/-- **Exercise `exer:reverse-from-split`.**  Running over the cuts of a list in the order of the
 atomic function `split` -- the prefix getting shorter -- and keeping the first entry of every
 suffix, gives the reverse of the list. -/
 theorem flatten_headAsList_splits (l : List X) :

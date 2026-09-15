@@ -292,6 +292,14 @@ all eleven are aliased in `RequestProject/Labels.lean`.
 | Exercise `exer:for-transducer-continuity-nonelementary` (the preimage nfa can be non-elementary) | `for_transducer_continuity_nonelementary` (with `PolyBounded`, `progSize`) | proved, in the size sense (running time is not modelled) |
 | Exercise `exer:forward-for-transducer` (forward for-transducers = marked squaring and rational functions) | `forwardFor_iff_ratMarkedSquare` (with `ForwardProg`, `IsForwardFor`, `RatMarkedFam`, `IsRatMarkedSquare`, `isForwardFor_of_isRationalFun`, `isForwardFor_markedSquare`) | proved |
 
+### A functional programming language (`higher-order.tex`)
+
+| Book | Lean | Status |
+| --- | --- | --- |
+| Exercise `exer:reverse-from-split` (`reverse` is definable without itself, from `split`) | `reverse_from_split` (with `HTerm.reverseTerm`, `flatten_headAsList_splits`) | proved |
+| Exercise `exer:block-from-split` (the block split of Example `ex:block` is definable without itself and without `reverse`) | `block_from_split` (with `HTerm.blockSplitTerm`, `twiFun_eq`, `bsFun_eq`) | proved |
+| Exercise `exer:pref-from-mult` (group prefix multiplication is definable from the product `mult` of a list) | `pref_from_mult` (with `HTerm.prefTerm`, `prefFun_eq`) | proved |
+
 Every exercise of these chapters carries a `\label` in the sources, so every
 formalised one is aliased in `RequestProject/Labels.lean`.
 

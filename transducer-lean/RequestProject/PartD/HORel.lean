@@ -1,19 +1,14 @@
 /-
-Part D, Section *A functional programming language*: the logical relation that proves the hard
-direction of Theorem `thm:higher-order-terms`.
+Part D, Section *A functional programming language*: the *good functions* of the Fundamental
+Lemma, which prove the hard direction of Theorem `thm:higher-order-terms`.
 
-The book proves that direction by normalising terms: closed terms consistent with a resource bound
-are parsed by a finite automaton (Lemma `claim:parsing-is-regular-with-resource-bounds`), a
-reduction strategy performs one parallel reduction step by a polyregular function on the string
-representations (Lemma `lem:reduction-strategy-lemma`), the strategy terminates in a bounded number
-of steps (Claim `claim:every-term-majorised`), and the normal form of a term of arrow-free type is
-a value (Lemma `lem:normal-forms-of-arrow-free-terms`).
-
-The formalisation replaces the normalisation argument by the other standard tool for the same job,
-a *logical relation* over the polyregular functions -- the semantic counterpart of that syntactic
-argument, and the one that is comfortable to carry out in a proof assistant.  For a higher-order
-type `H`, an arrow-free type `P` of Definition `def:types` (the *parameter*, playing the role of
-the free variables of a term) and a family
+The book proves that direction by the Fundamental Lemma: for every arrow-free parameter type `Q`
+and higher-order type `A` one identifies a class of *good* functions of type `Q → A`, which at
+arrow-free types are exactly the polyregular ones, and which the parametrised denotation of every
+term preserves.  That class is a *logical relation* over the polyregular functions, in the Kripke
+form in which the book states it at arrow types -- a change of parameters `r : P → Q` and a good
+argument `σ : P → A`.  For a higher-order type `H`, an arrow-free type `P` of Definition
+`def:types` (the *parameter*, playing the role of the free variables of a term) and a family
 
     g : P → H
 
@@ -39,6 +34,11 @@ is polyregular under string representation).  The last one is where the map with
 `RequestProject/PartD/HOPoly.lean` is used, and it is what makes the whole argument work: the
 relation is *equivalent* to polyregularity at arrow-free types, so the theorem follows by
 instantiating the fundamental lemma at the identity family.
+
+Two of these are numbered results of the book: `Transducers.Rel.iff_polyregular` is Lemma
+`lem:good-functions-are-polyregular-at-arrow-free-types`, and `Transducers.Rel.reindex` is Claim
+`claim:logical-relations-closed-under-precomposition`.  The definition of a good function itself
+carries no `\label` in the book, so it is not aliased in `RequestProject/Labels.lean`.
 -/
 import RequestProject.PartD.HOPoly
 import RequestProject.PartD.HOSyntax
@@ -97,7 +97,9 @@ theorem Rel.congr {H : HTy} {P : Ty} {g g' : P.Elt → H.Sem} (h : Rel H P g)
 
 /-! ## A polyregular change of parameter -/
 
-/-- **The relation is preserved by a polyregular change of parameter.** -/
+/-- **Claim `claim:logical-relations-closed-under-precomposition`.**  Good functions are closed
+under pre-composition with polyregular ones: the relation is preserved by a polyregular change of
+parameter. -/
 theorem Rel.reindex : ∀ (H : HTy) {P Q : Ty} {g : P.Elt → H.Sem} {r : Q.Elt → P.Elt},
     Rel H P g → IsPolyregularUnderRepr r → Rel H Q (fun q => g (r q)) := by
   intro H
@@ -244,8 +246,10 @@ theorem Rel.glue : ∀ (H : HTy) {P : Ty} {t : P.Elt → Unit ⊕ Unit} {u v : P
 
 /-! ## The relation at arrow-free types -/
 
-/-- **At an arrow-free type the relation says exactly that the family is polyregular under string
-representation.** -/
+/-- **Lemma `lem:good-functions-are-polyregular-at-arrow-free-types`.**  If `Q` and `A` are
+arrow-free, then the good functions of type `Q → A` are exactly the polyregular ones: at an
+arrow-free type the relation says exactly that the family is polyregular under string
+representation. -/
 theorem Rel.iff_polyregular : ∀ (A : Ty) {P : Ty} (g : P.Elt → (HTy.ofTy A).Sem),
     Rel (HTy.ofTy A) P g ↔ IsPolyregularUnderRepr (fun p => HTy.toElt A (g p)) := by
   intro A

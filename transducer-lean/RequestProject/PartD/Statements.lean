@@ -34,9 +34,7 @@ import RequestProject.PartD.PolyTermComplete
 import RequestProject.PartD.HOEasy
 import RequestProject.PartD.HOFund
 import RequestProject.PartD.HOFewer
-import RequestProject.PartD.HOBound
-import RequestProject.PartD.HOMaj
-import RequestProject.PartD.HOParse
+import RequestProject.PartD.HONat
 
 namespace Transducers
 
@@ -132,28 +130,24 @@ directions of the theorem are `Transducers.isHigherOrderTermFun_of_isPolyregular
 (`RequestProject/PartD/HOFund.lean`), the latter applied to the term with the reduced set of
 atomic functions that Lemma `lem:fewer-atomic` provides.
 
-The hard direction is not proved along the route of the book -- normalisation with resource bounds,
-Definition `def:resource-bound` to Claim `claim:every-term-majorised`, which is not formalised --
-but by a Kripke logical relation over the polyregular functions (`Transducers.Rel`,
-`RequestProject/PartD/HORel.lean`): a term of arrow type is related to a family of functions when
-it maps related arguments to related results, uniformly in a parameter, and at an arrow-free type
-being related to a family means that the family is polyregular under string representation.  The
-fundamental lemma `Transducers.HTerm.rel_eval` then says that every term is related to its own
-semantics, which at an arrow-free type is exactly the statement of the theorem.  The deviation is
-recorded in `THEOREMS.md`.
+The hard direction follows the book's own route: the *good functions* of the Fundamental Lemma,
+which are a Kripke logical relation over the polyregular functions (`Transducers.Rel`,
+`RequestProject/PartD/HORel.lean`).  A term of arrow type is related to a family of functions when
+it maps related arguments to related results, uniformly in a parameter and after any polyregular
+change of parameters, and at an arrow-free type being related to a family means that the family is
+polyregular under string representation -- which is Lemma
+`lem:good-functions-are-polyregular-at-arrow-free-types`, `Transducers.Rel.iff_polyregular`.  Claim
+`claim:logical-relations-closed-under-precomposition` is `Transducers.Rel.reindex` of the same
+file.  The Fundamental Lemma itself, which carries no label in the book, is
+`Transducers.HTerm.rel_eval` (`RequestProject/PartD/HOFund.lean`): every term is related to its own
+semantics, which at an arrow-free type is exactly the statement of the theorem.
 
-Parts of the machinery of the book's own route are formalised none the less, since each is worth
-having on its own.  The β-rule and the reduction rules of Figure `fig:reduction-rules` are
-`Transducers.HStep` (`RequestProject/PartD/HORed.lean`), which comes with substitution for the
-terms and with the book's observation that a step changes neither the type nor the semantics of a
-term; Definition `def:resource-bound` is `Transducers.ResourceBound`
-(`RequestProject/PartD/HOBound.lean`); Lemma `lem:normal-forms-of-arrow-free-terms` is
-`Transducers.normal_iff_isValue` (`RequestProject/PartD/HONormal.lean`); and Definition
-`def:majorants` is `Transducers.Maj` (`RequestProject/PartD/HOMaj.lean`).  The five remaining
-results of that route -- Lemma `claim:parsing-is-regular-with-resource-bounds`, Lemma
-`lem:reduction-strategy-lemma`, Corollary `cor:normalisation-of-terms-with-resource-bounds`, Claim
-`claim:atomic-functions-majorised` and Claim `claim:every-term-majorised` -- are not formalised;
-`THEOREMS.md` says what stands in the way of each. -/
+The naturality that the book uses in the induction basis of the Fundamental Lemma, for the atomic
+functions, is in `RequestProject/PartD/HONat.lean`: the arrow-free type functors
+`Transducers.TyFun` and their action on functions, the Definition of a natural transformation
+(`Transducers.IsNaturalTransformation`, which carries no label in the book), Claim
+`claim:atomic-functions-are-natural-transformations` (`Transducers.atoms_are_natural`) and Claim
+`claim:functors-applied-to-good` (`Transducers.good_of_functor_applied`). -/
 
 /-- **Theorem `thm:higher-order-terms`.**  A function between two arrow-free types is polyregular
 if and only if it is defined by a higher-order term.  Arrow-freeness is expressed here by taking

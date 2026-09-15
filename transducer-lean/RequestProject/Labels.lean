@@ -748,37 +748,21 @@ assert_no_sorry «lem:fewer-atomic»
 alias «thm:higher-order-terms» := Transducers.polyregular_iff_higherOrderTerm
 assert_no_sorry «thm:higher-order-terms»
 
-/-- **Definition `def:resource-bound`** (resource bound): `Transducers.ResourceBound`. -/
-alias «def:resource-bound» := Transducers.ResourceBound
-assert_no_sorry «def:resource-bound»
+/-- **Lemma `lem:good-functions-are-polyregular-at-arrow-free-types`** (good = polyregular at arrow-free types): `Transducers.Rel.iff_polyregular`. -/
+alias «lem:good-functions-are-polyregular-at-arrow-free-types» := Transducers.Rel.iff_polyregular
+assert_no_sorry «lem:good-functions-are-polyregular-at-arrow-free-types»
 
-/-- **Definition `def:resource-bound`** (resource bound): `Transducers.ResourceBound.Consistent`. -/
-alias «def:resource-bound#2» := Transducers.ResourceBound.Consistent
-assert_no_sorry «def:resource-bound#2»
+/-- **Claim `claim:logical-relations-closed-under-precomposition`** (good functions are closed under pre-composition with polyregular ones): `Transducers.Rel.reindex`. -/
+alias «claim:logical-relations-closed-under-precomposition» := Transducers.Rel.reindex
+assert_no_sorry «claim:logical-relations-closed-under-precomposition»
 
-/-- **Lemma `claim:parsing-is-regular-with-resource-bounds`** (parsing terms with a resource bound): `Transducers.parsing_isRegular_of_resourceBound`. -/
-alias «claim:parsing-is-regular-with-resource-bounds» := Transducers.parsing_isRegular_of_resourceBound
-assert_no_sorry «claim:parsing-is-regular-with-resource-bounds»
+/-- **Claim `claim:atomic-functions-are-natural-transformations`** (the atomic functions are natural): `Transducers.atoms_are_natural`. -/
+alias «claim:atomic-functions-are-natural-transformations» := Transducers.atoms_are_natural
+assert_no_sorry «claim:atomic-functions-are-natural-transformations»
 
-/-- **Lemma `lem:normal-forms-of-arrow-free-terms`** (normal forms of arrow-free terms): `Transducers.normal_iff_isValue`. -/
-alias «lem:normal-forms-of-arrow-free-terms» := Transducers.normal_iff_isValue
-assert_no_sorry «lem:normal-forms-of-arrow-free-terms»
-
-/-- **Definition `def:majorants`** (majorants): `Transducers.Maj`. -/
-alias «def:majorants» := Transducers.Maj
-assert_no_sorry «def:majorants»
-
-/-- **Definition `def:majorants`** (majorants): `Transducers.Maj.cost`. -/
-alias «def:majorants#2» := Transducers.Maj.cost
-assert_no_sorry «def:majorants#2»
-
-/-- **Definition `def:majorants`** (majorants): `Transducers.Maj.le`. -/
-alias «def:majorants#3» := Transducers.Maj.le
-assert_no_sorry «def:majorants#3»
-
-/-- **Definition `def:majorants`** (majorants): `Transducers.Maj.IsMono`. -/
-alias «def:majorants#4» := Transducers.Maj.IsMono
-assert_no_sorry «def:majorants#4»
+/-- **Claim `claim:functors-applied-to-good`** (the shape of a good function into a functor): `Transducers.good_of_functor_applied`. -/
+alias «claim:functors-applied-to-good» := Transducers.good_of_functor_applied
+assert_no_sorry «claim:functors-applied-to-good»
 
 /-! ## Exercises
 
@@ -1303,6 +1287,21 @@ alias «exer:forward-for-transducer» :=
   Transducers.Exercises.forwardFor_iff_ratMarkedSquare
 assert_no_sorry «exer:forward-for-transducer»
 
+/-- **Exercise `exer:reverse-from-split`** (`reverse` is definable without itself, from `split`): `Transducers.Exercises.reverse_from_split`. -/
+alias «exer:reverse-from-split» :=
+  Transducers.Exercises.reverse_from_split
+assert_no_sorry «exer:reverse-from-split»
+
+/-- **Exercise `exer:block-from-split`** (the block split of Example `ex:block` is definable without itself and without `reverse`): `Transducers.Exercises.block_from_split`. -/
+alias «exer:block-from-split» :=
+  Transducers.Exercises.block_from_split
+assert_no_sorry «exer:block-from-split»
+
+/-- **Exercise `exer:pref-from-mult`** (group prefix multiplication is definable from the product `mult` of a list): `Transducers.Exercises.pref_from_mult`. -/
+alias «exer:pref-from-mult» :=
+  Transducers.Exercises.pref_from_mult
+assert_no_sorry «exer:pref-from-mult»
+
 /-
 The theorem-like environments of the book that are not aliased
 above, so that this file accounts for all of them:
@@ -1311,10 +1310,6 @@ above, so that this file accounts for all of them:
 * `conj:regular-via-weighted-automata` (conjecture) -- a conjecture of the book, not a result to formalise;
 * `nolabel:thm-fo-transduction-into-primes` (theorem) -- removed from the formalised theorems at the user's request; its statement is kept, commented out, in `PartC/MSOOpen.lean`;
 * `nolabel:claim-representations-are-a-regular-language` (claim) -- not formalised: the parsing of a representation is done here by the bracket counter of `PartC/CombDepth.lean`, which is what the transducers of the easy direction of Theorem `thm:regular-terms` use instead;
-* `lem:reduction-strategy-lemma` (lemma) -- not formalised: a step of the same normalisation proof;
-* `cor:normalisation-of-terms-with-resource-bounds` (corollary) -- not formalised: a step of the same normalisation proof;
-* `claim:atomic-functions-majorised` (claim) -- not formalised: a step of the same normalisation proof;
-* `claim:every-term-majorised` (claim) -- not formalised: a step of the same normalisation proof;
 -/
 
 end Transducers.Book

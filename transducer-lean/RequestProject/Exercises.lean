@@ -74,3 +74,4 @@ import RequestProject.Exercises.CombinatorsEx
 import RequestProject.Exercises.CombNatural
 import RequestProject.Exercises.CombNaturalAtoms
 import RequestProject.Exercises.CombNaturalFree
+import RequestProject.Exercises.HOAtomsFromSplit
