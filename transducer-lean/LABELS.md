@@ -170,6 +170,7 @@ generator working from the tables alone would delete them.
 | C.4.15 | lemma | `lem:k-types-properties` | `logic.tex` |
 | C.4.16 | theorem | `thm:fo-rational-functions` | `logic.tex` |
 | (unnumbered) | paragraph | `nolabel:thm-fo-transduction-into-primes` | `logic.tex` |
+| (unnumbered) | exercise | `nolabel:exer-pref-from-mult` | `higher-order.tex` |
 | C.5.1 | definition | `def:types` | `combinators.tex` |
 | C.5.2 | definition | `def:regular-functions-on-types-under-string-representation` | `combinators.tex` |
 | C.5.3 | definition | `def:regular-terms` | `combinators.tex` |

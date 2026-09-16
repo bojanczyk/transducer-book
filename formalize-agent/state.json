@@ -1311,14 +1311,26 @@
       "idle_continues": 1
     },
     "D3-tiling-undecidability": {
-      "status": "pending",
-      "attempts": 0,
+      "status": "running",
+      "attempts": 1,
       "continues": 0,
       "reattempts": 0,
-      "task_ids": [],
-      "started_at": null,
+      "task_ids": [
+        "437e810b-9e1a-42c4-8fee-5d5bf3fe4005"
+      ],
+      "started_at": "2026-09-16 09:54:37Z",
       "finished_at": null,
-      "note": null
+      "note": null,
+      "sorries_at_start": 0,
+      "runs": [
+        {
+          "task_id": "437e810b-9e1a-42c4-8fee-5d5bf3fe4005",
+          "project_id": "eedba7f6-aea7-4a02-9587-b0579ba510e2",
+          "base": "43f41a5eba3ef8b53deb94436785c93306165388",
+          "kind": "initial",
+          "at": "2026-09-16 09:54:37Z"
+        }
+      ]
     },
     "book-remaining-results": {
       "status": "pending",
@@ -1331,11 +1343,18 @@
       "note": null
     }
   },
-  "current": null,
+  "current": {
+    "target_id": "D3-tiling-undecidability",
+    "task_id": "437e810b-9e1a-42c4-8fee-5d5bf3fe4005",
+    "project_id": "eedba7f6-aea7-4a02-9587-b0579ba510e2",
+    "base": "43f41a5eba3ef8b53deb94436785c93306165388",
+    "submitted_at": "2026-09-16 09:54:37Z",
+    "kind": "initial"
+  },
   "paused": false,
   "pause_reason": null,
-  "finished_at": "2026-09-16 06:16:13Z",
-  "ticks": 1236,
-  "last_tick": "2026-09-16 09:26:51Z",
+  "finished_at": null,
+  "ticks": 1241,
+  "last_tick": "2026-09-16 10:27:23Z",
   "review_pending": 12
 }

@@ -6,7 +6,7 @@ Lemma `lem:fewer-atomic` says that the atomic functions `id`, `diag`, `codiag`, 
 `reverse`, the block split of Example `ex:block` and group prefix multiplication are redundant in
 the presence of the higher-order features.  For the first five the book gives the defining terms,
 and they are immediate; the last three are the three exercises the book refers to -- Exercise
-`exer:reverse-from-split`, Exercise `exer:block-from-split` and Exercise `exer:pref-from-mult` --
+`exer:reverse-from-split`, Exercise `exer:block-from-split` and Exercise `nolabel:exer-pref-from-mult` --
 and each of them computes its output by running over all the ways of cutting the input list into a
 prefix and a suffix.  This file proves the three identities that those computations rest on, as
 statements about lists:

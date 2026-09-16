@@ -3426,7 +3426,7 @@ proof of Lemma `lem:fewer-atomic` already used:
 | --- | --- |
 | `exer:reverse-from-split` | `Transducers.Exercises.reverse_from_split` |
 | `exer:block-from-split` | `Transducers.Exercises.block_from_split` |
-| `exer:pref-from-mult` | `Transducers.Exercises.pref_from_mult` |
+| `nolabel:exer-pref-from-mult` | `Transducers.Exercises.pref_from_mult` |
 
 The book phrases them for polyregular terms; they are stated here for the
 higher-order terms with the reduced set of atomic functions, which is the
@@ -3475,7 +3475,7 @@ now says what each group of statements is for.
 | --- | --- | --- |
 | `exer:reverse-from-split` | `Transducers.Exercises.reverse_from_split` | `Transducers.Exercises.polyReverse` |
 | `exer:block-from-split` | `Transducers.Exercises.block_from_split` | `Transducers.Exercises.polyBlockSplit` |
-| `exer:pref-from-mult` | `Transducers.Exercises.pref_from_mult` | `Transducers.Exercises.polyPref` |
+| `nolabel:exer-pref-from-mult` | `Transducers.Exercises.pref_from_mult` | `Transducers.Exercises.polyPref` |
 
 All three are **proved outright**, with no hypothesis.  `#print axioms` on the
 three aliases of `RequestProject/Labels.lean` gives only `propext`,
@@ -3495,7 +3495,7 @@ another file.  The auxiliary `Transducers.PolyTerm.Reduced` (none of the three)
 is what the terms of the file are actually proved to satisfy; three one-line
 lemmas extract from it the clause each exercise needs.
 
-**The atomic function `mult`.**  Exercise `exer:pref-from-mult` asks for a term
+**The atomic function `mult`.**  Exercise `nolabel:exer-pref-from-mult` asks for a term
 that uses the product `mult : G* → G` of a list, which is *not* an atomic
 function of Definition `def:polyregular-terms`; `pref` is.  Rather than change
 that definition, the exercise is stated for `Transducers.PolyMultTerm`: terms
@@ -3528,6 +3528,6 @@ Lemma `lem:fewer-atomic` in `PartD/HOFewer.lean` appeals to, and that proof, and
 **Verification.**  `lake build` succeeds with no errors, and the three checks
 `tools/gen_labels.py --check`, `tools/decl_files.py --check` and
 `tools/tex_numbering.py --check` all pass.  `#print axioms` on the three aliases
-`exer:reverse-from-split`, `exer:block-from-split` and `exer:pref-from-mult` of
+`exer:reverse-from-split`, `exer:block-from-split` and `nolabel:exer-pref-from-mult` of
 `RequestProject/Labels.lean` reports `propext` and `Quot.sound` only, which is
 within the permitted `propext`, `Classical.choice`, `Quot.sound`.

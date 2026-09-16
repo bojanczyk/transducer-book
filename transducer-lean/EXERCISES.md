@@ -298,14 +298,14 @@ all eleven are aliased in `RequestProject/Labels.lean`.
 | --- | --- | --- |
 | Exercise `exer:reverse-from-split` (`reverse` is definable by a polyregular term that does not use it) | `reverse_from_split` (with `polyReverse`, `PolyTerm.NoReverse`, `flatten_headAsList_splits`) | proved |
 | Exercise `exer:block-from-split` (the block split is definable by a polyregular term that uses neither it nor `reverse`) | `block_from_split` (with `polyBlockSplit`, `PolyTerm.NoBlockSplit`, `PolyTerm.NoReverse`, `twiFun_eq`, `bsFun_eq`) | proved |
-| Exercise `exer:pref-from-mult` (group prefix multiplication is definable, without itself, from the product `mult` of a list) | `pref_from_mult` (with `polyPref`, `PolyMultTerm`, `PolyMultTerm.NoPref`, `prefFun_eq`) | proved |
+| ~~Exercise `nolabel:exer-pref-from-mult`~~ (group prefix multiplication is definable, without itself, from the product `mult` of a list) | — | **withdrawn from the book by the author**, which replaced it with `exer:split-triple`.  The statement is still proved, as `Transducers.Exercises.pref_from_mult`, and is simply no longer a result of the book |
 
 The three are stated for the polyregular terms of Definition
 `def:polyregular-terms`, as the book states them; the same three statements for
 the higher-order terms of Definition `def:higher-order-terms`, which the proof of
 Lemma `lem:fewer-atomic` uses, are `reverse_from_split_higherOrder`,
 `block_from_split_higherOrder` and `pref_from_mult_higherOrder` in the same file.
-Exercise `exer:pref-from-mult` asks for a term that uses the atomic function
+Exercise `nolabel:exer-pref-from-mult`, before it was withdrawn, asked for a term that uses the atomic function
 `mult : G* → G`, which Definition `def:polyregular-terms` does not have, so its
 witness lives in `Transducers.PolyMultTerm`: the polyregular terms extended by
 that one atomic function.

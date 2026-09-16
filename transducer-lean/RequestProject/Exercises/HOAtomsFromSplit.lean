@@ -10,7 +10,7 @@ without it:
 * Exercise `exer:reverse-from-split` -- `reverse`, by running over the cuts that `split` produces
   and keeping the first entry of every suffix;
 * Exercise `exer:block-from-split` -- the block split of Example `ex:block`, without `reverse`;
-* Exercise `exer:pref-from-mult` -- group prefix multiplication, from the product `mult` of a list.
+* Exercise `nolabel:exer-pref-from-mult` -- group prefix multiplication, from the product `mult` of a list.
 
 **What is proved where.**  The book phrases the three exercises for *polyregular* terms
 (Definition `def:polyregular-terms`, `Transducers.PolyTerm`), and that is what
@@ -35,7 +35,7 @@ wrong, and the polyregular statements above are what the exercises ask for.)
 **The atomic function `mult`.**  The polyregular terms of Definition `def:polyregular-terms` have
 group prefix multiplication `pref : G* → G*` among their atomic functions but not the product
 `mult : G* → G` of a list, which is the atomic function that Lemma `lem:fewer-atomic` puts in its
-place and that Exercise `exer:pref-from-mult` asks to use.  So the third exercise is stated for
+place and that Exercise `nolabel:exer-pref-from-mult` asks to use.  So the third exercise is stated for
 `Transducers.PolyMultTerm`, the polyregular terms extended by that one atomic function, and the
 clause `Transducers.PolyMultTerm.NoPref` of the statement says that the witness uses no `pref`.
 
@@ -229,7 +229,7 @@ theorem PolyTerm.Reduced.noPref :
 
 /-! ## The polyregular terms with the atomic function `mult`
 
-Exercise `exer:pref-from-mult` asks for a term that uses the product `mult : G* → G` of a list,
+Exercise `nolabel:exer-pref-from-mult` asks for a term that uses the product `mult : G* → G` of a list,
 which is not one of the atomic functions of Definition `def:polyregular-terms`.  The syntax below
 adds it: a term is built from the polyregular terms and from `mult` by composition and the three
 functoriality combinators.  Since the polyregular terms are themselves closed under those
@@ -242,7 +242,7 @@ def groupListProd (G : Ty) (grp : Group G.Elt) (l : List G.Elt) : G.Elt :=
   l.prod
 
 /-- **The polyregular terms extended by the atomic function `mult`** of Lemma `lem:fewer-atomic`,
-the setting of Exercise `exer:pref-from-mult`. -/
+the setting of Exercise `nolabel:exer-pref-from-mult`. -/
 inductive PolyMultTerm : Ty → Ty → Type
   /-- A polyregular term of Definition `def:polyregular-terms`. -/
   | ofPoly {A B : Ty} : PolyTerm A B → PolyMultTerm A B
@@ -582,7 +582,7 @@ def polyBlockSplit (A B : Ty) :
 theorem polyBlockSplit_reduced (A B : Ty) : (polyBlockSplit A B).Reduced :=
   ⟨trivial, polyTwi_reduced A B, polyBs_reduced A B⟩
 
-/-! ## Exercise `exer:pref-from-mult` -/
+/-! ## Exercise `nolabel:exer-pref-from-mult` -/
 
 /-- The contribution of one cut to the prefix products: a non-empty prefix contributes its
 product, computed by `mult`, and the empty prefix contributes nothing. -/
@@ -609,7 +609,7 @@ theorem polyPrefStep_noPref (G : Ty) (grp : Group G.Elt) (hfin : Finite G.Elt) :
   ⟨⟨⟨⟨trivial, trivial, trivial⟩, trivial⟩,
     ⟨(polyNil_reduced _ G).noPref _, ⟨trivial, trivial⟩, (polyPure_reduced G).noPref _⟩⟩, trivial⟩
 
-/-- **Exercise `exer:pref-from-mult`**, the term: every non-empty prefix of the input list
+/-- **Exercise `nolabel:exer-pref-from-mult`**, the term: every non-empty prefix of the input list
 contributes its product, and the products are collected in the order of the cuts. -/
 def polyPref (G : Ty) (grp : Group G.Elt) (hfin : Finite G.Elt) :
     PolyMultTerm (.list G) (.list G) :=
@@ -659,9 +659,13 @@ theorem block_from_split (A B : Ty) :
   ⟨polyBlockSplit A B, (polyBlockSplit_reduced A B).noBlockSplit _,
     (polyBlockSplit_reduced A B).noReverse _, fun l => congrFun (polyBlockSplit_eval A B) l⟩
 
-/-- **Exercise `exer:pref-from-mult`.**  Group prefix multiplication is defined by a term of the
+/-- **No longer an exercise of the book.**  Group prefix multiplication is defined by a term of the
 polyregular syntax extended by the product `mult` of a list, which does not use group prefix
-multiplication itself. -/
+multiplication itself.
+
+This was Exercise `nolabel:exer-pref-from-mult`, which the author has withdrawn, replacing it with
+`exer:split-triple`.  The statement is kept because it is proved and the fact is worth having; it
+is no longer aliased in `RequestProject/Labels.lean`, where the withdrawal is recorded. -/
 theorem pref_from_mult (G : Ty) (grp : Group G.Elt) (hfin : Finite G.Elt) :
     ∃ t : PolyMultTerm (.list G) (.list G), t.NoPref ∧
       ∀ l : List G.Elt, t.eval l = (PolyTerm.pref G grp hfin).eval l :=
@@ -691,7 +695,7 @@ theorem block_from_split_higherOrder (A B : HTy) :
   ⟨HTerm.blockSplitTerm [] A B, HAtom.smallImpl_small (.blockSplit A B) [],
     fun l => congrFun (HTerm.blockSplitTerm_eval (Γ := []) (A := A) (B := B) .nil) l⟩
 
-/-- The higher-order form of Exercise `exer:pref-from-mult`: group prefix multiplication is
+/-- The higher-order form of Exercise `nolabel:exer-pref-from-mult`: group prefix multiplication is
 defined by a closed higher-order term that does not use it, but uses the product `mult` of a
 list. -/
 theorem pref_from_mult_higherOrder (G : Ty) (grp : Group G.Elt) (hfin : Finite G.Elt) :

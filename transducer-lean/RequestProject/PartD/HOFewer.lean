@@ -19,7 +19,7 @@ book refers to, and all three run over the cuts of the input list, using the new
   `b` with the block of entries from `A` that follows it, and that block is itself computed by
   running over the cuts of the remaining list (Exercise `exer:block-from-split`);
 * group prefix multiplication takes the product of every non-empty prefix (Exercise
-  `exer:pref-from-mult`).
+  `nolabel:exer-pref-from-mult`).
 
 The identities that these computations satisfy are proved in `RequestProject/PartD/HOFewerAux.lean`.
 -/
@@ -221,7 +221,7 @@ section Pref
 
 variable (Γ : List HTy) (G : Ty) (grp : Group G.Elt) (hfin : Finite G.Elt)
 
-/-- **Exercise `exer:pref-from-mult`.**  Group prefix multiplication, from the product of a list:
+/-- **Exercise `nolabel:exer-pref-from-mult`.**  Group prefix multiplication, from the product of a list:
 the prefix products are the products of the non-empty prefixes. -/
 def prefTerm : HTerm Γ (.arrow (.list (HTy.ofTy G)) (.list (HTy.ofTy G))) :=
   .lam

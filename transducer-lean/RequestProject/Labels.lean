@@ -59,7 +59,6 @@ elab "assert_uses_sorry " id:ident : command => do
   if !axs.contains ``sorryAx then
     throwError "{n} does not depend on sorryAx"
 
-
 /-- **Definition `def:continuity`** (continuity): `Transducers.Continuous`. -/
 alias «def:continuity» := Transducers.Continuous
 assert_no_sorry «def:continuity»
@@ -863,7 +862,6 @@ assert_no_sorry «exer:invertible-mealy-is-reversible»
 alias «ex:map-lifting-continuous» := Transducers.mapLift_continuous_of_continuous
 assert_no_sorry «ex:map-lifting-continuous»
 
-
 /-
 The exercises that carry a `\label` in the sources, from `EXERCISES.md`.
 Exercises are not numbered results of the main text; the ones with no label in
@@ -1335,16 +1333,12 @@ alias «exer:block-from-split» :=
   Transducers.Exercises.block_from_split
 assert_no_sorry «exer:block-from-split»
 
-/-- **Exercise `exer:pref-from-mult`** (group prefix multiplication is definable, without itself, from the product `mult` of a list): `Transducers.Exercises.pref_from_mult`.  The witness is `Transducers.Exercises.polyPref`, a term of `Transducers.PolyMultTerm`: the polyregular terms of Definition `def:polyregular-terms` extended by the atomic function `mult`, which Definition `def:polyregular-terms` does not have and which the exercise asks to use. -/
-alias «exer:pref-from-mult» :=
-  Transducers.Exercises.pref_from_mult
-assert_no_sorry «exer:pref-from-mult»
-
 /-
 The theorem-like environments of the book that are not aliased
 above, so that this file accounts for all of them:
 
 * `def:rational-recognisable-subsets` (definition) -- not formalised (rational and recognisable subsets of a monoid, which the later sections do not use);
+* `nolabel:exer-pref-from-mult` (exercise) -- withdrawn from the book by the author, which replaced it with `exer:split-triple`; the statement it had is still proved, as `Transducers.Exercises.pref_from_mult` in `RequestProject/Exercises/HOAtomsFromSplit.lean`, and is simply no longer a result of the book;
 * `conj:regular-via-weighted-automata` (conjecture) -- a conjecture of the book, not a result to formalise;
 * `nolabel:thm-fo-transduction-into-primes` (theorem) -- removed from the formalised theorems at the user's request; its statement is kept, commented out, in `PartC/MSOOpen.lean`;
 * `nolabel:claim-representations-are-a-regular-language` (claim) -- not formalised: the parsing of a representation is done here by the bracket counter of `PartC/CombDepth.lean`, which is what the transducers of the easy direction of Theorem `thm:regular-terms` use instead;
