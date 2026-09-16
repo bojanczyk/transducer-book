@@ -1096,6 +1096,8 @@ def harvest(cfg: dict, st: dict, project, task, target: dict | None,
             st["pause_reason"] = f"{tid} could not be integrated"
             log("integration failed — paused")
             return False
+        if outcome == "merged" and st.get("current"):
+            st["current"]["harvested"] = True
         if outcome == "merged":
             log(f"merged {n_lean} lean files from {task.agent_task_id[:8]}; "
                 f"sorries {before} -> {sorry_count(ld)}"
@@ -1259,7 +1261,14 @@ def tick(cfg: dict, q: list, st: dict) -> None:
         except Exception as e:
             log(f"could not reach the run's project: {e!r} — will retry next tick")
             return
-        if not harvest(cfg, st, run_project, task, target):
+        # A run is merged once. Re-merging it is not idempotent: the verification
+        # gate can pause the queue after a successful merge, and whoever repairs
+        # the tree by hand then touches exactly the files the run's branch holds,
+        # so the second merge conflicts with the repair. That is what happened to
+        # D3-tiling-undecidability, whose work was already in the tree.
+        if cur.get("harvested"):
+            log(f"{cur['target_id']} was already merged; not merging it again")
+        elif not harvest(cfg, st, run_project, task, target):
             return          # nothing was integrated; do not act as though it was
         rec = st["targets"][cur["target_id"]] if target else None
 
