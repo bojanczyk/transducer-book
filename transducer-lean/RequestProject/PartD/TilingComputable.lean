@@ -34,19 +34,23 @@ theorem bnot {f : α → Bool} (hf : Primrec f) : Primrec fun a => !f a :=
   (Primrec.dom_bool (fun x => !x)).comp hf
 
 theorem decEq {f g : α → ℕ} (hf : Primrec f) (hg : Primrec g) :
-    Primrec fun a => decide (f a = g a) := Primrec.eq.comp hf hg
+    Primrec fun a => decide (f a = g a) := by
+  obtain ⟨inst, h⟩ : PrimrecPred fun a => f a = g a := Primrec.eq.comp hf hg
+  exact h.of_eq fun a => by simp
 
-theorem beqNat {f g : α → ℕ} (hf : Primrec f) (hg : Primrec g) :
-    Primrec fun a => (f a == g a) := (decEq hf hg).of_eq fun a => by simp
-
-theorem beqBool {f g : α → Bool} (hf : Primrec f) (hg : Primrec g) :
-    Primrec fun a => (f a == g a) := (Primrec.eq.comp hf hg).of_eq fun a => by simp
+/-! The `==` forms of these, `beqNat` and `beqBool`, were left unproved by the run that wrote this
+file -- its scratch notes show `decide (f a = g a) = (f a == g a)` was the goal it could not close --
+and are removed rather than left failing.  Nothing used them. -/
 
 theorem decLe {f g : α → ℕ} (hf : Primrec f) (hg : Primrec g) :
-    Primrec fun a => decide (f a ≤ g a) := Primrec.nat_le.comp hf hg
+    Primrec fun a => decide (f a ≤ g a) := by
+  obtain ⟨inst, h⟩ : PrimrecPred fun a => f a ≤ g a := Primrec.nat_le.comp hf hg
+  exact h.of_eq fun a => by simp
 
 theorem decMem {f : α → ℕ} {g : α → List ℕ} (hf : Primrec f) (hg : Primrec g) :
-    Primrec fun a => decide (f a ∈ g a) := Primrec.list_mem.comp hf hg
+    Primrec fun a => decide (f a ∈ g a) := by
+  obtain ⟨inst, h⟩ : PrimrecPred fun a => f a ∈ g a := Primrec.list_mem.comp hf hg
+  exact h.of_eq fun a => by simp
 
 end PrimAux
 

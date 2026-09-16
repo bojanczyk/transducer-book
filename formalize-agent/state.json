@@ -1330,7 +1330,8 @@
           "kind": "initial",
           "at": "2026-09-16 09:54:37Z"
         }
-      ]
+      ],
+      "idle_continues": 0
     },
     "book-remaining-results": {
       "status": "pending",
@@ -1351,10 +1352,10 @@
     "submitted_at": "2026-09-16 09:54:37Z",
     "kind": "initial"
   },
-  "paused": false,
-  "pause_reason": null,
+  "paused": true,
+  "pause_reason": "D3-tiling-undecidability merged but does not build",
   "finished_at": null,
-  "ticks": 1241,
-  "last_tick": "2026-09-16 10:27:23Z",
-  "review_pending": 12
+  "ticks": 1249,
+  "last_tick": "2026-09-16 12:47:36Z",
+  "review_pending": 13
 }

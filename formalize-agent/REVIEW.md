@@ -238,3 +238,41 @@ Verification performed now, from `transducer-lean/`: a full `lake build` complet
 The only edit made this session was to `THEOREMS.md`: a stale "Verification" paragraph claimed that the label and numbering checks still failed, and it now records that all three checks pass together with the axiom check. Everything is committed.
 
 One note on the build target list: I report no Lake target above because the Lake package is the one in the `transducer-lean/` subdirectory, which is where `lake build` succeeds; the repository root also carries a separate, pre-existing `lakefile.toml` whose library glob `transducer-lean.+` is not a legal Lean module glob, so any `lake` invocation from the repository root fails to even parse the configuration. That root file lies outside `transducer-lean/`, which this run is not permitted to modify, so I left it as found.
+
+## 2026-09-16 13:14:26Z — D3-tiling-undecidability: the merged tree does not verify
+
+The run was merged and then failed verification, so the target has NOT been marked done and the queue is stopped.
+
+`lake build` failed:
+
+warning: RequestProject/PartD/TilingComplete.lean:77:94: 'simp' tactic does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+warning: RequestProject/PartD/TilingComplete.lean:78:94: 'simp' tactic does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+warning: RequestProject/PartD/TilingComplete.lean:79:95: 'simp' tactic does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+warning: RequestProject/PartD/TilingComplete.lean:80:95: 'simp' tactic does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+warning: RequestProject/PartD/TilingComplete.lean:81:95: 'simp' tactic does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+✔ [8540/8544] Built RequestProject.PartD.ChildExample (120s)
+✔ [8541/8544] Built RequestProject.PartD (118s)
+✔ [8542/8544] Built RequestProject.Labels (221s)
+✔ [8543/8544] Built RequestProject (122s)
+Some required targets logged failures:
+- RequestProject.Scratch
+- RequestProject.PartD.TilingComputable
+warning: mathlib: repository '/Users/bojan/Documents/ksiazki/transducer-book-lean/transducer-lean/.lake/packages/mathlib' has local changes
+warning: batteries: repository '/Users/bojan/Documents/ksiazki/transducer-book-lean/transducer-lean/.lake/packages/batteries' has local changes
+error: build failed
+
+The merge is commit 4e6dd93; the tree as it stood before it is 218a7072, so
+
+    git -C /Users/bojan/Documents/ksiazki/transducer-book-lean reset --hard 218a7072
+
+undoes it if the run is not worth repairing. The run itself is on branch `aristotle/437e810b`.
