@@ -3451,3 +3451,85 @@ this run contain no `sorry`, no `axiom` and no `native_decide`;
 `tools/tex_numbering.py --check` all pass, and `tools/print_axioms.sh` reports
 that every alias of `RequestProject/Labels.lean` depends only on `propext`,
 `Classical.choice`, `Quot.sound`.
+
+## Status (the three exercises of Section D.3, restated for the polyregular terms)
+
+The three exercises of Section *A functional programming language* were
+formalised for the *higher-order* terms of Definition `def:higher-order-terms`,
+and the file that held them justified that by saying it was "the stronger
+reading ... since a polyregular term is a higher-order term".  That implication
+runs the other way: every polyregular term is a higher-order term, so asking for
+a higher-order term asks for *less*, and the higher-order statements are the
+weaker reading.  The book asks for polyregular terms, and the three witnesses of
+the earlier formalisation really did use the extra power (two, one and seven
+`lam` nodes respectively, because in the higher-order syntax `map` is an atomic
+function of arrow type that has to be applied to a lambda).  This run restates
+all three for `Transducers.PolyTerm` (Definition `def:polyregular-terms`), where
+`map` is a combinator and no lambda is needed.
+
+Everything is in `RequestProject/Exercises/HOAtomsFromSplit.lean`, whose header
+now says what each group of statements is for.
+
+| exercise | Lean name | witness |
+| --- | --- | --- |
+| `exer:reverse-from-split` | `Transducers.Exercises.reverse_from_split` | `Transducers.Exercises.polyReverse` |
+| `exer:block-from-split` | `Transducers.Exercises.block_from_split` | `Transducers.Exercises.polyBlockSplit` |
+| `exer:pref-from-mult` | `Transducers.Exercises.pref_from_mult` | `Transducers.Exercises.polyPref` |
+
+All three are **proved outright**, with no hypothesis.  `#print axioms` on the
+three aliases of `RequestProject/Labels.lean` gives only `propext`,
+`Classical.choice`, `Quot.sound`, and the file contains no `sorry`, no `axiom`
+and no `native_decide`.
+
+**Which atomic functions are excluded.**  There was no predicate on
+`Transducers.PolyTerm` saying which atomic constructors a term avoids, so three
+were added, on the model of `Transducers.HAtom.Small` and
+`Transducers.HTerm.Small`: `Transducers.PolyTerm.NoReverse`,
+`Transducers.PolyTerm.NoBlockSplit` and `Transducers.PolyTerm.NoPref`, each
+excluding exactly the constructors its exercise excludes and propagated
+structurally through `comp`, `prodMap`, `sumMap` and `map`.  Each statement
+carries the clause it needs -- `block_from_split` carries both `NoBlockSplit` and
+`NoReverse` -- so a reader of the statement sees the exclusion without opening
+another file.  The auxiliary `Transducers.PolyTerm.Reduced` (none of the three)
+is what the terms of the file are actually proved to satisfy; three one-line
+lemmas extract from it the clause each exercise needs.
+
+**The atomic function `mult`.**  Exercise `exer:pref-from-mult` asks for a term
+that uses the product `mult : G* → G` of a list, which is *not* an atomic
+function of Definition `def:polyregular-terms`; `pref` is.  Rather than change
+that definition, the exercise is stated for `Transducers.PolyMultTerm`: terms
+built from the polyregular terms and from `mult` by composition and the three
+functoriality combinators -- exactly "the polyregular terms with one more atomic
+function", since the polyregular terms are themselves closed under those
+combinators.  `Transducers.PolyMultTerm.NoPref` is the clause of the statement
+that says `pref` is not used, and `Transducers.PolyMultTerm.eval` is the
+semantics, with `Transducers.groupListProd` for the new atomic function.  This
+deviation is recorded in the file header and in `EXERCISES.md`.
+
+**The terms.**  They transcribe the author's solutions, and reuse the
+combinatorial identities of `PartD/HOFewerAux.lean` unchanged
+(`Transducers.flatten_headAsList_splits`, `Transducers.twiFun_eq`,
+`Transducers.bsFun_eq`, `Transducers.prefFun_eq`).  `polyReverse` is `splits`,
+then `snd*`, then `headAsList*`, then `concat`; `polyBlockSplit` pairs
+`polyTwi` with `polyBs`, both of which run over the cuts in the reversed order
+that `polyReverse` produces; `polyPref` collects the product of every non-empty
+prefix.  The auxiliary terms they are built from -- `polyBang` (the unique
+function `A → 1`, by induction on the type), `polyNil`, `polyPure`, `polySwap`,
+`polyHeadAsList`, `polyInrPart`, `polyHeadInl` -- are all `Reduced`.
+
+**The higher-order statements are kept**, under the names
+`Transducers.Exercises.reverse_from_split_higherOrder`,
+`Transducers.Exercises.block_from_split_higherOrder` and
+`Transducers.Exercises.pref_from_mult_higherOrder`.  They are what the proof of
+Lemma `lem:fewer-atomic` in `PartD/HOFewer.lean` appeals to, and that proof, and
+`PartD/HOFewer.lean` and `PartD/HOFewerAux.lean` themselves, are unchanged.
+
+**Verification.**  `lake build` succeeds with no errors.
+`tools/decl_files.py --check` passes.  `tools/gen_labels.py --check` and
+`tools/tex_numbering.py --check LABELS.md` report the same failures as before
+this run and no new ones: the copy of the book in this checkout is older than the
+author's, so `main.aux` lacks the labels `ex:block`,
+`claim:atomic-functions-are-natural-transformations` and
+`claim:functors-applied-to-good` and has stale numbers for 49 rows of
+`LABELS.md`.  Those are properties of the auxiliary file, not of the
+formalisation; the number of `gen_labels.py` complaints is unchanged (26).

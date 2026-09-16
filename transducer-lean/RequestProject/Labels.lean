@@ -1317,17 +1317,17 @@ alias «exer:forward-for-transducer» :=
   Transducers.Exercises.forwardFor_iff_ratMarkedSquare
 assert_no_sorry «exer:forward-for-transducer»
 
-/-- **Exercise `exer:reverse-from-split`** (`reverse` is definable without itself, from `split`): `Transducers.Exercises.reverse_from_split`. -/
+/-- **Exercise `exer:reverse-from-split`** (`reverse` is definable by a polyregular term that does not use it): `Transducers.Exercises.reverse_from_split`.  The witness is the polyregular term `Transducers.Exercises.polyReverse`, and the clause `Transducers.PolyTerm.NoReverse` of the statement is what says that `reverse` is not used. -/
 alias «exer:reverse-from-split» :=
   Transducers.Exercises.reverse_from_split
 assert_no_sorry «exer:reverse-from-split»
 
-/-- **Exercise `exer:block-from-split`** (the block split of Example `ex:block` is definable without itself and without `reverse`): `Transducers.Exercises.block_from_split`. -/
+/-- **Exercise `exer:block-from-split`** (the block split is definable by a polyregular term that uses neither it nor `reverse`): `Transducers.Exercises.block_from_split`.  The witness is the polyregular term `Transducers.Exercises.polyBlockSplit`. -/
 alias «exer:block-from-split» :=
   Transducers.Exercises.block_from_split
 assert_no_sorry «exer:block-from-split»
 
-/-- **Exercise `exer:pref-from-mult`** (group prefix multiplication is definable from the product `mult` of a list): `Transducers.Exercises.pref_from_mult`. -/
+/-- **Exercise `exer:pref-from-mult`** (group prefix multiplication is definable, without itself, from the product `mult` of a list): `Transducers.Exercises.pref_from_mult`.  The witness is `Transducers.Exercises.polyPref`, a term of `Transducers.PolyMultTerm`: the polyregular terms of Definition `def:polyregular-terms` extended by the atomic function `mult`, which Definition `def:polyregular-terms` does not have and which the exercise asks to use. -/
 alias «exer:pref-from-mult» :=
   Transducers.Exercises.pref_from_mult
 assert_no_sorry «exer:pref-from-mult»
