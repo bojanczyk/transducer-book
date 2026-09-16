@@ -2,7 +2,7 @@
 Unambiguity by means of the lexicographically least accepting run.
 
 Let `M` be an nfa with output in the ε-free normal form of Lemma
-`lemma:eliminate-epsilon-transitions`: in every accepting run over a nonempty input each transition
+`lem:eliminate-epsilon-transitions`: in every accepting run over a nonempty input each transition
 reads exactly one letter, and the accepting runs over the empty input consist of a single
 transition.
 

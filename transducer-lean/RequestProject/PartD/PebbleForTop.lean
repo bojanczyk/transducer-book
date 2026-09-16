@@ -4,7 +4,7 @@ Part D: a for-transducer is simulated by a pebble transducer.
 This finishes the easy inclusion of Theorem `thm:pebble-are-for`.  The run of the nest of loops is
 described in `RequestProject/PartD/PebbleForNest.lean`; what is left is the start of the run (the
 pebble that stays at the position `0` is pushed), the epilogue, and the passage from a program in
-prenex form to an arbitrary for-transducer through Lemma `lemma:prenex-normal-form`.
+prenex form to an arbitrary for-transducer through Lemma `lem:prenex-normal-form`.
 -/
 import RequestProject.PartD.PebbleForNest
 

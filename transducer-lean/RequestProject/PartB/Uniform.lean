@@ -1,7 +1,7 @@
 /-
 Uniformisation of rational relations (Lemma `lem:uniformisation`).
 
-Let `R` be a total rational relation.  By Lemma `lemma:eliminate-epsilon-transitions` it is computed
+Let `R` be a total rational relation.  By Lemma `lem:eliminate-epsilon-transitions` it is computed
 by an automaton `N` with extended transitions (each transition is labelled by an input letter and a
 regular language of output strings) in which every accepting run reads exactly one letter per
 transition, except for the runs over the empty input, which consist of a single transition.

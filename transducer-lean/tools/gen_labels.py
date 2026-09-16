@@ -75,7 +75,10 @@ KIND_OF = {
 
 DICT_ROW = re.compile(r"\|\s*([^|]+?)\s*\|\s*([a-z]+)\s*\|\s*`([^`]+)`\s*\|")
 TABLE_ROW = re.compile(
-    r"\|\s*(Definitions?|Theorems?|Lemmas?|Corollary|Corollaries|Claims?|Conjecture|Exercise)"
+    # `Examples?` because the main text has examples that are formalised -- the book
+    # numbers them in the `ex:` family, and without this an example can be aliased
+    # but can have no row, which is why ex:distance is filed as an "Exercise".
+    r"\|\s*(Definitions?|Theorems?|Lemmas?|Corollary|Corollaries|Claims?|Conjecture|Exercise|Examples?)"
     r"\s+`([^`]+)`([^|]*)\|([^|]*)\|(?:([^|]*)\|)?")
 ENTRY = re.compile(
     r"/--\s*\*\*(\w+) `([^`]+)`\*\*\s*(\([^)]*\))?.*?-/\s*\n"

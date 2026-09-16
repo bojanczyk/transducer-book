@@ -15,7 +15,7 @@ variable points at each of its positions; this is obtained by *marked squaring*,
 all the copies of the whole enumeration with a prefix underlined, followed by a streaming string
 transducer which keeps, out of each copy, only the block in which the underlining ends.  Since
 marked squaring is a prime polyregular function and a streaming string transducer computes a
-regular function (Theorem `theorem:sst-two-way-equivalence`), the enumeration is polyregular.
+regular function (Theorem `thm:sst-two-way-equivalence`), the enumeration is polyregular.
 
 A position variable is recorded in the annotation not by marking the position it points at, but
 by marking all the positions up to it: this is exactly what the underlining of marked squaring

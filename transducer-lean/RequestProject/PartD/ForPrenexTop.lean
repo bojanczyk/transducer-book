@@ -1,5 +1,5 @@
 /-
-Part D: for-transducers -- assembling the prenex form, Lemma `lemma:prenex-normal-form`.
+Part D: for-transducers -- assembling the prenex form, Lemma `lem:prenex-normal-form`.
 
 `Transducers.trFor` simulates a for-program by a single nest of loops, but only on inputs of
 length at least two, and only once two designated position variables hold the first and the last
@@ -544,7 +544,7 @@ theorem prenex_of_trFor (P : ForProg A B) (zv lv k₀ : ℕ) (L : List (Bool × 
       simp [ForProg.eval]
 
 
-/-- **Lemma `lemma:prenex-normal-form`.**  Every for-transducer is equivalent to one in prenex
+/-- **Lemma `lem:prenex-normal-form`.**  Every for-transducer is equivalent to one in prenex
 form.  This is the statement proved in `RequestProject/PartD/Statements.lean`; the fresh variables
 used by the construction are chosen above every variable of the given program. -/
 theorem forTransducer_prenex_aux (P : ForProg A B) :

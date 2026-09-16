@@ -5,7 +5,7 @@ The elegant syntax of regular expressions is one of the main attractions of regu
 \begin{align*}
  \myunderbrace{A^{**} \xrightarrow {\concatterm} A^*}{flatten a list of lists \\ into a list} \qquad \myunderbrace{\onetype + A \times A^* \xrightarrow {\consterm} A^*}{a list is constructed from \\ either an empty list, or \\ a head and a tail},
 \end{align*}
-which are familiar to any user of a functional programming language, such as  Haskell.
+which are familiar to any user of a functional programming language, such as  Haskell. The programming language will be a bit rather minimial and more cumbersome to use than other models for the regular functions, such as two-way transducers.  However, it will be a  basis for a  more usable programming  languages for the more powerful transducer class of  polyregular functions, which will be described in \cref{sec:polyregular-terms}. 
 
 \paragraph*{Types.} The functions in the above examples are not based purely on strings, but have more structured types. For example, the domain of $\concatterm$ uses lists of lists, while the domain of $\consterm$ is constructed using products, co-products, lists and a unit type. Such types can be encoded into strings using separators, but we will prefer a more direct approach which does not use such representations. The types that we care about are defined in the following way. 
 \begin{definition}
@@ -153,7 +153,7 @@ The rest of \cref{sec:regular-terms} is devoted to the proof of \cref{thm:regula
 \end{align*}
 This is a straightforward induction on the structure of the term. The induction basis says that all atomic terms are regular under string representation, which is easy to check, with the only  non-trivial part being  parsing the string representation of the input. Let us illustrate this on one example, which is distributivity.
 
-\begin{lemma}
+\begin{lemma}\label{lem:distributivity-is-regular-under-string-representation}
     For every types $A,B,C$, the distributivity function
     \begin{align*}
     A \times (B + C) \xrightarrow {\distrterm} (A \times B) + (A \times C)
@@ -476,6 +476,7 @@ In \cref{def:regular-functions-on-types-under-string-representation}, we defined
 
 \exerciseheader
 
+
 \exer{\label{exer:if-then-else} Recall that we think of the type $\onetype + \onetype$ as representing Booleans. Show that functions definable by regular (or rational) terms are closed under the following conditional construction
 \begin{align*}
 a \in A \mapsto 
@@ -493,6 +494,22 @@ A \xrightarrow {f_1,f_2} B.
 A \xrightarrow{(\idterm, f)} A \times (\onetype + \onetype)  \xrightarrow{\distrterm} (A \times \onetype) + (A \times \onetype) \xrightarrow {\fstterm \times \fstterm} A + A \xrightarrow {\either {f_1} {f_2}} B.
 \end{align*}
 For rational terms we cannot use the pairing in the first step. However, we can an indirect solution: by \cref{thm:rational-terms}, the functions defined by rational terms are exactly those that are rational under string representaiton, and the latter class of functions is closed under the conditional construction.
+}
+
+
+\exer{\label{exer:filter-plus}
+Give a regular term which defines the function of type
+\begin{align*}
+(A+B)^* \to A^*,
+\end{align*}
+that keeps only the list elements of type $A$. 
+}{ Using the conditional function from the previous exercise, we can  the function
+    \begin{align*}
+    A + B  & \to A^*\\
+    \leftterm a & \mapsto [a]\\
+    \rightterm b & \mapsto [].
+    \end{align*}
+    Applying this function to each element of the input list and then concatenating the results gives the desired output.
 }
 
 
@@ -542,8 +559,6 @@ Remove the last list element, and apply $(\idterm, \headterm)^*$, leading to the
 
 
 
-
-\knowledgeconfigure{quotation=false}% tikzcd "..." labels need catcode-12 quotes inside \exer
 
 \exer{\label{exer:natural-identity} Consider a family of functions 
 \begin{align*}
@@ -654,6 +669,3 @@ F(B) \arrow[r, "f_B"'] \& G(B)
     \end{align*}
     As a result, we can use distributivity to reduce the domain of a natural transformation to a disjoint union of products of types. If the input type is a disjoint union, then the natural transformation is necessarily obtained by combining two natural transformations, one for each summand. Therefore, we can reduce to the case of a natural transformation whose domain is a product of type variables, which we have already analysed.
 }
-
-
-\knowledgeconfigure{quotation=true}

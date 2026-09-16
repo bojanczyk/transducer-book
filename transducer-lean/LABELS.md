@@ -97,7 +97,7 @@ generator working from the tables alone would delete them.
 | A.2.7 | definition | `def:aperiodic-mealy` | `krohn-rhodes.tex` |
 | A.2.8 | theorem | `thm:aperiodic-mealy` | `krohn-rhodes.tex` |
 | A.2.9 | claim | `claim:aperiodic-pumping` | `krohn-rhodes.tex` |
-| A.2.10 | lemma | `lemma:derivatives` | `krohn-rhodes.tex` |
+| A.2.10 | lemma | `lem:derivatives` | `krohn-rhodes.tex` |
 | A.2.11 | lemma | `lem:aperiodicity-minimal-machine` | `krohn-rhodes.tex` |
 | B.1.1 | definition | `def:nfa-with-output` | `rational-relations.tex` |
 | B.1.2 | definition | `def:rational-relation` | `rational-relations.tex` |
@@ -109,7 +109,7 @@ generator working from the tables alone would delete them.
 | B.2.1 | definition | `def:rational-function` | `rational-functions.tex` |
 | B.2.2 | definition | `def:bimachine` | `rational-functions.tex` |
 | B.2.3 | theorem | `thm:bimachines` | `rational-functions.tex` |
-| B.2.4 | lemma | `lemma:eliminate-epsilon-transitions` | `rational-functions.tex` |
+| B.2.4 | lemma | `lem:eliminate-epsilon-transitions` | `rational-functions.tex` |
 | B.2.5 | lemma | `lem:uniformisation` | `rational-functions.tex` |
 | B.2.6 | theorem | `thm:rational-primes` | `rational-functions.tex` |
 | B.2.7 | theorem | `thm:rational-is-mealy-characterisation` | `rational-functions.tex` |
@@ -152,7 +152,7 @@ generator working from the tables alone would delete them.
 | C.2.11 | claim | `claim:conditional` | `2dfa.tex` |
 | C.2.12 | lemma | `lem:output-of-snake-graph-is-regular` | `2dfa.tex` |
 | C.3.1 | definition | `def:sst` | `sst.tex` |
-| C.3.2 | theorem | `theorem:sst-two-way-equivalence` | `sst.tex` |
+| C.3.2 | theorem | `thm:sst-two-way-equivalence` | `sst.tex` |
 | C.4.1 | theorem | `thm:mso-logic-languages` | `logic.tex` |
 | C.4.2 | lemma | `lem:mso-free-variables` | `logic.tex` |
 | C.4.3 | definition | `def:mso-relabeling` | `logic.tex` |
@@ -174,7 +174,7 @@ generator working from the tables alone would delete them.
 | C.5.2 | definition | `def:regular-functions-on-types-under-string-representation` | `combinators.tex` |
 | C.5.3 | definition | `def:regular-terms` | `combinators.tex` |
 | C.5.4 | theorem | `thm:regular-terms` | `combinators.tex` |
-| C.5.5 | lemma | `nolabel:lem-distributivity-under-string-representation` | `combinators.tex` |
+| C.5.5 | lemma | `lem:distributivity-is-regular-under-string-representation` | `combinators.tex` |
 | C.5.6 | claim | `nolabel:claim-representations-are-a-regular-language` | `combinators.tex` |
 | C.5.7 | lemma | `lem:terms-define-string-homomorphisms` | `combinators.tex` |
 | C.5.8 | claim | `claim:pairing-copairing` | `combinators.tex` |
@@ -189,10 +189,10 @@ generator working from the tables alone would delete them.
 | C.5.17 | claim | `claim:head` | `combinators.tex` |
 | C.5.18 | theorem | `thm:rational-terms` | `combinators.tex` |
 | D.0.1 | definition | `def:polyregular-functions` | `polyregular-intro.tex` |
-| D.0.2 | theorem | `thm:polyregular-functions-are-continuous` | `polyregular-intro.tex` |
+| D.0.3 | theorem | `thm:polyregular-functions-are-continuous` | `polyregular-intro.tex` |
 | D.1.1 | theorem | `thm:for-transducers-are-polyregular` | `polyregular-for.tex` |
 | D.1.2 | definition | `def:prenex-normal-form-for-transducers` | `polyregular-for.tex` |
-| D.1.3 | lemma | `lemma:prenex-normal-form` | `polyregular-for.tex` |
+| D.1.3 | lemma | `lem:prenex-normal-form` | `polyregular-for.tex` |
 | D.1.4 | lemma | `lem:for-closed-under-composition` | `polyregular-for.tex` |
 | D.2.1 | theorem | `thm:pebble-are-continuous` | `polyregular-pebble.tex` |
 | D.2.2 | lemma | `lem:reachability-pebble-automaton` | `polyregular-pebble.tex` |

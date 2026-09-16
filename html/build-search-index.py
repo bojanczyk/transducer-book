@@ -69,6 +69,7 @@ CHAPTERS = [
     ("15-polyregular-functions-introduction", "partDPolyregular/intro.tex"),
     ("16-for-transducers", "partDPolyregular/for.tex"),
     ("17-pebble-transducers", "partDPolyregular/pebble.tex"),
+    ("17a-higher-order", "partDPolyregular/higher-order.tex"),
     ("17z-polyregular-functions-references", "partDPolyregular/bib-notes.tex"),
 ]
 

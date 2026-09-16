@@ -4,7 +4,7 @@ M. Bojańczyk) and their semantics.
 
 These definitions were originally stated in `RequestProject/PartC/Statements.lean`; they have been
 moved here, unchanged, so that the constructions used in the proof of Theorem
-`theorem:sst-two-way-equivalence` can be developed before the statements of the numbered results.
+`thm:sst-two-way-equivalence` can be developed before the statements of the numbered results.
 `RequestProject/PartC/Statements.lean` imports this file, so the names `Transducers.Copyless`,
 `Transducers.SST`, `Transducers.SST.subst`, `Transducers.SST.stepConfig`,
 `Transducers.SST.runConfig`, `Transducers.SST.eval` and `Transducers.IsSST` are unchanged. -/

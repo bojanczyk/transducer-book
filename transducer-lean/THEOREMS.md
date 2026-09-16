@@ -154,15 +154,15 @@ RequestProject/
 | `PartC/TwoWayAnnotOrd.lean` | the same information as a *rational annotation* of the input (`TwoWay.exists_rational_visitOrder_annot`): from the annotation of the two letters adjacent to a cut one reads off, for every pair of states, which of the two visits comes first, and hence which visit to the cut is the first and which is the last |
 | `PartC/RatBi.lean` | *bilateral rewritings*: a rewriting in which the block produced at a letter depends on the letter, on the state of a deterministic automaton run left-to-right on the prefix and on the state of a deterministic automaton run right-to-left on the suffix, is computed by a bimachine and hence rational (`Transducers.isRationalFun_biEval`); the two standard instances are cutting out the factor selected by regular lookaround (`isRationalFun_biFilter`) and cutting the input into the blocks it delimits (`isRationalFun_biMarkSep`) |
 | `PartC/RegPair.lean` | the *neighbouring-block map combinator* is a regular operation (`Transducers.RegPair.isRegularFun_pairMap`): if `f` is regular then so is `w₀ # ⋯ # wₙ ↦ f (w₀ # w₁) · f (w₁ # w₂) ⋯ f (wₙ₋₁ # wₙ)`.  This is stages 1--3 of the book's induction step, carried out exactly as in the book: a rational function appends a copy of the separator at the end of every block, map duplicate procures the two copies of every block, and a bilateral rewriting deletes the extra copies of `w₀` and `wₙ` and re-brackets the rest |
-| `PartC/SSTDef.lean` | Definition `def:sst`: the copyless restriction (`Transducers.Copyless`), streaming string transducers (`Transducers.SST`) and their semantics (`SST.subst`, `SST.runConfig`, `SST.eval`, `Transducers.IsSST`), moved here unchanged from `Statements.lean` so that the constructions of Theorem `theorem:sst-two-way-equivalence` can precede it |
+| `PartC/SSTDef.lean` | Definition `def:sst`: the copyless restriction (`Transducers.Copyless`), streaming string transducers (`Transducers.SST`) and their semantics (`SST.subst`, `SST.runConfig`, `SST.eval`, `Transducers.IsSST`), moved here unchanged from `Statements.lean` so that the constructions of Theorem `thm:sst-two-way-equivalence` can precede it |
 | `PartC/SSTBasic.lean` | the elementary API of an sst: substitution of register contents, the workable form `Transducers.copyless_iff` of the copyless restriction, the list `Transducers.regsOf` of register occurrences, and the *simulation lemma* `SST.eval_of_sim` by which every construction below is verified |
 | `PartC/SSTComp.lean` | the easy cases of the closure of sst's under post-composition with a prime regular function: the identity sst, homomorphisms, the separator function and the case distinction on a regular language |
 | `PartC/SSTMealyRev.lean`, `PartC/SSTMealyFF.lean`, `PartC/SSTMealy.lean` | post-composition of an sst with a Mealy machine, hence with an arbitrary rational function: since the naive construction is not copyless, the machine is decomposed by Krohn–Rhodes (Theorem `thm:krohn-rhodes`) into reversible and flip-flop machines, treated in the first two files, and `SSTMealy.lean` assembles them |
 | `PartC/SSTMapRev.lean`, `PartC/SSTMapDup.lean` | post-composition of an sst with map reverse and with map duplicate, the two remaining prime regular functions: the register contents are kept as tuples indexed by the position of the separators inside them, and copylessness is proved by counting register occurrences |
-| `PartC/SSTRegular.lean` | the "regular to sst" half of Theorem `theorem:sst-two-way-equivalence` (`Transducers.isSST_of_isRegularFun`): sst's are closed under post-composition with every prime, hence with every regular function, and applying this to the identity sst gives the statement |
+| `PartC/SSTRegular.lean` | the "regular to sst" half of Theorem `thm:sst-two-way-equivalence` (`Transducers.isSST_of_isRegularFun`): sst's are closed under post-composition with every prime, hence with every regular function, and applying this to the identity sst gives the statement |
 | `PartC/SSTNorm.lean` | *normalised* sst's (`Transducers.NSST`: the register update depends only on the letter read, the state only on the last letter, and no register occurs twice in a final output string) and the reduction of an arbitrary sst to one (`Transducers.exists_nsst_of_sst`): the input letters are annotated by a Mealy machine with the state of the sst before them, and `K + 1` copies of every register are kept so that the occurrences in a final output string can be given pairwise distinct copies |
 | `PartC/SSTWalk.lean` | the two-way transducer that traverses the register flow tree of a normalised sst (`Transducers.isTwoWay_of_nsst`): it expands the final output string depth-first, moving left to expand the value of a register and right when an expansion is finished, and the copyless restriction is what makes the place at which the expansion has to be resumed a function of the register and of the letter at the position returned to (`NSSTWalk.findReg_eq`, `NSSTWalk.scan`, `NSSTWalk.top`) |
-| `PartC/SSTTwoWay.lean` | the "sst to regular" half of Theorem `theorem:sst-two-way-equivalence`, through Theorem `thm:2dfa-decomposition-into-primes` (`Transducers.isTwoWay_of_isSST`): the annotation of `SSTNorm.lean` is rational and two-way transducers are closed under pre-composition with rational functions (Corollary `cor:2dfa-closure-under-composition`) |
+| `PartC/SSTTwoWay.lean` | the "sst to regular" half of Theorem `thm:sst-two-way-equivalence`, through Theorem `thm:2dfa-decomposition-into-primes` (`Transducers.isTwoWay_of_isSST`): the annotation of `SSTNorm.lean` is rational and two-way transducers are closed under pre-composition with rational functions (Corollary `cor:2dfa-closure-under-composition`) |
 | `PartC/KTypes.lean` | `k`-types of strings (Definition `def:k-types`) and their properties (Lemma `lem:k-types-properties`) |
 | `PartC/Statements.lean` | Sections *The prime regular functions* to *Streaming string transducers*: regular functions, two-way transducers, streaming string transducers |
 | `PartC/MSODef.lean` | the definitions of Section *Logic*: monadic second-order logic over strings, mso relabellings, mso transductions and the first-order fragment (moved unchanged out of `MSO.lean`, which imports this file) |
@@ -225,7 +225,7 @@ RequestProject/
 | `PartC/CombInj.lean` | the string representation is prefix-free (`Transducers.Comb.repr_append_inj`), hence injective (`Transducers.Comb.repr_injective`) |
 | `PartC/CombMark.lean` | the marking of a list representation -- outer brackets deleted, top-level commas replaced by the separator of the map lifting -- and its inverse, used by reverse and by map; also the string reverse as a regular function (`Transducers.Comb.isRegularFun_listReverse`) |
 | `PartC/CombAtomProj.lean` | the identity, the two co-projections and the two projections are regular under string representation |
-| `PartC/CombAtomDistr.lean` | distributivity is regular under string representation (Lemma `nolabel:lem-distributivity-under-string-representation`, the book's worked example) |
+| `PartC/CombAtomDistr.lean` | distributivity is regular under string representation (Lemma `lem:distributivity-is-regular-under-string-representation`, the book's worked example) |
 | `PartC/CombAtomCons.lean` | the list constructor and the list deconstructor are regular under string representation |
 | `PartC/CombAtomConcat.lean` | concatenation is regular under string representation: every entry of the output is written preceded by a comma, and a second machine removes the leading comma and puts the brackets back |
 | `PartC/CombAtomSplit.lean` | split is regular under string representation: one machine, whose mode records whether an entry from `B` has been seen and whether the block being written is empty |
@@ -255,7 +255,7 @@ RequestProject/
 | `PartD/MarkedSquare.lean` | marked squaring and its continuity |
 | `PartD/ForDef.lean` | the syntax and the semantics of the for-transducers, and Definition `def:prenex-normal-form-for-transducers` |
 | `PartD/ForSem.lean` | the semantic toolkit: folds over lists, nests of loops as folds over tuples, the variables and the letters of a program |
-| `PartD/ForNest.lean`, `PartD/ForMerge.lean`, `PartD/ForPrenex.lean`, `PartD/ForLex.lean`, `PartD/ForTrace.lean`, `PartD/ForPrenexTop.lean` | the translation of a program into a single nest of loops and the proof of Lemma `lemma:prenex-normal-form`.  `Transducers.exec_merge`, `Transducers.exec_merge_fresh` and `Transducers.trFor_spec` are stated for **two designated positions in increasing order** (`pos zv < pos lv` and `pos lv < w.length`) rather than for the first and the last position; the prenex form of the book is the instance `0`, `w.length - 1`, and the forward prenex form of Exercise `exer:forward-for-transducer` is the instance `0`, `1`.  Nothing in the merging construction uses that the second designated position is the last one, only that it comes after the first |
+| `PartD/ForNest.lean`, `PartD/ForMerge.lean`, `PartD/ForPrenex.lean`, `PartD/ForLex.lean`, `PartD/ForTrace.lean`, `PartD/ForPrenexTop.lean` | the translation of a program into a single nest of loops and the proof of Lemma `lem:prenex-normal-form`.  `Transducers.exec_merge`, `Transducers.exec_merge_fresh` and `Transducers.trFor_spec` are stated for **two designated positions in increasing order** (`pos zv < pos lv` and `pos lv < w.length`) rather than for the first and the last position; the prenex form of the book is the instance `0`, `w.length - 1`, and the forward prenex form of Exercise `exer:forward-for-transducer` is the instance `0`, `1`.  Nothing in the merging construction uses that the second designated position is the last one, only that it comes after the first |
 | `PartD/ForAtom.lean` | atomic tests, the atomisation of a program, constant programs, and the letters a program can see |
 | `PartD/ForEvents.lean` | the tuples at which the body of a nest produces a letter, and their lexicographic order |
 | `PartD/ForResim.lean` | the re-simulation of the inner nest of loops: answering, inside the composed program, a question about the letter produced at a given tuple |
@@ -364,7 +364,7 @@ a single result, in the index below.  Every entry was re-read against the LaTeX
 sources during the closing audit of the project, and this list is complete for
 them; a divergence that has since disappeared from the book is noted as such
 rather than deleted, because the note explaining it is still in the Lean files.
-That last check moved one entry, Lemma `lemma:derivatives`, out of the list of
+That last check moved one entry, Lemma `lem:derivatives`, out of the list of
 false statements and into the list of statements the book has corrected.
 
 *Statements that were corrected because the printed version is false.*
@@ -473,7 +473,7 @@ false statements and into the list of statements the book has corrected.
   "outputs ε when the input is ε", which makes the theorem false.  The sources now
   list it as item (c), so the Lean statement is faithful; the earlier version is
   kept, commented out, in `PartB/WeightedStatements.lean`.
-* Lemma `lemma:derivatives` — the derivative used to be printed as `f⁽ʷ⁾(v) = f (w v)`,
+* Lemma `lem:derivatives` — the derivative used to be printed as `f⁽ʷ⁾(v) = f (w v)`,
   without removing the output produced while reading `w`, and with that reading
   even the identity has infinitely many derivatives and the lemma is false.  The
   sources now read "`v ↦ f(wv)` with the first `|w|` letters of the output
@@ -540,7 +540,7 @@ the argument differs, and both are recorded here because the docstrings refer to
 | Definition `def:aperiodic-mealy` (aperiodic) | `Transducers.Aperiodic` | — | `Common/Basic.lean` |
 | Theorem `thm:aperiodic-mealy` (aperiodic = flip-flops) | `Transducers.aperiodic_iff_flipflop_composition` | proved ("⇐" by `flipflop_composition_aperiodic`, "⇒" by `krohn_rhodes_flipFlop`, which runs the construction of `StateTrans.lean` inside the class of flip-flops, using that only realisable state transformations occur, see `StateTransAperiodic.lean`).  The theorem's last sentence, "moreover, this property can be decided", is *not* part of the Lean statement — see *Divergences from the book* above | `PartA/Statements.lean` |
 | Claim `claim:aperiodic-pumping` (pumping form of aperiodicity) | `Transducers.aperiodic_iff_pumping` | proved | `PartA/Statements.lean` |
-| Lemma `lemma:derivatives` (Myhill–Nerode) | `Transducers.myhill_nerode_mealy` | proved | `PartA/Statements.lean` |
+| Lemma `lem:derivatives` (Myhill–Nerode) | `Transducers.myhill_nerode_mealy` | proved | `PartA/Statements.lean` |
 | Lemma `lem:aperiodicity-minimal-machine` (condition (*)) | `Transducers.aperiodic_iff_transStabilises` | proved | `PartA/Statements.lean` |
 
 One definition of Part A had to be corrected in order to make the corresponding
@@ -551,11 +551,11 @@ documented in the docstrings.
   `f (u vⁿ w)` is eventually constant *as an element of `Option B`*.  Requiring
   an actual output letter would make the notion unsatisfiable, since for
   `u = v = w = ε` the output of a letter-to-letter function is empty.
-* `deriv` (the derivative used in Lemma `lemma:derivatives`) removes the `|w|` output letters
+* `deriv` (the derivative used in Lemma `lem:derivatives`) removes the `|w|` output letters
   produced while reading `w`: `f⁽ʷ⁾(v) = drop |w| (f (w v))`.  This is what the
   sources now say; an earlier edition printed `f⁽ʷ⁾(v) = f (w v)`, and with that
   reading even the identity function has infinitely many derivatives and Lemma
-  `lemma:derivatives` is false.
+  `lem:derivatives` is false.
 
 Two further divergences in Part A, both listed under *Divergences from the book*
 above:
@@ -589,8 +589,8 @@ transformations of the prefixes of the input).
 | Definition `def:rational-function` (rational function) | `Transducers.IsRationalFun` | — | `PartB/LabAut.lean` |
 | Definition `def:bimachine` (bimachine) | `Transducers.Bimachine`, `Transducers.IsBimachine` | — | `PartB/Bimachine.lean` |
 | Theorem `thm:bimachines` (rational = unambiguous = bimachine) | `Transducers.rational_iff_unambiguous_iff_bimachine` | proved (unambiguity by the least accepting run, `Unambig.lean` and `Uniform.lean`; bimachine → rational in `Bimachine.lean`, rational → bimachine in `RatBimach.lean`) | `PartB/RationalStatements.lean` |
-| Lemma `lemma:eliminate-epsilon-transitions` (elimination of ε-transitions) | `Transducers.epsilon_elimination` | proved (`EpsElim.lean`, using the regularity of the outputs on a fixed input, `OutLang.lean`) | `PartB/RationalStatements.lean` |
-| Lemma `lem:uniformisation` (uniformisation) | `Transducers.uniformisation` | proved (`Uniform.lean`, from the ε-free normal form of Lemma `lemma:eliminate-epsilon-transitions` and the unambiguisation of `Unambig.lean`) | `PartB/RationalStatements.lean` |
+| Lemma `lem:eliminate-epsilon-transitions` (elimination of ε-transitions) | `Transducers.epsilon_elimination` | proved (`EpsElim.lean`, using the regularity of the outputs on a fixed input, `OutLang.lean`) | `PartB/RationalStatements.lean` |
+| Lemma `lem:uniformisation` (uniformisation) | `Transducers.uniformisation` | proved (`Uniform.lean`, from the ε-free normal form of Lemma `lem:eliminate-epsilon-transitions` and the unambiguisation of `Unambig.lean`) | `PartB/RationalStatements.lean` |
 | Theorem `thm:rational-primes` (decomposition into primes) | `Transducers.rational_iff_prime_composition` | proved (`PrimeRat.lean` and `BimachPrime.lean`, from Theorem `thm:bimachines` and the Krohn–Rhodes Theorem) | `PartB/RationalStatements.lean` |
 | Theorem `thm:rational-is-mealy-characterisation` (Mealy machines inside rational functions) | `Transducers.rational_isMealy_iff` | proved (from Theorem `thm:mealy-machine-independent` and Theorem `thm:continuity-rational-relations`) | `PartB/RationalStatements.lean` |
 | Definition `def:semiring` (semiring) | Mathlib's `Semiring` | — | — |
@@ -650,7 +650,7 @@ produced but not yet emitted, or emitted but not yet produced), `SeqChar.lean` (
 `thm:sequential-function-independent`: the canonical sequential transducer, whose states are the
 Myhill–Nerode classes of the length-modulo and suffix languages), `RegularAux.lean` (regularity of
 the auxiliary languages), `OutLang.lean` (for a fixed input, the set of outputs is a regular
-language over the output alphabet) and `EpsElim.lean` (Lemma `lemma:eliminate-epsilon-transitions`).
+language over the output alphabet) and `EpsElim.lean` (Lemma `lem:eliminate-epsilon-transitions`).
 
 The files added for Theorem `thm:subsequential-functions` are:
 
@@ -737,7 +737,7 @@ The files added for Theorems `thm:bimachines`, `lem:uniformisation` and `thm:rat
   whose relation is total contains an unambiguous one with the same domain
   (`exists_unambiguous_of_epsFree`).
 * `Uniform.lean` — Lemma `lem:uniformisation`: choosing one output string in each language of the
-  extended ε-free automaton of Lemma `lemma:eliminate-epsilon-transitions` gives an ordinary nfa
+  extended ε-free automaton of Lemma `lem:eliminate-epsilon-transitions` gives an ordinary nfa
   with output contained in the relation, which is unambiguised as above; the same argument gives an
   unambiguous ε-free automaton for every rational function
   (`exists_unambiguous_aut_of_rationalFun`).
@@ -871,7 +871,7 @@ The proofs are organised as follows.
 | Lemma `lem:regular-closure-properties` (closure properties) | `Transducers.regular_closure_properties` | **proved** (`MapLiftAux.lean`, `MapLiftRat.lean`, `MapLiftPrime.lean`, `RegMapLift.lean`, `RatSeq.lean`, `RegClosure.lean`) | `PartC/Statements.lean` |
 | Claim `claim:conditional` (disjoint sums) | `Transducers.sum_of_regular` | **proved** (`SumShape.lean`, `SumPrime.lean`, `SumReg.lean`, `RegSum.lean`), in the corrected form — the claim as printed is false on the empty input, see *An error in Claim `claim:conditional`* below | `PartC/Statements.lean` |
 | Definition `def:sst` (sst) | `Transducers.SST`, `Transducers.IsSST` | — | `PartC/SSTDef.lean` |
-| Theorem `theorem:sst-two-way-equivalence` (sst = regular) | `Transducers.sst_iff_regular` | both implications are **proved** (`SSTComp.lean`, `SSTMealyRev.lean`, `SSTMealyFF.lean`, `SSTMealy.lean`, `SSTMapRev.lean`, `SSTMapDup.lean`, `SSTRegular.lean` for `regular ⊆ sst`; `SSTNorm.lean`, `SSTWalk.lean`, `SSTTwoWay.lean` for `sst ⊆ two-way`), and since Theorem `thm:2dfa-decomposition-into-primes` is now proved the statement depends only on `propext`, `Classical.choice`, `Quot.sound` — see *The proof of Theorem `theorem:sst-two-way-equivalence`* below | `PartC/Statements.lean` |
+| Theorem `thm:sst-two-way-equivalence` (sst = regular) | `Transducers.sst_iff_regular` | both implications are **proved** (`SSTComp.lean`, `SSTMealyRev.lean`, `SSTMealyFF.lean`, `SSTMealy.lean`, `SSTMapRev.lean`, `SSTMapDup.lean`, `SSTRegular.lean` for `regular ⊆ sst`; `SSTNorm.lean`, `SSTWalk.lean`, `SSTTwoWay.lean` for `sst ⊆ two-way`), and since Theorem `thm:2dfa-decomposition-into-primes` is now proved the statement depends only on `propext`, `Classical.choice`, `Quot.sound` — see *The proof of Theorem `thm:sst-two-way-equivalence`* below | `PartC/Statements.lean` |
 | Theorem `thm:mso-logic-languages` (mso = regular languages) | `Transducers.regular_iff_msoDefinable` | **proved** (`MSO.lean`, from `MSOSyntax.lean`, `RegAut.lean`, `MSOAnnot.lean`, `MSOBuchi.lean`) | `PartC/MSO.lean` |
 | Lemma `lem:mso-free-variables` (formulas with free variables) | `Transducers.mso_annotated_regular` | **proved** (`RegAut.lean`, `MSOSyntax.lean`, `MSOAnnot.lean`) | `PartC/MSO.lean` |
 | Definition `def:mso-relabeling` (mso relabelling) | `Transducers.MSORelabelling`, `Transducers.IsMSORelabelling` | — | `PartC/MSODef.lean` |
@@ -893,7 +893,8 @@ The proofs are organised as follows.
 | Definition `def:regular-functions-on-types-under-string-representation` (regular under string representation) | `Transducers.IsRegularUnderRepr`, `Transducers.IsRationalUnderRepr` | — | `PartC/CombTypes.lean` |
 | Definition `def:regular-terms` (regular term) | `Transducers.RegTerm`, `Transducers.RegTerm.eval`, `Transducers.IsRegularTermFun` | — | `PartC/CombTerms.lean` |
 | Theorem `thm:regular-terms` (regular terms) | `Transducers.regular_iff_regularTerm`, `Transducers.regularTerm_isRegular`, `Transducers.regularTerm_of_isRegular` | **proved**, as the equivalence `IsRegularUnderRepr f ↔ IsRegularTermFun f` (`Transducers.regular_iff_regularTerm`, `CombRepr.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`).  The easy direction, `Transducers.regularTerm_isRegular` (`CombStatements.lean`), is by induction on the term, on the atomic terms of `CombAtomProj.lean`, `CombAtomDistr.lean`, `CombAtomCons.lean`, `CombAtomConcat.lean`, `CombAtomSplit.lean`, `CombAtomReverse.lean`, `CombAtomPref.lean` and the combinators of `CombCombinators.lean`.  The converse, `Transducers.regularTerm_of_isRegular` (`CombRepr.lean`), composes the term for the string representation and the term for its inverse (Lemma `lem:terms-define-string-representation`) around a term for the regular string-to-string function in the middle, which comes from Lemma `lem:terms-define-append-hash`, Lemma `lem:terms-define-map-reverse-duplicate`, Lemma `lem:terms-define-flip-flop` and Lemma `lem:terms-define-reversible` through the prime decomposition of Theorem `thm:2dfa-decomposition-into-primes` and Theorem `thm:krohn-rhodes` | `PartC/CombStatements.lean`, `PartC/CombRepr.lean` |
-| Lemma `nolabel:lem-distributivity-under-string-representation` (distributivity) | `Transducers.Comb.isRegularUnderRepr_distr` | proved (`CombAtomDistr.lean`), the worked example of the induction basis of Theorem `thm:regular-terms`; the parsing is done by the bracket counter of `CombDepth.lean` rather than by the automaton of the unlabelled claim that follows it in the book | `PartC/CombAtomDistr.lean` |
+| Lemma `lem:distributivity-is-regular-under-string-representation` (distributivity) | `Transducers.Comb.isRegularUnderRepr_distr` | proved (`CombAtomDistr.lean`), the worked example of the induction basis of Theorem `thm:regular-terms`; the parsing is done by the bracket counter of `CombDepth.lean` rather than by the automaton of the unlabelled claim that follows it in the book | `PartC/CombAtomDistr.lean` |
+| Example `ex:string-reversal-not-rational` (string reversal is not rational) | `Transducers.Exercises.not_isRationalFun_reverse` | proved (`ReverseNotRational.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`) | `Exercises/ReverseNotRational.lean` |
 | Claim `nolabel:claim-representations-are-a-regular-language` (the representations form a regular language) | — | **not formalised**: the parsing of a representation is done here by the bracket counter of `PartC/CombDepth.lean`, which is what the transducers of the easy direction of Theorem `thm:regular-terms` use instead of this claim | — |
 | Lemma `lem:terms-define-string-homomorphisms` (homomorphisms) | `Transducers.terms_define_string_homomorphisms` | **proved** (`CombFinite.lean`: the map of a function with a finite domain, followed by concatenation; axioms: `propext`, `Classical.choice`, `Quot.sound`) | `PartC/CombFinite.lean` |
 | Claim `claim:pairing-copairing` (pairing and co-pairing) | `Transducers.IsRegularTermFun.pair`, `Transducers.IsRegularTermFun.copair` | **proved** (`CombFinite.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`), by the book's argument: pairing is the diagonal followed by `f₁ × f₂`, co-pairing is `f₁ + f₂` followed by the co-diagonal, the diagonal and the co-diagonal being atomic terms and `f₁ × f₂`, `f₁ + f₂` functoriality combinators of Definition `def:regular-terms` | `PartC/CombFinite.lean` |
@@ -1485,9 +1486,9 @@ a letter-to-letter map with `snakeOut k`.  `SnakeGraph.snakeOut_isRegular` and
 `Transducers.boundedWidth_isRegular` both depend only on `propext`,
 `Classical.choice` and `Quot.sound`.
 
-#### The proof of Theorem `theorem:sst-two-way-equivalence`
+#### The proof of Theorem `thm:sst-two-way-equivalence`
 
-Both implications of Theorem `theorem:sst-two-way-equivalence` are formalised, and every file that
+Both implications of Theorem `thm:sst-two-way-equivalence` are formalised, and every file that
 they use is sorry-free.
 
 The implication `regular ⊆ sst` is `Transducers.isSST_of_isRegularFun`
@@ -1582,7 +1583,7 @@ form `pre w`, what is composed with `pre` is its width-bounded output `TwoWay.wi
 function that agrees with the run wherever the run halts and is regular by Theorem
 `thm:2dfa-decomposition-into-primes`.
 
-Exactly as for Theorem `theorem:sst-two-way-equivalence`, the inclusion `mso ⊆ regular` uses the
+Exactly as for Theorem `thm:sst-two-way-equivalence`, the inclusion `mso ⊆ regular` uses the
 hard half of Theorem `thm:2dfa-decomposition-into-primes`; that half is now proved (see *How Theorem
 `thm:2dfa-decomposition-into-primes` is proved* above), so `Transducers.msoTransduction_iff_regular`
 is **proved outright** and depends only on `propext`, `Classical.choice`, `Quot.sound`.  The
@@ -1706,7 +1707,7 @@ among the primes.
 | For-transducers (Section *For-transducers*) | `Transducers.ForProg`, `Transducers.IsForTransducer` | — | `PartD/ForDef.lean` |
 | Theorem `thm:for-transducers-are-polyregular` (polyregular = for-transducers) | `Transducers.polyregular_iff_forTransducer` | proved (`ForPolyreg.lean` and `PolyFor.lean`) | `PartD/Statements.lean` |
 | Definition `def:prenex-normal-form-for-transducers` (prenex form) | `Transducers.ForProg.PrenexForm` | — | `PartD/ForDef.lean` |
-| Lemma `lemma:prenex-normal-form` (prenex normal form) | `Transducers.forTransducer_prenex` | proved (`ForPrenexTop.lean`) | `PartD/Statements.lean` |
+| Lemma `lem:prenex-normal-form` (prenex normal form) | `Transducers.forTransducer_prenex` | proved (`ForPrenexTop.lean`) | `PartD/Statements.lean` |
 | Lemma `lem:for-closed-under-composition` (composition) | `Transducers.forTransducer_comp` | proved (`ForCompTop.lean`) | `PartD/Statements.lean` |
 | Pebble transducers (Section *Pebble transducers*) | `Transducers.Pebble`, `Transducers.IsPebbleTransducer` | — | `PartD/PebbleDef.lean` |
 | Theorem `thm:pebble-are-continuous` (continuity) | `Transducers.pebble_continuous` | proved (`PebbleReg.lean`, on top of `PebbleAut.lean`, `PebbleProd.lean`, `PebbleSub.lean`, `PebbleAnn.lean`, `PebbleBisim.lean`, `PebbleOne.lean`, `PebbleLev1.lean`) | `PartD/Statements.lean` |
@@ -1736,7 +1737,7 @@ Supporting files for Part D: `MarkedSquare.lean` (marked squaring and the
 right-to-left automaton showing that it is continuous), the thirteen
 `For*.lean` files listed in the table of files above, which carry the syntax and
 the semantics of the for-transducers, the prenex form of Lemma
-`lemma:prenex-normal-form`, and the composition of two for-transducers of Lemma
+`lem:prenex-normal-form`, and the composition of two for-transducers of Lemma
 `lem:for-closed-under-composition`, the five `Poly*.lean` files that carry the
 right-to-left inclusion of Theorem `thm:for-transducers-are-polyregular`, the
 eight `Poly*.lean` files listed in the table of files above that carry Theorem

@@ -10,7 +10,7 @@ part = true
 \setcounter{mypart}{4}
 \setcounter{section}{0}
 \setcounter{ourexamplecounter}{35}
-% source stamp partDPolyregular/intro.tex:f7f93dbd
+% source stamp partDPolyregular/intro.tex:e33e3c3b
 \renewcommand{\exer}[2]{}
 \input{../../../partDPolyregular/intro.tex}
 {{< /latex >}}
@@ -34,7 +34,7 @@ part = true
 \noindent\textbf{Solution.}\quad Suppose that the input to marked squaring is the string $a^N$ with $N = 2^n$, which has a grammar compression of size linear in $n$, obtained by repeated doubling. We will show that the output of marked squaring has no grammar compression of size subexponential in $n$. The crucial observation is that the distances between consecutive underlined letters in the output take exponentially many values, while a grammar can only produce a linear number of such distances.
 
 Indeed, the output of marked squaring on $a^N$ is the concatenation of the strings $\underline a^i a^{N-i}$, with $i$ ranging from $1$ to $N$. Between the last underlined letter of the $i$-th block and the first underlined letter of the next block there are exactly $N-i$ letters that are not underlined, and hence the distances between consecutive underlined letters take all the values $1,\ldots,N-1$. It remains to prove the following claim, in which $b$ plays the role of the underlined letter.
-\begin{claim}
+\begin{claim}\label{claim:grammar-compression-of-baib}
     Consider a grammar compression of a string $w \in \set{a,b}^*$. Then 
     \begin{align*}
     \setbuild{ i \in \set{0,1,\ldots}}{$w$ contains an infix of the form $b a^i b$}

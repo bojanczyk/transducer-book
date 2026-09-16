@@ -18,6 +18,21 @@
 
 % commuting diagrams
 \usepackage{tikz-cd}
+\newenvironment{safeTikzcd}{%
+  \begingroup
+  \knowledgeconfigure{quotation=false}%
+}{%
+  \endgroup
+}
+\newenvironment{safeTikzcdDisplay}[1][]{%
+  \[
+  \begin{safeTikzcd}
+  \begin{tikzcd}[ampersand replacement=\&,#1]
+}{%
+  \end{tikzcd}
+  \end{safeTikzcd}
+  \]
+}
 % allows multline
 \newcommand{\txt}[1]{\begin{tabular}{c}#1\end{tabular}}
 
@@ -142,10 +157,38 @@
 \newtheorem{remark}[remark]{Remark}
 \aliascntresetthe{remark}
 
+\newaliascnt{openproblem}{theorem}
+\newtheorem{openproblem}[openproblem]{Open Problem}
+\aliascntresetthe{openproblem}
+
 
 % macros for exercises
 \newtheorem{exercise}{Exercise}[section]
-\newcommand{\exer}[2]{
+% \exer{statement}{solution}
+%
+% The quote character is made ordinary *before* the two arguments are read,
+% which is the only moment at which it can be done. knowledge's `quotation`
+% option makes " active, while tikz-cd's label syntax — \arrow[r,"f"] — needs
+% a " that tikz can recognise as a character: an active one arrives as a
+% protected xparse macro and tikz stops with "\xparse function is not
+% expandable". A token's catcode is fixed when it is read, so
+% \knowledgeconfigure inside the argument — or inside an environment inside
+% the argument, which is what safeTikzcdDisplay attempts — is always too late.
+% The argument was tokenised before any of it could run. Hence the split: one
+% macro to set the catcode, a second to do the reading.
+%
+% Worth knowing before writing an exercise: inside \exer a "…" is two literal
+% quote marks, not a knowledge reference. Write \kl{…} instead — the same
+% output, and the knowledge package's own non-quotation form.
+%
+% What this replaces: chapters used to wrap each affected exercise in
+% \knowledgeconfigure{quotation=false} … {quotation=true}, eleven times, and
+% one of those was never switched back on — so quotations were silently dead
+% from the end of Part B through to the middle of Section C.5, and nothing said
+% so. A diagram inside an exercise is common enough that it should not need a
+% ritual around it.
+\newcommand{\exer}{\begingroup\catcode`\"=12\relax\exer@read}
+\newcommand{\exer@read}[2]{\endgroup
 \begin{exercise}
 #1
 \end{exercise}
@@ -189,6 +232,7 @@
 \crefname{conjecture}{Conjecture}{Conjectures}
 \crefname{exercise}{Exercise}{Exercises}
 \crefname{remark}{Remark}{Remarks}
+\crefname{openproblem}{Open Problem}{Open Problems}
 
 
 %  *********** configurations for listings ***********

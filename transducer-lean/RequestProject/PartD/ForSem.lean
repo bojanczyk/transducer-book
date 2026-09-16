@@ -2,7 +2,7 @@
 Part D: for-transducers -- the semantic toolkit.
 
 Elementary facts about the semantics of the for-transducers of *Transducers* (M. Bojańczyk), used
-in the proofs of Lemma `lemma:prenex-normal-form` and of Lemma `lem:for-closed-under-composition`.
+in the proofs of Lemma `lem:prenex-normal-form` and of Lemma `lem:for-closed-under-composition`.
 
 The central one is `Transducers.exec_nestLoops`: a nest of loops runs its body once for every
 tuple of positions, in the lexicographic order of the tuples, and threads the Boolean valuation

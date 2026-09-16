@@ -26,22 +26,101 @@ Before presenting the full programming language, we begin with a minimal adjustm
 \end{align*}
 \end{definition}
 
+We will shortly show, without much difficulty, that the polyregular terms define exactly the polyregular functions. Let us begin, however, with some examples.
 
-\begin{myexample}[Split and marked square] \label{ex:split-and-marked-square} The split function is essentially the type-to-type version of the string-to-string function for marked squaring that is the basis of polyregular function. Since strings over a finite alphabet are a special case of types, we can try to recover marked squaring. This is done as follows. We begin with the composition
+\begin{myexample}[Prefixes]
+    \label{ex:all-prefixes} Let us write a polyregular term that computes all prefixes of a list. This term is a composition of three terms, as shown below, with the execution illustrated on an example.
+    \[
+    \begin{tikzcd}
+    A^* 
+    \ar[d,"{\reverseterm}"]
+    &
+    {[1,2,3]}
+    \ar[d,mapsto]
+    \\
+    A^*
+    \ar[d,"{\splitterm}"]
+    &
+    {[3,2,1]}
+    \ar[d,mapsto]
+    \\
+    (A^* \times A^*)^*
+    \ar[d,"{\sndterm^*}"]
+    & 
+    {[([3,2,1],[]),  ([3,2],[1]),  ([3],[2,1]),  ([],[3,2,1])]} 
+    \ar[d,mapsto]
+    \\
+    A^{**}
+    \ar[d,"{\reverseterm^*}"]
+    &
+    {[[],  [1],  [2,1],  [3,2,1]]} 
+    \ar[d,mapsto]
+    \\
+    A^{**}
+    & 
+    {[[],  [1],  [1,2],  [1,2,3]]}
+    \end{tikzcd}
+    \]
+\end{myexample}
+
+\begin{myexample}[Group multiplication]
+    \label{ex:groups-simpler}
+    Using the prefix operation, we can simplify the group prefix operation to a simpler one 
     \begin{align*}
+    G^* \xrightarrow{\multterm} G,
+    \end{align*}
+    in which the output is the group product of the input list. The original group prefix operation can be implemented by applying the new one to all prefixes, and the list of all prefixes can be computed as in the previous example. (We need to drop the first value in the output list, since it corresponds to an empty prefix.)
+\end{myexample}
+
+\begin{myexample}[Split and marked square] \label{ex:split-and-marked-square} The split function is essentially the type-to-type version of the string-to-string function for marked squaring that is the basis of the polyregular functions. Since strings over a finite alphabet are a special case of types, we can try to recover marked squaring. This is done as follows. (In the example on the right, we use underlines and non-underlines to distinguish two copies of $A+A$, to save space and be consistent with the notation for marked squaring.)
+\[
+\begin{tikzcd}
 A^* 
-\xrightarrow \splitterm 
+\ar[d,"\splitterm"] 
+&
+{[1,2,3]}
+\ar[d,mapsto]
+\\
 (A^* \times A^*)^* 
-\xrightarrow {(\leftterm^* \times \rightterm^*)^*}
+\ar[d, "{(\leftterm^* \times \rightterm^*)^*}"]
+&
+{[([1,2,3],[]),  ([1,2],[3]),  ([1],[2,3]),  ([],[1,2,3])]}
+\ar[d,mapsto]
+\\
 ((A+A)^* \times (A+A)^*)^*
-\xrightarrow {\binconcterm^*}.
+\ar[d,"{\binconcterm^*}"]
+&
+{[([\underline 1,\underline  2,\underline  3],[]),  ([\underline  1,\underline 2],[3]),  ([\underline 1],[2,3]),  ([],[1,2,3])]}
+\ar[d,mapsto]
+\\
 (A+A)^{**}
-\end{align*}
-Then we reverse the list, remove the first item, and apply  $\concatterm$ to flatten it. The converse simulation also holds: if we think of the split function as a string-to-string function, under string representation of types, then it is polyregular.  In fact, it can be obtained by applying marked squaring to the (string representation of the) input list, followed by a rational function that erases some of the extraneous annotation. 
+\ar[d,"{\reverseterm}"]
+&
+{[[\underline 1,\underline  2,\underline  3],  [\underline  1,\underline 2,3],  [\underline 1,2,3],  [1,2,3]]}
+\ar[d,mapsto]
+\\
+(A+A)^{**}
+\ar[d,"{\text{tail}}"]
+&
+{[[1,2,3],[\underline 1,2,3], [\underline  1,\underline 2,3], [\underline 1,\underline  2,\underline  3]]}
+\ar[d,mapsto]
+\\
+(A+A)^{**}
+\ar[d,"{\concatterm}"]
+&
+{[[\underline 1,2,3], [\underline  1,\underline 2,3], [\underline 1,\underline  2,\underline  3]]}
+\ar[d,mapsto]
+\\
+(A+A)^{*}
+&
+{[\underline 1,2,3,\underline  1,\underline 2,3,\underline 1,\underline  2,\underline  3]}
+\end{tikzcd}
+\]
+In the above, tail is a function that deletes the first element, which can easily be implemented using a regular (and therefore also polyregular) term. The converse simulation also holds: if we think of the split function as a string-to-string function, under string representation of types, then it is polyregular.  In fact, it can be obtained by applying marked squaring to the (string representation of the) input list, followed by a rational function that erases some of the extraneous annotation. 
 \end{myexample}
 
 
-In the exercises we show  $\blockterm$ and $\reverseterm$  become  redundant in the presence of $\splitterm$, and the group prefix multiplication function can be simplified (although not altogether eliminated) so that its type is $G^* \to G$ and not $G^* \to G^*$. We now show that the polyregular terms define exactly the polyregular functions. The functions in question are type-to-type functions, with the notion of polyregularity being defined using string representations as in \cref{def:polyregular-functions}. 
+
 
 
 
@@ -71,7 +150,7 @@ The system from \cref{thm:polyregular-terms} is only a minor variation on the sy
 
 Functional programming languages are based on the $\lambda$-calculus, where the  basic computational mechanism  is substitution:  a variable is replaced by its argument. Since a variable can appear multiple times, such substitution can lead to super-linear output size. For example, the squaring operation from \cref{exer:squaring-continuous}, which had quadratic output size, can be implemented by the following  code, which replaces each list element by the list itself:
 \begin{align*}
-\lambda x. \concatterm\ ( \mapterm\ (\lambda y. x)\  x).
+\lambda x. \concatterm\ ( \myunderbrace{(\lambda y. x)^*}{replace each list element by $x$}\  x).
 \end{align*}
 Because of the super-linear output size, we avoided substitution in the previous parts of this book, which were about functions with linear output size.
 Now, in the presence of polynomial size, we can  embrace substitution. This is what we do in this section: we define a functional programming language which defines exactly the polyregular functions. 
@@ -98,9 +177,9 @@ Our programming language is the extension of the polyregular terms with the mech
     \label{def:higher-order-terms}
     The syntax of \emph{higher-order  polyregular terms} is  defined by induction as follows:
         \begin{description}
-            \item[atomic functions and combinators:] we keep all atomic functions and combinatosrs of the polyregular terms, which are now also allowed for higher-order types; 
+            \item[atomic functions and combinators:] we keep all atomic functions and combinators of the polyregular terms, which are now also allowed for higher-order types; 
              \item[variable:]        each variable is a higher-order polyregular term of corresponding type;
-            \item [application] if $f : A \to B$ and $a : A$ are higher-order polyregular, then so is $f(a) : B$;
+            \item [application] if $f : A \to B$ and $a : A$ are higher-order polyregular terms, then so is $f(a) : B$;
             \item [abstraction] if $b : B$ is a higher-order polyregular term and $x : A$ is a variable, then $\lambda x. b : A \to B$ is a  higher-order polyregular term.
         \end{description}
 \end{definition}
@@ -112,9 +191,30 @@ The semantics of the programming language is defined in the expected way. For a 
 which is defined by induction on the structure of the term in the expected way.  Later in this section, we will show that the higher-order polyregular terms define exactly the polyregular functions in those cases where they can be compared: the inputs and outputs are arrow-free types.
 
 
+\begin{myexample}[Strength and rectangles]
+    \label{ex:strength-and-rectangle}
+    Even without the atomic function $\splitterm$, we can define some interesting non-linear functions purely using the mechanics of the $\lambda$-calculus and linear atomic functions. One example is the function
+    \begin{align*}
+    A \times B^* \xrightarrow{ \strengthterm} (A \times B)^* 
+    \end{align*}
+    which adds the first argument to each list element in the second argument. This function is implemented by the following term:
+    \begin{align*}
+    \lambda a : A. (\lambda b : B. (a,b))^*.
+    \end{align*}
+    Using the above function, we can implement the rectangle function
+    \begin{align*}
+    A^* \times B^* \xrightarrow{\rectangleterm} (A \times B)^* 
+    \end{align*}
+    which produces all pairs of elements in the two input lists, ordered lexicographically: 
+        \begin{align*}
+   \lambda x : A^* \times B^*. \concatterm (( \lambda a : A. \strengthterm\ (a, \sndterm x))^*  (\fstterm x)).
+    \end{align*}
+\end{myexample}
 
 
-\paragraph*{An alternative syntax.} The definition of higher-order polyregular terms from \cref{def:higher-order-terms} was phrased as an extension of the polyregular terms. However, if we were to build the programming language from scratch, without some legacy language that is built on atomic functions and combinators, we would be more likely to design a different syntax, such as the one in the following lemma.  In the lemma below, $\multterm$ is the function that multiplies elements in a group, and $\mapterm$ as well as $\mathtt{either}$ are defined as in Haskell.
+
+
+\paragraph*{An alternative syntax.} The definition of higher-order polyregular terms from \cref{def:higher-order-terms} was phrased as an extension of the polyregular terms. However, if we were to build the programming language from scratch, without some legacy language that is built on atomic functions and combinators, we would be more likely to design a different syntax, such as the one in the following lemma.  In the lemma below, $\multterm$ is the function from Example~\ref{ex:groups-simpler} and $\mapterm$ as well as $\mathtt{either}$ are defined as in Haskell.
 
 
 \begin{lemma}\label{lem:fewer-atomic}
@@ -145,7 +245,7 @@ which is defined by induction on the structure of the term in the expected way. 
     f_1 + f_2 & =  \lambda x. \either (\lambda y. \leftterm\ (f_1\ y))\ (\lambda z. \rightterm\ (f_2\ z))\ x \\
     f^* & = \mapterm f 
     \end{align*}
-    Therefore, it remains to show that all of the atomic polyregular functions can be implemented using the modified syntax. In \cref{exer:reverse-from-split} we show that $\reverseterm$ is redundant, in \cref{exer:block-from-split} we do the same for $\blockterm$, and in \cref{exer:pref-from-mult} we show that the group prefix operation can be replaced by the $\multterm$. The other missing atomic functions are implemented as follows:
+    Therefore, it remains to show that all of the atomic polyregular functions can be implemented using the modified syntax. In \cref{exer:reverse-from-split} we show that $\reverseterm$ is redundant, in \cref{exer:block-from-split} we do the same for $\blockterm$, while the group prefix operation was discussed in  Example \ref{ex:groups-simpler}. The other missing atomic functions are implemented as follows:
          \begin{align*}
         \idterm  &=  \lambda x.x \\
         \diagterm  & = \lambda x. (x,x) \\
@@ -158,6 +258,19 @@ which is defined by induction on the structure of the term in the expected way. 
         (\lambda y. \concatterm [ [\fstterm y], \sndterm y] ) .
     \end{align*}
 \end{proof}
+
+
+
+\begin{myexample}
+    [Filter] \label{ex:filter} Using $\eitherterm$ we can  implement  a filter function  of type 
+    \begin{align*}
+    (A \to \onetype + \onetype) \to A^* \to   A^*
+    \end{align*}
+    which keeps only the list elements that satisfy a certain criterion. The idea is to replace correct elements (those that satisfy the criterion) by singleton list items, incorrect list elements by the empty list, and then concatenate the resulting list of lists. The implementation is as follows:
+    \begin{align*}
+    \lambda p : (A \to \onetype + \onetype). \lambda x : A^*. \concatterm ((\lambda a : A. \either (\lambda y : \onetype. []) (\lambda y : \onetype. [a]) (p a))^* x)
+    \end{align*}
+\end{myexample}
 
 
 \subsection{Expressive completeness}
@@ -191,7 +304,7 @@ This new parameterised denotation is  defined to be  pointwise lifting of the or
 \begin{align*}
 \sem a_Q \myunderbrace{(\rho_1,\ldots,\rho_n)}{the values for free variables} \myoverbrace{(q)}{the parameter} = \sem{a}(\rho_1(q),\ldots,\rho_n(q)).
 \end{align*}
-At first sight, this  seems to be a mere obfuscation of the original semantics. However, the new definition  will enable us to find an invariant that will be used to remove the higher-order features of  higher-order polyregular terms.  This invariant is postulated in the following lemma. It is usually called logical relaitons, but  since we use both logics and relations in other ways, and we use the non-descriptive name of \emph{good functions} below.
+At first sight, this  seems to be a mere obfuscation of the original semantics. However, the new definition  will enable us to find an invariant that will be used to remove the higher-order features of  higher-order polyregular terms.  This invariant is postulated in the following lemma. It is usually called a logical relation, but since we use both logics and relations in other ways, we use the non-descriptive name of \emph{good functions} below.
 
 \begin{lemma}[Fundamental Lemma] \label{lem:fundamental-lemma} For every arrow-free type $Q$ and higher-order type $A$, one can identify  a subset of the functions of type $Q \to A$, called the \emph{good functions}, such that:
 \begin{enumerate}
@@ -200,7 +313,7 @@ At first sight, this  seems to be a mere obfuscation of the original semantics. 
 \end{enumerate}
 \end{lemma}
 
-Before proving the Fundamental Lemma, we use it prove \cref{thm:higher-order-terms}. 
+Before proving the Fundamental Lemma, we use it to prove \cref{thm:higher-order-terms}. 
 \begin{proof}[Proof of \cref{thm:higher-order-terms} using the Fundamental Lemma.]  As we have explained before, we only need to show that if a function between arrow-free types is defined by a closed higher-order polyregular term, then it is polyregular.  Suppose that $f$ is a closed higher-order polyregular term, whose type is $A \to B$ for some arrow-free types $A$ and $B$. Choose a variable $x : A$, let the parameter set be $A$ itself, and  consider the parametrised denotation $\sem{f(x)}_A$ of the application term $f(x)$. We apply this denotation to the identity function on the set $A$, which is good by the first item of the Fundamental Lemma. By the second item, 
     \begin{align*}
    A \xrightarrow{\sem{f(x)}_A \idterm}B
@@ -255,7 +368,7 @@ We begin with the first item of the Fundamental Lemma.
     For the implication good-to-polyregular, we apply the induction assumption to the good function $\rho$, and use the fact that polyregular functions are closed under composition and map. For the converse implication, we put the entire polyregular function into $f$, with $P=A$ and $\rho$ being the identity function on $A$. The product and co-product cases are similar.
 \end{proof}
 
-The crux of the matter is the second item of the Fundamental Lemma, which says that semantics of higher order polyregular terms are consistent with good functions. This is proved by induction on the structure of the term.
+The crux of the matter is the second item of the Fundamental Lemma, which says that the semantics of higher-order polyregular terms is consistent with good functions. This is proved by induction on the structure of the term.
 
 
 \newcommand{\fundlemlogrel}[2]{\sem{#1}_{#2}}
@@ -362,7 +475,7 @@ is good. (The change of parameters is not used, since our original good function
 \begin{align*}
 P \xrightarrow \sigma \onetype + A \times A^* \xrightarrow \consterm A^*
 \end{align*}
-is good. By using the definition of a good  functions, we can show $\sigma$ is a composition
+is good. By using the definition of good functions, we can show $\sigma$ is a composition
 \begin{align*}
 P \xrightarrow g  P_1 + P_2 \times P_3^* \xrightarrow { \sigma_1 + \sigma_2 \times \sigma_3^*} \onetype + A \times A^* 
 \end{align*}
@@ -404,6 +517,7 @@ A_n \xrightarrow{ \rho_n} B_n,
 \end{align*}
 which are not required to be good or polyregular,  the following diagram commutes
 \[
+\begin{safeTikzcd}
 \begin{tikzcd}
 [column sep=huge]
 F(A_1,\ldots,A_n)
@@ -416,6 +530,7 @@ F(B_1,\ldots,B_n)
  \arrow[r,"{f_{B_1,\ldots,B_n}}"'] 
 & G(B_1,\ldots,B_n),
 \end{tikzcd}
+\end{safeTikzcd}
 \]
 where $F$ and $G$ are lifted from types to functions in the expected way.
 \end{definition}
@@ -451,6 +566,7 @@ P \xrightarrow \rho F(A_1,\ldots,A_n)
 \end{align*}
 yields a good function. By the above two claims such a composition is described by the following commuting diagram
 \[
+\begin{safeTikzcd}
 \begin{tikzcd}
 [column sep=huge]
 P 
@@ -467,35 +583,222 @@ F(P_1,\ldots,P_n)
  \arrow[r,"{f_{A_1,\ldots,A_n}}"'] 
 & G(A_1,\ldots,A_n).
 \end{tikzcd}
+\end{safeTikzcd}
 \]
 The upper path in the above diagram consists of a composition of two polyregular functions on arrow-free types, followed by the output expression applied to some good functions. Therefore, it is good by \cref{claim:functors-applied-to-good}. This completes the proof of the Fundamental Lemma, and thus also the proof of \cref{thm:higher-order-terms}.
 
 
+\subsection{Undecidability of equivalence at higher-order types}
+As we have remarked at the beginning of this part, equivalence for polyregular functions is an open problem, see \cref{open:polyregular-equivalence}. The open problem is about string-to-string functions, and it does not change if we consider functions between arbitrary arrow-free types, since such types can be encoded in strings. As we show in this section, however, the situation changes when we consider higher-order types, i.e.~when we ask about equivalence $ \sem f = \sem g$ for higher-order polyregular terms $f$ and $g$ that have general higher-order types. In this case, we show that equivalence is undecidable.
+
+\begin{theorem} \label{thm:undecidability-higher-order}
+    The equivalence problem for higher-order polyregular terms is undecidable.
+\end{theorem}
+\begin{proof}
+    The terms in question will be functions that input functions, which are the lowest order terms that are not covered by \cref{open:polyregular-equivalence}. 
+
+    We reduce from a version of the tiling problem, in which a finite square grid is covered with tiles from a finite set. An instance of the problem consists of:
+    \begin{align*}
+    \myunderbrace{
+        T
+    }{
+        a finite \\ set of tiles
+    }
+    \qquad 
+    \myunderbrace{ 
+        s,t \in T
+    }{
+        tiles for two \\ opposing corners
+    }
+    \qquad 
+    \myunderbrace{ 
+        C \subseteq T^4
+    }{local constraint}
+    \end{align*}
+    A solution to this instance is a function of type 
+    \begin{align*}
+    \set{0,\ldots,n}\times \set{0,\ldots,n} \to T \qquad \text{for some $n \in \set{0,1,\ldots}$}
+    \end{align*}
+    which satisfies the conditions described in the following picture
+    \mypic{55}
+    \begin{lemma}\label{lem:tiling}
+        The tiling problem is undecidable.
+    \end{lemma}
+    \begin{proof}
+        Given a Turing machine, we can construct an instance of the tiling problem which has a solution if and only if the Turing machine halts on the empty input. This is an easy exercise: the  tiling problem in question is designed so that the rows describe consecutive configurations, and the tile in the corner $(n,n)$ represents acceptance.  Hence, the tiling problem is at least as hard as the halting problem, and thus undecidable.
+    \end{proof}
+
+    We use the tiling problem to show that equivalence is undecidable for higher-order polyregular terms. Suppose that we are given an instance of the tiling problem. We view the set of tiles as a finite type $T$. The crucial observation is in the following claim, which shows that correctness of solutions can be checked by a higher-order polyregular term.
+\begin{lemma}\label{lem:tiling-checker}
+    There is a higher-order polyregular term  of type 
+        \begin{align*}
+\myunderbrace{\onetype^*}{size of \\ the solution} \times \myunderbrace{((\onetype^* \times \onetype^*) \to T)}{extension of the solution \\ to the infinite quadrant} \to (\onetype + \onetype)
+\end{align*}
+    that defines the function
+    \begin{align*}
+(n,f) \quad \mapsto \quad 
+\begin{cases}
+    \text{true} &\text{$f$ restricted to $\set{0,\ldots,n} \times \set{0,\ldots,n}$ is a solution} \\
+    \text{false} & \text{otherwise}.
+\end{cases}
+\end{align*}
+\end{lemma}
+
+By the above lemma, the tiling problem has no solution if and only if the term from the claim is equivalent to the constant ``false'' term. Therefore, the equivalence problem for higher-order polyregular terms is undecidable. It remains to prove the claim.
+\begin{proof}[Proof of \cref{lem:tiling-checker}]
+    We begin by explaining that basic arithmetic on $\Nat = \onetype^*$ can be implemented. Zero is the empty list. Incrementation is implemented by the list constructor and  decrementation is implemented by the list deconstructor\footnote{We could even implement addition (using list concatenation) and multiplication (using the rectangle function from Example~\ref{ex:strength-and-rectangle}).  In the presence of this arithmetic, we could also use undecidability of  Hilbert's Tenth problem about diophantine equations, but there is no need to appeal to such a strong undecidability result, since the tiling problem is enough. }. 
+The term is constructed as follows. We first check that the corners  use the correct tiles, by applying $f$ to the pairs $(0,0)$ and $(n,n)$. Next, using the prefixes function from Example~\ref{ex:all-prefixes} and the rectangle function from Example~\ref{ex:strength-and-rectangle}, we  compute a list that stores  all pairs in 
+    \begin{align*}
+    \set{0,\ldots,n-1} \times \set{0,\ldots,n-1}.
+    \end{align*}
+    Using incrementation, we can convert the above list into a list of all $2 \times 2$ windows in the square grid.
+    Then, using the filter function from Example~\ref{ex:filter}, we can filter the list so that it only contains windows which are inconsistent with the local constraint, and finally we can answer whether the resulting list is empty. 
+\end{proof}
+\end{proof}
+
 
 \exerciseheader
 
-\exer{\label{exer:reverse-from-split}Show that $\reverseterm$ can be implemented by a polyregular term that does not use it.}
-{
-     Suppose that the input list is 
-    \begin{align*}
-    [a_1,\ldots,a_n] \in A^*.
-    \end{align*}
-    We first apply $\splitterm$ followed by $\sndterm^*$, yielding a result of the form 
-    \begin{align*}
-    [[], [a_n], [a_{n-1},a_n], \ldots, [a_1,\ldots,a_n]] \in (A^*)^*.
-    \end{align*}
-    Next, to each list item  we apply a verson of $\headterm$, which has output $A^* \to A^*$ and returns the singleton of the head if the list is non-empty, and the empty list otherwise. This yields a result of the form
-    \begin{align*}
-    [[], [a_n], [a_{n-1}], \ldots, [a_1]] \in (A^*)^*.
-    \end{align*}
-    Applying $\concatterm$ to this result yields the final output.
+\exer{\label{exer:reverse-from-split}Show that $\reverseterm$ can be implemented by a polyregular term that does not use it.}{
+We first implement a version of the head function, which returns the singleton list containing the first element of a list if it is non-empty, and the empty list otherwise.
+\begin{align*}
+A^* \xrightarrow {\unconsterm} \onetype + A \times A^* \xrightarrow {\either {\emptyterm} {\fstterm;\pureterm}} A^*
+\end{align*}
+Using the above function, we define reverse to be the following composition
+\begin{safeTikzcdDisplay}
+A^* 
+\ar[d,"{\splitterm}"]
+\& 
+{[1,2,3]}
+\ar[d,mapsto] \\
+(A^* \times A^*)^* 
+\ar[d, "{\sndterm^*}"]
+\&
+{[([1,2,3],[]),  ([1,2],[3]),  ([1],[2,3]),  ([],[1,2,3])]}
+\ar[d,mapsto] \\
+A^{**}
+\ar[d, "{\text{(the head function above)}^*}"]
+\&
+{[[], [3], [2,3], [1,2,3]]}
+\ar[d,mapsto] \\
+A^{**}
+\ar[d, "{\concatterm}"]
+\&
+{[[], [3], [2], [1]]}
+\ar[d,mapsto] \\
+A^*
+\&
+{[3,2,1]}.
+\end{safeTikzcdDisplay}
 }
 
-\exer{\label{exer:block-from-split}Show that $\blockterm$ can be implemented by a polyregular term that does not use it (or reverse).}
-{
 
+
+\exer{\label{exer:split-triple}
+Write a polyregular term which defines the following variant of the split function 
+\begin{align*}
+A^* & \to (A^* \times A \times A^*)^*\\
+[a_1,\ldots,a_n] & \mapsto [t_1,\ldots,t_n] \quad \text{where } t_i = ([a_1,\ldots,a_{i-1}],a_i,[a_{i+1},\ldots,a_n]).
+\end{align*}}
+{ 
+%     A type $\onetype + A$ can be seen as a variant of the Maybe monad, where we have a possibly undefined value of type $A$. Another way to implement this construction is by using $A^*$, with the empty list representing the undefined value, a list of length one representing a defined value, and lists of greater length never used. This representation is implemented by the function 
+% \begin{align*}
+% \onetype + A  \xrightarrow{\mathtt{maybe}} A^*,
+% \end{align*}
+% which can be easily implemented by a regular term.
+% Using  distributitivy, the list deconstructor, and the above representation of the Maybe monad, we can implement the following function
+% \begin{align*}
+% A^* \times A^* & \to  (A^* \times A \times A^*)^* \\
+% (w,[a_1,\ldots,a_n]) & \mapsto 
+% \begin{cases}
+%     [(w,a_1,[a_2,\ldots,a_n])] & \text{if $n \ge 1$} \\
+%     [] & \text{otherwise}.
+% \end{cases}
+% \end{align*}
+% The function in the statement of the exercise is obtained by applying first split, then the above function to each list element, followed by $\concatterm$. 
+This is the following composition. The final reversal is needed because $\splitterm$ lists the splits with the prefix getting shorter, so that without it the triples would be produced in the order $t_n,\ldots,t_1$.
+\[
+\begin{tikzcd}
+A^*
+\ar[d, "\splitterm"]
+\\
+(A^* \times A^*)^* 
+\ar[d, "{(\idterm \times \unconsterm)^*}"]
+\\
+(A^* \times (\onetype + A \times A^*))^* 
+\ar[d, "{(\distrterm)^*}"]
+\\
+(A^* \times \onetype + A^* \times A \times A^*)^* 
+\ar[d,"{\text{function from \cref{exer:filter-plus}}}"]
+\\
+(A^* \times A \times A^*)^* 
+\ar[d,"{\reverseterm}"]
+\\
+(A^* \times A \times A^*)^* 
+\end{tikzcd}
+\]
 }
 
-\exer{\label{exer:pref-from-mult} Show that the expressive power of the polyregular terms is not changed if the group prefix operation of type $G^* \to G^*$ is changed by the $\multterm$ operation of type $G^* \to G$.}{
-7
+
+
+
+\exer{\label{exer:block-from-split}Show that $\blockterm$ can be implemented by a polyregular term that does not use it (or reverse).}{
+    Since pairing is available, we can separately define the two components of the output of $\blockterm$. The first component is a list of type $A^*$ which contains the prefix up to (but not including) the first $B$, and the second component is a list of type $(B \times A^*)^*$ that describes the blocks which begin with occurrences of $B$. 
+\begin{enumerate}
+    \item To define the first component of the output, we  begin with an auxiliary  function of type $(A+B)^* \to \onetype + \onetype$ which tells us if the input list uses only elements of type $A$. This function is implemented (without using $\blockterm$) by keeping only the elements of type $B$ and then checking emptiness. Once this auxiliary function is defined, we use the following composition to define the first component of the output of $\blockterm$. As in \cref{exer:split-triple}, a reversal is needed at the end, because $\splitterm$ enumerates the all-$A$ prefixes from the longest to the shortest; this does not conflict with the restriction in the statement, since \cref{exer:reverse-from-split} implements reversal without using it.
+\[
+\begin{tikzcd}
+(A + B)^* 
+\ar[d, "\splitterm"] 
+\\
+((A+B)^* \times (A+B)^*)^*
+\ar[d, "{(\text{(auxiliary function)} \times \idterm)^*}"]
+\\
+((\onetype + \onetype) \times (A+B)^*)^*
+\ar[d,"{\distlterm^*}"]
+\\
+( (A+B)^* + (A+B)^*)^*
+\ar[d,"{\text{function from \cref{exer:filter-plus}}}"]
+\\
+(A+B)^{**}
+\ar[d, "{\unconsterm^*}"]
+\\ 
+(\onetype + (A+B) \times (A+B)^*)^*
+\ar[d, "{\text{function from \cref{exer:filter-plus}}}"]
+\\
+((A+B)\times (A+B)^*)^*
+\ar[d, "{\fstterm^*}"]
+\\
+(A+B)^*
+\ar[d, "{\text{function from \cref{exer:filter-plus}}}"]
+\\
+A^*
+\ar[d, "{\reverseterm}"]
+\\
+A^*
+\end{tikzcd}
+\]
+\item The second component of the output is defined using the following composition:
+\[
+\begin{tikzcd}
+(A+B)^*
+\ar[d, "{\text{function from \cref{exer:split-triple}}}"]
+\\
+((A+B)^* \times (A+B) \times (A+B)^*)^* 
+\ar[d, "\sndterm^*"]
+\\
+( (A+B) \times (A+B)^*)^* 
+\ar[d,"\distlterm^*"]
+\\
+(A \times (A+B)^* + B \times (A+B)^*)^*
+\ar[d, "{\text{function from \cref{exer:filter-plus}}}"]
+\\
+(B \times (A+B)^*)^*
+\ar[d, "{(\idterm \times \text{first component})^*}"]
+\\
+(B \times A^*)^*
+\end{tikzcd}
+\]
+\end{enumerate}
 }
+

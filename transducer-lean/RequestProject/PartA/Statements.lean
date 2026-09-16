@@ -260,7 +260,7 @@ theorem reversible_comp {A B C : Type} [Finite B] {f : List A → List B} {g : L
 
 /-! ### Aperiodic Mealy machines -/
 
-/-- Condition (3) of Lemma `lemma:derivatives`: the `n`-th output letter depends only on the
+/-- Condition (3) of Lemma `lem:derivatives`: the `n`-th output letter depends only on the
 first `n` input letters. -/
 def PrefixDetermined {A B : Type} (f : List A → List B) : Prop :=
   ∀ (w v : List A) (n : ℕ), w.take n = v.take n → (f w).take n = (f v).take n
@@ -271,7 +271,7 @@ produces *after* having read `w`, that is `f⁽ʷ⁾ (v) = drop |w| (f (w v))`.
 This is the definition of the book, which reads "`v ↦ f (w v)` with the first
 `|w|` letters of the output removed".  An earlier edition wrote
 `f⁽ʷ⁾ (v) = f (w v)`, without removing the part of the output that was produced
-while reading `w`, and with that reading Lemma `lemma:derivatives` below would be
+while reading `w`, and with that reading Lemma `lem:derivatives` below would be
 false: the identity function on `A*` is computed by a Mealy machine, yet the
 functions `v ↦ w v` are pairwise different for different `w`, so there would be
 infinitely many derivatives.  Dropping the first `|w|` output letters is also
@@ -439,7 +439,7 @@ lemma isEmpty_input_mealy {A B : Type} [IsEmpty A] (f : List A → List B) (hf :
   · intro z
     exact ⟨0, fun n _ => Subsingleton.elim _ _⟩
 
-/-- **Lemma `lemma:derivatives` (Myhill-Nerode for Mealy machines), left-to-right.** -/
+/-- **Lemma `lem:derivatives` (Myhill-Nerode for Mealy machines), left-to-right.** -/
 lemma myhill_nerode_mealy_forward {A B : Type} (f : List A → List B) (hf : IsMealy f) :
     ({g | ∃ w : List A, g = deriv f w}.Finite ∧
       LengthPreserving f ∧
@@ -464,7 +464,7 @@ lemma myhill_nerode_mealy_forward {A B : Type} (f : List A → List B) (hf : IsM
         | succ n => simp [ih]
     simp [Mealy.eval, run_take, h]
 
-/-- **Lemma `lemma:derivatives` (Myhill-Nerode for Mealy machines), right-to-left.** -/
+/-- **Lemma `lem:derivatives` (Myhill-Nerode for Mealy machines), right-to-left.** -/
 lemma myhill_nerode_mealy_backward {A B : Type} (f : List A → List B)
     (h1 : {g | ∃ w : List A, g = deriv f w}.Finite)
     (h2 : LengthPreserving f)
@@ -480,7 +480,7 @@ lemma myhill_nerode_mealy_backward {A B : Type} (f : List A → List B)
     obtain ⟨Q, hQ, M, hM, _⟩ := isEmpty_input_mealy f (List.eq_nil_of_length_eq_zero (h2 []))
     exact ⟨Q, hQ, M, hM⟩
 
-/-- **Lemma `lemma:derivatives` (Myhill-Nerode for Mealy machines).**  A string-to-string
+/-- **Lemma `lem:derivatives` (Myhill-Nerode for Mealy machines).**  A string-to-string
 function is computed by a Mealy machine if and only if: (1) it has finitely many
 derivatives; (2) it is letter-to-letter; (3) the `n`-th output letter depends
 only on the first `n` input letters. -/

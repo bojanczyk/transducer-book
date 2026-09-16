@@ -23,7 +23,7 @@ direction of every loop tracked; they used to be assumed, and are now proved:
   `Transducers.for_nest_form`, which prepends one last-to-first loop; that nest form is replaced
   by the forward one, `Transducers.Exercises.for_nest_form_fwd`.  The proof is in
   `RequestProject/Exercises/ForwardComp.lean`.
-* `ForwardPrenexNormalForm` -- Lemma `lemma:prenex-normal-form` for forward programs: a forward
+* `ForwardPrenexNormalForm` -- Lemma `lem:prenex-normal-form` for forward programs: a forward
   program is equivalent to one in prenex form all of whose loops are forward.  The project's
   construction (`RequestProject/PartD/ForPrenexTop.lean`) preserves the direction of every loop
   of the given program, and the *only* last-to-first loop it introduces is the one that binds a
@@ -114,7 +114,7 @@ def ForwardPrenexForm {A B : Type} (P : ForProg A B) : Prop :=
     (∀ p ∈ ls, p.1 = true) ∧ body.LoopFree ∧ epilogue.LoopFree ∧
       ForProg.OutputsAtMostOne body ∧ P = ForProg.seq (ForProg.nestLoops ls body) epilogue
 
-/-- **Lemma `lemma:prenex-normal-form` for forward programs**: every forward for-program is
+/-- **Lemma `lem:prenex-normal-form` for forward programs**: every forward for-program is
 equivalent to a forward program in prenex form. -/
 theorem ForwardPrenexNormalForm :
     ∀ (A B : Type) (P : ForProg A B), ForwardProg P →

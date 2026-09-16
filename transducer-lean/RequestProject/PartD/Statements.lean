@@ -5,7 +5,7 @@ Part D: Polyregular functions
 This file contains the definitions of Part D and the statements of its
 theorems and lemmas.  All of them are proved: Theorem
 `thm:polyregular-functions-are-continuous`, Theorem `thm:for-transducers-are-polyregular`, Lemma
-`lemma:prenex-normal-form`, Lemma `lem:for-closed-under-composition`, Theorem
+`lem:prenex-normal-form`, Lemma `lem:for-closed-under-composition`, Theorem
 `thm:pebble-are-continuous` and Theorem `thm:pebble-are-for`.
 
 The five results of Section *Pebble transducers* that speak about the string representation of
@@ -72,7 +72,7 @@ The syntax and the semantics of the for-transducers -- `Transducers.ForTest`,
 `def:prenex-normal-form-for-transducers` (`Transducers.ForProg.PrenexForm`) and
 `Transducers.IsForTransducer` -- are defined, unchanged, in
 `RequestProject/PartD/ForDef.lean`, so that the constructions proving Lemma
-`lemma:prenex-normal-form` and Lemma `lem:for-closed-under-composition` can be developed before
+`lem:prenex-normal-form` and Lemma `lem:for-closed-under-composition` can be developed before
 the statements below. -/
 
 /-! ### Equivalence with polyregular functions -/
@@ -84,7 +84,7 @@ theorem polyregular_iff_forTransducer {A B : Type} [Finite A] [Finite B]
   ⟨fun hf => isForTransducer_of_isPolyregular hf ‹Finite A› ‹Finite B›,
     PolyEnum.isPolyregular_of_isForTransducer⟩
 
-/-- **Lemma `lemma:prenex-normal-form`.**  Every for-transducer is equivalent to one in prenex
+/-- **Lemma `lem:prenex-normal-form`.**  Every for-transducer is equivalent to one in prenex
 form. -/
 theorem forTransducer_prenex {A B : Type} (P : ForProg A B) :
     ∃ P' : ForProg A B, P'.PrenexForm ∧ ∀ w, P'.eval w = P.eval w :=

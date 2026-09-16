@@ -250,7 +250,7 @@ The condition in the above claim is easily seen to be compatible with compositio
     \end{align*}
     where $w$ is some input string. 
     
-    \begin{lemma}[Myhill-Nerode for Mealy machines]\label{lemma:derivatives}
+    \begin{lemma}[Myhill-Nerode for Mealy machines]\label{lem:derivatives}
         A string-to-string function is computed by a Mealy machine if and only if: (1) it has finitely many derivatives; (2)  it is letter-to-letter; (3) the $n$-th output letter depends only on the first $n$ input letters.
     \end{lemma}
     \begin{proof}
@@ -267,7 +267,7 @@ The condition in the above claim is easily seen to be compatible with compositio
         A function computed by a  Mealy machine is aperiodic if and only if its minimal Mealy machine satisfies the following condition: (*) for every state transformation $\delta : Q \to Q$ that arises from some input string, the    sequence of state transformations $\delta^1, \delta^2,\ldots$  eventually stabilises on a single state transformation.
     \end{lemma}
     \begin{proof} The right-to-left direction is straightforward: if a Mealy machine (minimal or not) satisfies (*), then the function that it computes is aperiodic. 
-        Let us now prove the left-to-right direction. By Lemma~\ref{lemma:derivatives}, we can assume that the Mealy machine is minimal, and toward a contradiction suppose that this minimal machine does not satisfy (*). Then the input string $v$  that gives rise to the state transformation $\delta$ can be used to produce a violation of aperiodicity. Indeed, suppose that the sequence $\delta^1, \delta^2,\ldots$ does not stabilise, and thus it sees two state transformations $\delta^i \neq  \delta^j$ infinitely often. By definition of minimiality, there must be some strings $u$ and $v$ such that the last letters of $f(uv^iw)$ and $f(uv^jw)$ are different, for some $w$. This contradicts aperiodicity.
+        Let us now prove the left-to-right direction. By Lemma~\ref{lem:derivatives}, we can assume that the Mealy machine is minimal, and toward a contradiction suppose that this minimal machine does not satisfy (*). Then the input string $v$  that gives rise to the state transformation $\delta$ can be used to produce a violation of aperiodicity. Indeed, suppose that the sequence $\delta^1, \delta^2,\ldots$ does not stabilise, and thus it sees two state transformations $\delta^i \neq  \delta^j$ infinitely often. By definition of minimiality, there must be some strings $u$ and $v$ such that the last letters of $f(uv^iw)$ and $f(uv^jw)$ are different, for some $w$. This contradicts aperiodicity.
     \end{proof}
 
     The above lemma gives a decision procedure for checking if a function computed by a Mealy machine is aperiodic. We first compute all state transformations that arise from input strings, and for each one we check if its powers induce a non-trivial cycle. To compute the set of all state transformations, we start with the state transformations of individual letters, and we keep on adding state transformations by composing them, until we can add no new state transformation. This procedure terminates, since there are only finitely many possible state transformations.   This completes the decidability part of the theorem.

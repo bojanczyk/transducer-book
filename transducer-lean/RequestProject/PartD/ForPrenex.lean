@@ -1,5 +1,5 @@
 /-
-Part D: for-transducers -- the prenex normal form, Lemma `lemma:prenex-normal-form`.
+Part D: for-transducers -- the prenex normal form, Lemma `lem:prenex-normal-form`.
 
 The translation `Transducers.trFor` turns a for-program into a single nest of loops with a
 loop-free body, correct on inputs of length at least two.  It follows the proof of the book: a

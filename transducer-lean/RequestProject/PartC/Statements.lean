@@ -427,9 +427,9 @@ its semantics `Transducers.SST.subst`, `Transducers.SST.stepConfig`,
 to be given here; they have been moved, unchanged, to
 `RequestProject/PartC/SSTDef.lean`, which this file imports (through
 `RequestProject/PartC/SSTRegular.lean`), so that the constructions used in the
-proof of Theorem `theorem:sst-two-way-equivalence` could be developed before this file. -/
+proof of Theorem `thm:sst-two-way-equivalence` could be developed before this file. -/
 
-/-- **Theorem `theorem:sst-two-way-equivalence`.**  Streaming string transducers compute exactly the
+/-- **Theorem `thm:sst-two-way-equivalence`.**  Streaming string transducers compute exactly the
 regular functions.
 
 The right-to-left implication is `isSST_of_isRegularFun`

@@ -348,7 +348,8 @@ BibTeX entries for everything listed here live in the book's bibliography, [../b
 - **Rajeev Alur, Adam Freilich, and Mukund Raghothaman (2014), _Regular Combinators for String Transformations_.**  
   The reference for the combinators chapter: a machine-independent syntax for the regular functions in the spirit of regular expressions, built from constant functions by combinators rather than from states. The setting is functions from strings into a monoid. Over a commutative monoid, choice, split sum and iterated sum suffice — the analogues of union, concatenation and Kleene star, but with unambiguous parsing enforced. The main result covers the non-commutative case, which is the string-to-string one: it needs the left-additive versions of split and iterated sum (giving reversal), sum of functions (giving copying), and either function composition or a chained sum.  
   DOI: https://doi.org/10.1145/2603088.2603151  
-  PDF: [AlurFreilichRaghothaman2014_Regular_Combinators_for_String_Transformations.pdf](pdfs/AlurFreilichRaghothaman2014_Regular_Combinators_for_String_Transformations.pdf) (full version, arXiv:1402.3021, 15 pp., with the proofs and constructions cut from the 10-page proceedings version)
+  PDF: [AlurFreilichRaghothaman2014_Regular_Combinators_for_String_Transformations.pdf](pdfs/AlurFreilichRaghothaman2014_Regular_Combinators_for_String_Transformations.pdf) (CSL-LICS 2014 proceedings version, 10 pp. — this is the one the entry cites)  
+  Also: [AlurFreilichRaghothaman2014_Regular_Combinators_for_String_Transformations_full_arxiv.pdf](pdfs/AlurFreilichRaghothaman2014_Regular_Combinators_for_String_Transformations_full_arxiv.pdf) — the full version (arXiv:1402.3021, 15 pp.), which carries the proofs and constructions cut for space.
 
 - **Mikołaj Bojańczyk (2014), _Transducers with Origin Information_.**  
   Origin semantics viewpoint that clarifies and unifies regular string transducer models.  
@@ -400,10 +401,26 @@ BibTeX entries for everything listed here live in the book's bibliography, [../b
   DOI: https://doi.org/10.1109/LICS56636.2023.10175808  
   PDF: [Bojanczyk2023_On_the_growth_rates_of_polyregular_functions_preprint.pdf](pdfs/Bojanczyk2023_On_the_growth_rates_of_polyregular_functions_preprint.pdf) (author version, arXiv:2212.11631v3, 24 pp. — titled "On the growth rate of polyregular functions", singular, unlike the proceedings version)
 
+- **Mikołaj Bojańczyk, Grzegorz Fabiański, and Rafał Stefański (2026), _Polyregular equivalence is undecidable in higher-order types_.**  
+  Equivalence for string-to-string polyregular functions is still open; this paper settles the higher-order extension built on the lambda-calculus definition from _Polyregular Functions_ above, where equivalence turns out to be undecidable. The reduction is from the tiling problem, which is why Wang 1961 is in this section.  
+  DOI: https://doi.org/10.48550/arXiv.2604.11935  
+  PDF: [BojanczykFabianskiStefanski2026_Polyregular_Equivalence_is_Undecidable_in_Higher-Order_Types.pdf](pdfs/BojanczykFabianskiStefanski2026_Polyregular_Equivalence_is_Undecidable_in_Higher-Order_Types.pdf) (arXiv:2604.11935v1, 13 April 2026, 7 pp., preprint)
+
+- **Hao Wang (1961), _Proving Theorems by Pattern Recognition — II_.**  
+  The origin of Wang tiles, and so of the tiling problem used in the higher-order chapter. The paper is about decision procedures for the predicate calculus; the tiles appear in Section 4.1, _A Generalized Game of Dominoes_, on p. 23, as a tool for the forall-exists-forall satisfiability case. Wang calls them "plates", and 4.1.1 defines the cyclic rectangle that makes a tiling periodic.  
+  Worth noting what the paper does **not** contain. Wang states the decidability question as an open conjecture, not a theorem: 4.1.2, "the fundamental conjecture", says a finite set of plates is solvable if and only if it has a periodic solution, described as "a reasonable conjecture, which has resisted proof or disproof so far", and 4.1.3 observes that the conjecture would make solvability decidable. The conjecture was later refuted, and the undecidability of the domino problem belongs to that later work — Berger for the unconstrained version, Kahr-Moore-Wang for the origin-constrained one. So this is the reference for introducing the problem, not for its undecidability.  
+  DOI: https://doi.org/10.1002/j.1538-7305.1961.tb03975.x  
+  PDF: [Wang1961_Proving_Theorems_by_Pattern_Recognition_II.pdf](pdfs/Wang1961_Proving_Theorems_by_Pattern_Recognition_II.pdf) (42 pp. scanned, no text layer, free from the Bell System Technical Journal archive)
+
 - **Oscar H. Ibarra (1971), _Characterizations of Some Tape and Time Complexity Classes of Turing Machines in Terms of Multihead and Auxiliary Stack Automata_.**  
   Multihead automata correspond to logarithmic space; the reference for what pebble transducers would become without the stack discipline.  
   DOI: https://doi.org/10.1016/S0022-0000(71)80029-6  
   PDF: [Ibarra1971_Characterizations_of_Some_Tape_and_Time_Complexity_Classes.pdf](pdfs/Ibarra1971_Characterizations_of_Some_Tape_and_Time_Complexity_Classes.pdf)
+
+- **R. O. Gandy (1980), _Proofs of Strong Normalization_.**  
+  The source of the majorant method referred to in the Part D notes on higher-order polyregular terms. Gandy gives a method for proving that all reduction sequences terminate: order the ground types, lift the order pointwise through the type hierarchy so that every term of the typed lambda-I calculus denotes a strictly monotonic function, and read off from a term a numerical majorant bounding the length of any reduction sequence starting from it. Presented for the typed lambda calculus and then extended to other calculi. The method gives strong but not weak normalization, and does not cope with permutative reductions or an induction rule.  
+  No DOI (Academic Press, 1980, pre-DOI); the volume is ISBN 978-0-12-349050-6.  
+  PDF: [Gandy1980_Proofs_of_Strong_Normalization.pdf](pdfs/Gandy1980_Proofs_of_Strong_Normalization.pdf) (the chapter, pp. 457-477, 21 pp. scanned, no text layer)
 
 - **Noa Globerman and David Harel (1996), _Complexity Results for Two-Way and Multi-Pebble Automata and their Logics_.**  
   Foundational complexity background for pebble-style models and stack-discipline discussions.  
@@ -442,7 +459,7 @@ BibTeX entries for everything listed here live in the book's bibliography, [../b
 
 ## Local PDFs
 
-The 82 PDFs currently stored here are:
+The 86 PDFs currently stored here are:
 
 - [pdfs/AhoHopcroftUllman1969_A_General_Theory_of_Translation.pdf](pdfs/AhoHopcroftUllman1969_A_General_Theory_of_Translation.pdf)
 - [pdfs/AhoUllman1970_A_Characterization_of_Two-Way_Deterministic_Classes_of_Languages.pdf](pdfs/AhoUllman1970_A_Characterization_of_Two-Way_Deterministic_Classes_of_Languages.pdf)
@@ -450,6 +467,7 @@ The 82 PDFs currently stored here are:
 - [pdfs/AlurCerny2010_Expressiveness_of_Streaming_String_Transducers.pdf](pdfs/AlurCerny2010_Expressiveness_of_Streaming_String_Transducers.pdf)
 - [pdfs/AlurCerny2011_Streaming_Transducers_for_Algorithmic_Verification_of_Single-Pass_List-Processing_Programs.pdf](pdfs/AlurCerny2011_Streaming_Transducers_for_Algorithmic_Verification_of_Single-Pass_List-Processing_Programs.pdf)
 - [pdfs/AlurFreilichRaghothaman2014_Regular_Combinators_for_String_Transformations.pdf](pdfs/AlurFreilichRaghothaman2014_Regular_Combinators_for_String_Transformations.pdf)
+- [pdfs/AlurFreilichRaghothaman2014_Regular_Combinators_for_String_Transformations_full_arxiv.pdf](pdfs/AlurFreilichRaghothaman2014_Regular_Combinators_for_String_Transformations_full_arxiv.pdf)
 - [pdfs/Baschenis2017_Untwisting_Two-Way_Transducers_in_Elementary_Time.pdf](pdfs/Baschenis2017_Untwisting_Two-Way_Transducers_in_Elementary_Time.pdf)
 - [pdfs/BealLombardySakarovitch2006_Conjugacy_and_Equivalence_of_Weighted_Automata_and_Functional_Transducers.pdf](pdfs/BealLombardySakarovitch2006_Conjugacy_and_Equivalence_of_Weighted_Automata_and_Functional_Transducers.pdf)
 - [pdfs/Benedikt2017_Polynomial_Automata_Zeroness_and_Applications.pdf](pdfs/Benedikt2017_Polynomial_Automata_Zeroness_and_Applications.pdf)
@@ -465,6 +483,7 @@ The 82 PDFs currently stored here are:
 - [pdfs/Bojanczyk2025_An_Automata_Toolbox.pdf](pdfs/Bojanczyk2025_An_Automata_Toolbox.pdf)
 - [pdfs/BojanczykDaviaudKrishna2018_Regular_and_First-Order_List_Functions.pdf](pdfs/BojanczykDaviaudKrishna2018_Regular_and_First-Order_List_Functions.pdf)
 - [pdfs/BojanczykDaviaudKrishna2018_Regular_and_First-Order_List_Functions_extended_arxiv.pdf](pdfs/BojanczykDaviaudKrishna2018_Regular_and_First-Order_List_Functions_extended_arxiv.pdf)
+- [pdfs/BojanczykFabianskiStefanski2026_Polyregular_Equivalence_is_Undecidable_in_Higher-Order_Types.pdf](pdfs/BojanczykFabianskiStefanski2026_Polyregular_Equivalence_is_Undecidable_in_Higher-Order_Types.pdf)
 - [pdfs/BojanczykKieferLhote2019_String-to-String_Interpretations_With_Polynomial-Size_Output.pdf](pdfs/BojanczykKieferLhote2019_String-to-String_Interpretations_With_Polynomial-Size_Output.pdf)
 - [pdfs/BojanczykStefanski2020_Single-Use_Automata_and_Transducers_for_Infinite_Alphabets.pdf](pdfs/BojanczykStefanski2020_Single-Use_Automata_and_Transducers_for_Infinite_Alphabets.pdf)
 - [pdfs/Buchi1960_Weak_Second-Order_Arithmetic_and_Finite_Automata.pdf](pdfs/Buchi1960_Weak_Second-Order_Arithmetic_and_Finite_Automata.pdf)
@@ -484,6 +503,7 @@ The 82 PDFs currently stored here are:
 - [pdfs/EngelfrietManeth1999_Macro_Tree_Transducers_Attribute_Grammars_and_MSO_Definable_Tree_Translations.pdf](pdfs/EngelfrietManeth1999_Macro_Tree_Transducers_Attribute_Grammars_and_MSO_Definable_Tree_Translations.pdf)
 - [pdfs/EngelfrietManeth2002_Two-Way_Finite_State_Transducers_with_Nested_Pebbles.pdf](pdfs/EngelfrietManeth2002_Two-Way_Finite_State_Transducers_with_Nested_Pebbles.pdf)
 - [pdfs/FiliotReynierServais2013_From_Two-Way_to_One-Way_Finite_State_Transducers.pdf](pdfs/FiliotReynierServais2013_From_Two-Way_to_One-Way_Finite_State_Transducers.pdf)
+- [pdfs/Gandy1980_Proofs_of_Strong_Normalization.pdf](pdfs/Gandy1980_Proofs_of_Strong_Normalization.pdf)
 - [pdfs/GinsburgRose1966.pdf](pdfs/GinsburgRose1966.pdf)
 - [pdfs/GinsburgRose1966_A_Characterization_of_Machine_Mappings.pdf](pdfs/GinsburgRose1966_A_Characterization_of_Machine_Mappings.pdf)
 - [pdfs/GlobermanHarel1996_Complexity_Results_for_Two-Way_and_Multi-Pebble_Automata.pdf](pdfs/GlobermanHarel1996_Complexity_Results_for_Two-Way_and_Multi-Pebble_Automata.pdf)
@@ -525,6 +545,7 @@ The 82 PDFs currently stored here are:
 - [pdfs/Sipser2012_Introduction_to_the_Theory_of_Computation.pdf](pdfs/Sipser2012_Introduction_to_the_Theory_of_Computation.pdf)
 - [pdfs/Thomas1997_Languages_Automata_and_Logic.pdf](pdfs/Thomas1997_Languages_Automata_and_Logic.pdf)
 - [pdfs/Trakhtenbrot1962_Konechnye_avtomaty_i_logika_odnomestnyh_predikatov.pdf](pdfs/Trakhtenbrot1962_Konechnye_avtomaty_i_logika_odnomestnyh_predikatov.pdf)
+- [pdfs/Wang1961_Proving_Theorems_by_Pattern_Recognition_II.pdf](pdfs/Wang1961_Proving_Theorems_by_Pattern_Recognition_II.pdf)
 - [pdfs/Wilke1999_Classifying_Discrete_Temporal_Properties.pdf](pdfs/Wilke1999_Classifying_Discrete_Temporal_Properties.pdf)
 
 `GinsburgRose1966.pdf` and `Nivat1968.pdf` are second copies of the two entries

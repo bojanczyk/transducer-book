@@ -1,5 +1,5 @@
 /- Normalised streaming string transducers, and the reduction of an arbitrary sst to a normalised
-one (a step in the proof of Theorem `theorem:sst-two-way-equivalence` of *Transducers*, M.
+one (a step in the proof of Theorem `thm:sst-two-way-equivalence` of *Transducers*, M.
 Bojańczyk).
 
 The two-way transducer that simulates an sst has to perform a depth-first

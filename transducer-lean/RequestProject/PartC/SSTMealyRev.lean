@@ -1,5 +1,5 @@
 /- Post-composition of a streaming string transducer with a *reversible* Mealy machine (a step of
-the "regular to sst" half of Theorem `theorem:sst-two-way-equivalence` of *Transducers*, M.
+the "regular to sst" half of Theorem `thm:sst-two-way-equivalence` of *Transducers*, M.
 Bojańczyk).
 
 For every register `X` of the sst and every state `q` of the Mealy machine, the

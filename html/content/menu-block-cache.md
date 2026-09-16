@@ -212,6 +212,18 @@ list = "never"
 \item[2] Pebble transducers
 \end{list}
 {{< /latex >}}
+{{< latex preamble="book" as="menu-17a-higher-order.tex" >}}
+\begin{list}{}{
+  \setlength{\leftmargin}{1.5em}
+  \setlength{\labelwidth}{1em}
+  \setlength{\labelsep}{.5em}
+  \setlength{\topsep}{0pt}
+  \setlength{\partopsep}{0pt}
+  \setlength{\itemsep}{0pt}
+  \setlength{\parsep}{0pt}}
+\item[3] A functional programming language
+\end{list}
+{{< /latex >}}
 {{< latex preamble="book" as="menu-17z-polyregular-functions-references.tex" >}}
 \begin{list}{}{
   \setlength{\leftmargin}{1.5em}
@@ -221,7 +233,7 @@ list = "never"
   \setlength{\partopsep}{0pt}
   \setlength{\itemsep}{0pt}
   \setlength{\parsep}{0pt}}
-\item[3] References
+\item[4] References
 \end{list}
 {{< /latex >}}
 {{< latex preamble="book" as="book-title.tex" >}}
@@ -290,6 +302,9 @@ list = "never"
 {{< /latex >}}
 {{< latex preamble="book" as="title-17-pebble-transducers.tex" >}}
 \noindent {\Large\bfseries Pebble transducers}
+{{< /latex >}}
+{{< latex preamble="book" as="title-17a-higher-order.tex" >}}
+\noindent {\Large\bfseries A functional programming language}
 {{< /latex >}}
 {{< latex preamble="book" as="title-17z-polyregular-functions-references.tex" >}}
 \noindent {\Large\bfseries References}

@@ -2,7 +2,7 @@
 Post-composing a pebble transducer with a sequential machine.
 
 This is one of the two ingredients of the easy inclusion of Theorem `thm:pebble-are-for` (a
-for-transducer is simulated by a pebble transducer).  By Lemma `lemma:prenex-normal-form` and by
+for-transducer is simulated by a pebble transducer).  By Lemma `lem:prenex-normal-form` and by
 the analysis of `RequestProject/PartD/PolyScan.lean`, a for-transducer computes the composition of
 two functions: the *enumeration* of the tuples of positions visited by its nest of loops -- which
 is computed by a pebble transducer, see `RequestProject/PartD/PebbleEnum.lean` -- followed by the

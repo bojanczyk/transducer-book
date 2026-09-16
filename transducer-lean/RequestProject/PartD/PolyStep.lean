@@ -5,7 +5,7 @@ This file contains the streaming string transducer that turns the marked square 
 enumeration `enum k L w` into the enumeration `enum (k+1) (L ++ [(d, x)]) w`, and the proof that
 it does so.  Together with the fact that marked squaring is a prime polyregular function and that
 a streaming string transducer computes a regular function (Theorem
-`theorem:sst-two-way-equivalence`), this shows that the enumeration of the tuples visited by a
+`thm:sst-two-way-equivalence`), this shows that the enumeration of the tuples visited by a
 nest of for-loops is polyregular.
 
 The transducer reads the marked square copy by copy; the copies are separated by the end marker

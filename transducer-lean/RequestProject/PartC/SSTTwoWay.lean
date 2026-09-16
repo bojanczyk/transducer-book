@@ -1,5 +1,5 @@
 /- Every function computed by a streaming string transducer is computed by a two-way transducer: the
-"sst to regular" half of Theorem `theorem:sst-two-way-equivalence` of *Transducers* (M. Bojańczyk),
+"sst to regular" half of Theorem `thm:sst-two-way-equivalence` of *Transducers* (M. Bojańczyk),
 through Theorem `thm:2dfa-decomposition-into-primes`.
 
 The book's argument runs the two-way transducer over the *register flow tree* of
@@ -28,7 +28,7 @@ import RequestProject.PartC.SSTWalk
 
 namespace Transducers
 
-/-- **Theorem `theorem:sst-two-way-equivalence`, left-to-right implication (through Theorem
+/-- **Theorem `thm:sst-two-way-equivalence`, left-to-right implication (through Theorem
 `thm:2dfa-decomposition-into-primes`).**  Every function computed by a streaming string transducer
 is computed by a two-way transducer. -/
 theorem isTwoWay_of_isSST {A B : Type} [Finite A] {f : List A → List B}

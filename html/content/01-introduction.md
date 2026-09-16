@@ -11,7 +11,7 @@ source = "intro.tex"
 \setcounter{section}{0}
 \setcounter{ourexamplecounter}{0}
 \renewcommand{\exer}[2]{}
-% source stamp intro.tex:171c560f
+% source stamp intro.tex:45823d13
 \input{../../../intro.tex}
 {{< /latex >}}
 
@@ -145,7 +145,7 @@ is continuous.
 % context stamp 507c470a
 \setcounter{mypart}{0}\setcounter{section}{0}\setcounter{theorem}{1}
 \noindent\textbf{Solution.}\quad The main observation is the following claim, which says that factorial powers in a monoid must necessarily stabilise.  
-    \begin{claim}
+    \begin{claim}\label{claim:factorial-powers-stabilise-in-monoids}
         For every finite monoid $M$  and every $m \in M$, the following sequence of monoid elements is eventually constant:
         \begin{align*}
         m^{1!}, m^{2!}, m^{3!}, \ldots

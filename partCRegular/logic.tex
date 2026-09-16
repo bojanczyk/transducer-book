@@ -142,7 +142,7 @@ An \mso relabelling defines a function of type $A^* \to B^*$ as follows. If the 
     \begin{align*}
     \text{rational} \quad \subseteq \quad \text{\mso relabellings.}
     \end{align*}
-    Consider a rational function $f : A^* \to B^*$. By Theorem~\ref{thm:bimachines} and Lemma~\ref{lemma:eliminate-epsilon-transitions}, we  know that $f$  is computed by a nondeterministic one-way transducer, which has the following properties: (1) for every input string there is exactly one accepting run; and (2) if the input string is nonempty, then every transition used in the accepting run consumes exactly one input letter.  Let 
+    Consider a rational function $f : A^* \to B^*$. By Theorem~\ref{thm:bimachines} and Lemma~\ref{lem:eliminate-epsilon-transitions}, we  know that $f$  is computed by a nondeterministic one-way transducer, which has the following properties: (1) for every input string there is exactly one accepting run; and (2) if the input string is nonempty, then every transition used in the accepting run consumes exactly one input letter.  Let 
     \begin{align*}
     \Delta \subseteq Q \times A \times B^* \times Q
     \end{align*}
@@ -640,7 +640,7 @@ By induction on  $n \in \set{0,1,\ldots}$ define the \emph{strings of order $n$}
     a_1 w_1 a_2 w_2 \cdots a_\ell w_\ell  \qquad \text{where $a_1,\ldots,a_\ell \in \set{0,1}$}.
     \end{align*}
     At each increment $n$, the number of strings of order $n$ increases exponentially. We will now show that the first string of order $n$ can be defined by a first-order formula that is polynomial in $n$, thus completing the exercise. To prove this, we show a stronger claim which is amenable to induction. 
-    \begin{claim}
+    \begin{claim}\label{lem:fo-non-elementary-order}
         There is a first-order formula 
         \begin{align*}
             \varphi_n(x_1,x_2,y_1,y_2)

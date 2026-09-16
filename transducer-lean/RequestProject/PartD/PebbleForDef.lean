@@ -5,7 +5,7 @@ This is the easy inclusion of Theorem `thm:pebble-are-for`: "a for-transducer ca
 simulated by a pebble transducer, with one pebble for each nested for loop, and with the state
 used to store the values of the Boolean variables and the currently executed instruction".
 
-By Lemma `lemma:prenex-normal-form` it is enough to simulate a program in prenex form, a nest of
+By Lemma `lem:prenex-normal-form` it is enough to simulate a program in prenex form, a nest of
 loops with a loop-free body -- which outputs at most one letter per iteration -- followed by a
 loop-free epilogue.  The simulating machine uses one pebble per loop of the nest, plus one extra
 pebble that stays at the position `0` for ever: that pebble plays the role of the position

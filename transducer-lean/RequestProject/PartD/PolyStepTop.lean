@@ -10,7 +10,7 @@ correctness statement of the whole transducer,
 and deduces, by induction on the list of loops, that the enumeration `enum` of the tuples of
 positions visited by a nest of loops is a polyregular function of the input string: marked squaring
 is a prime polyregular function and a streaming string transducer computes a regular function
-(Theorem `theorem:sst-two-way-equivalence`).
+(Theorem `thm:sst-two-way-equivalence`).
 -/
 import RequestProject.PartD.PolyStep
 import RequestProject.PartD.ForPrenex

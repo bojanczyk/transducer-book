@@ -3,7 +3,7 @@
 So far we have proved that the regular functions are exactly those which can be computed by two-way transducers. In this section, we describe a one-way model for the regular functions, which is called \emph{streaming string transducers} (\sst's).  The general idea is that the transducer processes the input string in a single left-to-right pass, and uses registers to store intermediate results, which are strings over the output alphabet. Before giving a formal definition of the model, we give some examples to illustrate the main ideas behind it.
 
 \begin{myexample}[Reverse]
-    \label{example:reverse-function-sst}
+    \label{ex:reverse-function-sst}
     Consider the reverse function 
     \begin{align*}
     \set{a,b}^* 
@@ -24,7 +24,7 @@ So far we have proved that the regular functions are exactly those which can be 
 
 \begin{myexample}
     [Map reverse] 
-    \label{example:map-reverse-function-sst}
+    \label{ex:map-reverse-function-sst}
     Consider the map reverse function
     \begin{align*}
     \set{a,b,\#}^* 
@@ -85,7 +85,7 @@ So far we have proved that the regular functions are exactly those which can be 
 
 \begin{myexample}
     [Map duplicate]
-    \label{example:map-duplicate-function-sst}
+    \label{ex:map-duplicate-function-sst}
     As we have explained in the previous example, we cannot copy registers. Nevertheless, there is some bounded duplication that is possible. For example, if we want to compute the map duplicate function, we can simply have two registers $X_1$ and $X_2$ for the current block, which are updated independently. Then, the two registers are appended onto $Y$ upon reading the update
 \begin{align*}
     \begin{smallmatrix}        X_1 \\
@@ -139,7 +139,7 @@ An \sst as in the above definition computes a function of type $A^* \to B^*$ whi
 \label{sec:sst-equivalence-two-way}
 In this section we show that  the \sst model is equivalent to the ones previously described in this part of the book.
 \begin{theorem}[Alur and {\v{C}}ern{\'y}]
-    \label{theorem:sst-two-way-equivalence}
+    \label{thm:sst-two-way-equivalence}
     Streaming string transducers compute exactly the regular functions.
 \end{theorem}
 \begin{proof} We begin with the easier implication of the theorem, which is that functions computed by \sst's are regular. The converse implication, that regular functions are computed by \sst's, is more involved, and relies on the decomposition results for the various classes of transducers that we have proved before.
@@ -261,7 +261,7 @@ where $p$ is the state of the Mealy machine after reading $Y$; the relevant stat
 \end{itemize}
 This completes the proof that \sst's are closed under post-composition with the Mealy machines, and more generally, all prime functions used in the regular functions. 
 \end{itemize}
-Having proved that \sst's are closed under post-composition with all regular functions, we conclude that \sst's contain all regular functions, and this completes the proof of Theorem~\ref{theorem:sst-two-way-equivalence}.
+Having proved that \sst's are closed under post-composition with all regular functions, we conclude that \sst's contain all regular functions, and this completes the proof of Theorem~\ref{thm:sst-two-way-equivalence}.
 \end{proof}
 
 

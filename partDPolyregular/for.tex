@@ -174,7 +174,7 @@ def isEmpty(w):
     output('not empty')
 \end{lstlisting}
 
-        \begin{lemma}\label{lemma:prenex-normal-form}
+        \begin{lemma}\label{lem:prenex-normal-form}
             Every for-transducer is equivalent to one in prenex  form.
         \end{lemma}
         \begin{proof}
@@ -187,7 +187,7 @@ def isEmpty(w):
     String-to-string functions computed by for-transducers are closed under composition.
 \end{lemma}
 \begin{proof}
-    The construction is easiest to see if we assume that both composed for-transducers are in the prenex  form of Lemma~\ref{lemma:prenex-normal-form}, as follows:
+    The construction is easiest to see if we assume that both composed for-transducers are in the prenex  form of Lemma~\ref{lem:prenex-normal-form}, as follows:
 \begin{description}
   \item[First for-transducer] \ 
     \begin{lstlisting}
@@ -238,7 +238,7 @@ Let us now move to the other inclusion
 \begin{align*}
 \text{for-transducers} \subseteq \text{polyregular}.
 \end{align*}
-Thanks to Lemma~\ref{lemma:prenex-normal-form}, it suffices to show that for-transducers in prenex  form compute polyregular functions. Consider such a for-transducer, with its code being 
+Thanks to Lemma~\ref{lem:prenex-normal-form}, it suffices to show that for-transducers in prenex  form compute polyregular functions. Consider such a for-transducer, with its code being 
 \begin{lstlisting}
 for $x_1$ in  $\tau_1$:
   for $x_2$ in $\tau_2$:

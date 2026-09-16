@@ -1267,6 +1267,56 @@
       \verb https://doi.org/10.1016/0021-8693(69)90070-2
       \endverb
     \endentry
+    \entry{Gandy1980}{incollection}{}{}
+      \name{author}{1}{}{%
+        {{hash=ab9e394ddbaed5bc92ae5123a7a14217}{%
+           family={Gandy},
+           familyi={G\bibinitperiod},
+           given={Robin\bibnamedelima O.},
+           giveni={R\bibinitperiod\bibinitdelim O\bibinitperiod}}}%
+      }
+      \name{editor}{2}{}{%
+        {{hash=ae36db975de9bd5da69e64cdc53e0a85}{%
+           family={Seldin},
+           familyi={S\bibinitperiod},
+           given={Jonathan\bibnamedelima P.},
+           giveni={J\bibinitperiod\bibinitdelim P\bibinitperiod}}}%
+        {{hash=a4e29012443eb9bfad0de16faef9cebe}{%
+           family={Hindley},
+           familyi={H\bibinitperiod},
+           given={J.\bibnamedelimi Roger},
+           giveni={J\bibinitperiod\bibinitdelim R\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {London}%
+      }
+      \list{publisher}{1}{%
+        {Academic Press}%
+      }
+      \strng{namehash}{ab9e394ddbaed5bc92ae5123a7a14217}
+      \strng{fullhash}{ab9e394ddbaed5bc92ae5123a7a14217}
+      \strng{fullhashraw}{ab9e394ddbaed5bc92ae5123a7a14217}
+      \strng{bibnamehash}{ab9e394ddbaed5bc92ae5123a7a14217}
+      \strng{authorbibnamehash}{ab9e394ddbaed5bc92ae5123a7a14217}
+      \strng{authornamehash}{ab9e394ddbaed5bc92ae5123a7a14217}
+      \strng{authorfullhash}{ab9e394ddbaed5bc92ae5123a7a14217}
+      \strng{authorfullhashraw}{ab9e394ddbaed5bc92ae5123a7a14217}
+      \strng{editorbibnamehash}{ab94669563ba8f54a89b7146d688ee0c}
+      \strng{editornamehash}{ab94669563ba8f54a89b7146d688ee0c}
+      \strng{editorfullhash}{ab94669563ba8f54a89b7146d688ee0c}
+      \strng{editorfullhashraw}{ab94669563ba8f54a89b7146d688ee0c}
+      \field{labelalpha}{Gan80}
+      \field{sortinit}{G}
+      \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{To H.B. Curry: Essays on Combinatory Logic, Lambda Calculus and Formalism}
+      \field{isbn}{978-0-12-349050-6}
+      \field{title}{Proofs of Strong Normalization}
+      \field{year}{1980}
+      \field{pages}{457\bibrangedash 477}
+      \range{pages}{21}
+    \endentry
     \entry{lewenstein1996}{article}{}{}
       \name{author}{2}{}{%
         {{hash=a25610ba8c7ab23f2ae083a389b77eab}{%

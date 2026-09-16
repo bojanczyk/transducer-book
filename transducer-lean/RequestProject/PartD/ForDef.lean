@@ -4,7 +4,7 @@ Part D: for-transducers -- the definitions.
 The syntax and the semantics of the for-transducers of *Transducers*
 (M. Bojańczyk), together with Definition `def:prenex-normal-form-for-transducers` (prenex form).
 Everything in this file is moved unchanged from `RequestProject/PartD/Statements.lean`, so that the
-constructions used in the proofs of Lemma `lemma:prenex-normal-form` and of Lemma
+constructions used in the proofs of Lemma `lem:prenex-normal-form` and of Lemma
 `lem:for-closed-under-composition` can be developed before the statements of Part D.
 -/
 import Mathlib

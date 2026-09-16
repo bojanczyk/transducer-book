@@ -9,7 +9,7 @@ the constructions of Section *Streaming string transducers* use:
   and its compatibility with concatenation;
 * a workable criterion for the copyless restriction (`Transducers.copyless_iff`);
 * the *simulation lemma* `Transducers.SST.eval_of_sim`, which is how every construction in the proof
-  of Theorem `theorem:sst-two-way-equivalence` is verified: to see that a new sst computes `p ∘
+  of Theorem `thm:sst-two-way-equivalence` is verified: to see that a new sst computes `p ∘
   T.eval` it suffices to exhibit an invariant relating the configurations of the two machines.
 -/
 import RequestProject.PartC.SSTDef

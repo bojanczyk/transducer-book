@@ -1,7 +1,7 @@
 /-
 Part D: for-transducers -- manipulating nests of loops.
 
-The tools with which the prenex form of Lemma `lemma:prenex-normal-form` is assembled.  A nest of
+The tools with which the prenex form of Lemma `lem:prenex-normal-form` is assembled.  A nest of
 loops visits every tuple of positions once, in lexicographic order, so a *pinned* nest -- one whose
 body is guarded by the test "all these loop variables are equal to `z`" -- runs its body exactly
 once for every tuple of the *other* loop variables, in the same order.  This is what lets two nests

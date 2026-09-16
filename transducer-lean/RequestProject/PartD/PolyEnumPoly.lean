@@ -2,7 +2,7 @@
 Part D: the enumeration of the tuples of positions is a polyregular function.
 
 The transducer of one step is a streaming string transducer, hence computes a regular function
-(Theorem `theorem:sst-two-way-equivalence`), and marked squaring is a prime polyregular function.
+(Theorem `thm:sst-two-way-equivalence`), and marked squaring is a prime polyregular function.
 Since the enumeration of a nest of `k+1` loops is obtained from the enumeration of the first `k`
 loops by marked squaring followed by that transducer
 (`Transducers.PolyEnum.stepFun_enum`), an induction on the list of loops shows that the

@@ -1,5 +1,5 @@
 /- Post-composition of a streaming string transducer with a *flip-flop* Mealy machine (a step of the
-"regular to sst" half of Theorem `theorem:sst-two-way-equivalence` of *Transducers*, M. Bojańczyk).
+"regular to sst" half of Theorem `thm:sst-two-way-equivalence` of *Transducers*, M. Bojańczyk).
 
 In a flip-flop machine every letter either keeps the state or resets it to a
 fixed one.  The content of a register is therefore split into its part up to and

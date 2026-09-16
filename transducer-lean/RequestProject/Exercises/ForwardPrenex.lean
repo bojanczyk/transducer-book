@@ -2,7 +2,7 @@
 Exercise `exer:forward-for-transducer` of the chapter *For-transducers*
 (`polyregular-for.tex`) of *Transducers* (M. Bojańczyk) -- the **forward prenex normal form**.
 
-Lemma `lemma:prenex-normal-form` is proved in `RequestProject/PartD/ForPrenexTop.lean` by putting
+Lemma `lem:prenex-normal-form` is proved in `RequestProject/PartD/ForPrenexTop.lean` by putting
 the translation `Transducers.trFor` of the program under three extra loops,
 
   `for zv in positions: for lv in positions_reverse: for g in positions: …`

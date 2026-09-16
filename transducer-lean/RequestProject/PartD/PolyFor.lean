@@ -2,7 +2,7 @@
 Part D: a for-transducer computes a polyregular function.
 
 This is the right-to-left inclusion of Theorem `thm:for-transducers-are-polyregular`.  By Lemma
-`lemma:prenex-normal-form` every for-transducer is equivalent to one in prenex form, a nest of
+`lem:prenex-normal-form` every for-transducer is equivalent to one in prenex form, a nest of
 loops with a loop-free body followed by a loop-free epilogue.  Such a program is the composition
 of two functions:
 

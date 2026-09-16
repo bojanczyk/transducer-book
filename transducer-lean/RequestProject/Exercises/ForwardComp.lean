@@ -220,7 +220,7 @@ theorem for_nest_form_fwd (P : ForProg A B) (hP : ForwardProg P) :
 
 /-! ## The forward prenex normal form -/
 
-/-- **Lemma `lemma:prenex-normal-form` for forward programs.**  Every forward for-program is
+/-- **Lemma `lem:prenex-normal-form` for forward programs.**  Every forward for-program is
 equivalent to a forward program in prenex form. -/
 theorem forwardPrenex (P : ForProg A B) (hP : ForwardProg P) :
     ∃ (ls : List (Bool × ℕ)) (body epilogue : ForProg A B),

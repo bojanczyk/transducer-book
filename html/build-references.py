@@ -69,7 +69,8 @@ CHAPTERS = [
     ("15-polyregular-functions-introduction", "partDPolyregular/intro.tex", 4, 0),
     ("16-for-transducers", "partDPolyregular/for.tex", 4, 0),
     ("17-pebble-transducers", "partDPolyregular/pebble.tex", 4, 1),
-    ("17z-polyregular-functions-references", "partDPolyregular/bib-notes.tex", 4, 2),
+    ("17a-higher-order", "partDPolyregular/higher-order.tex", 4, 2),
+    ("17z-polyregular-functions-references", "partDPolyregular/bib-notes.tex", 4, 3),
 ]
 
 MYEXAMPLE_RE = re.compile(r"\\begin\{myexample\}(?:\[[^\]]*\])?\s*(?:\\label\{([^}]+)\})?")

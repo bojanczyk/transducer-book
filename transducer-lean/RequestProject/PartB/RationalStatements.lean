@@ -120,7 +120,7 @@ theorem rational_iff_unambiguous_iff_bimachine {A B : Type} [Finite A] [Finite B
   tfae_finish
 
 /-- An automaton with *extended transitions*: transitions are labelled by an input string and a
-regular language of output strings (used in Lemma `lemma:eliminate-epsilon-transitions`). -/
+regular language of output strings (used in Lemma `lem:eliminate-epsilon-transitions`). -/
 def IsExtendedNFAO {A B Q : Type} (M : LabAut A (Language B) Q) : Prop :=
   ∀ t ∈ M.δ, Language.IsRegular t.2.2.1
 
@@ -129,7 +129,7 @@ is any string in the concatenation of the languages along an accepting path. -/
 def extRel {A B Q : Type} (M : LabAut A (Language B) Q) (w : List A) (v : List B) : Prop :=
   ∃ ts, M.Accepting ts ∧ LabAut.inputOf ts = w ∧ v ∈ (LabAut.labelsOf ts).prod
 
-/-- The normal form of Lemma `lemma:eliminate-epsilon-transitions`: in every accepting run, either
+/-- The normal form of Lemma `lem:eliminate-epsilon-transitions`: in every accepting run, either
 the input is nonempty and each transition inputs exactly one letter, or the input is empty and the
 run consists of exactly one transition. -/
 def EpsilonFree {A L Q : Type} (M : LabAut A L Q) : Prop :=
@@ -137,7 +137,7 @@ def EpsilonFree {A L Q : Type} (M : LabAut A L Q) : Prop :=
     (LabAut.inputOf ts ≠ [] → ∀ t ∈ ts, t.2.1.length = 1) ∧
     (LabAut.inputOf ts = [] → ts.length = 1)
 
-/-- **Lemma `lemma:eliminate-epsilon-transitions` (Elimination of ε-transitions).**  Every rational
+/-- **Lemma `lem:eliminate-epsilon-transitions` (Elimination of ε-transitions).**  Every rational
 relation can be computed by an nfa with output and extended transitions in which every accepting run
 is in the normal form described by `EpsilonFree`.  Furthermore, if every input string has finitely
 many outputs, then extended transitions are not needed. -/

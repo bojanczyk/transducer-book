@@ -132,7 +132,7 @@ the book exactly:
   "outputs `ε` on input `ε`", without which it is false (`aⁿ ↦ aⁿ⁺¹` satisfies
   the other three conditions and is not sequential).  The condition is now item
   (c).
-* The derivative of Lemma `lemma:derivatives` is now defined in the sources as
+* The derivative of Lemma `lem:derivatives` is now defined in the sources as
   "`f(wv)` with the first `|w|` letters of the output removed", which is what
   Lean uses.  With the earlier reading `f⁽ʷ⁾(v) = f(wv)` even the identity has
   infinitely many derivatives and the Myhill–Nerode lemma is false.

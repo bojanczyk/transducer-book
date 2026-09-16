@@ -278,7 +278,7 @@ bounded by an affine function of the input length.
 
 The implication from the bound to the finiteness is the author's: there are finitely many strings
 of bounded length.  For the converse the author analyses the runs by hand; here the analysis is the
-one already carried out for Lemma `lemma:eliminate-epsilon-transitions`, whose second half says
+one already carried out for Lemma `lem:eliminate-epsilon-transitions`, whose second half says
 that a rational relation with finitely many outputs is computed by an nfa with output in which
 every transition of an accepting run reads exactly one letter (and a run on the empty input
 consists of a single transition).  Such a run on an input of length `n` has `n` transitions, each

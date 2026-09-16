@@ -1,7 +1,7 @@
 /-
 Part D: for-transducers -- merging two nests of loops into one.
 
-The single semantic step behind Lemma `lemma:prenex-normal-form`: on an input of length at least
+The single semantic step behind Lemma `lem:prenex-normal-form`: on an input of length at least
 two, the sequential composition of two nests of loops is again a nest of loops.  One extra loop
 variable `pi` is used as a two-valued *phase*: its first iteration (`pi` at the first position,
 which is the value of the designated variable `zv`) runs the first nest, its last iteration (`pi`

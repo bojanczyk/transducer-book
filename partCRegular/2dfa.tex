@@ -193,7 +193,7 @@ A^* \xrightarrow f B^* \xrightarrow g \Rat
 \end{align*}
 of a two-way transducer followed by a weighted automaton. The composed function can be computed directly by a weighted automaton, in which each run describes a labelling of the configuration graph of $f$ by transitions of $g$, as in the following picture, in which states of the weighted automaton are represented using colours:
 \mypic{38}
-The weight of a transition in the new automaton, which corresponds to a column in the above picture, is the product of transition weights of the original weighted automaton $g$ along the column. For example, the second column in the above picture has weight $14 = 1 \times 2 \times 7$. It is helpful in the construction to assume that the weighted automaton $g$ does not use $\varepsilon$-transitions. Such transitions can be eliminated using the same technique as in Lemma~\ref{lemma:eliminate-epsilon-transitions}. The details are left to the reader. 
+The weight of a transition in the new automaton, which corresponds to a column in the above picture, is the product of transition weights of the original weighted automaton $g$ along the column. For example, the second column in the above picture has weight $14 = 1 \times 2 \times 7$. It is helpful in the construction to assume that the weighted automaton $g$ does not use $\varepsilon$-transitions. Such transitions can be eliminated using the same technique as in Lemma~\ref{lem:eliminate-epsilon-transitions}. The details are left to the reader. 
 
 
 \subsection{Decomposition into prime functions}

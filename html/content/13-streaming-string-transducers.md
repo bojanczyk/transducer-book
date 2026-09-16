@@ -4,12 +4,12 @@ weight = 130
 source = "partCRegular/sst.tex"
 +++
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-% context stamp 6ac473a4
+% context stamp 43e0f4b3
 % Generated chapter wrapper; source body remains untouched.
 \setcounter{mypart}{3}
 \setcounter{section}{2}
 \setcounter{ourexamplecounter}{19}
-% source stamp partCRegular/sst.tex:5347efec
+% source stamp partCRegular/sst.tex:fa3a45a0
 \renewcommand{\exer}[2]{}
 \input{../../../partCRegular/sst.tex}
 {{< /latex >}}
@@ -18,7 +18,7 @@ source = "partCRegular/sst.tex"
 <div class="exercises">
 <div class="exercise" id="exercise-1">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-% context stamp 6ac473a4
+% context stamp 43e0f4b3
 \setcounter{mypart}{3}\setcounter{section}{3}\setcounter{theorem}{2}\setcounter{exercise}{0}
 \begin{exercise}
 \label{exer:sst-sorting} Write an \sst over alphabet $\set{a,b}$ that sorts the input string, i.e.~it outputs all the $a$'s first, followed by all the $b$'s.
@@ -28,7 +28,7 @@ source = "partCRegular/sst.tex"
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-% context stamp 6ac473a4
+% context stamp 43e0f4b3
 \setcounter{mypart}{3}\setcounter{section}{3}\setcounter{theorem}{2}
 \noindent\textbf{Solution.}\quad We use one state and two registers $X$ and $Y$, which store the letters $a$ and the letters $b$ that have been seen so far. The transitions are
 \begin{align*}
@@ -47,7 +47,7 @@ and the final output function is $XY$. Both updates are copyless, since each reg
 </div>
 <div class="exercise" id="exercise-2">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-% context stamp 6ac473a4
+% context stamp 43e0f4b3
 \setcounter{mypart}{3}\setcounter{section}{3}\setcounter{theorem}{2}\setcounter{exercise}{1}
 \begin{exercise}
 \label{exer:sst-copyful-sst} Consider copyful \sst's, i.e.~ones where the copyless restriction is lifted. Show that they are continuous.
@@ -57,7 +57,7 @@ and the final output function is $XY$. Both updates are copyless, since each reg
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-% context stamp 6ac473a4
+% context stamp 43e0f4b3
 \setcounter{mypart}{3}\setcounter{section}{3}\setcounter{theorem}{2}
 \noindent\textbf{Solution.}\quad Consider a composition 
 \[
@@ -72,7 +72,7 @@ For the regular language, we use a monoid homomorphism. We can now simulate the 
 </div>
 <div class="exercise" id="exercise-3">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-% context stamp 6ac473a4
+% context stamp 43e0f4b3
 \setcounter{mypart}{3}\setcounter{section}{3}\setcounter{theorem}{2}\setcounter{exercise}{2}
 \begin{exercise}
 \label{exer:sst-copyful-sst-output-size} Show that copyful \sst's can have exponential size outputs, but not doubly exponential.
@@ -82,7 +82,7 @@ For the regular language, we use a monoid homomorphism. We can now simulate the 
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-% context stamp 6ac473a4
+% context stamp 43e0f4b3
 \setcounter{mypart}{3}\setcounter{section}{3}\setcounter{theorem}{2}
 \noindent\textbf{Solution.}\quad For the upper bound, observe that for each input letter, the combined length of the strings in the registers can be at most multiplied by some fixed constant $c \in \set{1,2,\ldots}$, namely the maximal number of times that a register name is used in an update. Hence the output size is $\Oo(c^n)$, which is exponential and not doubly exponential.
 
@@ -97,7 +97,7 @@ with the final output function $X$. After reading $n$ letters, the register stor
 </div>
 <div class="exercise" id="exercise-4">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-% context stamp 6ac473a4
+% context stamp 43e0f4b3
 \setcounter{mypart}{3}\setcounter{section}{3}\setcounter{theorem}{2}\setcounter{exercise}{3}
 \begin{exercise}
 \label{exer:sst-copyful-sst-no-composition} Show that copyful \sst's are not closed under composition.
@@ -107,7 +107,7 @@ with the final output function $X$. After reading $n$ letters, the register stor
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-% context stamp 6ac473a4
+% context stamp 43e0f4b3
 \setcounter{mypart}{3}\setcounter{section}{3}\setcounter{theorem}{2}
 \noindent\textbf{Solution.}\quad By the previous exercise, the function $a^n \mapsto a^{2^n-1}$ is computed by a copyful \sst. The composition of this function with itself is
 \begin{align*}
@@ -120,7 +120,7 @@ which has doubly exponential output size, and hence it is not computed by a copy
 </div>
 <div class="exercise" id="exercise-5">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-% context stamp 6ac473a4
+% context stamp 43e0f4b3
 \setcounter{mypart}{3}\setcounter{section}{3}\setcounter{theorem}{2}\setcounter{exercise}{4}
 \begin{exercise}
 \label{exer:sst-polynomial-automaton} A polynomial automaton is an automaton with registers, like an \sst, but the registers hold rational numbers instead of strings. The updates need not be copyless, and they can use both addition and multiplication. A polynomial function computes a string-to-rational-number function. Show that $a^n \mapsto 2^n$ can be computed by a polynomial automaton.
@@ -130,7 +130,7 @@ which has doubly exponential output size, and hence it is not computed by a copy
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-% context stamp 6ac473a4
+% context stamp 43e0f4b3
 \setcounter{mypart}{3}\setcounter{section}{3}\setcounter{theorem}{2}
 \noindent\textbf{Solution.}\quad There is one register, which starts with $1$ and is doubled in each step.
 {{< /latex >}}
@@ -139,7 +139,7 @@ which has doubly exponential output size, and hence it is not computed by a copy
 </div>
 <div class="exercise" id="exercise-6">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-% context stamp 6ac473a4
+% context stamp 43e0f4b3
 \setcounter{mypart}{3}\setcounter{section}{3}\setcounter{theorem}{2}\setcounter{exercise}{5}
 \begin{exercise}
 \label{exer:sst-polynomial-automaton-doubly-exponential}  Show that $a^n \mapsto 2^{2^n}$ can be computed by a polynomial automaton.
@@ -149,7 +149,7 @@ which has doubly exponential output size, and hence it is not computed by a copy
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-% context stamp 6ac473a4
+% context stamp 43e0f4b3
 \setcounter{mypart}{3}\setcounter{section}{3}\setcounter{theorem}{2}
 \noindent\textbf{Solution.}\quad There is one register, which starts with $2$ and is squared in each step.
 {{< /latex >}}
@@ -158,7 +158,7 @@ which has doubly exponential output size, and hence it is not computed by a copy
 </div>
 <div class="exercise" id="exercise-7">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-% context stamp 6ac473a4
+% context stamp 43e0f4b3
 \setcounter{mypart}{3}\setcounter{section}{3}\setcounter{theorem}{2}\setcounter{exercise}{6}
 \begin{exercise}
 \label{exer:copyful-sst-decidable} Assume that equivalence is decidable for polynomial automata\footnote{This assumption is true by \cite[Corollary 1]{benedikt2017}. }. Show that equivalence is decidable for copyful \sst's.
@@ -168,7 +168,7 @@ which has doubly exponential output size, and hence it is not computed by a copy
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-% context stamp 6ac473a4
+% context stamp 43e0f4b3
 \setcounter{mypart}{3}\setcounter{section}{3}\setcounter{theorem}{2}
 \noindent\textbf{Solution.}\quad Essentially speaking, a polynomial automaton can simulate a copyful \sst by replacing its output with a number that represents it injectively.  Here are the details.
 Assume without loss of generality that the output alphabet is $\set{0,1}$. For a string over the output alphabet, we will be interested in two numbers: 

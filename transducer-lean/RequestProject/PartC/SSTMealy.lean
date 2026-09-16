@@ -1,7 +1,7 @@
 /-
 Post-composition of a streaming string transducer with a Mealy machine, and
 hence with an arbitrary rational function (a step of the "regular to sst" half
-of Theorem `theorem:sst-two-way-equivalence` of *Transducers*, M. Bojańczyk).
+of Theorem `thm:sst-two-way-equivalence` of *Transducers*, M. Bojańczyk).
 
 As the book explains, the naive construction -- keep, for every register `X` of
 the sst and every state `q` of the Mealy machine, a register `X_q` holding the

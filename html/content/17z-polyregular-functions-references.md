@@ -5,11 +5,11 @@ weight = 175
 source = "partDPolyregular/bib-notes.tex"
 +++
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-% context stamp f6e52b19
+% context stamp cf0967ed
 % Generated chapter wrapper; source body remains untouched.
 \setcounter{mypart}{4}
-\setcounter{section}{2}
-\setcounter{ourexamplecounter}{41}
-% source stamp partDPolyregular/bib-notes.tex:7bc11c8e
+\setcounter{section}{3}
+\setcounter{ourexamplecounter}{46}
+% source stamp partDPolyregular/bib-notes.tex:37c5c44d
 \input{../../../partDPolyregular/bib-notes.tex}
 {{< /latex >}}

@@ -132,9 +132,9 @@ assert_no_sorry «thm:aperiodic-mealy»
 alias «claim:aperiodic-pumping» := Transducers.aperiodic_iff_pumping
 assert_no_sorry «claim:aperiodic-pumping»
 
-/-- **Lemma `lemma:derivatives`** (Myhill–Nerode): `Transducers.myhill_nerode_mealy`. -/
-alias «lemma:derivatives» := Transducers.myhill_nerode_mealy
-assert_no_sorry «lemma:derivatives»
+/-- **Lemma `lem:derivatives`** (Myhill–Nerode): `Transducers.myhill_nerode_mealy`. -/
+alias «lem:derivatives» := Transducers.myhill_nerode_mealy
+assert_no_sorry «lem:derivatives»
 
 /-- **Lemma `lem:aperiodicity-minimal-machine`** (condition (*)): `Transducers.aperiodic_iff_transStabilises`. -/
 alias «lem:aperiodicity-minimal-machine» := Transducers.aperiodic_iff_transStabilises
@@ -184,9 +184,9 @@ assert_no_sorry «def:bimachine#2»
 alias «thm:bimachines» := Transducers.rational_iff_unambiguous_iff_bimachine
 assert_no_sorry «thm:bimachines»
 
-/-- **Lemma `lemma:eliminate-epsilon-transitions`** (elimination of ε-transitions): `Transducers.epsilon_elimination`. -/
-alias «lemma:eliminate-epsilon-transitions» := Transducers.epsilon_elimination
-assert_no_sorry «lemma:eliminate-epsilon-transitions»
+/-- **Lemma `lem:eliminate-epsilon-transitions`** (elimination of ε-transitions): `Transducers.epsilon_elimination`. -/
+alias «lem:eliminate-epsilon-transitions» := Transducers.epsilon_elimination
+assert_no_sorry «lem:eliminate-epsilon-transitions»
 
 /-- **Lemma `lem:uniformisation`** (uniformisation): `Transducers.uniformisation`. -/
 alias «lem:uniformisation» := Transducers.uniformisation
@@ -411,9 +411,9 @@ assert_no_sorry «def:sst»
 alias «def:sst#2» := Transducers.IsSST
 assert_no_sorry «def:sst#2»
 
-/-- **Theorem `theorem:sst-two-way-equivalence`** (sst = regular): `Transducers.sst_iff_regular`. -/
-alias «theorem:sst-two-way-equivalence» := Transducers.sst_iff_regular
-assert_no_sorry «theorem:sst-two-way-equivalence»
+/-- **Theorem `thm:sst-two-way-equivalence`** (sst = regular): `Transducers.sst_iff_regular`. -/
+alias «thm:sst-two-way-equivalence» := Transducers.sst_iff_regular
+assert_no_sorry «thm:sst-two-way-equivalence»
 
 /-- **Theorem `thm:mso-logic-languages`** (mso = regular languages): `Transducers.regular_iff_msoDefinable`. -/
 alias «thm:mso-logic-languages» := Transducers.regular_iff_msoDefinable
@@ -629,12 +629,12 @@ converse direction. -/
 alias «thm:rational-terms#3» := Transducers.ratTerm_of_isRational
 assert_no_sorry «thm:rational-terms#3»
 
-/-- **Lemma `nolabel:lem-distributivity-under-string-representation`** (distributivity):
+/-- **Lemma `lem:distributivity-is-regular-under-string-representation`** (distributivity):
 `Transducers.Comb.isRegularUnderRepr_distr`, the book's worked example of the induction basis of
 Theorem `thm:regular-terms`. -/
-alias «nolabel:lem-distributivity-under-string-representation» :=
+alias «lem:distributivity-is-regular-under-string-representation» :=
   Transducers.Comb.isRegularUnderRepr_distr
-assert_no_sorry «nolabel:lem-distributivity-under-string-representation»
+assert_no_sorry «lem:distributivity-is-regular-under-string-representation»
 
 /-- **Definition `def:polyregular-functions`** (polyregular functions): `Transducers.IsPolyregular`. -/
 alias «def:polyregular-functions» := Transducers.IsPolyregular
@@ -656,9 +656,9 @@ assert_no_sorry «thm:for-transducers-are-polyregular»
 alias «def:prenex-normal-form-for-transducers» := Transducers.ForProg.PrenexForm
 assert_no_sorry «def:prenex-normal-form-for-transducers»
 
-/-- **Lemma `lemma:prenex-normal-form`** (prenex normal form): `Transducers.forTransducer_prenex`. -/
-alias «lemma:prenex-normal-form» := Transducers.forTransducer_prenex
-assert_no_sorry «lemma:prenex-normal-form»
+/-- **Lemma `lem:prenex-normal-form`** (prenex normal form): `Transducers.forTransducer_prenex`. -/
+alias «lem:prenex-normal-form» := Transducers.forTransducer_prenex
+assert_no_sorry «lem:prenex-normal-form»
 
 /-- **Lemma `lem:for-closed-under-composition`** (composition): `Transducers.forTransducer_comp`. -/
 alias «lem:for-closed-under-composition» := Transducers.forTransducer_comp
@@ -1004,6 +1004,14 @@ assert_no_sorry «exer:decide-rational-colision#2»
 /-- **Exercise `exer:rational-one-letter-input`** (the graph of a rational function over a one-letter input alphabet): `Transducers.Exercises.rationalFun_unary_graph`. -/
 alias «exer:rational-one-letter-input» := Transducers.Exercises.rationalFun_unary_graph
 assert_no_sorry «exer:rational-one-letter-input»
+
+/-- **Example `ex:string-reversal-not-rational`** (string reversal is not rational):
+`Transducers.Exercises.not_isRationalFun_reverse`.  The book argues by the characterisation of
+Theorem `thm:machine-independent-rational-functions`, that a rational function has finitely many
+classes of the relation of bounded variation; the formalisation follows it, over the two-letter
+alphabet, which is what a refutation needs. -/
+alias «ex:string-reversal-not-rational» := Transducers.Exercises.not_isRationalFun_reverse
+assert_no_sorry «ex:string-reversal-not-rational»
 
 /-- **Exercise `exer:function-that-is-not-rational`** (not rational, yet rational after every rational function into a one-letter alphabet): `Transducers.Exercises.exists_not_isRationalFun_unary_compositions_rational`, proved outright.  Example `ex:string-reversal-not-rational` of the main text, that reversal is not rational, which this used to take as an explicit hypothesis, is proved as `Transducers.Exercises.not_isRationalFun_reverse`. -/
 alias «exer:function-that-is-not-rational» :=
