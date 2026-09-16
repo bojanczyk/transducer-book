@@ -722,6 +722,26 @@ def verify_tree(cfg: dict) -> tuple[bool, str]:
         VERIFY_MARKER.unlink(missing_ok=True)
 
 
+def build_errors(out: str, keep: int = 30) -> str:
+    """The lines of a `lake build` transcript that say what went wrong.
+
+    The tail is the wrong thing to show. Lean's linters are chatty -- a single
+    file can end a build with two dozen "'simp' tactic does nothing" warnings --
+    so the last twenty-five lines were entirely warnings, and a report built
+    from them named no error at all. That is what a reader gets instead of
+    `TilingComputable.lean:37:43: Type mismatch`.
+    """
+    lines = out.splitlines()
+    errs = [l for l in lines if l.lstrip().startswith("error:") or "✖" in l]
+    if not errs:
+        errs = [l for l in lines if "error" in l.lower()]
+    if not errs:
+        return "\n".join(lines[-keep:]) or "(it printed nothing, and named no error)"
+    head = errs[:keep]
+    more = f"\n… and {len(errs) - keep} more" if len(errs) > keep else ""
+    return "\n".join(head) + more
+
+
 def _verify(cfg: dict, ld: Path, limit: int) -> tuple[bool, str]:
     try:
         rc, out = run_capped([lake_exe(cfg), "build"], ld, toolchain_env(cfg), limit)
@@ -732,8 +752,7 @@ def _verify(cfg: dict, ld: Path, limit: int) -> tuple[bool, str]:
         return False, (f"`lake build` was still running after {limit // 60} minutes of "
                        f"wall-clock time and was killed. The last thing it said:\n\n{tail}")
     if rc:
-        tail = "\n".join(out.strip().splitlines()[-25:]) or "(it printed nothing)"
-        return False, f"`lake build` failed:\n\n{tail}"
+        return False, f"`lake build` failed:\n\n{build_errors(out)}"
     script = ld / "tools" / "print_axioms.sh"
     if script.is_file():
         # Twice before believing it, and always with the exit code: a blank
@@ -1097,6 +1116,11 @@ def harvest(cfg: dict, st: dict, project, task, target: dict | None,
                     st["paused"] = True
                     st["pause_reason"] = f"{tid} merged but does not build"
                     log("verification failed — paused")
+                    # so the continuation is told what broke, rather than being
+                    # asked to "continue where you left off" and left to
+                    # rediscover it
+                    if target:
+                        st["targets"][target["id"]]["verify_failure"] = why
                     return False
                 log("verified: builds clean, axioms unchanged")
         else:
@@ -1345,9 +1369,16 @@ def tick(cfg: dict, q: list, st: dict) -> None:
                 if rec["continues"] < target.get("max_continues",
                                                  cfg.get("max_continues", 3)):
                     rec["continues"] += 1
+                    broke = rec.pop("verify_failure", None)
                     extra = (f"Please continue exactly where you left off on the following "
                              f"task, picking up from the state of the repository and your "
-                             f"own last summary.\n\nThe task was:\n\n{target['prompt']}")
+                             f"own last summary.\n\n"
+                             + (f"Before anything else: the work you returned last time did "
+                                f"not build, so it was not accepted. Fix this first, and do "
+                                f"not leave scratch files behind -- a file that does not "
+                                f"compile fails the whole project even when nothing imports "
+                                f"it.\n\n{broke}\n\n" if broke else "")
+                             + f"The task was:\n\n{target['prompt']}")
                     st["current"] = None
                     if submit(cfg, st, target, "continue", extra):
                         return
