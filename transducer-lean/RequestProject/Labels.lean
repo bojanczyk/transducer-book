@@ -790,6 +790,10 @@ assert_no_sorry «def:natural-transformation»
 alias «claim:atomic-functions-are-natural-transformations» := Transducers.atoms_are_natural
 assert_no_sorry «claim:atomic-functions-are-natural-transformations»
 
+/-- **Lemma `lem:tiling-checker`** (checking a solution of the tiling problem by a term): `Transducers.tiling_checker`. -/
+alias «lem:tiling-checker» := Transducers.tiling_checker
+assert_no_sorry «lem:tiling-checker»
+
 /-- **Claim `claim:functors-applied-to-good`** (the shape of a good function into a functor): `Transducers.good_of_functor_applied`. -/
 alias «claim:functors-applied-to-good» := Transducers.good_of_functor_applied
 assert_no_sorry «claim:functors-applied-to-good»
@@ -1347,6 +1351,8 @@ above, so that this file accounts for all of them:
 * `def:rational-recognisable-subsets` (definition) -- not formalised (rational and recognisable subsets of a monoid, which the later sections do not use);
 * `conj:regular-via-weighted-automata` (conjecture) -- a conjecture of the book, not a result to formalise;
 * `nolabel:thm-fo-transduction-into-primes` (theorem) -- removed from the formalised theorems at the user's request; its statement is kept, commented out, in `PartC/MSOOpen.lean`;
+* `thm:undecidability-higher-order` (theorem) -- not formalised: undecidability of the equivalence problem for higher-order polyregular terms needs both Lemma `lem:tiling` and an encoding of the terms of Definition `def:higher-order-terms` as data; see `THEOREMS.md`;
+* `lem:tiling` (lemma) -- not formalised: the undecidability of the tiling problem needs the reduction of the halting problem to it, a development of its own; see `THEOREMS.md`;
 * `nolabel:claim-representations-are-a-regular-language` (claim) -- not formalised: the parsing of a representation is done here by the bracket counter of `PartC/CombDepth.lean`, which is what the transducers of the easy direction of Theorem `thm:regular-terms` use instead;
 -/
 

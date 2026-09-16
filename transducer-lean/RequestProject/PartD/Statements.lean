@@ -35,6 +35,7 @@ import RequestProject.PartD.HOEasy
 import RequestProject.PartD.HOFund
 import RequestProject.PartD.HOFewer
 import RequestProject.PartD.HONat
+import RequestProject.PartD.HOTiling
 
 namespace Transducers
 
@@ -160,6 +161,52 @@ theorem polyregular_iff_higherOrderTerm {A B : Ty} (f : A.Elt → B.Elt) :
       ((polyregular_iff_polyregularTerm f).mp h),
     fun h => isPolyregularUnderRepr_of_smallHigherOrderTermFun
       (isSmallHigherOrderTermFun_of_isHigherOrderTermFun h)⟩
+
+/-! ### Undecidability of equivalence at higher-order types
+
+Of the three results of this subsection, one is formalised.
+
+* Lemma `lem:tiling-checker` is `Transducers.tiling_checker` below; the term it provides is
+  `Transducers.HOTile.checkTerm` (`RequestProject/PartD/HOTiling.lean`), and the tiling problem it
+  is about -- which the book states inside the proof of Theorem `thm:undecidability-higher-order`,
+  referring to a picture that the sources available here do not contain -- is
+  `Transducers.Tiling.Instance`, `Transducers.Tiling.IsSolution` and
+  `Transducers.Tiling.Solvable` (`RequestProject/PartD/Tiling.lean`), where the conditions on a
+  solution are taken from the author's own proof of Lemma `lem:tiling-checker`.
+* Lemma `lem:tiling` (the tiling problem is undecidable) and Theorem
+  `thm:undecidability-higher-order` (the equivalence problem for higher-order polyregular terms is
+  undecidable) are **not formalised**.  `THEOREMS.md` says precisely what each of them would
+  require; in short, the first needs the reduction of the halting problem to the tiling problem,
+  which is a development of its own, and the second needs, on top of it, an encoding of the terms
+  of Definition `def:higher-order-terms` as data, so that "decidable" can be said of a problem
+  about terms at all.
+
+What *is* proved about the reduction, and is the other half of the proof of Theorem
+`thm:undecidability-higher-order`, is `Transducers.HOTile.checkTerm_eq_falseTerm_iff`: the term of
+Lemma `lem:tiling-checker` has the same semantics as the constant `false` term exactly when the
+instance has no solution. -/
+
+/-- **Lemma `lem:tiling-checker`.**  For every instance of the tiling problem there is a
+higher-order polyregular term of type
+
+    1* × ((1* × 1*) → T) → (1 + 1),
+
+where `T` is the type of the tiles of the instance, which answers whether the restriction of `f`
+to `{0,…,n} × {0,…,n}` is a solution.  The number `n` is given in unary, as a list of units, and
+the solution is read off from `f` by `Transducers.HOTile.gridOf`.
+
+The instance is assumed well formed (`Transducers.Tiling.Instance.WF`): its two corner tiles and
+the tiles of its local constraint are tiles of the instance.  This is not a restriction of the
+book's statement, where `s, t ∈ T` and `C ⊆ T⁴` hold by fiat; it has to be said here because the
+tiles of an instance are presented as the natural numbers `0, …, maxTile`. -/
+theorem tiling_checker (I : Tiling.Instance) (hI : I.WF) :
+    ∃ chk : HTerm []
+      (.arrow (.prod (.list .one)
+        (.arrow (.prod (.list .one) (.list .one)) (HOTile.tileTy I.maxTile))) (.sum .one .one)),
+      ∀ (n : List Unit) (f : List Unit × List Unit → (HOTile.tileTy I.maxTile).Sem),
+        chk.eval .nil (n, f) = HOTile.trueS ↔
+          Tiling.IsSolution I n.length (HOTile.gridOf I.maxTile f) :=
+  ⟨HOTile.checkTerm I, HOTile.eval_checkTerm I hI⟩
 
 /-! ## Pebble transducers
 
