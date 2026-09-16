@@ -212,6 +212,9 @@ generator working from the tables alone would delete them.
 | D.3.10 | claim | `claim:logical-relations-closed-under-precomposition` | `higher-order.tex` |
 | D.3.12 | claim | `claim:atomic-functions-are-natural-transformations` | `higher-order.tex` |
 | D.3.13 | claim | `claim:functors-applied-to-good` | `higher-order.tex` |
+| D.3.14 | theorem | `thm:undecidability-higher-order` | `higher-order.tex` |
+| D.3.15 | lemma | `lem:tiling` | `higher-order.tex` |
+| D.3.16 | lemma | `lem:tiling-checker` | `higher-order.tex` |
 
 Sections and subsections:
 
