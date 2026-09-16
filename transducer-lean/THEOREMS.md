@@ -3524,12 +3524,9 @@ function `A → 1`, by induction on the type), `polyNil`, `polyPure`, `polySwap`
 Lemma `lem:fewer-atomic` in `PartD/HOFewer.lean` appeals to, and that proof, and
 `PartD/HOFewer.lean` and `PartD/HOFewerAux.lean` themselves, are unchanged.
 
-**Verification.**  `lake build` succeeds with no errors.
-`tools/decl_files.py --check` passes.  `tools/gen_labels.py --check` and
-`tools/tex_numbering.py --check LABELS.md` report the same failures as before
-this run and no new ones: the copy of the book in this checkout is older than the
-author's, so `main.aux` lacks the labels `ex:block`,
-`claim:atomic-functions-are-natural-transformations` and
-`claim:functors-applied-to-good` and has stale numbers for 49 rows of
-`LABELS.md`.  Those are properties of the auxiliary file, not of the
-formalisation; the number of `gen_labels.py` complaints is unchanged (26).
+**Verification.**  `lake build` succeeds with no errors, and the three checks
+`tools/gen_labels.py --check`, `tools/decl_files.py --check` and
+`tools/tex_numbering.py --check` all pass.  `#print axioms` on the three aliases
+`exer:reverse-from-split`, `exer:block-from-split` and `exer:pref-from-mult` of
+`RequestProject/Labels.lean` reports `propext` and `Quot.sound` only, which is
+within the permitted `propext`, `Classical.choice`, `Quot.sound`.
