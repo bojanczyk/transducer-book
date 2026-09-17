@@ -22,9 +22,10 @@ result is proved outright — `assert_no_sorry` fails if the declaration depends
 So the names and the statuses in the tables below cannot go stale without
 breaking the build.
 
-Of the **100 theorem-like environments** of the book, 20 definitions and 77
-results are formalised, and 3 are not; **all 77 are proved outright**, and none
-of them takes a hypothesis.  **Parts A, B, C and D are proved in full**: the last
+Of the **132 theorem-like environments** of the book, 26 definitions and 101
+results are formalised, and 3 are not (a conjecture of the book and an exercise
+the author has withdrawn are left out of these counts); **all 101 are proved
+outright**, and none of them takes a hypothesis.  **Parts A, B, C and D are proved in full**: the last
 result that was conditional, Theorem `thm:decidable-equivalence-regular`, became
 unconditional when `Transducers.EffectiveTwoWayBound` was proved
 (`PartC/RegEffBound.lean`).  Nothing that is formalised is left unproved: there
@@ -310,6 +311,12 @@ RequestProject/
 | `PartD/HONat.lean` | the arrow-free type functors `Transducers.HTyFun` with higher-order parameters and their liftings, the definition `Transducers.IsNaturalTransformation` of a natural transformation (which carries no `\label` in the book), Claim `claim:atomic-functions-are-natural-transformations` and Claim `claim:functors-applied-to-good` |
 | `PartD/Tiling.lean` | the tiling problem used in the proof of Theorem `thm:undecidability-higher-order` (`Transducers.Tiling.Instance`, `Transducers.Tiling.IsSolution`, `Transducers.Tiling.Solvable`), with the conditions on a solution taken from the author's proof of Lemma `lem:tiling-checker`, since the picture the book refers to is not in the sources available here |
 | `PartD/HOTiling.lean` | Lemma `lem:tiling-checker`: the term `Transducers.HOTile.checkTerm` of type `1* × ((1* × 1*) → T) → (1 + 1)` that checks a solution of an instance of the tiling problem, its correctness (`Transducers.HOTile.eval_checkTerm`), and the consequence that it has the semantics of the constant `false` term exactly when the instance has no solution (`Transducers.HOTile.checkTerm_eq_falseTerm_iff`) |
+| `PartD/TilingCells.lean` | the cells of the reduction of the acceptance problem to the tiling problem (`Transducers.TilingRed.Cell`), the Boolean tests `validB`, `horizB`, `vertB` and `windowB` that say which cells and which `2 × 2` windows are allowed, the two corner tiles, the enumeration of the cells, and the instance `Transducers.TilingRed.inst M w` built from a machine and an input word |
+| `PartD/TilingSRS.lean`, `PartD/TilingRows.lean`, `PartD/TilingGrid.lean` | the rewriting system of a tape machine as it is used by the reduction, the rows of the grid as successive configurations, and the grid built from a computation, with the lemmas that introduce and use the Boolean tests |
+| `PartD/TilingSound.lean` | a solution of `Transducers.TilingRed.inst M w` yields an accepting computation (`Transducers.TilingRed.accepts_of_solvable`) |
+| `PartD/TilingComplete.lean` | an accepting computation yields a solution (`Transducers.TilingRed.solvable_of_accepts`) |
+| `PartD/TilingPrimrec.lean` | the reduction is effective: the instance is a primitive recursive function of the machine and the input word (`Transducers.TilingRed.primrec_inst`) |
+| `PartD/TilingUndec.lean` | Lemma `lem:tiling` (`Transducers.tiling_undecidable`) and Theorem `thm:undecidability-higher-order` (`Transducers.undecidability_higherOrder`), together with the well-formedness of the instance of the reduction (`Transducers.TilingRed.wf_inst`) |
 | `PartD/PebEnc.lean` | the string representation of a pair of configurations of a pebble transducer (`Transducers.PebEnc.PairLetter`, `Transducers.PebEnc.pairEnc`) and reachability along runs that never pop below a fixed height (`Transducers.Pebble.RestrReaches`, `Transducers.Pebble.BalancedRun`) |
 | `PartD/PebReachAut.lean`, `PartD/PebReachRun.lean`, `PartD/PebReachSim.lean` | the pebble automaton that reads the string representation of a pair of configurations, rebuilds the source stack bottom-up and simulates the machine, and its correctness (`Transducers.PebReach.reachAut_answers_iff`) |
 | `PartD/PebReach.lean` | Lemma `lem:reachability-pebble-automaton` and Claim `claim:reachability-basic-run` |
@@ -1734,8 +1741,8 @@ among the primes.
 | Natural transformations (no `\label` in the book) | `Transducers.HTyFun`, `Transducers.IsNaturalTransformation` | — | `PartD/HONat.lean` |
 | Claim `claim:atomic-functions-are-natural-transformations` (the atomic functions are natural) | `Transducers.atoms_are_natural` | proved (`HONat.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`) | `PartD/HONat.lean` |
 | Claim `claim:functors-applied-to-good` (the shape of a good function into a functor) | `Transducers.good_of_functor_applied` | proved (`HORel.lean`, `HONat.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`) | `PartD/HONat.lean` |
-| Theorem `thm:undecidability-higher-order` (equivalence at higher-order types is undecidable) | — | **not formalised**: it needs Lemma `lem:tiling`, which is not formalised either, and an encoding of the terms of Definition `def:higher-order-terms` as data.  The half of its proof that concerns the programming language is done: see Lemma `lem:tiling-checker` and the addendum *The undecidability of equivalence at higher-order types* at the end of this file | — |
-| Lemma `lem:tiling` (the tiling problem is undecidable) | — | **not formalised**: it needs the reduction of the halting problem to the tiling problem.  The tiling problem itself is formalised (`Transducers.Tiling.Solvable`, `PartD/Tiling.lean`); see the addendum at the end of this file | — |
+| Theorem `thm:undecidability-higher-order` (equivalence at higher-order types is undecidable) | `Transducers.undecidability_higherOrder` | proved (`TilingUndec.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`).  The decision problem is stated on the data `I` from which the two terms are built, not on codes of terms: for an instance `I` of the tiling problem the two terms are `Transducers.HOTile.checkTerm I` and `Transducers.HOTile.falseTerm I.maxTile`, and no algorithm decides, reading `I`, whether they have the same semantics.  The terms of Definition `def:higher-order-terms` are intrinsically typed here, so the project has no encoding of them as data; a decision procedure reading codes of the two terms would give one reading `I` under any encoding for which `I ↦ (code, code)` is computable | `PartD/TilingUndec.lean` |
+| Lemma `lem:tiling` (the tiling problem is undecidable) | `Transducers.tiling_undecidable` | proved (`Tiling.lean`, `TilingCells.lean`, `TilingSRS.lean`, `TilingRows.lean`, `TilingGrid.lean`, `TilingSound.lean`, `TilingComplete.lean`, `TilingPrimrec.lean`, `TilingUndec.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`).  The reduction is from the acceptance problem for the tape machines of `RequestProject/PCP/`, undecidable by `Acceptance.tm_acceptance_not_computablyDecidable`; the book reduces from halting on the empty input | `PartD/TilingUndec.lean` |
 | Lemma `lem:tiling-checker` (a term that checks a solution) | `Transducers.tiling_checker` | proved (`Tiling.lean`, `HOTiling.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`).  The instance is assumed well formed, its corner tiles and the tiles of its local constraint being tiles of the instance -- a condition that is automatic in the book, where `s, t ∈ T` and `C ⊆ T⁴`, and has to be stated here because the tiles are presented as the natural numbers `0, …, maxTile` | `PartD/Statements.lean` |
 
 Supporting files for Part D: `MarkedSquare.lean` (marked squaring and the
@@ -1804,17 +1811,17 @@ below for what the earlier passes had to remove to get there.
 
 ### Counts
 
-The book has **118 theorem-like environments**, listed in the dictionary of
+The book has **132 theorem-like environments**, listed in the dictionary of
 `LABELS.md` and checked against the book's `main.aux`.  Every one of them has a
 row in the index above.  The counts below are recomputed from that dictionary
 and from the aliases of `RequestProject/Labels.lean`; earlier passes of this
-file reported 100, then 115 and then 116, which was the size of the dictionary
-at the time -- the 116th environment is Claim `claim:pairing-copairing`, which
-the author has since labelled and which is proved, and the last two are
-Definition `def:polyregular-terms` and Theorem `thm:polyregular-terms` of
-Section D.3, added by the run whose status section closes this file.
-The three
-environments that are not formalised are Definition
+file reported 100, then 115, 116 and 118, which was the size of the dictionary
+at the time -- the dictionary has grown as the author has added and labelled
+results, the latest being the three results at the end of Section D.3.  Two
+environments are left out of the table below, as they have been all along: the
+open Conjecture `conj:regular-via-weighted-automata`, which is not a result, and
+the exercise `nolabel:exer-pref-from-mult`, which the author has withdrawn.
+The three environments that are not formalised are Definition
 `def:rational-recognisable-subsets`, Claim
 `nolabel:claim-representations-are-a-regular-language` and the unnumbered
 paragraph `nolabel:thm-fo-transduction-into-primes`, each with its reason in the
@@ -1822,8 +1829,8 @@ index above.
 
 | | Introduction | Part A | Part B | Part C | Part D | total |
 | --- | --- | --- | --- | --- | --- | --- |
-| definitions formalised | 1 | 4 | 7 | 9 | 3 | **24** |
-| results proved outright | 0 | 11 | 26 | 42 | 12 | **91** |
+| definitions formalised | 1 | 4 | 7 | 9 | 5 | **26** |
+| results proved outright | 0 | 11 | 26 | 43 | 21 | **101** |
 | results proved from an explicit hypothesis | 0 | 0 | 0 | 0 | 0 | **0** |
 | environments not formalised | 0 | 0 | 1 | 2 | 0 | **3** |
 
@@ -1836,8 +1843,10 @@ that the transducer computes a total function, as listed under *Hypotheses that
 the Lean statement adds* above.  **Parts A, B, C and D are proved in full**: the
 last conditional result, Theorem `thm:decidable-equivalence-regular`, became
 unconditional when `Transducers.EffectiveTwoWayBound` was proved.  Part D now includes the five results of Section *Pebble transducers*
-that are about the string representation of configurations; they used to be the
-only unformalised results of that part.
+that are about the string representation of configurations, and the three
+results at the end of Section D.3 -- Lemma `lem:tiling`, Lemma
+`lem:tiling-checker` and Theorem `thm:undecidability-higher-order` -- which were
+the last unformalised results of that part.
 
 ### No result is proved from a hypothesis
 
@@ -1873,10 +1882,11 @@ Seven results used to appear in this table, and every one of them is now proved 
 ### The three environments that are not formalised for want of a reason to be
 
 None of them is an unfinished proof: none of the three is a mathematical result
-that this formalisation is meant to establish.  (Two further environments,
-Theorem `thm:undecidability-higher-order` and Lemma `lem:tiling`, are not
-formalised because the work they need has not been done; see the addendum *The
-undecidability of equivalence at higher-order types* at the end of this file.)
+that this formalisation is meant to establish.  (Theorem
+`thm:undecidability-higher-order` and Lemma `lem:tiling`, which were on this
+list while the reduction they need was missing, are now proved; see the addendum
+*The undecidability of equivalence at higher-order types* at the end of this
+file.)
 
 | environment | reason |
 | --- | --- |
@@ -3546,8 +3556,9 @@ The run that added this section formalised the tiling problem and **Lemma
 `lem:tiling-checker`**, the step of the proof of Theorem
 `thm:undecidability-higher-order` that is about the programming language.  The
 other two results of the subsection, Theorem `thm:undecidability-higher-order`
-itself and Lemma `lem:tiling`, are **not formalised**; the addendum below says
-exactly what each of them still needs.
+itself and Lemma `lem:tiling`, were left unformalised by that run; they have
+since been proved -- see *Status (Section D.3: undecidability at higher-order
+types)* at the end of this file.
 
 | declaration | file | statement |
 | --- | --- | --- |
@@ -3584,40 +3595,86 @@ filter of Example `ex:filter` -- and asking whether the concatenation is empty.
 and the constant `false` term have the same semantics exactly when the instance
 is unsolvable.
 
-**What Lemma `lem:tiling` needs.**  A reduction of a problem already known here
-to be undecidable -- the acceptance problem for the tape machines of
+**How Lemma `lem:tiling` is proved.**  By a reduction of a problem already
+known here to be undecidable -- the acceptance problem for the tape machines of
 `RequestProject/PCP/`, `PCP.AcceptanceProblem`, undecidable by
-`Acceptance.tm_acceptance_not_computablyDecidable` -- to the tiling problem.
-Nothing of the kind is in the project or in Mathlib: the project's undecidable
-problems are the acceptance problem and the Post correspondence problem, and
-neither reduces to the tiling problem in one line.  The reduction is the
-classical one, in which the rows of the square are the successive
-configurations of the machine, and it is a development of its own.  Written out,
-it has to: force the bottom row to spell the initial configuration (the local
-constraint sees only two horizontally adjacent cells at a time, so the cells of
-the bottom row have to carry their position in it); force the first and the last
-column to be borders, so that a rewriting cannot run off either end and the
+`Acceptance.tm_acceptance_not_computablyDecidable`.  Nothing of the kind was in
+the project or in Mathlib, so the reduction is built here, in the files named
+`PartD/Tiling*.lean`.  It is the classical one, in which the rows of the square
+are the successive configurations of the machine, and it has to: force the
+bottom row to spell the initial configuration (the local constraint sees only
+two horizontally adjacent cells at a time, so the cells of the bottom row carry
+their position in it -- the field `cnt`); force the first and the last column to
+be borders (`lb`, `rb`), so that a rewriting cannot run off either end and the
 head cannot fall off the tape; carry in each cell the rôle it plays in the
-rewriting that produces the cell above it (which rule is being applied, and at
-which offset in its left-hand side), since the rules of a machine rewrite three
-consecutive symbols and a `2 × 2` window sees only two; propagate along a row a
-flag saying that the accepting state has been seen to the left, so that the
-corner `(n,n)` can require acceptance; and, on top of the combinatorics, be
-*primitive recursive* in the machine, since a reduction that is not effective
-proves nothing.  The last point is not a formality: the tile set and the list of
-allowed windows are built by nested list comprehensions over the machine's
-alphabet and rules, and each has to be shown primitive recursive.
+rewriting that produces the cell above it (`role`, `aux`: which rule is being
+applied, and at which offset in its left-hand side), since the rules of a
+machine rewrite three consecutive symbols and a `2 × 2` window sees only two;
+propagate along a row a flag (`acc`) saying that the accepting state has been
+seen to the left, so that the corner `(n,n)` can require acceptance; and, on top
+of the combinatorics, be *primitive recursive* in the machine, since a reduction
+that is not effective proves nothing.  The last point is not a formality: the
+tile set and the list of allowed windows are built by nested list comprehensions
+over the machine's alphabet and rules, and each is shown primitive recursive in
+`PartD/TilingPrimrec.lean`, ending in `Transducers.TilingRed.primrec_inst`.  The
+two halves of the correctness are
+`Transducers.TilingRed.accepts_of_solvable` (`PartD/TilingSound.lean`) and
+`Transducers.TilingRed.solvable_of_accepts` (`PartD/TilingComplete.lean`), and
+together they give `Transducers.TilingRed.solvable_inst_iff`.  The book reduces
+from halting on the empty input; the reduction here is from acceptance of an
+arbitrary input word, which is the form in which the project's undecidable
+problem is stated.
 
-**What Theorem `thm:undecidability-higher-order` needs on top of that.**  A
-notion of decidability for a problem about *terms*.  The terms of Definition
+**How Theorem `thm:undecidability-higher-order` is stated.**  A notion of
+decidability for a problem about *terms* is needed, and the terms of Definition
 `def:higher-order-terms` are an intrinsically typed family
-`Transducers.HTerm Γ A`, not a type of data, so a statement of the form
-`¬ ComputablePred …` cannot even be written about them: what is needed first is
-an encoding of terms as data -- a `Primcodable` type of codes, a decoding of a
-code into a term, and the primitive recursiveness of the map that sends an
-instance of the tiling problem to the code of `Transducers.HOTile.checkTerm`.
-This is the same bookkeeping that `PartB/Codes.lean` does for automata, where a
-rational relation is described by a `RelCode` and undecidability is stated as
-`¬ ComputablePred (fun p : RelCode × RelCode => codeRel p.1 = codeRel p.2)`; for
-a typed lambda calculus it is a larger piece of work, since the codes have to be
-parsed and typed before they denote anything.
+`Transducers.HTerm Γ A`, not a type of data: a statement of the form
+`¬ ComputablePred …` cannot be written about them without first fixing an
+encoding of terms as data -- a `Primcodable` type of codes, a decoding of a code
+into a term, and the primitive recursiveness of the map that sends an instance
+of the tiling problem to the code of `Transducers.HOTile.checkTerm`.  That is a
+development of its own, since for a typed lambda calculus the codes have to be
+parsed and typed before they denote anything; it is not attempted here.
+Instead, the theorem is stated on the data from which the two terms are built.
+For an instance `I` of the tiling problem, `Transducers.HOTile.checkTerm I` and
+`Transducers.HOTile.falseTerm I.maxTile` are two closed terms of the common type
+`1* × ((1* × 1*) → T) → (1 + 1)`, and
+
+```
+Transducers.undecidability_higherOrder :
+  ¬ ComputablePred fun I : Tiling.Instance =>
+    (HOTile.checkTerm I).eval HEnv.nil = (HOTile.falseTerm I.maxTile).eval HEnv.nil
+```
+
+says that no algorithm decides, reading `I`, whether the two are equivalent.
+This is a formalisation decision, and it is a deliberate one: it is weaker in
+form than a statement about codes of terms, but a decision procedure reading
+codes of the two terms would yield one reading `I` under any encoding for which
+the map `I ↦ (code, code)` is computable, so no undecidability is lost.  It is
+recorded in the docstring of the theorem and in the header of
+`PartD/TilingUndec.lean` as well.
+
+## Status (Section D.3: undecidability at higher-order types)
+
+The three results at the end of Section D.3 are now all formalised and proved.
+
+| result | declaration | file |
+| --- | --- | --- |
+| Lemma `lem:tiling` | `Transducers.tiling_undecidable` | `PartD/TilingUndec.lean` |
+| Lemma `lem:tiling-checker` | `Transducers.tiling_checker` | `PartD/Statements.lean` |
+| Theorem `thm:undecidability-higher-order` | `Transducers.undecidability_higherOrder` | `PartD/TilingUndec.lean` |
+
+The supporting development, all of it new, is listed in the table of files
+above: `PartD/TilingCells.lean`, `PartD/TilingSRS.lean`, `PartD/TilingRows.lean`,
+`PartD/TilingGrid.lean`, `PartD/TilingSound.lean`, `PartD/TilingComplete.lean`,
+`PartD/TilingPrimrec.lean` and `PartD/TilingUndec.lean`.
+
+Neither result is proved from a hypothesis: no `def … : Prop` is taken as an
+argument, and no axiom is introduced.
+
+**Verification.**  `lake build` succeeds with no errors; there is no `sorry` in
+any of the files above; `tools/gen_labels.py --check`, `tools/decl_files.py
+--check` and `tools/tex_numbering.py --check` all pass; and `#print axioms` on
+`Transducers.tiling_undecidable` and on
+`Transducers.undecidability_higherOrder` reports `propext`, `Classical.choice`
+and `Quot.sound` only.
