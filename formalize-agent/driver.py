@@ -1011,10 +1011,24 @@ def harvest(cfg: dict, st: dict, project, task, target: dict | None,
 
     with tempfile.TemporaryDirectory() as td:
         arc = Path(td) / "snapshot.tar.gz"
-        try:
-            run_async(project.get_files(str(arc)))
-        except Exception as e:
-            log(f"download failed: {e!r}")
+        # The server returns an empty-bodied error now and then. One such blip
+        # used to cost a whole tick, and when the laptop sleeps a tick is hours:
+        # a finished run sat undownloaded from 17:52 to 00:39 on three of them.
+        # Retrying in-process costs seconds.
+        err = None
+        for attempt in (1, 2, 3):
+            try:
+                run_async(project.get_files(str(arc)))
+                err = None
+                break
+            except Exception as e:
+                err = e
+                if attempt < 3:
+                    log(f"download attempt {attempt} failed ({e!r}) — retrying")
+                    time.sleep(5 * attempt)
+        if err is not None:
+            e = err
+            log(f"download failed after 3 attempts: {e!r}")
             return False
         ex = Path(td) / "x"
         ex.mkdir()
@@ -1375,8 +1389,23 @@ def tick(cfg: dict, q: list, st: dict) -> None:
                 finish_target(st, target["id"], "done",
                               f"stopped after {idle} continuation(s) with no .lean change")
             else:
-                if rec["continues"] < target.get("max_continues",
-                                                 cfg.get("max_continues", 3)):
+                # Ask whether there is anything left before spending another run.
+                # A partial status says the *budget* ran out, not that the work
+                # did; D3-tiling-undecidability came back COMPLETE_WITH_ERRORS
+                # with all three of its results proved and was sent round again.
+                # TERMINAL_OK has always checked this first -- the partial branch
+                # reached the check only once the continuations were exhausted,
+                # so a finished target burned every one of them.
+                done_names = target.get("lean_names") or []
+                if done_names and not open_results(lean_dir(cfg), done_names):
+                    log(f"{target['id']}: every declared result is proved — "
+                        f"not continuing")
+                    note_sorry_delta(cfg, st, rec, target)
+                    finish_target(st, target["id"], "done",
+                                  f"all declared results proved after "
+                                  f"{rec['continues']} continuation(s)")
+                elif rec["continues"] < target.get("max_continues",
+                                                   cfg.get("max_continues", 3)):
                     rec["continues"] += 1
                     broke = rec.pop("verify_failure", None)
                     extra = (f"Please continue exactly where you left off on the following "
