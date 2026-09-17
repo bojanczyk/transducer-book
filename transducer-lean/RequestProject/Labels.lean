@@ -635,6 +635,10 @@ alias «lem:distributivity-is-regular-under-string-representation» :=
   Transducers.Comb.isRegularUnderRepr_distr
 assert_no_sorry «lem:distributivity-is-regular-under-string-representation»
 
+/-- **Claim `claim:parsing-is-regular`** (the representations form a regular language): `Transducers.reprLang_isRegular`, the regularity of the language `Transducers.reprLang` of the string representations of the elements of a type. -/
+alias «claim:parsing-is-regular» := Transducers.reprLang_isRegular
+assert_no_sorry «claim:parsing-is-regular»
+
 /-- **Definition `def:polyregular-functions`** (polyregular functions): `Transducers.IsPolyregular`. -/
 alias «def:polyregular-functions» := Transducers.IsPolyregular
 assert_no_sorry «def:polyregular-functions»
@@ -905,6 +909,11 @@ assert_no_sorry «exer:factorial-continuous»
 /-- **Exercise `exer:factorial-power-continuous`** (continuity of `w ↦ w^{g(|w|)!}`): `Transducers.Exercises.factorial_power_continuous`. -/
 alias «exer:factorial-power-continuous» := Transducers.Exercises.factorial_power_continuous
 assert_no_sorry «exer:factorial-power-continuous»
+
+/-- **Claim `claim:factorial-powers-stabilise-in-monoids`** (in a finite monoid the factorial powers of an element are eventually constant): `Transducers.Exercises.factorial_powers_stabilise`, the claim of the author's solution of Exercise `exer:factorial-power-continuous`. -/
+alias «claim:factorial-powers-stabilise-in-monoids» :=
+  Transducers.Exercises.factorial_powers_stabilise
+assert_no_sorry «claim:factorial-powers-stabilise-in-monoids»
 
 /-- **Exercise `ex:continuity-for-finite-images`** (finitely many output values): `Transducers.Exercises.continuous_iff_regular_fibers`. -/
 alias «ex:continuity-for-finite-images» := Transducers.Exercises.continuous_iff_regular_fibers
@@ -1179,6 +1188,14 @@ alias «exer:polyregular-unmarked-squaring» :=
   Transducers.Exercises.unmarkedPolyregular_strict_subset_polyregular
 assert_no_sorry «exer:polyregular-unmarked-squaring»
 
+/-- **Claim `claim:grammar-compression-of-baib`** (for a grammar compression of `w`, the set of `i` with an infix `b aⁱ b` in `w` is at most linear in the size of the compression): `Transducers.Exercises.gaps_finite_of_generates`, that the set is finite.  It is stated for a string over any alphabet with a predicate naming the letter `b`, and `Transducers.Exercises.mem_gaps_of_infix` is what says that `Transducers.Exercises.gaps` is the set of the claim. -/
+alias «claim:grammar-compression-of-baib» := Transducers.Exercises.gaps_finite_of_generates
+assert_no_sorry «claim:grammar-compression-of-baib»
+
+/-- **Claim `claim:grammar-compression-of-baib`** (for a grammar compression of `w`, the set of `i` with an infix `b aⁱ b` in `w` is at most linear in the size of the compression): `Transducers.Exercises.ncard_gaps_le_of_generates`, the bound itself -- the set has at most as many elements as the compression has rules. -/
+alias «claim:grammar-compression-of-baib#2» := Transducers.Exercises.ncard_gaps_le_of_generates
+assert_no_sorry «claim:grammar-compression-of-baib#2»
+
 /-- **Exercise `exer:2nft`** (first half: the first nondeterministic model of a two-way transducer is not contained in the second): `Transducers.Exercises.exists_isTwoNFT₁_not_isTwoNFT₂`. -/
 alias «exer:2nft» := Transducers.Exercises.exists_isTwoNFT₁_not_isTwoNFT₂
 assert_no_sorry «exer:2nft»
@@ -1235,6 +1252,10 @@ assert_no_sorry «exer:group-prefix-multiplication-isomorphism»
 /-- **Exercise `exer:windows-of-size-two`** (a regular term for the windows of size two): `Transducers.Exercises.regTerm_windows_two`, that the exhibited term `Transducers.Exercises.windowsTwoTerm` computes `Transducers.Exercises.windowsTwo`. -/
 alias «exer:windows-of-size-two» := Transducers.Exercises.regTerm_windows_two
 assert_no_sorry «exer:windows-of-size-two»
+
+/-- **Exercise `exer:filter-plus`** (a regular term of type `(A + B)* → A*` that keeps only the entries of type `A`): `Transducers.Exercises.regTerm_filter_plus`, that the exhibited term `Transducers.Exercises.filterPlusTerm` computes `Transducers.Exercises.filterPlus`. -/
+alias «exer:filter-plus» := Transducers.Exercises.regTerm_filter_plus
+assert_no_sorry «exer:filter-plus»
 
 /-- **Exercise `exer:natural-identity`** (a natural family `A → A` is the identity at every type): `Transducers.Exercises.natural_id_eq_id`, for the notion of naturality of `Transducers.Exercises.IsNatural`, which this exercise fixes and which the other exercises about natural transformations use. -/
 alias «exer:natural-identity» := Transducers.Exercises.natural_id_eq_id
@@ -1325,6 +1346,10 @@ alias «exer:fo-non-elementary» :=
   Transducers.Exercises.fo_non_elementary
 assert_no_sorry «exer:fo-non-elementary»
 
+/-- **Claim `lem:fo-non-elementary-order`** (a first-order formula of size linear in `n`, with four free position variables, saying that the two infixes are consecutive strings of order `n`): `Transducers.Exercises.fo_non_elementary_order`.  The formula is `Transducers.Exercises.phiOrdSucc`, the formula `Transducers.Exercises.phiOrd` of the induction with its two mode variables quantified away; the string is asked to have at least two positions, as in `Transducers.Exercises.sat_phiOrd`. -/
+alias «lem:fo-non-elementary-order» := Transducers.Exercises.fo_non_elementary_order
+assert_no_sorry «lem:fo-non-elementary-order»
+
 /-- **Exercise `exer:fo-suc`** (first-order logic with successor only is strictly weaker): `Transducers.Exercises.fo_succ_strictly_weaker`, from the hypothesis `Transducers.Exercises.EFSuccSeparation`. -/
 alias «exer:fo-suc» :=
   Transducers.Exercises.fo_succ_strictly_weaker
@@ -1350,6 +1375,10 @@ alias «exer:block-from-split» :=
   Transducers.Exercises.block_from_split
 assert_no_sorry «exer:block-from-split»
 
+/-- **Exercise `exer:split-triple`** (a polyregular term for the variant of the split function with codomain `(A* × A × A*)*`): `Transducers.Exercises.split_triple`.  The witness is the polyregular term `Transducers.Exercises.polySplitTriple`, and the function it computes is `Transducers.splitTriples`. -/
+alias «exer:split-triple» := Transducers.Exercises.split_triple
+assert_no_sorry «exer:split-triple»
+
 /-
 The theorem-like environments of the book that are not aliased
 above, so that this file accounts for all of them:
@@ -1358,7 +1387,6 @@ above, so that this file accounts for all of them:
 * `nolabel:exer-pref-from-mult` (exercise) -- withdrawn from the book by the author, which replaced it with `exer:split-triple`; the statement it had is still proved, as `Transducers.Exercises.pref_from_mult` in `RequestProject/Exercises/HOAtomsFromSplit.lean`, and is simply no longer a result of the book;
 * `conj:regular-via-weighted-automata` (conjecture) -- a conjecture of the book, not a result to formalise;
 * `nolabel:thm-fo-transduction-into-primes` (theorem) -- removed from the formalised theorems at the user's request; its statement is kept, commented out, in `PartC/MSOOpen.lean`;
-* `nolabel:claim-representations-are-a-regular-language` (claim) -- not formalised: the parsing of a representation is done here by the bracket counter of `PartC/CombDepth.lean`, which is what the transducers of the easy direction of Theorem `thm:regular-terms` use instead;
 -/
 
 end Transducers.Book

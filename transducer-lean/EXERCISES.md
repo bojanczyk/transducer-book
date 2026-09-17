@@ -56,6 +56,8 @@ RequestProject/
     TwoNFT.lean                 -- the two nondeterministic two-way models, first half
     TwoNFT2.lean                -- the two nondeterministic two-way models, second half
     ForFO.lean                  -- first-order logic into for-transducers (polyregular-for.tex)
+    FONonElemClaim.lean         -- the claim of exer:fo-non-elementary with four free variables
+    SplitTriple.lean            -- the split into triples, by a polyregular term (higher-order.tex)
 ```
 
 | File | Contents |
@@ -74,7 +76,7 @@ RequestProject/
 | `Exercises/CombNatural.lean` | naturality for the type functors of Definition `def:types` (`TyFun`, `TyFun.app`, `TyFun.map`, `IsNatural`), and the first three exercises of `combinators.tex` about it: a natural family `A → A` is the identity (`natural_id_eq_id`), there is no natural transformation `A* → A` (`no_natural_head`, `not_natural_head_of_claim`), there are uncountably many natural transformations `A* → A*` (`uncountably_many_natural_list`), and every natural transformation `A → A*` repeats its argument a fixed number of times and is therefore regular (`natural_toList_eq_replicate`, `natural_toList_regularTerm`, `natural_toList_regular`) |
 | `Exercises/CombNaturalAtoms.lean` | Exercise `exer:natural-transformations-from-regular-terms`: the atomic functions of Definition `def:regular-terms`, group prefix multiplication aside, are natural transformations between functors in several type variables (`regTerm_atomics_natural`) |
 | `Exercises/CombNaturalFree.lean` | Exercise `exer:natural-transformations-list-free`: a natural transformation whose domain functor does not use the list constructor is definable by a regular term (`natural_listFree_regularTerm`), by way of the generic element of a list-free functor (`TyFun.posTy`, `TyFun.gen`, `TyFun.sel`, `TyFun.map_gen`) and the definability of the shape-with-pointers it produces (`tfun_sel`, `tfun_gen`, `tfun_mapOf`) |
-| `Exercises/CombinatorsEx.lean` | the four exercises of `combinators.tex`: the conditional construction for regular and for rational terms (`regTerm_ite`, `ratTerm_ite`), the replacement of the general identity by its special case at the unit type and its removal altogether (`regTerm_id_replaceable`), the bijectivity of group prefix multiplication together with a regular term for its inverse (`pref_bijective`), and an explicit regular term of type `A* → (A × A)*` for the windows of size two (`regTerm_windows_two`, `windowsTwoTerm`) |
+| `Exercises/CombinatorsEx.lean` | the five exercises of `combinators.tex`: the conditional construction for regular and for rational terms (`regTerm_ite`, `ratTerm_ite`), the replacement of the general identity by its special case at the unit type and its removal altogether (`regTerm_id_replaceable`), the bijectivity of group prefix multiplication together with a regular term for its inverse (`pref_bijective`), an explicit regular term of type `A* → (A × A)*` for the windows of size two (`regTerm_windows_two`, `windowsTwoTerm`), and the term that keeps the entries of type `A` of a list over `A + B` (`regTerm_filter_plus`, `filterPlusTerm`) |
 | `Exercises/TwoDFAEx.lean` | the exercise of `2dfa.tex` on Boolean combinations: the languages of deterministic two-way automata are closed under complement, union and intersection |
 | `Exercises/TwoDFALoop.lean` | loop elimination: the set of inputs on which a deterministic two-way transducer terminates is a regular language |
 | `Exercises/TwoDFAPass.lean` | a two-way deterministic automaton that performs a fixed sequence of left-to-right passes, one one-way automaton after another, rewinding between two passes: the transition function, the count of its states (the *sum* of the numbers of states of the passes, plus one rewinding state per pass) and the characterisation of its language as the non-empty inputs on which every pass accepts |
@@ -90,6 +92,8 @@ RequestProject/
 | `Exercises/CompressionRat.lean` | the rational case: the output of a bimachine at the gaps of a factor, its compositionality, and the resulting compression of linear size for the image of a compressed string under a rational function |
 | `Exercises/CompressionMapLift.lean` | Claim `claim:map-compression`: the first and last blocks of a string over the extended alphabet and the part of the image strictly between them, their compositionality, and the two-pass construction of a compression for the image under a map lifting |
 | `Exercises/CompressionReg.lean` | the exercise `exer:regular-compression`: compatibility with compression in the size sense, its closure under composition, the two easy prime functions (reverse and duplicate), and the induction over the composition tree of a regular function |
+| `Exercises/FONonElemClaim.lean` | Claim `lem:fo-non-elementary-order` of the solution of `exer:fo-non-elementary`: the formula `phiOrdSucc` with the four free position variables of the book, got from the formula `phiOrd` of the induction by quantifying its two mode variables away in the mode *consecutive*, its meaning (`sat_phiOrdSucc`), its size (`fsize_phiOrdSucc`) and the claim itself (`fo_non_elementary_order`) |
+| `Exercises/SplitTriple.lean` | Exercise `exer:split-triple`: the function `Transducers.splitTriples` that lists every entry of a list with the prefix before it and the suffix after it, the combinatorics of the cuts that the atomic function `split` produces (`Transducers.flatten_cutTriple_splits`), and the polyregular term `polySplitTriple` that defines it (`split_triple`) |
 | `Exercises/TwoNFT.lean` | the first half of the exercise of `2dfa.tex` on the two nondeterministic two-way models: the two models `IsTwoNFT₁` and `IsTwoNFT₂`, the finiteness of the set of outputs of the second one, and a relation of the first one with infinitely many outputs on one input |
 | `Exercises/TwoNFT2.lean` | the second half of that exercise: the relation `{(aⁿ, v v)}` is in the second model (through the two-way transducer for the map lifting of duplication) and not in the first (the cut-and-paste argument, with the cut lemma `TwoWayN.reachesN_cut` that replaces the solution's cut after exactly `n` output letters) |
 | `Exercises/ForFO.lean` | the exercise of `polyregular-for.tex` on simulating first-order logic: the translation `trans` of a formula into a for-transducer program that stores the truth value of every subformula in a Boolean variable, its correctness `trans_spec`, and the linear bound `10·|φ|+5` on the size of the resulting program |
@@ -135,6 +139,7 @@ Mathlib's topological notions (inside those files, plain `Continuous` is
 | Exercise `exer:squaring-continuous` (continuity of squaring `w ↦ w^{\|w\|}`) | `squaring_continuous` | proved |
 | Exercise `exer:factorial-continuous` (continuity of `w ↦ w^{\|w\|!}`) | `factorial_continuous` | proved |
 | Exercise `exer:factorial-power-continuous` (continuity of `w ↦ w^{g(\|w\|)!}` for `g` non-decreasing) | `factorial_power_continuous` | proved |
+| Claim `claim:factorial-powers-stabilise-in-monoids` (in a finite monoid the factorial powers of an element are eventually constant) | `factorial_powers_stabilise` | proved |
 | Exercise `ex:continuity-for-finite-images` (finitely many output values: continuity is regularity of the fibres) | `continuous_iff_regular_fibers` | proved |
 | Exercise `exer:finite-images-assumption-necessary` (that assumption is necessary) | `exists_regular_fibers_not_continuous` | proved |
 | Exercise `exer:middle-letter-not-continuous` (the middle letter function is not continuous) | `middleLetter_not_continuous` | proved |
@@ -259,6 +264,7 @@ all eleven are aliased in `RequestProject/Labels.lean`.
 | --- | --- | --- |
 | Exercise `exer:mealy-as-restricted-mso-relabelling` (Mealy machines are the restricted mso relabellings) | `RestrictedRelabelling`, `isMealy_iff_restrictedRelabelling` | proved |
 | Exercise `exer:fo-non-elementary` (first-order sentences of non-elementary succinctness) | `fo_non_elementary` (with `expTower`, `lenOrder`, `expTower_le_lenOrder`) | proved |
+| Claim `lem:fo-non-elementary-order` (a first-order formula of size linear in `n`, with four free position variables, saying that the two infixes are consecutive strings of order `n`) | `fo_non_elementary_order` (with `phiOrdSucc`, `sat_phiOrdSucc`, `fsize_phiOrdSucc`) | proved |
 | Exercise `exer:so-logic` (second-order logic defines a non-regular language) | `exists_SO_lang_not_isRegular` (with `SO`, `SO.Sat`, `SO.lang`) | proved |
 | Exercise `exer:fo-suc` (first-order logic with successor only is strictly weaker) | `fo_succ_strictly_weaker` (with `sepLang`, `sepLang_foDefinable`, `FOSuccDefinable`) | proved from the hypothesis `EFSuccSeparation` (the Ehrenfeucht–Fraïssé argument) |
 
@@ -270,6 +276,7 @@ all eleven are aliased in `RequestProject/Labels.lean`.
 | Exercise `exer:identity-function-replacement` (the general identity may be replaced by its special case at `1`, and is not needed at all) | `regTerm_id_replaceable` (with `IdOnlyOne`, `IdFree`, `elimId`, `idOneTerm`, `idTermOf`) | proved |
 | Exercise `exer:group-prefix-multiplication-isomorphism` (group prefix multiplication is an isomorphism) | `pref_bijective` (with `unprefixProd`) | proved |
 | Exercise `exer:windows-of-size-two` (a regular term of type `A* → (A × A)*` for the windows of size two) | `regTerm_windows_two` (with `windowsTwo`, `windowsTwoTerm`) | proved |
+| Exercise `exer:filter-plus` (a regular term of type `(A + B)* → A*` that keeps only the entries of type `A`) | `regTerm_filter_plus` (with `filterPlus`, `filterPlusTerm`, `keepLeftTerm`) | proved |
 | Exercise `exer:natural-identity` (a natural family `A → A` is the identity at every type) | `natural_id_eq_id` (with `TyFun`, `TyFun.app`, `TyFun.map`, `IsNatural`) | proved |
 | Exercise `exer:head-operation-natural` (there is no natural transformation `A* → A`, so the `head` of Claim `claim:head` is not one) | `no_natural_head`, `not_natural_head_of_claim` | proved |
 | Exercise `exer:natural-list-function` (there are uncountably many natural transformations `A* → A*`) | `uncountably_many_natural_list` (with `lenSelect`, `lenSelect_natural`) | proved |
@@ -283,6 +290,7 @@ all eleven are aliased in `RequestProject/Labels.lean`.
 | --- | --- | --- |
 | Exercise `exer:polyregular-marked-squaring-compression` (marked squaring is not compatible with compression) | `markedSquare_not_compatible_with_compression` (with `Rule`, `slpVal`, `Generates`) | proved |
 | Exercise `exer:polyregular-unmarked-squaring` (unmarked squaring gives a strictly smaller class) | `unmarkedPolyregular_strict_subset_polyregular` (with `listPow`, `squaring`, `UnmarkedFam`, `IsUnmarkedPolyregular`, `compatCompression_squaring`, `isPolyregular_squaring`, `not_isUnmarkedPolyregular_markedSquare`) | proved |
+| Claim `claim:grammar-compression-of-baib` (for a grammar compression of `w`, the set of `i` with an infix `b aⁱ b` in `w` is at most linear in the size of the compression) | `gaps_finite_of_generates`, `ncard_gaps_le_of_generates` (with `gaps`, `mem_gaps_of_infix`) | proved |
 
 ### For-transducers (`polyregular-for.tex`)
 
@@ -299,12 +307,16 @@ all eleven are aliased in `RequestProject/Labels.lean`.
 | Exercise `exer:reverse-from-split` (`reverse` is definable by a polyregular term that does not use it) | `reverse_from_split` (with `polyReverse`, `PolyTerm.NoReverse`, `flatten_headAsList_splits`) | proved |
 | Exercise `exer:block-from-split` (the block split is definable by a polyregular term that uses neither it nor `reverse`) | `block_from_split` (with `polyBlockSplit`, `PolyTerm.NoBlockSplit`, `PolyTerm.NoReverse`, `twiFun_eq`, `bsFun_eq`) | proved |
 | ~~Exercise `nolabel:exer-pref-from-mult`~~ (group prefix multiplication is definable, without itself, from the product `mult` of a list) | — | **withdrawn from the book by the author**, which replaced it with `exer:split-triple`.  The statement is still proved, as `Transducers.Exercises.pref_from_mult`, and is simply no longer a result of the book |
+| Exercise `exer:split-triple` (a polyregular term for the variant of the split function with codomain `(A* × A × A*)*`) | `split_triple` (with `Transducers.splitTriples`, `polySplitTriple`) | proved |
 
-The three are stated for the polyregular terms of Definition
-`def:polyregular-terms`, as the book states them; the same three statements for
-the higher-order terms of Definition `def:higher-order-terms`, which the proof of
-Lemma `lem:fewer-atomic` uses, are `reverse_from_split_higherOrder`,
-`block_from_split_higherOrder` and `pref_from_mult_higherOrder` in the same file.
+All of them are stated for the polyregular terms of Definition
+`def:polyregular-terms`, as the book states them; the same three statements about
+the atomic functions for the higher-order terms of Definition
+`def:higher-order-terms`, which the proof of Lemma `lem:fewer-atomic` uses, are
+`reverse_from_split_higherOrder`, `block_from_split_higherOrder` and
+`pref_from_mult_higherOrder` in the same file.  Exercise `exer:split-triple` is
+in `Exercises/SplitTriple.lean`, the other three in
+`Exercises/HOAtomsFromSplit.lean`.
 Exercise `nolabel:exer-pref-from-mult`, before it was withdrawn, asked for a term that uses the atomic function
 `mult : G* → G`, which Definition `def:polyregular-terms` does not have, so its
 witness lives in `Transducers.PolyMultTerm`: the polyregular terms extended by
@@ -1801,3 +1813,33 @@ records that choice and its consequences in full.
 `native_decide`; `#print axioms` on the six statements reports only `propext`,
 `Classical.choice` and `Quot.sound`, and `tools/gen_labels.py --check`,
 `tools/decl_files.py --check` and `tools/tex_numbering.py --check` pass.
+
+## Status (two exercises and three claims of solutions)
+
+This pass adds five entries to the tables above, all of them **proved
+outright** — no `sorry`, no `axiom`, no `native_decide`, and no statement takes
+a `Prop`-valued assumption:
+
+* Exercise `exer:filter-plus` (`combinators.tex`), the regular term
+  `Transducers.Exercises.filterPlusTerm` of type `(A + B)* → A*` that keeps only
+  the entries of type `A`, in `Exercises/CombinatorsEx.lean`;
+* Exercise `exer:split-triple` (`higher-order.tex`), the polyregular term
+  `Transducers.Exercises.polySplitTriple` for the variant of the split function
+  with codomain `(A* × A × A*)*`, in the new file `Exercises/SplitTriple.lean`.
+  The exercise is the one that replaced the withdrawn
+  `nolabel:exer-pref-from-mult`;
+* Claim `claim:factorial-powers-stabilise-in-monoids`, of the solution of
+  Exercise `exer:factorial-power-continuous`, in `Exercises/Intro.lean`;
+* Claim `lem:fo-non-elementary-order`, of the solution of Exercise
+  `exer:fo-non-elementary`, in the new file `Exercises/FONonElemClaim.lean`;
+* Claim `claim:grammar-compression-of-baib`, of the solution of Exercise
+  `exer:polyregular-marked-squaring-compression`, in
+  `Exercises/Compression.lean`.
+
+The last three carried no `\label` until the author added one, which is why
+they had no row here before; the last two were already proved in substance by
+the files that formalise their exercises, and what is added is the statement of
+the claim itself.  See the section *Status (six results that were still
+unformalised)* at the end of `THEOREMS.md` for the details and for the two
+reading conventions that `exer:split-triple` and `lem:fo-non-elementary-order`
+required.

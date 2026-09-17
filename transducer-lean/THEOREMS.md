@@ -242,6 +242,7 @@ RequestProject/
 | `PartC/CombMapRev.lean` | Lemma `lem:terms-define-map-reverse-duplicate`: both primes are map liftings, and the map lifting of a term-definable function is term-definable (`Transducers.tfun_mapLift`), by split, the function on each block, and the inverse of split |
 | `PartC/CombComplete.lean` | every regular string-to-string function is definable by terms (`Transducers.termStrFun_of_isRegularFun`): the rational primes through Theorem `thm:rational-primes`, the Mealy primes through Lemma `lem:terms-define-flip-flop` and Lemma `lem:terms-define-reversible`, and the two non-rational primes through Lemma `lem:terms-define-map-reverse-duplicate` |
 | `PartC/CombRepr.lean` | Lemma `lem:terms-define-string-representation` and the converse direction of Theorem `thm:regular-terms`: the string representation of a type and a one-sided inverse of it are both definable by terms, and hence a function that is regular under string representation is the composition of the representation, a term for the regular string-to-string function in the middle, and the inverse.  `Transducers.regular_iff_regularTerm` is the equivalence |
+| `PartC/CombParse.lean` | Claim `claim:parsing-is-regular`: the language `Transducers.reprLang` of the string representations of the elements of a type, described by a regular expression built from the languages of the components, and its regularity (`Transducers.reprLang_isRegular`) |
 | `PartC/RatTerms.lean` | Theorem `thm:rational-terms`: the syntax of the rational terms (`Transducers.RatTerm`), their semantics (`Transducers.RatTerm.eval`), the functions they define (`Transducers.IsRatTermFun`), and the derived combinators composition, `f₁ × f₂`, `f₁ + f₂`, `f*` and co-pairing |
 | `PartC/RatFinite.lean` | the rational analogues of Claim `claim:bang-definable`, Claim `claim:finite-type-bijection-disjoint-units`, Claim `claim:finite-domain-regular-list-function` and Lemma `lem:terms-define-string-homomorphisms`: a function with a finite domain, and a string homomorphism, are definable by rational terms.  Adjoining units replaces the diagonal throughout |
 | `PartC/RatDerived.lean` | the derived rational terms: the empty and the singleton list, binary concatenation `Transducers.rtfun_append` (which replaces the prepending that the regular case got from string reversal), the fixed prefix and suffix, the tail, the map of a renaming, Claim `claim:head`, and the finite case distinction in both coordinates -- `Transducers.rtfun_finCases` through `distr` and `Transducers.rtfun_finCasesR` through `distl` |
@@ -336,11 +337,13 @@ RequestProject/
 | `Exercises/RegularGrowth.lean`, `Exercises/RationalGrowth.lean` | the loop analysis of a deterministic automaton and the growth gap theorem for regular languages (`Transducers.Exercises.regular_growth_dichotomy`), and its transport to rational functions (`Transducers.Exercises.rationalFun_growth_dichotomy`, `Transducers.Exercises.rationalFun_loop_of_superPoly`, `Transducers.Exercises.exists_rational_bool_identity_of_superPoly`).  This is the analysis that the solutions of the exercises on the ideals of rational functions rest on; see the addendum at the end of this file |
 | `Exercises/CycleMean.lean` | the maximum cycle mean of an nfa with output: every cycle through a productive state has (output length)/(input length) at most the largest such ratio `p/q` over the cycles with at most `|Q|` transitions (`Transducers.Exercises.CycleMean.cycle_bound`), every path between a reachable and a co-reachable state obeys the same bound up to an additive constant (`Transducers.Exercises.CycleMean.path_bound`), and hence the output length of a rational function on the inputs of length at most `n` is `(p/q)·n` up to an additive constant (`Transducers.Exercises.CycleMean.exists_linear_rate`).  This is the analysis that the exercises on functions of exactly linear output size rest on; see the addendum at the end of this file |
 | `Exercises/CombNatural.lean`, `Exercises/CombNaturalAtoms.lean`, `Exercises/CombNaturalFree.lean` | naturality for the type functors of Definition `def:types` and the six exercises of Section *Combinators* about natural transformations: the definition itself (`Transducers.Exercises.TyFun`, `Transducers.Exercises.IsNatural`), a natural family `A → A` is the identity, there is no natural transformation `A* → A`, there are uncountably many of type `A* → A*`, every one of type `A → A*` is regular, the atomic functions of Definition `def:regular-terms` are natural, and a natural transformation with a list-free domain is definable by a regular term — indexed in `EXERCISES.md`, not here |
-| `Exercises/CombinatorsEx.lean` | the four exercises of Section *Combinators* (`combinators.tex`): the conditional construction for regular and for rational terms, the elimination of the identity atom, the bijectivity of group prefix multiplication together with a regular term for its inverse, and an explicit regular term for the windows of size two — indexed in `EXERCISES.md`, not here |
+| `Exercises/CombinatorsEx.lean` | the five exercises of Section *Combinators* (`combinators.tex`): the conditional construction for regular and for rational terms, the elimination of the identity atom, the bijectivity of group prefix multiplication together with a regular term for its inverse, an explicit regular term for the windows of size two, and the term of Exercise `exer:filter-plus` that keeps the entries of type `A` of a list over `A + B` — indexed in `EXERCISES.md`, not here |
 | `Exercises/ChainWords.lean`, `Exercises/SortedPattern.lean`, `Exercises/IdealsOmega.lean` | the `Ω(n^k)` half of the solution of Exercise `exer:polynomial-ideals`: the words produced by a chain of `k` loops, the rational bijection between such a word and a sorted word, and the two rational functions that put `Transducers.Exercises.sortedFun k` among the pre- and post-compositions of a rational function with `Ω(n^k)` outputs (`Transducers.Exercises.exists_rational_sorted_of_omega`) |
 | `Exercises/PatternCover.lean`, `Exercises/PatternCoverRat.lean`, `Exercises/IdealsPoly.lean` | the `O(n^k)` half: the analysis of the strongly connected components of an automaton with no ambiguous cycle and no chain of `k+1` loops, which covers its language by finitely many `k`-patterns (`Transducers.Exercises.RegGrowth.exists_pattern_cover`), the rational realisation of a finite family of `k`-patterns, and the factorisation of a rational function with `O(n^k)` outputs, `k ≥ 1`, through `sortedFun k` (`Transducers.Exercises.exists_rational_factor_through_sorted`) |
 | `Exercises/ForwardPrenex.lean`, `Exercises/ForwardComp.lean`, `Exercises/ForwardStep.lean` | Exercise `exer:forward-for-transducer`: the forward prenex normal form (the two designated positions are the first and the second, so that no last-to-first loop is introduced), the closure of the forward for-transducers under composition, and the fact that the one-step transducer of the enumeration is rational in the first-to-last direction because it is order preserving, hence a bimachine |
 | `Exercises/FONonElemOrder.lean`, `Exercises/FONonElemParse.lean`, `Exercises/FONonElemCore.lean`, `Exercises/FONonElemDSL.lean`, `Exercises/FONonElemForm.lean`, `Exercises/FONonElemTop.lean` | the Claim of the solution of Exercise `exer:fo-non-elementary`: the strings of order `n` (`Transducers.Exercises.ordStr`) and their length (`Transducers.Exercises.lenOrder`, `Transducers.Exercises.expTower_le_lenOrder`), the block structure of such a string, the combinatorics of the induction step (`Transducers.Exercises.formSem_iff`), the elementary first-order formulas used as building blocks, the formula `Transducers.Exercises.phiOrd` of the Claim with its four free position variables (`Transducers.Exercises.sat_phiOrd`) and the sentence `Transducers.Exercises.fTop` whose unique model is the first string of order `n` (`Transducers.Exercises.sat_fTop`), of size linear in `n`.  This is what `Transducers.Exercises.FirstStringOfOrderDefinable` rests on; see the addendum at the end of this file |
+| `Exercises/FONonElemClaim.lean` | Claim `lem:fo-non-elementary-order`: the formula `Transducers.Exercises.phiOrdSucc` with the four free position variables of the book, obtained from `Transducers.Exercises.phiOrd` by quantifying its two mode variables away, with its meaning (`Transducers.Exercises.sat_phiOrdSucc`) and its linear size — indexed in `EXERCISES.md`, not here |
+| `Exercises/SplitTriple.lean` | Exercise `exer:split-triple`: the function `Transducers.splitTriples` and the polyregular term `Transducers.Exercises.polySplitTriple` that defines it — indexed in `EXERCISES.md`, not here |
 | `Labels.lean` | the label-indexed view of the formalisation: for every result of the book that is formalised, an alias in the namespace `Transducers.Book` whose Lean name is the LaTeX label of the result, followed by `assert_no_sorry` or `assert_uses_sorry` according to its status in the tables below.  Kept in step with those tables by `tools/gen_labels.py --check`; see `LABELS.md` |
 
 ## Conventions
@@ -904,7 +907,7 @@ The proofs are organised as follows.
 | Theorem `thm:regular-terms` (regular terms) | `Transducers.regular_iff_regularTerm`, `Transducers.regularTerm_isRegular`, `Transducers.regularTerm_of_isRegular` | **proved**, as the equivalence `IsRegularUnderRepr f ↔ IsRegularTermFun f` (`Transducers.regular_iff_regularTerm`, `CombRepr.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`).  The easy direction, `Transducers.regularTerm_isRegular` (`CombStatements.lean`), is by induction on the term, on the atomic terms of `CombAtomProj.lean`, `CombAtomDistr.lean`, `CombAtomCons.lean`, `CombAtomConcat.lean`, `CombAtomSplit.lean`, `CombAtomReverse.lean`, `CombAtomPref.lean` and the combinators of `CombCombinators.lean`.  The converse, `Transducers.regularTerm_of_isRegular` (`CombRepr.lean`), composes the term for the string representation and the term for its inverse (Lemma `lem:terms-define-string-representation`) around a term for the regular string-to-string function in the middle, which comes from Lemma `lem:terms-define-append-hash`, Lemma `lem:terms-define-map-reverse-duplicate`, Lemma `lem:terms-define-flip-flop` and Lemma `lem:terms-define-reversible` through the prime decomposition of Theorem `thm:2dfa-decomposition-into-primes` and Theorem `thm:krohn-rhodes` | `PartC/CombStatements.lean`, `PartC/CombRepr.lean` |
 | Lemma `lem:distributivity-is-regular-under-string-representation` (distributivity) | `Transducers.Comb.isRegularUnderRepr_distr` | proved (`CombAtomDistr.lean`), the worked example of the induction basis of Theorem `thm:regular-terms`; the parsing is done by the bracket counter of `CombDepth.lean` rather than by the automaton of the unlabelled claim that follows it in the book | `PartC/CombAtomDistr.lean` |
 | Example `ex:string-reversal-not-rational` (string reversal is not rational) | `Transducers.Exercises.not_isRationalFun_reverse` | proved (`ReverseNotRational.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`) | `Exercises/ReverseNotRational.lean` |
-| Claim `nolabel:claim-representations-are-a-regular-language` (the representations form a regular language) | — | **not formalised**: the parsing of a representation is done here by the bracket counter of `PartC/CombDepth.lean`, which is what the transducers of the easy direction of Theorem `thm:regular-terms` use instead of this claim | — |
+| Claim `claim:parsing-is-regular` (the representations form a regular language) | `Transducers.reprLang_isRegular` | **proved** (`CombParse.lean`, for the language `Transducers.reprLang` of the representations, by the book's induction on the type: the language of representations is described by a regular expression built from the languages of the components, and the closure properties of `Common/RegLangClosure.lean` do the rest; axioms: `propext`, `Classical.choice`, `Quot.sound`).  The transducers of the easy direction of Theorem `thm:regular-terms` do not use it: they parse a representation with the bracket counter of `PartC/CombDepth.lean` | `PartC/CombParse.lean` |
 | Lemma `lem:terms-define-string-homomorphisms` (homomorphisms) | `Transducers.terms_define_string_homomorphisms` | **proved** (`CombFinite.lean`: the map of a function with a finite domain, followed by concatenation; axioms: `propext`, `Classical.choice`, `Quot.sound`) | `PartC/CombFinite.lean` |
 | Claim `claim:pairing-copairing` (pairing and co-pairing) | `Transducers.IsRegularTermFun.pair`, `Transducers.IsRegularTermFun.copair` | **proved** (`CombFinite.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`), by the book's argument: pairing is the diagonal followed by `f₁ × f₂`, co-pairing is `f₁ + f₂` followed by the co-diagonal, the diagonal and the co-diagonal being atomic terms and `f₁ × f₂`, `f₁ + f₂` functoriality combinators of Definition `def:regular-terms` | `PartC/CombFinite.lean` |
 | Claim `claim:finite-type-bijection-disjoint-units` (a finite type is a co-product of copies of the unit type) | `Transducers.finite_type_bijection_disjoint_units` | **proved** (`CombDerived.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`).  It is deduced here **from** Claim `claim:finite-domain-regular-list-function`, which is the reverse of the book's order of the two claims; both are proved, only the dependency between them is inverted (see *Divergences from the book*) | `PartC/CombDerived.lean` |
@@ -1821,18 +1824,18 @@ results, the latest being the three results at the end of Section D.3.  Two
 environments are left out of the table below, as they have been all along: the
 open Conjecture `conj:regular-via-weighted-automata`, which is not a result, and
 the exercise `nolabel:exer-pref-from-mult`, which the author has withdrawn.
-The three environments that are not formalised are Definition
-`def:rational-recognisable-subsets`, Claim
-`nolabel:claim-representations-are-a-regular-language` and the unnumbered
-paragraph `nolabel:thm-fo-transduction-into-primes`, each with its reason in the
-index above.
+The two environments that are not formalised are Definition
+`def:rational-recognisable-subsets` and the unnumbered paragraph
+`nolabel:thm-fo-transduction-into-primes`, each with its reason in the index
+above.  (Claim `claim:parsing-is-regular` was on that list while it carried no
+label in the sources; it is now labelled and proved, in `PartC/CombParse.lean`.)
 
 | | Introduction | Part A | Part B | Part C | Part D | total |
 | --- | --- | --- | --- | --- | --- | --- |
 | definitions formalised | 1 | 4 | 7 | 9 | 5 | **26** |
-| results proved outright | 0 | 11 | 26 | 43 | 21 | **101** |
+| results proved outright | 0 | 11 | 26 | 44 | 21 | **102** |
 | results proved from an explicit hypothesis | 0 | 0 | 0 | 0 | 0 | **0** |
-| environments not formalised | 0 | 0 | 1 | 2 | 0 | **3** |
+| environments not formalised | 0 | 0 | 1 | 1 | 0 | **2** |
 
 *Proved outright* means: the proof is complete, no file it depends on contains a
 `sorry`, and `#print axioms` reports only `propext`, `Classical.choice`,
@@ -1879,9 +1882,9 @@ Seven results used to appear in this table, and every one of them is now proved 
   `Common/PrimrecList.lean`, and both hypotheses are now theorems
   (`PartB/WCodePrimrec.lean` and `PartC/TwoWaySimPrimrec.lean`).
 
-### The three environments that are not formalised for want of a reason to be
+### The two environments that are not formalised for want of a reason to be
 
-None of them is an unfinished proof: none of the three is a mathematical result
+None of them is an unfinished proof: neither of the two is a mathematical result
 that this formalisation is meant to establish.  (Theorem
 `thm:undecidability-higher-order` and Lemma `lem:tiling`, which were on this
 list while the reduction they need was missing, are now proved; see the addendum
@@ -3678,3 +3681,75 @@ any of the files above; `tools/gen_labels.py --check`, `tools/decl_files.py
 `Transducers.tiling_undecidable` and on
 `Transducers.undecidability_higherOrder` reports `propext`, `Classical.choice`
 and `Quot.sound` only.
+
+## Status (six results that were still unformalised)
+
+This pass formalises six results that the review of the whole book found
+missing.  Three of them are results of the main text or of a solution that the
+author has just labelled, and so had no name to be filed under until now.
+
+| result | Lean | where |
+| --- | --- | --- |
+| Claim `claim:parsing-is-regular` | `Transducers.reprLang_isRegular` | `PartC/CombParse.lean` |
+| Exercise `exer:filter-plus` | `Transducers.Exercises.regTerm_filter_plus` | `Exercises/CombinatorsEx.lean` |
+| Exercise `exer:split-triple` | `Transducers.Exercises.split_triple` | `Exercises/SplitTriple.lean` |
+| Claim `claim:factorial-powers-stabilise-in-monoids` | `Transducers.Exercises.factorial_powers_stabilise` | `Exercises/Intro.lean` |
+| Claim `lem:fo-non-elementary-order` | `Transducers.Exercises.fo_non_elementary_order` | `Exercises/FONonElemClaim.lean` |
+| Claim `claim:grammar-compression-of-baib` | `Transducers.Exercises.gaps_finite_of_generates`, `Transducers.Exercises.ncard_gaps_le_of_generates` | `Exercises/Compression.lean` |
+
+All six are **proved outright**: no statement takes a `Prop`-valued assumption,
+the files contain no `sorry`, no `axiom` and no `native_decide`, and
+`#print axioms` on each of the seven new aliases of `RequestProject/Labels.lean`
+reports only `propext`, `Classical.choice`, `Quot.sound`.  `lake build`
+succeeds, and `tools/gen_labels.py --check`, `tools/decl_files.py --check` and
+`tools/tex_numbering.py --check LABELS.md` all pass.
+
+**What is new and what was already there.**
+
+* Claim `claim:parsing-is-regular` was the claim that this file used to
+  record as *not formalised* under the placeholder tag
+  `nolabel:claim-representations-are-a-regular-language`; the author has since
+  labelled it, and it is now proved.  The proof is the book's induction on the
+  type: `Transducers.reprLang` is described by a regular expression built from
+  the languages of the components (`Transducers.reprLang_prod`,
+  `reprLang_sum`, `reprLang_list`, `joinSepLang_eq`, `commaBlocksLang_eq`), and
+  the closure properties of `Common/RegLangClosure.lean` — which had no user in
+  the project until now — finish it.  The route the rest of Section
+  *Combinators* takes, the bracket counter of `PartC/CombDepth.lean`, is
+  unchanged: nothing in the development depends on this claim.
+* Claim `lem:fo-non-elementary-order` was already proved *in substance*
+  for Exercise `exer:fo-non-elementary`: `Transducers.Exercises.phiOrd`,
+  `sat_phiOrd` and `fsize_phiOrd` are the formula of the induction, its meaning
+  and its linear size.  That formula carries six free position variables, the
+  last two of which choose between *same index* and *consecutive index*, because
+  the induction step needs both readings.  What was missing was the four-variable
+  formula that the book writes, and that is what
+  `Transducers.Exercises.phiOrdSucc` adds: the two mode variables are quantified
+  away in the mode *consecutive*.  Nothing of the existing development is
+  changed.
+* Claim `claim:grammar-compression-of-baib` was likewise already there in
+  substance, as the machinery of `Exercises/Compression.lean`
+  (`gaps_slpVal_subset`, `slpGapSet_card`); what is added is the statement of the
+  claim itself — the set is finite and has at most as many elements as the
+  compression has rules.  It is stated for a string over any alphabet with a
+  predicate naming the letter `b`, which is the general form the file works in.
+* Claim `claim:factorial-powers-stabilise-in-monoids` is proved from the
+  stabilisation of the iterates of a self-map of a finite set
+  (`Transducers.Exercises.iterate_stable_single`), applied to the left
+  multiplication by `m`.  Mathlib knows the powers of an idempotent element and
+  the order of an element of a finite group, but has no statement giving the
+  eventual periodicity of the powers of an element of a finite *monoid*, so the
+  claim is proved rather than cited.
+* Exercise `exer:filter-plus` and Exercise `exer:split-triple` are the author's
+  own solutions, transcribed: `map` of a one-entry-or-nothing function followed
+  by `concat` in the first case; the atomic function `split`, a term applied to
+  every cut, `concat` and a final `reverse` in the second.
+
+**A convention.**  Exercise `exer:split-triple` writes its codomain
+`(A* × A × A*)*` without saying how the product is bracketed; it is read as
+`A* × (A × A*)`.  Claim `lem:fo-non-elementary-order` reads an infix
+half-open, as `(x₁, x₂]`, and renders "consecutive in the lexicographic order" as
+"with consecutive indices", both as in the existing development of
+`exer:fo-non-elementary`; and it carries the hypothesis that the string has at
+least two positions, which is the hypothesis of `sat_phiOrd`, and is what makes
+the two quantified mode positions available.

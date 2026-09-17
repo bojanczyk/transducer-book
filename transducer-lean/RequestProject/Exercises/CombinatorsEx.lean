@@ -1,7 +1,9 @@
 /-
-Four exercises of Section *Combinators* of *Transducers* (M. Bojańczyk), all of them constructions
+Five exercises of Section *Combinators* of *Transducers* (M. Bojańczyk), all of them constructions
 in the language of regular (and rational) terms of Definition `def:regular-terms`.
 
+* Exercise `exer:filter-plus`: a regular term of type `(A + B)* → A*` that keeps only the entries
+  of type `A`.
 * Exercise `exer:if-then-else`: the functions defined by regular terms, and the functions defined
   by rational terms, are closed under the conditional construction.
 * Exercise `exer:identity-function-replacement`: the general identity `A → A` may be replaced by
@@ -605,6 +607,55 @@ theorem pref_bijective (G : Ty) (grp : Group G.Elt) (hfin : Finite G.Elt) :
   · exact fun l => ⟨unprefixProd l, hright l⟩
   · intro l; rw [ht]; exact hleft l
   · intro l; rw [ht]; exact hright l
+
+/-! ## Exercise `exer:filter-plus`: keeping the entries of the first summand -/
+
+/-- The function of Exercise `exer:filter-plus`: from a list over `A + B`, keep the entries that
+lie in `A`, in their order. -/
+def filterPlus {A B : Ty} (l : List ((Ty.sum A B).Elt)) : List A.Elt :=
+  l.filterMap Sum.getLeft?
+
+@[simp] lemma filterPlus_nil {A B : Ty} : filterPlus (A := A) (B := B) [] = [] := rfl
+
+@[simp] lemma filterPlus_cons_inl {A B : Ty} (a : A.Elt) (l : List ((Ty.sum A B).Elt)) :
+    filterPlus (Sum.inl a :: l) = a :: filterPlus l := rfl
+
+@[simp] lemma filterPlus_cons_inr {A B : Ty} (b : B.Elt) (l : List ((Ty.sum A B).Elt)) :
+    filterPlus (A := A) (Sum.inr b :: l) = filterPlus l := rfl
+
+/-- The function `A + B → A*` of the author's solution: `L a ↦ [a]` and `R b ↦ []`. -/
+def keepLeftTerm (A B : Ty) : RegTerm (.sum A B) (.list A) :=
+  ((pureTerm A).sumMap (constNilTerm B A)).comp (RegTerm.codiag (.list A))
+
+@[simp] lemma keepLeftTerm_eval_inl (A B : Ty) (a : A.Elt) :
+    (keepLeftTerm A B).eval (Sum.inl a) = [a] := by
+  show (pureTerm A).eval a = [a]
+  rw [pureTerm_eval]
+
+@[simp] lemma keepLeftTerm_eval_inr (A B : Ty) (b : B.Elt) :
+    (keepLeftTerm A B).eval (Sum.inr b) = [] := rfl
+
+/-- **The term of Exercise `exer:filter-plus`**: apply `Transducers.Exercises.keepLeftTerm` to
+every entry of the input and concatenate the results. -/
+def filterPlusTerm (A B : Ty) : RegTerm (.list (.sum A B)) (.list A) :=
+  ((keepLeftTerm A B).map).comp (RegTerm.concat A)
+
+/-- **Exercise `exer:filter-plus`.**  The regular term `Transducers.Exercises.filterPlusTerm`
+defines the function `(A + B)* → A*` that keeps only the list entries of type `A`. -/
+theorem regTerm_filter_plus (A B : Ty) (l : List ((Ty.sum A B).Elt)) :
+    (filterPlusTerm A B).eval l = filterPlus l := by
+  show (l.map (keepLeftTerm A B).eval).flatten = filterPlus l
+  induction l with
+  | nil => rfl
+  | cons x l ih =>
+      cases x with
+      | inl a => rw [List.map_cons, List.flatten_cons, keepLeftTerm_eval_inl, ih]; rfl
+      | inr b => rw [List.map_cons, List.flatten_cons, keepLeftTerm_eval_inr, ih]; rfl
+
+/-- The function of Exercise `exer:filter-plus`, as a function defined by a regular term. -/
+lemma tfun_filterPlus (A B : Ty) :
+    IsRegularTermFun (A := .list (.sum A B)) (B := .list A) filterPlus :=
+  ⟨filterPlusTerm A B, funext (regTerm_filter_plus A B)⟩
 
 end Exercises
 end Transducers

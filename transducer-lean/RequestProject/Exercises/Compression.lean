@@ -288,6 +288,29 @@ lemma card_le_of_generates {P : A → Prop} {rs : List (Rule A)} {w : List A}
   have hpos : 1 ≤ rs.length := List.length_pos_iff.2 hgen.1
   omega
 
+/-- **Claim `claim:grammar-compression-of-baib`.**  The set of distances between consecutive
+marked letters of a compressed string is finite.  For a string over `{a, b}` with `b` the marked
+letter, this is the set of `i` such that the string contains an infix `b aⁱ b`, by
+`Transducers.Exercises.mem_gaps_of_infix`. -/
+theorem gaps_finite_of_generates {P : A → Prop} {rs : List (Rule A)} {w : List A}
+    (hgen : Generates rs w) : (gaps P w).Finite := by
+  refine Set.Finite.subset (slpGapSet P rs (rs.length - 1)).finite_toSet ?_
+  rw [← hgen.2]
+  exact gaps_slpVal_subset P rs (rs.length - 1)
+
+/-- **Claim `claim:grammar-compression-of-baib`.**  That set has at most as many elements as the
+compression has rules -- in particular its size is linear in the size of the compression. -/
+theorem ncard_gaps_le_of_generates {P : A → Prop} {rs : List (Rule A)} {w : List A}
+    (hgen : Generates rs w) : (gaps P w).ncard ≤ rs.length := by
+  have hsub : gaps P w ⊆ ↑(slpGapSet P rs (rs.length - 1)) := by
+    rw [← hgen.2]
+    exact gaps_slpVal_subset P rs (rs.length - 1)
+  have hle := Set.ncard_le_ncard hsub (slpGapSet P rs (rs.length - 1)).finite_toSet
+  rw [Set.ncard_coe_finset] at hle
+  have hcard := slpGapSet_card P rs (rs.length - 1)
+  have hpos : 1 ≤ rs.length := List.length_pos_iff.2 hgen.1
+  omega
+
 /-! ## The compressions of a power of a letter -/
 
 /-- The grammar compression of `a^(2ⁿ)` by repeated doubling: `n+1` rules. -/

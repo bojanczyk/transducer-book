@@ -75,3 +75,5 @@ import RequestProject.Exercises.CombNatural
 import RequestProject.Exercises.CombNaturalAtoms
 import RequestProject.Exercises.CombNaturalFree
 import RequestProject.Exercises.HOAtomsFromSplit
+import RequestProject.Exercises.SplitTriple
+import RequestProject.Exercises.FONonElemClaim

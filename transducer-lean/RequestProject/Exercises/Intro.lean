@@ -87,6 +87,31 @@ theorem squaring_continuous {A : Type} : Continuous (fun w : List A => npow w w.
 
 /-! ## Exercise `exer:factorial-power-continuous` and Exercise `exer:factorial-continuous` -/
 
+/-- **Claim `claim:factorial-powers-stabilise-in-monoids`.**  In a finite monoid the sequence
+`m^{1!}, m^{2!}, m^{3!}, …` is eventually constant: there is an `N > 0` with `m^{n!} = m^{N!}` for
+every `n ≥ N`.
+
+Mathlib has the powers of an idempotent element and the order of an element of a finite group, but
+nothing that gives the eventual periodicity of the powers of an element of a finite *monoid*, so
+the claim is proved here.  The proof is the author's, through the stabilisation of the iterates of
+a self-map of a finite set (`Transducers.Exercises.iterate_stable_single`), applied to the left
+multiplication by `m`: its `k`-th iterate sends `1` to `m^k`, and it stabilises along the
+multiples of some `D > 0`, of which every `n!` with `n ≥ D` is one. -/
+theorem factorial_powers_stabilise {M : Type} [Monoid M] [Finite M] (m : M) :
+    ∃ N : ℕ, 0 < N ∧ ∀ n, N ≤ n → m ^ n ! = m ^ N ! := by
+  obtain ⟨D, hD, hstab⟩ := iterate_stable_single (fun x : M => m * x)
+  have hiter : ∀ k : ℕ, (fun x : M => m * x)^[k] 1 = m ^ k := by
+    intro k
+    induction k with
+    | zero => simp
+    | succ k ih => rw [Function.iterate_succ_apply', ih, ← pow_succ']
+  refine ⟨D, hD, fun n hn => ?_⟩
+  have h1 : (fun x : M => m * x)^[n !] = (fun x : M => m * x)^[D] :=
+    hstab _ (le_trans hn (Nat.self_le_factorial n)) (Nat.dvd_factorial hD hn)
+  have h2 : (fun x : M => m * x)^[D !] = (fun x : M => m * x)^[D] :=
+    hstab _ (Nat.self_le_factorial D) (Nat.dvd_factorial hD (le_refl D))
+  rw [← hiter, ← hiter, h1, h2]
+
 /-- The exponents `g(n)!` stabilise, uniformly in the state transformation:
 for a non-decreasing `g` there is an `n₀` such that `t^[(g n)!] = t^[(g n₀)!]`
 for every `n ≥ n₀` and every self-map `t` of the (finite) state set.

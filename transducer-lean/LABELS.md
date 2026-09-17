@@ -24,12 +24,11 @@ dictionary and against the index tables.  The numbers are those of the
 sources as of this writing and are recorded only to make the table easy to check
 against the pdf -- nothing in the project refers to a result by its number.
 
-Two rows of Section *Combinators* carry a `nolabel:` tag although they are
-numbered: the lemma that distributivity is regular under string representation
-(C.5.5) and the claim that the representations of the elements of a type form a
-regular language (C.5.6) carry no `\label` in the sources, so the tags are
-placeholders chosen here, and their numbers are read off from the labelled
-environments that surround them rather than from `main.aux`.
+The claim that the representations of the elements of a type form a regular
+language (C.5.6) used to carry a `nolabel:` tag here, because it carried no
+`\label` in the sources; the author has since labelled it
+`claim:parsing-is-regular`, and the row below now uses that label, with its
+number read out of `main.aux` like every other.
 
 Three numbered environments of Section *A functional programming language* are
 missing from the dictionary, and the numbers D.3.7, D.3.8 and D.3.11 are
@@ -176,7 +175,7 @@ generator working from the tables alone would delete them.
 | C.5.3 | definition | `def:regular-terms` | `combinators.tex` |
 | C.5.4 | theorem | `thm:regular-terms` | `combinators.tex` |
 | C.5.5 | lemma | `lem:distributivity-is-regular-under-string-representation` | `combinators.tex` |
-| C.5.6 | claim | `nolabel:claim-representations-are-a-regular-language` | `combinators.tex` |
+| C.5.6 | claim | `claim:parsing-is-regular` | `combinators.tex` |
 | C.5.7 | lemma | `lem:terms-define-string-homomorphisms` | `combinators.tex` |
 | C.5.8 | claim | `claim:pairing-copairing` | `combinators.tex` |
 | C.5.9 | claim | `claim:finite-type-bijection-disjoint-units` | `combinators.tex` |
