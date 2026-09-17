@@ -262,7 +262,11 @@ def read_labels():
     for m in re.finditer(r"^\* `([^`]+)` \((\w+)\) -- ([^;]+)", text, re.M):
         excused[m.group(1)] = m.group(3).strip()
     out["__excused__"] = excused
-    for m in re.finditer(r"^alias «([^»]+)» := ([A-Za-z_][\w'.]*)", text, re.M):
+    # `\s*` and not " ": a long label pushes the declaration onto the next line,
+    # and requiring it on the same one silently lost 44 of the 292 aliases --
+    # results that are proved, and that the web edition showed as not
+    # formalised, which is worse than showing nothing at all.
+    for m in re.finditer(r"^alias «([^»]+)» :=\s*([A-Za-z_][\w'.]*)", text, re.M):
         tag, decl = m.group(1), m.group(2)
         label = tag.split("#")[0]
         after = text[m.end():m.end() + 200]

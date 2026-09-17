@@ -10,20 +10,10 @@
    "label": "exer:sst-copyful-sst",
    "number": "C.3.2"
   },
-  "CopyfulSST.output_length_exp_bound": {
-   "kind": "exercise",
-   "label": "exer:sst-copyful-sst-output-size",
-   "number": "C.3.3"
-  },
   "ForwardPrenexNormalForm": {
    "kind": "lemma",
    "label": "lem:prenex-normal-form",
    "number": "D.1.3"
-  },
-  "IsRegularUnderRepr": {
-   "kind": "definition",
-   "label": "def:regular-functions-on-types-under-string-representation",
-   "number": "C.5.2"
   },
   "RatTerm": {
    "kind": "theorem",
@@ -55,20 +45,55 @@
    "label": "def:continuity",
    "number": ".0.1"
   },
+  "Transducers.Exercises.CopyfulSST.output_length_exp_bound": {
+   "kind": "exercise",
+   "label": "exer:sst-copyful-sst-output-size",
+   "number": "C.3.3"
+  },
+  "Transducers.Exercises.all_ideals": {
+   "kind": "exercise",
+   "label": "exer:all-ideals",
+   "number": "B.2.14"
+  },
   "Transducers.Exercises.ambiguous_iff_reach": {
    "kind": "exercise",
    "label": "exer:decide-unambiguous",
    "number": "B.2.5"
+  },
+  "Transducers.Exercises.block_from_split": {
+   "kind": "exercise",
+   "label": "exer:block-from-split",
+   "number": "D.3.3"
+  },
+  "Transducers.Exercises.compatCompression_of_isRationalFun": {
+   "kind": "exercise",
+   "label": "exer:rational-compression",
+   "number": "B.2.19"
+  },
+  "Transducers.Exercises.compatCompression_of_isRegularFun": {
+   "kind": "exercise",
+   "label": "exer:regular-compression",
+   "number": "C.0.1"
   },
   "Transducers.Exercises.continuous_iff_regular_fibers": {
    "kind": "exercise",
    "label": "ex:continuity-for-finite-images",
    "number": ".0.6"
   },
+  "Transducers.Exercises.continuous_iff_uniformContinuous": {
+   "kind": "exercise",
+   "label": "exer:continuous-iff-uniformly-continuous",
+   "number": ".0.11"
+  },
   "Transducers.Exercises.continuous_of_isCopyfulSST": {
    "kind": "exercise",
    "label": "exer:sst-copyful-sst",
    "number": "C.3.2"
+  },
+  "Transducers.Exercises.copyfulSST_equivalence_reduces_to_polyAut": {
+   "kind": "exercise",
+   "label": "exer:copyful-sst-decidable",
+   "number": "C.3.7"
   },
   "Transducers.Exercises.decidableUnambiguousNFA": {
    "kind": "exercise",
@@ -90,10 +115,30 @@
    "label": "exer:for-transducers-simulate-fo",
    "number": "D.1.1"
   },
+  "Transducers.Exercises.exists_isCopyfulSST_comp_not_isCopyfulSST": {
+   "kind": "exercise",
+   "label": "exer:sst-copyful-sst-no-composition",
+   "number": "C.3.4"
+  },
   "Transducers.Exercises.exists_isCopyfulSST_exponential": {
    "kind": "exercise",
    "label": "exer:sst-copyful-sst-output-size",
    "number": "C.3.3"
+  },
+  "Transducers.Exercises.exists_isRegularFun_not_weighted_precomp": {
+   "kind": "exercise",
+   "label": "exer:not-semiring-continuous",
+   "number": "C.1.2"
+  },
+  "Transducers.Exercises.exists_isRegularFun_uniformising_isTwoNFT₁": {
+   "kind": "exercise",
+   "label": "exer:2nft-uniformise",
+   "number": "C.2.8"
+  },
+  "Transducers.Exercises.exists_isRegularFun_uniformising_isTwoNFT₂": {
+   "kind": "exercise",
+   "label": "exer:2nft-uniformise",
+   "number": "C.2.8"
   },
   "Transducers.Exercises.exists_isTwoNFT₁_not_isTwoNFT₂": {
    "kind": "exercise",
@@ -105,10 +150,35 @@
    "label": "exer:2nft",
    "number": "C.2.7"
   },
+  "Transducers.Exercises.exists_not_isRationalFun_unary_compositions_rational": {
+   "kind": "exercise",
+   "label": "exer:function-that-is-not-rational",
+   "number": "B.2.8"
+  },
   "Transducers.Exercises.exists_rationalFun_leftInverse": {
    "kind": "exercise",
    "label": "exer:surjective-rational-function",
    "number": "B.2.16"
+  },
+  "Transducers.Exercises.exists_rationalRel_atMostOneOutput_not_isRegular": {
+   "kind": "exercise",
+   "label": "exer:non-regular-languages-for-rational-relations",
+   "number": "B.1.2"
+  },
+  "Transducers.Exercises.exists_rationalRel_inter_not_rationalRel": {
+   "kind": "exercise",
+   "label": "exer:rational-relations-not-closed-under-intersection",
+   "number": "B.1.3"
+  },
+  "Transducers.Exercises.exists_regular_fibers_not_continuous": {
+   "kind": "exercise",
+   "label": "exer:finite-images-assumption-necessary",
+   "number": ".0.7"
+  },
+  "Transducers.Exercises.exists_terminating_twoDFA_halts": {
+   "kind": "exercise",
+   "label": "exer:2dfa-loop-elimination-sipser",
+   "number": "C.2.5"
   },
   "Transducers.Exercises.exists_twoDFA_shortest_exponential": {
    "kind": "exercise",
@@ -125,10 +195,50 @@
    "label": "exer:factorial-power-continuous",
    "number": ".0.5"
   },
+  "Transducers.Exercises.factorial_powers_stabilise": {
+   "kind": "claim",
+   "label": "claim:factorial-powers-stabilise-in-monoids",
+   "number": ".0.2"
+  },
   "Transducers.Exercises.finite_range_ideal_classification": {
    "kind": "exercise",
    "label": "exer:finite-range-ideals",
    "number": "B.2.11"
+  },
+  "Transducers.Exercises.fo_non_elementary": {
+   "kind": "exercise",
+   "label": "exer:fo-non-elementary",
+   "number": "C.4.2"
+  },
+  "Transducers.Exercises.fo_non_elementary_order": {
+   "kind": "claim",
+   "label": "lem:fo-non-elementary-order",
+   "number": "C.4.17"
+  },
+  "Transducers.Exercises.fo_succ_strictly_weaker": {
+   "kind": "exercise",
+   "label": "exer:fo-suc",
+   "number": "C.4.4"
+  },
+  "Transducers.Exercises.for_transducer_continuity_nonelementary": {
+   "kind": "exercise",
+   "label": "exer:for-transducer-continuity-nonelementary",
+   "number": "D.1.2"
+  },
+  "Transducers.Exercises.forwardFor_iff_ratMarkedSquare": {
+   "kind": "exercise",
+   "label": "exer:forward-for-transducer",
+   "number": "D.1.3"
+  },
+  "Transducers.Exercises.full_ideal_iff": {
+   "kind": "exercise",
+   "label": "exer:full-ideal",
+   "number": "B.2.12"
+  },
+  "Transducers.Exercises.gaps_finite_of_generates": {
+   "kind": "claim",
+   "label": "claim:grammar-compression-of-baib",
+   "number": "D.0.4"
   },
   "Transducers.Exercises.halts_isRegular": {
    "kind": "exercise",
@@ -136,6 +246,16 @@
    "number": "C.2.4"
   },
   "Transducers.Exercises.isBimachine_isRationalFun_evenLength": {
+   "kind": "exercise",
+   "label": "exer:examples-of-rational-fun",
+   "number": "B.2.1"
+  },
+  "Transducers.Exercises.isBimachine_isRationalFun_swapFirstLast": {
+   "kind": "exercise",
+   "label": "exer:examples-of-rational-fun",
+   "number": "B.2.1"
+  },
+  "Transducers.Exercises.isBimachine_isRationalFun_upToLastHash": {
    "kind": "exercise",
    "label": "exer:examples-of-rational-fun",
    "number": "B.2.1"
@@ -150,10 +270,20 @@
    "label": "exer:some-ideals",
    "number": "B.2.10"
   },
+  "Transducers.Exercises.isMealy_iff_restrictedRelabelling": {
+   "kind": "exercise",
+   "label": "exer:mealy-as-restricted-mso-relabelling",
+   "number": "C.4.1"
+  },
   "Transducers.Exercises.isPolyAut_two_pow": {
    "kind": "exercise",
    "label": "exer:sst-polynomial-automaton",
    "number": "C.3.5"
+  },
+  "Transducers.Exercises.isPolyAut_two_pow_two_pow": {
+   "kind": "exercise",
+   "label": "exer:sst-polynomial-automaton-doubly-exponential",
+   "number": "C.3.6"
   },
   "Transducers.Exercises.isRecognisableRel_iff_finite_union": {
    "kind": "exercise",
@@ -165,6 +295,11 @@
    "label": "exer:two-letter-alphabet-suffices",
    "number": "C.1.1"
   },
+  "Transducers.Exercises.isRegularFun_iff_isRationalFun_of_unary_output": {
+   "kind": "exercise",
+   "label": "exer:2dfa-unary-output",
+   "number": "C.2.1"
+  },
   "Transducers.Exercises.isSST_sort": {
    "kind": "exercise",
    "label": "exer:sst-sorting",
@@ -174,6 +309,16 @@
    "kind": "exercise",
    "label": "exer:2dfa-boolean",
    "number": "C.2.2"
+  },
+  "Transducers.Exercises.iterates_finiteness_undecidable": {
+   "kind": "exercise",
+   "label": "exer:rational-composition-finiteness-undecidable",
+   "number": "B.2.18"
+  },
+  "Transducers.Exercises.markedSquare_not_compatible_with_compression": {
+   "kind": "exercise",
+   "label": "exer:polyregular-marked-squaring-compression",
+   "number": "D.0.1"
   },
   "Transducers.Exercises.middleLetter_not_continuous": {
    "kind": "exercise",
@@ -200,6 +345,16 @@
    "label": "exer:natural-identity",
    "number": "C.5.6"
   },
+  "Transducers.Exercises.natural_listFree_regular": {
+   "kind": "exercise",
+   "label": "exer:natural-transformations-list-free",
+   "number": "C.5.11"
+  },
+  "Transducers.Exercises.natural_listFree_regularTerm": {
+   "kind": "exercise",
+   "label": "exer:natural-transformations-list-free",
+   "number": "C.5.11"
+  },
   "Transducers.Exercises.natural_toList_eq_replicate": {
    "kind": "exercise",
    "label": "exer:natural-transformations-from-A",
@@ -210,15 +365,30 @@
    "label": "exer:natural-transformations-from-A",
    "number": "C.5.9"
   },
+  "Transducers.Exercises.ncard_gaps_le_of_generates": {
+   "kind": "claim",
+   "label": "claim:grammar-compression-of-baib",
+   "number": "D.0.4"
+  },
   "Transducers.Exercises.no_natural_head": {
    "kind": "exercise",
    "label": "exer:head-operation-natural",
    "number": "C.5.7"
   },
+  "Transducers.Exercises.non_minimal_automaton": {
+   "kind": "exercise",
+   "label": "exer:non-minimal-automaton",
+   "number": "B.4.5"
+  },
   "Transducers.Exercises.not_isRationalFun_duplicate": {
    "kind": "exercise",
    "label": "exer:non-rational",
    "number": "B.2.4"
+  },
+  "Transducers.Exercises.not_isRationalFun_duplicate_boundedVar": {
+   "kind": "exercise",
+   "label": "exer:duplication-not-rational",
+   "number": "B.4.1"
   },
   "Transducers.Exercises.not_isRationalFun_firstHalf": {
    "kind": "exercise",
@@ -229,6 +399,11 @@
    "kind": "exercise",
    "label": "exer:head-operation-natural",
    "number": "C.5.7"
+  },
+  "Transducers.Exercises.polynomial_ideals": {
+   "kind": "exercise",
+   "label": "exer:polynomial-ideals",
+   "number": "B.2.13"
   },
   "Transducers.Exercises.pref_bijective": {
    "kind": "exercise",
@@ -245,15 +420,60 @@
    "label": "exer:decide-rational-colision",
    "number": "B.2.6"
   },
+  "Transducers.Exercises.rationalFun_equal_length_decidable": {
+   "kind": "exercise",
+   "label": "exer:decide-rational-colision",
+   "number": "B.2.6"
+  },
+  "Transducers.Exercises.rationalFun_injectivity_decidable": {
+   "kind": "exercise",
+   "label": "exer:rational-injectivity-decidable",
+   "number": "B.2.17"
+  },
   "Transducers.Exercises.rationalFun_unary_graph": {
    "kind": "exercise",
    "label": "exer:rational-one-letter-input",
    "number": "B.2.7"
   },
+  "Transducers.Exercises.rationalRel_domain_isRegular": {
+   "kind": "exercise",
+   "label": "exer:regular-languages-for-rational-relations",
+   "number": "B.1.1"
+  },
   "Transducers.Exercises.rationalRel_finiteOutputs_iff_affine": {
    "kind": "exercise",
    "label": "exer:rational-output-size",
    "number": "B.1.5"
+  },
+  "Transducers.Exercises.rationalRel_intersection_undecidable": {
+   "kind": "exercise",
+   "label": "exer:rational-relations-intersection-undecidable",
+   "number": "B.1.4"
+  },
+  "Transducers.Exercises.rationalRel_range_isRegular": {
+   "kind": "exercise",
+   "label": "exer:regular-languages-for-rational-relations",
+   "number": "B.1.1"
+  },
+  "Transducers.Exercises.rational_exactly_linear_output": {
+   "kind": "exercise",
+   "label": "exer:rational-outpus-of-exactly-linear-size",
+   "number": "B.2.2"
+  },
+  "Transducers.Exercises.rational_primes_no_reverse_reversible": {
+   "kind": "exercise",
+   "label": "exer:no-reverse-reversible",
+   "number": "B.2.9"
+  },
+  "Transducers.Exercises.regTerm_atomics_natural": {
+   "kind": "exercise",
+   "label": "exer:natural-transformations-from-regular-terms",
+   "number": "C.5.10"
+  },
+  "Transducers.Exercises.regTerm_filter_plus": {
+   "kind": "exercise",
+   "label": "exer:filter-plus",
+   "number": "C.5.2"
   },
   "Transducers.Exercises.regTerm_id_replaceable": {
    "kind": "exercise",
@@ -270,10 +490,30 @@
    "label": "exer:windows-of-size-two",
    "number": "C.5.5"
   },
+  "Transducers.Exercises.regular_exactly_linear_output": {
+   "kind": "exercise",
+   "label": "exer:regular-outpus-of-exactly-linear-size",
+   "number": "C.2.6"
+  },
   "Transducers.Exercises.reverse_continuous": {
    "kind": "exercise",
    "label": "exer:reverse-continuous",
    "number": ".0.1"
+  },
+  "Transducers.Exercises.reverse_from_split": {
+   "kind": "exercise",
+   "label": "exer:reverse-from-split",
+   "number": "D.3.1"
+  },
+  "Transducers.Exercises.sameIdeal_iff": {
+   "kind": "exercise",
+   "label": "exer:decide-same-ideal",
+   "number": "B.2.15"
+  },
+  "Transducers.Exercises.split_triple": {
+   "kind": "exercise",
+   "label": "exer:split-triple",
+   "number": "D.3.2"
   },
   "Transducers.Exercises.squaring_continuous": {
    "kind": "exercise",
@@ -309,6 +549,11 @@
    "kind": "exercise",
    "label": "exer:natural-list-function",
    "number": "C.5.8"
+  },
+  "Transducers.Exercises.unmarkedPolyregular_strict_subset_polyregular": {
+   "kind": "exercise",
+   "label": "exer:polyregular-unmarked-squaring",
+   "number": "D.0.2"
   },
   "Transducers.ForProg.PrenexForm": {
    "kind": "definition",
@@ -429,6 +674,11 @@
    "kind": "claim",
    "label": "claim:pairing-copairing",
    "number": "C.5.8"
+  },
+  "Transducers.IsRegularUnderRepr": {
+   "kind": "definition",
+   "label": "def:regular-functions-on-types-under-string-representation",
+   "number": "C.5.2"
   },
   "Transducers.IsSST": {
    "kind": "definition",
@@ -709,6 +959,16 @@
    "kind": "theorem",
    "label": "thm:decidable-equivalence-regular",
    "number": "C.1.4"
+  },
+  "Transducers.finite_domain_regular_list_function": {
+   "kind": "claim",
+   "label": "claim:finite-domain-regular-list-function",
+   "number": "C.5.10"
+  },
+  "Transducers.finite_type_bijection_disjoint_units": {
+   "kind": "claim",
+   "label": "claim:finite-type-bijection-disjoint-units",
+   "number": "C.5.9"
   },
   "Transducers.firstConst_flipflop_decomposition": {
    "kind": "exercise",
@@ -1080,6 +1340,11 @@
    "label": "thm:regular-terms",
    "number": "C.5.4"
   },
+  "Transducers.reprLang_isRegular": {
+   "kind": "claim",
+   "label": "claim:parsing-is-regular",
+   "number": "C.5.6"
+  },
   "Transducers.reverse_continuous_lengthPreserving_not_mealy": {
    "kind": "exercise",
    "label": "exer:letter-to-letter-not-mealy",
@@ -1150,6 +1415,21 @@
    "label": "lem:terms-define-string-homomorphisms",
    "number": "C.5.7"
   },
+  "Transducers.terms_define_string_representation": {
+   "kind": "lemma",
+   "label": "lem:terms-define-string-representation",
+   "number": "C.5.16"
+  },
+  "Transducers.tiling_checker": {
+   "kind": "lemma",
+   "label": "lem:tiling-checker",
+   "number": "D.3.16"
+  },
+  "Transducers.tiling_undecidable": {
+   "kind": "lemma",
+   "label": "lem:tiling",
+   "number": "D.3.15"
+  },
   "Transducers.tp": {
    "kind": "definition",
    "label": "def:k-types",
@@ -1210,6 +1490,11 @@
    "label": "cor:2dfa-closure-under-composition",
    "number": "C.2.7"
   },
+  "Transducers.undecidability_higherOrder": {
+   "kind": "theorem",
+   "label": "thm:undecidability-higher-order",
+   "number": "D.3.14"
+  },
   "Transducers.uniformisation": {
    "kind": "lemma",
    "label": "lem:uniformisation",
@@ -1230,17 +1515,7 @@
    "label": "thm:zeroness-weighted-automata",
    "number": "B.3.7"
   },
-  "all_ideals": {
-   "kind": "exercise",
-   "label": "exer:all-ideals",
-   "number": "B.2.14"
-  },
   "blockSplitTerm": {
-   "kind": "exercise",
-   "label": "exer:block-from-split",
-   "number": "D.3.3"
-  },
-  "block_from_split": {
    "kind": "exercise",
    "label": "exer:block-from-split",
    "number": "D.3.3"
@@ -1250,25 +1525,10 @@
    "label": "lem:children-of-configuration-in-pebble-run",
    "number": "D.2.5"
   },
-  "compatCompression_of_isRationalFun": {
-   "kind": "exercise",
-   "label": "exer:rational-compression",
-   "number": "B.2.19"
-  },
-  "compatCompression_of_isRegularFun": {
-   "kind": "exercise",
-   "label": "exer:regular-compression",
-   "number": "C.0.1"
-  },
   "compatCompression_of_isRegularFun_aux": {
    "kind": "exercise",
    "label": "exer:regular-compression",
    "number": "C.0.1"
-  },
-  "continuous_iff_uniformContinuous": {
-   "kind": "exercise",
-   "label": "exer:continuous-iff-uniformly-continuous",
-   "number": ".0.11"
   },
   "continuous_mapLift": {
    "kind": "lemma",
@@ -1279,11 +1539,6 @@
    "kind": "theorem",
    "label": "thm:pebble-are-continuous",
    "number": "D.2.1"
-  },
-  "copyfulSST_equivalence_reduces_to_polyAut": {
-   "kind": "exercise",
-   "label": "exer:copyful-sst-decidable",
-   "number": "C.3.7"
   },
   "decidableAmbiguous": {
    "kind": "exercise",
@@ -1300,85 +1555,25 @@
    "label": "thm:undecidable-equivalence-rational-relations",
    "number": "B.1.6"
   },
-  "exists_isCopyfulSST_comp_not_isCopyfulSST": {
-   "kind": "exercise",
-   "label": "exer:sst-copyful-sst-no-composition",
-   "number": "C.3.4"
-  },
-  "exists_isRegularFun_not_weighted_precomp": {
-   "kind": "exercise",
-   "label": "exer:not-semiring-continuous",
-   "number": "C.1.2"
-  },
-  "exists_isRegularFun_uniformising_isTwoNFT₁": {
-   "kind": "exercise",
-   "label": "exer:2nft-uniformise",
-   "number": "C.2.8"
-  },
-  "exists_isRegularFun_uniformising_isTwoNFT₂": {
-   "kind": "exercise",
-   "label": "exer:2nft-uniformise",
-   "number": "C.2.8"
-  },
-  "exists_not_isRationalFun_unary_compositions_rational": {
-   "kind": "exercise",
-   "label": "exer:function-that-is-not-rational",
-   "number": "B.2.8"
+  "eval_checkTerm": {
+   "kind": "lemma",
+   "label": "lem:tiling-checker",
+   "number": "D.3.16"
   },
   "exists_rationalFun_inverse_of_injective": {
    "kind": "exercise",
    "label": "exer:rational-injectivity-decidable",
    "number": "B.2.17"
   },
-  "exists_rationalRel_atMostOneOutput_not_isRegular": {
-   "kind": "exercise",
-   "label": "exer:non-regular-languages-for-rational-relations",
-   "number": "B.1.2"
-  },
-  "exists_rationalRel_inter_not_rationalRel": {
-   "kind": "exercise",
-   "label": "exer:rational-relations-not-closed-under-intersection",
-   "number": "B.1.3"
-  },
-  "exists_regular_fibers_not_continuous": {
-   "kind": "exercise",
-   "label": "exer:finite-images-assumption-necessary",
-   "number": ".0.7"
-  },
   "exists_slp_of_mapLift": {
    "kind": "claim",
    "label": "claim:map-compression",
    "number": "C.0.2"
   },
-  "exists_terminating_twoDFA_halts": {
-   "kind": "exercise",
-   "label": "exer:2dfa-loop-elimination-sipser",
-   "number": "C.2.5"
-  },
-  "finite_domain_regular_list_function": {
-   "kind": "claim",
-   "label": "claim:finite-domain-regular-list-function",
-   "number": "C.5.10"
-  },
-  "finite_type_bijection_disjoint_units": {
-   "kind": "claim",
-   "label": "claim:finite-type-bijection-disjoint-units",
-   "number": "C.5.9"
-  },
   "flatten_headAsList_splits": {
    "kind": "exercise",
    "label": "exer:reverse-from-split",
    "number": "D.3.1"
-  },
-  "fo_non_elementary": {
-   "kind": "exercise",
-   "label": "exer:fo-non-elementary",
-   "number": "C.4.2"
-  },
-  "fo_succ_strictly_weaker": {
-   "kind": "exercise",
-   "label": "exer:fo-suc",
-   "number": "C.4.4"
   },
   "forTransducer_comp_aux": {
    "kind": "lemma",
@@ -1390,55 +1585,20 @@
    "label": "lem:prenex-normal-form",
    "number": "D.1.3"
   },
-  "for_transducer_continuity_nonelementary": {
-   "kind": "exercise",
-   "label": "exer:for-transducer-continuity-nonelementary",
-   "number": "D.1.2"
-  },
-  "forwardFor_iff_ratMarkedSquare": {
-   "kind": "exercise",
-   "label": "exer:forward-for-transducer",
-   "number": "D.1.3"
-  },
   "forwardPrenex": {
    "kind": "lemma",
    "label": "lem:prenex-normal-form",
    "number": "D.1.3"
-  },
-  "full_ideal_iff": {
-   "kind": "exercise",
-   "label": "exer:full-ideal",
-   "number": "B.2.12"
   },
   "hom_complement_rational_aux": {
    "kind": "claim",
    "label": "claim:homomorphism-complement-rational",
    "number": "B.1.7"
   },
-  "isBimachine_isRationalFun_swapFirstLast": {
-   "kind": "exercise",
-   "label": "exer:examples-of-rational-fun",
-   "number": "B.2.1"
-  },
-  "isBimachine_isRationalFun_upToLastHash": {
-   "kind": "exercise",
-   "label": "exer:examples-of-rational-fun",
-   "number": "B.2.1"
-  },
   "isMealy_iff_aux": {
    "kind": "theorem",
    "label": "thm:mealy-machine-independent",
    "number": "B.4.1"
-  },
-  "isMealy_iff_restrictedRelabelling": {
-   "kind": "exercise",
-   "label": "exer:mealy-as-restricted-mso-relabelling",
-   "number": "C.4.1"
-  },
-  "isPolyAut_two_pow_two_pow": {
-   "kind": "exercise",
-   "label": "exer:sst-polynomial-automaton-doubly-exponential",
-   "number": "C.3.6"
   },
   "isRationalFun_enc": {
    "kind": "lemma",
@@ -1459,11 +1619,6 @@
    "kind": "lemma",
    "label": "lem:regular-closure-properties",
    "number": "C.2.10"
-  },
-  "isRegularFun_iff_isRationalFun_of_unary_output": {
-   "kind": "exercise",
-   "label": "exer:2dfa-unary-output",
-   "number": "C.2.1"
   },
   "isRegularFun_mapLift": {
    "kind": "lemma",
@@ -1525,11 +1680,6 @@
    "label": "thm:sst-two-way-equivalence",
    "number": "C.3.2"
   },
-  "iterates_finiteness_undecidable": {
-   "kind": "exercise",
-   "label": "exer:rational-composition-finiteness-undecidable",
-   "number": "B.2.18"
-  },
   "lengthPreserving_iff_typing_aux": {
    "kind": "claim",
    "label": "claim:typing-length-preserving",
@@ -1544,11 +1694,6 @@
    "kind": "lemma",
    "label": "lem:map-lifting-decomposition-mealy",
    "number": "A.2.4"
-  },
-  "markedSquare_not_compatible_with_compression": {
-   "kind": "exercise",
-   "label": "exer:polyregular-marked-squaring-compression",
-   "number": "D.0.1"
   },
   "msoDefinable_of_isRegular": {
    "kind": "theorem",
@@ -1585,30 +1730,10 @@
    "label": "lem:derivatives",
    "number": "A.2.10"
   },
-  "natural_listFree_regular": {
-   "kind": "exercise",
-   "label": "exer:natural-transformations-list-free",
-   "number": "C.5.11"
-  },
-  "natural_listFree_regularTerm": {
-   "kind": "exercise",
-   "label": "exer:natural-transformations-list-free",
-   "number": "C.5.11"
-  },
-  "non_minimal_automaton": {
-   "kind": "exercise",
-   "label": "exer:non-minimal-automaton",
-   "number": "B.4.5"
-  },
   "non_minimal_automaton_wide": {
    "kind": "exercise",
    "label": "exer:non-minimal-automaton",
    "number": "B.4.5"
-  },
-  "not_isRationalFun_duplicate_boundedVar": {
-   "kind": "exercise",
-   "label": "exer:duplication-not-rational",
-   "number": "B.4.1"
   },
   "polyBlockSplit": {
    "kind": "exercise",
@@ -1619,11 +1744,6 @@
    "kind": "exercise",
    "label": "exer:reverse-from-split",
    "number": "D.3.1"
-  },
-  "polynomial_ideals": {
-   "kind": "exercise",
-   "label": "exer:polynomial-ideals",
-   "number": "B.2.13"
   },
   "polyregularTerm_isPolyregular": {
    "kind": "theorem",
@@ -1655,22 +1775,12 @@
    "label": "lem:terms-define-string-homomorphisms",
    "number": "C.5.7"
   },
-  "rationalFun_equal_length_decidable": {
-   "kind": "exercise",
-   "label": "exer:decide-rational-colision",
-   "number": "B.2.6"
-  },
   "rationalFun_equivalence_decidable_aux": {
    "kind": "theorem",
    "label": "thm:equivalence-rational-functions",
    "number": "B.3.4"
   },
   "rationalFun_injective_iff_exists_inverse": {
-   "kind": "exercise",
-   "label": "exer:rational-injectivity-decidable",
-   "number": "B.2.17"
-  },
-  "rationalFun_injectivity_decidable": {
    "kind": "exercise",
    "label": "exer:rational-injectivity-decidable",
    "number": "B.2.17"
@@ -1690,21 +1800,6 @@
    "label": "thm:continuity-rational-relations",
    "number": "B.1.5"
   },
-  "rationalRel_domain_isRegular": {
-   "kind": "exercise",
-   "label": "exer:regular-languages-for-rational-relations",
-   "number": "B.1.1"
-  },
-  "rationalRel_intersection_undecidable": {
-   "kind": "exercise",
-   "label": "exer:rational-relations-intersection-undecidable",
-   "number": "B.1.4"
-  },
-  "rationalRel_range_isRegular": {
-   "kind": "exercise",
-   "label": "exer:regular-languages-for-rational-relations",
-   "number": "B.1.1"
-  },
   "rational_iff_msoRelabelling_aux": {
    "kind": "theorem",
    "label": "thm:logic-rational-functions",
@@ -1714,16 +1809,6 @@
    "kind": "theorem",
    "label": "thm:characterisation-rational-functions-weighted-automata",
    "number": "B.3.6"
-  },
-  "rational_primes_no_reverse_reversible": {
-   "kind": "exercise",
-   "label": "exer:no-reverse-reversible",
-   "number": "B.2.9"
-  },
-  "regTerm_atomics_natural": {
-   "kind": "exercise",
-   "label": "exer:natural-transformations-from-regular-terms",
-   "number": "C.5.10"
   },
   "regularFun_eq_iff_weighted_eq": {
    "kind": "theorem",
@@ -1745,11 +1830,6 @@
    "label": "thm:decidable-equivalence-regular",
    "number": "C.1.4"
   },
-  "regular_exactly_linear_output": {
-   "kind": "exercise",
-   "label": "exer:regular-outpus-of-exactly-linear-size",
-   "number": "C.2.6"
-  },
   "regular_iff_msoDefinable_aux": {
    "kind": "theorem",
    "label": "thm:mso-logic-languages",
@@ -1760,20 +1840,15 @@
    "label": "exer:reverse-from-split",
    "number": "D.3.1"
   },
-  "reverse_from_split": {
-   "kind": "exercise",
-   "label": "exer:reverse-from-split",
-   "number": "D.3.1"
-  },
   "sameIdeal_decidable": {
    "kind": "exercise",
    "label": "exer:decide-same-ideal",
    "number": "B.2.15"
   },
-  "sameIdeal_iff": {
-   "kind": "exercise",
-   "label": "exer:decide-same-ideal",
-   "number": "B.2.15"
+  "sat_phiOrdSucc": {
+   "kind": "claim",
+   "label": "lem:fo-non-elementary-order",
+   "number": "C.4.17"
   },
   "sortSST_eval": {
    "kind": "exercise",
@@ -1784,11 +1859,6 @@
    "kind": "claim",
    "label": "claim:conditional",
    "number": "C.2.11"
-  },
-  "terms_define_string_representation": {
-   "kind": "lemma",
-   "label": "lem:terms-define-string-representation",
-   "number": "C.5.16"
   },
   "tp_properties_aux": {
    "kind": "lemma",
@@ -1804,11 +1874,6 @@
    "kind": "lemma",
    "label": "lem:uniformisation",
    "number": "B.2.5"
-  },
-  "unmarkedPolyregular_strict_subset_polyregular": {
-   "kind": "exercise",
-   "label": "exer:polyregular-unmarked-squaring",
-   "number": "D.0.2"
   },
   "weighted_equivalence_decidable_aux": {
    "kind": "theorem",
@@ -1996,9 +2061,20 @@
    "anchor": "claim.21",
    "kind": "claim",
    "label": "claim:factorial-powers-stabilise-in-monoids",
-   "lean": [],
+   "lean": [
+    {
+     "decl_line": 100,
+     "end": 113,
+     "file": "RequestProject/Exercises/Intro.lean",
+     "line": 90,
+     "name": "Transducers.Exercises.factorial_powers_stabilise",
+     "primary": true,
+     "state": "proved"
+    }
+   ],
    "number": ".0.2",
-   "page": "5"
+   "page": "5",
+   "theorems_md_status": "`Exercises/Intro.lean`"
   },
   "claim:finite-domain-regular-list-function": {
    "anchor": "claim.404",
@@ -2010,7 +2086,7 @@
      "end": 275,
      "file": "RequestProject/PartC/CombFinite.lean",
      "line": 271,
-     "name": "finite_domain_regular_list_function",
+     "name": "Transducers.finite_domain_regular_list_function",
      "primary": true,
      "state": "proved"
     },
@@ -2037,7 +2113,7 @@
      "end": 261,
      "file": "RequestProject/PartC/CombDerived.lean",
      "line": 251,
-     "name": "finite_type_bijection_disjoint_units",
+     "name": "Transducers.finite_type_bijection_disjoint_units",
      "primary": true,
      "state": "proved"
     }
@@ -2126,9 +2202,28 @@
    "anchor": "claim.451",
    "kind": "claim",
    "label": "claim:grammar-compression-of-baib",
-   "lean": [],
+   "lean": [
+    {
+     "decl_line": 295,
+     "end": 299,
+     "file": "RequestProject/Exercises/Compression.lean",
+     "line": 291,
+     "name": "Transducers.Exercises.gaps_finite_of_generates",
+     "primary": true,
+     "state": "proved"
+    },
+    {
+     "decl_line": 303,
+     "end": 312,
+     "file": "RequestProject/Exercises/Compression.lean",
+     "line": 301,
+     "name": "Transducers.Exercises.ncard_gaps_le_of_generates",
+     "state": "proved"
+    }
+   ],
    "number": "D.0.4",
-   "page": "155"
+   "page": "155",
+   "theorems_md_status": "`Exercises/Compression.lean`"
   },
   "claim:head": {
    "anchor": "claim.416",
@@ -2306,9 +2401,20 @@
    "anchor": "claim.400",
    "kind": "claim",
    "label": "claim:parsing-is-regular",
-   "lean": [],
+   "lean": [
+    {
+     "decl_line": 163,
+     "end": 187,
+     "file": "RequestProject/PartC/CombParse.lean",
+     "line": 161,
+     "name": "Transducers.reprLang_isRegular",
+     "primary": true,
+     "state": "proved"
+    }
+   ],
    "number": "C.5.6",
-   "page": "138"
+   "page": "138",
+   "theorems_md_status": "**proved** (`CombParse.lean`, for the language `Transducers.reprLang` of the representations, by the book's induction on the type: the language of representations is described by a regular expression built from the languages of the components, and the closure properties of `Common/RegLangClosure.lean` do the rest; axioms: `propext`, `Classical.choice`, `Quot.sound`). The transducers of the easy direction of Theorem `thm:regular-terms` do not use it: they parse a representation with the bracket counter of `PartC/CombDepth.lean`"
   },
   "claim:reachability-basic-run": {
    "anchor": "claim.590",
@@ -3002,7 +3108,7 @@
      "end": 190,
      "file": "RequestProject/PartC/CombTypes.lean",
      "line": 184,
-     "name": "IsRegularUnderRepr",
+     "name": "Transducers.IsRegularUnderRepr",
      "primary": true,
      "state": "proved"
     },
@@ -3010,7 +3116,6 @@
      "decl_line": 193,
      "end": 194,
      "file": "RequestProject/PartC/CombTypes.lean",
-     "from": "THEOREMS.md",
      "line": 192,
      "name": "Transducers.IsRationalUnderRepr",
      "state": "proved"
@@ -3194,10 +3299,10 @@
    "label": "ex:continuity-for-finite-images",
    "lean": [
     {
-     "decl_line": 186,
-     "end": 223,
+     "decl_line": 211,
+     "end": 248,
      "file": "RequestProject/Exercises/Intro.lean",
-     "line": 180,
+     "line": 205,
      "name": "Transducers.Exercises.continuous_iff_regular_fibers",
      "primary": true,
      "state": "proved"
@@ -3213,35 +3318,35 @@
    "label": "ex:distance",
    "lean": [
     {
-     "decl_line": 397,
-     "end": 402,
+     "decl_line": 422,
+     "end": 427,
      "file": "RequestProject/Exercises/Intro.lean",
-     "line": 394,
+     "line": 419,
      "name": "Transducers.Exercises.strDist",
      "primary": true,
      "state": "proved"
     },
     {
-     "decl_line": 509,
-     "end": 518,
+     "decl_line": 534,
+     "end": 543,
      "file": "RequestProject/Exercises/Intro.lean",
-     "line": 505,
+     "line": 530,
      "name": "Transducers.Exercises.strDist_isMetric",
      "state": "proved"
     },
     {
-     "decl_line": 482,
-     "end": 503,
+     "decl_line": 507,
+     "end": 528,
      "file": "RequestProject/Exercises/Intro.lean",
-     "line": 478,
+     "line": 503,
      "name": "Transducers.Exercises.strDist_ultrametric",
      "state": "proved"
     },
     {
-     "decl_line": 521,
-     "end": 526,
+     "decl_line": 546,
+     "end": 551,
      "file": "RequestProject/Exercises/Intro.lean",
-     "line": 520,
+     "line": 545,
      "name": "Transducers.Exercises.strMetric",
      "state": "proved"
     }
@@ -3355,7 +3460,7 @@
      "end": 132,
      "file": "RequestProject/Exercises/TwoDFASipser.lean",
      "line": 118,
-     "name": "exists_terminating_twoDFA_halts",
+     "name": "Transducers.Exercises.exists_terminating_twoDFA_halts",
      "primary": true,
      "state": "proved"
     }
@@ -3374,7 +3479,7 @@
      "end": 617,
      "file": "RequestProject/Exercises/TwoDFAUnary.lean",
      "line": 603,
-     "name": "isRegularFun_iff_isRationalFun_of_unary_output",
+     "name": "Transducers.Exercises.isRegularFun_iff_isRationalFun_of_unary_output",
      "primary": true,
      "state": "proved"
     }
@@ -3416,20 +3521,20 @@
    "label": "exer:2nft-uniformise",
    "lean": [
     {
-     "decl_line": 53,
-     "end": 83,
-     "file": "RequestProject/Exercises/TwoNFTUnif.lean",
-     "line": 49,
-     "name": "exists_isRegularFun_uniformising_isTwoNFT₂",
-     "primary": true,
-     "state": "proved"
-    },
-    {
      "decl_line": 637,
      "end": 669,
      "file": "RequestProject/Exercises/TwoNFTUnif1.lean",
      "line": 625,
-     "name": "exists_isRegularFun_uniformising_isTwoNFT₁",
+     "name": "Transducers.Exercises.exists_isRegularFun_uniformising_isTwoNFT₁",
+     "primary": true,
+     "state": "proved"
+    },
+    {
+     "decl_line": 53,
+     "end": 83,
+     "file": "RequestProject/Exercises/TwoNFTUnif.lean",
+     "line": 49,
+     "name": "Transducers.Exercises.exists_isRegularFun_uniformising_isTwoNFT₂",
      "state": "proved"
     }
    ],
@@ -3443,10 +3548,10 @@
    "label": "exer:all-functions-continuous-for-metric",
    "lean": [
     {
-     "decl_line": 604,
-     "end": 619,
+     "decl_line": 629,
+     "end": 644,
      "file": "RequestProject/Exercises/Intro.lean",
-     "line": 596,
+     "line": 621,
      "name": "Transducers.Exercises.strDist_all_continuous",
      "primary": true,
      "state": "proved"
@@ -3466,7 +3571,7 @@
      "end": 528,
      "file": "RequestProject/Exercises/Ideals.lean",
      "line": 446,
-     "name": "all_ideals",
+     "name": "Transducers.Exercises.all_ideals",
      "primary": true,
      "state": "proved"
     }
@@ -3504,7 +3609,7 @@
      "end": 660,
      "file": "RequestProject/Exercises/HOAtomsFromSplit.lean",
      "line": 653,
-     "name": "block_from_split",
+     "name": "Transducers.Exercises.block_from_split",
      "primary": true,
      "state": "proved"
     },
@@ -3555,11 +3660,11 @@
    "label": "exer:continuous-iff-uniformly-continuous",
    "lean": [
     {
-     "decl_line": 638,
-     "end": 702,
+     "decl_line": 663,
+     "end": 727,
      "file": "RequestProject/Exercises/Intro.lean",
-     "line": 623,
-     "name": "continuous_iff_uniformContinuous",
+     "line": 648,
+     "name": "Transducers.Exercises.continuous_iff_uniformContinuous",
      "primary": true,
      "state": "proved"
     }
@@ -3578,7 +3683,7 @@
      "end": 247,
      "file": "RequestProject/Exercises/SSTPoly.lean",
      "line": 214,
-     "name": "copyfulSST_equivalence_reduces_to_polyAut",
+     "name": "Transducers.Exercises.copyfulSST_equivalence_reduces_to_polyAut",
      "primary": true,
      "state": "proved"
     }
@@ -3606,7 +3711,7 @@
      "end": 205,
      "file": "RequestProject/Exercises/LengthCollision.lean",
      "line": 180,
-     "name": "rationalFun_equal_length_decidable",
+     "name": "Transducers.Exercises.rationalFun_equal_length_decidable",
      "state": "proved"
     }
    ],
@@ -3624,7 +3729,7 @@
      "end": 602,
      "file": "RequestProject/Exercises/Ideals.lean",
      "line": 546,
-     "name": "sameIdeal_iff",
+     "name": "Transducers.Exercises.sameIdeal_iff",
      "primary": true,
      "state": "proved"
     },
@@ -3724,7 +3829,7 @@
      "end": 90,
      "file": "RequestProject/Exercises/DuplicateNotRational.lean",
      "line": 59,
-     "name": "not_isRationalFun_duplicate_boundedVar",
+     "name": "Transducers.Exercises.not_isRationalFun_duplicate_boundedVar",
      "primary": true,
      "state": "proved"
     },
@@ -3761,7 +3866,7 @@
      "end": 577,
      "file": "RequestProject/Exercises/PartBC.lean",
      "line": 554,
-     "name": "isBimachine_isRationalFun_swapFirstLast",
+     "name": "Transducers.Exercises.isBimachine_isRationalFun_swapFirstLast",
      "state": "proved"
     },
     {
@@ -3769,7 +3874,7 @@
      "end": 648,
      "file": "RequestProject/Exercises/PartBC.lean",
      "line": 638,
-     "name": "isBimachine_isRationalFun_upToLastHash",
+     "name": "Transducers.Exercises.isBimachine_isRationalFun_upToLastHash",
      "state": "proved"
     }
    ],
@@ -3783,10 +3888,10 @@
    "label": "exer:factorial-continuous",
    "lean": [
     {
-     "decl_line": 175,
-     "end": 176,
+     "decl_line": 200,
+     "end": 201,
      "file": "RequestProject/Exercises/Intro.lean",
-     "line": 165,
+     "line": 190,
      "name": "Transducers.Exercises.factorial_continuous",
      "primary": true,
      "state": "proved"
@@ -3802,10 +3907,10 @@
    "label": "exer:factorial-power-continuous",
    "lean": [
     {
-     "decl_line": 145,
-     "end": 163,
+     "decl_line": 170,
+     "end": 188,
      "file": "RequestProject/Exercises/Intro.lean",
-     "line": 142,
+     "line": 167,
      "name": "Transducers.Exercises.factorial_power_continuous",
      "primary": true,
      "state": "proved"
@@ -3819,10 +3924,21 @@
    "anchor": "exercise.423",
    "kind": "exercise",
    "label": "exer:filter-plus",
-   "lean": [],
+   "lean": [
+    {
+     "decl_line": 645,
+     "end": 653,
+     "file": "RequestProject/Exercises/CombinatorsEx.lean",
+     "line": 643,
+     "name": "Transducers.Exercises.regTerm_filter_plus",
+     "primary": true,
+     "state": "proved"
+    }
+   ],
    "not_formalised": true,
    "number": "C.5.2",
-   "page": "146"
+   "page": "146",
+   "theorems_md_status": "`Exercises/CombinatorsEx.lean`"
   },
   "exer:finite-images-assumption-necessary": {
    "anchor": "exercise.23",
@@ -3830,11 +3946,11 @@
    "label": "exer:finite-images-assumption-necessary",
    "lean": [
     {
-     "decl_line": 345,
-     "end": 381,
+     "decl_line": 370,
+     "end": 406,
      "file": "RequestProject/Exercises/Intro.lean",
-     "line": 335,
-     "name": "exists_regular_fibers_not_continuous",
+     "line": 360,
+     "name": "Transducers.Exercises.exists_regular_fibers_not_continuous",
      "primary": true,
      "state": "proved"
     }
@@ -3891,7 +4007,7 @@
      "end": 168,
      "file": "RequestProject/Exercises/FONonElementary.lean",
      "line": 152,
-     "name": "fo_non_elementary",
+     "name": "Transducers.Exercises.fo_non_elementary",
      "primary": true,
      "state": "proved"
     }
@@ -3910,7 +4026,7 @@
      "end": 249,
      "file": "RequestProject/Exercises/FOSucc.lean",
      "line": 237,
-     "name": "fo_succ_strictly_weaker",
+     "name": "Transducers.Exercises.fo_succ_strictly_weaker",
      "primary": true,
      "state": "proved"
     }
@@ -3929,7 +4045,7 @@
      "end": 93,
      "file": "RequestProject/Exercises/ForContinuity.lean",
      "line": 58,
-     "name": "for_transducer_continuity_nonelementary",
+     "name": "Transducers.Exercises.for_transducer_continuity_nonelementary",
      "primary": true,
      "state": "proved"
     }
@@ -3967,7 +4083,7 @@
      "end": 328,
      "file": "RequestProject/Exercises/ForwardForTop.lean",
      "line": 315,
-     "name": "forwardFor_iff_ratMarkedSquare",
+     "name": "Transducers.Exercises.forwardFor_iff_ratMarkedSquare",
      "primary": true,
      "state": "proved"
     }
@@ -3986,7 +4102,7 @@
      "end": 348,
      "file": "RequestProject/Exercises/Ideals.lean",
      "line": 313,
-     "name": "full_ideal_iff",
+     "name": "Transducers.Exercises.full_ideal_iff",
      "primary": true,
      "state": "proved"
     }
@@ -4005,7 +4121,7 @@
      "end": 857,
      "file": "RequestProject/Exercises/PartBC.lean",
      "line": 834,
-     "name": "exists_not_isRationalFun_unary_compositions_rational",
+     "name": "Transducers.Exercises.exists_not_isRationalFun_unary_compositions_rational",
      "primary": true,
      "state": "proved"
     }
@@ -4020,10 +4136,10 @@
    "label": "exer:group-prefix-multiplication-isomorphism",
    "lean": [
     {
-     "decl_line": 578,
-     "end": 610,
+     "decl_line": 580,
+     "end": 609,
      "file": "RequestProject/Exercises/CombinatorsEx.lean",
-     "line": 571,
+     "line": 573,
      "name": "Transducers.Exercises.pref_bijective",
      "primary": true,
      "state": "proved"
@@ -4068,10 +4184,10 @@
    "label": "exer:identity-function-replacement",
    "lean": [
     {
-     "decl_line": 299,
-     "end": 303,
+     "decl_line": 301,
+     "end": 305,
      "file": "RequestProject/Exercises/CombinatorsEx.lean",
-     "line": 296,
+     "line": 298,
      "name": "Transducers.Exercises.regTerm_id_replaceable",
      "primary": true,
      "state": "proved"
@@ -4088,19 +4204,19 @@
    "label": "exer:if-then-else",
    "lean": [
     {
-     "decl_line": 47,
-     "end": 59,
+     "decl_line": 49,
+     "end": 61,
      "file": "RequestProject/Exercises/CombinatorsEx.lean",
-     "line": 41,
+     "line": 43,
      "name": "Transducers.Exercises.regTerm_ite",
      "primary": true,
      "state": "proved"
     },
     {
-     "decl_line": 71,
-     "end": 116,
+     "decl_line": 73,
+     "end": 118,
      "file": "RequestProject/Exercises/CombinatorsEx.lean",
-     "line": 61,
+     "line": 63,
      "name": "Transducers.Exercises.ratTerm_ite",
      "state": "proved"
     }
@@ -4204,7 +4320,7 @@
      "end": 1387,
      "file": "RequestProject/Exercises/PartBC.lean",
      "line": 1376,
-     "name": "isMealy_iff_restrictedRelabelling",
+     "name": "Transducers.Exercises.isMealy_iff_restrictedRelabelling",
      "primary": true,
      "state": "proved"
     }
@@ -4219,10 +4335,10 @@
    "label": "exer:middle-letter-not-continuous",
    "lean": [
     {
-     "decl_line": 302,
-     "end": 305,
+     "decl_line": 327,
+     "end": 330,
      "file": "RequestProject/Exercises/Intro.lean",
-     "line": 300,
+     "line": 325,
      "name": "Transducers.Exercises.middleLetter_not_continuous",
      "primary": true,
      "state": "proved"
@@ -4347,7 +4463,7 @@
      "end": 199,
      "file": "RequestProject/Exercises/CombNaturalAtoms.lean",
      "line": 152,
-     "name": "regTerm_atomics_natural",
+     "name": "Transducers.Exercises.regTerm_atomics_natural",
      "primary": true,
      "state": "proved"
     }
@@ -4367,7 +4483,7 @@
      "end": 263,
      "file": "RequestProject/Exercises/CombNaturalFree.lean",
      "line": 240,
-     "name": "natural_listFree_regularTerm",
+     "name": "Transducers.Exercises.natural_listFree_regularTerm",
      "primary": true,
      "state": "proved"
     },
@@ -4376,7 +4492,7 @@
      "end": 274,
      "file": "RequestProject/Exercises/CombNaturalFree.lean",
      "line": 265,
-     "name": "natural_listFree_regular",
+     "name": "Transducers.Exercises.natural_listFree_regular",
      "state": "proved"
     }
    ],
@@ -4395,7 +4511,7 @@
      "end": 319,
      "file": "RequestProject/Exercises/NoReverseReversible.lean",
      "line": 304,
-     "name": "rational_primes_no_reverse_reversible",
+     "name": "Transducers.Exercises.rational_primes_no_reverse_reversible",
      "primary": true,
      "state": "proved"
     }
@@ -4415,7 +4531,7 @@
      "end": 685,
      "file": "RequestProject/Exercises/MinimalTransducerBound.lean",
      "line": 663,
-     "name": "non_minimal_automaton",
+     "name": "Transducers.Exercises.non_minimal_automaton",
      "primary": true,
      "state": "proved"
     },
@@ -4488,7 +4604,7 @@
      "end": 166,
      "file": "RequestProject/Exercises/PartBC.lean",
      "line": 97,
-     "name": "exists_rationalRel_atMostOneOutput_not_isRegular",
+     "name": "Transducers.Exercises.exists_rationalRel_atMostOneOutput_not_isRegular",
      "primary": true,
      "state": "proved"
     }
@@ -4507,7 +4623,7 @@
      "end": 75,
      "file": "RequestProject/Exercises/RegularPrimes.lean",
      "line": 51,
-     "name": "exists_isRegularFun_not_weighted_precomp",
+     "name": "Transducers.Exercises.exists_isRegularFun_not_weighted_precomp",
      "primary": true,
      "state": "proved"
     }
@@ -4526,7 +4642,7 @@
      "end": 426,
      "file": "RequestProject/Exercises/Ideals.lean",
      "line": 402,
-     "name": "polynomial_ideals",
+     "name": "Transducers.Exercises.polynomial_ideals",
      "primary": true,
      "state": "proved"
     }
@@ -4568,11 +4684,11 @@
    "label": "exer:polyregular-marked-squaring-compression",
    "lean": [
     {
-     "decl_line": 409,
-     "end": 421,
+     "decl_line": 432,
+     "end": 444,
      "file": "RequestProject/Exercises/Compression.lean",
-     "line": 404,
-     "name": "markedSquare_not_compatible_with_compression",
+     "line": 427,
+     "name": "Transducers.Exercises.markedSquare_not_compatible_with_compression",
      "primary": true,
      "state": "proved"
     }
@@ -4591,7 +4707,7 @@
      "end": 340,
      "file": "RequestProject/Exercises/UnmarkedSquaring.lean",
      "line": 319,
-     "name": "unmarkedPolyregular_strict_subset_polyregular",
+     "name": "Transducers.Exercises.unmarkedPolyregular_strict_subset_polyregular",
      "primary": true,
      "state": "proved"
     }
@@ -4610,7 +4726,7 @@
      "end": 296,
      "file": "RequestProject/Exercises/IterateFiniteness.lean",
      "line": 280,
-     "name": "iterates_finiteness_undecidable",
+     "name": "Transducers.Exercises.iterates_finiteness_undecidable",
      "primary": true,
      "state": "proved"
     }
@@ -4629,7 +4745,7 @@
      "end": 128,
      "file": "RequestProject/Exercises/CompressionReg.lean",
      "line": 116,
-     "name": "compatCompression_of_isRationalFun",
+     "name": "Transducers.Exercises.compatCompression_of_isRationalFun",
      "primary": true,
      "state": "proved"
     }
@@ -4644,12 +4760,20 @@
    "label": "exer:rational-injectivity-decidable",
    "lean": [
     {
+     "decl_line": 223,
+     "end": 234,
+     "file": "RequestProject/Exercises/RatInjectiveDec.lean",
+     "line": 213,
+     "name": "Transducers.Exercises.rationalFun_injectivity_decidable",
+     "primary": true,
+     "state": "proved"
+    },
+    {
      "decl_line": 183,
      "end": 200,
      "file": "RequestProject/Exercises/RatInjective.lean",
      "line": 175,
      "name": "exists_rationalFun_inverse_of_injective",
-     "primary": true,
      "state": "proved"
     },
     {
@@ -4658,14 +4782,6 @@
      "file": "RequestProject/Exercises/RatInjective.lean",
      "line": 202,
      "name": "rationalFun_injective_iff_exists_inverse",
-     "state": "proved"
-    },
-    {
-     "decl_line": 223,
-     "end": 234,
-     "file": "RequestProject/Exercises/RatInjectiveDec.lean",
-     "line": 213,
-     "name": "rationalFun_injectivity_decidable",
      "state": "proved"
     }
    ],
@@ -4696,7 +4812,17 @@
    "anchor": "exercise.152",
    "kind": "exercise",
    "label": "exer:rational-outpus-of-exactly-linear-size",
-   "lean": [],
+   "lean": [
+    {
+     "decl_line": 169,
+     "end": 174,
+     "file": "RequestProject/Exercises/LinearOutput.lean",
+     "line": 165,
+     "name": "Transducers.Exercises.rational_exactly_linear_output",
+     "primary": true,
+     "state": "proved"
+    }
+   ],
    "not_formalised": true,
    "number": "B.2.2",
    "page": "47"
@@ -4705,7 +4831,17 @@
    "anchor": "exercise.153",
    "kind": "exercise",
    "label": "exer:rational-outpus-of-exactly-linear-size-rational-number",
-   "lean": [],
+   "lean": [
+    {
+     "decl_line": 169,
+     "end": 174,
+     "file": "RequestProject/Exercises/LinearOutput.lean",
+     "line": 165,
+     "name": "Transducers.Exercises.rational_exactly_linear_output",
+     "primary": true,
+     "state": "proved"
+    }
+   ],
    "not_formalised": true,
    "number": "B.2.3",
    "page": "47"
@@ -4739,7 +4875,7 @@
      "end": 271,
      "file": "RequestProject/Exercises/PartBC.lean",
      "line": 254,
-     "name": "rationalRel_intersection_undecidable",
+     "name": "Transducers.Exercises.rationalRel_intersection_undecidable",
      "primary": true,
      "state": "proved"
     }
@@ -4758,7 +4894,7 @@
      "end": 250,
      "file": "RequestProject/Exercises/PartBC.lean",
      "line": 180,
-     "name": "exists_rationalRel_inter_not_rationalRel",
+     "name": "Transducers.Exercises.exists_rationalRel_inter_not_rationalRel",
      "primary": true,
      "state": "proved"
     }
@@ -4819,20 +4955,20 @@
    "label": "exer:regular-compression",
    "lean": [
     {
+     "decl_line": 164,
+     "end": 169,
+     "file": "RequestProject/Exercises/CompressionReg.lean",
+     "line": 162,
+     "name": "Transducers.Exercises.compatCompression_of_isRegularFun",
+     "primary": true,
+     "state": "proved"
+    },
+    {
      "decl_line": 142,
      "end": 160,
      "file": "RequestProject/Exercises/CompressionReg.lean",
      "line": 139,
      "name": "compatCompression_of_isRegularFun_aux",
-     "primary": true,
-     "state": "proved"
-    },
-    {
-     "decl_line": 164,
-     "end": 169,
-     "file": "RequestProject/Exercises/CompressionReg.lean",
-     "line": 162,
-     "name": "compatCompression_of_isRegularFun",
      "state": "proved"
     }
    ],
@@ -4850,7 +4986,7 @@
      "end": 41,
      "file": "RequestProject/Exercises/PartBC.lean",
      "line": 30,
-     "name": "rationalRel_domain_isRegular",
+     "name": "Transducers.Exercises.rationalRel_domain_isRegular",
      "primary": true,
      "state": "proved"
     },
@@ -4859,7 +4995,7 @@
      "end": 51,
      "file": "RequestProject/Exercises/PartBC.lean",
      "line": 43,
-     "name": "rationalRel_range_isRegular",
+     "name": "Transducers.Exercises.rationalRel_range_isRegular",
      "state": "proved"
     }
    ],
@@ -4877,7 +5013,7 @@
      "end": 206,
      "file": "RequestProject/Exercises/LinearOutput.lean",
      "line": 183,
-     "name": "regular_exactly_linear_output",
+     "name": "Transducers.Exercises.regular_exactly_linear_output",
      "primary": true,
      "state": "proved"
     }
@@ -4915,7 +5051,7 @@
      "end": 651,
      "file": "RequestProject/Exercises/HOAtomsFromSplit.lean",
      "line": 643,
-     "name": "reverse_from_split",
+     "name": "Transducers.Exercises.reverse_from_split",
      "primary": true,
      "state": "proved"
     },
@@ -5037,10 +5173,21 @@
    "anchor": "exercise.633",
    "kind": "exercise",
    "label": "exer:split-triple",
-   "lean": [],
+   "lean": [
+    {
+     "decl_line": 144,
+     "end": 150,
+     "file": "RequestProject/Exercises/SplitTriple.lean",
+     "line": 141,
+     "name": "Transducers.Exercises.split_triple",
+     "primary": true,
+     "state": "proved"
+    }
+   ],
    "not_formalised": true,
    "number": "D.3.2",
-   "page": "189"
+   "page": "189",
+   "theorems_md_status": "`Exercises/SplitTriple.lean`"
   },
   "exer:squaring-continuous": {
    "anchor": "exercise.17",
@@ -5098,7 +5245,7 @@
      "end": 310,
      "file": "RequestProject/Exercises/SST.lean",
      "line": 291,
-     "name": "exists_isCopyfulSST_comp_not_isCopyfulSST",
+     "name": "Transducers.Exercises.exists_isCopyfulSST_comp_not_isCopyfulSST",
      "primary": true,
      "state": "proved"
     }
@@ -5113,20 +5260,20 @@
    "label": "exer:sst-copyful-sst-output-size",
    "lean": [
     {
+     "decl_line": 190,
+     "end": 205,
+     "file": "RequestProject/Exercises/SST.lean",
+     "line": 185,
+     "name": "Transducers.Exercises.CopyfulSST.output_length_exp_bound",
+     "primary": true,
+     "state": "proved"
+    },
+    {
      "decl_line": 249,
      "end": 253,
      "file": "RequestProject/Exercises/SST.lean",
      "line": 247,
      "name": "Transducers.Exercises.exists_isCopyfulSST_exponential",
-     "primary": true,
-     "state": "proved"
-    },
-    {
-     "decl_line": 190,
-     "end": 205,
-     "file": "RequestProject/Exercises/SST.lean",
-     "line": 185,
-     "name": "CopyfulSST.output_length_exp_bound",
      "state": "proved"
     }
    ],
@@ -5163,7 +5310,7 @@
      "end": 391,
      "file": "RequestProject/Exercises/SST.lean",
      "line": 377,
-     "name": "isPolyAut_two_pow_two_pow",
+     "name": "Transducers.Exercises.isPolyAut_two_pow_two_pow",
      "primary": true,
      "state": "proved"
     }
@@ -5243,10 +5390,10 @@
    "label": "exer:windows-of-size-two",
    "lean": [
     {
-     "decl_line": 476,
-     "end": 486,
+     "decl_line": 478,
+     "end": 488,
      "file": "RequestProject/Exercises/CombinatorsEx.lean",
-     "line": 474,
+     "line": 476,
      "name": "Transducers.Exercises.regTerm_windows_two",
      "primary": true,
      "state": "proved"
@@ -5510,7 +5657,6 @@
      "decl_line": 214,
      "end": 233,
      "file": "RequestProject/PartC/CombAtomDistr.lean",
-     "from": "THEOREMS.md",
      "line": 213,
      "name": "Transducers.Comb.isRegularUnderRepr_distr",
      "primary": true,
@@ -5520,6 +5666,14 @@
    "number": "C.5.5",
    "page": "137",
    "theorems_md_status": "proved (`CombAtomDistr.lean`), the worked example of the induction basis of Theorem `thm:regular-terms`; the parsing is done by the bracket counter of `CombDepth.lean` rather than by the automaton of the unlabelled claim that follows it in the book"
+  },
+  "lem:domination": {
+   "anchor": "lemma.643",
+   "kind": "lemma",
+   "label": "lem:domination",
+   "lean": [],
+   "number": "D.4.6",
+   "page": "193"
   },
   "lem:eliminate-epsilon-transitions": {
    "anchor": "lemma.134",
@@ -5579,9 +5733,28 @@
    "anchor": "claim.383",
    "kind": "claim",
    "label": "lem:fo-non-elementary-order",
-   "lean": [],
+   "lean": [
+    {
+     "decl_line": 101,
+     "end": 111,
+     "file": "RequestProject/Exercises/FONonElemClaim.lean",
+     "line": 92,
+     "name": "Transducers.Exercises.fo_non_elementary_order",
+     "primary": true,
+     "state": "proved"
+    },
+    {
+     "decl_line": 55,
+     "end": 75,
+     "file": "RequestProject/Exercises/FONonElemClaim.lean",
+     "line": 52,
+     "name": "sat_phiOrdSucc",
+     "state": "proved"
+    }
+   ],
    "number": "C.4.17",
-   "page": "132"
+   "page": "132",
+   "theorems_md_status": "`Exercises/FONonElemClaim.lean`"
   },
   "lem:for-closed-under-composition": {
    "anchor": "lemma.535",
@@ -5589,10 +5762,10 @@
    "label": "lem:for-closed-under-composition",
    "lean": [
     {
-     "decl_line": 95,
-     "end": 97,
+     "decl_line": 96,
+     "end": 98,
      "file": "RequestProject/PartD/Statements.lean",
-     "line": 93,
+     "line": 94,
      "name": "Transducers.forTransducer_comp",
      "primary": true,
      "state": "proved"
@@ -5870,10 +6043,10 @@
    "label": "lem:prenex-normal-form",
    "lean": [
     {
-     "decl_line": 89,
-     "end": 91,
+     "decl_line": 90,
+     "end": 92,
      "file": "RequestProject/PartD/Statements.lean",
-     "line": 87,
+     "line": 88,
      "name": "Transducers.forTransducer_prenex",
      "primary": true,
      "state": "proved"
@@ -6144,7 +6317,7 @@
      "end": 294,
      "file": "RequestProject/PartC/CombRepr.lean",
      "line": 214,
-     "name": "terms_define_string_representation",
+     "name": "Transducers.terms_define_string_representation",
      "primary": true,
      "state": "proved"
     }
@@ -6157,17 +6330,55 @@
    "anchor": "lemma.628",
    "kind": "lemma",
    "label": "lem:tiling",
-   "lean": [],
+   "lean": [
+    {
+     "decl_line": 95,
+     "end": 102,
+     "file": "RequestProject/PartD/TilingUndec.lean",
+     "line": 88,
+     "name": "Transducers.tiling_undecidable",
+     "primary": true,
+     "state": "proved"
+    }
+   ],
    "number": "D.3.15",
-   "page": "188"
+   "page": "188",
+   "theorems_md_status": "proved (`Tiling.lean`, `TilingCells.lean`, `TilingSRS.lean`, `TilingRows.lean`, `TilingGrid.lean`, `TilingSound.lean`, `TilingComplete.lean`, `TilingPrimrec.lean`, `TilingUndec.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`). The reduction is from the acceptance problem for the tape machines of `RequestProject/PCP/`, undecidable by `Acceptance.tm_acceptance_not_computablyDecidable`; the book reduces from halting on the empty input"
   },
   "lem:tiling-checker": {
    "anchor": "lemma.629",
    "kind": "lemma",
    "label": "lem:tiling-checker",
-   "lean": [],
+   "lean": [
+    {
+     "decl_line": 201,
+     "end": 208,
+     "file": "RequestProject/PartD/Statements.lean",
+     "line": 188,
+     "name": "Transducers.tiling_checker",
+     "primary": true,
+     "state": "proved"
+    },
+    {
+     "decl_line": 535,
+     "end": 574,
+     "file": "RequestProject/PartD/HOTiling.lean",
+     "line": 532,
+     "name": "eval_checkTerm",
+     "state": "proved"
+    }
+   ],
    "number": "D.3.16",
-   "page": "188"
+   "page": "188",
+   "theorems_md_status": "proved (`Tiling.lean`, `HOTiling.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`). The instance is assumed well formed, its corner tiles and the tiles of its local constraint being tiles of the instance -- a condition that is automatic in the book, where `s, t ∈ T` and `C ⊆ T⁴`, and has to be stated here because the tiles are presented as the natural numbers `0, …, maxTile`"
+  },
+  "lem:tuples-listed-by-for": {
+   "anchor": "lemma.640",
+   "kind": "lemma",
+   "label": "lem:tuples-listed-by-for",
+   "lean": [],
+   "number": "D.4.3",
+   "page": "193"
   },
   "lem:uniformisation": {
    "anchor": "lemma.137",
@@ -6195,6 +6406,14 @@
    "number": "B.2.5",
    "page": "43",
    "theorems_md_status": "proved (`Uniform.lean`, from the ε-free normal form of Lemma `lem:eliminate-epsilon-transitions` and the unambiguisation of `Unambig.lean`)"
+  },
+  "lema:tuples-listed-by-for-quantifier-free": {
+   "anchor": "lemma.641",
+   "kind": "lemma",
+   "label": "lema:tuples-listed-by-for-quantifier-free",
+   "lean": [],
+   "number": "D.4.4",
+   "page": "193"
   },
   "thm:2dfa-decomposition-into-primes": {
    "anchor": "theorem.281",
@@ -6700,10 +6919,10 @@
    "label": "thm:for-transducers-are-polyregular",
    "lean": [
     {
-     "decl_line": 82,
-     "end": 85,
+     "decl_line": 83,
+     "end": 86,
      "file": "RequestProject/PartD/Statements.lean",
-     "line": 80,
+     "line": 81,
      "name": "Transducers.polyregular_iff_forTransducer",
      "primary": true,
      "state": "proved"
@@ -6719,10 +6938,10 @@
    "label": "thm:higher-order-terms",
    "lean": [
     {
-     "decl_line": 157,
-     "end": 162,
+     "decl_line": 158,
+     "end": 163,
      "file": "RequestProject/PartD/Statements.lean",
-     "line": 152,
+     "line": 153,
      "name": "Transducers.polyregular_iff_higherOrderTerm",
      "primary": true,
      "state": "proved"
@@ -6927,10 +7146,10 @@
    "label": "thm:pebble-are-continuous",
    "lean": [
     {
-     "decl_line": 176,
-     "end": 178,
+     "decl_line": 222,
+     "end": 224,
      "file": "RequestProject/PartD/Statements.lean",
-     "line": 175,
+     "line": 221,
      "name": "Transducers.pebble_continuous",
      "primary": true,
      "state": "proved"
@@ -6954,10 +7173,10 @@
    "label": "thm:pebble-are-for",
    "lean": [
     {
-     "decl_line": 184,
-     "end": 189,
+     "decl_line": 230,
+     "end": 235,
      "file": "RequestProject/PartD/Statements.lean",
-     "line": 182,
+     "line": 228,
      "name": "Transducers.pebble_iff_forTransducer",
      "primary": true,
      "state": "proved"
@@ -6973,10 +7192,10 @@
    "label": "thm:polyregular-functions-are-continuous",
    "lean": [
     {
-     "decl_line": 53,
-     "end": 64,
+     "decl_line": 54,
+     "end": 65,
      "file": "RequestProject/PartD/Statements.lean",
-     "line": 52,
+     "line": 53,
      "name": "Transducers.polyregular_continuous",
      "primary": true,
      "state": "proved"
@@ -6992,10 +7211,10 @@
    "label": "thm:polyregular-terms",
    "lean": [
     {
-     "decl_line": 114,
-     "end": 116,
+     "decl_line": 115,
+     "end": 117,
      "file": "RequestProject/PartD/Statements.lean",
-     "line": 112,
+     "line": 113,
      "name": "Transducers.polyregular_iff_polyregularTerm",
      "primary": true,
      "state": "proved"
@@ -7258,9 +7477,20 @@
    "anchor": "theorem.627",
    "kind": "theorem",
    "label": "thm:undecidability-higher-order",
-   "lean": [],
+   "lean": [
+    {
+     "decl_line": 119,
+     "end": 137,
+     "file": "RequestProject/PartD/TilingUndec.lean",
+     "line": 104,
+     "name": "Transducers.undecidability_higherOrder",
+     "primary": true,
+     "state": "proved"
+    }
+   ],
    "number": "D.3.14",
-   "page": "187"
+   "page": "187",
+   "theorems_md_status": "proved (`TilingUndec.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`). The decision problem is stated on the data `I` from which the two terms are built, not on codes of terms: for an instance `I` of the tiling problem the two terms are `Transducers.HOTile.checkTerm I` and `Transducers.HOTile.falseTerm I.maxTile`, and no algorithm decides, reading `I`, whether they have the same semantics. The terms of Definition `def:higher-order-terms` are intrinsically typed here, so the project has no encoding of them as data; a decision procedure reading codes of the two terms would give one reading `I` under any encoding for which `I ↦ (code, code)` is computable"
   },
   "thm:undecidable-equivalence-rational-relations": {
    "anchor": "theorem.110",
