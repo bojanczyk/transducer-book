@@ -214,6 +214,8 @@ generator working from the tables alone would delete them.
 | D.3.14 | theorem | `thm:undecidability-higher-order` | `higher-order.tex` |
 | D.3.15 | lemma | `lem:tiling` | `higher-order.tex` |
 | D.3.16 | lemma | `lem:tiling-checker` | `higher-order.tex` |
+| D.4.3 | lemma | `lem:tuples-listed-by-for` | `mso-interpretation.tex` |
+| D.4.6 | lemma | `lem:domination` | `mso-interpretation.tex` |
 
 Sections and subsections:
 

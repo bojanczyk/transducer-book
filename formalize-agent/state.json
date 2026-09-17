@@ -50,7 +50,8 @@
     "D3-realign",
     "D3-exercises-polyregular",
     "D3-tiling-undecidability",
-    "book-remaining-results"
+    "book-remaining-results",
+    "B13-rational-recognisable"
   ],
   "targets": {
     "B-effectivity-conditional": {
@@ -1379,13 +1380,42 @@
         }
       ],
       "idle_continues": 0
+    },
+    "B13-rational-recognisable": {
+      "status": "running",
+      "attempts": 1,
+      "continues": 0,
+      "reattempts": 0,
+      "task_ids": [
+        "da13108d-5ac4-4823-b64b-6ef15d8057a3"
+      ],
+      "started_at": "2026-09-17 06:18:10Z",
+      "finished_at": null,
+      "note": null,
+      "sorries_at_start": 0,
+      "runs": [
+        {
+          "task_id": "da13108d-5ac4-4823-b64b-6ef15d8057a3",
+          "project_id": "7bef2a42-3e48-49fb-b7c9-dddbb9b97e98",
+          "base": "0548071d13019e74221b9e195df678cd18bfaa9f",
+          "kind": "initial",
+          "at": "2026-09-17 06:18:10Z"
+        }
+      ]
     }
   },
-  "current": null,
+  "current": {
+    "target_id": "B13-rational-recognisable",
+    "task_id": "da13108d-5ac4-4823-b64b-6ef15d8057a3",
+    "project_id": "7bef2a42-3e48-49fb-b7c9-dddbb9b97e98",
+    "base": "0548071d13019e74221b9e195df678cd18bfaa9f",
+    "submitted_at": "2026-09-17 06:18:10Z",
+    "kind": "initial"
+  },
   "paused": false,
   "pause_reason": null,
   "finished_at": null,
-  "ticks": 1262,
-  "last_tick": "2026-09-17 04:36:02Z",
+  "ticks": 1266,
+  "last_tick": "2026-09-17 06:18:04Z",
   "review_pending": 14
 }

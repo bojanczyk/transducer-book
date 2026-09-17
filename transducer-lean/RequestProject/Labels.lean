@@ -1385,6 +1385,8 @@ above, so that this file accounts for all of them:
 
 * `def:rational-recognisable-subsets` (definition) -- not formalised (rational and recognisable subsets of a monoid, which the later sections do not use);
 * `nolabel:exer-pref-from-mult` (exercise) -- withdrawn from the book by the author, which replaced it with `exer:split-triple`; the statement it had is still proved, as `Transducers.Exercises.pref_from_mult` in `RequestProject/Exercises/HOAtomsFromSplit.lean`, and is simply no longer a result of the book;
+* `lem:tuples-listed-by-for` (lemma) -- in Section D.4, which the author says is inconsistent at this stage and is not to be formalised until it settles;
+* `lem:domination` (lemma) -- Section D.4, the same;
 * `conj:regular-via-weighted-automata` (conjecture) -- a conjecture of the book, not a result to formalise;
 * `nolabel:thm-fo-transduction-into-primes` (theorem) -- removed from the formalised theorems at the user's request; its statement is kept, commented out, in `PartC/MSOOpen.lean`;
 -/

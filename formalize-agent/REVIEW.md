@@ -276,3 +276,9 @@ The merge is commit 4e6dd93; the tree as it stood before it is 218a7072, so
     git -C /Users/bojan/Documents/ksiazki/transducer-book-lean reset --hard 218a7072
 
 undoes it if the run is not worth repairing. The run itself is on branch `aristotle/437e810b`.
+
+## 2026-09-16 14:14:25Z — D3-tiling-undecidability conflicts with local work
+
+The run started from 43f41a5e and its result does not merge cleanly into what the repository holds now — the same files were changed on both sides. Nothing has been lost: the run is on branch `aristotle/437e810b`.
+
+    git -C /Users/bojan/Documents/ksiazki/transducer-book-lean/transducer-lean merge aristotle/437e810b

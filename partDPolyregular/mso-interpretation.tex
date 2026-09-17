@@ -1,0 +1,108 @@
+\section{\mso interpretations}
+\label{sec:mso-interpretation}
+
+
+
+\begin{definition}
+    Consider two linearly ordered sets $U$ and $V$ such that $V \subseteq X^d$ for some $d \in \set{1,2,\ldots}$. We say that coordinate $i \in \set{1,\ldots,d}$ is \emph{dominating} if 
+    \begin{align*}
+    \myunderbrace{v[i] < v'[i]}{order on $U$} \implies
+    \myunderbrace{v < v'}{order on $V$} \quad \text{for all } v,v' \in V.
+    \end{align*}
+\end{definition}
+
+
+
+
+
+\begin{lemma}
+    Consider a type $A^*$, and two formulas 
+    \begin{align*}
+    \tau(x_1,\ldots,x_d) \quad \varphi_{\leq}(x_1,\ldots,x_d, y_1,\ldots,y_d)
+    \end{align*}
+    such that for evdery $w \in A^*$, the formula $\varphi$ defines a linear order on the set $\psi^w$. Then for every $w \in A^*$, the order defined by $\varphi$ satisfies the domination property with respect to the list order on $w$. 
+    Furhtermore, the parameters of domination (the coordinate $i$, the orientation of the order, and the distance threshold) can be chosen uniformly for all $w \in A^*$.
+\end{lemma}
+
+
+
+
+
+
+\begin{lemma}\label{lem:tuples-listed-by-for}
+    Consider a type $A$, and two quantifier-free formulas 
+    \begin{align*}
+    \varphi (x : \tau) \quad \psi(x,y : \tau)
+    \end{align*}
+    such that for every $a \in A$, the formula $\psi$ defines a linear order on the set $\varphi^a$. Then 
+    \begin{align*}
+    a \in A \quad \mapsto \quad \text{tuples in $\varphi^a$ ordered according to $\psi$.}
+    \end{align*}
+    is computed by a for-transducer.
+\end{lemma}
+
+
+
+
+\begin{lemma}\label{lema:tuples-listed-by-for-quantifier-free}
+    To prove \cref{lem:tuples-listed-by-for}, it is enough to prove the case when:
+    \begin{itemize}
+        \item the type $A$ is of the form $A_1^* \times \cdots \times A_n^*$, and
+        \item the formula $\varphi$ is a quantifier-free type.
+    \end{itemize}
+\end{lemma}
+\begin{proof}
+    
+\end{proof}
+
+
+
+\begin{definition}
+    A structure-to-order function is a function of the following form:
+    \begin{itemize}
+        \item \textbf{Input.} A structure from some class of structures $A$;
+        \item \textbf{Output.} A list in $(\dom a)^d$;
+    \end{itemize}
+\end{definition}
+
+
+\begin{lemma}[Domination Lemma]\label{lem:domination}
+    Consider 
+\begin{itemize}
+    \item a type $A = A_1^* \times \times A_k^*$;
+    \item quantifier-free formulas $\varphi(x_1,\ldots,x_d)$ and $\psi(x_1,\ldots,x_d,y_1,\ldots,y_d)$ over the vocabulary of $\underline A$;
+    \item the order formula is quantifier-free
+\end{itemize}
+Then there exist: 
+\begin{itemize}
+    \item a coordinate $i \in \set{1,\ldots,d}$,
+    \item an orientation $\in \set{\text{increasing}, \text{decreasing}}$,
+    \item a distance threshold $k \in \set{0,1,\ldots}$
+\end{itemize}
+such that if we write 
+\begin{itemize}
+    \item $<_a$ for the list order on elements of $a$;
+    \item $\prec_a$ for the order on $\varphi^a$ defined by $\psi$;
+\end{itemize}
+then we have one of the following two properties:
+\begin{itemize}
+    \item for every $a \in A$ and $x,y \in \underline a^d$, if $x[i] + t <_a y[i]$ then $x \prec_a y$.
+\end{itemize}
+\end{lemma}
+
+
+\begin{align*}
+(\underline a, \text{list order}) \quad (\varphi^a, \text{order defined by $\psi$})
+\end{align*}
+
+
+\begin{lemma}
+    Consider a type 
+    \begin{align*}
+    A = A_1^* \times \cdots \times A_n^*,
+    \end{align*}
+    and a quantifier-free formulas
+    \begin{align*}
+    \varphi(x_1,\ldots,x_d) 
+    \end{align*}
+\end{lemma}
