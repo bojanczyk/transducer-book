@@ -26,5 +26,6 @@ import RequestProject.PartB.SubseqState
 import RequestProject.PartB.SubseqBound
 import RequestProject.PartB.SubseqChar
 import RequestProject.PartB.WeightedZero
+import RequestProject.PartB.MonoidSubsets
 import RequestProject.PartB.RationalStatements
 import RequestProject.PartB.WeightedStatements

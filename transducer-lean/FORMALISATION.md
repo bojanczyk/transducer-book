@@ -209,14 +209,15 @@ now theorems: `Transducers.EffectiveWeightedEvalEq` in
 
 ## 5. What is not formalised, and why
 
-Three theorem-like environments of the book have no Lean counterpart.  None of
-them is a gap in a proof: none of the three is a mathematical result that this
-formalisation is meant to establish.
+Two theorem-like environments of the book have no Lean counterpart.  Neither of
+them is a gap in a proof: neither is a mathematical result that this
+formalisation is meant to establish.  (Definition
+`def:rational-recognisable-subsets`, the rational and recognisable subsets of a
+monoid, was the third entry of this list; it is now formalised, as
+`Transducers.IsRecognisableSubset` and `Transducers.IsRationalSubset` of
+`PartB/MonoidSubsets.lean`, although the book uses it only in the remark
+explaining the name *Kleene theorem* and nothing else depends on it.)
 
-* **Definition `def:rational-recognisable-subsets`** (rational and recognisable
-  subsets of a monoid).  The book uses it once, in the remark explaining the
-  name *Kleene theorem*; nothing else depends on it.  The recognisable subsets
-  of `A* × B*` are formalised, for that monoid, as part of the exercises.
 * **Conjecture `conj:regular-via-weighted-automata`** — an open conjecture, not
   a result.
 * **The unnumbered paragraph at the end of `logic.tex`** (first-order

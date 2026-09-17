@@ -493,8 +493,9 @@ named after the labels.
   bound directly.
 * **`ex:recognisable-relations`.**  `IsRecognisableRel` is the book's Definition
   `def:rational-recognisable-subsets` specialised to the monoid `A* × B*`; the
-  general notion, for an arbitrary monoid, is still not formalised, and this
-  exercise is the only place that needs it.  Recognisability is taken in the
+  general notion, for an arbitrary monoid, is `Transducers.IsRecognisableSubset`
+  of `PartB/MonoidSubsets.lean`, and this exercise is the only place in the
+  project that needs recognisability at all.  Recognisability is taken in the
   form the author's solution uses -- the inverse image of a subset of a finite
   monoid under a monoid homomorphism -- and a homomorphism out of a free monoid
   is given by a plain function together with the two equations it satisfies, so
