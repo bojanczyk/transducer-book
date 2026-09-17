@@ -10,9 +10,12 @@ representation of configurations and of child configuration graphs, and are ther
 `claim:from-child-configuration-graph-to-children` (`ChildGraphFor.lean`) and Claim
 `claim:from-configuration-to-child-configuration-graph` together with Lemma
 `lem:children-of-configuration-in-pebble-run` (`CGFor.lean`), and a machine for which the
-hypotheses of the last two are satisfied (`ChildExample.lean`). -/
+hypotheses of the last two are satisfied (`ChildExample.lean`), and the undecidability results of
+Section *A functional programming language*: Lemma `lem:tiling` and Theorem
+`thm:undecidability-higher-order` (`TilingUndec.lean`). -/
 import RequestProject.PartD.Statements
 import RequestProject.PartD.PebReach
 import RequestProject.PartD.ChildGraphFor
 import RequestProject.PartD.CGFor
 import RequestProject.PartD.ChildExample
+import RequestProject.PartD.TilingUndec

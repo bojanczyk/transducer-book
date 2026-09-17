@@ -164,7 +164,7 @@ theorem polyregular_iff_higherOrderTerm {A B : Ty} (f : A.Elt → B.Elt) :
 
 /-! ### Undecidability of equivalence at higher-order types
 
-Of the three results of this subsection, one is formalised.
+All three results of this subsection are formalised.
 
 * Lemma `lem:tiling-checker` is `Transducers.tiling_checker` below; the term it provides is
   `Transducers.HOTile.checkTerm` (`RequestProject/PartD/HOTiling.lean`), and the tiling problem it
@@ -173,18 +173,17 @@ Of the three results of this subsection, one is formalised.
   `Transducers.Tiling.Instance`, `Transducers.Tiling.IsSolution` and
   `Transducers.Tiling.Solvable` (`RequestProject/PartD/Tiling.lean`), where the conditions on a
   solution are taken from the author's own proof of Lemma `lem:tiling-checker`.
-* Lemma `lem:tiling` (the tiling problem is undecidable) and Theorem
-  `thm:undecidability-higher-order` (the equivalence problem for higher-order polyregular terms is
-  undecidable) are **not formalised**.  `THEOREMS.md` says precisely what each of them would
-  require; in short, the first needs the reduction of the halting problem to the tiling problem,
-  which is a development of its own, and the second needs, on top of it, an encoding of the terms
-  of Definition `def:higher-order-terms` as data, so that "decidable" can be said of a problem
-  about terms at all.
+* Lemma `lem:tiling` (the tiling problem is undecidable) is `Transducers.tiling_undecidable` and
+  Theorem `thm:undecidability-higher-order` (the equivalence problem for higher-order polyregular
+  terms is undecidable) is `Transducers.undecidability_higherOrder`; both are in
+  `RequestProject/PartD/TilingUndec.lean`, which comes after this file because it uses the
+  Turing-machine development of `RequestProject/Acceptance/` and `RequestProject/PCP/`.  The
+  reduction of the acceptance problem to the tiling problem is built in
+  `RequestProject/PartD/TilingCells.lean` and the files named `Tiling*` after it.
 
-What *is* proved about the reduction, and is the other half of the proof of Theorem
-`thm:undecidability-higher-order`, is `Transducers.HOTile.checkTerm_eq_falseTerm_iff`: the term of
-Lemma `lem:tiling-checker` has the same semantics as the constant `false` term exactly when the
-instance has no solution. -/
+The link between the two halves of the proof of Theorem `thm:undecidability-higher-order` is
+`Transducers.HOTile.checkTerm_eq_falseTerm_iff`: the term of Lemma `lem:tiling-checker` has the
+same semantics as the constant `false` term exactly when the instance has no solution. -/
 
 /-- **Lemma `lem:tiling-checker`.**  For every instance of the tiling problem there is a
 higher-order polyregular term of type
