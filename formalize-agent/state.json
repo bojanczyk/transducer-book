@@ -1350,21 +1350,42 @@
       "idle_continues": 0
     },
     "book-remaining-results": {
-      "status": "pending",
-      "attempts": 0,
-      "continues": 0,
+      "status": "done",
+      "attempts": 2,
+      "continues": 1,
       "reattempts": 0,
-      "task_ids": [],
-      "started_at": null,
+      "task_ids": [
+        "4f1cc300-f04c-4177-bc6d-84660e37c983",
+        "02b808b2-ac16-45a1-b57d-daf9006d417e"
+      ],
+      "started_at": "2026-09-17 00:41:44Z",
       "finished_at": null,
-      "note": null
+      "note": "all six results proved, verified, axiom-clean",
+      "sorries_at_start": 0,
+      "runs": [
+        {
+          "task_id": "4f1cc300-f04c-4177-bc6d-84660e37c983",
+          "project_id": "b94f7fb2-9821-4c47-821d-126baa8f1c9b",
+          "base": "26f4b52263f2affbb1b5ff6c99de3ce20f30c8ee",
+          "kind": "initial",
+          "at": "2026-09-17 00:41:44Z"
+        },
+        {
+          "task_id": "02b808b2-ac16-45a1-b57d-daf9006d417e",
+          "project_id": "34a11c36-910a-4c63-b300-ed080744c07a",
+          "base": "0fd09a0e8844853f9db8e14e011f092fd6f9fcfe",
+          "kind": "continue",
+          "at": "2026-09-17 05:25:21Z"
+        }
+      ],
+      "idle_continues": 0
     }
   },
   "current": null,
   "paused": false,
   "pause_reason": null,
   "finished_at": null,
-  "ticks": 1258,
-  "last_tick": "2026-09-17 00:37:23Z",
+  "ticks": 1262,
+  "last_tick": "2026-09-17 04:36:02Z",
   "review_pending": 14
 }

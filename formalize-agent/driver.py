@@ -449,6 +449,21 @@ def live_hypotheses(ld: Path, names: list[str]) -> list[str]:
     return [n for n in names if n in live]
 
 
+def unaliased(ld: Path, labels: list) -> list:
+    """Which of these book labels have no alias in `Labels.lean` yet.
+
+    The companion to open_results, for targets that are named by the labels they
+    are to formalise rather than by a Lean declaration. book-remaining-results
+    had six labels and no `lean_names`, so the completion check could say
+    nothing about it and it was sent round again with all six already proved.
+    """
+    f = ld / "RequestProject" / "Labels.lean"
+    if not f.is_file():
+        return list(labels)
+    text = f.read_text(errors="ignore")
+    return [l for l in labels if f"alias «{l}»" not in text]
+
+
 def open_results(ld: Path, names: list[str]) -> list[str]:
     """Which of these declarations are not yet fully proved.
 
@@ -1397,7 +1412,10 @@ def tick(cfg: dict, q: list, st: dict) -> None:
                 # reached the check only once the continuations were exhausted,
                 # so a finished target burned every one of them.
                 done_names = target.get("lean_names") or []
-                if done_names and not open_results(lean_dir(cfg), done_names):
+                done_labels = target.get("labels") or []
+                finished = ((done_names and not open_results(lean_dir(cfg), done_names))
+                            or (done_labels and not unaliased(lean_dir(cfg), done_labels)))
+                if finished:
                     log(f"{target['id']}: every declared result is proved — "
                         f"not continuing")
                     note_sorry_delta(cfg, st, rec, target)
@@ -1529,6 +1547,40 @@ def cmd_status(args) -> None:
     if cur:
         print(f"running: {cur['target_id']} (task {cur['task_id']}, {cur['kind']}, "
               f"since {cur['submitted_at']})")
+        # Ask Aristotle rather than reporting what the last tick believed. The
+        # two disagree whenever a run finishes between ticks -- the dashboard
+        # shows nothing running while this said "running", which reads as the
+        # driver having lost the job when in fact it simply had not looked yet.
+        # status holds no lock and changes no state, so a live read is safe.
+        try:
+            t = get_task(cur["task_id"])
+            name = str(t.status).split(".")[-1]
+            pct = getattr(t, "percent_complete", None)
+            if name in ("QUEUED", "IN_PROGRESS"):
+                print(f"   on Aristotle: {name}"
+                      + (f", {pct}% complete" if pct is not None else ""))
+            elif VERIFY_MARKER.exists():
+                print(f"   on Aristotle: {name} — it has FINISHED, and the driver is "
+                      f"verifying its merge right now (see below).")
+                print(f"   The dashboard shows nothing running because nothing is.")
+            else:
+                print(f"   on Aristotle: {name} — it has FINISHED and is waiting to be "
+                      f"collected.")
+                print(f"   The dashboard shows nothing running because nothing is; the "
+                      f"next tick will merge it.")
+                print(f"   To collect it now: driver.py tick")
+        except Exception as e:
+            print(f"   on Aristotle: could not ask ({e!r}); the line above is "
+                  f"what the last tick saw, which may be stale")
+    last = st.get("last_tick")
+    if last:
+        try:
+            mins = (now() - datetime.fromisoformat(
+                last.replace("Z", "+00:00"))).total_seconds() / 60
+            stale = "  — the scheduled tick is overdue" if mins > 20 else ""
+            print(f"last tick: {last} ({mins:.0f} min ago){stale}")
+        except Exception:
+            print(f"last tick: {last}")
     if VERIFY_MARKER.exists():
         began = VERIFY_MARKER.read_text().strip()
         try:
