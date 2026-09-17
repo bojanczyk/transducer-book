@@ -151,6 +151,19 @@ assert_no_sorry «def:nfa-with-output#2»
 alias «def:rational-relation» := Transducers.IsRationalRel
 assert_no_sorry «def:rational-relation»
 
+/-- **Definition `def:rational-recognisable-subsets`** (the rational and the recognisable subsets
+of a monoid): `Transducers.IsRecognisableSubset`, the recognisable ones.  A congruence of finite
+index is rendered by a `Con M` with finite quotient, and `L` is the union of a finite set of its
+classes, as in the book. -/
+alias «def:rational-recognisable-subsets» := Transducers.IsRecognisableSubset
+assert_no_sorry «def:rational-recognisable-subsets»
+
+/-- **Definition `def:rational-recognisable-subsets`** (the rational and the recognisable subsets
+of a monoid): `Transducers.IsRationalSubset`, the rational ones -- an inductive predicate whose
+clauses are the book's finite subsets, union, pointwise product and Kleene star. -/
+alias «def:rational-recognisable-subsets#2» := Transducers.IsRationalSubset
+assert_no_sorry «def:rational-recognisable-subsets#2»
+
 /-- **Theorem `thm:composition-rational-relations`** (composition): `Transducers.rationalRel_comp`. -/
 alias «thm:composition-rational-relations» := Transducers.rationalRel_comp
 assert_no_sorry «thm:composition-rational-relations»
@@ -1383,8 +1396,9 @@ assert_no_sorry «exer:split-triple»
 The theorem-like environments of the book that are not aliased
 above, so that this file accounts for all of them:
 
-* `def:rational-recognisable-subsets` (definition) -- not formalised (rational and recognisable subsets of a monoid, which the later sections do not use);
 * `nolabel:exer-pref-from-mult` (exercise) -- withdrawn from the book by the author, which replaced it with `exer:split-triple`; the statement it had is still proved, as `Transducers.Exercises.pref_from_mult` in `RequestProject/Exercises/HOAtomsFromSplit.lean`, and is simply no longer a result of the book;
+* `lem:tuples-listed-by-for` (lemma) -- in Section D.4, which the author says is inconsistent at this stage and is not to be formalised until it settles;
+* `lem:domination` (lemma) -- Section D.4, the same;
 * `conj:regular-via-weighted-automata` (conjecture) -- a conjecture of the book, not a result to formalise;
 * `nolabel:thm-fo-transduction-into-primes` (theorem) -- removed from the formalised theorems at the user's request; its statement is kept, commented out, in `PartC/MSOOpen.lean`;
 -/

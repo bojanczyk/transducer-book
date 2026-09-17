@@ -319,8 +319,9 @@ theorem rationalRel_finiteOutputs_iff_affine {A B : Type} [Finite A] [Finite B]
 
 /-- **Definition of a recognisable subset of `A* × B*`.**  This is the book's Definition
 `def:rational-recognisable-subsets` specialised to the monoid `A* × B*`, whose product is
-concatenation in each coordinate; the general notion, for an arbitrary monoid, is not part of this
-formalisation, and the exercise is the only place that needs it.
+concatenation in each coordinate; the general notion, for an arbitrary monoid, is
+`Transducers.IsRecognisableSubset` of `RequestProject/PartB/MonoidSubsets.lean`, and this exercise
+is the only place that needs recognisability at all.
 
 As in the author's solution, recognisability is used in the form "inverse image of a subset of a
 finite monoid under a monoid homomorphism" (the solution recalls that this is equivalent to the

@@ -89,6 +89,7 @@ RequestProject/
 | `PartB/WeightedDec.lean`, `PartB/RatEqDec.lean`, `PartB/MealyDec.lean` | the decision procedures of Theorems `thm:equivalence-weighted-automata` and `thm:zeroness-weighted-automata`, of Theorem `thm:equivalence-rational-functions` and of Theorem `thm:decide-if-mealy` |
 | `PartB/PrefixCodes.lean`, `PartB/CodeRat.lean` | the two codes reducing prefix preservation to an equality of rational functions, and the rational function described by a code over its own finite alphabets |
 | `PartB/RationalStatements.lean` | Sections *Rational relations* to *Rational functions*: rational relations, rational functions, bimachines |
+| `PartB/MonoidSubsets.lean` | Definition `def:rational-recognisable-subsets`: the rational and the recognisable subsets of an arbitrary monoid.  Nothing else in the project uses it, as nothing else in the book does |
 | `PartB/WeightedNF.lean`, `PartB/WeightedLinRep.lean`, `PartB/WeightedPrecomp.lean`, `PartB/WeightedRegular.lean`, `PartB/WeightedZero.lean` | normal forms and linear representations of weighted automata, the proofs of Lemma `lem:closure-weighted-automata-precomposition` and Theorem `thm:characterisation-rational-functions-weighted-automata`, and Schützenberger's zeroness criterion |
 | `PartB/WeightedStatements.lean` | Sections *Rational relations and weighted automata* to *Machine independent characterisations*: weighted automata, machine independent characterisations |
 | `PartC/ContAux.lean` | continuity: closure under composition, letter-to-letter maps, reversal, duplication, and the map lifting (Lemma `lem:map-lifting-continuous`) |
@@ -450,8 +451,6 @@ false statements and into the list of statements the book has corrected.
   procedure rests (enumerate the state transformations that arise and check that
   the powers of each one stabilise), but neither that enumeration nor the
   resulting decision procedure is written down.
-* Definition `def:rational-recognisable-subsets` — not formalised at all; see its row in the
-  Part B index.
 * Conjecture `conj:regular-via-weighted-automata` — not formalised; see its row in the
   Part C index.
 
@@ -593,7 +592,7 @@ transformations of the prefixes of the input).
 | --- | --- | --- | --- |
 | Definition `def:nfa-with-output` (nfa with output) | `Transducers.NFAO` (via `Transducers.LabAut`) | — | `PartB/LabAut.lean` |
 | Definition `def:rational-relation` (rational relation) | `Transducers.IsRationalRel` | — | `PartB/LabAut.lean` |
-| Definition `def:rational-recognisable-subsets` (the rational and the recognisable subsets of a monoid) | — | not formalised.  The book uses it once, in the remark that explains the name *Kleene Theorem*; nothing else in the book, and nothing in this project, depends on it.  The recognisable subsets of `A* × B*` are formalised, for that monoid only, as `Transducers.Exercises.IsRecognisableRel` (Exercise `ex:recognisable-relations`, see `EXERCISES.md`) | — |
+| Definition `def:rational-recognisable-subsets` (the rational and the recognisable subsets of a monoid) | `Transducers.IsRecognisableSubset`, `Transducers.IsRationalSubset` | — | `PartB/MonoidSubsets.lean` |
 | Theorem `thm:composition-rational-relations` (composition) | `Transducers.rationalRel_comp` | proved (product automaton in `RatComp.lean`, on the atomic normal form of `Atomize.lean`) | `PartB/RationalStatements.lean` |
 | Theorem `thm:continuity-rational-relations` (continuity) | `Transducers.rationalRel_continuous` | proved (ε-automaton running a dfa on the output, `RatCont.lean`) | `PartB/RationalStatements.lean` |
 | Theorem `thm:undecidable-equivalence-rational-relations` (undecidable equivalence) | `Transducers.rationalRel_equivalence_undecidable` | proved outright; the reduction is in `PCPRed.lean`, and the undecidability of the Post correspondence problem, which this used to take as an explicit hypothesis, is now proved as `Transducers.PCP.solvable_not_computablePred` (`PCP/Index.lean`) | `PartB/RationalStatements.lean` |
@@ -1824,18 +1823,19 @@ results, the latest being the three results at the end of Section D.3.  Two
 environments are left out of the table below, as they have been all along: the
 open Conjecture `conj:regular-via-weighted-automata`, which is not a result, and
 the exercise `nolabel:exer-pref-from-mult`, which the author has withdrawn.
-The two environments that are not formalised are Definition
-`def:rational-recognisable-subsets` and the unnumbered paragraph
-`nolabel:thm-fo-transduction-into-primes`, each with its reason in the index
-above.  (Claim `claim:parsing-is-regular` was on that list while it carried no
+The one environment that is not formalised is the unnumbered paragraph
+`nolabel:thm-fo-transduction-into-primes`, with its reason in the index above.
+(Definition `def:rational-recognisable-subsets` was on that list until the
+present pass, which formalises it: `Transducers.IsRecognisableSubset` and
+`Transducers.IsRationalSubset` of `PartB/MonoidSubsets.lean`.)  (Claim `claim:parsing-is-regular` was on that list while it carried no
 label in the sources; it is now labelled and proved, in `PartC/CombParse.lean`.)
 
 | | Introduction | Part A | Part B | Part C | Part D | total |
 | --- | --- | --- | --- | --- | --- | --- |
-| definitions formalised | 1 | 4 | 7 | 9 | 5 | **26** |
+| definitions formalised | 1 | 4 | 8 | 9 | 5 | **27** |
 | results proved outright | 0 | 11 | 26 | 44 | 21 | **102** |
 | results proved from an explicit hypothesis | 0 | 0 | 0 | 0 | 0 | **0** |
-| environments not formalised | 0 | 0 | 1 | 1 | 0 | **2** |
+| environments not formalised | 0 | 0 | 0 | 1 | 0 | **1** |
 
 *Proved outright* means: the proof is complete, no file it depends on contains a
 `sorry`, and `#print axioms` reports only `propext`, `Classical.choice`,
@@ -1882,10 +1882,12 @@ Seven results used to appear in this table, and every one of them is now proved 
   `Common/PrimrecList.lean`, and both hypotheses are now theorems
   (`PartB/WCodePrimrec.lean` and `PartC/TwoWaySimPrimrec.lean`).
 
-### The two environments that are not formalised for want of a reason to be
+### The environments that are not formalised for want of a reason to be
 
-None of them is an unfinished proof: neither of the two is a mathematical result
-that this formalisation is meant to establish.  (Theorem
+Neither of them is an unfinished proof: neither is a mathematical result
+that this formalisation is meant to establish.  (Definition
+`def:rational-recognisable-subsets` was the third entry of this table; it is now
+formalised, in `PartB/MonoidSubsets.lean`, even though nothing uses it.)  (Theorem
 `thm:undecidability-higher-order` and Lemma `lem:tiling`, which were on this
 list while the reduction they need was missing, are now proved; see the addendum
 *The undecidability of equivalence at higher-order types* at the end of this
@@ -1893,7 +1895,6 @@ file.)
 
 | environment | reason |
 | --- | --- |
-| Definition `def:rational-recognisable-subsets` | the rational and recognisable subsets of a monoid; used once in the book, in the remark explaining the name *Kleene theorem*, and by nothing else |
 | Conjecture `conj:regular-via-weighted-automata` | an open conjecture of the book, not a result |
 | Theorem `nolabel:thm-fo-transduction-into-primes` | withdrawn from this formalisation at the author's request; the book states it without proof.  Its statement is kept, commented out, in `PartC/MSOOpen.lean`, and its easy half is proved as `Transducers.isFOTransduction_of_compClosure` |
 
@@ -3753,3 +3754,54 @@ half-open, as `(x₁, x₂]`, and renders "consecutive in the lexicographic orde
 `exer:fo-non-elementary`; and it carries the hypothesis that the string has at
 least two positions, which is the hypothesis of `sat_phiOrd`, and is what makes
 the two quantified mode positions available.
+
+## Status (the last unformalised definition: `def:rational-recognisable-subsets`)
+
+This pass formalises Definition `def:rational-recognisable-subsets`, the
+rational and the recognisable subsets of a monoid, which was the only definition
+of the book that this project did not render.  The book makes it in the remark
+that explains the name *rational* and uses it nowhere else, so nothing is proved
+about the two notions here and nothing in the project depends on the new file.
+
+| result | Lean | where |
+| --- | --- | --- |
+| Definition `def:rational-recognisable-subsets` (recognisable) | `Transducers.IsRecognisableSubset` | `PartB/MonoidSubsets.lean` |
+| Definition `def:rational-recognisable-subsets` (rational) | `Transducers.IsRationalSubset` | `PartB/MonoidSubsets.lean` |
+
+**How the two notions are rendered.**
+
+* `IsRecognisableSubset L` says: there is a congruence `c : Con M` of finite
+  index (`Finite c.Quotient`) and a finite set `S` of its classes with
+  `L = ⇑c.mk' ⁻¹' S`, i.e. `L` is the union of finitely many classes of `c`.
+  Mathlib's `Con M` is exactly an equivalence relation on `M` satisfying the
+  implication the book displays, `m₁ ∼ m₁' → m₂ ∼ m₂' → m₁ · m₂ ∼ m₁' · m₂'`, so
+  no congruence machinery is rebuilt.  The finiteness of `S` follows from the
+  finiteness of the quotient; it is kept because the book says "finitely many
+  equivalence classes".
+* `IsRationalSubset` is an inductive predicate with the book's four clauses: a
+  finite subset is rational, and the rational subsets are closed under union,
+  under the pointwise product `L * K` (Mathlib's `Set.mul`, in the `Pointwise`
+  scope) and under the Kleene star `⋃ n : ℕ, L ^ n` written exactly as the book
+  writes it.  Being inductive is what renders "obtained by applying the three
+  operations a finite number of times".
+
+**What Mathlib has.**  Mathlib (v4.28.0) has neither notion for a general
+monoid: it has `Language.IsRegular` and the automata material for languages over
+a free monoid, `Submonoid.closure`, and the pointwise product and powers of
+subsets, but no `IsRational`/`IsRecognisable` predicate on `Set M`.  So the two
+definitions are made here, out of Mathlib's `Con` and pointwise operations.
+
+**Verification.**  `lake build` succeeds with no errors, and the new file draws
+no linter warning of its own (the fifty warnings the build now emits, all of
+them `simp` arguments and tactics that the linters call unused, are in the
+tiling files of Part D and predate this pass); the new
+file contains no `sorry`, no `axiom` and no `native_decide`, and `#print axioms`
+on the two new aliases `«def:rational-recognisable-subsets»` and
+`«def:rational-recognisable-subsets#2»` of `RequestProject/Labels.lean` reports
+only `propext`, `Classical.choice`, `Quot.sound`.  `tools/gen_labels.py
+--check`, `tools/decl_files.py --check` and `tools/tex_numbering.py --check`
+pass.  With this definition the only environments of the book left unaliased are
+the withdrawn Theorem `nolabel:thm-fo-transduction-into-primes`, the withdrawn
+exercise `nolabel:exer-pref-from-mult`, the open Conjecture
+`conj:regular-via-weighted-automata`, and Lemmas `lem:tuples-listed-by-for` and
+`lem:domination` of Section D.4, which the author has asked to be left alone.
