@@ -77,3 +77,6 @@ import RequestProject.Exercises.CombNaturalFree
 import RequestProject.Exercises.HOAtomsFromSplit
 import RequestProject.Exercises.SplitTriple
 import RequestProject.Exercises.FONonElemClaim
+import RequestProject.Exercises.EvalMonoid
+import RequestProject.Exercises.EvalSimonHeight
+import RequestProject.Exercises.EvalNonWeakTop

@@ -1433,6 +1433,38 @@ assert_no_sorry «exer:block-from-split»
 alias «exer:split-triple» := Transducers.Exercises.split_triple
 assert_no_sorry «exer:split-triple»
 
+/-- **Exercise `exer:monoid-vs-deterministic-automaton`** (the recognising monoid can be exponentially bigger than a deterministic automaton): `Transducers.Exercises.monoid_vs_deterministic_automaton`.  The automaton has `n + 2` states (the book's `n + 1` omits the rejecting sink), the monoid at least `2ⁿ` elements. -/
+alias «exer:monoid-vs-deterministic-automaton» :=
+  Transducers.Exercises.monoid_vs_deterministic_automaton
+assert_no_sorry «exer:monoid-vs-deterministic-automaton»
+
+/-- **Exercise `exer:monoid-vs-deterministic-automaton-strengthened`** (exponentially bigger than both left-to-right and right-to-left deterministic automata): `Transducers.Exercises.monoid_vs_deterministic_automaton_strengthened`. -/
+alias «exer:monoid-vs-deterministic-automaton-strengthened» :=
+  Transducers.Exercises.monoid_vs_deterministic_automaton_strengthened
+assert_no_sorry «exer:monoid-vs-deterministic-automaton-strengthened»
+
+/-- **Exercise `exer:idempotents-in-monoid-of-functions`** (the idempotents of the monoid of functions `Q → Q`): `Transducers.Exercises.idempotent_function_iff`. -/
+alias «exer:idempotents-in-monoid-of-functions» := Transducers.Exercises.idempotent_function_iff
+assert_no_sorry «exer:idempotents-in-monoid-of-functions»
+
+/-- **Exercise `exer:idempotents-in-monoid-of-relations`** (the idempotents of the monoid of binary relations): `Transducers.Exercises.idempotent_relation_iff`, for arbitrary `Q`. -/
+alias «exer:idempotents-in-monoid-of-relations» := Transducers.Exercises.idempotent_relation_iff
+assert_no_sorry «exer:idempotents-in-monoid-of-relations»
+
+/-- **Exercise `exer:idempotents-in-monoid-of-relations`** (the idempotents of the monoid of binary relations): `Transducers.Exercises.idempotent_relation_iff_of_finite`, the characterisation through a loop for finite `Q`. -/
+alias «exer:idempotents-in-monoid-of-relations#2» :=
+  Transducers.Exercises.idempotent_relation_iff_of_finite
+assert_no_sorry «exer:idempotents-in-monoid-of-relations#2»
+
+/-- **Exercise `exer:height-of-simon-tree`** (the height of a Simon tree can be linear in the size of the semigroup): `Transducers.Exercises.height_of_simon_tree`. -/
+alias «exer:height-of-simon-tree» := Transducers.Exercises.height_of_simon_tree
+assert_no_sorry «exer:height-of-simon-tree»
+
+/-- **Exercise `exer:non-weak-simon-tree-not-aperiodic`** (Simon trees are not computed by a first-order rational function): `Transducers.Exercises.non_weak_simon_tree_not_aperiodic`.  The monoid is `{0, 1, 2}` with capped addition; the trees are output in the bracket encoding, and their height is not bounded. -/
+alias «exer:non-weak-simon-tree-not-aperiodic» :=
+  Transducers.Exercises.non_weak_simon_tree_not_aperiodic
+assert_no_sorry «exer:non-weak-simon-tree-not-aperiodic»
+
 /-
 The theorem-like environments of the book that are not aliased
 above, so that this file accounts for all of them:

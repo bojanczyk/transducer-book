@@ -352,6 +352,9 @@ RequestProject/
 | `Exercises/FONonElemOrder.lean`, `Exercises/FONonElemParse.lean`, `Exercises/FONonElemCore.lean`, `Exercises/FONonElemDSL.lean`, `Exercises/FONonElemForm.lean`, `Exercises/FONonElemTop.lean` | the Claim of the solution of Exercise `exer:fo-non-elementary`: the strings of order `n` (`Transducers.Exercises.ordStr`) and their length (`Transducers.Exercises.lenOrder`, `Transducers.Exercises.expTower_le_lenOrder`), the block structure of such a string, the combinatorics of the induction step (`Transducers.Exercises.formSem_iff`), the elementary first-order formulas used as building blocks, the formula `Transducers.Exercises.phiOrd` of the Claim with its four free position variables (`Transducers.Exercises.sat_phiOrd`) and the sentence `Transducers.Exercises.fTop` whose unique model is the first string of order `n` (`Transducers.Exercises.sat_fTop`), of size linear in `n`.  This is what `Transducers.Exercises.FirstStringOfOrderDefinable` rests on; see the addendum at the end of this file |
 | `Exercises/FONonElemClaim.lean` | Claim `lem:fo-non-elementary-order`: the formula `Transducers.Exercises.phiOrdSucc` with the four free position variables of the book, obtained from `Transducers.Exercises.phiOrd` by quantifying its two mode variables away, with its meaning (`Transducers.Exercises.sat_phiOrdSucc`) and its linear size — indexed in `EXERCISES.md`, not here |
 | `Exercises/SplitTriple.lean` | Exercise `exer:split-triple`: the function `Transducers.splitTriples` and the polyregular term `Transducers.Exercises.polySplitTriple` that defines it — indexed in `EXERCISES.md`, not here |
+| `Exercises/EvalMonoid.lean` | the four exercises of Section *Evaluation* about monoids: `exer:monoid-vs-deterministic-automaton`, `exer:monoid-vs-deterministic-automaton-strengthened` (explicit deterministic automata, and the lower bound `2ⁿ` on every recognising monoid), `exer:idempotents-in-monoid-of-functions` and `exer:idempotents-in-monoid-of-relations` (with the monoid of relations `Transducers.Exercises.RelMonoid`) — indexed in `EXERCISES.md`, not here |
+| `Exercises/EvalSimonHeight.lean` | Exercise `exer:height-of-simon-tree`: the monoid `({0, …, n}, max)`, the words `wₙ`, and the bound `n - 1` on the height of their Simon trees — indexed in `EXERCISES.md`, not here |
+| `Exercises/EvalNonWeak.lean`, `Exercises/EvalNonWeakTop.lean` | Exercise `exer:non-weak-simon-tree-not-aperiodic`: the monoid `{0, 1, 2}` with capped addition, the bracket depth of encodings of trees, the impossibility of a factor `a R a R a` (`R` balanced) in the encoding of a Simon tree, and the output of an aperiodic bimachine on a one-letter alphabet — indexed in `EXERCISES.md`, not here |
 | `Labels.lean` | the label-indexed view of the formalisation: for every result of the book that is formalised, an alias in the namespace `Transducers.Book` whose Lean name is the LaTeX label of the result, followed by `assert_no_sorry` or `assert_uses_sorry` according to its status in the tables below.  Kept in step with those tables by `tools/gen_labels.py --check`; see `LABELS.md` |
 
 ## Conventions
@@ -3878,3 +3881,32 @@ instruction: `thm:evaluation-polyregular`, `lem:evaluation-mso-successor-in-cons
 `claim:find-position-in-factor` and the exercise
 `exer:linear-time-data-structure-for-rational-relation` (running time).  `lake build` succeeds
 (8559 jobs), and the three checks of `tools/` pass.
+
+## Status (Section *Evaluation*: the exercises)
+
+Section *Evaluation* (`partDPolyregular/evaluation.tex`) has eight exercises; they are indexed in
+`EXERCISES.md` (section *Section Evaluation*), not in the index above, and each formalised one has
+an alias in `RequestProject/Labels.lean` followed by `assert_no_sorry`.  The Simon trees they use
+are those of `Transducers.FactTree.IsSimon` (`PartD/SimonTree.lean`), which, together with the
+Factorisation Forest Theorem `thm:factorisation-forest`, was already in the sources.
+
+* Proved outright (no `sorry`; `#print axioms` reports at most `propext`, `Classical.choice`,
+  `Quot.sound`): `exer:monoid-vs-deterministic-automaton`,
+  `exer:monoid-vs-deterministic-automaton-strengthened`, `exer:idempotents-in-monoid-of-functions`,
+  `exer:idempotents-in-monoid-of-relations` (two declarations: arbitrary and finite `Q`),
+  `exer:height-of-simon-tree` and `exer:non-weak-simon-tree-not-aperiodic`.  None is proved from a
+  hypothesis.
+* Not formalised: `exer:weak-simon-tree-aperiodic` (weak Simon trees are computed by an aperiodic
+  rational function when the monoid is aperiodic) -- see `EXERCISES.md` for what it would take;
+  and, by instruction, `exer:linear-time-data-structure-for-rational-relation` (running time).
+* Divergences, recorded in the docstrings and in `EXERCISES.md`: the deterministic automaton of
+  `exer:monoid-vs-deterministic-automaton` has `n + 2` states, not the book's `n + 1` (a complete
+  automaton needs a rejecting sink); in `exer:height-of-simon-tree` the semigroup `({1,…,n}, max)`
+  gets an identity adjoined (Simon trees are defined for monoid homomorphisms) and the bound proved
+  is `n - 1`; `exer:non-weak-simon-tree-not-aperiodic` is stated for first-order relabellings with
+  trees output in the bracket encoding and with no bound on their height (stronger than the book's
+  statement), and its proof differs from the book's.
+
+`lake build` succeeds, and `tools/gen_labels.py --check`, `tools/decl_files.py --check` and
+`tools/tex_numbering.py --check` pass.
+

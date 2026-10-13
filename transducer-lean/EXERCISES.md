@@ -1847,7 +1847,73 @@ required.
 
 ## Section *Evaluation* (`partDPolyregular/evaluation.tex`)
 
-The section has one exercise, `exer:linear-time-data-structure-for-rational-relation`.  It is
-**not formalised**: it is a running-time statement, the project has no model of running time,
-and the author has not yet decided how the running-time statements of this section should be
-stated.  No Lean file or import is added for it.
+The section has eight exercises.  They are formalised in
+`RequestProject/Exercises/EvalMonoid.lean` (the four exercises about monoids),
+`RequestProject/Exercises/EvalSimonHeight.lean` (the height of a Simon tree) and
+`RequestProject/Exercises/EvalNonWeak.lean`, `RequestProject/Exercises/EvalNonWeakTop.lean`
+(Simon trees and first-order rational functions), except as recorded in the rows below; the Simon trees are those of `Transducers.FactTree.IsSimon`
+(`PartD/SimonTree.lean`).  The eighth, `exer:linear-time-data-structure-for-rational-relation`, is
+**not formalised**: it is a running-time statement, the project has no model of running time, and
+the author has not yet decided how the running-time statements of this section should be stated.
+
+| Book | Lean | Status |
+| --- | --- | --- |
+| Exercise `exer:monoid-vs-deterministic-automaton` (the recognising monoid can be exponentially bigger than a deterministic automaton) | `Transducers.Exercises.monoid_vs_deterministic_automaton` (with `Transducers.Exercises.nthLetterA`) | proved (axioms: `propext`, `Classical.choice`, `Quot.sound`) |
+| Exercise `exer:monoid-vs-deterministic-automaton-strengthened` (exponentially bigger than both left-to-right and right-to-left deterministic automata) | `Transducers.Exercises.monoid_vs_deterministic_automaton_strengthened` (with `Transducers.Exercises.nthLetterAOfLength`) | proved (axioms: `propext`, `Classical.choice`, `Quot.sound`) |
+| Exercise `exer:idempotents-in-monoid-of-functions` (the idempotents of the monoid of functions `Q → Q`) | `Transducers.Exercises.idempotent_function_iff` | proved (axioms: `propext`, `Classical.choice`, `Quot.sound`) |
+| Exercise `exer:idempotents-in-monoid-of-relations` (the idempotents of the monoid of binary relations) | `Transducers.Exercises.idempotent_relation_iff`, `Transducers.Exercises.idempotent_relation_iff_of_finite` (with `Transducers.Exercises.RelMonoid`) | proved (axioms: `propext`, `Classical.choice`, `Quot.sound`) |
+| Exercise `exer:height-of-simon-tree` (the height of a Simon tree can be linear in the size of the semigroup) | `Transducers.Exercises.height_of_simon_tree` (with `Transducers.Exercises.MaxMon`, `Transducers.Exercises.simonWord`) | proved (axioms: `propext`, `Classical.choice`, `Quot.sound`) |
+| Exercise `exer:weak-simon-tree-aperiodic` (weak Simon trees computed by an aperiodic rational function) | not formalised (see below) | not formalised |
+| Exercise `exer:non-weak-simon-tree-not-aperiodic` (Simon trees are not computed by a first-order rational function) | `Transducers.Exercises.non_weak_simon_tree_not_aperiodic` (with `Transducers.Exercises.Cap2`, `Transducers.Exercises.capHom`, and the aperiodic-bimachine form `Transducers.Exercises.not_isAperiodicBimachine_simon`) | proved (`EvalNonWeak.lean`, `EvalNonWeakTop.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`) |
+
+Notes on the statements.
+
+* `exer:monoid-vs-deterministic-automaton` -- the language is `{w ∈ {a,b}* | the n-th letter of w
+  is a}` for `n ≥ 1`.  The statement gives a deterministic automaton with `n + 2` states and shows
+  that every finite monoid recognising the language (through a homomorphism `h` such that membership
+  depends only on `h(w)`, as in Theorem `thm:monoids-equal-automata`) has at least `2ⁿ` elements.
+  The book counts `n + 1` states: that is the count without the rejecting sink, which a complete
+  automaton (Mathlib's `DFA`) needs.
+* `exer:monoid-vs-deterministic-automaton-strengthened` -- the language is that of the words of
+  length exactly `2n` whose `n`-th letter is `a`.  The book only says that the automata in both
+  directions have size polynomial in `n`; the statement gives the explicit count `4n + 3` for both
+  the left-to-right automaton and the right-to-left one (an automaton run on the reversed word),
+  together with the lower bound `2ⁿ` for every recognising monoid.
+* `exer:idempotents-in-monoid-of-functions` -- for arbitrary `Q` (Mathlib's `Function.End Q`): `e`
+  is idempotent iff it is the identity on its image.
+* `exer:idempotents-in-monoid-of-relations` -- the monoid of relations is
+  `Transducers.Exercises.RelMonoid Q` (`Q → Q → Prop`, the product being composition and the
+  identity equality).  The first declaration is the characterisation for arbitrary `Q` (transitive,
+  and every pair splits in two steps); the second is the characterisation through a loop for finite
+  `Q`, as in the book's last sentence.
+* `exer:height-of-simon-tree` -- the book's semigroup `({1, …, n}, max)` becomes, with an identity
+  adjoined (Simon trees are defined for monoid homomorphisms), the monoid
+  `Transducers.Exercises.MaxMon n = ({0, …, n}, max)` with `n + 1` elements.  For the book's word
+  `wₙ` (of length `2ⁿ - 1`) every Simon tree has height at least `n - 1`.
+* `exer:non-weak-simon-tree-not-aperiodic` -- "first-order definable rational function" is read as
+  first-order relabelling (`Transducers.IsFORelabelling`), which by Theorem
+  `thm:fo-rational-functions` is the same as a function computed by an aperiodic bimachine; the
+  proof works with the bimachine.  As in Lemma `lem:factorisation-forest-rational`, the book's
+  codomain `facttype{h,k}` is replaced by the bracket encoding `Transducers.FactTree.enc`, the input
+  alphabet is the one-letter alphabet `Unit`, and the monoid is `{0, 1, 2}` with capped addition
+  (`Transducers.Exercises.Cap2`, shown aperiodic in the statement).  The statement does not bound
+  the height of the trees, so it is stronger than the book's.  The argument differs from the book's
+  (which goes through first-order definability of the pairing of a position with its successor): on
+  `a^{2K+n}` an aperiodic bimachine outputs `α βⁿ⁺¹ γ`; `β` must contain exactly one letter and be
+  balanced, so the output contains a factor `a R a R a` with `R` a balanced word of brackets, and
+  no Simon tree for this monoid has such an encoding (the child containing the middle leaf has
+  label `1`, which is not idempotent, so its parent has at most two children, yet the two other
+  leaves lie on both sides of it).
+* `exer:weak-simon-tree-aperiodic` -- **not formalised**.  The intended statement: for an aperiodic
+  finite monoid `M` and `h : A* → M` with `A` finite, there are `k` and a function computed by an
+  aperiodic bimachine (equivalently, by Theorem `thm:fo-rational-functions`, a first-order
+  relabelling) that maps every `w` to the bracket encoding of a *weak* Simon tree for `w` (a node
+  with at least three children has all children with the same label, not necessarily idempotent)
+  of height at most `k`.  The book's solution revisits the proof of the Factorisation Forest
+  Theorem.  The existing proof of Lemma `lem:factorisation-forest-rational` does not adapt: it
+  obtains the rational function by uniformising a rational relation (Lemma `lem:uniformisation`),
+  and the project has no aperiodic counterpart of uniformisation.  A direct proof would have to
+  carry the induction of `PartD/SimonInduction.lean` through aperiodic bimachines (the block
+  decomposition by a shrinking letter requires automata that reset at that letter, and closure of
+  aperiodicity under such cascades), which is not in the project.
+
