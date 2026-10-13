@@ -1460,6 +1460,18 @@ assert_no_sorry «exer:idempotents-in-monoid-of-relations#2»
 alias «exer:height-of-simon-tree» := Transducers.Exercises.height_of_simon_tree
 assert_no_sorry «exer:height-of-simon-tree»
 
+/-- **Exercise `exer:weak-simon-tree-aperiodic`** (weak Simon trees computed by an aperiodic rational function): `Transducers.Exercises.weak_simon_tree_aperiodic`. -/
+alias «exer:weak-simon-tree-aperiodic» := Transducers.Exercises.weak_simon_tree_aperiodic
+assert_no_sorry «exer:weak-simon-tree-aperiodic»
+
+/-- **Exercise `exer:weak-simon-tree-aperiodic`** (weak Simon trees computed by an aperiodic rational function): `Transducers.FactTree.IsWeakSimon`. -/
+alias «exer:weak-simon-tree-aperiodic#2» := Transducers.FactTree.IsWeakSimon
+assert_no_sorry «exer:weak-simon-tree-aperiodic#2»
+
+/-- **Exercise `exer:weak-simon-tree-aperiodic`** (weak Simon trees computed by an aperiodic rational function): `Transducers.Exercises.weak_simon_tree_aperiodicBimachine`. -/
+alias «exer:weak-simon-tree-aperiodic#3» := Transducers.Exercises.weak_simon_tree_aperiodicBimachine
+assert_no_sorry «exer:weak-simon-tree-aperiodic#3»
+
 /-- **Exercise `exer:non-weak-simon-tree-not-aperiodic`** (Simon trees are not computed by a first-order rational function): `Transducers.Exercises.non_weak_simon_tree_not_aperiodic`.  The monoid is `{0, 1, 2}` with capped addition; the trees are output in the bracket encoding, and their height is not bounded. -/
 alias «exer:non-weak-simon-tree-not-aperiodic» :=
   Transducers.Exercises.non_weak_simon_tree_not_aperiodic

@@ -1851,7 +1851,9 @@ The section has eight exercises.  They are formalised in
 `RequestProject/Exercises/EvalMonoid.lean` (the four exercises about monoids),
 `RequestProject/Exercises/EvalSimonHeight.lean` (the height of a Simon tree) and
 `RequestProject/Exercises/EvalNonWeak.lean`, `RequestProject/Exercises/EvalNonWeakTop.lean`
-(Simon trees and first-order rational functions), except as recorded in the rows below; the Simon trees are those of `Transducers.FactTree.IsSimon`
+(Simon trees and first-order rational functions) and `RequestProject/Exercises/EvalWeakEnc.lean`,
+`EvalWeakMon.lean`, `EvalWeakWords.lean`, `EvalWeakShrink.lean`, `EvalWeakLeft.lean`,
+`EvalWeakInd.lean`, `EvalWeakTop.lean` (weak Simon trees), except as recorded in the rows below; the Simon trees are those of `Transducers.FactTree.IsSimon`
 (`PartD/SimonTree.lean`).  The eighth, `exer:linear-time-data-structure-for-rational-relation`, is
 **not formalised**: it is a running-time statement, the project has no model of running time, and
 the author has not yet decided how the running-time statements of this section should be stated.
@@ -1863,7 +1865,7 @@ the author has not yet decided how the running-time statements of this section s
 | Exercise `exer:idempotents-in-monoid-of-functions` (the idempotents of the monoid of functions `Q → Q`) | `Transducers.Exercises.idempotent_function_iff` | proved (axioms: `propext`, `Classical.choice`, `Quot.sound`) |
 | Exercise `exer:idempotents-in-monoid-of-relations` (the idempotents of the monoid of binary relations) | `Transducers.Exercises.idempotent_relation_iff`, `Transducers.Exercises.idempotent_relation_iff_of_finite` (with `Transducers.Exercises.RelMonoid`) | proved (axioms: `propext`, `Classical.choice`, `Quot.sound`) |
 | Exercise `exer:height-of-simon-tree` (the height of a Simon tree can be linear in the size of the semigroup) | `Transducers.Exercises.height_of_simon_tree` (with `Transducers.Exercises.MaxMon`, `Transducers.Exercises.simonWord`) | proved (axioms: `propext`, `Classical.choice`, `Quot.sound`) |
-| Exercise `exer:weak-simon-tree-aperiodic` (weak Simon trees computed by an aperiodic rational function) | not formalised (see below) | not formalised |
+| Exercise `exer:weak-simon-tree-aperiodic` (weak Simon trees computed by an aperiodic rational function) | `Transducers.Exercises.weak_simon_tree_aperiodic` (with `Transducers.FactTree.IsWeakSimon`, and the aperiodic-bimachine form `Transducers.Exercises.weak_simon_tree_aperiodicBimachine`) | proved (`EvalWeakEnc.lean` … `EvalWeakTop.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`) |
 | Exercise `exer:non-weak-simon-tree-not-aperiodic` (Simon trees are not computed by a first-order rational function) | `Transducers.Exercises.non_weak_simon_tree_not_aperiodic` (with `Transducers.Exercises.Cap2`, `Transducers.Exercises.capHom`, and the aperiodic-bimachine form `Transducers.Exercises.not_isAperiodicBimachine_simon`) | proved (`EvalNonWeak.lean`, `EvalNonWeakTop.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`) |
 
 Notes on the statements.
@@ -1904,16 +1906,25 @@ Notes on the statements.
   no Simon tree for this monoid has such an encoding (the child containing the middle leaf has
   label `1`, which is not idempotent, so its parent has at most two children, yet the two other
   leaves lie on both sides of it).
-* `exer:weak-simon-tree-aperiodic` -- **not formalised**.  The intended statement: for an aperiodic
-  finite monoid `M` and `h : A* → M` with `A` finite, there are `k` and a function computed by an
-  aperiodic bimachine (equivalently, by Theorem `thm:fo-rational-functions`, a first-order
-  relabelling) that maps every `w` to the bracket encoding of a *weak* Simon tree for `w` (a node
-  with at least three children has all children with the same label, not necessarily idempotent)
-  of height at most `k`.  The book's solution revisits the proof of the Factorisation Forest
-  Theorem.  The existing proof of Lemma `lem:factorisation-forest-rational` does not adapt: it
-  obtains the rational function by uniformising a rational relation (Lemma `lem:uniformisation`),
-  and the project has no aperiodic counterpart of uniformisation.  A direct proof would have to
-  carry the induction of `PartD/SimonInduction.lean` through aperiodic bimachines (the block
-  decomposition by a shrinking letter requires automata that reset at that letter, and closure of
-  aperiodicity under such cascades), which is not in the project.
+* `exer:weak-simon-tree-aperiodic` -- weak Simon trees are `Transducers.FactTree.IsWeakSimon`
+  (`EvalWeakEnc.lean`): a node with at least three children has all its children labelled by the
+  same monoid element, not necessarily an idempotent.  "Aperiodic" for the monoid is read as
+  `∀ x, ∃ n, x ^ (n + 1) = x ^ n` (the monoid is finite), and "computed by an aperiodic rational
+  function" as: there are a bound `k` and a first-order relabelling (`Transducers.IsFORelabelling`;
+  by Theorem `thm:fo-rational-functions` the same as a function computed by an aperiodic bimachine,
+  and the bimachine form is proved too) mapping every input `w` to the bracket encoding
+  (`Transducers.FactTree.enc`) of a weak Simon tree for `h` with yield `w` and height at most `k`
+  -- the bounded height plays the role of the book's codomain `facttype{h,k}`, as in Lemma
+  `lem:factorisation-forest-rational`.  The proof follows the book's solution: the induction of the
+  Factorisation Forest Theorem (`PartD/SimonInduction.lean`) is redone (`EvalWeakInd.lean`) so that
+  the trees produced have all leaves at the same depth and their encodings have, between two
+  consecutive letters, `]ʳ [ʳ` with `r` a function of the values of the prefix and of the suffix in
+  a finite aperiodic monoid (built from runs and from a "cut" monoid, `EvalWeakMon.lean`).  In the
+  shrinking-letter step the outer tree over the blocks comes from the induction hypothesis for the
+  smaller semigroup (`EvalWeakShrink.lean`); when no letter value shrinks the semigroup,
+  aperiodicity forces `t·s = t` for all `t` in the semigroup ("the group case will never arise"),
+  and the blocks starting with a fixed letter value are the children of one flat weak Simon node,
+  with no grouping into factors of constant length (`EvalWeakLeft.lean`).  The final function is
+  computed by a bimachine whose two automata compute values in that aperiodic monoid
+  (`EvalWeakTop.lean`).  The empty word is mapped to the encoding of the tree with no children.
 

@@ -80,3 +80,4 @@ import RequestProject.Exercises.FONonElemClaim
 import RequestProject.Exercises.EvalMonoid
 import RequestProject.Exercises.EvalSimonHeight
 import RequestProject.Exercises.EvalNonWeakTop
+import RequestProject.Exercises.EvalWeakTop

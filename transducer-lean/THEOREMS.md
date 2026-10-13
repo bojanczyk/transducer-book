@@ -355,6 +355,7 @@ RequestProject/
 | `Exercises/EvalMonoid.lean` | the four exercises of Section *Evaluation* about monoids: `exer:monoid-vs-deterministic-automaton`, `exer:monoid-vs-deterministic-automaton-strengthened` (explicit deterministic automata, and the lower bound `2ⁿ` on every recognising monoid), `exer:idempotents-in-monoid-of-functions` and `exer:idempotents-in-monoid-of-relations` (with the monoid of relations `Transducers.Exercises.RelMonoid`) — indexed in `EXERCISES.md`, not here |
 | `Exercises/EvalSimonHeight.lean` | Exercise `exer:height-of-simon-tree`: the monoid `({0, …, n}, max)`, the words `wₙ`, and the bound `n - 1` on the height of their Simon trees — indexed in `EXERCISES.md`, not here |
 | `Exercises/EvalNonWeak.lean`, `Exercises/EvalNonWeakTop.lean` | Exercise `exer:non-weak-simon-tree-not-aperiodic`: the monoid `{0, 1, 2}` with capped addition, the bracket depth of encodings of trees, the impossibility of a factor `a R a R a` (`R` balanced) in the encoding of a Simon tree, and the output of an aperiodic bimachine on a one-letter alphabet — indexed in `EXERCISES.md`, not here |
+| `Exercises/EvalWeakEnc.lean`, `Exercises/EvalWeakMon.lean`, `Exercises/EvalWeakWords.lean`, `Exercises/EvalWeakShrink.lean`, `Exercises/EvalWeakLeft.lean`, `Exercises/EvalWeakInd.lean`, `Exercises/EvalWeakTop.lean` | Exercise `exer:weak-simon-tree-aperiodic`: weak Simon trees (`Transducers.FactTree.IsWeakSimon`), encodings of uniform-depth trees through ranks, the aperiodic monoids of runs and cuts, the two induction steps of the Factorisation Forest Theorem redone for an aperiodic monoid, the induction, and the aperiodic bimachine — indexed in `EXERCISES.md`, not here |
 | `Labels.lean` | the label-indexed view of the formalisation: for every result of the book that is formalised, an alias in the namespace `Transducers.Book` whose Lean name is the LaTeX label of the result, followed by `assert_no_sorry` or `assert_uses_sorry` according to its status in the tables below.  Kept in step with those tables by `tools/gen_labels.py --check`; see `LABELS.md` |
 
 ## Conventions
@@ -3894,19 +3895,21 @@ Factorisation Forest Theorem `thm:factorisation-forest`, was already in the sour
   `Quot.sound`): `exer:monoid-vs-deterministic-automaton`,
   `exer:monoid-vs-deterministic-automaton-strengthened`, `exer:idempotents-in-monoid-of-functions`,
   `exer:idempotents-in-monoid-of-relations` (two declarations: arbitrary and finite `Q`),
-  `exer:height-of-simon-tree` and `exer:non-weak-simon-tree-not-aperiodic`.  None is proved from a
-  hypothesis.
-* Not formalised: `exer:weak-simon-tree-aperiodic` (weak Simon trees are computed by an aperiodic
-  rational function when the monoid is aperiodic) -- see `EXERCISES.md` for what it would take;
-  and, by instruction, `exer:linear-time-data-structure-for-rational-relation` (running time).
+  `exer:height-of-simon-tree`, `exer:weak-simon-tree-aperiodic` (stated for first-order
+  relabellings, and also for aperiodic bimachines) and `exer:non-weak-simon-tree-not-aperiodic`.
+  None is proved from a hypothesis.
+* Not formalised, by instruction: `exer:linear-time-data-structure-for-rational-relation` (running
+  time).
 * Divergences, recorded in the docstrings and in `EXERCISES.md`: the deterministic automaton of
   `exer:monoid-vs-deterministic-automaton` has `n + 2` states, not the book's `n + 1` (a complete
   automaton needs a rejecting sink); in `exer:height-of-simon-tree` the semigroup `({1,…,n}, max)`
   gets an identity adjoined (Simon trees are defined for monoid homomorphisms) and the bound proved
   is `n - 1`; `exer:non-weak-simon-tree-not-aperiodic` is stated for first-order relabellings with
   trees output in the bracket encoding and with no bound on their height (stronger than the book's
-  statement), and its proof differs from the book's.
+  statement), and its proof differs from the book's; `exer:weak-simon-tree-aperiodic` outputs the
+  trees in the bracket encoding, with a bound on their height in place of the codomain
+  `facttype{h,k}`.
 
-`lake build` succeeds, and `tools/gen_labels.py --check`, `tools/decl_files.py --check` and
+`lake build` succeeds (8570 jobs), and `tools/gen_labels.py --check`, `tools/decl_files.py --check` and
 `tools/tex_numbering.py --check` pass.
 
