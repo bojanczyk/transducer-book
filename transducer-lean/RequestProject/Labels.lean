@@ -708,6 +708,47 @@ assert_no_sorry «claim:from-configuration-to-child-configuration-graph»
 alias «claim:from-child-configuration-graph-to-children» := Transducers.from_child_configuration_graph_to_children
 assert_no_sorry «claim:from-child-configuration-graph-to-children»
 
+/-- **Theorem `thm:monoids-equal-automata`** (finite monoids = finite automata): `Transducers.regular_iff_recognised_by_monoid`. -/
+alias «thm:monoids-equal-automata» := Transducers.regular_iff_recognised_by_monoid
+assert_no_sorry «thm:monoids-equal-automata»
+
+/-- **Lemma `lem:factorisation-forest-evaluation`** (evaluating factors with a Simon tree): `Transducers.factorisation_forest_evaluation`.  The running-time statement of the book is rendered by its content: the value on a factor is a product of at most `2·height + 1` labels of nodes of the tree. -/
+alias «lem:factorisation-forest-evaluation» := Transducers.factorisation_forest_evaluation
+assert_no_sorry «lem:factorisation-forest-evaluation»
+
+/-- **Theorem `thm:factorisation-forest`** (the Factorisation Forest Theorem): `Transducers.factorisation_forest`.  The Simon trees are `Transducers.FactTree.IsSimon`; their definition carries no label in the book, so it has no alias here. -/
+alias «thm:factorisation-forest» := Transducers.factorisation_forest
+assert_no_sorry «thm:factorisation-forest»
+
+/-- **Lemma `lem:factorisation-forest-single-letter`** (the case of one letter value): `Transducers.factorisation_forest_single_letter`. -/
+alias «lem:factorisation-forest-single-letter» := Transducers.factorisation_forest_single_letter
+assert_no_sorry «lem:factorisation-forest-single-letter»
+
+/-- **Lemma `lem:factorisation-forest-shrinking-letter`** (a letter that shrinks the semigroup): `Transducers.factorisation_forest_shrinking_letter`, stated as the induction step of the proof of `thm:factorisation-forest`. -/
+alias «lem:factorisation-forest-shrinking-letter» := Transducers.factorisation_forest_shrinking_letter
+assert_no_sorry «lem:factorisation-forest-shrinking-letter»
+
+/-- **Lemma `lem:semigroup-is-group`** (translations are permutations, so the semigroup is a group): `Transducers.semigroup_is_group`, for a nonempty semigroup. -/
+alias «lem:semigroup-is-group» := Transducers.semigroup_is_group
+assert_no_sorry «lem:semigroup-is-group»
+
+/-- **Lemma `lem:semigroup-is-group`** (translations are permutations, so the semigroup is a group): `Transducers.semigroup_is_group_false_without_nonempty`, the empty semigroup refutes the statement without the nonemptiness hypothesis. -/
+alias «lem:semigroup-is-group#2» := Transducers.semigroup_is_group_false_without_nonempty
+assert_no_sorry «lem:semigroup-is-group#2»
+
+/-- **Lemma `lem:factorisation-forest-group`** (the case of a group): `Transducers.factorisation_forest_group`. -/
+alias «lem:factorisation-forest-group» := Transducers.factorisation_forest_group
+assert_no_sorry «lem:factorisation-forest-group»
+
+/-- **Lemma `lem:factorisation-forest-rational`** (Simon trees produced by a rational function): `Transducers.factorisation_forest_rational`; a Simon tree is output through its bracket encoding `Transducers.FactTree.enc`. -/
+alias «lem:factorisation-forest-rational» := Transducers.factorisation_forest_rational
+assert_no_sorry «lem:factorisation-forest-rational»
+
+/-- **Claim `claim:mso-formula-recognised-by-homomorphism`** (every mso formula is recognised by a monoid homomorphism): `Transducers.mso_formula_recognised_by_homomorphism`; the profile of the book is `Transducers.mso_profile`. -/
+alias «claim:mso-formula-recognised-by-homomorphism» :=
+  Transducers.mso_formula_recognised_by_homomorphism
+assert_no_sorry «claim:mso-formula-recognised-by-homomorphism»
+
 /-- **Definition `def:polyregular-terms`** (polyregular terms): `Transducers.PolyTerm`. -/
 alias «def:polyregular-terms» := Transducers.PolyTerm
 assert_no_sorry «def:polyregular-terms»
@@ -1397,8 +1438,10 @@ The theorem-like environments of the book that are not aliased
 above, so that this file accounts for all of them:
 
 * `nolabel:exer-pref-from-mult` (exercise) -- withdrawn from the book by the author, which replaced it with `exer:split-triple`; the statement it had is still proved, as `Transducers.Exercises.pref_from_mult` in `RequestProject/Exercises/HOAtomsFromSplit.lean`, and is simply no longer a result of the book;
-* `lem:tuples-listed-by-for` (lemma) -- in Section D.4, which the author says is inconsistent at this stage and is not to be formalised until it settles;
-* `lem:domination` (lemma) -- Section D.4, the same;
+* `thm:evaluation-polyregular` (theorem) -- a running-time statement of Section *Evaluation*; the project has no model of running time and the author has not yet decided how it should be stated;
+* `lem:evaluation-mso-successor-in-constant-time` (lemma) -- a running-time statement of Section *Evaluation*, for the same reason;
+* `claim:find-position-in-factor` (claim) -- a running-time statement of Section *Evaluation*, for the same reason;
+* `lem:domination` (lemma) -- in the \mso-interpretation section, now D.5, which the author says is inconsistent at this stage and is not to be formalised until it settles;
 * `conj:regular-via-weighted-automata` (conjecture) -- a conjecture of the book, not a result to formalise;
 * `nolabel:thm-fo-transduction-into-primes` (theorem) -- removed from the formalised theorems at the user's request; its statement is kept, commented out, in `PartC/MSOOpen.lean`;
 -/

@@ -331,6 +331,13 @@ RequestProject/
 | `PartD/ChildGraphOfRun.lean` | the string representation `Transducers.CG.cgOfChildren` of the child configuration graph of a configuration, and the fact that it represents the children of that configuration |
 | `PartD/CGLang.lean`, `PartD/CGAtom.lean`, `PartD/CGSem.lean` | the regular properties of the input and of the current position out of which the child configuration graph of a configuration is assembled, and the rational function that produces it (`Transducers.CGL.isRationalFun_cgOfConf`) |
 | `PartD/CGFor.lean` | Claim `claim:from-configuration-to-child-configuration-graph` and Lemma `lem:children-of-configuration-in-pebble-run` |
+| `PartD/SimonTree.lean` | factorisation trees and **Simon trees** (`Transducers.FactTree`, `Transducers.FactTree.IsSimon`); the definition carries no `\label` in the book |
+| `PartD/SimonBound.lean`, `PartD/SimonFF.lean`, `PartD/SimonGroup.lean`, `PartD/SimonInduction.lean` | the proof of the Factorisation Forest Theorem: Simon trees of bounded height for semigroup-valued letters, the single-letter, shrinking-letter and group cases, and the induction on the size of the semigroup and the number of letter values |
+| `PartD/MonoidAut.lean` | Theorem `thm:monoids-equal-automata` and Lemma `lem:semigroup-is-group` (with its nonemptiness correction) |
+| `PartD/FactForest.lean` | Theorem `thm:factorisation-forest` and Lemmas `lem:factorisation-forest-single-letter`, `lem:factorisation-forest-shrinking-letter`, `lem:factorisation-forest-group` |
+| `PartD/SimonEval.lean` | Lemma `lem:factorisation-forest-evaluation` |
+| `PartD/SimonRat.lean` | Lemma `lem:factorisation-forest-rational`, with the bracket encoding of factorisation trees (`Transducers.TreeSym`, `Transducers.FactTree.enc`) |
+| `PartD/MSOProfile.lean` | Claim `claim:mso-formula-recognised-by-homomorphism` and the profile `Transducers.mso_profile` |
 | `PartD/ChildExample.lean` | a one-pebble machine whose initial configuration has exactly one child, so that the hypothesis of the two results above is satisfiable and they are not vacuous (`Transducers.children_of_configuration_in_pebble_run_witness`) |
 | `Exercises/TwoDFAPass.lean`, `Exercises/TwoDFARuler.lean`, `Exercises/TwoDFAExp.lean` | Exercise `exer:2dfa-complexity`: a two-way automaton performing a sequence of one-way passes, the ruler word and the conditions that characterise it, and the automaton with `4·(n+1)` states whose shortest accepted string has length `2^(n+1)-1` |
 | `Exercises/TwoDFASipserDef.lean`, `Exercises/TwoDFASipserRun.lean`, `Exercises/TwoDFASipserTree.lean`, `Exercises/TwoDFASipserExplore.lean`, `Exercises/TwoDFASipserScan.lean`, `Exercises/TwoDFASipserSound.lean`, `Exercises/TwoDFASipser.lean` | Exercise `exer:2dfa-loop-elimination-sipser`: the depth-first search of the tree of accepting configurations, performed by a two-way automaton of quadratic size |
@@ -388,11 +395,33 @@ false statements and into the list of statements the book has corrected.
   the output of a letter-to-letter function is empty.  The Lean definition also
   drops the book's side conditions that `f` be length preserving and that `uvw`
   be nonempty; neither is used.
+* Lemma `lem:semigroup-is-group` — the semigroup must be **nonempty**: the empty semigroup
+  satisfies the hypothesis vacuously and is not a group
+  (`Transducers.semigroup_is_group_false_without_nonempty`).  The corrected statement
+  `Transducers.semigroup_is_group` assumes `Nonempty S` (finiteness turns out not to be needed).
 * Claim `claim:conditional` — corrected on the empty input; the claim as printed is false
   there, and `Transducers.not_sum_of_regular_nil` is the counterexample.  See
   *An error in Claim `claim:conditional`* below.
 
 *Statements that are formalised in an equivalent or restricted form.*
+
+* Lemma `lem:factorisation-forest-evaluation` — the book's statement is about running time,
+  which the project does not model.  What is proved is the content of the argument: the value
+  of the homomorphism on a factor (given as a decomposition `w = u v x`) is a product of at most
+  `2·height + 1` labels of nodes of the Simon tree.
+* Lemma `lem:factorisation-forest-shrinking-letter` — stated as the induction step in which the
+  book uses it (the bound for the semigroup given bounds for smaller semigroups and for fewer
+  letter values), the semigroups being subsets of a finite monoid closed under multiplication.
+* Lemma `lem:factorisation-forest-rational` — the book's codomain is the polynomial type
+  `facttype{h,k}`; rational functions are string-to-string here, so a Simon tree is output
+  through its bracket encoding `Transducers.FactTree.enc` over `A + {open, close}`, and the
+  alphabet `A` is assumed finite.
+* Claim `claim:mso-formula-recognised-by-homomorphism` — the profile, which the book defines by a
+  picture, is the explicit `Transducers.mso_profile`, defined for every valuation of the
+  variables.
+* The definition of a Simon tree (no `\label`) — the labels of inner nodes are not stored but
+  recomputed from the tree (`Transducers.FactTree.label`), and a node may have no children, which
+  is how the empty string gets a Simon tree.
 
 * Theorem `thm:equivalence-decidable-mealy` — stated as the finite check "the two machines are
   equivalent iff they agree on all inputs of length at most `|Q₁|·|Q₂|`", not as a
@@ -1728,6 +1757,19 @@ among the primes.
 | Lemma `lem:children-of-configuration-in-pebble-run` (the children of a configuration) | `Transducers.children_of_configuration_in_pebble_run` | proved (composition of the two claims below) | `PartD/CGFor.lean` |
 | Claim `claim:from-configuration-to-child-configuration-graph` (configuration to child configuration graph) | `Transducers.from_configuration_to_child_configuration_graph` | proved (`ChildSem.lean`, `ChildReach.lean`, `CGLang.lean`, `CGAtom.lean`, `CGSem.lean`) | `PartD/CGFor.lean` |
 | Claim `claim:from-child-configuration-graph-to-children` (child configuration graph to children) | `Transducers.from_child_configuration_graph_to_children` | proved (`ChildGraph.lean`, `ChildPath.lean`, `ChildGraphAut.lean`, `ChildGraphRun.lean`) | `PartD/ChildGraphFor.lean` |
+| Theorem `thm:evaluation-polyregular` (polyregular functions are evaluated in time linear in input and output) | not formalised: a running-time statement, and the project has no model of running time; the author has not yet decided how it should be stated | not formalised | — |
+| Theorem `thm:monoids-equal-automata` (finite monoids = finite automata) | `Transducers.regular_iff_recognised_by_monoid` | proved (`MonoidAut.lean`, by the two constructions of the book: the automaton on the monoid, and the monoid of state transformations taken in the opposite monoid; axioms: `propext`, `Classical.choice`, `Quot.sound`) | `PartD/MonoidAut.lean` |
+| The definition of a Simon tree (the `definition` environment headed *Simon tree*; no `\label` in the book) | `Transducers.FactTree`, `Transducers.FactTree.yield`, `Transducers.FactTree.height`, `Transducers.FactTree.label`, `Transducers.FactTree.IsSimon` | — (no alias, since the environment carries no `\label`) | `PartD/SimonTree.lean` |
+| Lemma `lem:factorisation-forest-evaluation` (evaluating factors with a Simon tree) | `Transducers.factorisation_forest_evaluation` | proved (`SimonEval.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`).  The book's statement is about running time, which the project does not model; what is proved is the content of its argument: the value of the homomorphism on any factor of the underlying string is a product of at most `2·height + 1` labels of nodes of the tree | `PartD/SimonEval.lean` |
+| Theorem `thm:factorisation-forest` (the Factorisation Forest Theorem) | `Transducers.factorisation_forest` | proved (`SimonBound.lean`, `SimonFF.lean`, `SimonGroup.lean`, `SimonInduction.lean`, by the book's induction on the size of the semigroup and the number of letter values; axioms: `propext`, `Classical.choice`, `Quot.sound`) | `PartD/FactForest.lean` |
+| Lemma `lem:factorisation-forest-single-letter` (the case of one letter value) | `Transducers.factorisation_forest_single_letter` | proved (`SimonFF.lean`, with the bound `2p` for `s^p` idempotent; axioms: `propext`, `Classical.choice`, `Quot.sound`) | `PartD/FactForest.lean` |
+| Lemma `lem:factorisation-forest-shrinking-letter` (a letter that shrinks the semigroup) | `Transducers.factorisation_forest_shrinking_letter` | proved (`SimonFF.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`).  Stated, as it is used in the book, as the induction step: the theorem holds for the semigroup and the letter values, given that it holds for every smaller semigroup and for fewer letter values; the semigroups are finite subsets of a finite monoid closed under multiplication | `PartD/FactForest.lean` |
+| Lemma `lem:semigroup-is-group` (translations are permutations, so the semigroup is a group) | `Transducers.semigroup_is_group`, `Transducers.semigroup_is_group_false_without_nonempty` | proved (`MonoidAut.lean`; `#print axioms` reports no axioms at all, for both declarations).  Corrected: the semigroup must be **nonempty** -- the empty semigroup satisfies the hypothesis vacuously and is not a group, which is the second declaration; finiteness is not needed | `PartD/MonoidAut.lean` |
+| Lemma `lem:factorisation-forest-group` (the case of a group) | `Transducers.factorisation_forest_group` | proved (`SimonGroup.lean`, by the book's induction on `σ(w)`, with the bound three times the order of the group; axioms: `propext`, `Classical.choice`, `Quot.sound`) | `PartD/FactForest.lean` |
+| Lemma `lem:factorisation-forest-rational` (Simon trees produced by a rational function) | `Transducers.factorisation_forest_rational`, `Transducers.FactTree.enc`, `Transducers.TreeSym` | proved (`SimonRat.lean`, by the book's second argument: the encodings of Simon trees of height `≤ k` form a regular language, so the inverse of the projection is a rational relation, total by `thm:factorisation-forest`, and Lemma `lem:uniformisation` extracts a rational function; axioms: `propext`, `Classical.choice`, `Quot.sound`).  A rational function is string-to-string in this project, so the book's polynomial type `facttype{h,k}` is replaced by the bracket encoding of trees over the alphabet `A + {open, close}`; the alphabet `A` is finite | `PartD/SimonRat.lean` |
+| Lemma `lem:evaluation-mso-successor-in-constant-time` (constant-time successor for an mso formula) | not formalised: a running-time statement, and the project has no model of running time | not formalised | — |
+| Claim `claim:mso-formula-recognised-by-homomorphism` (every mso formula is recognised by a monoid homomorphism) | `Transducers.mso_formula_recognised_by_homomorphism`, `Transducers.mso_profile` | proved (`MSOProfile.lean`, from Lemma `lem:mso-free-variables` and Theorem `thm:monoids-equal-automata`, as in the book; axioms: `propext`, `Classical.choice`, `Quot.sound`).  The profile, which the book defines by a picture, is `Transducers.mso_profile`: the distinguished positions from left to right, with their letters and the variables pointing to them, and the values of the homomorphism on the factors between them; it is defined for any valuation of the variables, not only for distinct ordered positions | `PartD/MSOProfile.lean` |
+| Claim `claim:find-position-in-factor` (finding a position in a factor in constant time) | not formalised: a running-time statement, and the project has no model of running time | not formalised | — |
 | Definition `def:polyregular-terms` (polyregular terms) | `Transducers.PolyTerm`, `Transducers.PolyTerm.eval`, `Transducers.IsPolyregularTermFun`, `Transducers.splitsList` | — | `PartD/PolyTerms.lean` |
 | Theorem `thm:polyregular-terms` (polyregular = polyregular terms) | `Transducers.polyregular_iff_polyregularTerm` | proved (`PolyTermEasy.lean` and `PolyTermComplete.lean`) | `PartD/Statements.lean` |
 | Definition `def:higher-order-types` (higher-order types) | `Transducers.HTy`, `Transducers.HTy.Sem`, `Transducers.HTy.ArrowFree` | — | `PartD/HOSyntax.lean` |
@@ -1813,18 +1855,24 @@ below for what the earlier passes had to remove to get there.
 
 ### Counts
 
-The book has **132 theorem-like environments**, listed in the dictionary of
+The book has **144 theorem-like environments**, listed in the dictionary of
 `LABELS.md` and checked against the book's `main.aux`.  Every one of them has a
 row in the index above.  The counts below are recomputed from that dictionary
 and from the aliases of `RequestProject/Labels.lean`; earlier passes of this
 file reported 100, then 115, 116 and 118, which was the size of the dictionary
 at the time -- the dictionary has grown as the author has added and labelled
-results, the latest being the three results at the end of Section D.3.  Two
+results, the latest being the twelve labelled environments of the new Section *Evaluation*
+(`partDPolyregular/evaluation.tex`), which brought it from 132 to 144.  Two
 environments are left out of the table below, as they have been all along: the
 open Conjecture `conj:regular-via-weighted-automata`, which is not a result, and
 the exercise `nolabel:exer-pref-from-mult`, which the author has withdrawn.
-The one environment that is not formalised is the unnumbered paragraph
-`nolabel:thm-fo-transduction-into-primes`, with its reason in the index above.
+The environments that are not formalised are the unnumbered paragraph
+`nolabel:thm-fo-transduction-into-primes` and the three running-time statements of Section
+*Evaluation* -- Theorem `thm:evaluation-polyregular`, Lemma
+`lem:evaluation-mso-successor-in-constant-time` and Claim `claim:find-position-in-factor` --
+with their reasons in the index above.  The definition of a Simon tree is formalised
+(`Transducers.FactTree.IsSimon`) but, carrying no `\label`, is not in the dictionary and not
+counted.
 (Definition `def:rational-recognisable-subsets` was on that list until the
 present pass, which formalises it: `Transducers.IsRecognisableSubset` and
 `Transducers.IsRationalSubset` of `PartB/MonoidSubsets.lean`.)  (Claim `claim:parsing-is-regular` was on that list while it carried no
@@ -1833,9 +1881,9 @@ label in the sources; it is now labelled and proved, in `PartC/CombParse.lean`.)
 | | Introduction | Part A | Part B | Part C | Part D | total |
 | --- | --- | --- | --- | --- | --- | --- |
 | definitions formalised | 1 | 4 | 8 | 9 | 5 | **27** |
-| results proved outright | 0 | 11 | 26 | 44 | 21 | **102** |
+| results proved outright | 0 | 11 | 26 | 44 | 30 | **111** |
 | results proved from an explicit hypothesis | 0 | 0 | 0 | 0 | 0 | **0** |
-| environments not formalised | 0 | 0 | 0 | 1 | 0 | **1** |
+| environments not formalised | 0 | 0 | 0 | 1 | 3 | **4** |
 
 *Proved outright* means: the proof is complete, no file it depends on contains a
 `sorry`, and `#print axioms` reports only `propext`, `Classical.choice`,
@@ -1849,7 +1897,12 @@ unconditional when `Transducers.EffectiveTwoWayBound` was proved.  Part D now in
 that are about the string representation of configurations, and the three
 results at the end of Section D.3 -- Lemma `lem:tiling`, Lemma
 `lem:tiling-checker` and Theorem `thm:undecidability-higher-order` -- which were
-the last unformalised results of that part.
+the last unformalised results of that part.  Section *Evaluation* adds nine results proved
+outright: Theorem `thm:monoids-equal-automata`, Lemma `lem:factorisation-forest-evaluation`, the
+Factorisation Forest Theorem `thm:factorisation-forest`, Lemmas
+`lem:factorisation-forest-single-letter`, `lem:factorisation-forest-shrinking-letter`,
+`lem:semigroup-is-group` (corrected: nonempty), `lem:factorisation-forest-group`,
+`lem:factorisation-forest-rational`, and Claim `claim:mso-formula-recognised-by-homomorphism`.
 
 ### No result is proved from a hypothesis
 
@@ -1896,6 +1949,7 @@ file.)
 | environment | reason |
 | --- | --- |
 | Conjecture `conj:regular-via-weighted-automata` | an open conjecture of the book, not a result |
+| Theorem `thm:evaluation-polyregular`, Lemma `lem:evaluation-mso-successor-in-constant-time`, Claim `claim:find-position-in-factor` | running-time statements of Section *Evaluation*; the project has no model of running time and the author has not yet decided how they should be stated (the exercise `exer:linear-time-data-structure-for-rational-relation` is left out for the same reason) |
 | Theorem `nolabel:thm-fo-transduction-into-primes` | withdrawn from this formalisation at the author's request; the book states it without proof.  Its statement is kept, commented out, in `PartC/MSOOpen.lean`, and its easy half is proved as `Transducers.isFOTransduction_of_compClosure` |
 
 One part of a formalised statement is also left out: the final sentence of
@@ -1927,11 +1981,10 @@ There is **no `axiom` declaration**, no `@[implemented_by]` and no
 hypotheses listed above and, for the exercises, the ones listed in
 `EXERCISES.md`; all of them are theorem arguments.
 
-This is checked by the build itself.  `RequestProject/Labels.lean` declares 213
-aliases — one per formalised result, with `#2`, `#3`, … when a result is rendered
-by several declarations: **116** of them cover the 97 environments of the book
-that are formalised, and the remaining **97** cover the 81 exercises (they are
-indexed in `EXERCISES.md`).  Each alias is followed by
+This is checked by the build itself.  `RequestProject/Labels.lean` declares 304
+aliases (the count reported by `tools/gen_labels.py --check`) — one per formalised result, with
+`#2`, `#3`, … when a result is rendered by several declarations; 110 of them are for exercises,
+which are indexed in `EXERCISES.md`.  Each alias is followed by
 `assert_no_sorry`, which fails at compile time if the declaration depends on
 `sorryAx` **or on any axiom other than `propext`, `Classical.choice`,
 `Quot.sound`**.  So the whole *proved outright* column above is re-verified on
@@ -3803,5 +3856,25 @@ only `propext`, `Classical.choice`, `Quot.sound`.  `tools/gen_labels.py
 pass.  With this definition the only environments of the book left unaliased are
 the withdrawn Theorem `nolabel:thm-fo-transduction-into-primes`, the withdrawn
 exercise `nolabel:exer-pref-from-mult`, the open Conjecture
-`conj:regular-via-weighted-automata`, and Lemmas `lem:tuples-listed-by-for` and
-`lem:domination` of Section D.4, which the author has asked to be left alone.
+`conj:regular-via-weighted-automata`, and Lemma `lem:domination` of the
+\mso-interpretation section, now D.5, which the author has asked to be left
+alone.  A companion lemma on the tuples listed by a for-transducer stood beside
+it and has since been removed from the book.
+
+## Status (Section *Evaluation*: the subsection *Simon trees*)
+
+The new Section *Evaluation* (`partDPolyregular/evaluation.tex`) is formalised except for its
+running-time statements.  Proved outright (no `sorry`; `#print axioms` gives `propext`,
+`Classical.choice`, `Quot.sound`, or no axioms at all for `lem:semigroup-is-group`):
+`thm:monoids-equal-automata`, `lem:factorisation-forest-evaluation` (time-free form),
+`thm:factorisation-forest`, `lem:factorisation-forest-single-letter`,
+`lem:factorisation-forest-shrinking-letter` (induction-step form), `lem:semigroup-is-group`
+(corrected: the semigroup must be nonempty), `lem:factorisation-forest-group`,
+`lem:factorisation-forest-rational` (bracket encoding of trees) and
+`claim:mso-formula-recognised-by-homomorphism`.  None is proved from a hypothesis.  The definition
+of a Simon tree (`Transducers.FactTree.IsSimon`, `PartD/SimonTree.lean`) carries **no `\label`**
+in the book and therefore has no alias in `RequestProject/Labels.lean`.  Not formalised, by
+instruction: `thm:evaluation-polyregular`, `lem:evaluation-mso-successor-in-constant-time`,
+`claim:find-position-in-factor` and the exercise
+`exer:linear-time-data-structure-for-rational-relation` (running time).  `lake build` succeeds
+(8559 jobs), and the three checks of `tools/` pass.

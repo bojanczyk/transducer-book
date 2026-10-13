@@ -1844,3 +1844,10 @@ the claim itself.  See the section *Status (six results that were still
 unformalised)* at the end of `THEOREMS.md` for the details and for the two
 reading conventions that `exer:split-triple` and `lem:fo-non-elementary-order`
 required.
+
+## Section *Evaluation* (`partDPolyregular/evaluation.tex`)
+
+The section has one exercise, `exer:linear-time-data-structure-for-rational-relation`.  It is
+**not formalised**: it is a running-time statement, the project has no model of running time,
+and the author has not yet decided how the running-time statements of this section should be
+stated.  No Lean file or import is added for it.

@@ -31,15 +31,22 @@ language (C.5.6) used to carry a `nolabel:` tag here, because it carried no
 number read out of `main.aux` like every other.
 
 Three numbered environments of Section *A functional programming language* are
-missing from the dictionary, and the numbers D.3.7, D.3.8 and D.3.11 are
-therefore skipped: the Fundamental Lemma (D.3.7), the definition of the *good
-functions* (D.3.8) and the definition of a *natural transformation* (D.3.11)
+missing from the dictionary, and the numbers D.4.7, D.4.8 and D.4.11 are
+therefore skipped: the Fundamental Lemma (D.4.7), the definition of the *good
+functions* (D.4.8) and the definition of a *natural transformation* (D.4.11)
 carry no `\label` in the sources, so they have no name to be referred to by and
 no alias in `RequestProject/Labels.lean`.  All three are formalised --
 `Transducers.HTerm.rel_eval` (`PartD/HOFund.lean`), `Transducers.Rel`
 (`PartD/HORel.lean`) and `Transducers.IsNaturalTransformation`
 (`PartD/HONat.lean`) -- and `THEOREMS.md` records them; no placeholder tag is
 invented for them.
+
+Likewise, the number D.3.3 is skipped in Section *Evaluation*: it is the
+definition of a *Simon tree*, the `definition` environment headed *Simon tree* in
+`evaluation.tex`, which carries no `\label` in the sources.  It is formalised, as
+`Transducers.FactTree` and `Transducers.FactTree.IsSimon` (`PartD/SimonTree.lean`),
+and `THEOREMS.md` records it, but it has no name to be referred to by, so it has no
+alias in `RequestProject/Labels.lean` and no placeholder tag is invented for it.
 
 The one row with no number is the withdrawn Theorem
 `nolabel:thm-fo-transduction-into-primes`: the book no longer states it as a
@@ -201,21 +208,32 @@ generator working from the tables alone would delete them.
 | D.2.5 | lemma | `lem:children-of-configuration-in-pebble-run` | `polyregular-pebble.tex` |
 | D.2.6 | claim | `claim:from-configuration-to-child-configuration-graph` | `polyregular-pebble.tex` |
 | D.2.7 | claim | `claim:from-child-configuration-graph-to-children` | `polyregular-pebble.tex` |
-| D.3.1 | definition | `def:polyregular-terms` | `higher-order.tex` |
-| D.3.2 | theorem | `thm:polyregular-terms` | `higher-order.tex` |
-| D.3.3 | definition | `def:higher-order-types` | `higher-order.tex` |
-| D.3.4 | definition | `def:higher-order-terms` | `higher-order.tex` |
-| D.3.5 | lemma | `lem:fewer-atomic` | `higher-order.tex` |
-| D.3.6 | theorem | `thm:higher-order-terms` | `higher-order.tex` |
-| D.3.9 | lemma | `lem:good-functions-are-polyregular-at-arrow-free-types` | `higher-order.tex` |
-| D.3.10 | claim | `claim:logical-relations-closed-under-precomposition` | `higher-order.tex` |
-| D.3.12 | claim | `claim:atomic-functions-are-natural-transformations` | `higher-order.tex` |
-| D.3.13 | claim | `claim:functors-applied-to-good` | `higher-order.tex` |
-| D.3.14 | theorem | `thm:undecidability-higher-order` | `higher-order.tex` |
-| D.3.15 | lemma | `lem:tiling` | `higher-order.tex` |
-| D.3.16 | lemma | `lem:tiling-checker` | `higher-order.tex` |
-| D.4.3 | lemma | `lem:tuples-listed-by-for` | `mso-interpretation.tex` |
-| D.4.6 | lemma | `lem:domination` | `mso-interpretation.tex` |
+| D.3.1 | theorem | `thm:evaluation-polyregular` | `evaluation.tex` |
+| D.3.2 | theorem | `thm:monoids-equal-automata` | `evaluation.tex` |
+| D.3.4 | lemma | `lem:factorisation-forest-evaluation` | `evaluation.tex` |
+| D.3.5 | theorem | `thm:factorisation-forest` | `evaluation.tex` |
+| D.3.6 | lemma | `lem:factorisation-forest-single-letter` | `evaluation.tex` |
+| D.3.7 | lemma | `lem:factorisation-forest-shrinking-letter` | `evaluation.tex` |
+| D.3.8 | lemma | `lem:semigroup-is-group` | `evaluation.tex` |
+| D.3.9 | lemma | `lem:factorisation-forest-group` | `evaluation.tex` |
+| D.3.10 | lemma | `lem:factorisation-forest-rational` | `evaluation.tex` |
+| D.3.11 | lemma | `lem:evaluation-mso-successor-in-constant-time` | `evaluation.tex` |
+| D.3.12 | claim | `claim:mso-formula-recognised-by-homomorphism` | `evaluation.tex` |
+| D.3.13 | claim | `claim:find-position-in-factor` | `evaluation.tex` |
+| D.4.1 | definition | `def:polyregular-terms` | `higher-order.tex` |
+| D.4.2 | theorem | `thm:polyregular-terms` | `higher-order.tex` |
+| D.4.3 | definition | `def:higher-order-types` | `higher-order.tex` |
+| D.4.4 | definition | `def:higher-order-terms` | `higher-order.tex` |
+| D.4.5 | lemma | `lem:fewer-atomic` | `higher-order.tex` |
+| D.4.6 | theorem | `thm:higher-order-terms` | `higher-order.tex` |
+| D.4.9 | lemma | `lem:good-functions-are-polyregular-at-arrow-free-types` | `higher-order.tex` |
+| D.4.10 | claim | `claim:logical-relations-closed-under-precomposition` | `higher-order.tex` |
+| D.4.12 | claim | `claim:atomic-functions-are-natural-transformations` | `higher-order.tex` |
+| D.4.13 | claim | `claim:functors-applied-to-good` | `higher-order.tex` |
+| D.4.14 | theorem | `thm:undecidability-higher-order` | `higher-order.tex` |
+| D.4.15 | lemma | `lem:tiling` | `higher-order.tex` |
+| D.4.16 | lemma | `lem:tiling-checker` | `higher-order.tex` |
+| D.5.8 | lemma | `lem:domination` | `mso-interpretation.tex` |
 
 Sections and subsections:
 
@@ -264,7 +282,10 @@ Sections and subsections:
 | D.2 | section | *Pebble transducers* | `polyregular-pebble.tex` |
 | D.2.1 | subsection | *Continuity* | `polyregular-pebble.tex` |
 | D.2.2 | subsection | *Equivalence with for-transducers* | `polyregular-pebble.tex` |
-| D.3 | section | *A functional programming language* | `higher-order.tex` |
-| D.3.1 | subsection | *Polyregular terms* | `higher-order.tex` |
-| D.3.2 | subsection | *Higher-order polyregular terms* | `higher-order.tex` |
-| D.3.3 | subsection | *Expressive completeness* | `higher-order.tex` |
+| D.3 | section | *Evaluation* | `evaluation.tex` |
+| D.3.1 | subsection | *Simon trees* | `evaluation.tex` |
+| D.3.2 | subsection | *The evaluation algorithm* | `evaluation.tex` |
+| D.4 | section | *A functional programming language* | `higher-order.tex` |
+| D.4.1 | subsection | *Polyregular terms* | `higher-order.tex` |
+| D.4.2 | subsection | *Higher-order polyregular terms* | `higher-order.tex` |
+| D.4.3 | subsection | *Expressive completeness* | `higher-order.tex` |
