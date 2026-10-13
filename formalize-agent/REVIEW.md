@@ -282,3 +282,9 @@ undoes it if the run is not worth repairing. The run itself is on branch `aristo
 The run started from 43f41a5e and its result does not merge cleanly into what the repository holds now — the same files were changed on both sides. Nothing has been lost: the run is on branch `aristotle/437e810b`.
 
     git -C /Users/bojan/Documents/ksiazki/transducer-book-lean/transducer-lean merge aristotle/437e810b
+
+## 2026-10-13 08:44:55Z — D3-simon-trees conflicts with local work
+
+The run started from 8a61f2c5 and its result does not merge cleanly into what the repository holds now — the same files were changed on both sides. Nothing has been lost: the run is on branch `aristotle/74009739`.
+
+    git -C /Users/bojan/Documents/ksiazki/transducer-book-lean/transducer-lean merge aristotle/74009739

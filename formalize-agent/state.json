@@ -53,7 +53,8 @@
     "book-remaining-results",
     "B13-rational-recognisable",
     "D3-simon-trees",
-    "D3-evaluation-exercises"
+    "D3-evaluation-exercises",
+    "D3-evaluation-structural"
   ],
   "targets": {
     "B-effectivity-conditional": {
@@ -1437,6 +1438,16 @@
       "started_at": null,
       "finished_at": null,
       "note": null
+    },
+    "D3-evaluation-structural": {
+      "status": "pending",
+      "attempts": 0,
+      "continues": 0,
+      "reattempts": 0,
+      "task_ids": [],
+      "started_at": null,
+      "finished_at": null,
+      "note": null
     }
   },
   "current": {
@@ -1447,10 +1458,10 @@
     "submitted_at": "2026-10-13 07:32:44Z",
     "kind": "initial"
   },
-  "paused": false,
-  "pause_reason": null,
+  "paused": true,
+  "pause_reason": "D3-simon-trees needs a merge by hand",
   "finished_at": null,
-  "ticks": 1904,
-  "last_tick": "2026-10-13 07:32:36Z",
-  "review_pending": 14
+  "ticks": 1911,
+  "last_tick": "2026-10-13 09:14:56Z",
+  "review_pending": 15
 }
