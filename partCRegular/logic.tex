@@ -223,7 +223,7 @@ To implement this, we will use an extended syntax, in which first-order variable
 
 \begin{myexample}
     Using a variable $x : n^2$, we  can quantify over pairs of positions.
-    To access the components of this variable, we will have a feature in the logic that will unpack it as a pair $(x_1,x_2)$ of variables of type $n$. 
+    To access the components of this variable, we will have a feature in the logic that will unpack it as  two elements $x(1)$ and $x(2)$ of the underlying structure.
 \end{myexample}
 
 \begin{myexample} The summation in a polynomial is used to represent alternative variants. For example, the polynomial $n^0 + n^0$, which we denote by $1+1$, allows us to quantify over Boolean values. To access a variant type, we will have a feature in the logic that will allow us to identify which variant is used.
@@ -240,24 +240,29 @@ For the second-order variables, the types will be of the form $2^\tau$, such tha
 \qquad 
 \myunderbrace{\exists X : 2^\tau \quad \forall X : 2^\tau}{second-order quantifiers}
 \qquad 
-\myunderbrace{\lor \ \land \  \neg}{Boolean connectives}
-\qquad 
-\myunderbrace{x \le y \quad a(x)}{atomic formulas \\ for order and labels} 
-\qquad 
-\myunderbrace{x \in X}{set membership}.
+\myunderbrace{\lor \ \land \  \neg}{Boolean connectives}.
+% \qquad 
+% \myunderbrace{x \le y \quad a(x)}{atomic formulas \\ for order and labels} 
+% \qquad 
+% \myunderbrace{x \in X}{set membership}.
 \end{align*}
-For the atomic formulas, the variables need to represent positions, i.e.~their types must be $n$, while for set membership, the types need to match: if $x$ has type $\tau$ then $X$ must have type $2^\tau$.  Finally, we add a feature for  unpacking the polynomial types. For every variable $x$ that has a type 
+Let us now describe the atomic formulas. There is an atomic formula $x \in X$ for set membership, which must be well-typed, i.e.~$x$ must have type $\tau$ and $X$ must have type $2^\tau$.  There is an atomic formula 
+$
+\summand i x
+$
+which allows us to check if a variable $x$ uses  variant $i \in \set{1,\ldots,k}$ in a type which is a disjoint union of $k$ variants. Finally,  the relations from the underlying structure (which are, in our case, a binary relation for the order and unary relations for the labels) can be applied to the elements stored in the variables.  More formally, formulas of the form 
 \begin{align*}
-\tau = n^{d_1} + \cdots + n^{d_k},
+R(x_1(i_1),\ldots,x_k(i_k)),
 \end{align*}
-and for every $i \in \set{1,\ldots,k}$ we have an atomic formula
+where $R$ is a relation in the vocabulary (or equality) with $k$ arguments, $x_1,\ldots,x_k$ are variables and $i_1,\ldots,i_k \in \set{1,2,\ldots}$ are coordinates. This relation holds if  the elements $x_1(i_1),\ldots,x_k(i_k)$ are defined (which means that the corresponding variants have the required dimensions) and the corresponding tuple belongs to the relation.  For example,
 \begin{align*}
-x = i(\myunderbrace{x_1,\ldots,x_{d_i}}{these variables have type $n$}),
+x(1) \leq  y(2)
 \end{align*}
-which says that $x$    uses the $i$-th monomial, and identifies the coordinates of it. 
+says that $x$ belongs to a variant with dimension at least one, $y$ belongs to a variant with dimension at least two, and the first coordinate of $x$ is to the left of the second coordinate of $y$. 
+
 
 \begin{myexample}
-    If we have a Boolean variable $x : 1+1$ then we can check if it is true or false using the atomic formulas $x = 1()$ and $x = 2()$.
+    If we have a Boolean variable $x : 1+1$ then we can check if it is true or false using the atomic formulas $\summand 1 x$ and $\summand 2 x$.
 \end{myexample}
 
 Here is a more sophisticated example of the logic, which computes the transitive closure of the one-step reachability relation of a two-way transducer. 

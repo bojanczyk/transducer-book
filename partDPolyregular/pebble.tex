@@ -205,4 +205,20 @@ By composing the for-transducers in Claims~\ref{claim:from-configuration-to-chil
 
 
 
+\exerciseheader
 
+\exer{\label{exer:no-stack-discipline} Consider a pebble automaton (i.e.~it accepts or rejects, and thus it defines  a language instead of a string-to-string function) without stack discipline. Show that this model is equivalent to (deterministic) logarithmic space Turing machines.} { 
+A pebble automaton can easily be simulated in logarithmic space, since a configuration has a constant number of pointers to the input tape, and each pointer can be stored in logarithmic space. Furthermore, the operations on pointers (increment, decrement, equality comparisons, and label tests) can easily be implemented by a logarithmic space Turing machine.  
+
+The more interesting direction is to show that a logarithmic space Turing machine can be simulated by a pebble automaton. The idea is that if the input string has length $n$, then one pebble can be used to store a stack of bits of length at most $\log n$. Therefore, a logarithmic size memory tape can be simulated using two stacks, one on the left and one on the right, each of which can be implemented by a constant number of pebbles, as in the following picture:
+\mypic{60}  We need to implement the stack operations using a pebble automaton:
+\begin{itemize}
+    \item emptiness means that the pebble is at the first gap of the input string;
+    \item having bit $0$ on the top means that the pebble is at an even-numbered gap;
+    \item having bit $1$ on the top means that the pebble is at an odd-numbered gap;
+    \item popping means that the pebble updated by $i \mapsto \lfloor i/2 \rfloor$;
+    \item pushing bit $0$ means that the pebble is updated by $i \mapsto 2i$;
+    \item pushing bit $1$ means that the pebble is updated by $i \mapsto 2i+1$.
+\end{itemize}
+In the presence of an extra pebble, we can easily implement the above operations. The lack of stack discipline is crucial here, since it allows us to independently operate on the two stacks (and on the extra pebble).
+}

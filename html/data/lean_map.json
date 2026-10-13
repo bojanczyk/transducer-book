@@ -650,10 +650,20 @@
    "label": "def:rational-relation",
    "number": "B.1.2"
   },
+  "Transducers.IsRationalSubset": {
+   "kind": "definition",
+   "label": "def:rational-recognisable-subsets",
+   "number": "B.1.3"
+  },
   "Transducers.IsRationalUnderRepr": {
    "kind": "definition",
    "label": "def:regular-functions-on-types-under-string-representation",
    "number": "C.5.2"
+  },
+  "Transducers.IsRecognisableSubset": {
+   "kind": "definition",
+   "label": "def:rational-recognisable-subsets",
+   "number": "B.1.3"
   },
   "Transducers.IsRegularFun": {
    "kind": "definition",
@@ -3046,11 +3056,28 @@
    "anchor": "definition.105",
    "kind": "definition",
    "label": "def:rational-recognisable-subsets",
-   "lean": [],
-   "not_formalised": true,
-   "not_formalised_because": "not formalised (rational and recognisable subsets of a monoid, which the later sections do not use)",
+   "lean": [
+    {
+     "decl_line": 42,
+     "end": 43,
+     "file": "RequestProject/PartB/MonoidSubsets.lean",
+     "line": 33,
+     "name": "Transducers.IsRecognisableSubset",
+     "primary": true,
+     "state": "proved"
+    },
+    {
+     "decl_line": 54,
+     "end": 66,
+     "file": "RequestProject/PartB/MonoidSubsets.lean",
+     "line": 45,
+     "name": "Transducers.IsRationalSubset",
+     "state": "proved"
+    }
+   ],
    "number": "B.1.3",
-   "page": "34"
+   "page": "34",
+   "theorems_md_status": ""
   },
   "def:rational-relation": {
    "anchor": "definition.101",
@@ -3380,10 +3407,10 @@
    "label": "ex:recognisable-relations",
    "lean": [
     {
-     "decl_line": 350,
-     "end": 424,
+     "decl_line": 351,
+     "end": 425,
      "file": "RequestProject/Exercises/PartBC.lean",
-     "line": 336,
+     "line": 337,
      "name": "Transducers.Exercises.isRecognisableRel_iff_finite_union",
      "primary": true,
      "state": "proved"
@@ -3698,10 +3725,10 @@
    "label": "exer:decide-rational-colision",
    "lean": [
     {
-     "decl_line": 735,
-     "end": 738,
+     "decl_line": 736,
+     "end": 739,
      "file": "RequestProject/Exercises/PartBC.lean",
-     "line": 715,
+     "line": 716,
      "name": "Transducers.Exercises.rationalFun_collision_undecidable",
      "primary": true,
      "state": "proved"
@@ -3834,10 +3861,10 @@
      "state": "proved"
     },
     {
-     "decl_line": 708,
-     "end": 711,
+     "decl_line": 709,
+     "end": 712,
      "file": "RequestProject/Exercises/PartBC.lean",
-     "line": 700,
+     "line": 701,
      "name": "Transducers.Exercises.not_isRationalFun_duplicate",
      "state": "proved"
     }
@@ -3853,27 +3880,27 @@
    "label": "exer:examples-of-rational-fun",
    "lean": [
     {
-     "decl_line": 477,
-     "end": 493,
+     "decl_line": 478,
+     "end": 494,
      "file": "RequestProject/Exercises/PartBC.lean",
-     "line": 474,
+     "line": 475,
      "name": "Transducers.Exercises.isBimachine_isRationalFun_evenLength",
      "primary": true,
      "state": "proved"
     },
     {
-     "decl_line": 556,
-     "end": 577,
+     "decl_line": 557,
+     "end": 578,
      "file": "RequestProject/Exercises/PartBC.lean",
-     "line": 554,
+     "line": 555,
      "name": "Transducers.Exercises.isBimachine_isRationalFun_swapFirstLast",
      "state": "proved"
     },
     {
-     "decl_line": 641,
-     "end": 648,
+     "decl_line": 642,
+     "end": 649,
      "file": "RequestProject/Exercises/PartBC.lean",
-     "line": 638,
+     "line": 639,
      "name": "Transducers.Exercises.isBimachine_isRationalFun_upToLastHash",
      "state": "proved"
     }
@@ -3965,10 +3992,10 @@
    "label": "exer:finite-range-ideals",
    "lean": [
     {
-     "decl_line": 1048,
-     "end": 1080,
+     "decl_line": 1049,
+     "end": 1081,
      "file": "RequestProject/Exercises/PartBC.lean",
-     "line": 1037,
+     "line": 1038,
      "name": "Transducers.Exercises.finite_range_ideal_classification",
      "primary": true,
      "state": "proved"
@@ -4117,10 +4144,10 @@
    "label": "exer:function-that-is-not-rational",
    "lean": [
     {
-     "decl_line": 846,
-     "end": 857,
+     "decl_line": 847,
+     "end": 858,
      "file": "RequestProject/Exercises/PartBC.lean",
-     "line": 834,
+     "line": 835,
      "name": "Transducers.Exercises.exists_not_isRationalFun_unary_compositions_rational",
      "primary": true,
      "state": "proved"
@@ -4316,10 +4343,10 @@
    "label": "exer:mealy-as-restricted-mso-relabelling",
    "lean": [
     {
-     "decl_line": 1379,
-     "end": 1387,
+     "decl_line": 1380,
+     "end": 1388,
      "file": "RequestProject/Exercises/PartBC.lean",
-     "line": 1376,
+     "line": 1377,
      "name": "Transducers.Exercises.isMealy_iff_restrictedRelabelling",
      "primary": true,
      "state": "proved"
@@ -4573,19 +4600,19 @@
    "label": "exer:non-rational",
    "lean": [
     {
-     "decl_line": 682,
-     "end": 698,
+     "decl_line": 683,
+     "end": 699,
      "file": "RequestProject/Exercises/PartBC.lean",
-     "line": 676,
+     "line": 677,
      "name": "Transducers.Exercises.not_isRationalFun_firstHalf",
      "primary": true,
      "state": "proved"
     },
     {
-     "decl_line": 708,
-     "end": 711,
+     "decl_line": 709,
+     "end": 712,
      "file": "RequestProject/Exercises/PartBC.lean",
-     "line": 700,
+     "line": 701,
      "name": "Transducers.Exercises.not_isRationalFun_duplicate",
      "state": "proved"
     }
@@ -4795,10 +4822,10 @@
    "label": "exer:rational-one-letter-input",
    "lean": [
     {
-     "decl_line": 764,
-     "end": 791,
+     "decl_line": 765,
+     "end": 792,
      "file": "RequestProject/Exercises/PartBC.lean",
-     "line": 743,
+     "line": 744,
      "name": "Transducers.Exercises.rationalFun_unary_graph",
      "primary": true,
      "state": "proved"
@@ -5148,19 +5175,19 @@
    "label": "exer:some-ideals",
    "lean": [
     {
-     "decl_line": 900,
-     "end": 910,
+     "decl_line": 901,
+     "end": 911,
      "file": "RequestProject/Exercises/PartBC.lean",
-     "line": 895,
+     "line": 896,
      "name": "Transducers.Exercises.isIdeal_rangeAtMost",
      "primary": true,
      "state": "proved"
     },
     {
-     "decl_line": 920,
-     "end": 945,
+     "decl_line": 921,
+     "end": 946,
      "file": "RequestProject/Exercises/PartBC.lean",
-     "line": 912,
+     "line": 913,
      "name": "Transducers.Exercises.isIdeal_outputsPoly",
      "state": "proved"
     }
@@ -5352,10 +5379,10 @@
    "label": "exer:surjective-rational-function",
    "lean": [
     {
-     "decl_line": 1092,
-     "end": 1098,
+     "decl_line": 1093,
+     "end": 1099,
      "file": "RequestProject/Exercises/PartBC.lean",
-     "line": 1084,
+     "line": 1085,
      "name": "Transducers.Exercises.exists_rationalFun_leftInverse",
      "primary": true,
      "state": "proved"
@@ -5371,10 +5398,10 @@
    "label": "exer:two-letter-alphabet-suffices",
    "lean": [
     {
-     "decl_line": 1212,
-     "end": 1223,
+     "decl_line": 1213,
+     "end": 1224,
      "file": "RequestProject/Exercises/PartBC.lean",
-     "line": 1204,
+     "line": 1205,
      "name": "Transducers.Exercises.isRegularFun_iff_compClosure2",
      "primary": true,
      "state": "proved"
@@ -5648,6 +5675,14 @@
    "page": "25",
    "theorems_md_status": "proved"
   },
+  "lem:disjunction-tuple-enumerator": {
+   "anchor": "lemma.645",
+   "kind": "lemma",
+   "label": "lem:disjunction-tuple-enumerator",
+   "lean": [],
+   "number": "D.4.8",
+   "page": "194"
+  },
   "lem:distributivity-is-regular-under-string-representation": {
    "anchor": "lemma.399",
    "kind": "lemma",
@@ -5668,12 +5703,14 @@
    "theorems_md_status": "proved (`CombAtomDistr.lean`), the worked example of the induction basis of Theorem `thm:regular-terms`; the parsing is done by the bracket counter of `CombDepth.lean` rather than by the automaton of the unlabelled claim that follows it in the book"
   },
   "lem:domination": {
-   "anchor": "lemma.643",
+   "anchor": "lemma.646",
    "kind": "lemma",
    "label": "lem:domination",
    "lean": [],
-   "number": "D.4.6",
-   "page": "193"
+   "not_formalised": true,
+   "not_formalised_because": "Section D.4, the same",
+   "number": "D.4.9",
+   "page": "194"
   },
   "lem:eliminate-epsilon-transitions": {
    "anchor": "lemma.134",
@@ -6080,6 +6117,14 @@
    "page": "161",
    "theorems_md_status": "proved (`ForPrenexTop.lean`)"
   },
+  "lem:quantifier-free-tuple-enumerator-is-for-definable": {
+   "anchor": "lemma.644",
+   "kind": "lemma",
+   "label": "lem:quantifier-free-tuple-enumerator-is-for-definable",
+   "lean": [],
+   "number": "D.4.7",
+   "page": "194"
+  },
   "lem:reachability-pebble-automaton": {
    "anchor": "lemma.589",
    "kind": "lemma",
@@ -6377,6 +6422,8 @@
    "kind": "lemma",
    "label": "lem:tuples-listed-by-for",
    "lean": [],
+   "not_formalised": true,
+   "not_formalised_because": "in Section D.4, which the author says is inconsistent at this stage and is not to be formalised until it settles",
    "number": "D.4.3",
    "page": "193"
   },

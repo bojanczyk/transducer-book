@@ -1,0 +1,472 @@
+\section{Evaluation}
+\label{sec:evaluation}
+For the regular functions, and even more so for the simpler models of Mealy machines and rational functions, the evaluation problem is not an interesting question. The trivial algorithm, which is to run the machine (say, a two-way transducer), runs in  linear time, which is the time needed to read the input string, and thus cannot be improved without making some more elaborate assumptions. However, for the polyregular functions, the evaluation problem becomes interesting. For example, a pebble transducer could do a quadratic computation but have linear size output. This would mean that most of the computation would be unproductive. In this section, we show an algorithm for evaluating polyregular functions which eliminates such unproductive computations, and runs in time that is linear in the size of the input and output.
+
+\begin{theorem}\label{thm:evaluation-polyregular}
+    Every polyregular function can be evaluated in time 
+    \begin{align*}
+    \Oo(\text{input size} + \text{output size}).
+    \end{align*}
+\end{theorem}
+
+In the above theorem, the hidden constant in the $\Oo$ notation depends on the polyregular function, and this dependence is nasty -- a tower of exponentials in terms of the source code of the polyregular function.
+The theorem is based on a data structure that is called Simon trees; this data structure is a powerful tool and it will be used later in the book for other purposes as well. We define Simon trees in \cref{sec:Simon-trees}, and then we show how to use them to evaluate polyregular functions in \cref{sec:evaluation-algorithm}.
+
+\subsection{Simon trees}
+\label{sec:Simon-trees}
+
+Simon trees are based on the algebraic approach to regular languages, where monoids are used instead of automata.  
+We have already seen monoids in the exercises and side comments before, but since they are about to  become a central tool,  we give the appropriate definitions.  Recall that a monoid is a set with a binary operation that is associative, i.e.~
+\begin{align*}
+x \cdot (y \cdot z) = (x \cdot y) \cdot z,
+\end{align*}
+and which has a neutral element, i.e.~an element $1$ such that 
+\begin{align*}
+1 \cdot x = x = x \cdot 1.
+\end{align*}
+A canonical example of a monoid is the set $A^*$ with concatenation, which is called the free monoid. A monoid homomorphism is a function between two monoids that preserves the binary operation and the neutral element. From the perspective of regular languages, the reason for using monoids is the following theorem, which says that finite monoids have the same expressive power as finite automata.
+\begin{theorem}\label{thm:monoids-equal-automata}
+A language $L \subseteq A^*$ is regular if and only if it is recognised by a homomorphism into a finite monoid, i.e.~there  is a monoid homomorphism
+\begin{align*}
+A^* \xrightarrow h M \qquad \text{with $M$ a finite monoid,}
+\end{align*}
+such that membership $w \in L$ depends only on $h(w) \in M$.
+\end{theorem}
+\begin{proof}
+    If the language is recognised by a homomorphism into a finite monoid, then it is regular, since we can construct a deterministic finite automaton whose states are the elements of the monoid, the initial state is the neutral element of the monoid, and the transition function is given by $(m,a) \mapsto m \cdot h(a)$. For the converse implication, suppose that the language is regular, as witnessed by some deterministic finite automaton. Consider the function 
+    \begin{align*}
+    A^* \xrightarrow h (Q \to Q),
+    \end{align*}
+    which maps a string to its state transformation. This is a monoid homomorphism into the finite monoid of functions from the set of states to itself. It recognises the language, since membership in the language depends only on the state transformation of the input string.
+\end{proof}
+
+\paragraph*{Binary factorisations.} Before introducing Simon trees, we begin with a simpler data structure, which corresponds to binary factorisations of strings. Define a \emph{factorisation tree} for a monoid homomorphism to be a tree where leaves are labelled by input letters, and where each inner node (i.e.~a node that is not a leaf) is labelled by  the monoid element that is assigned by the homomorphism to  the string in its subtree.  Initially, we will care about binary factorisation trees, where every inner node has exactly two children. Here is a picture, in which the homomorphism 
+\begin{align*}
+\set{a,b}^* \xrightarrow h \set{0,1}
+\end{align*}
+counts the number of letters $b$ modulo two (the monoid is the group of order two):
+\mypic{63}
+By using a simple divide and conquer approach, we can always find a binary factorisation tree of height logarithmic in the length of the underlying string (i.e.~the string in the leaves). 
+A binary factorisation tree can be used to evaluate the homomorphism on factors of the underlying string.  The corresponding monoid element can be computed in time proportional to the height of the tree (which will be logarithmic in the length of the string if the tree is balanced), by looking at the maximal subtrees of the tree that are entirely contained in the factor, as explained in the following picture:
+\mypic{64}
+
+
+\paragraph*{Simon trees.} If we insist on using binary trees, then we cannot go below logarithmic height. We will, however, want to go down to constant height, and therefore we will need to  allow nodes of unbounded branching.  To constrain such nodes, we require that nodes with at least three children must use idempotents in the monoid, i.e.~monoid elements $e$ that satisfy $e^2 = e$.  The corresponding data structure is named after Imre Simon, who introduced it. 
+
+\begin{definition}[Simon tree] A \emph{Simon tree} is a factorisation tree with the following idempotent property: if a node has at least three children, then all these children  must be labelled by the same monoid element, which  must be an idempotent.
+\end{definition}
+Here is a picture of a Simon tree:
+\mypic{62}
+The following lemma shows that for Simon trees, factors can still be evaluated in time that is linear in the height of the tree, as was the case for binary factorisation trees. In the lemma, we assume that the monoid operations can be computed in constant time, which is reasonable since we will assume that we are working with a fixed finite monoid.
+
+\begin{lemma}\label{lem:factorisation-forest-evaluation}
+    Suppose that we are given a Simon tree for a monoid homomorphism. The following problem can be solved in time linear in the  height of the tree:
+    \begin{itemize}
+            \item \textbf{Input.} A factor, given by its endpoints, of the string in the leaves of the tree.
+            \item \textbf{Output.} The value of the monoid homomorphism on the factor.
+    \end{itemize}
+\end{lemma}
+\begin{proof}
+    We use essentially the same algorithm as for binary factorisation trees.  We identify maximal subtrees that are contained in the factor. Because the tree has unbounded branching, there may be many such subtrees. However, these subtrees can be grouped into bundles, with each bundle consisting of consecutive siblings, and each level in the tree having a constant number of bundles. These bundles are  illustrated using blue boxes in the following picture:
+\mypic{65}
+Let us give a more formal argument. Suppose that we want to compute the value for some factor $v$. The algorithm runs by induction on the height of the subtree of a tree that contains this factor. If the height is zero, then the factor is a single letter, and we can compute the value of the homomorphism directly. Otherwise, if the subtree has at most two children, then we can compute the values of the parts of the factor in the two children, and combine them using the monoid operaiton. The interesting case is when the subtree has at least three children $x_1,\ldots,x_n$. In this case, we look at which subtrees of these children are covered by the factor, as in the following picture:
+\mypic{66}
+The middle part  that is completely covered by the factor is one of the bundles that we talked about earlier. This bundle will be either empty (in case the factor is contained in at most two consecutive subtrees), or otherwise its value will be the idempotent $e$ used by all nodes. The remaining two parts, on the left and right can have their values computed by induction assumption on smaller height. 
+
+To implement the above description using an algorithm, we need to be able to navigate the Simon tree efficiently. This requires that the Simon tree is equipped with the following  information: (a) every node stores its label; (b) every node stores a pointer to its parent; (c) every node stores pointers to its next and previous siblings if they exist; and (d) we can test the order on siblings in constant time.
+\end{proof}
+
+
+% \begin{lemma}
+%     Let $\varphi(x_1,\ldots,x_k)$ be an \mso formula which selects $k$-tuples of positions in strings from $A^*$. There exists a monoid homomorphism 
+%     \begin{align*}
+%     A^* \xrightarrow h M \qquad \text{with $M$ a finite monoid,}
+%     \end{align*}
+%     such that for every string $w \in A^*$ with distinguished positions $x_1 < \cdots < x_k$, whether 
+%     \begin{align*}
+%     w \models \varphi(x_1,\ldots,x_k)
+%     \end{align*}
+%     is uniquely determined by the list of  monoid elements
+%     \begin{align*}
+%     w[1,x_1), w[x_1+1,x_2), \ldots, w[x_k+1,|w|].
+%     \end{align*}
+% \end{lemma}
+
+
+
+
+\paragraph*{Bounded height.} The main result about Simon trees is that they can be constructed with bounded height, when the monoid homomorphism is fixed. This means, in particular, that the algorithm from \cref{lem:factorisation-forest-evaluation} for evaluating factors will run in constant time.
+
+\begin{theorem}[Factorisation Forest Theorem]\label{thm:factorisation-forest}
+    For every monoid homomorphism $h$ into  a finite monoid 
+    there is a constant $k \in \set{1,2,\ldots}$ such that every input string admits a Simon tree of height at most $k$.  
+\end{theorem}
+\begin{proof}
+    Although we state and  use the theorem for monoid homomorphisms, which is more convenient since we do not need to distinguish between empty and nonempty strings, the proof itself will be phrased in terms of   semigroup homomorphisms. A semigroup is  like a monoid,  except that it  does not need to have a neutral element. The notion of Simon tree for semigroups is the same as for monoids. The advantage of semigroups is that when we restrict a semigroup to a subset (as we will do in the proof), we will not have to ensure that the subset contains an identity element.  We will show that for every semigroup homomorphism 
+\begin{align*}
+A^+ \xrightarrow h S
+\end{align*}
+into a finite semigroup, all input strings have Simon trees of bounded height. The proof will be by induction on two parameters, ordered lexicographically: (a) the size of the semigroup; and (b) the number of semigroup elements that are images of individual letters.
+One should think of parameter (b) as being the size of the input alphabet, but in the proof we will consider potentially infinite alphabets, and therefore will be counting the size of the input alphabet after merging letters with the same image in the semigroup.
+
+We begin with the case when the input alphabet has one letter only, which covers the induction basis, and a bit more. 
+
+\begin{lemma}\label{lem:factorisation-forest-single-letter}
+    The theorem holds when all input letters are mapped to the same semigroup element.
+\end{lemma}
+\begin{proof}
+    Let $s$ be the unique semigroup element from the assumption of the lemma. Like in any finite semigroup, there is some power $k \in \set{1,2,\ldots}$ such that $s^k$ is an idempotent (this follows from \cref{claim:factorial-powers-stabilise-in-monoids}). Therefore, to obtain a Simon tree for a string, we group it into factors of length $k$, which are all mapped to the same idempotent. Each such factor has a Simon tree of constant size, and therefore also constant height. Then, these factors are grouped together with a single idempotent node. Finally, the remaining letters -- of which there are less than $k$ -- are added with a bounded number of nodes. 
+\end{proof}
+
+The next lemma essentially covers the induction step. In this lemma, we consider the case where some input letter shrinks the semigroup on the right. 
+\begin{lemma}\label{lem:factorisation-forest-shrinking-letter}
+    The theorem holds if there is some semigroup element $s \in S$ which is an image of a letter, and such that $S \cdot s$ is a proper subset of the semigroup $S$.
+\end{lemma}
+\begin{proof} Decompose the input alphabet as a disjoint union 
+    \begin{align*}
+    A = B + C
+    \end{align*}
+    where $C$ are the letters  mapped to $s$, and $B$ are the remaining letters.     The set $A^*$ is isomorphic to 
+    \begin{align*}
+    C^* \times (B^+ \times C^+)^* \times B^*,
+    \end{align*}
+    by identifying the  maximal factors that use letters from $C$. The factors from $B^*$ and $B^+$ have Simon trees of bounded height by the induction hypothesis, since we have disallowed $s$ as an image of a letter. The factors from $C^*$ and $C^+$ have Simon trees of bounded height by \cref{lem:factorisation-forest-single-letter}, since all letters are mapped to $s$.  Consider now the factors from 
+    \begin{align*}
+    B^+ \times C^+.
+    \end{align*}
+    They have Simon trees of bounded height, by combining two  Simon trees of bounded height. Furthermore, their image under the homomorphism lies in $S \cdot s$. This set is a subsemigroup (this is where semigroups come in handy, since otherwise we might be forced to add an identity element, which could potentially break the size decrease). Therefore, if we think of $B^+ \times C^+$ as being a new alphabet (this is where we create an infinite alphabet), we can apply the induction assumption on a smaller semigroup to obtain Simon trees of bounded height for 
+    \begin{align*}
+    (B^+ \times C^+)^*.
+    \end{align*}
+Finally, the factors from $C^*$ on the left and $B^*$ on the right can be added with a bounded increase in the height of the Simon tree.
+\end{proof}
+
+Equipped with the above lemma, we prove the induction step for the theorem. If there is some letter as in the above lemma, then we are done. Otherwise, for every semigroup element $s \in S$ which arises as an image of a letter, the function $t \mapsto t \cdot s$ is a permutation of the semigroup $S$. This property extends to all other semigroup elements -- not only those that are images of letters -- since it is closed under composition. (We assume without loss of generality that the semigroup is generated by images of letters, since otherwise it can be made smaller.) By a symmetric argument (including a symmetric version of \cref{lem:factorisation-forest-shrinking-letter}), we can also assume that for every semigroup element $s \in S$,  the function $t \mapsto s \cdot t$ is a permutation of the semigroup $S$. As we now show, this means that the semigroup is actually a group.
+
+\begin{lemma}\label{lem:semigroup-is-group}
+    Assume that for every $s \in S$, the functions $t \mapsto t \cdot s$ and $t \mapsto s \cdot t$ are permutations of the semigroup $S$. Then the semigroup is a group.
+\end{lemma}
+\begin{proof}
+    Consider some idempotent $e \in S$, which must exist since every finite semigroup has an idempotent (which is obtained by taking a large enough power of any element). By assumption, the function $t \mapsto t \cdot e$ is a permutation. It must be the identity permutation, since applying it twice gives the same result as applying it once, by the assumption that $e$ is an idempotent. Therefore, $e$ is a right identity. For the same reasons, it is a left identity, and therefore it is a two-sided identity. We now find the inverses. Take some $s \in S$. We know that some power $s^k$ is an idempotent, and therefore it must be equal to $e$, since there can only be one two-sided identity. Therefore $s^{k-1}$ is a two-sided inverse of $s$. 
+\end{proof}
+
+Summing up, we have shown that either we can use \cref{lem:factorisation-forest-shrinking-letter} to reduce the size of the semigroup, or otherwise the semigroup is a group. In the latter case, we can use the following lemma to complete the proof of the theorem.
+
+    \begin{lemma}\label{lem:factorisation-forest-group}
+        The theorem holds when the semigroup is a group.
+    \end{lemma}
+    \begin{proof}
+        We will show that every string $w \in A^+$ has a Simon tree whose height is at most three times the size of the following  subset of the group
+        \begin{align*}
+        \sigma(w) = \setbuild{ h(v)}{$v$ is a prefix of $w$ that is neither empty ($v=\varepsilon$) nor full ($v=w$)}. 
+        \end{align*}
+        The proof is by induction on the size of this subset.
+        When this subset is empty, then the string has only one letter, and we can use a  trivial Simon tree which consists only of a leaf, and therefore has height zero. Suppose now that this subset is nonempty, and choose some $g \in \sigma(w)$. Consider all gaps 
+        \begin{align*}
+        x_1 < \cdots < x_n 
+        \end{align*}
+        in $w$ which are the end of prefixes mapped to $g$. These gaps induce a factorisation 
+        \begin{align*}
+        w =  w_0 \cdots w_n
+        \end{align*}
+        with $n+1$ factors. We first argue that all of these factors have a smaller induction parameter. For the first factor, this is clear, since it excludes $g$: 
+        \begin{align*}
+        \sigma(w_0) \subseteq \sigma(w) \setminus \set g.
+        \end{align*}
+        For the remaining factors, we observe that 
+        \begin{align*}
+        g \cdot \sigma(w_i) \subseteq \sigma(w) \setminus \set g \quad \text{for $i \in \set{1,\ldots,n}$}.
+        \end{align*}
+        Since we are in a group, multiplying a subset by a group element does not change its size, and therefore the induction parameter is smaller for all factors. This means that we can apply the induction hypothesis to all factors, and obtain Simon trees of bounded height.  We will now put them together, increasing the height of the Simon tree by at most three. 
+        The essential observation is that if we ignore the first and last factors, then the remaining factors  $w_1,\ldots,w_{n-1}$ are all mapped by the homomorphism to the group unit, since they connect gaps that are mapped to the same group element. Therefore, they can be grouped together in one step with an idempotent node. Finally, the first and last factors can be added with two more steps. Summing up, we have increased the height of the Simon tree by at most three, which completes the proof.
+    \end{proof}
+    This completes the proof of the Factorisation Forest Theorem. 
+\end{proof}
+
+
+\paragraph*{Computing the Simon Tree.} Before continuing, we would like to observe that the proof of the above theorem is constructive, in the sense that it gives an algorithm for computing a Simon tree. The running time of this algorithm is linear in the length of the input string, once the semigroup is fixed.  We can, however, do even better, and compute the Simon tree using a transducer, specifically a rational function. The Simon trees in the output of the transducer are represented as an inductively defined type. 
+\begin{align*}
+    \facttype{h,k,m},
+\end{align*}
+where $h$ is the monoid homomorphism, $k$ is the maximum height, and $m$ is the monoid element in the root.  This type is inductively defined as follows. For height  zero, a Simon  tree is nothing but a letter which is mapped to the chosen monoid element, and therefore the type is defined by 
+\begin{align*}
+\facttype {h,0,m} = \sum_{
+    \substack{
+        a \in A \\
+        h(a) = m
+    }
+} \onetype.
+\end{align*}
+For nonzero height, the definition of the type depends on whether the monoid element is an idempotent or not. If the  monoid element $m \in M$ is not an idempotent, then the  tree must have one or two children with appropriate values under the homomorphism, i.e.~
+\begin{align*}
+\facttype {h,k+1, m} = 
+\myoverbrace{\facttype {h,k,m}}{one child} +  
+\myoverbrace{
+\sum_{
+    \substack{
+        m_1,m_2 \in M \\
+        m_1m_2 = m
+    }    
+} \facttype {h,k,m_1} \times \facttype {h,k,m_2}}
+{two children}.
+\end{align*}
+If the monoid element    is an idempotent $e \in M$, then we additionally allow a list of children labelled by the same monoid element, i.e.
+\begin{align*}
+\facttype {h,k+1, e} = 
+\myoverbrace{\facttype {h,k,e}}{one child} +  
+\myoverbrace{
+\sum_{
+    \substack{
+        e_1,e_2 \in M \\
+        e_1e_2 = e
+    }    
+} \facttype {h,k,e_1} \times \facttype {h,k,e_2}}
+{two children}
++ 
+\myoverbrace{
+    \facttype{h,k,e}^{\ge 3}}{three or more\\  children}.
+\end{align*}
+In the type above, we have specified the monoid element in the root. The following type is 
+used to represent Simon trees with an unknown monoid element in the root:
+\begin{align*}
+\facttype {h,k} = \sum_{m \in M} \facttype {h,k,m}
+\end{align*}
+
+Using the above representation, we can state the following constructive version of the Factorisation Forest Theorem.
+\begin{lemma}\label{lem:factorisation-forest-rational}
+    For every monoid homomorphism 
+    \begin{align*}
+    A^* \xrightarrow h M
+    \end{align*}
+    into a finite monoid 
+    there is a constant $k$ and a rational function 
+    \begin{align*}
+    A^* \xrightarrow f \facttype {h,k}
+    \end{align*}
+   which maps every string $w$ to a Simon tree whose underlying string is $w$.
+\end{lemma}
+\begin{proof}
+    One way to prove this result is by inspecting the proof of the Factorisation Forest Theorem, which is constructive and yields a Simon tree in a rational way. Another way is to use the following argument, which treats the Factorisation Forest Theorem as a black box.
+    Apply the Factorisation Forest Theorem to obtain a constant $k$. This means that the natural projection map 
+\begin{align*}\facttype {h,k} \to A^*,\end{align*}
+which takes a factorisation tree to the underlying string, is surjective. This projection map is easily seen to be a rational function. Therefore, its inverse is a rational relation, which is furthermore total, i.e.~each string is mapped to at least one Simon tree. By \cref{lem:uniformisation}, the inverse of the projection map contains a rational function, which is the desired function $f$.
+\end{proof}
+
+\subsection{The evaluation algorithm}
+\label{sec:evaluation-algorithm}
+We now explain how Simon trees can be used to efficiently evaluate polyregular functions. In the proof, we use pebble transducers or for transducers.  As mentioned at the beginning of this section, the main difficulty with evaluation is that the computation of such a transducer might be much longer than its output size, e.g.~the computation could be quadratic despite a linear output size. To avoid this, we will use Simon trees to move between productive configurations (i.e.~configurations that produce an output letter) in constant time. 
+
+To compute the next productive configuration, all we will need is that the next configuration can be defined in \mso logic. The reasoning that we describe below will work for both for transducers and pebble transducers; we will use pebble transducers. Recall from \cref{lem:reachability-pebble-automaton} that if we fix a pebble transducer with states $Q$ and $k$ pebbles, then the set of configurations is described by the polynomial
+\begin{align*}
+    \tau(n) = \sum_{\ell \in \set{0,\ldots,k}} Q \times (1+n)^\ell
+\end{align*}
+and also the reachability relation can be defined by an \mso formula
+\begin{align*}
+    \varphi(s: \tau, t : \tau)
+\end{align*}
+From reachability we can define in \mso the successor relation on productive configurations, i.e.~we can write an \mso formula 
+\begin{align*}
+\psi(s : \tau, t : \tau)
+\end{align*}
+which holds if both $s$ and $t$ are productive configurations, and there is no productive configuration between them. The following lemma shows that if we build a data structure in linear time, then we will be able to navigate between productive configurations in constant time. Therefore, after building the data structure, we can produce the output string with constant delay between consecutive output letters. This gives  \cref{thm:evaluation-polyregular} about evaluation of polyregular functions. 
+
+
+
+\begin{lemma}\label{lem:evaluation-mso-successor-in-constant-time}
+    Fix a finite alphabet  $A$ and  an \mso formula 
+\begin{align*}
+\varphi(s : \sigma, t : \tau)
+\end{align*}
+over the vocabulary of $A^*$. Given an input string $w \in A^*$, one can compute in time $\Oo(|w|)$ a data structure that allows to solve the following  problem in time $\Oo(1)$:
+    \begin{itemize}
+    \item \textbf{Input.} $s \in \sigma(w)$.
+    \item \textbf{Output.} Some $t \in \tau(w)$ such that $\varphi(s,t)$ is true in $w$, or otherwise a  ``no'' answer if no such  $t$ exists.
+\end{itemize} 
+\end{lemma}
+\begin{proof} The formula in the statement of the lemma uses complex variables, which have variants and variable dimension. This is good for the application to pebble transducers, but for the proof we will prefer a simpler setting without variants, i.e.~the  input type $\sigma$ is $n^k$ for some $k$ and the output type $\tau$ is $n^\ell$ for some $\ell$, i.e.~the formula is 
+     \begin{align*}
+    \psi(\myunderbrace{x_1,\ldots,x_k}{input\\ positions}, \myunderbrace{y_1,\ldots,y_\ell}{output\\ positions}),
+    \end{align*}
+in which all free variables point to positions in the input string.
+    This special case is enough for the lemma, since the variant for the input  $s : \sigma$ is given, and the variant for the output $t : \tau$ has a constant number of  possibilities which can be handled by a case analysis. A second simplifying observation is that we can reduce to the case of one output position, i.e.~$\ell =1$. This is because we can progressively identify all coordinates of a tuple of output positions. More specifically,  consider the formula obtained from $\psi$ by existentially quantifying all output positions except the first one:
+\begin{align*}
+\psi'(x_1,\ldots,x_k, y_1) \quad = \quad \exists y_2 \cdots \exists y_\ell \psi(x_1,\ldots,x_k, y_1,\ldots,y_\ell).
+\end{align*}
+This formula has one output position. If we can solve the problem for this formula, then we can find the first output position, i.e.~some choice for the first output position that can be extended with a choice for the remaining output positions. By repeating the process $\ell-1$ times, we can find all output positions, thus solving the original problem.  
+
+Summing up, we are left with the following problem: given an \mso formula
+\begin{align*}
+\psi(x_1,\ldots,x_k, y),
+\end{align*}
+in which all $k+1$ variables range over positions in the input string,  we want to build a data structure that allows us to compute the output position $y$ in constant time based on the input positions $x_1,\ldots,x_k$, or say that no such position exists. 
+
+The data structure will be a Simon tree. To identify the underlying monoid homomorphism,  we explain how a monoid homomorphism can be used to evaluate the  \mso formula $\psi$. Define  the \emph{profile} of distinguished positions  $x_1,\ldots,x_k,y$ in a string $w \in A^*$ under a monoid homomorphism $h$ to be the information that is described in the following picture:
+\mypic{61}
+Once we fix the monoid homomorphism and the number of distinguished positions, the set of possible profiles is finite. We say that a  formula $\psi$  
+is \emph{recognised} by $h$ if the profile of a tuple of positions determines whether the formula is satisfied, i.e.~if we know the profile then we know if the formula is satisfied.
+\begin{claim}\label{claim:mso-formula-recognised-by-homomorphism}
+    The \mso formula $\psi$   is recognised by some monoid homomorphism.
+\end{claim}
+\begin{proof}
+    This is essentially a combination of \cref{thm:mso-logic-languages} about \mso definable languages being regular,   \cref{thm:monoids-equal-automata} about monoids recognising regular languages, and some simple observations about how to encode distinguished positions in the input string.
+    As in the proof of \cref{thm:mso-logic-languages}, the formula $\psi$ can be seen as a regular language over an extended alphabet $A \times 2^{k+1}$, where the $k+1$ extra bits indicate which positions are distinguished. 
+    By \cref{thm:monoids-equal-automata}, this language is recognised by some monoid homomorphism
+    \begin{align*}
+    (A \times 2^{k+1})^* \xrightarrow g M.
+    \end{align*}
+    This means that whether or not positions $x_1,\ldots,x_k,y$ are selected by $\psi$ in a string $w$ 
+    is uniquely determined by the homomorphic image 
+    \begin{align}
+        \label{eq:profile-homomorphism}
+    g(w \otimes \set {x_1} \otimes \cdots \otimes \set{x_k} \otimes \set{y})
+    \end{align}
+    To compute the above homomorphic image, we will use the profile with respect to  the following homomorphism, which simulates $g$ with no distinguished positions:
+    \begin{align*}
+    A^* & \xrightarrow h  M \\
+    w & \mapsto g(w \otimes \emptyset \otimes \cdots \otimes \emptyset \otimes \emptyset).
+    \end{align*}
+It is easy to see that the homomorphic image from \eqref{eq:profile-homomorphism} -- and therefore also the truth value of the \mso formula --  can be determined from the corresponding profile under the homomorphism $h$. 
+\end{proof}
+
+Apply the above claim, yielding a monoid homomorphism $h$. Part of our data structure will be a Simon tree for this homomorphism, which will allow us to compute profiles under $h$ in constant time. 
+ We are given the input string $w$ and the input positions $x_1,\ldots,x_k$. We want to know if there is some output position $y$ such that the corresponding profile implies that the formula is satisfied. Since there is a constant number of possible profiles, it is enough to show that for a fixed profile, we can check in constant time if there is some output position $y$ that yields this profile. According to the profile, the output position $y$ will either be equal to one of the input positions, or otherwise it will fall in one of the factors without distinguished positions. In the first case, we already know where $y$ is, and we simply need to check if the profile is correct, which can be done in constant time, since we have the Simon tree for $h$. The second case is more interesting, since it requires finding the position $y$ in the corresponding factor. As far as the profile is concerned, the relevant information about $y$ inside the factor is: the label of $y$, as well as  the value of the homomorphism on the part of the factor to the left and right of $y$. The following claim shows that we can find a position $y$  with the required properties in constant time, or report that it does not exist.
+
+\begin{claim}\label{claim:find-position-in-factor}
+    Fix a monoid homomorphism 
+    \begin{align*}
+    A^* \xrightarrow h M.
+    \end{align*}
+     Given an input string $w \in A^*$, one can compute in time $\Oo(|w|)$ a data structure that allows to solve the following  problem in time $\Oo(1)$:
+    \begin{itemize}
+    \item \textbf{Input.} A factor $v$ of $w$, given by its endpoints, as well as a triple
+    \begin{align*}
+    m_1 \in M \quad a \in A \quad m_2 \in M.
+    \end{align*}
+    \item \textbf{Output.} A decomposition $v = v_1 a v_2$ with $h(v_1)=m_1$ and $h(v_2)=m_2$, or otherwise a ``no'' answer if no such decomposition exists.
+\end{itemize} 
+\end{claim}
+\begin{proof}
+    Consider the function 
+    \begin{align*}
+    A^* \xrightarrow {g} M \times \powerset(M \times A \times M)
+    \end{align*}
+    which maps a string $w$ to the pair consisting of $h(w)$ and the following set of triples
+    \begin{align*}
+    \setbuild{(h(w_1),a,h(w_2))}{$w = w_1 a w_2$}.
+    \end{align*}
+    One can easily show that this is a monoid homomorphism, for a suitably defined monoid structure on its codomain. The data structure is a Simon tree for this homomorphism. By  \cref{lem:factorisation-forest-evaluation}, using this data structure we can determine in constant time whether a factor $v$ admits a decomposition $v = v_1 a v_2$ as in the statement of the claim. Furthermore, if such a decomposition exists, then we can find it in constant time as well, which is left as an exercise to the reader. 
+\end{proof}
+By using the above claim, we can find the output position $y$ in constant time (or report that it does not exist), which completes the proof of \cref{lem:evaluation-mso-successor-in-constant-time}.
+\end{proof}
+
+
+\exerciseheader
+
+\exer{
+\label{exer:monoid-vs-deterministic-automaton}    
+Show that the monoid recognising a language can be exponentially bigger than a deterministic automaton.  } { 
+For $n \in \set{1,2,\ldots}$, consider
+\begin{align*}
+\setbuild{ w \in \set{a,b}^*}{the $n$-th letter is $a$}.
+\end{align*}
+A deterministic automaton for this language has $n+1$ states, but the monoid recognising it has size $2^n$, since it needs to remember which of the first $n$ letters are $a$ and which are $b$. More formally, if we take some two strings $u,v$ that disagree on the $i$-th letter with $i \in \set{1,\ldots,n}$, then they must be mapped to different elements of the monoid, since otherwise prepending $a^{n-i}$ would yield two strings that have the same value under the homomorphismm, but  ony one of them is  in the language.
+}
+
+\exer{
+\label{exer:monoid-vs-deterministic-automaton-strengthened}    
+Strengthen the previous exercise, by finding languages where the monoid is exponentially bigger than both  deterministic left-to-right and right-to-left automata. } { The language from the solution in the previous exercise will not work, since a right-to-left automaton needs to be exponential in order to check the $n$-the letter from the right (because it does not know the length of the input string). However, we can adapt the language by restricting it to  strings of constant length, say $2n$. (I.e.~the length is fixed for each language, with $n$ being a paremeter of the language.) The monoid lower bound continues to hold, but now the deterministic automata in both directions have size polynomial in $n$. 
+ }
+
+
+\exer{
+    \label{exer:idempotents-in-monoid-of-functions}
+     What are the idempotents in the monoid of functions $Q \to Q$? } { 
+A function 
+\begin{align*}
+Q \xrightarrow e Q
+\end{align*}
+is an idempotent if and only if it is the identity on its image:
+\begin{align*}
+e(q) = q \quad \text{for every }q \in \im e.
+\end{align*}
+}
+
+\exer{
+    \label{exer:idempotents-in-monoid-of-relations}
+     What are the idempotents in the monoid of binary relations on  $Q$? } { 
+        The condition $R^2 \subseteq R$ means that $R$ is transitive. The condition $R \subseteq R^2$ means that every pair $(q,p) \in R$ can be split into two steps: there is some $r \in Q$ such that $(q,r) \in R$ and $(r,p) \in R$. These two conditions characterise exactly the idempotents. If the set $Q$ is additionally assumed to be finite, then we can also modify the second condition by requiring that $r$ is a loop, i.e.~$(r,r) \in R$. This will not change the condition, since if we keep on splitting, then eventually we will find some $r$ that is used twice, and therefore is a loop.
+     }
+     
+
+
+
+\exer{
+\label{exer:height-of-simon-tree}
+    Show that the height of the Simon tree can be linear in the size of the semigroup. } {
+    Consider the maximum function
+\begin{align*}
+\set{1,\ldots,n}^* \xrightarrow \max \set{1,\ldots,n},
+\end{align*}
+which is a semigroup homomorphism, where the semigroup operation is the maximum of two numbers. Define a string 
+\begin{align*}
+w_0 & = \varepsilon \\
+w_i & = w_{i-1} \cdot i \cdot  w_{i-1}.
+\end{align*}
+In this string, we cannot find a factor with three consecutive idempotents, i.e.~a factor $v_1 \cdot v_2 \cdot v_3$ such that all $v_1,v_2,v_3$ are mapped to the same idempotent. Therefore, the Simon tree for this string will never use a node with three children. Since the string has length exponential in $n$, the tree must have height linear in $n$. 
+}
+
+\exer{
+\label{exer:weak-simon-tree-aperiodic}    
+A weak Simon tree is defined like a Simon tree, except that the idempotent property is relaxed as follows: if a node has at least three children, then all these children must be labelled by the same monoid element, but this element does not need to be an idempotent. Show that if the monoid is aperiodic, then a weak Simon tree can be computed by an aperiodic rational function.
+} {
+    By revisiting the proof of the Factorisation Forest Theorem. In the proof, the semigroup is changed by going to a sub-semigroup, and this preserves aperiodicity. Therefore, if we begin with an aperiodic semigroup, then we will only encounter aperiodic semigroups in the proof. That means that the group case will never arise. Another part that we need to be careful about is \cref{lem:factorisation-forest-single-letter}: the proof of this lemma groups strings into factors of constant size, which would require some form of modulo counting. However, if we want a weak Simon tree, then no grouping is needed, since we can use a trivial weak Simon tree of height one, where all positions of the input string are children of the root node.
+ }
+
+\exer{
+    \label{exer:non-weak-simon-tree-not-aperiodic}
+Show that even under the assumption that  the monoid is aperiodic,  a (non-weak) Simon tree cannot be computed by an first-order definable rational function.} { Consider the function
+\begin{align*}
+ \onetype^* \xrightarrow h \set{0,1,2}
+\end{align*}
+which outputs the length of the input string capped to 2. This is a monoid homomorphism, where the monoid operation on $\set{0,1,2}$ is addition capped to 2. The monoid is aperiodic, with the idempotents being $0$ and $2$ but not $1$. Suppose now that we would have a first-order rational function computing Simon trees 
+\begin{align*}
+\onetype^* \xrightarrow f \facttype {h, k}.
+\end{align*}
+Define a formula $\varphi(x)$ which selects a position of the input string $w$ if this position is paired, by a subtree of the Simon tree $f(w)$ that has two leaves, with the next position $x+1$. If $f$ would be first-order rational, then  $\varphi$ would be first-order definable. By aperiodicity, this would mean that there is some constant $\omega \in \set{1,2,\ldots}$ such that if we take a position $x$ that is at least $\omega$ positions away from the beginning and end of the input string, then $\varphi(x)$ holds if and only if $\varphi(x+1)$ holds. Since $\varphi$ must hold for some positions that are far away from the beginning and end of the input string, it must hold for all positions that are far away from the beginning and end of the input string. This is a contradiction, since a position cannot be paired with both its predecessor and its successor.
+}
+
+
+\exer{ 
+\label{exer:linear-time-data-structure-for-rational-relation}    
+Consider a rational relation $R \subseteq A^* \times \onetype^*$. Show that for an input string $w \in A^*$ we can compute a data structure in linear time, which allows us to answer the following queries in constant time: given a factor $v$ of $w$, compute some number $n$ such that $R(v,1^n)$, or report that the output does not exist. } { 
+Suppose that the rational relation is computed by a nondeterministic one-way automaton with output that has states $Q$. We consider the monoid homomorphism
+\begin{align*}
+A^* \xrightarrow h \powerset{(Q \times Q)}
+\end{align*}
+which maps an input string to the possible source-target pairs of runs that input this string. The data structure is a Simon tree for this homomorphism, extended with the following information for every node $x$ in the tree:
+\begin{itemize}
+    \item For every of states $(p,q)$, we store  a number 
+    \begin{align*}
+    \#(x,p,q) \in \Nat
+    \end{align*}
+    which is the length of  an output of some run from  $p$ to $q$ over the string in the subtree of $x$. This number is undefined if no such run exists. 
+    \item Suppose that $x$ has at least three children $x_1,\ldots,x_n$, and let $r$ be a state such that $(r,r)$ belongs to the idempotent element that is assigned to $x$ and its children. For every child $x_i$, we store the sum 
+    \begin{align*}
+    \#(x_1,r,r) + \cdots + \#(x_i,r,r),
+    \end{align*}
+    where the summands are as defined in the previous item.    
+\end{itemize}
+This extra information can be easily computed in linear time by a bottom-up traversal of the Simon tree. Let us now explain how the queries can answered. Suppose that we are given some factor $v$ of $w$.  The output is produced by induction on the height of the tree that contains this factor. The most interesting case is when the factor is contained in a subtree where the root $x$ has at least three children $x_1,\ldots,x_n$.  
+The factor begins in the subtree of some child $x_i$ and ends in the subtree of some child $x_j$. Let us decompose $v$ as 
+\begin{align*}
+v = v_i v_{i+1} \cdots v_{j}
+\end{align*}
+according the how the factors are placed in the subtrees of $x_i,\ldots,x_j$. We care about the states used by the automaton for the rational function between these factors, i.e.~the states 
+\begin{align*}
+q_{i-1} \xrightarrow {v_i} q_i \xrightarrow{v_{i+1}} \cdots \xrightarrow{v_j} q_j
+\end{align*}
+The crucial observation is that the reachability relation on the factors is an idempotent, and therefore by the solution of \cref{exer:idempotents-in-monoid-of-relations}, we can choose the run so that there is some state $r$ which is used in almost all steps, except for the first two steps and the last two steps. (We need the first two steps, since the first step in $v_i$ might not read the entire factor $v_i$, and the second step is needed to reach the state $r$. Similarly, we need the last two steps to leave the state $r$ and reach the final state $q_j$.) Therefore, we know that we can choose the run so that it has the following form:
+\begin{align*}
+q_{i-1} \xrightarrow {v_i} q_i \xrightarrow{v_{i+1}} \myunderbrace{r \xrightarrow{v_{i+2}} \cdots  \xrightarrow{v_{j-2}} r}{this part uses only state $r$ in \\ the gaps between the factors} \xrightarrow{v_{j-1}} q_{j-1} \xrightarrow{v_j} q_j.
+\end{align*}
+The relevant states  $q_{i-1},q_i,r,  q_{j-1},q_j$ can be computed in constant time using the Simon tree, and similarly the outputs for the first two and last two runs. For the output of the middle part, which uses only state $r$, we use the precomputed sums, by subtracting the sum stored at $x_{i+1}$ from the sum stored at $x_{j-2}$.} 

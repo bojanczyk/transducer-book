@@ -51,7 +51,9 @@
     "D3-exercises-polyregular",
     "D3-tiling-undecidability",
     "book-remaining-results",
-    "B13-rational-recognisable"
+    "B13-rational-recognisable",
+    "D3-simon-trees",
+    "D3-evaluation-exercises"
   ],
   "targets": {
     "B-effectivity-conditional": {
@@ -1382,7 +1384,7 @@
       "idle_continues": 0
     },
     "B13-rational-recognisable": {
-      "status": "running",
+      "status": "done",
       "attempts": 1,
       "continues": 0,
       "reattempts": 0,
@@ -1390,7 +1392,7 @@
         "da13108d-5ac4-4823-b64b-6ef15d8057a3"
       ],
       "started_at": "2026-09-17 06:18:10Z",
-      "finished_at": null,
+      "finished_at": "2026-09-17 10:08:48Z",
       "note": null,
       "sorries_at_start": 0,
       "runs": [
@@ -1401,21 +1403,54 @@
           "kind": "initial",
           "at": "2026-09-17 06:18:10Z"
         }
+      ],
+      "idle_continues": 0
+    },
+    "D3-simon-trees": {
+      "status": "running",
+      "attempts": 1,
+      "continues": 0,
+      "reattempts": 0,
+      "task_ids": [
+        "74009739-381e-44c5-9ed8-36f7108445db"
+      ],
+      "started_at": "2026-10-13 07:32:44Z",
+      "finished_at": null,
+      "note": null,
+      "sorries_at_start": 0,
+      "runs": [
+        {
+          "task_id": "74009739-381e-44c5-9ed8-36f7108445db",
+          "project_id": "a250259a-8e8e-4f63-bca8-335aa5905bdd",
+          "base": "8a61f2c50d19648c59133a419670b67f8b7f4f06",
+          "kind": "initial",
+          "at": "2026-10-13 07:32:44Z"
+        }
       ]
+    },
+    "D3-evaluation-exercises": {
+      "status": "pending",
+      "attempts": 0,
+      "continues": 0,
+      "reattempts": 0,
+      "task_ids": [],
+      "started_at": null,
+      "finished_at": null,
+      "note": null
     }
   },
   "current": {
-    "target_id": "B13-rational-recognisable",
-    "task_id": "da13108d-5ac4-4823-b64b-6ef15d8057a3",
-    "project_id": "7bef2a42-3e48-49fb-b7c9-dddbb9b97e98",
-    "base": "0548071d13019e74221b9e195df678cd18bfaa9f",
-    "submitted_at": "2026-09-17 06:18:10Z",
+    "target_id": "D3-simon-trees",
+    "task_id": "74009739-381e-44c5-9ed8-36f7108445db",
+    "project_id": "a250259a-8e8e-4f63-bca8-335aa5905bdd",
+    "base": "8a61f2c50d19648c59133a419670b67f8b7f4f06",
+    "submitted_at": "2026-10-13 07:32:44Z",
     "kind": "initial"
   },
   "paused": false,
   "pause_reason": null,
   "finished_at": null,
-  "ticks": 1266,
-  "last_tick": "2026-09-17 06:18:04Z",
+  "ticks": 1904,
+  "last_tick": "2026-10-13 07:32:36Z",
   "review_pending": 14
 }

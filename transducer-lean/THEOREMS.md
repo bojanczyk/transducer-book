@@ -3803,5 +3803,7 @@ only `propext`, `Classical.choice`, `Quot.sound`.  `tools/gen_labels.py
 pass.  With this definition the only environments of the book left unaliased are
 the withdrawn Theorem `nolabel:thm-fo-transduction-into-primes`, the withdrawn
 exercise `nolabel:exer-pref-from-mult`, the open Conjecture
-`conj:regular-via-weighted-automata`, and Lemmas `lem:tuples-listed-by-for` and
-`lem:domination` of Section D.4, which the author has asked to be left alone.
+`conj:regular-via-weighted-automata`, and Lemma `lem:domination` of the
+\mso-interpretation section, now D.5, which the author has asked to be left
+alone.  A companion lemma on the tuples listed by a for-transducer stood beside
+it and has since been removed from the book.

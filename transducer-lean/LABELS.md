@@ -201,21 +201,20 @@ generator working from the tables alone would delete them.
 | D.2.5 | lemma | `lem:children-of-configuration-in-pebble-run` | `polyregular-pebble.tex` |
 | D.2.6 | claim | `claim:from-configuration-to-child-configuration-graph` | `polyregular-pebble.tex` |
 | D.2.7 | claim | `claim:from-child-configuration-graph-to-children` | `polyregular-pebble.tex` |
-| D.3.1 | definition | `def:polyregular-terms` | `higher-order.tex` |
-| D.3.2 | theorem | `thm:polyregular-terms` | `higher-order.tex` |
-| D.3.3 | definition | `def:higher-order-types` | `higher-order.tex` |
-| D.3.4 | definition | `def:higher-order-terms` | `higher-order.tex` |
-| D.3.5 | lemma | `lem:fewer-atomic` | `higher-order.tex` |
-| D.3.6 | theorem | `thm:higher-order-terms` | `higher-order.tex` |
-| D.3.9 | lemma | `lem:good-functions-are-polyregular-at-arrow-free-types` | `higher-order.tex` |
-| D.3.10 | claim | `claim:logical-relations-closed-under-precomposition` | `higher-order.tex` |
-| D.3.12 | claim | `claim:atomic-functions-are-natural-transformations` | `higher-order.tex` |
-| D.3.13 | claim | `claim:functors-applied-to-good` | `higher-order.tex` |
-| D.3.14 | theorem | `thm:undecidability-higher-order` | `higher-order.tex` |
-| D.3.15 | lemma | `lem:tiling` | `higher-order.tex` |
-| D.3.16 | lemma | `lem:tiling-checker` | `higher-order.tex` |
-| D.4.3 | lemma | `lem:tuples-listed-by-for` | `mso-interpretation.tex` |
-| D.4.6 | lemma | `lem:domination` | `mso-interpretation.tex` |
+| D.4.1 | definition | `def:polyregular-terms` | `higher-order.tex` |
+| D.4.2 | theorem | `thm:polyregular-terms` | `higher-order.tex` |
+| D.4.3 | definition | `def:higher-order-types` | `higher-order.tex` |
+| D.4.4 | definition | `def:higher-order-terms` | `higher-order.tex` |
+| D.4.5 | lemma | `lem:fewer-atomic` | `higher-order.tex` |
+| D.4.6 | theorem | `thm:higher-order-terms` | `higher-order.tex` |
+| D.4.9 | lemma | `lem:good-functions-are-polyregular-at-arrow-free-types` | `higher-order.tex` |
+| D.4.10 | claim | `claim:logical-relations-closed-under-precomposition` | `higher-order.tex` |
+| D.4.12 | claim | `claim:atomic-functions-are-natural-transformations` | `higher-order.tex` |
+| D.4.13 | claim | `claim:functors-applied-to-good` | `higher-order.tex` |
+| D.4.14 | theorem | `thm:undecidability-higher-order` | `higher-order.tex` |
+| D.4.15 | lemma | `lem:tiling` | `higher-order.tex` |
+| D.4.16 | lemma | `lem:tiling-checker` | `higher-order.tex` |
+| D.5.8 | lemma | `lem:domination` | `mso-interpretation.tex` |
 
 Sections and subsections:
 
