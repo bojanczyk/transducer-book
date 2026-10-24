@@ -13,6 +13,7 @@ The general idea behind the logical perspective is to describe a property of a w
 \myunderbrace{a(y)}{such that \\ $y$  has \\ label $a$} \quad \land \quad 
 \myunderbrace{y \le x}{and is before $x$}
 \end{align*}
+\issue{Math: the displayed formula is vacuously true on $\varepsilon$, so it defines $\{\varepsilon\}\cup aA^*$, not $aA^*$. Conjoin $\exists x\,(x=x)$.}% book review
 describes the language $aA^*$ of strings that begin with the letter $a$. The first logic that comes to mind is first-order logic, where formulas are constructed using 
 \begin{align*}
 \myunderbrace{\exists x \quad \forall x}{quantification \\ over positions}
@@ -88,6 +89,7 @@ As it turns out, first-order logic is not strong enough to define all regular la
             \forall x \ \exists y \ y \geq x \land \bigvee_{i} y \in X_i.
         \end{cases}
     \end{align*}
+\issue{Math: add label compatibility $x\in X_i\Rightarrow a_i(x)$. As written, the guessed transitions need not read the input letters. The formula also accepts $\varepsilon$ unconditionally; handle acceptance of the empty word separately.}% book review
 The disjunctions in the four items range as follows: (1) $i$ ranges over all transitions; (2) $(i,j)$ ranges over all pairs of transitions   such that the target state of $i$ is equal to the source state of $j$; (3) $i$ ranges over all transitions that have an initial source state; and (4) $i$ ranges over all transitions that have an accepting target state. These are finite disjunctions, and hence they correspond to repeated use of $\lor$, and not some kind of quantification.  The formula also uses the successor relation $x+1 =y $, which can easily be defined in terms of the order. It should be easy to see that the formula is true exactly in the words that admit at least one accepting run.
 
 Let us now prove the other inclusion     \begin{align*}    \text{regular} \quad \supseteq \quad \text{\mso.}
@@ -183,6 +185,7 @@ Let us now prove the other inclusion
     Thanks to Theorem~\ref{thm:mso-logic-languages}, the language is regular.
 \end{proof}
 
+\issue{Boundary case: the final homomorphism maps $\varepsilon$ to $\varepsilon$, losing the special output for empty input allowed by Definition~\ref{def:mso-relabeling}. Add that output separately.}% book review
 The language above can be seen as a length-preserving rational relation 
 \begin{align*}
 R \subseteq A^* \times \Phi^*,
@@ -190,55 +193,28 @@ R \subseteq A^* \times \Phi^*,
 which for input $a_1 \cdots a_n$ outputs all possible choices of $\phi_1 \cdots \phi_n$ such that the corresponding zipped word belongs to the language from the above claim. Because of the unambiguity requirement in the definition of an \mso relabelling, we know that this relation is in fact a function. Therefore, in order to produce the output of the \mso relabelling, we can apply this rational function, followed by a homomorphism which maps each formula from $\Phi$ to the corresponding output string in $B^*$. Since rational functions are closed under composition, it follows that the function defined by the \mso relabelling is rational.
 \end{proof}
 
-\exerciseheader
 
-\exer{\label{exer:mealy-as-restricted-mso-relabelling}Show that a function $f : A^* \to B^*$ is computed by a Mealy machine if and only if it is definable by an \mso relabelling with the following additional restrictions imposed on Definition~\ref{def:mso-relabeling}:
-\begin{enumerate}
-    \item the string for empty input in item~\ref{item:mso-relabeling-empty-input} is empty;
-    \item the output map in item~\ref{item:mso-relabeling-output-map} maps each formula to a one-letter string;
-    \item the formulas in item~\ref{item:mso-relabeling-formulas} depend only on the past, which means that  $w \models \varphi(x)$ depends only on the prefix of $w$ up to and including position $x$.
-\end{enumerate}
-} {
-    Consider first a function computed by a Mealy machine. As the set of formulas we take one formula $\varphi_t(x)$ for each transition $t$, which says that transition $t$ is used in position $x$; this can be written in \mso as in Claim~\ref{claim:transition-formula}. Since the machine is deterministic, exactly one of these formulas is true in each position, as required in the definition of an \mso relabelling. The three additional restrictions are satisfied: a Mealy machine maps the empty string to the empty string; the output map, which sends $\varphi_t$ to the output letter of the transition $t$, produces one-letter strings; and the formulas depend only on the past, because the transition used in a position is determined by the prefix up to and including this position.
 
-    Consider now an \mso relabelling which satisfies the three restrictions. Because of the third restriction, each formula $\varphi \in \Phi$ is determined by the language
-    \begin{align*}
-    L_\varphi \quad \eqdef \quad \setbuild{w \in A^*}{$w$ is nonempty and $w \models \varphi(x)$ for the last position $x$ of $w$},
-    \end{align*}
-    in the sense that $\varphi$ is true in a position of an input string if and only if the prefix up to and including this position belongs to $L_\varphi$. This language is definable in \mso, and hence it is regular by Theorem~\ref{thm:mso-logic-languages}. The Mealy machine for the relabelling is the product of deterministic automata for the languages $L_\varphi$, with $\varphi$ ranging over $\Phi$. The state of this product after reading a prefix of the input string tells us which formulas are true in the last position of this prefix; by the uniqueness requirement in the definition of an \mso relabelling, exactly one formula is true, and by the second restriction, it is mapped to a single output letter. Therefore, each transition of the product can be labelled by the output letter that corresponds to its target state, and the resulting Mealy machine computes the same function as the relabelling; for the empty input string, both produce the empty string thanks to the first restriction.
-}
 \subsection{Regular functions in terms of logic}
 \label{sec:mso-transductions}
 In this section, we define the logical model for the regular functions. This model is called \emph{\mso transductions}. The idea is that we use formulas of \mso logic to define a new order on the input positions, and to change the labels. For example, the reverse function is defined by saying that the labels are the same as in the input string, but the order is reversed. A more sophisticated formula is needed to define the order after applying map reverse, but this can still be done. For functions that create new positions (such as map duplicate), we will need an extra duplication feature in the model. To make this feature easier to use, as well as to prepare the ground for more advanced models  of logical transduction in the next part, we begin by introducing an extended syntax for \mso logic. 
 
-\paragraph*{Extended syntax for \mso logic.} We will want to quantify over objects such as gaps in strings,  configurations,  or sets of configurations.  For example, the set of gaps in a string of length $n$ has $n+1$ elements, and therefore quantifying over a gap corresponds to either quantifying over a position, or otherwise considering the special case of the extra gap that is not associated with any position. Such quantification can be handled directly in \mso, by considering different cases inside formulas. Nevertheless, in order to handle such constructions  in a succinct and yet precise way, we consider an extended notation for \mso logic, in which first-order  variables can have types such as:
+\paragraph*{Multi-sorted syntax for \mso logic.} We will want to quantify over objects such as gaps in strings,  configurations,  or sets of configurations.  For example, the set of gaps in a string of length $n$ has $n+1$ elements, and therefore quantifying over a gap corresponds to either quantifying over the position after the gap, or otherwise considering the special case of the extra gap that is after all positions. Such quantification can be handled directly in \mso, by considering different cases inside formulas. Nevertheless, in order to handle such constructions  in a succinct and yet precise way, we consider an extended notation for  logic, in which first-order  variables can have sorts such as:
 \begin{align}\label{eq:examples-of-type-variables}
 \myunderbrace{ x : n+1}{a variable \\ that ranges \\ over gaps}
 \qquad 
 \myunderbrace{ x : Q \times (n+1)}{a variable  that \\ ranges  over \\ configurations}
 \end{align}
-To implement this, we will use an extended syntax, in which first-order variables are assigned types that are polynomials of the form 
+Formally, the sorts of first-order variables are polynomials with natural coefficients
+    \begin{align*}
+    \tau = n^{d_1} + \cdots + n^{d_k} \qquad \text{with $d_1,\ldots,d_k \in \set{0,1,\ldots}$}.
+    \end{align*}
+A variable of sort $\tau$ ranges over \emph{coloured tuples} in the universe of the structure, with each coloured tuple consisting of a \emph{colour} $i \in \set{1,\ldots,k}$ that specifies the monomial, and a tuple of $d_i$ elements in the universe.  
+For monadic second-order  variables, we use sorts of the form  $2^{\tau}$, where $\tau$ is a linear polynomial, i.e.~it only uses monomials of degree zero or one. (The linear restriction  corresponds to the fact that we are working with the monadic fragment of  second-order logic.)  We have the same formula constructors as in \mso logic, except that the quantifiers are decorated with sorts
 \begin{align*}
-\tau = n^{d_1} + \cdots + n^{d_k}.\end{align*}  
-
-\begin{myexample}
-    Using a variable $x : n^2$, we  can quantify over pairs of positions.
-    To access the components of this variable, we will have a feature in the logic that will unpack it as  two elements $x(1)$ and $x(2)$ of the underlying structure.
-\end{myexample}
-
-\begin{myexample} The summation in a polynomial is used to represent alternative variants. For example, the polynomial $n^0 + n^0$, which we denote by $1+1$, allows us to quantify over Boolean values. To access a variant type, we will have a feature in the logic that will allow us to identify which variant is used.
-\end{myexample}
-
-The polynomials are used as types for first-order variables. We extend this notation to second-order variables, so that we use variables such as
-\begin{align*}
-\myunderbrace{ X : 2^{ Q \times (n+1)}}{a variable that \\ ranges over \\ sets of configurations }.
-\end{align*}
-For the second-order variables, the types will be of the form $2^\tau$, such that the polynomial $\tau$ is linear, i.e.~it only uses monomials of degree zero or one. (The linear restriction  corresponds to the fact that we are working with the monadic fragment of  second-order logic.) 
- We have the same formula constructors as in \mso logic, except that the quantifiers are now typed:
-\begin{align*}
-\myunderbrace{\exists x : \tau \quad \forall x : \tau}{first-order quantifiers}
+\myunderbrace{\exists x : \tau \quad \forall x : \tau}{first-order quantifiers\\ where $\tau$ is polynomial}
 \qquad 
-\myunderbrace{\exists X : 2^\tau \quad \forall X : 2^\tau}{second-order quantifiers}
+\myunderbrace{\exists X : 2^\tau \quad \forall X : 2^\tau}{second-order quantifiers \\ where $\tau$ is linear}
 \qquad 
 \myunderbrace{\lor \ \land \  \neg}{Boolean connectives}.
 % \qquad 
@@ -246,46 +222,40 @@ For the second-order variables, the types will be of the form $2^\tau$, such tha
 % \qquad 
 % \myunderbrace{x \in X}{set membership}.
 \end{align*}
-Let us now describe the atomic formulas. There is an atomic formula $x \in X$ for set membership, which must be well-typed, i.e.~$x$ must have type $\tau$ and $X$ must have type $2^\tau$.  There is an atomic formula 
+Let us now describe the atomic formulas. There is an atomic formula $x \in X$ for set membership, which must be well-typed, i.e.~if $x$ has sort $\tau$ then  $X$ must have sort $2^\tau$.  For a first-order variable $x$ and a possible colour $i$, there is an atomic formula 
 $
 \summand i x
 $
-which allows us to check if a variable $x$ uses  variant $i \in \set{1,\ldots,k}$ in a type which is a disjoint union of $k$ variants. Finally,  the relations from the underlying structure (which are, in our case, a binary relation for the order and unary relations for the labels) can be applied to the elements stored in the variables.  More formally, formulas of the form 
+which checks if variable $x$ has colour $i$.  Finally,  the relations from the underlying structure (which are, in our case, a binary relation for the order and unary relations for the labels) can be applied to the coordinates of the variables.  More formally, there are atomic formulas of the form 
 \begin{align*}
-R(x_1(i_1),\ldots,x_k(i_k)),
+R(x_1(i_1),\ldots,x_n(i_n)),
 \end{align*}
-where $R$ is a relation in the vocabulary (or equality) with $k$ arguments, $x_1,\ldots,x_k$ are variables and $i_1,\ldots,i_k \in \set{1,2,\ldots}$ are coordinates. This relation holds if  the elements $x_1(i_1),\ldots,x_k(i_k)$ are defined (which means that the corresponding variants have the required dimensions) and the corresponding tuple belongs to the relation.  For example,
+where $R$ is a relation in the vocabulary (or equality) with $n$ arguments, $x_1,\ldots,x_n$ are variables and $i_1,\ldots,i_n \in \set{1,2,\ldots}$ are coordinates. This relation holds if  the coordinates $x_1(i_1),\ldots,x_n(i_n)$ are defined (which means that the corresponding tuples have sufficiently large dimensions) and the corresponding tuple belongs to the relation.  For example,
 \begin{align*}
 x(1) \leq  y(2)
 \end{align*}
-says that $x$ belongs to a variant with dimension at least one, $y$ belongs to a variant with dimension at least two, and the first coordinate of $x$ is to the left of the second coordinate of $y$. 
+says that $x$ belongs to a variant with dimension at least one, $y$ belongs to a variant with dimension at least two, and the first coordinate of $x$ is to the left of the second coordinate of $y$. This completes the definition of the multi-sorted syntax for \mso logic.  The semantics of this logic is the same as for \mso logic, except that the variables are interpreted according to their sorts.
 
 
 \begin{myexample}
-    If we have a Boolean variable $x : 1+1$ then we can check if it is true or false using the atomic formulas $\summand 1 x$ and $\summand 2 x$.
+    A variable $x$ of sort $1+1$ ranges over Booleans, and it can be unpacked using atomic formulas $\summand 1 x$ and $\summand 2 x$.
 \end{myexample}
 
 Here is a more sophisticated example of the logic, which computes the transitive closure of the one-step reachability relation of a two-way transducer. 
 
-\begin{myexample}\label{ex:reachability-of-configurations}
-    Consider a two-way transducer which has input alphabet $A$ and states $Q$. If an input string has length $n$, then it has $n+1$ gaps, with one gap before the input string and one gap after each position. Therefore,  the set of configurations of this automaton is produced by the polynomial 
+\begin{myexample}[Reachability in a two-way transducer]\label{ex:reachability-of-configurations}
+    Consider a two-way transducer which has input alphabet $A$ and states $Q$. If an input string has length $n$, then it has $n+1$ gaps, with one gap before the input string and one gap after each position. Therefore,  a configuration of this transducer is described by the sort
     \begin{align*}
     \tau = Q \cdot (n +1) = 
     \myunderbrace{n + \cdots + n}{$|Q|$ times} + 
     \myunderbrace{1 + \cdots + 1}{$|Q|$ times}.
     \end{align*}
-    We first observe that one-step reachability can be defined in \mso. This means that we can write a formula
+    We first observe that one-step reachability can be defined in \mso. This means that we can write a formula $\delta(x,y : \tau)$
+    which says that the transducer can go in one step from configuration $x$ to configuration $y$. This is done by unpacking the state and position in $x$, similarly for $y$, and then comparing them with respect to the definition of transitions in the transducer. The more interesting observation is that we can also define multi-step reachability:    
     \begin{align*}
-    \delta(x: \tau, y : \tau)
+    \myunderbrace{\forall X: 2^\tau}{for every \\ set of \\ configurations} \ \myunderbrace{x \in X \land (\forall z_1 : \tau\ \forall z_2 : \tau\ z_1 \in X \land \delta(z_1,z_2) \Rightarrow z_2 \in X )}{which contains $x$ and is closed under one step of transitions} \Rightarrow \myunderbrace{y \in X}{the set must \\ contain $y$}.
     \end{align*}
-    which says that the transducer can go in one step from configuration $x$ to configuration $y$. This is done by unpacking the state and position in $x$, similarly for $y$, and then comparing them with respect to the definition of transitions in the transducer. The more interesting observation is that we can also define multi-step reachability. The corresponding formula
-        \begin{align*}
-    \delta^*(x: \tau, y : \tau)
-    \end{align*}
-    says that for every set $X : 2^\tau$ of configurations that is closed under the one-step reachability relation we have 
-    \begin{align*}
-    x \in X \implies y \in X.
-    \end{align*} Observe that we can quantify over sets of configurations, since the type $\tau$ has degree at most one, which corresponds to the fact that the number of configurations is linear in the length of the input string. 
+    Observe that we can quantify over sets of configurations, since the sort $\tau$ is linear.
 \end{myexample}
 
 
@@ -299,7 +269,7 @@ We now explain how \mso logic can be used to define regular string-to-string fun
 \begin{itemize}
     \item an input alphabet $A$;
     \item an output alphabet $B$;
-    \item a  type $\tau \in \Nat[n]$, which is linear;
+    \item a  linear sort $\tau$;
     \item a family of  formulas 
     \begin{align*}
         \myunderbrace{\varphi_{\text{univ}}(x : \tau)}{universe formula}
@@ -313,10 +283,10 @@ We now explain how \mso logic can be used to define regular string-to-string fun
 We require that for every input string $w \in A^*$, every element $x \in \tau(w)$ selected by the universe formula satisfies exactly one of the letter formulas, and that the order formula defines a linear order on the  elements selected by the universe formula
 \end{definition}
 
-The semantics of an \mso transduction is a function of type $A^* \to B^*$, which is defined as follows. For an input string $w \in A^*$, the output string is obtained by taking the elements of $\tau(w)$ that satisfy the universe formula, ordering them according to the order formula, and then labelling them according to the letter formulas. The assumption that the type $\tau$ is linear will ensure that the output has linear size, as required in a regular function. Later on in this book, we will consider an extension where the linearity requirement is dropped. Also, \mso transductions can be used to define functions on other structures, such as graphs or trees, but this is beyond the scope of this book.
+The semantics of an \mso transduction is a function of type $A^* \to B^*$, which is defined as follows. For an input string $w \in A^*$, the output string is obtained by taking the elements of $\tau(w)$ that satisfy the universe formula, ordering them according to the order formula, and then labelling them according to the letter formulas. The assumption that the sort $\tau$ is linear will ensure that the output has linear size, as required in a regular function. In \cref{sec:mso-interpretation},  we will consider an extension where the linearity requirement is dropped, and polynomial sorts are allowed. Also, \mso transductions can be used to define functions on other structures, such as graphs or trees, but this is beyond the scope of this book.
 
 \begin{myexample}[Reverse as an \mso transduction]
-   Let us show that string reversal over alphabet $ A$ can be defined as an \mso transduction. Since the positions in the output string are the same as the positions in the input string, we use the type $\tau = n$. The labels are inherited from the input string, so the letter formula $\varphi_a(x)$ is $a(x)$. Finally, the order is reversed, so the order formula is 
+   Let us show that string reversal over alphabet $ A$ can be defined as an \mso transduction. Since the positions in the output string are the same as the positions in the input string, we use the sort $\tau = n$. The labels are inherited from the input string, so the letter formula $\varphi_a(x)$ is $a(x)$. Finally, the order is reversed, so the order formula is 
    \begin{align*}
    \varphi_{\leq}(x : n ,y : n) \quad \eqdef \quad x \geq y.
    \end{align*}
@@ -326,18 +296,20 @@ The semantics of an \mso transduction is a function of type $A^* \to B^*$, which
     \begin{align*}
     f : A^* \to B^*
     \end{align*} 
-    in which all outputs have at most one letter. In this case, we can use the type  $\tau = 1$. For each output letter $b \in B$, the label formula 
+\issue{Math: assume $f$ is continuous (or its output fibres are regular). An arbitrary function with output length at most one need not have MSO-definable fibres. Also specify the universe formula, which excludes the single position when the output is empty.}% book review
+    in which all outputs have at most one letter. In this case, we can use the sort  $\tau = 1$. For each output letter $b \in B$, the label formula 
     \begin{align*}
     \varphi_b(x : 1)
     \end{align*}
-    is an \mso formula that describes the regular language of input strings that are mapped to $b$. (The formula ignores the variable $x$, since it carries no information.) The order formula is ``true'', since there is at most one position to order. The same construction would work for functions with outputs of length at most $k$, by using the type $\tau = 1 + \cdots + 1$ with $k$ copies of $1$, so that all output positions can be covered.
+    is an \mso formula that describes the regular language of input strings that are mapped to $b$. (The formula ignores the variable $x$, since it carries no information.) The order formula is ``true'', since there is at most one position to order. The same construction would work for functions with outputs of length at most $k$, by using the sort $\tau = 1 + \cdots + 1$ with $k$ copies of $1$, so that all output positions can be covered.
 \end{myexample}
 
 \begin{myexample}[Duplication as an \mso transduction] 
-    We describe an \mso transduction for the duplicating function $w \mapsto ww$. In this case, the  type is $\tau = n + n$. For each letter $a \in A$ in the alphabet, the corresponding letter formula says that its argument  is one of the copies of an input position with label $a$, i.e.
+    We describe an \mso transduction for the duplicating function $w \mapsto ww$. In this case, the  sort is $\tau = n + n$. For each letter $a \in A$ in the alphabet, the corresponding letter formula says that its argument  is one of the copies of an input position with label $a$, i.e.
     \begin{align*}
    \varphi_a( x : \tau) \quad \eqdef \quad  \exists y : n \quad a(y) \land (x = 1(y)  \lor x = 2(y)).
     \end{align*}
+\issue{Notation: $x=1(y)$ and $x=2(y)$ need to be introduced as abbreviations for summand tests and coordinate equality. Earlier, $1(x)$ and $2(x)$ denote Boolean colour tests, not injections.}% book review
     The order formula uses the lexicographic order, with the first copy of the input string coming before the second copy:
 \begin{align*}
 \varphi_\leq ( x : \tau, y : \tau) 
@@ -362,7 +334,8 @@ The semantics of an \mso transduction is a function of type $A^* \to B^*$, which
     \begin{align*}
     \twodftmath \subseteq \mso \text{ transductions}.
     \end{align*}
-One approach would be to show that \mso transductions are closed under composition, see the exercises, which would reduce the proof to the case of prime functions. However, the proof for general two-way transducers is easy enough so that we do not need to decompose into prime functions. Indeed, we can simply use \mso to formalise the semantics of a two-way transducer. We assume without loss of generality that the two-way transducer outputs at most one letter in each transition; this can be ensured by using extra transitions.  As the affine type, we use the type 
+\issue{Math: normalising every transition to at most one output letter is impossible on an empty tape in the present gap model (there is only one gap and no legal move). Treat empty input separately or allow stationary moves in this normalisation.}% book review
+One approach would be to show that \mso transductions are closed under composition, see the exercises, which would reduce the proof to the case of prime functions. However, the proof for general two-way transducers is easy enough so that we do not need to decompose into prime functions. Indeed, we can simply use \mso to formalise the semantics of a two-way transducer. We assume without loss of generality that the two-way transducer outputs at most one letter in each transition; this can be ensured by using extra transitions.  As the linear sort, we use 
     \begin{align*}
     \tau = Q \cdot (n +1) = 
     \myunderbrace{n + \cdots + n}{$|Q|$ times} + 
@@ -373,25 +346,26 @@ One approach would be to show that \mso transductions are closed under compositi
     We now turn to the more difficult direction
     \begin{align*}
     \twodftmath \supseteq \mso \text{ transductions}.
-    \end{align*} from \mso transductions to two-way transducers. We begin by reducing to the special case where the type $\tau$ is $n$, which will make the proof easier. 
+    \end{align*} from \mso transductions to two-way transducers. We begin by reducing to the special case where the sort $\tau$ is $n$, which will make the proof easier. 
     \begin{lemma}\label{lem:logic-reduction-to-type-n}
-        We can assume without loss of generality that the type $\tau$ is $n$.
+        We can assume without loss of generality that the sort $\tau$ is $n$.
     \end{lemma}
     \begin{proof}
-        The crucial observation is that types more complicated than $n$ can be reduced away by using rational functions:
+        The crucial observation is that sorts more complicated than $n$ can be reduced away by using rational functions:
         \begin{itemize}
-            \item[(*)] every \mso transduction can be obtained by composing a rational function with an \mso transduction that uses type $n$.
+            \item[(*)] every \mso transduction can be obtained by composing a rational function with an \mso transduction that uses sort $n$.
         \end{itemize}
-        Once we have proved (*), the lemma will follow, since two-way transducers are closed under precomposition with rational functions. It remains to prove (*). Consider an \mso transduction that has  type $\tau = \alpha n + \beta$. The rational function copies each input letter $\alpha$ times, and then appends $\beta$ extra letters, as in the following example:
+        Once we have proved (*), the lemma will follow, since two-way transducers are closed under precomposition with rational functions. It remains to prove (*). Consider an \mso transduction that has  sort $\tau = \alpha n + \beta$. The rational function copies each input letter $\alpha$ times, and then appends $\beta$ extra letters, as in the following example:
 \begin{align*}
 123 \quad \mapsto \quad 1^\alpha 2^\alpha 3^\alpha \#^\beta.
 \end{align*}
-If $f$ is this rational function, then there is a one-to-one correspondence between $\tau(w)$ and positions in $f(w)$. This correspondence and the structure of order and labels can be defined in \mso, and thus the output of the original \mso transduction can be obtained by a new \mso transduction that uses type $n$.
+\issue{Math: if $\alpha=0$, the proposed encoding sends all inputs to $\#^\beta$ and loses the information needed by the formulas. Use at least one copy of each input letter, and let the universe formula ignore unused copies.}% book review
+If $f$ is this rational function, then there is a one-to-one correspondence between $\tau(w)$ and positions in $f(w)$. This correspondence and the structure of order and labels can be defined in \mso, and thus the output of the original \mso transduction can be obtained by a new \mso transduction that uses sort $n$.
     \end{proof}
 
-    Thanks to the above lemma, we assume that the type $\tau$ is $n$, which means that the output positions are in one-to-one correspondence to some subset of  the input positions. To design the two-way automaton, we use the following lemma. 
+    Thanks to the above lemma, we assume that the sort $\tau$ is the identity  $n$, which means that the output positions are in one-to-one correspondence to some subset of  the input positions. To design the two-way automaton, we use the following lemma. 
     \begin{lemma}\label{lem:logic-precomputation}
-        Let $\Phi$ be a finite set of \mso formulas over some alphabet $A$, which have either one or two free variables of type $n$.  There is a letter-to-letter rational function 
+        Let $\Phi$ be a finite set of \mso formulas over some alphabet $A$, which have either one or two free variables of sort $n$.  There is a letter-to-letter rational function 
         \begin{align*}
         f : A^* \to C^*
         \end{align*}
@@ -402,6 +376,7 @@ If $f$ is this rational function, then there is a one-to-one correspondence betw
             w \models \varphi(x: n) \quad \iff \quad \text{$F_\varphi$ contains the label of $x$ in $f(w)$}.
             \end{align*}
 
+\issue{Math: the infix $[x..y]$ is defined only for $x\le y$, but the lemma is stated for arbitrary $x,y$. State the orientation restriction and apply a separate formula with swapped arguments for $y<x$.}% book review
             \item If $\varphi$ has two free variables, then there is a regular language $L_\varphi \subseteq C^+$ such that 
             \begin{align*}            w \models \varphi(x: n, y : n) \quad \iff \quad L_\varphi \text{ contains the infix  $[x..y]$ in $f(w)$.}
             \end{align*}
@@ -428,6 +403,7 @@ If $f$ is this rational function, then there is a one-to-one correspondence betw
         \quad 
         \myunderbrace{w[y+1..] \otimes \emptyset \otimes \emptyset}{we write $\delta_{>y}$ for the \\  state transformation \\ of this part}.
         \end{align*}
+\issue{Construction: retain the original input letter in the relabelling, as well as the two state transformations, so that $\delta_{xy}$ can be recovered from the infix.}% book review
         The letter-to-letter rational function $f$ in the statement of the lemma labels each position $x$ with the state transformations $\delta_{<x}$ and $\delta_{>x}$. Once we have the range $[x..y]$ of the relabelled string $f(w)$, we can compute the state transformation in~\eqref{eq:state-transformation-for-logic} as follows: the state transformation $\delta_{<x}$ is stored in the first position, the state transformation $\delta_{>y}$ is stored in the last position, and the state transformation $\delta_{xy}$ can be computed by looking at the letters in the range $[x..y]$. All of this can be computed by a regular language $L_\varphi$, as required in the conclusion of the lemma.
     \end{proof}
 
@@ -458,6 +434,7 @@ If $f$ is this rational function, then there is a one-to-one correspondence betw
     for some two-way transducer $h$. The two-way transducer $h$ is described in the following program. In the program, the transducer can ask questions about formulas with one argument from $\Phi$, since the answer to such a question is encoded in the label of the current position. 
     \begin{enumerate}
         \item If the input string is empty, output $f(\varepsilon)$. Otherwise, go to step 2.
+\issue{Boundary case: a nonempty input may have empty output. If no position satisfies ``first in the output order'', halt with empty output; the current program otherwise fails to find $x$.}% book review
         \item Scan the input string from left to right, and in each position ask if it is the first position. The answer to this question can be determined by looking at the label in $g(w)$, thanks to Lemma~\ref{lem:logic-precomputation}. Find the position $x$ that is the first in the output order, and go to step 3.
         \item Let $x$ be the current position. Ask which of the label formulas is true in it, and produce this letter on the output. Ask if the position $x$ is the last in the output order, and if so terminate the computation. Otherwise, go to step 4.
         \item We know that $x$ is not the last position in the output order. Ask if the successor of $x$, call it $y$, is to the left or right in the input order. If $y$ is to the right, then start moving to the right, while running the automaton for the language $L \subseteq C^*$ that is associated  by \cref{lem:logic-precomputation} to the formula with two arguments that represents the successor relation on output positions. The position $y$ is the first one such that the infix $[x..y]$ belongs to $L$. If $y$ is to the left, do the same, but using the language  for the predecessor relation. Go to step 3. 
@@ -505,6 +482,7 @@ Recall the notion of an aperiodic string-to-string function from Definition~\ref
     \end{tikzcd}
     \]
     It remains to show the last step, i.e.~if $f$ is a composition of flip-flops, then $L$ is first-order definable. For this, we introduce the notion of first-order definable Mealy machine, which means that for every output letter $b$, the language 
+\issue{Boundary case: this recognises the language only on nonempty words. Restore the independent choice of whether $\varepsilon\in L$ when concluding first-order definability.}% book review
     \begin{align*}
     \setbuild{ w \in A^*}{$f(w)$ ends with letter $b$}
     \end{align*} is first-order definable. Flip-flop machines are easily seen to be first-order definable, and it is also easy to see -- using substitution of formulas -- that first-order definable Mealy machines are closed under composition. Hence, if $f$ is a composition of flip-flops, then it is first-order definable, and therefore also $L$ is first-order definable.
@@ -530,6 +508,7 @@ By definition, once the alphabet $A$ is fixed there are finitely many $k$-types 
 
 
 \begin{lemma}\label{lem:k-types-fo-equivalence}
+\issue{Terminology: use ``first-order sentences'' here. Satisfaction of formulas with free variables requires a valuation, which is supplied only in the stronger claim below.}% book review
     Two strings in $A^*$ have the same $k$-type if and only if they satisfy the same first-order formulas of quantifier rank at most $k$.
 \end{lemma}
 \begin{proof}
@@ -626,6 +605,21 @@ In the above theorem, we described the languages $L \subseteq A^*$ that can be d
 
 \exerciseheader
 
+\exer{\label{exer:mealy-as-restricted-mso-relabelling}Show that a function $f : A^* \to B^*$ is computed by a Mealy machine if and only if it is definable by an \mso relabelling with the following additional restrictions imposed on Definition~\ref{def:mso-relabeling}:
+\begin{enumerate}
+    \item the string for empty input in item~\ref{item:mso-relabeling-empty-input} is empty;
+    \item the output map in item~\ref{item:mso-relabeling-output-map} maps each formula to a one-letter string;
+    \item the formulas in item~\ref{item:mso-relabeling-formulas} depend only on the past, which means that  $w \models \varphi(x)$ depends only on the prefix of $w$ up to and including position $x$.
+\end{enumerate}
+} {
+    Consider first a function computed by a Mealy machine. As the set of formulas we take one formula $\varphi_t(x)$ for each transition $t$, which says that transition $t$ is used in position $x$; this can be written in \mso as in Claim~\ref{claim:transition-formula}. Since the machine is deterministic, exactly one of these formulas is true in each position, as required in the definition of an \mso relabelling. The three additional restrictions are satisfied: a Mealy machine maps the empty string to the empty string; the output map, which sends $\varphi_t$ to the output letter of the transition $t$, produces one-letter strings; and the formulas depend only on the past, because the transition used in a position is determined by the prefix up to and including this position.
+
+    Consider now an \mso relabelling which satisfies the three restrictions. Because of the third restriction, each formula $\varphi \in \Phi$ is determined by the language
+    \begin{align*}
+    L_\varphi \quad \eqdef \quad \setbuild{w \in A^*}{$w$ is nonempty and $w \models \varphi(x)$ for the last position $x$ of $w$},
+    \end{align*}
+    in the sense that $\varphi$ is true in a position of an input string if and only if the prefix up to and including this position belongs to $L_\varphi$. This language is definable in \mso, and hence it is regular by Theorem~\ref{thm:mso-logic-languages}. The Mealy machine for the relabelling is the product of deterministic automata for the languages $L_\varphi$, with $\varphi$ ranging over $\Phi$. The state of this product after reading a prefix of the input string tells us which formulas are true in the last position of this prefix; by the uniqueness requirement in the definition of an \mso relabelling, exactly one formula is true, and by the second restriction, it is mapped to a single output letter. Therefore, each transition of the product can be labelled by the output letter that corresponds to its target state, and the resulting Mealy machine computes the same function as the relabelling; for the empty input string, both produce the empty string thanks to the first restriction.
+}
 \exer{\label{exer:fo-non-elementary}
 Consider first-order formulas that define languages. Show that for every $n \in \set{1,2,\ldots}$ there is a first-order formula of size polynomial in $n$ such that the corresponding language contains exactly one string which has length  at least
 \begin{align*}
@@ -640,6 +634,7 @@ By induction on  $n \in \set{0,1,\ldots}$ define the \emph{strings of order $n$}
     \begin{align*}
     w_1,\ldots,w_\ell
     \end{align*}
+\issue{Language: remove the duplicated ``string'' in ``A string string of order $n$''.}% book review
     be the strings of order $n-1$, listed in lexicographic order.  The new alphabet is obtained by extending the previous alphabet with two fresh letters $0$ and $1$. A string  string of order $n$ is defined to be any string of the form 
     \begin{align*}
     a_1 w_1 a_2 w_2 \cdots a_\ell w_\ell  \qquad \text{where $a_1,\ldots,a_\ell \in \set{0,1}$}.
@@ -658,6 +653,7 @@ By induction on  $n \in \set{0,1,\ldots}$ define the \emph{strings of order $n$}
         \end{itemize}
     \end{claim}
     \begin{proof}
+\issue{Proof gap: ``the same number of applications of the consecutive relation'' is a transitive-closure/synchronisation condition, not automatically first-order definable. Give an explicit comparison formula for equal lower-order indices; the size argument alone does not supply it.}% book review
         The induction step uses $\varphi_{n-1}$ to identify, inside two infixes of order $n$, the pairs of sub-infixes of order $n-1$ that carry the same index $i$: these are the pairs that can be reached from the first sub-infixes by applying the ``consecutive'' relation of order $n-1$ the same number of times. Being consecutive in the lexicographic order on strings of order $n$ then says that the bit sequences $a_1 \cdots a_\ell$ of the two infixes are consecutive binary numbers, i.e.~there is an index where the first has $0$ and the second has $1$, before it the bits agree, and after it the first has only $1$s and the second only $0$s. All of this is first-order, once the sub-infixes of order $n-1$ can be compared.
 
         The only delicate point is the size. A naive translation uses $\varphi_{n-1}$ a constant number $c > 1$ of times, which would give formulas of size exponential in $n$. This is avoided by the standard trick of quantifying over the arguments: instead of writing several copies of $\varphi_{n-1}$ with different arguments, one writes a single copy applied to universally quantified arguments,

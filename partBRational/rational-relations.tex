@@ -44,6 +44,7 @@ Every Mealy machine is a special case of a rational relation, since it correspon
  Here is an example of a rational relation which is a function, i.e.~every input string has exactly one output string: the output string is obtained from the input string by swapping the first and last letters (if the input string has at most one letter, it is unchanged). To implement this function, we use a union of six nondeterministic automata. (In the pictures below, we use an alphabet with two letters.) The first two automata deal with inputs that have at most one letter:
 \mypic{20}
 The remaining four automata deal with the possible combinations of (first letter, last letter), with one of them being:
+\issue{Figure typo: inputs start with $a$, not $f$, in the heading.}% book review
 \mypic{19}
 This function is not computed by a Mealy machine, even though it is letter-to-letter. The reason is that for a Mealy machine, the first output letter depends only on the first input letter.
 \end{myexample}
@@ -64,6 +65,7 @@ This function is not computed by a Mealy machine, even though it is letter-to-le
     \end{itemize}
 \end{definition}
 Often the second class is called the \emph{regular expressions}, but the French algebraic tradition uses the name rational, which is inspired by similar terminology for power series.
+\issue{Language/math: this sentence conflates $A^*$ and $A^*\times B^*$. In $A^*$, rational and recognisable subsets are the regular languages. In the product monoid, rational subsets are exactly rational relations. State these two facts separately.}% book review
 In the free monoid $A^*$, the two notions coincide, are exactly the rational subsets from the above definition, which can be proved by converting an \nfa with output into a regular expression. The recognisable subsets of $A^* \times B^*$ are much weaker; these are relations that can be recognised by separately testing some regular properties of the input and output strings, as explained in Exercise~\ref{ex:recognisable-relations}.
 
 
@@ -93,6 +95,7 @@ q \xrightarrow{u,w} q' \qquad  \qquad
     \end{align*}
     in the automata  for $R$ and $S$ respectively
     are combined into a new transition 
+\issue{Language: an transition $\to$ a transition.}% book review
     \begin{align*}
     (q,p) \xrightarrow{u,v} (q',p')\end{align*} in the automaton for the composition. (To properly synchronise the two automata, we also assume that each one has an transition with empty input and output around each state.)
     The rest of the construction is as usual in a product construction, i.e.~initial states are pairs that are initial on both coordinates, and likewise for final states.
@@ -142,11 +145,13 @@ Observe that rational relations are symmetric with respect to input and output, 
         is a rational relation.
     \end{claim}
     \begin{proof}
+\issue{Math: the construction only covers outputs that are shorter or disagree at some letter. For $h(a)=b$, it misses $(a,bb)$, where $h(a)$ is a proper prefix of the output. Add a branch that reads all input correctly and then emits a nonempty suffix; case (i) only truncates.}% book review
         The automaton guesses a prefix of the input word for which the homomorphism is correctly applied. After reading this prefix and producing the correct output, it insists on making an error. This means that for the next input letter $a$ after the correct input prefix, it does one of the following: (i) outputs a string that is a proper prefix of $h(a)$ and then produces no more output; or (ii) outputs a string that is  incomparable with $h(a)$ under the prefix relation and then produces any output.
     \end{proof}
 % This issue was flagged, but is not an issue, it follows under (i)
 % \issue{The case analysis misses the possibility that $h(w)$ is a \emph{proper prefix} of $v$: then the correctly applied prefix is all of $w$ and there is no ``next letter $a$''. A third option is needed --- read the whole input correctly and then produce at least one extra output letter.}
 
+\issue{Math: both displayed PCP formulas must restrict $w$ to $A^+$; all homomorphisms agree on $\varepsilon$. For universality on $A^*\times B^*$, also add all pairs with empty input to the union of complements.}% book review
     Using the complements from the above claim, we will recast the  Post Correspondence Problem as an instance of universality for rational relations. Consider an instance of the Post Correspondence Problem\footnote{This problem was proved undecidable in 
         \cite[p.264]{Post1946}, where it was  called the ``correspondence problem''. A more modern proof can be found in \cite[Theorem 5.15]{Sipser2012}.
     }:
@@ -188,6 +193,7 @@ Show that for every rational relation $R \subseteq A^* \times B^*$, the followin
 Show that for some rational relation $R \subseteq A^* \times B^*$, the set of inputs that produce at most one output is non-regular.  
 }
 {
+\issue{Language: different output alphabets can still share letters. The parenthetical assertion is true for disjoint output alphabets, not merely different ones.}% book review
 The crucial idea is to  find two rational functions for which the following language is non-regular:
 \begin{align*}
 \setbuild{ w \in A^*}{$f(w) = g(w)$}.
@@ -214,6 +220,7 @@ Once we have found them, the relation is simply the union of the two functions, 
     \begin{align*}
     \setbuild{(w,g(w))}{$w \in A^*$ is nonempty}.
     \end{align*}
+\issue{Terminology: these relations are partial functions (undefined on $\varepsilon$), whereas Definition~\ref{def:rational-function} requires totality. Extend them with different outputs on $\varepsilon$ to obtain the asserted total-function version.}% book review
     This relation is rational: the automaton has an initial and a final state, and for each input letter $a$ it has a transition with input $a$ and output $g(a)$, which goes from the initial to the final state, and also from the final state to itself. (The two states are used only to rule out the empty input string.) The intersection of the two relations obtained this way is nonempty if and only if the two homomorphisms agree on some nonempty input string, which is exactly the Post Correspondence Problem. Since the two relations used in the reduction are functions, the problem remains undecidable for rational functions.
 }
 

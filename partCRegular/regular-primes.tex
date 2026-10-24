@@ -93,6 +93,7 @@ The second condition can also  be checked by an automaton thanks to continuity o
             \myunderbrace
             {      r \xrightarrow{\# / x } s }{in the original automaton}.
         \end{align*}
+\issue{Math: the triple endpoint constraints are inconsistent with the backwards middle-coordinate transitions. With $r$ the block start and $s$ its end, use initial triples $(r,s,s)$, final triples $(r,r,s)$, and separator steps $(r,r,s)\to(p,t,t)$ corresponding to $s\xrightarrow{\#}p$.}% book review
         The initial states are those which have an initial state on the first coordinate, and the accepting states are those which have an accepting state on the third coordinate. Note that this weighted automaton will multiply the weights of the original run in a different order, but this is not an issue since multiplication in a field is commutative. More generally, this construction would work for any commutative semiring. For non-commutative semirings, the construction cannot work, since we have established in Theorem~\ref{thm:characterisation-rational-functions-weighted-automata} that only rational functions can be closed under post-composition with  weighted automata over arbitrary semirings, and map reverse is not rational.
 
         \item \textbf{Map duplicate.}

@@ -2,58 +2,98 @@
 \label{sec:mso-interpretation}
 
 
-
-In \cref{sec:logic} we showed that the regular string-to-string functions are exactly those functions that can be defined by \mso transductions. In the definition of  an \mso transduction, see \cref{def:mso-transduction}, we require that the universe formula uses a linear type, i.e.~element of the output structure is defined by using a single element of the input structure. What if we lift this restriction? 
+In this section, we describe a logical characterisation of polyregular functions, in terms of \mso.
+As we showed in \cref{sec:logic}, the regular string-to-string functions are exactly those functions that can be defined by \mso transductions. In the definition of  an \mso transduction, see \cref{def:mso-transduction}, we require that the universe formula uses a linear shape such as $3n + 2$.  What if we lift this restriction, and allow polynomial shapes like $3n^2 + 2n + 1$?
 
 
 \begin{definition}[\mso interpretation] \label{def:mso-interpretation}
-    A string-to-string \mso interpretation is defined in the same way as an \mso transduction, except that we do not require the type $\tau$ to be linear. 
+    A string-to-string \mso interpretation is defined in the same way as an \mso transduction, except that we allow the shape to be any polynomial $n^{d_1} + \cdots + n^{d_k}$.
 \end{definition}
 
-In this section, we prove that the \mso interpretations are exactly the polyregular functions.  (The theorem below is stated for string-to-string functions, but we will also prove it in the slightly more general setting of type-to-type functions.)
+
+\begin{myexample}[Interpretation for marked squaring]\label{ex:marked-squaring-mso-interpretation}
+\issue{Math: with the first coordinate indexing the copy and the second indexing the position, underline exactly when $x(2)\le x(1)$, not when $x(1)<x(2)$. Also specify that the underlying letter comes from coordinate 2.}% book review
+    The marked squaring function is defined by an \mso interpretation with shape $n^2$. The universe formula selects all tuples of this shape, the order is lexicographic, and the labels formula check if the first coordinate $x(1)$ is smaller than the second coordinate $x(2)$ to see if the label should be underlined.
+\end{myexample}
+
+In this section, we prove that the \mso interpretations are exactly the polyregular functions.  The theorem below is stated for string-to-string functions, but \cref{exer:type-to-type-interpretations} shows that it can be lifted to type-to-type functions.
 \begin{theorem}\label{thm:mso-interpretation}
 A string-to-string function is polyregular if and only if it can be defined by a string-to-string \mso interpretation.
 \end{theorem}
 
+A corollary of the theorem is that string-to-string \mso interpretations are closed under composition, because polyregular functions are closed under composition.  This corollary is not at all obvious from the definition of \mso interpretations, since the standard composition construction fails. To see this, consider a composition of two
+\mso interpretations
+\begin{align*}
+A^* \xrightarrow f B^* \xrightarrow g C^*.
+\end{align*}
+If an \mso formula in the definition of $g$ uses quantification over sets of positions in the intermediate string $f(w) \in B^*$, then the standard  substitution construction  would require  quantifying over sets of tuples in the original input string $w \in A^*$, which is not allowed in \mso. This means that the standard substitution construction cannot be used to prove composition.
+
+
+
+
 The easy part of the theorem is the implication
 \begin{align*}
-\text{polyregular} \subseteq \text{\mso interpretation}.
+\text{polyregular} \subseteq \text{\mso interpretations}.
 \end{align*}
-As we have shown in \cref{lem:reachability-pebble-automaton}, for each pebble transducer there is  an \mso formula that defines the reachability relation between  configurations. Using this formula, we can write a  formula that selects configurations which are: (a) reachable from the initial configuration, and (b)  produce an output letter in the next step. This formula will be the universe formula of the interpretation. The order formula  is then reachability between configurations, restricted to configurations selected by the universe formula. Finally, the label formulas are obtained by consulting the transition function of the transducer to see what letter is produced. 
+As we have shown in \cref{lem:reachability-pebble-automaton}, for every pebble transducer there is  an \mso formula that defines the reachability relation between  configurations. Therefore, we can write an \mso  formula that selects configurations which are: (a) reachable from the initial configuration, and (b)  produce an output letter in the next step. This formula will be the universe formula of the interpretation, and (b) can be used to define the label formulas. The order formula  is then reachability between configurations, restricted to configurations selected by the universe formula. 
 
 
-The hard part of the theorem is the converse implication:
+The rest of this section is devoted to proving the hard part of the theorem:
 \begin{align*}
-\text{polyregular} \supseteq \text{\mso interpretation}.
+\text{polyregular} \supseteq \text{\mso interpretations}.
 \end{align*}
-The difficulty is that the automata models for polyregular functions, such as for transducers or pebble transducers, have a stack discipline on their loops, which is not aparent in an \mso interpretation. As we know from \cref{exer:no-stack-discipline}, without stack discipline pebble transducers are not continuous, and even equivalent to deterministic logarithmic space. Therefore, the heart of the proof is showing that an \mso interpretation must have some implicit stack discipline. This will be the content of the rest of this section. 
+The difficulty is that the automata models for polyregular functions, such as for-transducers or pebble transducers, have a stack discipline on their loops, which is not apparent in an \mso interpretation. As we know from \cref{exer:no-stack-discipline}, without stack discipline pebble transducers are no longer necessarily continuous, and are even equivalent to deterministic logarithmic space. Therefore, the heart of the proof is showing that an \mso interpretation must have some implicit stack discipline.
 
 The plan is as follows.
- In \cref{sec:quantifier-elimination},  we show
+ In \cref{sec:quantifier-elimination},  we show that
  every \mso interpretation can be factored into two steps: a rational function  followed by a quantifier-free interpretation, i.e.
 \begin{align*}
-\text{\mso interpretations} = \text{rational}; \text{quantifier-free interpretations.}
+ \text{rational}; \text{quantifier-free interpretations} 
+ \supseteq \text{\mso interpretations.}
 \end{align*}
- Since polyregular functions are closed under composition and contain the rational functions, this means that the difficult inclusion  from \cref{thm:mso-interpretation} reduces to its quantifier-free special case, i.e. 
+(The opposite inclusion is also true, but we will not need it.)  
+The proof is based on the techniques from \cref{sec:evaluation}, where we used Simon trees to evaluate \mso formulas in constant time.  
+ Since polyregular functions are closed under composition and contain the rational functions, the above decomposition will show that the difficult inclusion in \cref{thm:mso-interpretation} reduces to its quantifier-free special case, i.e. 
  \begin{align*}
 \text{polyregular} \supseteq \text{quantifier-free interpretations}.
  \end{align*}
-The next step of the proof is \cref{sec:rational-domination}, where we show that quantifier-free orders on tuples of positions have a precedence on the coordinates, which is where the implicit stack discipline emerges. Finally, in \cref{sec:using-domination-lemma} we put the results together to prove \cref{thm:mso-interpretation}, by using the precedence order to simulate compute an quantifier-free interpretation using a for-transducer.
+The next step of the proof is \cref{sec:rational-domination},  which is where the implicit stack discipline emerges:  we show that quantifier-free orders on tuples of positions must have a precedence on the coordinates. Finally, in \cref{sec:using-domination-lemma} we put the results together to prove \cref{thm:mso-interpretation}.
 
 \subsection{Quantifier elimination}
 \label{sec:quantifier-elimination}
-The goal of this section is to show that every \mso interpretation can be decomposed as a rational function followed by a quantifier-free interpretation. This decomposition will be based on the Factorisation Forest Theorem, which is a powerful result from semigroup theory. The rough idea is that the rational function in the first step produces a factorisation tree (which is the subject of the Factorisation Forest Theorem), which contains enough information so that it can be interpreted in a quantifier-free way in the second step.  The argument has three steps. In \cref{sec:logical-structures-for-types}, we explain how factorisation trees are represented as logical structures, since the output of the rational function will not be strings. In \cref{sec:factorisation-forests}, we prove the  Factorisation Forest Theorem. Finally, in \cref{sec:proof-of-quantifier-free-interpretation-decomposition} we put everything together to prove the decomposition result. 
-\subsubsection*{Logical structures for types}
-\label{sec:logical-structures-for-types}
+The goal of this section is to show that every \mso interpretation can be decomposed as a rational function followed by a quantifier-free interpretation. As mentioned above, the decomposition will use the Simon trees from \cref{sec:evaluation}. Consider an \mso interpretation
+\begin{align*}
+A^* \xrightarrow f B^*.
+\end{align*}
+This interpretation is based on a finite set of \mso formulas. As we have shown in \cref{claim:mso-formula-recognised-by-homomorphism}, every such formula is recognised by some monoid homomorphism. By combining these monoids into a product monoid, we get a monoid homomorphism 
+\begin{align*}
+A^* \xrightarrow h M
+\end{align*}
+into a finite monoid
+that recognises all \mso formulas used by the interpretation. By \cref{lem:factorisation-forest-rational}, we can use a rational function to compute Simon trees for this homomorphism, for some height bound $k$: 
+\begin{align*}
+A^* \xrightarrow s \facttype {h,k}.
+\end{align*}
+In \cref{lem:evaluation-mso-successor-in-constant-time} we showed that if we have access to the Simon tree produced by $s$, then all formulas used by the \mso interpretation can be evaluated in constant time. We will now strengthen this, by showing that the formulas can be evaluated in a quantifier-free way. This means that  instead of using \mso formulas in the input string $w \in A^*$, we can use quantifier-free formulas in the Simon tree $s(w)$, thus yielding a quantifier-free interpretation
+\begin{align*}
+    \facttype {h,k} \xrightarrow g B^*
+\end{align*}
+such that $f = s;g$.  
 
-% Our intended application is to use quantifier-free formulas, and therefore we will have to be careful about the choice of vocabulary, since quantifier-free formulas are sensitive to such choices (for example, the successor can be defined from the order, but not in a quantifier-free way).
+The above sketch describes  the quantifier-elimination result that is the content of  this section. 
+However, in order to formalise the sketch, we need to say what we mean by a ``quantifier-free interpretation'' which inputs Simon trees. This will require describing a Simon tree as a relational structure, which is what we do now.
 
-In our quantifier elimination argument, the intermediate structures (the outputs of the rational function and the inputs of the quantifier-free interpretation) will not be strings, but a certain kind of bounded height trees. These trees will be viewed as elements of some type (as in \cref{def:types}). We already know how types can be outputs of rational functions, see \cref{sec:rational-terms}, but we also need to explain how types can be used as inputs or outputs of quantifier-free interpretations. This requires a representation of the inputs and outputs as relational structures, which we now explain. The idea is to think of an element of a type as a its syntax tree. The notion of syntax tree is best explained in a picture:
+\issue{Language: ``descibing'' $\to$ ``describing''; insert a space in ``picture,which''. Standardise ``shape'' here with ``sort'' in Section~\ref{sec:logic}.}% book review
+\paragraph*{Relational structures for types.} Instead of descibing logical structures that are explicitly tailored to Simon trees, we think of Simon trees as being a special case of a type $A$, and we show how elements of any type  can be  represented as relational structures.  The idea is to view $a \in A$  as its syntax tree, as described in the following picture,which shows the syntax tree of
+\begin{align*}
+([\rightterm 1, \leftterm 1, \rightterm 1, \leftterm 1],[1,1,1]) \in (\onetype + \onetype)^*  \times \onetype^*.
+\end{align*}
+
 \mypic{58}
-An important property of syntax trees is that if a type $A$ is fixed, then syntax trees of elements $a \in A$ have bounded height. The syntax tree is viewed as a relational structure, according to the the following definition., 
+An important property of syntax trees is that if the type $A$ is fixed, then syntax trees of elements $a \in A$ have bounded height: trees for $\onetype$ have height zero, and each type constructor increments the height by one. The syntax tree is viewed as a relational structure, according to the following definition.  The vocabulary is designed with the following purpose in mind: if the type represents Simon trees, then the relations can be used to extract the relevant information in a quantifier-free way.
 
 \begin{definition}
-    [Tree structure] \label{def:tree-model} Let $A$ be a type. The \emph{tree structure} associated to $a \in A$ is defined as follows. The universe is the nodes of the  syntax tree. The structure has unary relations for the  possible labels
+    [Tree structure] \label{def:tree-model} Let $A$ be a type. The \emph{tree structure} associated to $a \in A$ is defined as follows. The universe is the nodes of the  syntax tree, there are unary relations for the  possible labels
     \begin{align*}
     \times \quad * \quad 1 \quad  \leftterm \quad \rightterm,
     \end{align*}
@@ -68,721 +108,555 @@ An important property of syntax trees is that if a type $A$ is fixed, then synta
         \end{align*}
 \end{definition}
 
-Some of the relations above may seem redundant. For example, the root can be defined in terms of the parent relation: a node without a parent. However, this definition requires a quantifier, and we will be interested in quantifier-free formulas. Similar comments apply to the sibling successor, first child, and last child relations.  The vocabulary of the tree structure does not depend on the type, and we will call it the \emph{tree vocabulary}.  When we talk about interpretations that input and output types, we will assume that the input and output are represented as tree structures, as in \cref{def:tree-model}. If the type is $A^*$ where $A$ is a finite alphabet, then there is some ambiguity -- since strings can be represented either as labelled linear orders, according to the representation described in \cref{sec:logic}, or as tree structures. There is not an important difference (the tree structure has an extra root, and some more relations such as the successor),  but  we will indicate our choice whenever it arises. 
+Some of the relations in the tree structure may seem redundant. For example, the root can be defined in terms of the parent relation: a node without a parent. However, this definition requires a quantifier, and we will be interested in quantifier-free formulas. Similar comments apply to the sibling successor, first child, and last child relations, which can be defined using first-order logic in terms of the sibling order.
+
+The vocabulary of the tree structure does not depend on the type, and we will call it the \emph{tree vocabulary}.  When we talk about interpretations that input or output types, we will assume that the elements of these types are represented as tree structures. If the type is $A^*$ where $A$ is a finite alphabet, then there is some ambiguity:  strings in $A^*$ can be represented either as labelled linear orders according to the representation described in \cref{sec:logic}, or as tree structures according to the above definition. This is not an important difference (the tree structure has an extra root, and some more relations such as the successor), and it does not affect the expressiveness of \mso interpretations. However, to avoid ambiguity,  we will indicate our choice whenever it arises. 
 
 \begin{myexample}
     Consider a function 
     \begin{align*}
     \onetype^* \xrightarrow f \onetype^*
     \end{align*}
-    which extends the input string by adding one extra letter. We view this function as a type-to-type interpetation, which means that both inputs and outputs are repesented as tree structures. The universe of the output structure is described using  variable type $n+1$, which means that there are two variants: one for elements of the input structure, plus one for defining an extra node. 
-    The universe formula is ``true'' since all input nodes are used, plus the extra node. The formula 
+    which extends the input string by adding one extra letter. We view this function as a type-to-type interpretation, which means that both inputs and outputs are represented as tree structures. The shape of the interpretation is  $n+1$, which means that there are two colours, of dimensions one and zero, respectively. The interpretation is quantifier-free.
+    The universe formula is ``true'' since all input nodes are used, plus the extra node. The formula defining the parent relation of the output tree structure is
     \begin{align*}
-    \varphi_\parent(x : n+1, y : n+1)
+    \myunderbrace{(\summand 1 x \land \summand 1 y \land \parent(x(1),y(1)))}{if both $x$ and $y$ use the first colour, \\ then we use the parent relation from the input} \lor
+    \myunderbrace{(\summand 1 x \land \summand 2 y \land \rootrel(x(1)))}{if $y$ is the extra node \\  then its parent is the input root}.
     \end{align*}
-    which defines the parent relation of the output structure is as follows:
-    \begin{align*}
-    \myunderbrace{(\summand 1 x \land \summand 1 y \land \parent(x(1),y(1)))}{if both $x$ and $y$ are from the first variant, \\ then we use the parent relation from the input} \lor
-    \myunderbrace{(\summand 2 y \land \rootrel(x(1)))}{if $y$ is the extra node \\ from the second variant \\ then its parent is the input root}.
-    \end{align*}
-    In the second disjunct from the above formula, we do not need to assert that $x$ uses the first variant, since $\rootrel(x(1))$ requires that the coordinate is defined, which can only happen when $x$ uses the first variant. The formulas defining the remaining relations -- sibling order, sibling successor, first child, last child, and the labels -- are left as an exercise for the reader.
+\issue{Math: for the stated append-at-end representation, the extra node is first child exactly when the input list is empty. A quantifier-free formula on its nullary colour has no coordinates with which to test emptiness. Thus the claimed formulas for the remaining relations do not follow; enrich the encoding or weaken this example.}% book review
+    In the second disjunct from the above formula, $\summand 1 x$ is redundant,  since $\rootrel(x(1))$ requires that  coordinate 1 is defined, which can only happen when $x$ uses  colour 1 in the case of shape $n+1$. The formulas defining the remaining relations -- sibling order, sibling successor, first child, last child, and the labels -- are left as an exercise for the reader.
 \end{myexample}
 
 
 
 
     
-We are now ready to state the quantifier-free decomposition result.
+\paragraph*{Quantifier elimination.} We now state the quantifier elimination result.
 
 \begin{lemma}\label{lem:quantifier-free-interpretation-decomposition}
-Every  string-to-string \mso interpretation
+For every string-to-string \mso interpretation
    \begin{align*}
    A^* \xrightarrow f B^*
    \end{align*}
-   can be decomposed as 
-   \[
-   \begin{tikzcd}
-   A^* 
-   \ar[r,"f_1"]
-   &
-   C
-   \ar[r,"f_2"]
-    &
-    B^*
-   \end{tikzcd}
-   \]
-   where  $C$ is some type, $f_1$ is a rational function  and $f_2$ is a quantifier-free   interpretation. In the interpretation $f_2$, inputs are represented as tree structures and outputs are represented as labelled linear orders. 
+   there is a type $C$ and a decomposition of $f$ as 
+   \begin{align*}
+   A^* \xrightarrow[\text{rational}] s C \xrightarrow[\text{quantifier-free interpretation}] g B^*.
+   \end{align*}
 \end{lemma}
 
- The above lemma is stated for string-to-string functions, but the proof can be extended to cover also type-to-type functions. The assumption that inputs of $f_2$ are represented as tree structures is important for the lemma, but the assumption that outputs are represented as labelled linear orders is not (we use the labelled linear orders for the outputs so as to be consistent with the way that outputs of $f$ are represented).    The rest of   \cref{lem:quantifier-free-interpretation-decomposition} is devoted to proving the  lemma.
-
-% In our definition of \mso interpretations, we used extended syntax of first-order logic, where each variable would have a type such as $1 + n + n^2$, meaning that the variable rai
-
+In the interpretation $g$ from the lemma, inputs are represented as tree structures and  outputs are represented as labelled linear orders. The lemma would still be true for outputs represented as tree structures, but the order representation will be more convenient for the proof and later applications. 
+%  The above lemma is stated for string-to-string functions, but the proof can be extended to cover also type-to-type functions. The assumption that inputs  of step (2) are represented as tree structures is important for the lemma, but the assumption that outputs are represented as labelled linear orders is not important (we use the labelled linear orders for the outputs so as to be consistent with the way that outputs of $f$ are represented).    The rest of   \cref{lem:quantifier-free-interpretation-decomposition} is devoted to proving the  lemma.
 
 
 
-
-
-
-
-
-
-
-
-\subsubsection*{Proof of \cref{lem:quantifier-free-interpretation-decomposition}}
-\label{sec:proof-of-quantifier-free-interpretation-decomposition}
-Having proved the (constructive version of the) Factorisation Forest Theorem, we use it to complete the proof of our quantifier elimination result from \cref{lem:quantifier-free-interpretation-decomposition}.
-Consider an \mso interpretation
-\begin{align*}
-A^* \xrightarrow f B^*
-\end{align*}
-that we want to decompose into a rational function followed by a quantifier-free interpretation.  
-Let $\Phi$ be all of the \mso formulas that are used in the \mso interpretation $f$.  We will apply the constructive version of the factorisation forest theorem to a suitably chosen  monoid homomorphism
-
-
-Apply the above claim, yielding some homomorphism $h$. Apply the constructive version of the  factorisation forest theorem from \cref{lem:factorisation-forest-rational}, yielding a rational function
-        \begin{align*}
-    A^* \xrightarrow {g} \facttype {h, k}.
-    \end{align*}
-
-%      Let us write $C$ for the output type of $f_1$. 
-% To prove the lemma, we will show that $f$ can be decomposed as
-% \begin{align*}
-% A^* \xrightarrow {f_1} C \xrightarrow {f_2} B^*
-% \end{align*}
-% for some quantifier-free interpretation $f_2$.
- For a  distinguished position $x$  in a string $w \in A^*$, define its \emph{factorisation path} to be the path in the  tree structure  $g(w)$ which leads from the root to the leaf corresponding to position $x$. This path has length bounded by some constant $c \in \set{1,2,\ldots}$, since the factorisation trees have bounded height.  The factorisation path has variable length, but it can be described by a tuple of exactly $c$ nodes, with the root repeated multiple times if necessary to pad the length so that it is exactly $c$. We write $g(x)$ for this tuple of nodes (the notation is a bit sloppy, since it implicitly assumes the string $w$ in which the position $x$ is distinguished).  
- The following claim shows that if we want to know if a formula from $\Phi$ is satisfied for some distinguished positions, then it is enough to look at the quantifier-free type of the corresponding factorisation paths. (If there are $\ell$ distinguished positions, then the quantifier-free type will involve $c\cdot \ell$ nodes, since each factorisation path has length $c$.)
- 
-
- \begin{claim} \label{claim:factorisation-paths-qf-reduction} For every formula $\varphi \in \Phi$ that has $\ell$ arguments there is a quantifier-free formula, call it $g(\varphi)$, with $c \cdot \ell$ arguments such that 
+\begin{proof} We follow the proof sketch from  the beginning of this section. By 
+    \cref{claim:mso-formula-recognised-by-homomorphism}, there is a homomorphism $h$ that recognises all formulas used by the \mso interpretation, and by \cref{lem:factorisation-forest-rational} there is a rational function
     \begin{align*}
-    w \models \varphi(x_1,\ldots,x_\ell) \quad \text{iff} \quad g(w) \models g(\varphi)(g(x_1),\ldots,g(x_\ell))
+    A^* \xrightarrow s \myunderbrace{\facttype {h,k}}{$C$}
     \end{align*}
-    for every string $w \in A^*$ with distinguished positions $x_1,\ldots,x_\ell$.
+    which computes Simon trees for this homomorphism. 
+    It remains to show that if $w \in A^*$ is an input string, then  $f(w)$ can be obtained from $s(w)$ by some quantifier-free interpretation.  This is done by using quantifier-free formulas to formalise the constant time algorithm for evaluating \mso formulas in  \cref{lem:evaluation-mso-successor-in-constant-time}.
+ For a position $x$  in the input string $w$, define $s(w,x)$  to be the root-to-leaf path in the Simon tree $s(w)$ which leads to the leaf that corresponds to position $x$. Such a path has length bounded by some constant $\ell \in \set{1,2,\ldots}$, since the Simon trees in question have height at most $k$, and therefore $s(w,x)$  can  be represented by a shape 
+ \begin{align*}
+ \sigma = n^1 + n^2 + \cdots + n^\ell.
+ \end{align*}
+ We can lift the map $x \mapsto s(w,x)$  from positions to coloured tuples of positions, by applying it to all coordinates in the coloured tuple. If a coloured tuple $x$  in $w$ has shape $\tau$, then the corresponding coloured tuple $s(w,x)$ in $s(w)$ has  shape $\tau \circ \sigma$. The following claim shows that along this correspondence, \mso definable properties in the input string $w$ are mapped to quantifier-free definable properties in the Simon tree$s(w)$.
+
+ \begin{claim} \label{claim:factorisation-paths-qf-reduction} Consider an \mso formula $\varphi(x : \tau)$ over the vocabulary of $A^*$ which  is recognised by the homomorphism $h$. Then there is a quantifier-free formula $\varphi'(x : \tau \circ \sigma)$ over the tree vocabulary such that
+    \begin{align*}
+    w \models \varphi(x) \ \iff \  s(w) \models \varphi'(s(w,x))
+    \quad \text{for every $w \in A^*$ and $x \in \tau(w)$.}
+    \end{align*}
  \end{claim}
  \begin{proof}
-    Because the homomorphism recognises the formula, it is enough to show that the information in the statement of the claim uniquely determines the profile of the distinguished positions. The order and labels are directly recovered from the 
+    Because the homomorphism recognises the formula,  it is enough to show that the $h$-profile of the coloured tuple $x$ can be recovered in a quantifier-free way from the coloured tuple $s(w,x)$. The labels are given as unary relations, and thus they can be tested in a quantifier-free way. The order is obtained by looking at the sibling order in the Simon tree (here it is useful that $s(w,x)$ is closed under ancestors). Finally, to recover the monoid elements for the factors without distinguished positions, we use quantifier-free formulas to formalise the reasoning in the proof of \cref{lem:factorisation-forest-evaluation}. The sibling successor is used to check if two sibling nodes are separated by an empty factor (this tells us if we need to use the idempotent), and the first child and last child relations are used for a similar purpose.
  \end{proof}
-We are now ready to construct a quantifier-free interpretation
+\issue{Proof gap: the universe formula must also check that every output tuple encodes a valid complete root-to-unit-leaf path (with the correct colour/length). The claim only gives equivalence on tuples already of the form $s(w,x)$ and leaves other tuples unconstrained.}% book review
+ By applying the above claim to all formulas used by the \mso interpretation, we get  a quantifier-free interpretation
          \begin{align*}
-    \facttype {h, k} \xrightarrow {e}  B^*
+    \facttype {h, k} \xrightarrow {g}  B^*
     \end{align*}
-such that $f = g;e$, as required by the lemma. In this interpretaton, the elements of the output structure will be described using tuples of $d$ factorisation paths. This means that the type of the interpretation is  $n^{c \cdot d}$, since each factorisation path is described by a tuple of $c$ nodes. All formulas in the interpretation are obtained by applying \cref{claim:factorisation-paths-qf-reduction} to the formulas in the original interpretation. This is a quantifier-free interpretation, and from the conclusion of \cref{claim:factorisation-paths-qf-reduction}, it is clear that $f = g;e$.
-
-
+such that $f = s;g$, as required by the lemma. The corresponding shape is  $\tau \circ \sigma$, where $\tau$ is the shape of the original \mso interpretation.
+\end{proof}
 
 
 
 
 \subsection{The domination lemma} 
 \label{sec:rational-domination}
-As we have explained before, the main difficulty in the proof is showing that definable orders on tuples of positions are essentially lexicographic. The actual formalisation of this statement will be rather technical, and presented in the following section. However, we can begin with a simplified version that contains some of the main ideas, and which is based on rational numbers. 
+We now move to the second stage of the proof of \cref{thm:mso-interpretation}, which contains the  combinatorial core: we show that every quantifier-free definable order on tuples of positions has an implicit stack discipline, which is witnessed by some coordinate that dominates the order.  This coordinate will correspond to the bottom of the stack, or the outermost for-loop in a for-transducer. 
 
+The actual formalisation of this statement is rather technical, and will be presented later in this section. We begin our discussion with a simplified  version that talks about the rational ordering $(\Rat,<)$. 
 
-To explain the importance of lexicographic orders, we will first illustrate it on a clean example which involves the ordered rational numbers 
-\begin{align*}
-(\Rat, <).
+What are the linear orders on tuples of rational numbers, which can be defined purely in terms of the standard ordering on the rationals?  In  dimension $d=1$, there are at least two options, namely the standard order $<$ and its opposite $<^{-1}$. (We will soon show that these are the only two options.) In higher dimensions, we can use  lexicographic orders, where coordinates are equipped with a priority ordering, as in the following definition. 
+
+\begin{definition}[Lexicographic order]
+    \label{def:lexicographic-order}
+    A linear order $\prec$ on the set $\Rat^d$ is called \emph{lexicographic} if there is some permutation 
+    of the coordinates
+    \begin{align*}
+    \alpha_1,\ldots,\alpha_d \in \set{1,\ldots,d}
+    \end{align*}
+    and  some list of   orientations
+    \begin{align*}
+    \beta_1,\ldots,\beta_d \in \set{-1,1}
+    \end{align*}
+    such that tuples are ordered as follows: first sort them on coordinate $\alpha_1$ according to $<^{\beta_1}$, in case of equality  sort them on coordinate $\alpha_2$ according to $<^{\beta_2}$, and so on. 
+\end{definition}
+
+The permutation can be chosen in $d!$  ways, and the orientation can be chosen in $2^d$ ways, thus leading to  $d! 2^d$ lexicographic orders. Clearly every lexicographic order can be defined by a quantifier-free formula with  $2d$ free variables. We will now show the converse: the lexicographic orders are the only ones that can be defined. This is not literally true, since a definable order could also depend on the order type within a tuple, e.g.~the tuples where the first two coordinates are equal could be treated differently from tuples where the last two coordinates are equal, and so on. For this reason, we will restrict our attention to tuples with a fixed order type, namely growing tuples. As the following theorem shows, once we restrict our attention to growing tuples, the only definable orders are the lexicographic ones (i.e.~those that coincide with a lexicographic order on the growing tuples). The theorem talks about orders that are quantifier-free definable, but adding quantifiers would not change the result, since the rational ordering admits quantifier elimination, see \cref{exer:quantifier-elimnination}.
+
+\newcommand{\rattuples}[1]{\Rat^{(#1)}}
+    \begin{theorem}\label{thm:lexicographic-order-on-rationals}
+        Consider a linear order   $\prec$ on the set of growing tuples
+                \begin{align*}
+\rattuples d = \setbuild { x \in \Rat^d }{$x(1) < x(2) < \cdots < x(d)$}.
 \end{align*}
-We will discuss linear orders on $d$-tuples of rationals that can be defined by formulas
-\begin{align*}
-\varphi(x_1,\ldots,x_d,y_1,\ldots,y_d).
-\end{align*}
-The formulas in question will be quantifier-free, but this restriction is not essential, since the rational ordering has quantifier elimination, so that even higher-order logic collapses to the quantifier-free fragment.
-Also, we will only care about growing tuples  
-\begin{align*}
-\Rat^{(d)} = \setbuild { x \in \Rat^d }{$x[1] < \cdots < x[d]$}.
-\end{align*}
-This will make the result cleaner, since otherwise the definable orders could make a case distinction between various order types of tuples, leading to more possiblities.
-  
+Then $\prec$ is definable by a quantifier-free formula if and only if it is lexicographic. 
+    \end{theorem}
+\begin{proof}
+        Clearly every lexicographic order is quantifier-free definable, and thus it remains to prove that all definable orders are lexicographic. This is proved by induction on the dimension $d$. The base case of dimension $d=0$ is trivial, since there is only one empty tuple to be ordered. The rest of this proof describes the induction step.   We begin by finding the first item of the permutation, and the corresponding orientation.
 
-In dimension $d=1$ there are only two possibilities for the order: the original order $<$ and its opposite. In dimension $d=2$, there are four possibilities, namely the  lexicographic orders: we can give priority to the first or second coordinate, and for each of the coordinates we can choose the original order or its opposite.  As we will  see, this pattern continues in higher dimensions.  The crucial observation is the following lemma, which says that any definable order on growing tuples of rationals must give priority to one of the coordinates.
-
-    \begin{lemma}[Rational Domination Lemma]\label{lem:rational-dominating-coordinate}
-        Consider an linear order   $\prec$ on $\Rat^{(d)}$
-    that is defined by a quantifier-free formula. Then there is a dominating coordinate, i.e.~a coordinate $i \in \set{1,\ldots,d}$ such that one of the following two conditions holds:
-\begin{itemize}
-    \item $x[i] < y[i]  \quad \Rightarrow \quad x \prec y 
-\quad \text{for every  $x,y \in \Rat^{(d)}$}$; or
-    \item $x[i] < y[i]  \quad \Rightarrow \quad x \succ y 
-\quad \text{for every  $x,y \in \Rat^{(d)}$}$.
-\end{itemize}
+    \begin{lemma}\label{lem:rational-dominating-coordinate} Assume that $\prec$ is definable. 
+Then there is a dominating coordinate, i.e.~a coordinate $\alpha \in \set{1,\ldots,d}$ and an orientation $\beta \in \set{-1,1}$ such that 
+\begin{align*}
+x(\alpha) < y(\alpha) \ \Rightarrow \ x \prec^\beta y  
+\quad \text{for every }x,y \in \rattuples d.
+\end{align*}
     \end{lemma}
-
-Before proving the lemma, we remark that it can be used to draw a stronger conclusion: the order must necessarily be lexicographic, i.e.~we first look the dominating coordinate, and in case of equality we look at some other coordinate, and so on. This stronger conclusion is proved in \cref{exer:rational-lexicographic}. For the purposes of our transducer application, we only need the weaker formulation of the lemma that is given above. 
-
-\begin{proof}[Proof of \cref{lem:rational-dominating-coordinate}]
-        We use the names \emph{positive domination} and \emph{negative domination} for the following two conditions in the conclusion of the lemma, respectively.  
-    Choose some  tuples 
+\begin{proof}
+    Choose some   tuples
         \begin{align*}
-        x_0,\ldots,x_d, x \in \Rat^{(d)}
+        x_0,\ldots,x_d, x \in \rattuples d
         \end{align*}
-        such that $x_i$ is placed between coordinates $i$ and $i+1$ of the tuple $x$, as shown in the following picture for $d=3$:
+    which are arranged  as in the following picture for $d=3$:
         \mypic{56}
-
-        Since the quantifier-free relation between $x_i$ and $x_{i+1}$ is always the same, we know that defined order must order them monotonically, and so we have either
+        This means that the tuple $x_i$ is contained entirely in the interval strictly between $x(i)$ and $x(i+1)$, with the suitable adjustment for the edge cases of $i=0$ and $i=d$.
+        Since the quantifier-free relation between $x_i$ and $x_{i+1}$ does not depend on $i$, we know that the tuples $x_0,\ldots,x_d$  must be ordered  monotonically, with one of
         \begin{align*}
-        x_0 \prec \cdots \prec x_d \quad \text{or} \quad x_0 \succ \cdots \succ x_d.
+x_0 \prec \cdots \prec x_d \qquad \text{or} \qquad x_0 \succ \cdots \succ x_d
         \end{align*}
-        By symmetry, we consider the first case, where we will prove positive domination for the dominating coordinate. (The second case leads to negative domination.)  Choose the mininimal index $i$ such that $x \prec x_i$. 
-        This index must belong to $\set{1,\ldots,d}$ since  $x$ is strictly between $x_0$ and $x_d$.  Here is a picture for $d=3$ and $i=2$:
+        By symmetry, we consider the first case, which will lead to  orientation $\beta =1$ in the conclusion of the lemma. Choose the minimal index $\alpha$ such that $x \prec x_i$.
+        This index must belong to $\set{1,\ldots,d}$ since   $x_0 \prec x \prec x_d$.  Here is a picture for  $\alpha=2$:
         \mypic{57}
-        We will show that conclusion of the lemma for coordinate $i$ and positive domination. Indeed, take some $y \in \Rat^{(d)}$ such that coordinate $i$ of $x$ is to the left of the same coordinate in $y$. To prove the desired conclusion $x \prec y$, we will find a tuple that is strictly between them in the right order. Because the rational numbers are dense, we can find a  tuple $z$ which: (a) is strictly between coordinates $i$ of $x$ and $y$, respectively; and (b)  crosses neither $x$ nor $y$, which means that every coordinate of $x$ or $y$ is either entirely to the left or entirely to the right of $z$. Because $z$ is to the right of coordinate $i$ in $x$ and  does not cross $x$, we know that $x \prec z$. Because $z$ is to the left of coordinate $i$ in  $y$ and it does not cross $y$, we know that $z \prec y$. Therefore, we have $x \prec z \prec y$, which implies $x \prec y$.
+        We will show that coordinate $\alpha$  dominates as required by the lemma:
+        \begin{align*}
+        x(\alpha) < y(\alpha) \ \Rightarrow \ x \prec y.
+        \end{align*}
+\issue{Language: the intermediate tuple is between $x$ and $y$, not ``between $x$ and $z$''. Specify that its coordinates avoid all coordinates of both tuples.}% book review
+        To prove the conclusion of this implication, we will find an intermediate tuple between $x$ and $z$.  Because the rational numbers are dense, we can find a  tuple $z \in \rattuples d$ which: (a) is entirely contained in the interval strictly between $x(\alpha)$ and $y(\alpha)$; and (b)  crosses neither $x$ nor $y$, which means that every coordinate of $x$ or $y$ is either entirely to the left or entirely to the right of $z$. Because $z$ is to the right of $x(\alpha)$, and  does not cross $x$, we know that $x \prec z$. Because $z$ is to the left of $y(\alpha)$ and  it does not cross $y$, we know that $z \prec y$. By transitivity, we get $x \prec y$.
         \end{proof}
 
+% Before continuing with the proof, we remark that only the above lemma will be used in our transducer application. Nevertheless, it is nice to have the full theorem, so we continue the proof.  
+
+\issue{Language: ``consdier'' $\to$ ``consider''.}% book review
+The above lemma  determines the first coordinate $\alpha_1$ and the first orientation $\beta_1$ in the definition of a lexicographic order. To find the remaining coordinates and orientations, we will apply the induction assumption on a smaller dimension.  The idea is to consdier the order obtained from $\prec$ by fixing the dominating coordinate  $\alpha_1$. However,  once we have fixed coordinate $\alpha_1$, the new order is not an order on $\rattuples{d-1}$, since it  only compares tuples where coordinates $<\alpha_1$ are completely disjoint from coordinates $>\alpha_1$.  However, we can extend this comparison to an order on all tuples, as shown in the following claim. 
+
+\begin{claim}\label{claim:extend-rational-order}
+    There is a quantifier-free definable order  $\prec'$ on $\rattuples {d-1}$ such that 
+    \begin{align*}
+    x \prec y \quad \iff \quad \text{($x$ with coordinate $\alpha_1$ removed)} \prec' \text{($y$ with coordinate $\alpha_1$ removed)}
+    \end{align*}
+\issue{Language: ``hold for every tuples'' $\to$ ``holds for all tuples''.}% book review
+    hold for every tuples $x,y \in \rattuples d$ which agree on coordinate $\alpha_1$.
+\end{claim}
+\begin{proof}
+    To make the correspondence clear, we will index the coordinates of $\rattuples {d-1}$ as
+    \begin{align*}
+    \myunderbrace{\set{1,\ldots,\alpha_1-1}}{left coordinates} 
+    \quad 
+    \myunderbrace{\set{\alpha_1+1,\ldots,d}}{right coordinates},
+    \end{align*}
+    with coordinate $\alpha_1$ not used at all. Given two tuples $x', y' \in \rattuples {d-1}$, we determine their order according to $\prec'$ as follows. Choose a large enough offset $\delta > 0$ so that subtracting $\delta$ from all left coordinates of $x'$ and $y'$ makes them negative, and adding $\delta$ to all right coordinates of $x'$ and $y'$ makes them positive. After subtracting $\delta$ from the left coordinates and adding $\delta$ to the right coordinates, we  insert coordinate $\alpha_1$ with value $0$, and compare the resulting tuples  using the original order $\prec$. The order type of the new tuples does not depend on the choice of offset, and it can be recovered in a quantifier-free way from the order type of the original tuples, and thus the new relation is quantifier-free definable. It is also easily seen to be a linear order, and it satisfies the required property.
+\end{proof}
+Applying the induction assumption to the extended order from the above claim will give the precedence order on the remaining coordinates and the corresponding orientations, thus proving the theorem.
+    \end{proof}
 
 
 
 
-\paragraph*{Labelled version.} We now strengthen the above domination lemma to a labelled version of the rational ordering. Suppose that $A$ is some finite set of labels. Choose some
+
+
+
+\paragraph*{Domination lemma for transducers.} We now move to the main technical result of this section, which is a version of the domination lemma that is suitable for our transducer application.  Unlike the situation from \cref{thm:lexicographic-order-on-rationals}, instead of tuples in one infinite structure $\Rat$, we will have an infinite family of finite  structures, namely
 \begin{align*}
-\Rat \xrightarrow \lambda A
+\setbuild{\text{tree structure of $a$}}{$a \in A$}
 \end{align*}
- such that every label is dense, i.e.~betwen every two rationls we wll find all possible labels. (As we show in \cref{exer:shuffle-unique}, there is not much choice going on, since any two such labellings are isomorphic.) We think of this labelling as a structure, which is obtained by extending the rational order with unary predicates $a(x)$ for every $a \in A$.  Using the same proof as in the ulabelled version from \cref{lem:}
-
- \begin{lemma}\label{lem:labelled-order}
-    Let $A$ be a finite set, let $a_1,\ldots,a_d \in A$ and consider a linear order on 
-\begin{align*}
-    \setbuild{ x \in \Rat^d}{ $x$ is growing and the labels under $\lambda$ are $a_1,\ldots,a_d$}
-\end{align*}
-that is defined by a quantifier-free formula. Then there is a dominating coordinate. 
- \end{lemma}
+\issue{Language: ``wil'' $\to$ ``will''. Standardise ``arrangment/arrangments'' to ``arrangement/arrangements'' throughout this section.}% book review
+for some type $A$.  Similarly to the case of the rational order, we will want to consider an order on tuples of some given type. For technical reasons, we wil want the tuples to have certain closure properties, as described in the following definition.
 
 
 
 
+\begin{definition}[Arrangement]
+    An arrangement in $a \in A$ is a (possibly coloured) tuple of nodes in the tree structure of $a$, such that the set nodes in the tuple is obtained by choosing some unit leaves (i.e.~leaves with label $1$), and taking all their ancestors.
+\end{definition}
+
+
+ Here is a picture of an arrangment, with the red nodes being those that are in the arrangement, and the grey nodes being the remaining nodes in the tree structure:
+\mypic{81}
+
+\issue{Language: insert ``if'' after ``arrangement type''; ``the set nodes'' in the definition above needs ``the set of nodes''.}% book review
+A quantifier-free formula $\varphi(x: \tau)$ over the tree vocabulary is called an  \emph{arrangement type} it is obtained by taking some arrangement of shape $\tau$, and specifying all relations in the tree structure that are satisfied by this arrangement. (If the shape $\tau$ has several possible colours, then the arrangement type also specifies the colour.)  For example, if we take the arrangment from the above picture, then arrangment type will describe information given in the following picture:
+\mypic{82}
+In the picture, an ellipsis $\cdots$ indicates some nodes that are in the tree structure but not in the arrangment. In terms of a quantifier-free formula, an ellipsis between two coordinates means that they are not consecutive siblings, and a leading/trailing ellipsis means that the coordinate is not the first/last child of its parent.  
 
 
 
-A quantifier-free formula is called \emph{saturated} (the usual name is quantifier-free type, but the word type is already used here for a different meaning)  it contains all information about the relations which concern its arguments. Every quantifier-free formula is equivalent to a disjunction of saturated formulas. Therefore, thanks to the Merging Lemma, it is enough to prove \cref{lem:quantifier-free-tuple-enumerator-is-for-definable} for quantifier-free definable tuple enumerators in which the universe formula is saturated. The key technical result will be in the following lemma.
-
-
-\newcommand{\vars}{\mathrm{vars}}
-\begin{lemma}[Domination Lemma]\label{lem:domination}
-    Consider a quantifier-free definable tuple enumerator where:
-\begin{itemize}
-    \item the input type is a list type  $A^*$;
-    \item the dimension is $d$;
-    \item the universe formula $\varphi$  is saturated;
-\end{itemize}
-Then there exist: 
-\begin{itemize}
-    \item a variable $x \in \vars (\varphi)$ which  is a child of the root according to $\varphi$
-    \item a distance threshold $t \in \set{0,1,\ldots}$
-\end{itemize}
-such that if we use the following notation for $a \in A$:
-\begin{itemize}
-    \item $<_a$ is the order on children of the root in  $a$;
-    \item $a^\varphi$ is the set of tuples selected by the universe formula in $a$;
-    \item $\prec_a$ is the order on $a^\varphi$  defined by the order formula; 
-\end{itemize}
-then one of the following two conditions holds:
-\begin{itemize}
-    \item $\alpha(x) + t <_a \beta(x)$ implies $\alpha \prec_a \beta$ for every $a \in A$ and $\alpha,\beta  \in \varphi^a$; or
-    \item $\alpha(x) + t <_a \beta(x)$ implies $\alpha \succ_a \beta$ for every $a \in A$ and $\alpha,\beta  \in \varphi^a$; or
-\end{itemize}
-\end{lemma}
-
-A quantifier-free formula with free variables $X$ is called a \emph{quantifier-free type} if it specifies all relations between its variables. This means that it is a conjuction of atomic formulas and negations of atomic formulas, which contains every atomic formula or its negation. For example, if the vocabulary contains equality only, then an example of a quantifier-free type over variables $x,y,z$ is 
-\begin{align*}
-x = x \land x = y \land x \neq z \land y = x \land y = y \land y \neq z \land z \neq x \land z \neq y \land z = z.
-\end{align*}
-Up to logical equivalence, the example quantifier-free type above can be written as $x = y \land x \neq z$. We will be interested in quantifier-free types that describe tree arrangements: a quantifier-free type over the tree vocabulary is called a \emph{tree arrangement} if it is closed under the parent relation: for every free variable $x \in X$ which is not a root (a notion that is meaningful thanks to the first condition), there is a variable $y \in X$ such that $\parent(y,x)$ holds.
-
-(1)  and (2) for every free variable $x \in X$ which is not a root (a notion that is meaningful thanks to the first condition), there is a variable $y \in X$ such that $x$ is a child of $y$. In other words, the formula defines a tree arrangement on its variables.  The universe formula in the above lemma is saturated, and therefore it defines a tree arrangement.
+We are now ready to state the version of the domination lemma that is suitable for our transducer application. In the lemma, the tree structures will be taken from a list type,  i.e.~a type of the form $A^*$, and the order will be a quantifier-free definable order on some arrangment type. The dominating coordinate $\alpha$ will point to a child of the root in the tree structure (in other words, a list item in the list from $A^*$). This is a meaningful notion, since a tree arrangement type tells us which a coordinates are children of the root.  Finally, the conclusion will be weakened by having  a distance threshold $t \in \set{0,1,\ldots}$ such that instead of requiring  an increase $x(\alpha) < y(\alpha)$ on the dominating coordinate, we will require an increase by at least $t$ positions in the sibling order, which will be denoted by $x(\alpha) + t < y(\alpha)$.
 
 \begin{lemma}[Domination Lemma]\label{lem:domination}
-    Let  s
+    Let 
 \begin{itemize}
-    \item $A$ be a type;
-    \item $X$ be a finite set of variables;
-    \item $\varphi$ be a quantifier-free formula with  variables $X$ which defines a tree arrangment;
-    \item $\psi$ be a quantifier-free formula with variables $X + X$ such that for every $a \in A$,  $\psi$ defines a linear order  on the tuples selected by $\varphi$ in $a$;
+    \item $A^*$ be a list type;
+    \item $\varphi(x : \tau)$  be a tree arrangement type;
+    \item $\psi(x, y : \tau)$ be a quantifier-free formula which defines, for every $a \in A^*$,  a  linear order on the arrangements in $a$ selected by  $\varphi$.
 \end{itemize}
+\issue{Math: require the arrangement type to contain a non-root node. A zero-dimensional arrangement (e.g. a constant output position) has no coordinate pointing to a child of the root, so the stated conclusion is impossible for that case.}% book review
 Then there exist: 
 \begin{itemize}
-    \item a variable $x \in X$ which describes a child of the root according to $\varphi$;
+    \item a coordinate $\alpha \in \set{1,2,\ldots}$ which describes a child of the root according to $\varphi$;
+    \item an orientation $\beta \in \set{-1,1}$; 
     \item a distance threshold $t \in \set{0,1,\ldots}$
 \end{itemize}
-such that if we use the following notation for $a \in A$:
-\begin{itemize}
-    \item $<_a$ is the order on children of the root in  $a$;
-    \item $\prec_a$ is the order defined by $\psi$ on tuples selected by $\varphi$;
-\end{itemize}
-then one of the following two conditions holds:
-\begin{itemize}
-    \item $\alpha(x) + t <_a \beta(x)$ implies $\alpha \prec_a \beta$ for every $a \in A$ and $\alpha,\beta  \in a^X$ selected by $\varphi$;
-    \item $\alpha(x) + t <_a \beta(x)$ implies $\alpha \succ_a \beta$ for every $a \in A$ and $\alpha,\beta  \in \varphi^X$ selected by $\varphi$.
-\end{itemize}
+such that if we write $<$ for the sibling order and $\prec$ for the order defined by $\psi$, then
+\begin{align*}
+x(\alpha) + t < y(\alpha) \ \Rightarrow \ x \prec^\beta y
+\end{align*}
+\issue{Type error: the quantified input is $a\in A^*$, not $a\in A$, as required at the start of the lemma.}% book review
+for every $a \in A$ and arrangements $x,y$ of type $\varphi$ in $a$.
 \end{lemma}
 
 
 
 \begin{proof}
-    The proof has two steps, with the first one being the major one: (1) we prove the conclusion of the lemma for tuples that are disconnected; and (2) we use the first result to conclude the proof for all tuples. In step (1), we will use the results on labelled rational numbers from \cref{sec:rational-domination}. 
+    In the proof, we use a running example where the  arrangement type is
+\mypic{71}
+In the running example, there are three children of the root, and two of them are connected by the sibling successor relation, which is indicated by a lack of a separating ellipsis. This means that there is a dependency: the first two children of the root must move together.  This dependency is captured by the following notion: we say that two  non-root nodes in the arrangement type are in the same \emph{segment}  if one can be reached from the other by a path of the form
+\begin{align*}
+\text{parent}^* \cdot \text{(next or previous sibling)}^* \cdot \text{child}^*
+\end{align*}
+that does not pass through the root. Our  running example has two segments:
+\mypic{74}
+This means that there are two degrees of freedom when choosing children of the root in our arrangment type.  Segments could be further subdivided to talk about dependencies between grandchildren and nodes deeper in the tree, but this will not be needed for the present lemma.
 
 
-    \paragraph*{Disconnected tuples.}
-    Consider two tuples $\alpha, \beta \in \varphi^a$. We say that these tuples  are \emph{connected} if some coordinate of $\alpha$ is related to some coordinate of $\beta$ by one of: equality,  successor and  predecessor relation. If the tuples are not connected, then we call them \emph{disconnected}. In the first step, we will show that the domination lemma holds for disconnected tuples, even without the distance threshold.
+    We begin by proving a special case of the lemma, which talks about arrangments where the segments are disjoint or equal. We say that two arrangments $x,y$ of type $\varphi$ in a tree structure $a \in A$  are \emph{separated} if for every segment $s$ in the arrangement type, either: (i) the arrangments $x$ and $y$ agree on segment $s$; or (ii) the nodes from segment $s$ in $x$ do not touch any  nodes in $y$  (i.e.~they are not related to them by equality or by one step of  sibling successor). Here is a picture of two separated arrangements where (i) holds for segment 1 and (ii) holds for segment 2:
+\issue{Figure/prose: the coinciding segment is segment 2, not segment 1 as stated above. In the figure, ``segment 3 in $y$ should be ``segment 2 in $y$; the arrangement type has only two segments.}% book review
+    \mypic{73}
+
+The following claim shows the domination property for  separated arrangements, even without a distance threshold. 
 
     \begin{claim}\label{claim:domination-lemma-discconnected}
-        There is some variable $x$ which is a child of the root such that either
-    \begin{itemize}
-    \item $\alpha(x) <_a \beta(x)$ implies $\alpha \prec_a \beta$ for every $a \in A$ and disconnected $\alpha,\beta  \in \varphi^a$; or
-    \item $\alpha(x)  <_a \beta(x)$ implies $\alpha \succ_a \beta$ for every $a \in A$ and disconnected $\alpha,\beta  \in \varphi^a$.
-\end{itemize}
+        There is some orientation $\beta \in \set{-1,1}$ and some  coordinate $\alpha$  which is a child of the root according to the arrangement $\varphi$ such that
+\begin{align*}
+x(\alpha)  < y(\alpha) \ \Rightarrow \ x \prec^\beta y
+\end{align*}
+for every $a \in A$ and separated arrangements $x,y$ of type $\varphi$ in $a$.
 \end{claim}
-
-    The proof of this claim is rather long and will require some preparation. We say that a saturated formula $\varphi$ is connected if every (equivalently, some) valuation that satisfies it is connected. For two saturated formulas $\varphi_1$ and $\varphi_2$ with disjoint variables, we write $\varphi_1 \ll \varphi_2$ for the saturated forrmula which says that $\varphi_1$ and $\varphi_2$ are satisfied, and that every root-child variable of $\varphi_1$ is to at least two positions to the left of every root variable of $\varphi_2$. 
-
-    \begin{claim}
-        Every saturated formula $\varphi$ can be written as 
-        \begin{align*}
-        \varphi = \varphi_1  \ll \cdots \ll \varphi_\ell
-        \end{align*}
-        for some saturated formulas $\varphi_1,\ldots,\varphi_\ell$ which are connected.
-    \end{claim}
-
-
-    Apply the above claim to the universe formula $\varphi$, yielding formulas $\varphi_1,\ldots,\varphi_\ell$. Consider a labelling 
-    \begin{align*}
-    \Rat \xrightarrow \lambda \set{\varphi_1,\ldots,\varphi_n}
-    \end{align*}
-    where each labelling is dense. We will now apply the labelled version of the Rational Domination Lemma to  a certain ordering $\sqsubset$ on 
-    \begin{align}\label{eq:domination-lemma-rational-order}
-    \setbuild { \alpha \in \Rat^\ell} {$\alpha$ is growing and the labels under $\lambda$ are $\varphi_1,\ldots,\varphi_\ell$}.
-    \end{align}
-        This ordering is defined as follows. First replace each rational number $q \in \Rat$ by a structure that represents the saturated formula in the label $\lambda(q)$. The result is some infinite structure, call it $a_\lambda$ over the vocabulary of  $A^*$. Each tuple $\alpha \in \Rat^{(d)}$ gives rise to some tuple in the limit structure $\alpha_\lambda$.  This tuple, call it $\alpha_\lambda$,  satisfies the universe formula. We are now ready to define the ordering:
-        \begin{align*}
-        \alpha \sqsubset \beta \quad \text{if} \quad \text{ $(\alpha_\lambda,\beta_\lambda)$ satisfies the order formula.}
-        \end{align*}
-        This ordering is quantifier-free definable, since the relations satisfied by the the valuation $(\alpha_\lambda,\beta_\lambda)$ are uniquely by the order on the variables in $(\alpha,\beta)$ and the labels (the labels are redundant, since they are determined by the assumption that we only order tuples from \eqref{eq:domination-lemma-rational-order}).
-        
-        when given two tuples $\alpha$ and $\beta$, we replace each  coordinate labelled by $\varphi_i$ with some instsantiation of the formula $\varphi_i$, and then we ask if the formula defining the original order $\prec$ is satisfied. This is indeed a linear order, and 
-
-
 \begin{proof}
-    We will appeal to the results on rational numbers, by using a suitably defined order. 
+    Suppose that there are $\ell$ segments, which are numbered from left to right. 
+If we are given a pair of separated arrangements $x,y$, then the order relation on them depends only on the relative order on their segments (some segments might coincide, but this can only happen for segments of the same kind). This will allow us to describe the order relation on segments as an ordering on tuples in a linear order with positions labelled by segment names $\set{1,\ldots,\ell}$. Instead of considering a family of finite linear orders, we will pass to the limit and consider a single infinite linear order, which will make the argument cleaner.
+Choose a labelling of the rational numbers
+    \begin{align*}
+    \Rat \xrightarrow \lambda \set{1,\ldots,\ell}
+    \end{align*}
+    where each label is dense. As we show in the exercises, there is not much choice here, since the labelling is unique up to isomorphism. Consider the set
+\issue{Notation: use $\ell$ rather than the undefined $d$ here: there is one rational coordinate per segment.}% book review
+    \begin{align*}
+    X = \setbuild{ x \in \rattuples d}{the coordinates of $x$ are labelled by $1,\ldots,\ell$ from left to right}.
+    \end{align*}
+\issue{Proof gap: justify simultaneous realisability of these separated arrangements, especially for segments constrained to be first/last children. Arbitrarily replacing rational points by such segments can violate those endpoint constraints; remove pinned segments or treat them separately.}% book review
+    We define a linear order on $X$ as follows:  given  $x,y \in X$, we replace each position by a segment as indicated by its label,  yielding an arrangement that describes two separated tuples, and we consult the order formula $\psi$ to ask which of the two separated arrangements is to the left. This is easily seen to be  a linear order. Using the same proof as in \cref{lem:rational-dominating-coordinate}, we can show that there is a dominating coordinate, which corresponds to a dominating segment. (We can reuse the same proof, because of the density assumption on the labels, which allows us to place positions with any label wherever we want.)     The dominating coordinate for the order on $X$ translates back to a dominating coordinate as in the statement of the claim, which completes the proof.
 \end{proof}
 
-
-
-\paragraph*{General tuples.}
-
-    
+Let us now use the claim to  finish the proof of the domination lemma.  Apply the claim, yielding some coordinate $\alpha$ and orientation $\beta$. We will prove the conclusion of the  domination lemma for the same coordinate and orientation, with some suitable distance threshold. The main observation is that  if we take two arrangements $x$ and $y$ that are far enough on the dominating coordinate (this distance will be the threshold), then we can insert an arrangement between them that is separated from both $x$ and $y$. Indeed, choose a threshold $t$ such that if we take some $a \in A$ and two arrangements $x,y$ of type $\varphi$ in $a$ with $x(\alpha)$ and $y(\alpha)$ separated by at least $t$ positions, then there is some node that is  between $x(\alpha)$ and $y(\alpha)$ in the sibling order which does not touch any of the nodes in $x$ or $y$. Without changing the  quantifier-free type relating  $x$ and $y$, we could replace this non-touching node with some list in $A^*$ that contains a new arrangement $z$ of type $\varphi$. This new arrangement is separated from both $x$ and $y$, and  is placed between the dominating coordinates of $x$ and $y$. By applying the claim, this arrangement satisfies $x \prec^\beta z \prec^\beta y$ and thus witnesses $x \prec^\beta y$. This completes the proof of the domination lemma.
 \end{proof}
 
 
 
 \subsection{Using the domination lemma}
 \label{sec:using-domination-lemma}
+In this section, we complete the proof of \cref{thm:mso-interpretation}.
+Thanks to the quantifier elimination result from \cref{lem:quantifier-free-interpretation-decomposition}, in order to prove \cref{thm:mso-interpretation}, it is enough to show that quantifier-free interpretations are polyregular. We  prove this using for-transducers:
+\begin{align*}
+\text{for-transducers} \supseteq \text{quantifier-free interpretations}. 
+\end{align*}
+The function in question is a type-to-string function, so we need to explain how  for-transducers can handle inputs that are not strings but tree structures. This is  explained in the following example.
 
-% Consider a  for-transducer, say a string-to-string for-transducer in prenex normal form which has $d$ nested loops. This transducer enumerates through all $d$-tuples of position in the input string, ordered lexicographically, which corresponds to the nesting of the for loops. Therefore, a for-transducer can be seen as a special kind of  interpretation where the order on tuples of positions is lexicographic. Why should lexicographic orders be the general form? As it turns out, this is indeed the case: we will show that  definable linear orders can never be very different from the lexicographic order. 
+\begin{myexample}[Type-to-string for-transducer]\label{ex:type-to-string-for-transducer}
+    Consider the function 
+    \begin{align*}
+    (\onetype + \onetype)^{**} \xrightarrow \concatterm (\onetype + \onetype)^*,
+    \end{align*}
+    which flattens the list of lists into a single list.  We use different representations for the input and output. The input is viewed as a tree structure, as in the following picture:
+    \mypic{72}
+    The for-transducer will navigate the input by having access to its nodes and for-loops that range over children of a node. 
+    The output is viewed as a string that uses letters $0$ and $1$. The for-transducer will create the output by using  output instructions for the two letters. Here is the code of the for-transducer:
+    \begin{lstlisting}
+    def concat (a : $(\onetype + \onetype)^{**}$):
+        for x in a.root.children:
+            for y in x.children:
+                if y.label == 'Left':
+                    output 0
+                else:
+                    output 1
+    \end{lstlisting}
+    This example illustrates most features of a for-transducer that inputs tree structures. The remaining features are: (a) Boolean variables; and (b) for-loops in the reverse direction; and (c) access  to the relations on nodes available in the tree structure (i.e.~equality, sibling order, sibling successor, parent, first child, last child and the labels).
+\end{myexample}
 
-Although we use interpretations to define output string, the interpretations gives us a bit more: each position of the output  is produced using some tuple of positions in the input.  In our proof, we will pay attention to this extra information: we will be interested in functions that output lists of tuples of positions in the input. 
+The for-transducer model described in the above example is easily seen to be polyregular, and thus it remains to show that every quantifier-free interpretation can be implemented by such a  for-transducer. 
+The proof will be based on the domination lemma from \cref{lem:domination}, with the  dominating coordinate corresponding to  the outermost loop in the for-transducer.
+However, the domination lemma  assumes that: (1) the input type is a list type; and (2) the formula is an arrangement type.  We will need some work to ensure these assumptions. 
 
 
+% There are, however, two issues that we need to address: (a) the quantifier-free interpretations in question are type-to-string, so we need to extend the model of for-transducers to handle inputs that are types and not just strings; and (b) the   domination lemma talks about arrangements that satisfy a fixed arrangement type, while in a general quantifier-free interpretation, the universe formula might allow several different tree arrangements. Issue (a) will be addressed by extending for-transducers so that they can navigate the tree that represents the input. To handle issue (b), we will restrict the output to positions produced by each of the  finitely many possible tree arrangements, and then merge the outputs, as in the following picture:
+% \mypic{76}
+% To merge the pieces of the output string into a single output string, we will need to have information about how the positions in the output strings compare to each other.  We will do this by labelling each output position with the tuple of input positions that was used to create it, as  formalised in the following definition. In the definition, a variable type $\tau$ is a polynomial variable type like $n^2 + n^3$, as in \cref{def:variable-type}, and when we apply it to an input $a \in A$, we mean applying $\tau$ to the nodes in the tree structure of $a$.
 
 
-\begin{definition}[Tuple enumerator]\label{def:tuple-enumerator}
-    A tuple enumerator of input type $A$ and dimension $d$ is a function of the following form:
-    \begin{itemize}
-        \item \textbf{Input.} $a \in A$;
-        \item \textbf{Output.} a non-repeating list of $d$-tuples of positions in $a$.
-    \end{itemize}
+% A tuple of nodes in a tree structure is called an \emph{arrangement} if it is obtained as follows: take some nodes with label $1$, close them under ancestors, and order  them into a tuple. Here is a picture of an arrangement:
+% \mypic{81}
+% An \emph{arrangement type} is a formula which specifies the quantifier-free type of an arrangement. 
+
+Let us begin by discussing assumption (2), which says that the universe formula is an arrangement type. We can assume without loss of generality that the universe formula is a finite disjunction of arrangement types, since the quantifier-free formula that was produced in the proof of \cref{lem:quantifier-free-interpretation-decomposition} selected only arrangments, and each such formula is a finite disjunction of arrangement types.  We will  handle the disjunction by   splitting the quantifier-free interpretation into several interpretations, one for each arrangement type, as in the following 
+picture:
+\mypic{76}
+However, once the outputs for different arrangements have been computed,  it is not clear how to  merge them into a single output, at least as long as the outputs are seen as strings without any additional structure. To resolve this, we will think of the output positions as being decorated with the arrangements that were used to create them. This will enable us to merge outputs using the order formula. This is formalised in the following definition.
+
+
+\begin{definition}[Enumerator]\label{def:tuple-enumerator} 
+    An enumerator of input type $A$ and shape $\tau$  is a function that inputs $a \in A$ and outputs a non-repeating list of arrangements in $\tau(a)$. 
 \end{definition}
 
-We will have two formalisms for specifying tuple enumerators. The first formalism is based on logic, and it corresponds to interpretations. We say that  tuple enumerator is called \emph{quantifier-free definable} if there are two  quantifier-free formulas, over the vocabulary of the input type $A$, namely
-    \begin{itemize}
-        \item a formula with $d$ free variables, called the \emph{universe formula}; and 
-        \item a  formula with $2d$ free variables, called the \emph{order formula},
-    \end{itemize}
-    such that for every $a \in A$, the output of the tuple enumerator is the list of $d$-tuples of positions in the structure of $a$ that satisfy the universe formula, ordered according to the order formula. The other formalism is based on for-transducers, and it is defined just like a for-transduceer, except that instead of outputting letters, we have output instructions of the form 
+We will use two formalisms for specifying enumerators. The first formalism is  \emph{quantifier-free definable} enumerators, which are defined  like quantifier-free interpretations: we have a quantifier-free formula $\varphi(x : \tau)$ for the universe and a quantifier-free formula $\psi(x, y : \tau)$ for the order.  The other formalism is  \emph{for-computable} enumerators,  which are defined like  type-to-string for-transducers  in \cref{ex:type-to-string-for-transducer}, except that instead of outputting letters from the output alphabet, we use instructions like 
 \begin{lstlisting}
-output (x_1,...,x_d)
+    output 2(x,y,z)
 \end{lstlisting}
-that uses position variables. 
+to output coloured tuples that represent arrangements.  
 
-A quantifier-free interpretation can be seen as a tuple enumerator, together with quantifier-free formulas which choose the output label for each tuple. Therefore, if we manage to convert the tuple enumerator into a for-transducer, we will also have a for-transducer for the corresponding function with string outputs: we simple need to replace each instruction that outputs a tuple of positions with an instruction that outputs the corresponding output letter. Therefore, the main technical difficulty is to show that every quantifier-free definable tuple enumerator can be implemented by a for-transducer. This is the content of the following lemma.
+% is adapted from the string-to-string model described in \cref{sec:for-transducers}, by: (a) extending the input type from strings to types; and (b) outputting tuples of unit paths instead of letters. This adaptation is best explained by an example.
+
+% \begin{myexample}\label{ex:for-transducer-enumerating-paths}
+%     Let $A = \onetype^{**}$. Here is a picture of a tree structure in this type:
+%     \mypic{77}
+%     Consider  an enumerator which outputs all root-to-leaf paths,  ordered as follows: the children of the root are ordered in the normal direction, and the grand-children are ordered in the opposite direction. This enumerator is quantifier-free definable, with the universe formula selecting all unit paths, and the order formula being:
+%     \begin{align*}
+% x(2) < y(2)
+% \quad \lor \quad
+% x(2)= y(2) \land x(3) > y(3)
+%     \end{align*}
+%     The corresponding for-program is as follows:
+%       \begin{lstlisting}
+% def f (a  : $\onetype^{**}$): 
+%     for x in a.root.children:
+%         for y in x.children.reverse:
+%             output (a.root,x,y)
+% \end{lstlisting}
+%     The above program illustrates the main features of for-programs that compute enumerators, which are node variables that range over nodes in the tree structure, and for-loops which range over children, in either forward or reverse order. The remaining features are: (a)  Boolean variables; and (b) access  to the relations on nodes available in the tree structure (i.e.~equality, sibling order, sibling successor, parent, first child, last child and the labels). Finally, in this example the dimension is one, but we could output tuples with more paths, and these paths could have variable length, using instructions like
+% \begin{lstlisting}
+% output ((a.root,x,y),(a.root,z))
+% \end{lstlisting}
+% which outputs a pair of unit paths, that have three and two nodes, respectively.
+% \end{myexample}
+
+
+
+
+ 
+We are now ready to state  the main technical result of this section.
 \begin{lemma}\label{lem:quantifier-free-tuple-enumerator-is-for-definable}
-    If a tuple enumerator is quantifier-free definable, then it is computed by a for-transducer.
+    If an  enumerator is quantifier-free definable, then it is for-computable.
 \end{lemma}
-The rest of this section is devoted to the proof of this lemma. Let us begin by explaining  the essential difficulty in the proof. 
 
+    Before proving the lemma, we use it to complete the proof of \cref{thm:mso-interpretation}. 
 
-\paragraph*{Merging lemma.}
-\begin{lemma}[Merging lemma]\label{lem:merging-lemma}
-    Consider a tuple enumerator $f$  which is quantifier-free definable, using a  universe formula which is a disjuntion $\varphi_1 \lor \varphi_2$. Then
-    \begin{align*}
-    f \text{ is for-definable}
-    \quad \Leftrightarrow \quad 
-    \bigwedge_{i \in \set{1,2}} f|{\varphi_i} \text{ is for-definable}
-    \end{align*}
-\end{lemma}
-\begin{proof}
-    The left-to-right implication is trivial: the corresponding for-transducer can check if the formula $\varphi_i$ is true before outputting a tuple. For the right-to-left implication, we run a nested construction. We first run the for-transducer $f|{\varphi_1}$. Whenever it is about to output a tuple $x$, we do a nested call to the for-transducer $f|\varphi_2$, with its output restricted to tuples that are between $x$ and its predecessor in the list for $f|\varphi_1$. 
+\begin{proof}[Proof of \cref{thm:mso-interpretation} using \cref{lem:quantifier-free-tuple-enumerator-is-for-definable}]
+By  \cref{lem:quantifier-free-interpretation-decomposition}, every string-to-string \mso interpretation can be decomposed into two phases:  a rational function, followed by  a quantifier-free interpretation. Furthermore, the proof of \cref{lem:quantifier-free-interpretation-decomposition} yields an  interpretation where the universe formula selects only arrangements. The first phase is polyregular since rational functions are polyregular. Since polyregular functions are closed under composition, it remains to show that the  second phase is polyregular. By \cref{lem:quantifier-free-tuple-enumerator-is-for-definable}, the  enumerator  underlying the quantifier-free interpretation in the second phase is for-computable. In the corresponding source code, we can replace each output arrangement by the corresponding output label, since a for-transducer can evaluate the label formulas in the interpretation. This way, we get a for-transducer for the second phase.
 \end{proof}
 
-Thanks to the domination lemma, it is enough to prove \cref{lem:quantifier-free-tuple-enumerator-is-for-definable} for quantifier-free definable tuple enumerators in which the universe formula is saturated. 
-
-
-Consider a valuation of some set of variables $X$ in some structure. The quantifier-free type of this valuation is defined to be a quantifier-free formula that describes all relations (and their negations) that are satisfied by the valuation. For example, if we take four variables in a linear order, then a possible example of a quantifier-free type is 
+The rest of this section is devoted to the proof of \cref{lem:quantifier-free-tuple-enumerator-is-for-definable}.  The lemma is proved by induction on the following parameter of the universe formula:
 \begin{align*}
-x_1 < x_2 = x_4 < x_3.
+\max_x \quad  \text{number of coordinates in the arrangment $x$ that have parent labelled by $*$},
 \end{align*}
-In a graph, a quantifier-free type tells us which variables are equal, and which ones are connected by edges. A quantifer-free type over a class of structures is any quantifier-free type that arises from some valuation in a structure from the class. The classes of structures that we will be interested are those that correspond to types (as in \cref{def:types}). For such a quantifier-free type, we will that 
+where $x$ ranges over arrangements selected by the universe formula of the enumerator in tree structures from $A$.
 
+\issue{Clarification: an arrangement may be the empty tuple; include it explicitly in the bounded base case and exclude it when invoking the domination lemma.}% book review
+The induction basis is when the induction parameter is zero, which means that selected arrangements do not use the star label at all (a star cannot be a leaf in the arrangement).  Once the input type $A$ is fixed, each tree structure $a \in A$ has a bounded number of arrangements that do not use the star. A for-program can identify these arrangements, and then use a constant number of order comparisons to sort them. This proves the induction basis.
 
-A \emph{quantifier-free type} over variables $X$ in a class of structures $A$ is a quantifier-free formula that arises as follows: take some structure in the class, and some valuation of the variables, and return the conjunction of all atomic formulas and their negations that are satisfied by the valuation. 
-
-is a quantifier-free formula $\varphi$ which contains all information about the relations on its variables: every quantifier-free formula $\psi$ over the same variables is either a consequence of $\varphi$, or its negation is a consequence of $\varphi$. Quantifier-free formulas are the same as Boolean combinations of atomic formulas of the form 
-\begin{align*}
-\myunderbrace{R(x_1,\ldots,x_n)}{a relation from the vocabulary \\ applied to some variables}.
-\end{align*}
-Therefore, up to logical equivalence, every quantifier-free type is a conjunction of atomic formulas and their negations, where every possible atomic formula appears exactly once, either in its positive or negative form. We will 
-
-
-We say that a quantifier-free formula $\varphi$ with variables $X$ is \emph{saturated} if: 
-\begin{itemize}
-    \item it contains all quantifier-free information about the relations between its arguments: if $\psi$ is a  quantifier-free formula over the same variables, then $\varphi$ implies either $\psi$ or it implies $\neg \psi$;
-    \item if there is some variable $x$ which is not the root, then 
-\end{itemize}
-(the usual name is quantifier-free type, but the word type is already used here for a different meaning)  it contains all information about the relations which concern its arguments. Every quantifier-free formula is equivalent to a disjunction of saturated formulas. Therefore, thanks to the Merging Lemma, it is enough to prove \cref{lem:quantifier-free-tuple-enumerator-is-for-definable} for quantifier-free definable tuple enumerators in which the universe formula is saturated. The key technical result will be in the following lemma.
-
-
-\begin{lemma}
-    Let $A$ be a type, and let $f$ be a tuple-enumerator of input type $A$ and dimension $d$. If $f$ is quantifier-free definable and its universe formula is saturated, then it is computed by a for-transducer.
-\end{lemma}
+The rest of this section is devoted to the induction step. The general strategy is to  use the domination lemma. As mentioned earlier in this section, this strategy requires that the enumerator is in  a form where the domination lemma can be applied, i.e.~the input type must be a list type, and the universe formula must be a tree arrangement. To ensure these assumptions, we will use a notion of one-to-many reduction, as formalised in the following definition.
 
 
 
-The proof is by induction on the following parameter: 
-\begin{align*}
-\sum_{i \in \set{1,\ldots,d}} \text{depth of variable $x_i$ in the universe formula}
-\end{align*}
-\newcommand{\first}{\mathrm{first}}
 
-
-\begin{lemma}
-    When proving the induction step in \cref{lem:quantifier-free-tuple-enumerator-is-for-definable}, we can assume without loss of generality we can assume that the input type $A$ is a list type $B^*$.
-\end{lemma}
-\begin{proof}
-    Call a type $k$-good if the lemma holds for instances that use this type and induction parameter $k$. We will show that $k$-good types have the following closure properties:
+\begin{definition}[Reduction]
+        Define a \emph{reduction} of an enumerator $f$ to be a finite set $F$ of enumerators (which can have different input types)  such that: 
         \begin{enumerate}
-             \item \label{item:good-for-unit} if $A$ is $k$-good, then so is $A \times \onetype$;
-            \item \label{item:good-for-sum} if $A$ and $B$ are $k$-good, then so is $A+B$;
-            \item \label{item:good-for-distr} if $A \times B + A \times C$ is $k$-good, then so is $A \times (B + C)$;
-            \item \label{item:good-for-product} if $(A_1 + \cdots + A_n)^*$ is $k$-good, then so is $A_1^* \times \cdots \times A_n^*$.
+                        \item all enumerators in $F$ have the same or smaller induction parameter as $f$; 
+            \item if $f$ is quantifier-free definable, then so are all enumerators in $F$;
+            \item if all enumerators in $F$ are for-computable, then so is $f$.
         \end{enumerate}
+\end{definition}
 
-    Before proving these closure properties, we explain how they implies the lemma. Suppose that we want to prove that some type is $k$-good. By applying the closure properties in items \ref{item:good-for-sum} and \ref{item:good-for-distr}, we can distribute products over sums, and reduce the problem to showing that a product of list types and units is $k$-good. The units can be eliminated by item \ref{item:good-for-unit}, and \ref{item:good-for-product} one allows us to reduce to list types.  Therefore, it is enough to prove the closure properties.
+We will show that every quantifier-free definable enumerator has a reduction in which all enumerators satisfy the assumptions of the domination lemma, and thus we will be able to reduce the induction step to the case where the domination lemma can be applied.
+Our first reduction step will ensure that the input type is a list type. 
 
-    Closure property \cref{item:good-for-unit} is immediate, since the extra $\onetype$ does not contirubte to the interpretation in any meaningful way. Similarly closure property \cref{item:good-for-sum} is immediate, since we can run the for-transducer for $A$ or $B$ depending on which type the input belongs to. The more interesting closure properties are \cref{item:good-for-distr} and \cref{item:good-for-product}. We will only prove the last one, with the proof of the other one being similar.
+ \begin{lemma}\label{lem:reduction-lemma}
+        Every  enumerator has a reduction in which all  enumerators use  list types as input.
+    \end{lemma}
+\begin{proof}
+    The main observation is the following claim, which reduces input types.
 
-    Suppose that we want to show that  is $k$-good. Consider then a quantifier-free definable tuple enumerator with  input type $A_1^* \times \cdots \times A_n^*$. To the input structure, we can apply the function 
-    \begin{align*}
-    A_1^* \times \cdots \times A_n^* \xrightarrow f (A_1 + \cdots + A_n)^*
-    \end{align*}
-    Consider the universe formula $\varphi$ of the interpretation. We can write a new quantifier-free formula, call it $f(\varphi)$ 
-    Each saturated type over the input strucure maps to a saturated formula over the output structure so that there is a bijection between tuples $a^\varphi$ and $f(a)^\psi$. Furthermore, this lifts along the order: we can define a quantifier-free formula $\psi_f$ over the output structure such that the order 
 
-    We say that a type $A$ is \emph{good} for parameter $k$ if every quantifer-free interpretation with input type $A$ and parameter $k$ is for-definable. \cref{lem:quantifier-free-tuple-enumerator-is-for-definable} says that every type is good for every parameter. 
+            \begin{claim}\label{claim:input-type-reduction}
+\issue{Statement: the surrounding reduction lemma says ``Every enumerator'', but the claim and proof assume quantifier-free definability. Either restrict the lemma or explain the generalisation.}% book review
+            Let $f$ be a  quantifier-free definable enumerator.
+                        \begin{enumerate}
+    \item If the input type is finite (i.e.~does not use lists), then the empty set is a reduction.
+    \item If the input type is $A+B$, then there is a reduction that has two enumerators, which have input types $A$ or $B$, respectively.
+    \item If the input type is $A \times (B_1+B_2)$, then there is a reduction with  one  enumerator, which  has input type $(A \times B_1) + (A \times B_2)$.
+    \item If the input type is a product of list types, i.e. $A_1^* \times \cdots \times A_k^*$, then there is a reduction that with one enumerator, whose   input type is a list type.
+\end{enumerate}
+        \end{claim}
 
-    
-For types $A$ and $B$ we write 
+
+
+
+        Before proving the claim, we use it to complete the proof of the lemma.         
+        Reductions can be composed, by replacing each enumerator in a reduction with its own reduction.  The first three items in the claim make the input type smaller or delete the reduction, and can be applied as long as the input type is not a product of lists as in the last item. (Formally speaking, we need to rearrange products to when applying the third item.) Therefore, by repeatedly applying the first three items, we eventually obtain a reduction in which all input types are  products of lists.  Then the last item can be applied, to make the input types into lists. It remains to prove the claim.
+
+        \begin{proof}[Proof of \cref{claim:input-type-reduction}]
+        The first item is immediate: if the input type  is finite, then every enumerator -- quantifier-free definable or not --  is for-computable.  The second item is also straightforward:  a quantifier-free enumerator with input type $A+B$ is essentially two quantifier-free enumerators,   one with input type $A$ and one with input type $B$, and these two enumerators are the reduction.
+
+Consider now the third item. We  use the distributivity function: 
 \begin{align*}
-A \leq_k B 
+\myunderbrace{A \times (B_1+B_2)}{$C$} \xrightarrow {\distrterm} \myunderbrace{(A \times B_1) + (A \times B_2)}{$C'$}
 \end{align*}
-if 
+The following picture shows how the distributivity function works on tree structures:
+\mypic{78}
+\issue{Definition gap: an arrangement is currently an arbitrary coloured tuple whose coordinate set is ancestor-closed. Its unit leaves do not determine coordinate order, repetitions, or colour. Specify a canonical tuple encoding before claiming this bijection on arrangements.}% book review
+There is a bijective correspondence between unit leaves in the input and unit leaves in the output. (This bijection can be extended to other nodes as well, but we will not need this extension and it will not exist in the next item.) The bijective correspondence extends to arrangements, since each arrangement is determined by its unit leaves.  Using the bijective correspondence on arrangments, an enumerator $f$ with input type $C$ can be translated into an enumerator $f'$ with input type $C'$: given $c' \in C'$, apply the inverse of the distributivity function to get some $c \in C$,  then apply $f$ to get a list of arrangements in $c$, and finally apply the bijective correspondence to map these  arrangements to the tree structure of $c'$.  To prove the third item of the claim, we will show that $f \mapsto \set{f'}$ is a  reduction.
+\begin{enumerate}
+    \item The first condition in the definition of a reduction says that the induction parameter stays the same or decreases.  In this case, the parameter stays the same, since the only change on nodes does not concern star labels.
+    \item The second condition says that if $f$ is quantifier-free definable , then so is $f'$. To see this, we observe that the quantifier-free type of an arrangement in the output $c'$ uniquely  determines  the quantifier-free type of the corresponding arrangement in the input $c$. This allows us to translate the quantifier-free formulas from $f$ that talk about arrangements in the input into quantifier-free formulas that talk about the corresponding arrangements in the output, thus proving that $f'$ is quantifier-free definable.
+    \item The third condition says that if $f'$ is for-computable, then so is $f$. We prove this similarly to the previous item. A for-program that implements $f'$ can be adapted to implement $f$. Indeed, the nodes of the input $c$ and the output $c'$ are essentially the same, except for a swap between two nodes, and this swap can easily be dealt with in the code of a for-program.
+\end{enumerate}
 
-
+We now move to the last part in the claim, in which a tuple of lists is reduced to a single list. The basic idea is to use a similar construction as in the previous type, except that distributivity is replaced by the function 
 \begin{align*}
-\frac{
-    A \times B + A \times C \text{ is good for $k$}
-}{
-    A \times (B + C) \text{ is good for $k$}
-}
-\quad 
-\frac{
-    (A + B)^* \text{ is good for $k$}
-}{
-    A^* \times B^* \text{ is good for $k$}
-}
-\quad 
-\frac{
-     \text{$A$ and $B$ are good for $k$}
-}{
-   A+B \text{ is good for $k$}
-}
+A_1^* \times \cdots \times A_\ell^* \xrightarrow g (A_1 + \cdots + A_\ell)^*,
 \end{align*}
-
-
-    To deduce to a list type, we will use various forms of distributivity. Consider the distributivity function 
-    \begin{align*}
-    A \times (B + C) \xrightarrow \distrterm (A \times B) + (A \times C).
-    \end{align*}
-    If we have a quantifier-free definable tuple enumerator over this input type, we can create a new one over the distributed type 
-    \begin{align*}
-    A \times B + A \times C,
-    \end{align*}
-    by pulling back the quantifier-free formulas over the new type into quantifier-free formulas over the old type. 
-
-    Suppose that we have a function 
-    \begin{align*}
-    A \xrightarrow f B
-    \end{align*}
-    together with a family of injective functions 
-    \begin{align*}
-    f(a) \xrightarrow {\iota_a} a 
-    \end{align*}
-
-
-    
+which combines all lists into a single list, with all items from the first list, followed by all items from the second list, and so on. Here is a picture with $\ell=2$:
+\mypic{79}
+\issue{Language: ``preivous'' $\to$ ``previous''; ``rearrange products to when'' above $\to$ ``rearrange products when''; ``a reduction that with'' $\to$ ``a reduction with''.}% book review
+As was the case in the preivous item, there is a bijective correspondence between arrangements in the input and arrangements in the output.
+Unlike distributivity, this function is not an isomorphism, but it still has a one-sided inverse, i.e.~a function $g^{-1}$ such that $g$ followed by $g^{-1}$ is the identity on the type $A_1^* \times \cdots A_\ell^*$. For our construction, a one-sided inverse is enough. Unfortunately, there is a problem with this function: the quantifier-free type of an arrangement in the output of $g$ does not uniquely determine the  quantifier-free type of the corresponding arrangement in the input.  This is because by combining the lists, we lose information about which children of the root are first/last in their respective lists. To fix this, we improve $g$ by using four copies of each type $A_i$, which tell us if a list item from $A_i^*$ is first/last (there are four possibilities, since an item can be both first and last). The corresponding function has type 
+\begin{align*}
+A_1^* \times \cdots \times A_\ell^* \xrightarrow g ((A_1+ A_1+A_1+A_1) + \cdots + (A_\ell + A_\ell + A_\ell+ A_\ell))^*.
+\end{align*}
+After this fix, we can proceed exactly as in the previous item.
+        \end{proof}
 \end{proof}
 
-
-Suppose then that type type is a product 
-\begin{align*}
-A = A_1^* \times \cdots \times A_n^*.
-\end{align*}
-
-\begin{lemma}
-    There is some coordinate $i \in \set{1,\ldots,d}$ such that if: 
-    \begin{itemize}
-        \item $j$ is the index $A_j^*$ which contains coordinate $i$;
-        \item $<a$ is the ordering on positions from the component $A_j^*$ for $ a \in A$;
-    \end{itemize}
-    then one of the following two conditions holds:
-\begin{itemize}
-    \item $x[i] <_a y[i]  \quad \Rightarrow \quad x \prec_a y 
-\quad \text{for every $a \in A$ and disconnected $x,y \in U_a$}$; or
-    \item $x[i]  <_a y[i]  \quad \Rightarrow \quad x \succ_a y 
-\quad \text{for every $a \in A$ and disconnected $x,y \in U_a$}$.
-\end{itemize} 
+Having reduced to input types that are list types, we now reduce to the case where the universe formula is an arrangement type. We will do this using a reduction which does not change the input type, and thus preserves the properties from the previous reduction. As mentioned earlier in this section, every quantifier-free formula is a finite disjunction of quantifier-free types, which are arrangement types in our case, and therefore this step boils down to getting rid of the disjunction. 
+\begin{lemma}[Merging Lemma]\label{lemma:merging-lemma}
+\issue{Math: require pairwise disjoint disjuncts, or remove duplicate outputs when merging. Arbitrary disjuncts may overlap. Also ``respective disjunctions'' should be ``respective disjuncts''.}% book review
+    Consider a quantifier-free definable enumerator $f$ whose universe formula is a disjunction  $\varphi_1 \vee \cdots \vee \varphi_\ell$, and let $f_1,\ldots,f_\ell$  be the enumerators obtained from $f$ by  restricting the  universe to the respective disjunctions. Then $f$ is for-computable if and only if all $f_1,\ldots,f_\ell$ are for-computable.
 \end{lemma}
-Consider some $a \in A$, and let $x$ be a child of $a.i$, i.e.~$x$ is an index in the list from the dominating coordinate.  Define the \emph{first tuple} of $(a,x)$ to be  the first tuple in the list $f(a)$ that uses $x$ on the dominating coordinate. This tuple might not exist. 
+\begin{proof}
+    The left-to-right implication is trivial: by restricting the outputs to arrangements that satisfy $\varphi_i$, we can adapt a for-program for $f$ to get a for-program for $f_i$.   The  right-to-left implication is proved by induction on the number $\ell$ of disjuncts, with  a  nested construction. For the induction basis of $\ell =1 $ there is nothing to do. Consider now the induction step.   Let $f_{\ge 2}$ be the enumerator obtained from $f$ by restricting the universe to the disjunction $\varphi_2 \vee \cdots \vee \varphi_\ell$.  By the induction hypothesis, $f_{\ge 2}$ is for-computable. The output of $f$ is computed as follows. 
+\issue{Boundary cases: output the $f_{\ge2}$ elements preceding the first $f_1$ element, and all $f_{\ge2}$ elements when $f_1$ is empty. Explain how a predecessor tuple is supplied without assignments to node variables. Also ``call the the'' $\to$ ``call to the''.}% book review
+    We first run $f_1$. Whenever it is about to output an arrangement $x$, we do a nested call the the enumerator $f_{\ge 2}$, and filter its output to arrangements that are strictly between $x$ and its predecessor in the order from $f_1$. At the end, we output all arrangements from the output of $f_{\ge 2}$ that come after the last arrangement in the output of $f_1$.
+\end{proof}
+
+A corollary of the Merging Lemma is that $\set{f_1,\ldots,f_\ell}$ is a reduction of $f$.  Since the input type is not changed, by combining this reduction with the one from the  previous lemma, we get a reduction where all enumerators satisfy the assumptions of the domination lemma, i.e.~the input type is a list type and the universe formula is an arrangement type. Therefore, it remains to prove the induction step for a quantifier-free definable enumerator where the input type is a list type and the universe formula is a tree arrangement.  Fix such an enumerator $f$ for the rest of this section, and let $A^*$ be the input list type. Apply the domination lemma, yielding some dominating coordinate $\alpha$, some orientation $\beta$  and some threshold $t$.  
+
+
+For an input 
+\begin{align*}
+a = [a_1,\ldots,a_n] \in A^*,
+\end{align*}
+define the \emph{initiator} of a list item $i \in \set{1,\ldots,n}$ to be the first arrangement in the list $f(a)$ that uses list item $i$ on the dominating coordinate. The initiator might not exist, if $f(a)$ does not contain any arrangements with $i$ on the dominating coordinate. We will compute $f(a)$ by first computing the initiators, and then inserting the remaining arrangements.
+
+
 
 \begin{claim}
-    There is a for-transducer which checks if the first tuple of $(a,x)$ is defined, and if so computes it.
+    There is a for-program that computes $f(a)$ restricted to initiators. 
 \end{claim}
 \begin{proof}
-    The for-transducer enumerates through all possible tuples in lexicographic order. For each one it checks if it satisfies the required criteria: (a) it is selected by the universe formula; (b) it uses $x$ on the dominating coordinate; and (c) is not preceded by any tuple that also satisfies (a) and (b).
+     We first observe that initiators can be computed by a for-program. Indeed, we can use for-loops to enumerate over all arrangements, and for each arrangement  we can check if it is the initiator of a given list item $i$, by looping through all candidates for an earlier arrangement that also uses $i$ on the dominating coordinate.
+    
+     We now show how to output the initiators in the correct order. The rough idea is that this order corresponds roughly to the order of the list items, with some perturbations. These perturbations will necessarily be local, thanks to the domination lemma. For this proof, we assume without loss of generality that the orientation $\beta$ is $1$, i.e.~the dominating coordinate is in the normal direction, with the other case being symmetric. 
+
+     For a list item $i \in \set{1,\ldots,n}$, define 
+    \begin{align*}
+   X_i =  \setbuild{ x }{$x$ is the initiator of some item $\ge i$  which is before,  
+    in \\ the order $f(a)$, the initiator of some list item $\le i$.}
+    \end{align*}
+\issue{Math: the definition uses strict ``before'', so it need not contain the initiator of $i$. More seriously, the $X_i$ overlap: if initiator 2 precedes initiator 1, then initiator 2 belongs to both $X_1$ and $X_2$. They therefore cannot be emitted as disjoint consecutive blocks as claimed.}% book review
+    This set contains the initiator of $i$, if it exists. Apart from this initiator, this contains at most $t$ other arrangements, where $t$ is the threshold from the domination lemma. This is because the domination lemma guarantees that once the dominating coordinate is after list item $i+t$, then $x$ cannot come before the initiator of any list item $\le i$.  Finally, the set $X_i$ can be computed by a for-program, similarly to how we computed the initiators.
+
+    Essentially by definition, the sets $X_i$ are ordered increasingly
+    \begin{align*}
+    X_1 \prec X_2 \prec \cdots \prec X_n
+    \end{align*}
+    according to the order in $f(a)$.
+    Indeed, if $x \in X_i$ is smaller than some  $y \in X_j$ with $j < i$, then $x$ satisfies the criteria of membership in  $X_j$. In particular, the sets $X_i$ are pairwise disjoint. Also, these sets have bounded size, as we previously observed.  This gives us the for-transducer in the claim: for every $i \in \set{1,\ldots,n}$, output all tuples in $X_i$ according to their order in $f(a)$. Because $X_i$ has bounded size, its order can be computed by doing a constant bounded of comparisons.
 \end{proof}
-Thanks to the domination lemma, we know that if two tuples are far enough apart on the dominating coordinate, then they are ordered according to the dominating coordinate. In particular, if $x$ is a child of $a.i$, and $t$ is the distance threshold from the domination lemma, then we have:
+
+
+Using the initiators, we can compute the entire output list $f(a)$ similarly to the proof of the Merging Lemma. We enumerate all initiators in the correct order using the above claim. After each initiator $x$, we output all arrangements from the set
 \begin{align*}
-\text{first tuple of $(a,x)$} <_a \text{first tuple of $(a,x+t)$},
+f(a,x) = \setbuild{y}{$y$ is a non-initiator that comes after $x$ in $f(a)$, \\ but  before any other initiator that is after $x$ }
 \end{align*}
-whenever both tuples are defined. This means that we can compute the output list $f(a)$ as follows. We enumerate through all children $x$ of $a.i$ that are divisible by $t$. (This will guarantee that the are separated by the the threshold.) For each such position $x$, we output:
-
-Let 
+It remains to show that there is a for-program which enumerates through   $f(a,x)$ in the correct order. 
+By the domination lemma, the dominating coordinate of $y \in f(a,x)$ is at distance at most $t$ from the dominating coordinate of $x$, i.e.~
 \begin{align*}
-x_1,\ldots,x_n
+f(a,x) \subseteq \bigcup_i  \setbuild{y}{$y \in f(a)$ and $y$ uses $i$ on the dominating coordinate},
 \end{align*}
-be those children $x$ of $a.i$ for which the first tuple of $(a,x)$ is defined. Define the \emph{important} children to those  tuples to be those which are first tuples for some $x_i$ where the index $i$ is divisible by $t$. 
+where $i$ ranges over the values of the dominating coordinate that are at distance at most $t$ from the dominating coordinate of $x$.  Let us write $g(a,i)$ for each summand in the above sum. Since the number of summands is constant, we can use the Merging Lemma to merge the summands, followed by a filtering step where outputs are restricted to those that belong to $f(a,x)$. Therefore,  it remains to show that each summand can be computed by a for-transducer. 
 
-\begin{enumerate}
-    \item 
-\end{enumerate}
-
-Consider children of $a.i$ that have index divisible by $t$: 
-\begin{align*}
-x_1,\ldots,x_n.
-\end{align*}
-To each such child $x_i$, we associate some tuple $\bar x_i$ which uses child $x_i$ on the dominating coordinate. 
-Apply the Domintation Lemma to the tuple enumerator, yielding some coordinate $i$ and a distance threshold $t$. 
-
-Let 
-\begin{align*}
-\ell_1,\ldots,\ell_n
-\end{align*}
-be all indices in the list $a_i$ that are divisible by $t$. For each such index, consider 
-
-\begin{lstlisting}
- for x in a.i.children:
-    #  We loop only care about children whose index is divisible by 
-    #  This modulo test can be implemented using Boolean variables
-    if first(a,x) is defined: 
-        c++
-        if c == t
-            output all 
-        
-
-
-\end{lstlisting}
-
-
-For a $a \in A^*$, 
-define the \emph{neighborhood} of a tuple $\alpha \in f(a)$ to be those tuples from $f(a)$ where the dominating coordinate is at distance at most $t$ from the dominating coordinate of $\alpha$, in either direction.  The remaining tuples are either to the left or right of the neighbourhood, depending on how their dominating coordinate compares to the dominating coordinate of $\alpha(x)$. The Domination Lemma says that the tuples on the left are before $\alpha$, and those on the right are after $\alpha$, but the neighbourhood might have some more complicated patterns.
-
-\begin{lemma}\label{lem:domination-skeleton}
-    Let $t \in \set{0,1,\ldots}$.
-    There is a for-transducer which does the following:
-    \begin{itemize}
-        \item \textbf{Input.} $a \in A^*$
-        \item \textbf{Output.} A list $g(a) \subseteq f(a)$ which intersects every neighborhood from $f(a)$.
-    \end{itemize}
-\end{lemma}
+\begin{claim}
+    There is a for-program that enumerates through $g(a,i)$.
+\end{claim}
 \begin{proof}
-For a child $i$ of the root of $a$, define the \emph{chosen tuple of $(a,i)$} to be the tuple which is minimial in the lexicographic order among tuples that appear in the list $f(a)$ and use $i$ on their dominating coordinate. Because we use the lexicographic order and not the order used by $f(a)$,  the chosen tuple can be computed by a for-transducer. 
-
-
-\begin{definition}
-    A function 
-    \begin{align*}
-    A \xrightarrow f B
-    \end{align*}
-    is called .. if for every quantifier-free formula $\varphi$ formula over the vocabulary of $B$ there is a quantifier  
-\end{definition}
-
-
-
-For a position $i$, define $c(a,i)$ to be the chosen tuples of positions $i, i+1,\ldots,i+t$. This is a set of at most $t+1$ tuples, and it can be computed by a for-transducer (which inputs both $a$ and $i$), according to the order of $f(a)$. f
-
-For a chosen tuple $\alpha$, define its \emph{leader} to be the minimal $i$ such that the chosen tuple of $(a,i)$ exists and comes after $\alpha$ in the order of $f(a)$.  We know that the leader of 
-
-\begin{lstlisting}
-for i in a.children:
-    let $X$   be the chosen tuples of $(a,i),\ldots,(a,i+t)$
-    output the tuples 
-\end{lstlisting}
-The for transducer enumerates through all children $i$ of the root of $a$. For each such child, 
-\end{proof}
-
-
-\begin{lemma}\label{lem:enumerate-around-x}
-    There is a for-transducer which implements the following function:
-    \begin{itemize}
-        \item \textbf{Input.} $a \in A^*$ and $x \in a.children$
-        \item \textbf{Output.} The list $f(a)$ restricted to tuples where the dominating coordinate is $x$.
-    \end{itemize}
-\end{lemma}
-\begin{proof}
-    We can think of the function in the statement of the lemma as a tuple enumerator of the same dimension where the  input type is
-    \begin{align*}
-    B = A^* \times A \times A^*,
-    \end{align*}
-    with the distinguished child $i$ corresponding to  the middle component. This new tuple enumerator is easily seen to be quantifier-free definable, by a simple syntactic modification of the universe and order formulas of the original tuple enumerator. We will now show that this tuple enumerator can be implemented by a for-transducer, using the induction assumption of the main lemma. 
-
-    Like any type, $A$ is isomorphic to a type of the form 
-    \begin{align*}
-    \sum_{i \in I} \prod_{j \in J_i} A_{ij}^*.
-    \end{align*}
-    Therefore, we can 
-
-
-
-    The output is essentially the same as the input, except that we loose information about the distinguished list element $a_n$. 
-    For every $a \in A^* \times A \times A^*$, a node of $g(a)$ can be interpreted as a node of $a$ in the natural way. Therefore, also a tuple of nodes in $g(a)$ can be interpreted as a tuple of nodes in $a$. 
-    \begin{claim}
-        The following tuple enumerator is quantifier-free definable:
-    \end{claim}
-    \begin{itemize}
-        \item \textbf{Input.} $a \in A^* \times A \times A^*$;
-        \item \textbf{Output.} $f(g(a))$, viewed as a list of tuples in $a$ using the pullbacks, restricted to tuples where the dominating coordinate is in the middle component of $a$.
-    \end{itemize}
-
-\end{proof}
-
-
-
-
-
-\begin{lemma}\label{lem:enumerate-between-alpha-beta}
-    There is a for-transducer which implements the following function:
-    \begin{itemize}
-        \item \textbf{Input.} $a \in A^*$ and  tuples $\alpha, \beta$ that are consecutive in $g(a)$;
-        \item \textbf{Output.} The list $f(a)$ restricted to tuples between $\alpha$ and $\beta$. 
-    \end{itemize}
-\end{lemma}
-\begin{proof}
-By definition of the skeleton $g(a)$, we know that there are no tuples from $f(a)$ between the neighborhoods of $\alpha$ and $\beta$. Therefore, every tuple is either: (1) to the left of both $\alpha$ and $\beta$; or (2) in one of the two neihborhoods from the statement of the claim; or (3) to the right of both $\alpha$ and $\beta$. Cases (1) and (3) cannot arise for tuples that are strictly between $\alpha$ and $\beta$, and therefore every tuple between $\alpha$ and $\beta$ must be in one the neighborhoods of $\alpha$ and $\beta$.
-    These two neighborhoods have a constant number of possibilities for the dominating coordinate, and hence we can use the Merging Lemma and \cref{lem:enumerate-around-x} to enumerate through all tuples from $f(a)$ in these two neighborhoods, and filter the list to those which are between $\alpha$ and $\beta$.
-\end{proof}
-
-By   \cref{lem:enumerate-around-x} and the merging lemma, there is a for-transducer which inputs $a \in A^*$ and $\alpha \in f(a)$  and outputs the list $f(a)$ restricted to tuples where the dominating coordinate is at distance (in either direction) at most $t$ from the dominating coordinate of $\alpha$. By the Domination Lemma, we know that if 
-
-Consider two consecutive tuples $\alpha < \beta$. 
+\issue{Proof gap: splitting off the distinguished item can lose sibling-successor/first/last relations at the two new boundaries. Show how their quantifier-free truth is recovered (or add finite boundary annotations), rather than asserting that all relevant information is present.}% book review
+Strictly speaking $g(a,i)$ is not an enumerator in the sense of \cref{def:tuple-enumerator}, since the input is a tree structure together with  a   distinguished node.  To apply the induction hypothesis, which does not have distinguished nodes, we view a pair $(a,i)$ as a tree structure $\tuple{a,i}$ in the type 
 \begin{align*}
-\alpha < \gamma < \beta \qquad   \Rightarrow  \qquad 
+A^* \times A \times A^*,
 \end{align*}
+where the middle $A$ represents the distinguished list item. 
+The unit leaves  in $\tuple{a,i}$ are in bijective correspondence with the unit leaves in $a$, and this correspondence extends to arrangements. Using this bijective correspondence, we can define a new enumerator
+\begin{align*}
+\tuple{a,i} \quad \mapsto \quad \text{$g(a,i)$ with the bijective correspondence applied}.
+\end{align*}
+This new enumerator is now a proper enumerator, since it has no distinguished nodes, and it is easily seen to be quantifier-free definable, since the original enumerator was quantifier-free definable, and the  tree structure of $\tuple{a,i}$ contains all relevant information about  the  tree structure of $a$ with distinguished position $i$.  Furthermore, the dominating coordinate in $\tuple{a,i}$ no longer has a star as its parent, since we removed the star from the distinguished list item. Therefore, we can apply the induction hypothesis to the new enumerator, yielding a for-program. A for-program that runs in $\tuple{a,i}$ can now be easily adapted to work in $a$ with a distinguished list item, thus completing the proof of the claim.
+\end{proof}
 
-
-
-
-\begin{lemma}
-    Consider a type 
-    \begin{align*}
-    A = A_1^* \times \cdots \times A_n^*,
-    \end{align*}
-    and a quantifier-free formulas
-    \begin{align*}
-    \varphi(x_1,\ldots,x_d) 
-    \end{align*}
-\end{lemma}
-
+This completes the proof of the induction step in \cref{lem:quantifier-free-tuple-enumerator-is-for-definable}, and therefore also the  proof of \cref{thm:mso-interpretation}.
 
 \exerciseheader
 
 
+\issue{Incomplete: the printed solution is empty. The label also misspells ``elimination''; rename it and its references together if correcting it.}% book review
+\exer{\label{exer:quantifier-elimnination}
+Show that the structure $(\Rat,<)$ has quantifier elimination.
+}{ }
 
-\exer{ \label{exer:shuffle-unique} Consider two labellings $\Rat \xrightarrow{\lambda_1,\lambda_2} A$ such that every label is dense. Show that the two labellings are isomorphic.
-} {
+\issue{Incomplete: the printed solution is empty (a back-and-forth construction is needed).}% book review
+\exer{\label{exer:labelled-orders}
+Consider two labellings of the rational numbers by the same  finite set of labels $A$, such that each label is dense. Show that they are isomorphic as labelled orders.
+}{
 
 }
 
+\issue{LaTeX error: this call closes the statement immediately after its label, putting the exercise question in the solution and leaving a third stray argument. Move the question into the first argument; the actual solution is also empty.}% book review
+\exer{\label{exer:type-to-type-interpretations}}{
+    Lift \cref{thm:mso-interpretation} to type-to-type interpretations.
+}{
 
-\exer{ \label{exer:rational-lexicographic}
-Consider a linear  order on $\Rat^{(d)}$  that is definable by a quantifier-free formula. Show that this must be one of the  $d! 2^d$ lexicographic orders, which are obtained by choosing: a precedence order on the coordinates in $d!$ ways, and an orientation for each coordinate in $2^d$ ways.
-}
-{
-Let $i$ be the dominating coordinate from the above lemma.  By symmetry, we assume that the domination is of positive domination. We know that if we increase coordinate $i$, then the tuple will increase in the order. To complete the proof of the theorem, we need to show that if we fix coordinate $i$, then the order on the remaining coordinates is also lexicographic. We will do this by appealing to the induction hypothesis, although there is a small obstacle. The most natural idea would be to apply the induction hypothesis to the order where coordinate $i$ is fixed. However,  once we have fixed coordinate $i$, the new order is on 
-\begin{align*}
-\Rat^{(i-1)} \times \Rat^{(d-i)},
-\end{align*}
-since the $i-1$ coordinates to the left of the $i$-th one cannot move into the same area as the remaining coordinates. This order does not have the same form as in the induction assumption, and therefore we need to take some more care. We can, however, consider the orders before and after $i$, i.e~we can use the induction assumption to prove that the following two orders are lexicographic:
-\begin{enumerate}
-    \item[$\prec_1$] the order on $\Rat^{(i-1)}$ obtained by fixing coordiantes $\set{i,\ldots,d}$; 
-    \item[$\prec_2$] the order on $\Rat^{(d-i)}$ obtained by fixing coordinates $\set{1,\ldots,i}$.
-\end{enumerate}
-To finish the proof of the induction step, we will show that these two orders are composed in a lexicographic way, i.e.~one will have priority over the other. To find the winner, consider two tuples $x,y \in \Rat^{(d)}$ which agree on coordinate $i$ but conflict on the orders $\prec_1$ and $\prec_2$, i.e.~we have
-\begin{align*}
-x[<i] \prec_1 y[<i] 
-\quad 
-x[i] = y[i] 
-\quad 
-x[>i] \succ_2 y[>i],
-\end{align*}
-where the restrictions $<i$ and $>i$ are defined in the expected way.
-These tuples must be ordered in some way by $\prec$, and this order will determine which of the two orders $\prec_1$ and $\prec_2$ has priority.  The following claim shows that conclusion for $x \prec y$, and a symmetric argument shows the opposite conclusion for $x \succ y$.
-\begin{lemma}\label{lemma:reconcile-orders}
-    If $x \prec y$, then the lexicographic order is obtained as follows:
-    \begin{enumerate}
-        \item first look at coordinate $i$; 
-        \item in case of equality, look at  coordinates $\set{1,\ldots,i-1}$ under the order $\prec_1$;
-        \item in case of equality, look at coordinates $\set{i+1,\ldots,d}$ under the order $\prec_2$.
-    \end{enumerate}
-\end{lemma}
-\begin{proof}
-    Consider some tuples $u,v \in \Rat^{(d)}$. We need to show that the order $\prec$ between them is determined according to the three prioritised rules in the statement of the lemma. 
-   If the first rule is applied, then we get the conclusion from \cref{lem:rational-dominating-coordinate}. If the third rule is applied,, then we get the conclusion from the definition of $\prec_2$. The important case is when the second rule is applied. This case is dealt with by finding a tuple $w$ with $u \prec w \prec v$, with $u \prec w$ proved using the assumption on $x \prec y$, and $w \prec v$ proved using the definition of $\prec_2$.
-\end{proof}
 }
 
-
-\exerciseheader
-
-\exer{
-    \label{exer:quantifier-free-extended-syntax} Find an approriate definition for a quantifier-free formula with variables that have types, as in extended syntax. Choose this definition so that quantifier-free interpretations, with the extended syntax, are closed under composition. 
-}
-{
-    Essentially the idea is to distribute sum over product. 
-    Consider a formula 
-    \begin{align*}
-    \varphi( x_1 : \tau_1, \ldots, x_n : \tau_n).
-    \end{align*}
-    This can be seen as a formula with one free variable of type $\tau_1 \times \cdots \times \tau_n$, and this type (thanks to distributivity) can be seen as a type 
-    \begin{align*}
-    n^{d_1} + \cdots + n^{d_k}.
-    \end{align*}
-    Therefore, we have $k$ variants, and for each variant we supply a quantifier-free formula with $d_i$ free variables. 
-}
+\issue{Language/incomplete: ``Conisder'' $\to$ ``Consider''; the printed solution is empty.}% book review
+\exer{\label{exer:for-transducer-navigating-trees} Conisder the for-transducer model that inputs tree structures, as described in \cref{ex:type-to-string-for-transducer}. Show that tests for sibling order, parent, first child, last child, and sibling successor are redundant in the presence of equality tests.
+} {}

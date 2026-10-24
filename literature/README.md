@@ -2,6 +2,9 @@
 
 This folder collects the main sources to cite for the first four parts of the book.
 
+Proposed additions, paste-ready BibTeX and citation text, and the newly collected
+PDFs are listed separately in [Bibliography suggestions](bibliography-suggestions.md).
+
 BibTeX entries for everything listed here live in the book's bibliography, [../bib.bib](../bib.bib).
 
 ## Background

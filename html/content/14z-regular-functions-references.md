@@ -5,7 +5,7 @@ weight = 145
 source = "partCRegular/bib-notes.tex"
 +++
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-% context stamp fa6d89dd
+% context stamp e88259ef
 % Generated chapter wrapper; source body remains untouched.
 \setcounter{mypart}{3}
 \setcounter{section}{5}

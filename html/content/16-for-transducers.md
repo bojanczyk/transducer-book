@@ -9,7 +9,7 @@ source = "partDPolyregular/for.tex"
 \setcounter{mypart}{4}
 \setcounter{section}{0}
 \setcounter{ourexamplecounter}{36}
-% source stamp partDPolyregular/for.tex:32e4e2fe
+% source stamp partDPolyregular/for.tex:ce6d6a30
 \renewcommand{\exer}[2]{}
 \input{../../../partDPolyregular/for.tex}
 {{< /latex >}}

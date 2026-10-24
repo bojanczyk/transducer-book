@@ -29,6 +29,7 @@ Before presenting the full programming language, we begin with a minimal adjustm
 We will shortly show, without much difficulty, that the polyregular terms define exactly the polyregular functions. Let us begin, however, with some examples.
 
 \begin{myexample}[Prefixes]
+\issue{Language: the diagram composes four functions, not three.}% book review
     \label{ex:all-prefixes} Let us write a polyregular term that computes all prefixes of a list. This term is a composition of three terms, as shown below, with the execution illustrated on an example.
     \[
     \begin{tikzcd}
@@ -197,6 +198,7 @@ which is defined by induction on the structure of the term in the expected way. 
     \begin{align*}
     A \times B^* \xrightarrow{ \strengthterm} (A \times B)^* 
     \end{align*}
+\issue{Type error: the following term is curried, of type $A\to(B^*\to(A\times B)^*)$, but strength was assigned the uncurried type $A\times B^*\to(A\times B)^*$. Uncurry it, or change the stated type and later uses consistently.}% book review
     which adds the first argument to each list element in the second argument. This function is implemented by the following term:
     \begin{align*}
     \lambda a : A. (\lambda b : B. (a,b))^*.
@@ -266,6 +268,7 @@ which is defined by induction on the structure of the term in the expected way. 
     \begin{align*}
     (A \to \onetype + \onetype) \to A^* \to   A^*
     \end{align*}
+\issue{Consistency: earlier the first summand of $\onetype+\onetype$ means true. This implementation maps the first summand to $[]$ and the second to $[a]$, so it keeps false elements. Swap the branches or explicitly change the Boolean convention.}% book review
     which keeps only the list elements that satisfy a certain criterion. The idea is to replace correct elements (those that satisfy the criterion) by singleton list items, incorrect list elements by the empty list, and then concatenate the resulting list of lists. The implementation is as follows:
     \begin{align*}
     \lambda p : (A \to \onetype + \onetype). \lambda x : A^*. \concatterm ((\lambda a : A. \either (\lambda y : \onetype. []) (\lambda y : \onetype. [a]) (p a))^* x)
@@ -306,6 +309,7 @@ This new parameterised denotation is  defined to be  pointwise lifting of the or
 \end{align*}
 At first sight, this  seems to be a mere obfuscation of the original semantics. However, the new definition  will enable us to find an invariant that will be used to remove the higher-order features of  higher-order polyregular terms.  This invariant is postulated in the following lemma. It is usually called a logical relation, but since we use both logics and relations in other ways, we use the non-descriptive name of \emph{good functions} below.
 
+\issue{Language: standardise parameterised/parametrised/parameterized; all three spellings occur in this section.}% book review
 \begin{lemma}[Fundamental Lemma] \label{lem:fundamental-lemma} For every arrow-free type $Q$ and higher-order type $A$, one can identify  a subset of the functions of type $Q \to A$, called the \emph{good functions}, such that:
 \begin{enumerate}
     \item When $A$ is arrow-free, good functions  are exactly the polyregular ones.
@@ -503,10 +507,12 @@ The proof for the remaining atomic functions is similar. The first observation i
 \begin{align*}
 F(A_1,\ldots,A_n) \xrightarrow {f_{A_1,\ldots,A_n}} G(A_1,\ldots,A_n)
 \end{align*}
+\issue{Qualification: group prefix multiplication has a fixed finite group parameter. Treat it as a family with no varying type parameters (a constant functor), or handle it separately; it is not natural under arbitrary maps between underlying groups.}% book review
 which is indexed by some type parameters $A_1,\ldots,A_n$ (for our system, there are at most three parameters), in which the inputs and outputs are expressions constructed from the type parameters using the arrow-free type constructors. Furthermore, each of the atomic functions will turn out to be natural in the following sense.
 
 \begin{definition}[Natural transformation] \label{def:natural-transformation}
     Consider a family of functions
+\issue{Language: ``for every types'' $\to$ ``for all types''; ``for every functions'' $\to$ ``for all functions'' below.}% book review
     \begin{align*}
 F(A_1,\ldots,A_n) \xrightarrow {f_{A_1,\ldots,A_n}} G(A_1,\ldots,A_n) \qquad \text{for every types $A_1,\ldots,A_n$},
 \end{align*}
@@ -543,6 +549,7 @@ where $F$ and $G$ are lifted from types to functions in the expected way.
 \end{proof}
 The second ingredient is the following claim, which is a generalisation of the argument we used for the list constructor about the shape of good functions at types constructed from arrow-free type constructors.
 
+\issue{Statement: explicitly require $P$ and the new parameter types $P_i$ to be arrow-free, as required in the definition of goodness and by the subsequent proof.}% book review
 \begin{claim}\label{claim:functors-applied-to-good}
     Let $F(A_1,\ldots,A_n)$ be an expression that is built using the arrow-free type constructors $\onetype, +, \times$ and $*$, and let $A_1,\ldots,A_n$ be higher-order types. A function 
     \begin{align*}
@@ -619,6 +626,7 @@ As we have remarked at the beginning of this part, equivalence for polyregular f
     \begin{align*}
     \set{0,\ldots,n}\times \set{0,\ldots,n} \to T \qquad \text{for some $n \in \set{0,1,\ldots}$}
     \end{align*}
+\issue{Statement: spell out the two corner constraints and the ordered four entries of each $2\times2$ window in prose or a formula, so that the local constraint $C\subseteq T^4$ is defined independently of the illustration.}% book review
     which satisfies the conditions described in the following picture
     \mypic{55}
     \begin{lemma}\label{lem:tiling}
@@ -648,6 +656,7 @@ By the above lemma, the tiling problem has no solution if and only if the term f
 \begin{proof}[Proof of \cref{lem:tiling-checker}]
     We begin by explaining that basic arithmetic on $\Nat = \onetype^*$ can be implemented. Zero is the empty list. Incrementation is implemented by the list constructor and  decrementation is implemented by the list deconstructor\footnote{We could even implement addition (using list concatenation) and multiplication (using the rectangle function from Example~\ref{ex:strength-and-rectangle}).  In the presence of this arithmetic, we could also use undecidability of  Hilbert's Tenth problem about diophantine equations, but there is no need to appeal to such a strong undecidability result, since the tiling problem is enough. }. 
 The term is constructed as follows. We first check that the corners  use the correct tiles, by applying $f$ to the pairs $(0,0)$ and $(n,n)$. Next, using the prefixes function from Example~\ref{ex:all-prefixes} and the rectangle function from Example~\ref{ex:strength-and-rectangle}, we  compute a list that stores  all pairs in 
+\issue{Boundary detail: the prefixes operation includes the full prefix $n$. Remove that entry before forming the rectangle of window origins; for $n=0$ there are no windows.}% book review
     \begin{align*}
     \set{0,\ldots,n-1} \times \set{0,\ldots,n-1}.
     \end{align*}
@@ -716,6 +725,7 @@ A^* & \to (A^* \times A \times A^*)^*\\
 % \end{cases}
 % \end{align*}
 % The function in the statement of the exercise is obtained by applying first split, then the above function to each list element, followed by $\concatterm$. 
+\issue{Math: Exercise~\ref{exer:filter-plus} keeps the first summand. Here the nonempty triples lie in the second summand after distributivity; use the symmetric filter or swap the summands first.}% book review
 This is the following composition. The final reversal is needed because $\splitterm$ lists the splits with the prefix getting shorter, so that without it the triples would be produced in the order $t_n,\ldots,t_1$.
 \[
 \begin{tikzcd}
@@ -744,6 +754,7 @@ A^*
 
 \exer{\label{exer:block-from-split}Show that $\blockterm$ can be implemented by a polyregular term that does not use it (or reverse).}{
     Since pairing is available, we can separately define the two components of the output of $\blockterm$. The first component is a list of type $A^*$ which contains the prefix up to (but not including) the first $B$, and the second component is a list of type $(B \times A^*)^*$ that describes the blocks which begin with occurrences of $B$. 
+\issue{Math: the diagram applies $\distlterm$ to $(\onetype+\onetype)\times(A+B)^*$, but then silently identifies $\onetype\times C$ with $C$; add the projections on both summands. It extracts heads of suffixes whose prefixes are all-$A$, which already lists the initial $A$-block in reverse order; the final reversal is needed as shown.}% book review
 \begin{enumerate}
     \item To define the first component of the output, we  begin with an auxiliary  function of type $(A+B)^* \to \onetype + \onetype$ which tells us if the input list uses only elements of type $A$. This function is implemented (without using $\blockterm$) by keeping only the elements of type $B$ and then checking emptiness. Once this auxiliary function is defined, we use the following composition to define the first component of the output of $\blockterm$. As in \cref{exer:split-triple}, a reversal is needed at the end, because $\splitterm$ enumerates the all-$A$ prefixes from the longest to the shortest; this does not conflict with the restriction in the statement, since \cref{exer:reverse-from-split} implements reversal without using it.
 \[
@@ -778,6 +789,7 @@ A^*
 A^*
 \end{tikzcd}
 \]
+\issue{Math: the filtering operation from Exercise~\ref{exer:filter-plus} keeps the first summand. Here the desired $B$-entries are in the second summand after distributivity; swap the summands or use the symmetric filter.}% book review
 \item The second component of the output is defined using the following composition:
 \[
 \begin{tikzcd}

@@ -9,6 +9,7 @@ In this part, we move to the third step in the transducer ladder, namely the  re
     \begin{align*}
     123 \# 45 \# 6789 \quad \mapsto 123123 \# 4545 \# 67896789.
     \end{align*}
+\issue{Math: the nonrationality claim requires at least two letters in the block alphabet. On a unary block alphabet, map reverse is the identity and map duplicate is a homomorphism.}% book review
     Formally speaking these are not two functions, but a family of functions, one for each alphabet (the input and output alphabets are the same in this case). Using Theorem~\ref{thm:machine-independent-rational-functions}, one can show that none of these functions is rational. 
 \end{myexample}
 
@@ -40,6 +41,7 @@ Functions compatible with compression are clearly closed under composition, and 
     \begin{align*}
     X \to \myunderbrace{YZ}{both are external}\qquad \text{or} \qquad  X \to \#\myunderbrace{Y}{internal}
     \end{align*}
+\issue{Boundary case: allow an empty external part (for a string with no separators), e.g. an external rule $X\to\varepsilon$. The listed external rules otherwise always generate a separator.}% book review
     The initial nonterminal has a rule of the form $S \to XY$ where $X$ is internal and $Y$ is external. The idea is that the internal nonterminals generate the blocks, and the external nonterminals generate sequences of blocks. 
 
     One can show without much difficulty that any grammar compression can be transformed into this form in polynomial time. The transformation is done by splitting the rules of the grammar at the separators, and introducing new nonterminals for the parts that are split off. After transforming into the form, we can apply the assumption on the original function to the blocks, which are the nonterminals $Y$ in the rules $X \to \#Y$.

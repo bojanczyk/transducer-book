@@ -9,6 +9,7 @@ For the regular functions, and even more so for the simpler models of Mealy mach
     \end{align*}
 \end{theorem}
 
+\issue{Complexity model: state a unit-cost RAM model with pointers/indices of $O(\log n)$ bits. Constant-time tree navigation and arithmetic on these indices are used throughout the evaluation proof.}% book review
 In the above theorem, the hidden constant in the $\Oo$ notation depends on the polyregular function, and this dependence is nasty -- a tower of exponentials in terms of the source code of the polyregular function.
 The theorem is based on a data structure that is called Simon trees; this data structure is a powerful tool and it will be used later in the book for other purposes as well. We define Simon trees in \cref{sec:Simon-trees}, and then we show how to use them to evaluate polyregular functions in \cref{sec:evaluation-algorithm}.
 
@@ -40,6 +41,7 @@ such that membership $w \in L$ depends only on $h(w) \in M$.
     which maps a string to its state transformation. This is a monoid homomorphism into the finite monoid of functions from the set of states to itself. It recognises the language, since membership in the language depends only on the state transformation of the input string.
 \end{proof}
 
+\issue{Definition: clarify that a leaf labelled by $a$ has monoid value $h(a)$ when applying the Simon-tree condition. Leaves currently carry letters, whereas that condition asks all children to carry monoid labels.}% book review
 \paragraph*{Binary factorisations.} Before introducing Simon trees, we begin with a simpler data structure, which corresponds to binary factorisations of strings. Define a \emph{factorisation tree} for a monoid homomorphism to be a tree where leaves are labelled by input letters, and where each inner node (i.e.~a node that is not a leaf) is labelled by  the monoid element that is assigned by the homomorphism to  the string in its subtree.  Initially, we will care about binary factorisation trees, where every inner node has exactly two children. Here is a picture, in which the homomorphism 
 \begin{align*}
 \set{a,b}^* \xrightarrow h \set{0,1}
@@ -53,6 +55,7 @@ A binary factorisation tree can be used to evaluate the homomorphism on factors 
 
 \paragraph*{Simon trees.} If we insist on using binary trees, then we cannot go below logarithmic height. We will, however, want to go down to constant height, and therefore we will need to  allow nodes of unbounded branching.  To constrain such nodes, we require that nodes with at least three children must use idempotents in the monoid, i.e.~monoid elements $e$ that satisfy $e^2 = e$.  The corresponding data structure is named after Imre Simon, who introduced it. 
 
+\issue{Boundary case: the definition gives no Simon tree for $\varepsilon$: every leaf must carry a letter. Add an empty-tree convention (with monoid value $1$) and include it in $\mathsf S$ below; otherwise the theorem for every input and the later surjectivity claim fail.}% book review
 \begin{definition}[Simon tree] A \emph{Simon tree} is a factorisation tree with the following idempotent property: if a node has at least three children, then all these children  must be labelled by the same monoid element, which  must be an idempotent.
 \end{definition}
 Here is a picture of a Simon tree:
@@ -69,6 +72,7 @@ The following lemma shows that for Simon trees, factors can still be evaluated i
 \begin{proof}
     We use essentially the same algorithm as for binary factorisation trees.  We identify maximal subtrees that are contained in the factor. Because the tree has unbounded branching, there may be many such subtrees. However, these subtrees can be grouped into bundles, with each bundle consisting of consecutive siblings, and each level in the tree having a constant number of bundles. These bundles are  illustrated using blue boxes in the following picture:
 \mypic{65}
+\issue{Language: ``operaiton'' $\to$ ``operation''. Complexity: recurse only on the two boundary paths and use stored labels for fully covered subtrees; naive recursive calls on all covered children would not give the stated height bound.}% book review
 Let us give a more formal argument. Suppose that we want to compute the value for some factor $v$. The algorithm runs by induction on the height of the subtree of a tree that contains this factor. If the height is zero, then the factor is a single letter, and we can compute the value of the homomorphism directly. Otherwise, if the subtree has at most two children, then we can compute the values of the parts of the factor in the two children, and combine them using the monoid operaiton. The interesting case is when the subtree has at least three children $x_1,\ldots,x_n$. In this case, we look at which subtrees of these children are covered by the factor, as in the following picture:
 \mypic{66}
 The middle part  that is completely covered by the factor is one of the bundles that we talked about earlier. This bundle will be either empty (in case the factor is contained in at most two consecutive subtrees), or otherwise its value will be the idempotent $e$ used by all nodes. The remaining two parts, on the left and right can have their values computed by induction assumption on smaller height. 
@@ -165,6 +169,7 @@ Summing up, we have shown that either we can use \cref{lem:factorisation-forest-
         \begin{align*}
         x_1 < \cdots < x_n 
         \end{align*}
+\issue{Math: restrict these to proper nonempty prefixes. Otherwise, when $g=1$ or $g=h(w)$, an endpoint gap can be included, producing empty factors outside the induction on $A^+$.}% book review
         in $w$ which are the end of prefixes mapped to $g$. These gaps induce a factorisation 
         \begin{align*}
         w =  w_0 \cdots w_n
@@ -188,6 +193,7 @@ Summing up, we have shown that either we can use \cref{lem:factorisation-forest-
 \begin{align*}
     \facttype{h,k,m},
 \end{align*}
+\issue{Type convention: some fibres $\mathsf S(h,0,m)$ are empty, so the displayed finite sums require an empty type, absent from Definition~\ref{def:types}. Extend the type grammar or remove empty summands before applying type-to-type results.}% book review
 where $h$ is the monoid homomorphism, $k$ is the maximum height, and $m$ is the monoid element in the root.  This type is inductively defined as follows. For height  zero, a Simon  tree is nothing but a letter which is mapped to the chosen monoid element, and therefore the type is defined by 
 \begin{align*}
 \facttype {h,0,m} = \sum_{
@@ -256,7 +262,7 @@ which takes a factorisation tree to the underlying string, is surjective. This p
 \label{sec:evaluation-algorithm}
 We now explain how Simon trees can be used to efficiently evaluate polyregular functions. In the proof, we use pebble transducers or for transducers.  As mentioned at the beginning of this section, the main difficulty with evaluation is that the computation of such a transducer might be much longer than its output size, e.g.~the computation could be quadratic despite a linear output size. To avoid this, we will use Simon trees to move between productive configurations (i.e.~configurations that produce an output letter) in constant time. 
 
-To compute the next productive configuration, all we will need is that the next configuration can be defined in \mso logic. The reasoning that we describe below will work for both for transducers and pebble transducers; we will use pebble transducers. Recall from \cref{lem:reachability-pebble-automaton} that if we fix a pebble transducer with states $Q$ and $k$ pebbles, then the set of configurations is described by the polynomial
+To compute the next productive configuration, all we will need is that the next configuration can be defined in \mso logic. The reasoning that we describe below will work for both for transducers and pebble transducers; we will use pebble transducers. Recall from \cref{lem:reachability-pebble-automaton} that if we fix a pebble transducer with states $Q$ and $k$ pebbles, then the set of configurations is described by the polynomial sort
 \begin{align*}
     \tau(n) = \sum_{\ell \in \set{0,\ldots,k}} Q \times (1+n)^\ell
 \end{align*}
@@ -268,12 +274,13 @@ From reachability we can define in \mso the successor relation on productive con
 \begin{align*}
 \psi(s : \tau, t : \tau)
 \end{align*}
-which holds if both $s$ and $t$ are productive configurations, and there is no productive configuration between them. The following lemma shows that if we build a data structure in linear time, then we will be able to navigate between productive configurations in constant time. Therefore, after building the data structure, we can produce the output string with constant delay between consecutive output letters. This gives  \cref{thm:evaluation-polyregular} about evaluation of polyregular functions. 
+\issue{Math: explicitly require $t$ to be reachable strictly after $s$; ``no productive configuration between them'' alone also permits $s=t$. Also explain how the first productive configuration is found and the no-output case detected.}% book review
+which holds if both $s$ and $t$ are productive configurations, and there is no productive configuration between them. The following lemma (which is stated in a minor generalisation where the variables $s$ and $t$ have different sorts) shows that after building a certain data structure in linear time, we will be able to navigate between productive configurations in constant time. Therefore, using this data structure, we can produce the output string with constant delay between consecutive output letters. This gives  \cref{thm:evaluation-polyregular} about evaluation of polyregular functions. 
 
 
 
 \begin{lemma}\label{lem:evaluation-mso-successor-in-constant-time}
-    Fix a finite alphabet  $A$ and  an \mso formula 
+    Fix a finite alphabet  $A$ and  an \mso formula
 \begin{align*}
 \varphi(s : \sigma, t : \tau)
 \end{align*}
@@ -283,24 +290,32 @@ over the vocabulary of $A^*$. Given an input string $w \in A^*$, one can compute
     \item \textbf{Output.} Some $t \in \tau(w)$ such that $\varphi(s,t)$ is true in $w$, or otherwise a  ``no'' answer if no such  $t$ exists.
 \end{itemize} 
 \end{lemma}
-\begin{proof} The formula in the statement of the lemma uses complex variables, which have variants and variable dimension. This is good for the application to pebble transducers, but for the proof we will prefer a simpler setting without variants, i.e.~the  input type $\sigma$ is $n^k$ for some $k$ and the output type $\tau$ is $n^\ell$ for some $\ell$, i.e.~the formula is 
+
+\issue{Editing: this sentence announces a remark, but the proof starts immediately. Remove it or supply the missing remark.}% book review
+Before proving the lemma, let us make a remark that will be used later in the book. 
+
+\begin{proof} The formula in the statement of the lemma uses complex variables, which have colours and variable dimension. This is good for the application to pebble transducers, but for the proof we will prefer a simpler setting without colours, i.e.~the  input sort $\sigma$ is $n^k$ for some $k$ and the output sort $\tau$ is $n^\ell$ for some $\ell$, i.e.~the formula is 
      \begin{align*}
     \psi(\myunderbrace{x_1,\ldots,x_k}{input\\ positions}, \myunderbrace{y_1,\ldots,y_\ell}{output\\ positions}),
     \end{align*}
 in which all free variables point to positions in the input string.
-    This special case is enough for the lemma, since the variant for the input  $s : \sigma$ is given, and the variant for the output $t : \tau$ has a constant number of  possibilities which can be handled by a case analysis. A second simplifying observation is that we can reduce to the case of one output position, i.e.~$\ell =1$. This is because we can progressively identify all coordinates of a tuple of output positions. More specifically,  consider the formula obtained from $\psi$ by existentially quantifying all output positions except the first one:
+    This special case is enough for the lemma, since the colour for the input  $s : \sigma$ is given, and the colour for the output $t : \tau$ has a constant number of  possibilities which can be handled by a case analysis. A second simplifying observation is that we can reduce to the case of at most  one output position, i.e.~$\ell \in \set{0,1}$.    
+    This is because if $\ell \ge 2$, then we can progressively identify all coordinates of a tuple of output positions. More specifically,  consider the formula obtained from $\psi$ by existentially quantifying all output positions except the first one:
 \begin{align*}
 \psi'(x_1,\ldots,x_k, y_1) \quad = \quad \exists y_2 \cdots \exists y_\ell \psi(x_1,\ldots,x_k, y_1,\ldots,y_\ell).
 \end{align*}
 This formula has one output position. If we can solve the problem for this formula, then we can find the first output position, i.e.~some choice for the first output position that can be extended with a choice for the remaining output positions. By repeating the process $\ell-1$ times, we can find all output positions, thus solving the original problem.  
 
-Summing up, we are left with the following problem: given an \mso formula
+\issue{Math/typo: the second ``special case of $\ell=0$'' should be ``of $\ell=1$''. Adding a dummy position only works on nonempty inputs; handle $w=\varepsilon$ separately.}% book review
+In the proof below, we consider the case of one output position, i.e.~$\ell=1$, since the case of no output positions $\ell=0$ can be handled by a subset of the same argument. (Also,  the case of no output positions $\ell=0$  can be seen as a special case of $\ell=0$, since we can add a dummy output variable that does not affect the truth value of the formula.)
+Summing up, we are left with the following problem: given an \mso formula 
 \begin{align*}
 \psi(x_1,\ldots,x_k, y),
 \end{align*}
 in which all $k+1$ variables range over positions in the input string,  we want to build a data structure that allows us to compute the output position $y$ in constant time based on the input positions $x_1,\ldots,x_k$, or say that no such position exists. 
 
 The data structure will be a Simon tree. To identify the underlying monoid homomorphism,  we explain how a monoid homomorphism can be used to evaluate the  \mso formula $\psi$. Define  the \emph{profile} of distinguished positions  $x_1,\ldots,x_k,y$ in a string $w \in A^*$ under a monoid homomorphism $h$ to be the information that is described in the following picture:
+\issue{Figure notation: the distinguished output position is labelled $f$; it should be $y$, as in the formula and the surrounding definition of the profile.}% book review
 \mypic{61}
 Once we fix the monoid homomorphism and the number of distinguished positions, the set of possible profiles is finite. We say that a  formula $\psi$  
 is \emph{recognised} by $h$ if the profile of a tuple of positions determines whether the formula is satisfied, i.e.~if we know the profile then we know if the formula is satisfied.
@@ -369,11 +384,13 @@ For $n \in \set{1,2,\ldots}$, consider
 \begin{align*}
 \setbuild{ w \in \set{a,b}^*}{the $n$-th letter is $a$}.
 \end{align*}
+\issue{Math: a complete DFA needs $n+2$ states (the $n$ prefix-counter states and two outcome sinks), not $n+1$. The monoid argument proves a lower bound of $2^n$, not exact size. Also ``homomorphismm'' $\to$ ``homomorphism'' and ``ony'' $\to$ ``only''.}% book review
 A deterministic automaton for this language has $n+1$ states, but the monoid recognising it has size $2^n$, since it needs to remember which of the first $n$ letters are $a$ and which are $b$. More formally, if we take some two strings $u,v$ that disagree on the $i$-th letter with $i \in \set{1,\ldots,n}$, then they must be mapped to different elements of the monoid, since otherwise prepending $a^{n-i}$ would yield two strings that have the same value under the homomorphismm, but  ony one of them is  in the language.
 }
 
 \exer{
 \label{exer:monoid-vs-deterministic-automaton-strengthened}    
+\issue{Language: ``$n$-the'' $\to$ ``$n$-th'' and ``paremeter'' $\to$ ``parameter''. Clarify that the reverse automaton tests the $n$-th position in the original direction, not a fixed-distance position in its own scan.}% book review
 Strengthen the previous exercise, by finding languages where the monoid is exponentially bigger than both  deterministic left-to-right and right-to-left automata. } { The language from the solution in the previous exercise will not work, since a right-to-left automaton needs to be exponential in order to check the $n$-the letter from the right (because it does not know the length of the input string). However, we can adapt the language by restricting it to  strings of constant length, say $2n$. (I.e.~the length is fixed for each language, with $n$ being a paremeter of the language.) The monoid lower bound continues to hold, but now the deterministic automata in both directions have size polynomial in $n$. 
  }
 
@@ -407,6 +424,7 @@ e(q) = q \quad \text{for every }q \in \im e.
 \begin{align*}
 \set{1,\ldots,n}^* \xrightarrow \max \set{1,\ldots,n},
 \end{align*}
+\issue{Math: the displayed domain must be $\{1,\ldots,n\}^+$, since maximum on $\varepsilon$ is undefined and the argument is about a semigroup homomorphism.}% book review
 which is a semigroup homomorphism, where the semigroup operation is the maximum of two numbers. Define a string 
 \begin{align*}
 w_0 & = \varepsilon \\
@@ -419,11 +437,13 @@ In this string, we cannot find a factor with three consecutive idempotents, i.e.
 \label{exer:weak-simon-tree-aperiodic}    
 A weak Simon tree is defined like a Simon tree, except that the idempotent property is relaxed as follows: if a node has at least three children, then all these children must be labelled by the same monoid element, but this element does not need to be an idempotent. Show that if the monoid is aperiodic, then a weak Simon tree can be computed by an aperiodic rational function.
 } {
+\issue{Math: an aperiodic group can still arise, but it is the trivial group. Treat this case explicitly instead of claiming that the group case never occurs.}% book review
     By revisiting the proof of the Factorisation Forest Theorem. In the proof, the semigroup is changed by going to a sub-semigroup, and this preserves aperiodicity. Therefore, if we begin with an aperiodic semigroup, then we will only encounter aperiodic semigroups in the proof. That means that the group case will never arise. Another part that we need to be careful about is \cref{lem:factorisation-forest-single-letter}: the proof of this lemma groups strings into factors of constant size, which would require some form of modulo counting. However, if we want a weak Simon tree, then no grouping is needed, since we can use a trivial weak Simon tree of height one, where all positions of the input string are children of the root node.
  }
 
 \exer{
     \label{exer:non-weak-simon-tree-not-aperiodic}
+\issue{Math: state that there exists an aperiodic monoid for which no such bounded-height first-order selector exists. The assertion is false for every aperiodic monoid: the trivial monoid admits the obvious height-one selector. Also ``an first-order'' $\to$ ``a first-order''.}% book review
 Show that even under the assumption that  the monoid is aperiodic,  a (non-weak) Simon tree cannot be computed by an first-order definable rational function.} { Consider the function
 \begin{align*}
  \onetype^* \xrightarrow h \set{0,1,2}
@@ -439,11 +459,13 @@ Define a formula $\varphi(x)$ which selects a position of the input string $w$ i
 \exer{ 
 \label{exer:linear-time-data-structure-for-rational-relation}    
 Consider a rational relation $R \subseteq A^* \times \onetype^*$. Show that for an input string $w \in A^*$ we can compute a data structure in linear time, which allows us to answer the following queries in constant time: given a factor $v$ of $w$, compute some number $n$ such that $R(v,1^n)$, or report that the output does not exist. } { 
+\issue{Math: first eliminate input-$\varepsilon$ transitions (handling empty input separately), or use the $\varepsilon$-closure relation as the identity of a submonoid. As written, $h(\varepsilon)$ can differ from the identity relation, so $h$ need not be a monoid homomorphism into the stated relation monoid.}% book review
 Suppose that the rational relation is computed by a nondeterministic one-way automaton with output that has states $Q$. We consider the monoid homomorphism
 \begin{align*}
 A^* \xrightarrow h \powerset{(Q \times Q)}
 \end{align*}
 which maps an input string to the possible source-target pairs of runs that input this string. The data structure is a Simon tree for this homomorphism, extended with the following information for every node $x$ in the tree:
+\issue{Language: ``For every of states'' $\to$ ``For every pair of states''; ``queries can answered'' $\to$ ``queries can be answered''; ``according the how'' $\to$ ``according to how''.}% book review
 \begin{itemize}
     \item For every of states $(p,q)$, we store  a number 
     \begin{align*}
@@ -465,6 +487,7 @@ according the how the factors are placed in the subtrees of $x_i,\ldots,x_j$. We
 \begin{align*}
 q_{i-1} \xrightarrow {v_i} q_i \xrightarrow{v_{i+1}} \cdots \xrightarrow{v_j} q_j
 \end{align*}
+\issue{Precision: only the fully covered middle-child factors have the common idempotent relation; the two boundary fragments need not. Handle fewer than four child factors separately before using the displayed middle run and prefix-sum subtraction.}% book review
 The crucial observation is that the reachability relation on the factors is an idempotent, and therefore by the solution of \cref{exer:idempotents-in-monoid-of-relations}, we can choose the run so that there is some state $r$ which is used in almost all steps, except for the first two steps and the last two steps. (We need the first two steps, since the first step in $v_i$ might not read the entire factor $v_i$, and the second step is needed to reach the state $r$. Similarly, we need the last two steps to leave the state $r$ and reach the final state $q_j$.) Therefore, we know that we can choose the run so that it has the following form:
 \begin{align*}
 q_{i-1} \xrightarrow {v_i} q_i \xrightarrow{v_{i+1}} \myunderbrace{r \xrightarrow{v_{i+2}} \cdots  \xrightarrow{v_{j-2}} r}{this part uses only state $r$ in \\ the gaps between the factors} \xrightarrow{v_{j-1}} q_{j-1} \xrightarrow{v_j} q_j.

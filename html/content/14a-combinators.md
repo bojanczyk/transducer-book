@@ -4,7 +4,7 @@ weight = 142
 source = "partCRegular/combinators.tex"
 +++
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-% context stamp 4698b22f
+% context stamp bf5d2909
 % Generated chapter wrapper; source body remains untouched.
 \setcounter{mypart}{3}
 \setcounter{section}{4}
@@ -18,7 +18,7 @@ source = "partCRegular/combinators.tex"
 <div class="exercises">
 <div class="exercise" id="exercise-1">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-% context stamp 4698b22f
+% context stamp bf5d2909
 \setcounter{mypart}{3}\setcounter{section}{5}\setcounter{theorem}{18}\setcounter{exercise}{0}
 \begin{exercise}
 \label{exer:if-then-else} Recall that we think of the type $\onetype + \onetype$ as representing Booleans. Show that functions definable by regular (or rational) terms are closed under the following conditional construction
@@ -39,7 +39,7 @@ A \xrightarrow {f_1,f_2} B.
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-% context stamp 4698b22f
+% context stamp bf5d2909
 \setcounter{mypart}{3}\setcounter{section}{5}\setcounter{theorem}{18}
 \noindent\textbf{Solution.}\quad For regular terms, we use the following composition:
 \begin{align*}
@@ -52,7 +52,7 @@ For rational terms we cannot use the pairing in the first step. However, we can 
 </div>
 <div class="exercise" id="exercise-2">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-% context stamp 4698b22f
+% context stamp bf5d2909
 \setcounter{mypart}{3}\setcounter{section}{5}\setcounter{theorem}{18}\setcounter{exercise}{1}
 \begin{exercise}
 \label{exer:filter-plus}
@@ -67,7 +67,7 @@ that keeps only the list elements of type $A$.
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-% context stamp 4698b22f
+% context stamp bf5d2909
 \setcounter{mypart}{3}\setcounter{section}{5}\setcounter{theorem}{18}
 \noindent\textbf{Solution.}\quad Using the conditional function from the previous exercise, we can  the function
     \begin{align*}
@@ -82,7 +82,7 @@ that keeps only the list elements of type $A$.
 </div>
 <div class="exercise" id="exercise-3">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-% context stamp 4698b22f
+% context stamp bf5d2909
 \setcounter{mypart}{3}\setcounter{section}{5}\setcounter{theorem}{18}\setcounter{exercise}{2}
 \begin{exercise}
 \label{exer:identity-function-replacement}Show that the general version $A \xrightarrow \idterm A$ of the identity function can be replaced by its special case of $A = \onetype$, and the expressive power of the regular terms is not affected. In fact, even the special case is not needed.
@@ -92,7 +92,7 @@ that keeps only the list elements of type $A$.
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-% context stamp 4698b22f
+% context stamp bf5d2909
 \setcounter{mypart}{3}\setcounter{section}{5}\setcounter{theorem}{18}
 \noindent\textbf{Solution.}\quad By induction on the structure of the type $A$, we can lift the identity function from $\onetype$ to arbitrary types. We can implement the identity function on $\onetype$ as follows:
 \begin{align*}
@@ -104,7 +104,7 @@ that keeps only the list elements of type $A$.
 </div>
 <div class="exercise" id="exercise-4">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-% context stamp 4698b22f
+% context stamp bf5d2909
 \setcounter{mypart}{3}\setcounter{section}{5}\setcounter{theorem}{18}\setcounter{exercise}{3}
 \begin{exercise}
 \label{exer:group-prefix-multiplication-isomorphism}Show that group prefix multiplication is an isomorphism.
@@ -114,7 +114,7 @@ that keeps only the list elements of type $A$.
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-% context stamp 4698b22f
+% context stamp bf5d2909
 \setcounter{mypart}{3}\setcounter{section}{5}\setcounter{theorem}{18}
 \noindent\textbf{Solution.}\quad Suppose that the output is 
     \begin{align*}
@@ -127,7 +127,7 @@ that keeps only the list elements of type $A$.
 </div>
 <div class="exercise" id="exercise-5">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-% context stamp 4698b22f
+% context stamp bf5d2909
 \setcounter{mypart}{3}\setcounter{section}{5}\setcounter{theorem}{18}\setcounter{exercise}{4}
 \begin{exercise}
 \label{exer:windows-of-size-two} Write a regular term of type $A^* \to (A \times A)^*$ which outputs all windows of size two in the input list, as in the following example 
@@ -140,7 +140,7 @@ that keeps only the list elements of type $A$.
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-% context stamp 4698b22f
+% context stamp bf5d2909
 \setcounter{mypart}{3}\setcounter{section}{5}\setcounter{theorem}{18}
 \noindent\textbf{Solution.}\quad Consider a function 
     \begin{align*}
@@ -166,7 +166,7 @@ Remove the last list element, and apply $(\idterm, \headterm)^*$, leading to the
 </div>
 <div class="exercise" id="exercise-6">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-% context stamp 4698b22f
+% context stamp bf5d2909
 \setcounter{mypart}{3}\setcounter{section}{5}\setcounter{theorem}{18}\setcounter{exercise}{5}
 \begin{exercise}
 \label{exer:natural-identity} Consider a family of functions 
@@ -187,7 +187,7 @@ commutes for every function $g: A \to B$. Show that each $f_A$ must be the ident
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-% context stamp 4698b22f
+% context stamp bf5d2909
 \setcounter{mypart}{3}\setcounter{section}{5}\setcounter{theorem}{18}
 \noindent\textbf{Solution.}\quad We do not even need to compare the functions for different types $A$. Consider some type $A$  and a function $f : A\to A$ 
     which is natural in the sense that $f;g = g;f$ holds for every function $g : A \to A$. We will show that $f$ must be the identity function. Indeed, let $a \in A$ and take a function $g$ which maps all elements to $a$. Then we have 
@@ -205,7 +205,7 @@ commutes for every function $g: A \to B$. Show that each $f_A$ must be the ident
 </div>
 <div class="exercise" id="exercise-7">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-% context stamp 4698b22f
+% context stamp bf5d2909
 \setcounter{mypart}{3}\setcounter{section}{5}\setcounter{theorem}{18}\setcounter{exercise}{6}
 \begin{exercise}
 \label{exer:head-operation-natural} Show that there is no natural transformation of type $A^* \to A$. In particular, the   $\headterm$ operation from \cref{claim:head} is not  a natural transformation.
@@ -215,7 +215,7 @@ commutes for every function $g: A \to B$. Show that each $f_A$ must be the ident
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-% context stamp 4698b22f
+% context stamp bf5d2909
 \setcounter{mypart}{3}\setcounter{section}{5}\setcounter{theorem}{18}
 \noindent\textbf{Solution.}\quad Take any type $A$ and apply $f_A$ to the empty list, yielding some $a \in A$.  Take now any type $B$ that has at least two elements, e.g.~$B = \onetype + \onetype$, 
     and consider two functions 
@@ -233,7 +233,7 @@ commutes for every function $g: A \to B$. Show that each $f_A$ must be the ident
 </div>
 <div class="exercise" id="exercise-8">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-% context stamp 4698b22f
+% context stamp bf5d2909
 \setcounter{mypart}{3}\setcounter{section}{5}\setcounter{theorem}{18}\setcounter{exercise}{7}
 \begin{exercise}
 \label{exer:natural-list-function} Show that there are uncountably many natural transformations of type $A^* \to A^*$.
@@ -243,7 +243,7 @@ commutes for every function $g: A \to B$. Show that each $f_A$ must be the ident
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-% context stamp 4698b22f
+% context stamp bf5d2909
 \setcounter{mypart}{3}\setcounter{section}{5}\setcounter{theorem}{18}
 \noindent\textbf{Solution.}\quad Choose some function 
     \begin{align*}
@@ -261,7 +261,7 @@ commutes for every function $g: A \to B$. Show that each $f_A$ must be the ident
 </div>
 <div class="exercise" id="exercise-9">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-% context stamp 4698b22f
+% context stamp bf5d2909
 \setcounter{mypart}{3}\setcounter{section}{5}\setcounter{theorem}{18}\setcounter{exercise}{8}
 \begin{exercise}
 \label{exer:natural-transformations-from-A}  Show that all natural transformations of type $A \to A^*$ are regular (i.e.~regular for each type).
@@ -271,7 +271,7 @@ commutes for every function $g: A \to B$. Show that each $f_A$ must be the ident
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-% context stamp 4698b22f
+% context stamp bf5d2909
 \setcounter{mypart}{3}\setcounter{section}{5}\setcounter{theorem}{18}
 \noindent\textbf{Solution.}\quad By similar reasoning as in the previous exercise, one can show that such a natrual transformation is uniquely determined by the length of the output list, and it must simply repeat the input element that many times.
 {{< /latex >}}
@@ -280,7 +280,7 @@ commutes for every function $g: A \to B$. Show that each $f_A$ must be the ident
 </div>
 <div class="exercise" id="exercise-10">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-% context stamp 4698b22f
+% context stamp bf5d2909
 \setcounter{mypart}{3}\setcounter{section}{5}\setcounter{theorem}{18}\setcounter{exercise}{9}
 \begin{exercise}
 \label{exer:natural-transformations-from-regular-terms} The notion of natural transformation is easily extended to functors that use multiple type variables. With the exception of group prefix multiplicaiton, the atomic functions in \cref{def:regular-terms}  are indexed by types, and hence they can potentially be natural transformations. Show that they are indeed natural transformations.
@@ -290,7 +290,7 @@ commutes for every function $g: A \to B$. Show that each $f_A$ must be the ident
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-% context stamp 4698b22f
+% context stamp bf5d2909
 \setcounter{mypart}{3}\setcounter{section}{5}\setcounter{theorem}{18}
 \noindent\textbf{Solution.}\quad A routine inspection.
 {{< /latex >}}
@@ -299,7 +299,7 @@ commutes for every function $g: A \to B$. Show that each $f_A$ must be the ident
 </div>
 <div class="exercise" id="exercise-11">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-% context stamp 4698b22f
+% context stamp bf5d2909
 \setcounter{mypart}{3}\setcounter{section}{5}\setcounter{theorem}{18}\setcounter{exercise}{10}
 \begin{exercise}
 \label{exer:natural-transformations-list-free} Consider a natural transformation, possibly with more than one type parameter, where the domain functor does not use the list constructor. Show that such a natural transformation is definable by a regular term. \footnote{As a corollary, we could more succinctly say that the atomic functions in \cref{def:regular-terms} are all natural transformations, as well as the functions that have lists in their domain, which are group prefix multiplication, $\reverseterm, \consterm, \unconsterm, \concatterm$ and $\blockterm$.}
@@ -309,7 +309,7 @@ commutes for every function $g: A \to B$. Show that each $f_A$ must be the ident
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-% context stamp 4698b22f
+% context stamp bf5d2909
 \setcounter{mypart}{3}\setcounter{section}{5}\setcounter{theorem}{18}
 \noindent\textbf{Solution.}\quad Suppose first that the domain type is a product 
     \begin{align*}

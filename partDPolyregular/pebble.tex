@@ -71,12 +71,13 @@ We now show that with stack discipline, the model becomes continuous.
     \]
     This is easy to show, by using a product of the pebble transducer with a \dfa that recognises the regular language. Therefore, in order to prove the theorem, it is enough to show that pebble automata recognise only regular languages. (They also recognise all regular languages, since they generalise \dfa.) 
  
-    Consider a pebble automaton that has $k$ pebbles and states $Q$. If the input string has length $n$, then the set of configurations can be described by the polynomial
+\issue{Language: ``a configurations'' $\to$ ``a configuration''; ``in the same was'' $\to$ ``in the same way'', ``configuraitons'' $\to$ ``configurations'', and remove ``the the'' below.}% book review
+    Consider a pebble automaton that has $k$ pebbles and states $Q$. To describe the accepted language, we will use \mso logic, in the multi-sorted variant that was described in \cref{sec:logic}. If the input string has length $n$, then a configurations can be described using the polynomial sort
     \begin{align}
         \label{eq:type-of-configurations-for-pebble-automaton}
     \tau(n) = \sum_{\ell \in \set{0,\ldots,k}} Q \times (1+n)^\ell.
     \end{align}
-    The main observation in the proof is that reachability of configurations can be defined in \mso, as stated in the following lemma.
+    The main observation in the proof is that reachability of configurations can be defined in \mso,  as stated in the following lemma.
     \begin{lemma}\label{lem:reachability-pebble-automaton}
         Let $\tau$ be as in~\eqref{eq:type-of-configurations-for-pebble-automaton}. There is an \mso formula 
     \begin{align*}
@@ -94,13 +95,8 @@ We now show that with stack discipline, the model becomes continuous.
 
 
     \begin{proof}
-        The most natural idea would be to define one-step reachability using a formula $\psi$, and to then express  reachability as a fixpoint, as follows
-        \begin{align*}
-        \myunderbrace{\forall X : 2^\tau}{for every \\ set $X$ of \\ configurations} 
-        \quad 
-        \myunderbrace{(s \in X}{if $X$ \\ contains\\ the source} \land \myunderbrace{\forall c : \tau \ \forall d : \tau\  \psi(c,d) \land c \in X \Rightarrow d \in X)}{and is closed under  taking transitions} \quad \Rightarrow \quad \myunderbrace{t \in X}{then  $X$ \\ contains\\ the target}.
-        \end{align*}
-        Unfortunately, this approach does not work directly, since we cannot quantify over sets of type $2^\tau$. This is because $\tau$ contains tuples of positions (if the automaton has $k>1$ pebbles), and monadic second-order logic can only quantify over sets of individual positions. To work around this issue, we will have to appeal to the stack discipline. 
+        The most natural idea would be to define one-step reachability in the same was as we did in \cref{ex:reachability-of-configurations}: if a set of configuraitons contains the source and is closed under single transitions, then it must contain the target. 
+        Unfortunately, this approach does not work directly, since we cannot quantify over sets of sort $2^\tau$ if the the automaton has at least two pebbles, since  monadic second-order logic only allows linear sorts $\tau$ in the exponent. To work around this issue, we will have to appeal to the stack discipline. 
         
         The proof is based on the analysis of special runs, which we call \emph{balanced runs}: this is a run in which the source and target have the same height, and the top pebble is never popped (but it can be moved).  Every run of the pebble automaton can be decomposed into a sequence of at most $4k$ runs, each of which is either a single transition, or a balanced run, as explained in the following picture, which shows the evolution of the stack:
 \mypic{53}
@@ -108,7 +104,7 @@ We now show that with stack discipline, the model becomes continuous.
 
     When formalising balanced runs, we will think of a configuration with stack of  height $\ell > 0$ as being a pair of the form $(x,y)$ where
         \begin{align*}
-        \myunderbrace{x: (1+n)^{\ell-1}}{prefix of the  stack \\  that  has height $\ell-1$} \quad  \quad \myunderbrace{y: \myoverbrace{Q \times (1+n)}{we write $\sigma$ \\ for this type}}{the head}.
+        \myunderbrace{x: (1+n)^{\ell-1}}{prefix of the  stack \\  that  has height $\ell-1$} \quad  \quad \myunderbrace{y: \myoverbrace{Q \times (1+n)}{we write $\sigma$ \\ for this sort}}{the head}.
         \end{align*}
     The point of this decomposition is that a balanced run modifies $y$ but not $x$.  The following claim shows that balanced runs can be defined in \mso, and thus concludes the proof of the lemma.
         \begin{claim}\label{claim:reachability-basic-run}
@@ -119,6 +115,7 @@ We now show that with stack discipline, the model becomes continuous.
     which holds if and only if there is a balanced run from  $(x,y_1)$ to  $(x,y_2)$.
         \end{claim}
 \begin{proof}
+\issue{Math: include transitions that change state without moving a pebble (e.g. an output action, when output is ignored). The listed basic balanced runs only cover moves and push/pop excursions, so they omit these transitions.}% book review
     The proof is by induction on $\ell$, but in the opposite order: the induction starts with $\ell=k$ and proceeds down until $\ell=1$. The base case is proved in the same way as the induction step, so we will only describe the induction step. Define a \emph{basic balanced run} to be a balanced run which is either: (a) a single transition that moves pebble $\ell$; or (b) a run that starts by pushing pebble $\ell+1$, then does a balanced run, and finishes with popping pebble $\ell+1$. A balanced run is a composition of basic balanced runs. Using the induction assumption (if $\ell < k$), we can write an \mso formula 
     \begin{align*}
     \psi(x : (1+n)^{\ell-1}, y_1  : \sigma, y_2 : \sigma)
@@ -129,7 +126,7 @@ We now show that with stack discipline, the model becomes continuous.
         \quad 
         \myunderbrace{(y_1 \in Y}{if $Y$ \\ contains\\ the source} \land \myunderbrace{\forall c : \sigma \ \forall d : \sigma\  \psi(x,c,d) \land c \in Y \Rightarrow d \in Y)}{and is closed under  taking basic balanced runs} \quad \Rightarrow \quad \myunderbrace{y_2 \in Y}{then  $Y$ \\ contains\\ the target}.
         \end{align*}
-    The difference with respect to the erroneous fixpoint construction at the beginning of the lemma is that the type $\sigma$ is linear, and therefore quantification over sets of type $2^\sigma$ is allowed in \mso, as explained below:
+    The difference with respect to the erroneous fixpoint construction at the beginning of the lemma is that the sort $\sigma$ is linear, and therefore quantification over sets of sort $2^\sigma$ is allowed in \mso, as explained below:
 \begin{align*}
 2^\sigma = 2^{Q \times (1+n)} = \myoverbrace{(2^{1} \times 2^{n}) \times \cdots \times (2^{1} \times 2^{n})}{quantifying over a subset of $Q \times (1+n)$ is like \\ quantifying over $|Q|$ bits and $|Q|$ subsets of $n$}.
 \end{align*}
@@ -180,7 +177,10 @@ Before proving the lemma, we show how to use it to conclude the proof of the the
 
 
 \begin{proof}[Proof of Lemma~\ref{lem:children-of-configuration-in-pebble-run}] Fix some $k$-pebble transducer for the rest of the proof.   Suppose that the input is a configuration with stack of height $\ell$. If $\ell =k$, then there is nothing to do, since the stack is already at full height and there can be no children. Suppose now that $\ell < k$. The children of the input configuration can be  described as a directed graph, in which an edge represents a run between two configurations of height $\ell+1$ that are not separated by any configuration of height $\ell +1$. Here is a picture of this graph, in which $\ell=3$.
+\issue{Math: a child-graph edge can stay in the same column (an output step or a push/pop excursion returns to the same head position). Explain how such edges are normalised before applying the snake-graph proof, which only allows edges between adjacent columns.}% book review
+\issue{Figure typo: the three lower pebbles are labelled $x_1,x_2,x_2$. Change the repeated lower-left $x_2$ to $x_3$.}% book review
 \mypic{49}
+\issue{Boundary case: a graph encoding of length equal to the input cannot encode the nontrivial gap configurations on an empty string. Add a special empty-input encoding or an extra boundary cell.}% book review
 The picture also contains additional annotation (in red), which gives us the input string and the positions of pebbles $\set{1,\ldots,\ell}$ that stay fixed throughout the run. We use the name \emph{child configuration graph} for this graph. The child configuration graph can be represented as a string over a fixed finite alphabet, whose length is the same as the input string.  This string contains the red annotation of the input string together with the positions of pebble $\ell+1$ in each child. Using this string representation, it is meaningful to talk about a for-transducer which outputs the child configuration graph.
 
 \begin{claim}\label{claim:from-configuration-to-child-configuration-graph}
@@ -212,10 +212,12 @@ A pebble automaton can easily be simulated in logarithmic space, since a configu
 
 The more interesting direction is to show that a logarithmic space Turing machine can be simulated by a pebble automaton. The idea is that if the input string has length $n$, then one pebble can be used to store a stack of bits of length at most $\log n$. Therefore, a logarithmic size memory tape can be simulated using two stacks, one on the left and one on the right, each of which can be implemented by a constant number of pebbles, as in the following picture:
 \mypic{60}  We need to implement the stack operations using a pebble automaton:
+\issue{Math: the binary-stack encoding loses leading zeroes: pushing $0$ onto the empty stack at gap $0$ leaves it at $0$, indistinguishable from empty. Add a sentinel bit (and adjust the gap offset and capacity) before using these push/pop rules.}% book review
 \begin{itemize}
     \item emptiness means that the pebble is at the first gap of the input string;
     \item having bit $0$ on the top means that the pebble is at an even-numbered gap;
     \item having bit $1$ on the top means that the pebble is at an odd-numbered gap;
+\issue{Language: ``the pebble updated'' $\to$ ``the pebble is updated''.}% book review
     \item popping means that the pebble updated by $i \mapsto \lfloor i/2 \rfloor$;
     \item pushing bit $0$ means that the pebble is updated by $i \mapsto 2i$;
     \item pushing bit $1$ means that the pebble is updated by $i \mapsto 2i+1$.

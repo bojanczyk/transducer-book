@@ -80,6 +80,7 @@ So far we have proved that the regular functions are exactly those which can be 
 \end{myexample}
 
 \begin{myexample}[Iterated duplication]
+\issue{Boundary case: $X\mapsto XX$ alone, with initially empty registers, always gives empty output. Seed $X$ with a letter or use $X\mapsto XXa$ to obtain exponential growth.}% book review
     Using a register update of the form $X \mapsto XX$, we could implement a function with exponential output size. This will be forbidden in our model, by requiring that the register updates are copyless, which means intuitively that each register from the old valuation can be used at most once in the new valuation. 
 \end{myexample}
 
@@ -146,6 +147,7 @@ In this section we show that  the \sst model is equivalent to the ones previousl
 \paragraph*{\sst to regular.} Let us first show that every \sst computes a regular function. Since the regular functions are the same as two-way transducers by Theorem~\ref{thm:2dfa-decomposition-into-primes}, we will prove this by converting an \sst into an equivalent two-way transducer. A single register update of the \sst can be visualised as a forest (of depth 1), as in the following picture:
 \mypic{45}
 The fact that the picture above is a forest, i.e.~that the registers in the left column of the above picture have outdegree at most one, is a consequence of the copyless restriction on the register updates.
+\issue{Math: the final output function is allowed to copy registers, so the flow need not be a tree. First apply the earlier transformation that makes the final output copyless.}% book review
 If we compose all the register updates that are applied when reading an input string of length $n$, and then we add the final output update, then we get a tree of depth $n+1$, as explained in the following picture (the unreachable parts are erased from the tree):
 \mypic{46}
 We use the name \emph{register flow tree} for this tree. This tree can be computed by a rational function, under a suitable string representation, similar to the one for the configuration graph in Section~\ref{sec:2dfa-continuity}. Since two-way transducers are closed under pre-composition with rational functions by Corollary~\ref{cor:2dfa-closure-under-composition}, it remains to show that there is a two-way transducer which inputs a (string representation of) a  register flow tree, and outputs the corresponding output string. This is easy to see, since the output string is produced by traversing the register flow tree in a depth-first search, which can easily be implemented by a two-way transducer. 
@@ -211,6 +213,7 @@ In the new \sst computing the composition of $f$ with map reverse, each register
  \myoverbrace{X\mapsto YZ}{concatenation}.
  \end{align*}
 
+\issue{Math: prepending the first separator requires a separate update. When $X$ has no separator, the invariant for $\#X$ is $X_1=\varepsilon$, $X_2=\#$ and $X_3=\operatorname{reverse}(X)$; the displayed update instead moves the old content into $X_2$. Appending with no separator also needs a separate case.}% book review
  \begin{itemize}
     \item \textbf{Prepending a letter.} If the original \sst does a prepend operation $X \mapsto  aX$ for a letter $a$ that is not the separator symbol, then the new \sst simulates this by adding the same letter to the left part in the opposite order, i.e.~$X_1 \mapsto  X_1a$. If the prepended letter is the separator symbol $\#$, then we need to move the left part into the middle part, which is implemented by the following update (updates are, as usual, simultaneous): 
     \begin{align*}
@@ -257,6 +260,7 @@ In the edge case, where there is no reset letter in $X$, the first part is the w
 X_q & \mapsto  Y_q  \\
 X_{\text{right}} & \mapsto  Y_{\text{right}} Z_p Z_{\text{right}},
 \end{align*}
+\issue{Math: this update assumes $Y$ contains a reset letter. If it does not, the state after $Y$ depends on the entering state $q$; update each $X_q$ using the appropriate $Z$-part until the first reset. State this missing case.}% book review
 where $p$ is the state of the Mealy machine after reading $Y$; the relevant state $p$ can be inferred from the information stored in the state of the new \sst. This is a copyless update, as required. The updates for prepending/appending letters are similar, and are left to the reader.
 \end{itemize}
 This completes the proof that \sst's are closed under post-composition with the Mealy machines, and more generally, all prime functions used in the regular functions. 
@@ -297,6 +301,7 @@ For the regular language, we use a monoid homomorphism. We can now simulate the 
 
  \exer{\label{exer:sst-copyful-sst-output-size} Show that copyful \sst's can have exponential size outputs, but not doubly exponential.
 }  {
+\issue{Math: new output letters contribute an additive constant: $L_{n+1}\le cL_n+d$. The stated multiplicative bound fails at $L_0=0$, and $O(c^n)$ fails for $c=1$ with linear growth. Use a larger constant $C>1$ for an $O(C^n)$ bound.}% book review
 For the upper bound, observe that for each input letter, the combined length of the strings in the registers can be at most multiplied by some fixed constant $c \in \set{1,2,\ldots}$, namely the maximal number of times that a register name is used in an update. Hence the output size is $\Oo(c^n)$, which is exponential and not doubly exponential.
 
 The upper bound is attained. Consider the copyful \sst with one register $X$, which starts empty, and the transitions
@@ -314,6 +319,7 @@ a^n \mapsto a^{2^{2^n-1}-1},
 which has doubly exponential output size, and hence it is not computed by a copyful \sst, again by the previous exercise.
 }
 
+\issue{Language: ``A polynomial function computes'' $\to$ ``A polynomial automaton computes''.}% book review
   \exer{\label{exer:sst-polynomial-automaton} A polynomial automaton is an automaton with registers, like an \sst, but the registers hold rational numbers instead of strings. The updates need not be copyless, and they can use both addition and multiplication. A polynomial function computes a string-to-rational-number function. Show that $a^n \mapsto 2^n$ can be computed by a polynomial automaton. } { There is one register, which starts with $1$ and is doubled in each step. }
 
     \exer{\label{exer:sst-polynomial-automaton-doubly-exponential}  Show that $a^n \mapsto 2^{2^n}$ can be computed by a polynomial automaton. } { There is one register, which starts with $2$ and is squared in each step. }

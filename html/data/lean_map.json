@@ -63,7 +63,7 @@
   "Transducers.Exercises.block_from_split": {
    "kind": "exercise",
    "label": "exer:block-from-split",
-   "number": "D.3.3"
+   "number": "D.4.3"
   },
   "Transducers.Exercises.compatCompression_of_isRationalFun": {
    "kind": "exercise",
@@ -213,7 +213,7 @@
   "Transducers.Exercises.fo_non_elementary_order": {
    "kind": "claim",
    "label": "lem:fo-non-elementary-order",
-   "number": "C.4.17"
+   "number": "C.4.18"
   },
   "Transducers.Exercises.fo_succ_strictly_weaker": {
    "kind": "exercise",
@@ -244,6 +244,26 @@
    "kind": "exercise",
    "label": "exer:2dfa-loop-elimination",
    "number": "C.2.4"
+  },
+  "Transducers.Exercises.height_of_simon_tree": {
+   "kind": "exercise",
+   "label": "exer:height-of-simon-tree",
+   "number": "D.3.5"
+  },
+  "Transducers.Exercises.idempotent_function_iff": {
+   "kind": "exercise",
+   "label": "exer:idempotents-in-monoid-of-functions",
+   "number": "D.3.3"
+  },
+  "Transducers.Exercises.idempotent_relation_iff": {
+   "kind": "exercise",
+   "label": "exer:idempotents-in-monoid-of-relations",
+   "number": "D.3.4"
+  },
+  "Transducers.Exercises.idempotent_relation_iff_of_finite": {
+   "kind": "exercise",
+   "label": "exer:idempotents-in-monoid-of-relations",
+   "number": "D.3.4"
   },
   "Transducers.Exercises.isBimachine_isRationalFun_evenLength": {
    "kind": "exercise",
@@ -340,6 +360,16 @@
    "label": "exer:minimal-subsequential",
    "number": "B.4.3"
   },
+  "Transducers.Exercises.monoid_vs_deterministic_automaton": {
+   "kind": "exercise",
+   "label": "exer:monoid-vs-deterministic-automaton",
+   "number": "D.3.1"
+  },
+  "Transducers.Exercises.monoid_vs_deterministic_automaton_strengthened": {
+   "kind": "exercise",
+   "label": "exer:monoid-vs-deterministic-automaton-strengthened",
+   "number": "D.3.2"
+  },
   "Transducers.Exercises.natural_id_eq_id": {
    "kind": "exercise",
    "label": "exer:natural-identity",
@@ -379,6 +409,11 @@
    "kind": "exercise",
    "label": "exer:non-minimal-automaton",
    "number": "B.4.5"
+  },
+  "Transducers.Exercises.non_weak_simon_tree_not_aperiodic": {
+   "kind": "exercise",
+   "label": "exer:non-weak-simon-tree-not-aperiodic",
+   "number": "D.3.7"
   },
   "Transducers.Exercises.not_isRationalFun_duplicate": {
    "kind": "exercise",
@@ -503,7 +538,7 @@
   "Transducers.Exercises.reverse_from_split": {
    "kind": "exercise",
    "label": "exer:reverse-from-split",
-   "number": "D.3.1"
+   "number": "D.4.1"
   },
   "Transducers.Exercises.sameIdeal_iff": {
    "kind": "exercise",
@@ -513,7 +548,7 @@
   "Transducers.Exercises.split_triple": {
    "kind": "exercise",
    "label": "exer:split-triple",
-   "number": "D.3.2"
+   "number": "D.4.2"
   },
   "Transducers.Exercises.squaring_continuous": {
    "kind": "exercise",
@@ -555,6 +590,26 @@
    "label": "exer:polyregular-unmarked-squaring",
    "number": "D.0.2"
   },
+  "Transducers.Exercises.weak_simon_tree_aperiodic": {
+   "kind": "exercise",
+   "label": "exer:weak-simon-tree-aperiodic",
+   "number": "D.3.6"
+  },
+  "Transducers.Exercises.weak_simon_tree_aperiodicBimachine": {
+   "kind": "exercise",
+   "label": "exer:weak-simon-tree-aperiodic",
+   "number": "D.3.6"
+  },
+  "Transducers.FactTree.IsWeakSimon": {
+   "kind": "exercise",
+   "label": "exer:weak-simon-tree-aperiodic",
+   "number": "D.3.6"
+  },
+  "Transducers.FactTree.enc": {
+   "kind": "lemma",
+   "label": "lem:factorisation-forest-rational",
+   "number": "D.3.10"
+  },
   "Transducers.ForProg.PrenexForm": {
    "kind": "definition",
    "label": "def:prenex-normal-form-for-transducers",
@@ -563,37 +618,37 @@
   "Transducers.HAtom": {
    "kind": "definition",
    "label": "def:higher-order-terms",
-   "number": "D.3.4"
+   "number": "D.4.4"
   },
   "Transducers.HTerm": {
    "kind": "definition",
    "label": "def:higher-order-terms",
-   "number": "D.3.4"
+   "number": "D.4.4"
   },
   "Transducers.HTerm.eval": {
    "kind": "definition",
    "label": "def:higher-order-terms",
-   "number": "D.3.4"
+   "number": "D.4.4"
   },
   "Transducers.HTerm.rel_eval": {
    "kind": "lemma",
    "label": "lem:fundamental-lemma",
-   "number": "D.3.7"
+   "number": "D.4.7"
   },
   "Transducers.HTy": {
    "kind": "definition",
    "label": "def:higher-order-types",
-   "number": "D.3.3"
+   "number": "D.4.3"
   },
   "Transducers.HTy.ArrowFree": {
    "kind": "definition",
    "label": "def:higher-order-types",
-   "number": "D.3.3"
+   "number": "D.4.3"
   },
   "Transducers.HTy.Sem": {
    "kind": "definition",
    "label": "def:higher-order-types",
-   "number": "D.3.3"
+   "number": "D.4.3"
   },
   "Transducers.HankelRank.zero_of_short": {
    "kind": "theorem",
@@ -608,7 +663,7 @@
   "Transducers.IsHigherOrderTermFun": {
    "kind": "definition",
    "label": "def:higher-order-terms",
-   "number": "D.3.4"
+   "number": "D.4.4"
   },
   "Transducers.IsMSORelabelling": {
    "kind": "definition",
@@ -618,7 +673,7 @@
   "Transducers.IsMSOTransduction": {
    "kind": "definition",
    "label": "def:mso-transduction",
-   "number": "C.4.7"
+   "number": "C.4.8"
   },
   "Transducers.IsMealy": {
    "kind": "definition",
@@ -628,7 +683,7 @@
   "Transducers.IsNaturalTransformation": {
    "kind": "definition",
    "label": "def:natural-transformation",
-   "number": "D.3.11"
+   "number": "D.4.11"
   },
   "Transducers.IsPolyregular": {
    "kind": "definition",
@@ -638,7 +693,7 @@
   "Transducers.IsPolyregularTermFun": {
    "kind": "definition",
    "label": "def:polyregular-terms",
-   "number": "D.3.1"
+   "number": "D.4.1"
   },
   "Transducers.IsRationalFun": {
    "kind": "definition",
@@ -723,12 +778,12 @@
   "Transducers.MSOTransduction": {
    "kind": "definition",
    "label": "def:mso-transduction",
-   "number": "C.4.7"
+   "number": "C.4.8"
   },
   "Transducers.MSOTransduction.exists_norm": {
    "kind": "lemma",
    "label": "lem:logic-reduction-to-type-n",
-   "number": "C.4.9"
+   "number": "C.4.10"
   },
   "Transducers.Mealy": {
    "kind": "definition",
@@ -758,12 +813,12 @@
   "Transducers.PolyTerm": {
    "kind": "definition",
    "label": "def:polyregular-terms",
-   "number": "D.3.1"
+   "number": "D.4.1"
   },
   "Transducers.PolyTerm.eval": {
    "kind": "definition",
    "label": "def:polyregular-terms",
-   "number": "D.3.1"
+   "number": "D.4.1"
   },
   "Transducers.PrimeMealyFam": {
    "kind": "definition",
@@ -808,17 +863,17 @@
   "Transducers.Rel": {
    "kind": "definition",
    "label": "def:good-function",
-   "number": "D.3.8"
+   "number": "D.4.8"
   },
   "Transducers.Rel.iff_polyregular": {
    "kind": "lemma",
    "label": "lem:fundamental-lemma",
-   "number": "D.3.7"
+   "number": "D.4.7"
   },
   "Transducers.Rel.reindex": {
    "kind": "claim",
    "label": "claim:logical-relations-closed-under-precomposition",
-   "number": "D.3.10"
+   "number": "D.4.10"
   },
   "Transducers.SST": {
    "kind": "definition",
@@ -854,6 +909,11 @@
    "kind": "claim",
    "label": "claim:computing-branching-part",
    "number": "B.4.10"
+  },
+  "Transducers.TreeSym": {
+   "kind": "lemma",
+   "label": "lem:factorisation-forest-rational",
+   "number": "D.3.10"
   },
   "Transducers.TwoWay": {
    "kind": "definition",
@@ -898,7 +958,7 @@
   "Transducers.atoms_are_natural": {
    "kind": "claim",
    "label": "claim:atomic-functions-are-natural-transformations",
-   "number": "D.3.12"
+   "number": "D.4.12"
   },
   "Transducers.bang_definable": {
    "kind": "claim",
@@ -963,12 +1023,42 @@
   "Transducers.exists_small_higherOrderTerm": {
    "kind": "lemma",
    "label": "lem:fewer-atomic",
-   "number": "D.3.5"
+   "number": "D.4.5"
   },
   "Transducers.exists_twoWayCode_bound": {
    "kind": "theorem",
    "label": "thm:decidable-equivalence-regular",
    "number": "C.1.4"
+  },
+  "Transducers.factorisation_forest": {
+   "kind": "theorem",
+   "label": "thm:factorisation-forest",
+   "number": "D.3.5"
+  },
+  "Transducers.factorisation_forest_evaluation": {
+   "kind": "lemma",
+   "label": "lem:factorisation-forest-evaluation",
+   "number": "D.3.4"
+  },
+  "Transducers.factorisation_forest_group": {
+   "kind": "lemma",
+   "label": "lem:factorisation-forest-group",
+   "number": "D.3.9"
+  },
+  "Transducers.factorisation_forest_rational": {
+   "kind": "lemma",
+   "label": "lem:factorisation-forest-rational",
+   "number": "D.3.10"
+  },
+  "Transducers.factorisation_forest_shrinking_letter": {
+   "kind": "lemma",
+   "label": "lem:factorisation-forest-shrinking-letter",
+   "number": "D.3.7"
+  },
+  "Transducers.factorisation_forest_single_letter": {
+   "kind": "lemma",
+   "label": "lem:factorisation-forest-single-letter",
+   "number": "D.3.6"
   },
   "Transducers.finite_domain_regular_list_function": {
    "kind": "claim",
@@ -998,12 +1088,12 @@
   "Transducers.foDefinable_iff_aperiodic_dfa": {
    "kind": "theorem",
    "label": "thm:logic-aperiodic",
-   "number": "C.4.11"
+   "number": "C.4.12"
   },
   "Transducers.foRelabelling_iff_aperiodicBimachine": {
    "kind": "theorem",
    "label": "thm:fo-rational-functions",
-   "number": "C.4.16"
+   "number": "C.4.17"
   },
   "Transducers.forTransducer_comp": {
    "kind": "lemma",
@@ -1028,7 +1118,7 @@
   "Transducers.good_of_functor_applied": {
    "kind": "claim",
    "label": "claim:functors-applied-to-good",
-   "number": "D.3.13"
+   "number": "D.4.13"
   },
   "Transducers.hom_complement_rational": {
    "kind": "claim",
@@ -1168,17 +1258,27 @@
   "Transducers.msoTransduction_iff_regular": {
    "kind": "theorem",
    "label": "thm:logic-regular-functions",
-   "number": "C.4.8"
+   "number": "C.4.9"
   },
   "Transducers.mso_annotated_regular": {
    "kind": "lemma",
    "label": "lem:mso-free-variables",
    "number": "C.4.2"
   },
+  "Transducers.mso_formula_recognised_by_homomorphism": {
+   "kind": "claim",
+   "label": "claim:mso-formula-recognised-by-homomorphism",
+   "number": "D.3.12"
+  },
   "Transducers.mso_formulas_via_rational": {
    "kind": "lemma",
    "label": "lem:logic-precomputation",
-   "number": "C.4.10"
+   "number": "C.4.11"
+  },
+  "Transducers.mso_profile": {
+   "kind": "claim",
+   "label": "claim:mso-formula-recognised-by-homomorphism",
+   "number": "D.3.12"
   },
   "Transducers.myhill_nerode_mealy": {
    "kind": "lemma",
@@ -1198,7 +1298,7 @@
   "Transducers.polyregularTerm_of_isPolyregular": {
    "kind": "theorem",
    "label": "thm:polyregular-terms",
-   "number": "D.3.2"
+   "number": "D.4.2"
   },
   "Transducers.polyregular_continuous": {
    "kind": "theorem",
@@ -1213,12 +1313,12 @@
   "Transducers.polyregular_iff_higherOrderTerm": {
    "kind": "theorem",
    "label": "thm:higher-order-terms",
-   "number": "D.3.6"
+   "number": "D.4.6"
   },
   "Transducers.polyregular_iff_polyregularTerm": {
    "kind": "theorem",
    "label": "thm:polyregular-terms",
-   "number": "D.3.2"
+   "number": "D.4.2"
   },
   "Transducers.ratTerm_isRational": {
    "kind": "theorem",
@@ -1345,6 +1445,11 @@
    "label": "thm:mso-logic-languages",
    "number": "C.4.1"
   },
+  "Transducers.regular_iff_recognised_by_monoid": {
+   "kind": "theorem",
+   "label": "thm:monoids-equal-automata",
+   "number": "D.3.2"
+  },
   "Transducers.regular_iff_regularTerm": {
    "kind": "theorem",
    "label": "thm:regular-terms",
@@ -1373,12 +1478,22 @@
   "Transducers.sat_iff_of_kEquiv": {
    "kind": "claim",
    "label": "claim:fo-composition-quantifier-rank",
-   "number": "C.4.14"
+   "number": "C.4.15"
+  },
+  "Transducers.semigroup_is_group": {
+   "kind": "lemma",
+   "label": "lem:semigroup-is-group",
+   "number": "D.3.8"
+  },
+  "Transducers.semigroup_is_group_false_without_nonempty": {
+   "kind": "lemma",
+   "label": "lem:semigroup-is-group",
+   "number": "D.3.8"
   },
   "Transducers.splitsList": {
    "kind": "definition",
    "label": "def:polyregular-terms",
-   "number": "D.3.1"
+   "number": "D.4.1"
   },
   "Transducers.sst_iff_regular": {
    "kind": "theorem",
@@ -1433,27 +1548,27 @@
   "Transducers.tiling_checker": {
    "kind": "lemma",
    "label": "lem:tiling-checker",
-   "number": "D.3.16"
+   "number": "D.4.16"
   },
   "Transducers.tiling_undecidable": {
    "kind": "lemma",
    "label": "lem:tiling",
-   "number": "D.3.15"
+   "number": "D.4.15"
   },
   "Transducers.tp": {
    "kind": "definition",
    "label": "def:k-types",
-   "number": "C.4.12"
+   "number": "C.4.13"
   },
   "Transducers.tp_eq_iff_fo_equiv": {
    "kind": "lemma",
    "label": "lem:k-types-fo-equivalence",
-   "number": "C.4.13"
+   "number": "C.4.14"
   },
   "Transducers.tp_properties": {
    "kind": "lemma",
    "label": "lem:k-types-properties",
-   "number": "C.4.15"
+   "number": "C.4.16"
   },
   "Transducers.twoWay_comp": {
    "kind": "theorem",
@@ -1503,7 +1618,7 @@
   "Transducers.undecidability_higherOrder": {
    "kind": "theorem",
    "label": "thm:undecidability-higher-order",
-   "number": "D.3.14"
+   "number": "D.4.14"
   },
   "Transducers.uniformisation": {
    "kind": "lemma",
@@ -1528,7 +1643,7 @@
   "blockSplitTerm": {
    "kind": "exercise",
    "label": "exer:block-from-split",
-   "number": "D.3.3"
+   "number": "D.4.3"
   },
   "children_of_configuration_in_pebble_run_witness": {
    "kind": "lemma",
@@ -1568,7 +1683,7 @@
   "eval_checkTerm": {
    "kind": "lemma",
    "label": "lem:tiling-checker",
-   "number": "D.3.16"
+   "number": "D.4.16"
   },
   "exists_rationalFun_inverse_of_injective": {
    "kind": "exercise",
@@ -1583,7 +1698,7 @@
   "flatten_headAsList_splits": {
    "kind": "exercise",
    "label": "exer:reverse-from-split",
-   "number": "D.3.1"
+   "number": "D.4.1"
   },
   "forTransducer_comp_aux": {
    "kind": "lemma",
@@ -1643,7 +1758,7 @@
   "isRegularFun_of_isMSOTransduction": {
    "kind": "theorem",
    "label": "thm:logic-regular-functions",
-   "number": "C.4.8"
+   "number": "C.4.9"
   },
   "isRegular_annLang": {
    "kind": "lemma",
@@ -1668,7 +1783,7 @@
   "isSmallHigherOrderTermFun_of_isHigherOrderTermFun": {
    "kind": "lemma",
    "label": "lem:fewer-atomic",
-   "number": "D.3.5"
+   "number": "D.4.5"
   },
   "isSubsequential_iff_aux": {
    "kind": "theorem",
@@ -1723,7 +1838,7 @@
   "mso_formulas_via_rational_aux": {
    "kind": "lemma",
    "label": "lem:logic-precomputation",
-   "number": "C.4.10"
+   "number": "C.4.11"
   },
   "msum_to_sum": {
    "kind": "claim",
@@ -1748,17 +1863,17 @@
   "polyBlockSplit": {
    "kind": "exercise",
    "label": "exer:block-from-split",
-   "number": "D.3.3"
+   "number": "D.4.3"
   },
   "polyReverse": {
    "kind": "exercise",
    "label": "exer:reverse-from-split",
-   "number": "D.3.1"
+   "number": "D.4.1"
   },
   "polyregularTerm_isPolyregular": {
    "kind": "theorem",
    "label": "thm:polyregular-terms",
-   "number": "D.3.2"
+   "number": "D.4.2"
   },
   "rat_bang_definable": {
    "kind": "claim",
@@ -1848,7 +1963,7 @@
   "reverseTerm": {
    "kind": "exercise",
    "label": "exer:reverse-from-split",
-   "number": "D.3.1"
+   "number": "D.4.1"
   },
   "sameIdeal_decidable": {
    "kind": "exercise",
@@ -1858,7 +1973,7 @@
   "sat_phiOrdSucc": {
    "kind": "claim",
    "label": "lem:fo-non-elementary-order",
-   "number": "C.4.17"
+   "number": "C.4.18"
   },
   "sortSST_eval": {
    "kind": "exercise",
@@ -1873,7 +1988,7 @@
   "tp_properties_aux": {
    "kind": "lemma",
    "label": "lem:k-types-properties",
-   "number": "C.4.15"
+   "number": "C.4.16"
   },
   "twoWay_continuous_aux": {
    "kind": "theorem",
@@ -1922,7 +2037,7 @@
    "theorems_md_status": "proved"
   },
   "claim:atomic-functions-are-natural-transformations": {
-   "anchor": "claim.624",
+   "anchor": "claim.657",
    "kind": "claim",
    "label": "claim:atomic-functions-are-natural-transformations",
    "lean": [
@@ -1936,12 +2051,12 @@
      "state": "proved"
     }
    ],
-   "number": "D.3.12",
-   "page": "186",
+   "number": "D.4.12",
+   "page": "203",
    "theorems_md_status": "proved (`HONat.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`)"
   },
   "claim:bang-definable": {
-   "anchor": "claim.406",
+   "anchor": "claim.407",
    "kind": "claim",
    "label": "claim:bang-definable",
    "lean": [
@@ -2086,8 +2201,19 @@
    "page": "5",
    "theorems_md_status": "`Exercises/Intro.lean`"
   },
+  "claim:find-position-in-factor": {
+   "anchor": "claim.619",
+   "kind": "claim",
+   "label": "claim:find-position-in-factor",
+   "lean": [],
+   "not_formalised": true,
+   "not_formalised_because": "a running-time statement of Section *Evaluation*, for the same reason",
+   "number": "D.3.13",
+   "page": "186",
+   "theorems_md_status": "running-time statements of Section *Evaluation*; the project has no model of running time and the author has not yet decided how they should be stated (the exer"
+  },
   "claim:finite-domain-regular-list-function": {
-   "anchor": "claim.404",
+   "anchor": "claim.405",
    "kind": "claim",
    "label": "claim:finite-domain-regular-list-function",
    "lean": [
@@ -2114,7 +2240,7 @@
    "theorems_md_status": "**proved** (`CombFinite.lean`, by induction on a measure of the type; axioms: `propext`, `Classical.choice`, `Quot.sound`)"
   },
   "claim:finite-type-bijection-disjoint-units": {
-   "anchor": "claim.403",
+   "anchor": "claim.404",
    "kind": "claim",
    "label": "claim:finite-type-bijection-disjoint-units",
    "lean": [
@@ -2133,7 +2259,7 @@
    "theorems_md_status": "**proved** (`CombDerived.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`). It is deduced here **from** Claim `claim:finite-domain-regular-list-function`, which is the reverse of the book's order of the two claims; both are proved, only the dependency between them is inverted (see *Divergences from the book*)"
   },
   "claim:fo-composition-quantifier-rank": {
-   "anchor": "claim.373",
+   "anchor": "claim.374",
    "kind": "claim",
    "label": "claim:fo-composition-quantifier-rank",
    "lean": [
@@ -2147,12 +2273,12 @@
      "state": "proved"
     }
    ],
-   "number": "C.4.14",
+   "number": "C.4.15",
    "page": "128",
    "theorems_md_status": "proved (`FOComp.lean`), as the internal step of the proof of Lemma `lem:k-types-fo-equivalence`"
   },
   "claim:from-child-configuration-graph-to-children": {
-   "anchor": "claim.595",
+   "anchor": "claim.596",
    "kind": "claim",
    "label": "claim:from-child-configuration-graph-to-children",
    "lean": [
@@ -2171,7 +2297,7 @@
    "theorems_md_status": "proved (`ChildGraph.lean`, `ChildPath.lean`, `ChildGraphAut.lean`, `ChildGraphRun.lean`)"
   },
   "claim:from-configuration-to-child-configuration-graph": {
-   "anchor": "claim.594",
+   "anchor": "claim.595",
    "kind": "claim",
    "label": "claim:from-configuration-to-child-configuration-graph",
    "lean": [
@@ -2190,7 +2316,7 @@
    "theorems_md_status": "proved (`ChildSem.lean`, `ChildReach.lean`, `CGLang.lean`, `CGAtom.lean`, `CGSem.lean`)"
   },
   "claim:functors-applied-to-good": {
-   "anchor": "claim.625",
+   "anchor": "claim.658",
    "kind": "claim",
    "label": "claim:functors-applied-to-good",
    "lean": [
@@ -2204,12 +2330,12 @@
      "state": "proved"
     }
    ],
-   "number": "D.3.13",
-   "page": "186",
+   "number": "D.4.13",
+   "page": "203",
    "theorems_md_status": "proved (`HORel.lean`, `HONat.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`)"
   },
   "claim:grammar-compression-of-baib": {
-   "anchor": "claim.451",
+   "anchor": "claim.452",
    "kind": "claim",
    "label": "claim:grammar-compression-of-baib",
    "lean": [
@@ -2236,7 +2362,7 @@
    "theorems_md_status": "`Exercises/Compression.lean`"
   },
   "claim:head": {
-   "anchor": "claim.416",
+   "anchor": "claim.417",
    "kind": "claim",
    "label": "claim:head",
    "lean": [
@@ -2290,7 +2416,7 @@
    "theorems_md_status": "proved (explicit four-state automaton, `HomComplement.lean`)"
   },
   "claim:logical-relations-closed-under-precomposition": {
-   "anchor": "claim.620",
+   "anchor": "claim.653",
    "kind": "claim",
    "label": "claim:logical-relations-closed-under-precomposition",
    "lean": [
@@ -2304,8 +2430,8 @@
      "state": "proved"
     }
    ],
-   "number": "D.3.10",
-   "page": "183",
+   "number": "D.4.10",
+   "page": "200",
    "theorems_md_status": "proved (`HORel.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`)"
   },
   "claim:map-compression": {
@@ -2361,6 +2487,34 @@
    "page": "118",
    "theorems_md_status": "**proved** (`MSORelab.lean`, from Lemma `lem:mso-free-variables`)"
   },
+  "claim:mso-formula-recognised-by-homomorphism": {
+   "anchor": "claim.617",
+   "kind": "claim",
+   "label": "claim:mso-formula-recognised-by-homomorphism",
+   "lean": [
+    {
+     "decl_line": 124,
+     "end": 162,
+     "file": "RequestProject/PartD/MSOProfile.lean",
+     "line": 120,
+     "name": "Transducers.mso_formula_recognised_by_homomorphism",
+     "primary": true,
+     "state": "proved"
+    },
+    {
+     "decl_line": 57,
+     "end": 61,
+     "file": "RequestProject/PartD/MSOProfile.lean",
+     "from": "THEOREMS.md",
+     "line": 54,
+     "name": "Transducers.mso_profile",
+     "state": "proved"
+    }
+   ],
+   "number": "D.3.12",
+   "page": "185",
+   "theorems_md_status": "proved (`MSOProfile.lean`, from Lemma `lem:mso-free-variables` and Theorem `thm:monoids-equal-automata`, as in the book; axioms: `propext`, `Classical.choice`, `Quot.sound`). The profile, which the book defines by a picture, is `Transducers.mso_profile`: the distinguished positions from left to right, with their letters and the variables pointing to them, and the values of the homomorphism on the factors between them; it is defined for any valuation of the variables, not only for distinct ordered positions"
+  },
   "claim:offsets-are-regular": {
    "anchor": "claim.219",
    "kind": "claim",
@@ -2381,7 +2535,7 @@
    "theorems_md_status": "proved (`SubseqState.lean`); phrased through Myhill–Nerode states rather than through regular languages — see the note below"
   },
   "claim:pairing-copairing": {
-   "anchor": "claim.402",
+   "anchor": "claim.403",
    "kind": "claim",
    "label": "claim:pairing-copairing",
    "lean": [
@@ -2408,7 +2562,7 @@
    "theorems_md_status": "**proved** (`CombFinite.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`), by the book's argument: pairing is the diagonal followed by `f₁ × f₂`, co-pairing is `f₁ + f₂` followed by the co-diagonal, the diagonal and the co-diagonal being atomic terms and `f₁ × f₂`, `f₁ + f₂` functoriality combinators of Definition `def:regular-terms`"
   },
   "claim:parsing-is-regular": {
-   "anchor": "claim.400",
+   "anchor": "claim.401",
    "kind": "claim",
    "label": "claim:parsing-is-regular",
    "lean": [
@@ -2427,7 +2581,7 @@
    "theorems_md_status": "**proved** (`CombParse.lean`, for the language `Transducers.reprLang` of the representations, by the book's induction on the type: the language of representations is described by a regular expression built from the languages of the components, and the closure properties of `Common/RegLangClosure.lean` do the rest; axioms: `propext`, `Classical.choice`, `Quot.sound`). The transducers of the easy direction of Theorem `thm:regular-terms` do not use it: they parse a representation with the bracket counter of `PartC/CombDepth.lean`"
   },
   "claim:reachability-basic-run": {
-   "anchor": "claim.590",
+   "anchor": "claim.591",
    "kind": "claim",
    "label": "claim:reachability-basic-run",
    "lean": [
@@ -2621,7 +2775,7 @@
    "theorems_md_status": ""
   },
   "def:good-function": {
-   "anchor": "definition.615",
+   "anchor": "definition.648",
    "kind": "definition",
    "label": "def:good-function",
    "lean": [
@@ -2635,12 +2789,12 @@
      "state": "proved"
     }
    ],
-   "number": "D.3.8",
-   "page": "181",
+   "number": "D.4.8",
+   "page": "198",
    "theorems_md_status": "proved (`HORel.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`)"
   },
   "def:higher-order-terms": {
-   "anchor": "definition.605",
+   "anchor": "definition.638",
    "kind": "definition",
    "label": "def:higher-order-terms",
    "lean": [
@@ -2678,12 +2832,12 @@
      "state": "proved"
     }
    ],
-   "number": "D.3.4",
-   "page": "177",
+   "number": "D.4.4",
+   "page": "194",
    "theorems_md_status": ""
   },
   "def:higher-order-types": {
-   "anchor": "definition.604",
+   "anchor": "definition.637",
    "kind": "definition",
    "label": "def:higher-order-types",
    "lean": [
@@ -2713,12 +2867,12 @@
      "state": "proved"
     }
    ],
-   "number": "D.3.3",
-   "page": "176",
+   "number": "D.4.3",
+   "page": "193",
    "theorems_md_status": ""
   },
   "def:k-types": {
-   "anchor": "definition.371",
+   "anchor": "definition.372",
    "kind": "definition",
    "label": "def:k-types",
    "lean": [
@@ -2732,8 +2886,8 @@
      "state": "proved"
     }
    ],
-   "number": "C.4.12",
-   "page": "127",
+   "number": "C.4.13",
+   "page": "128",
    "theorems_md_status": ""
   },
   "def:left-distance": {
@@ -2837,7 +2991,7 @@
    "theorems_md_status": ""
   },
   "def:mso-transduction": {
-   "anchor": "definition.351",
+   "anchor": "definition.352",
    "kind": "definition",
    "label": "def:mso-transduction",
    "lean": [
@@ -2859,12 +3013,12 @@
      "state": "proved"
     }
    ],
-   "number": "C.4.7",
-   "page": "121",
+   "number": "C.4.8",
+   "page": "122",
    "theorems_md_status": ""
   },
   "def:natural-transformation": {
-   "anchor": "definition.623",
+   "anchor": "definition.656",
    "kind": "definition",
    "label": "def:natural-transformation",
    "lean": [
@@ -2878,8 +3032,8 @@
      "state": "proved"
     }
    ],
-   "number": "D.3.11",
-   "page": "186",
+   "number": "D.4.11",
+   "page": "203",
    "theorems_md_status": "proved (`HONat.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`)"
   },
   "def:nfa-with-output": {
@@ -2910,7 +3064,7 @@
    "theorems_md_status": ""
   },
   "def:polyregular-functions": {
-   "anchor": "definition.443",
+   "anchor": "definition.444",
    "kind": "definition",
    "label": "def:polyregular-functions",
    "lean": [
@@ -2937,7 +3091,7 @@
    "theorems_md_status": ""
   },
   "def:polyregular-terms": {
-   "anchor": "definition.598",
+   "anchor": "definition.631",
    "kind": "definition",
    "label": "def:polyregular-terms",
    "lean": [
@@ -2975,12 +3129,12 @@
      "state": "proved"
     }
    ],
-   "number": "D.3.1",
-   "page": "174",
+   "number": "D.4.1",
+   "page": "191",
    "theorems_md_status": ""
   },
   "def:prenex-normal-form-for-transducers": {
-   "anchor": "definition.520",
+   "anchor": "definition.521",
    "kind": "definition",
    "label": "def:prenex-normal-form-for-transducers",
    "lean": [
@@ -3126,7 +3280,7 @@
    "theorems_md_status": ""
   },
   "def:regular-functions-on-types-under-string-representation": {
-   "anchor": "definition.390",
+   "anchor": "definition.391",
    "kind": "definition",
    "label": "def:regular-functions-on-types-under-string-representation",
    "lean": [
@@ -3153,7 +3307,7 @@
    "theorems_md_status": ""
   },
   "def:regular-terms": {
-   "anchor": "definition.395",
+   "anchor": "definition.396",
    "kind": "definition",
    "label": "def:regular-terms",
    "lean": [
@@ -3259,7 +3413,7 @@
    "theorems_md_status": ""
   },
   "def:types": {
-   "anchor": "definition.388",
+   "anchor": "definition.389",
    "kind": "definition",
    "label": "def:types",
    "lean": [
@@ -3292,6 +3446,14 @@
    "number": "C.5.1",
    "page": "134",
    "theorems_md_status": ""
+  },
+  "def:variable-type": {
+   "anchor": "definition.346",
+   "kind": "definition",
+   "label": "def:variable-type",
+   "lean": [],
+   "number": "C.4.7",
+   "page": "120"
   },
   "def:weighted-automaton": {
    "anchor": "definition.178",
@@ -3627,7 +3789,7 @@
    "page": "28"
   },
   "exer:block-from-split": {
-   "anchor": "exercise.634",
+   "anchor": "exercise.667",
    "kind": "exercise",
    "label": "exer:block-from-split",
    "lean": [
@@ -3658,8 +3820,8 @@
     }
    ],
    "not_formalised": true,
-   "number": "D.3.3",
-   "page": "190",
+   "number": "D.4.3",
+   "page": "207",
    "theorems_md_status": ""
   },
   "exer:composition-needs-many-states": {
@@ -3948,7 +4110,7 @@
    "page": "5"
   },
   "exer:filter-plus": {
-   "anchor": "exercise.423",
+   "anchor": "exercise.424",
    "kind": "exercise",
    "label": "exer:filter-plus",
    "lean": [
@@ -4025,7 +4187,7 @@
    "page": "27"
   },
   "exer:fo-non-elementary": {
-   "anchor": "exercise.382",
+   "anchor": "exercise.383",
    "kind": "exercise",
    "label": "exer:fo-non-elementary",
    "lean": [
@@ -4044,7 +4206,7 @@
    "page": "131"
   },
   "exer:fo-suc": {
-   "anchor": "exercise.385",
+   "anchor": "exercise.386",
    "kind": "exercise",
    "label": "exer:fo-suc",
    "lean": [
@@ -4063,7 +4225,7 @@
    "page": "133"
   },
   "exer:for-transducer-continuity-nonelementary": {
-   "anchor": "exercise.572",
+   "anchor": "exercise.573",
    "kind": "exercise",
    "label": "exer:for-transducer-continuity-nonelementary",
    "lean": [
@@ -4082,7 +4244,7 @@
    "page": "164"
   },
   "exer:for-transducers-simulate-fo": {
-   "anchor": "exercise.571",
+   "anchor": "exercise.572",
    "kind": "exercise",
    "label": "exer:for-transducers-simulate-fo",
    "lean": [
@@ -4101,7 +4263,7 @@
    "page": "164"
   },
   "exer:forward-for-transducer": {
-   "anchor": "exercise.573",
+   "anchor": "exercise.574",
    "kind": "exercise",
    "label": "exer:forward-for-transducer",
    "lean": [
@@ -4158,7 +4320,7 @@
    "page": "49"
   },
   "exer:group-prefix-multiplication-isomorphism": {
-   "anchor": "exercise.425",
+   "anchor": "exercise.426",
    "kind": "exercise",
    "label": "exer:group-prefix-multiplication-isomorphism",
    "lean": [
@@ -4178,7 +4340,7 @@
    "theorems_md_status": ""
   },
   "exer:head-operation-natural": {
-   "anchor": "exercise.428",
+   "anchor": "exercise.429",
    "kind": "exercise",
    "label": "exer:head-operation-natural",
    "lean": [
@@ -4205,8 +4367,73 @@
    "page": "149",
    "theorems_md_status": ""
   },
+  "exer:height-of-simon-tree": {
+   "anchor": "exercise.625",
+   "kind": "exercise",
+   "label": "exer:height-of-simon-tree",
+   "lean": [
+    {
+     "decl_line": 301,
+     "end": 316,
+     "file": "RequestProject/Exercises/EvalSimonHeight.lean",
+     "line": 295,
+     "name": "Transducers.Exercises.height_of_simon_tree",
+     "primary": true,
+     "state": "proved"
+    }
+   ],
+   "not_formalised": true,
+   "number": "D.3.5",
+   "page": "188"
+  },
+  "exer:idempotents-in-monoid-of-functions": {
+   "anchor": "exercise.623",
+   "kind": "exercise",
+   "label": "exer:idempotents-in-monoid-of-functions",
+   "lean": [
+    {
+     "decl_line": 283,
+     "end": 290,
+     "file": "RequestProject/Exercises/EvalMonoid.lean",
+     "line": 279,
+     "name": "Transducers.Exercises.idempotent_function_iff",
+     "primary": true,
+     "state": "proved"
+    }
+   ],
+   "not_formalised": true,
+   "number": "D.3.3",
+   "page": "188"
+  },
+  "exer:idempotents-in-monoid-of-relations": {
+   "anchor": "exercise.624",
+   "kind": "exercise",
+   "label": "exer:idempotents-in-monoid-of-relations",
+   "lean": [
+    {
+     "decl_line": 332,
+     "end": 349,
+     "file": "RequestProject/Exercises/EvalMonoid.lean",
+     "line": 329,
+     "name": "Transducers.Exercises.idempotent_relation_iff",
+     "primary": true,
+     "state": "proved"
+    },
+    {
+     "decl_line": 382,
+     "end": 421,
+     "file": "RequestProject/Exercises/EvalMonoid.lean",
+     "line": 377,
+     "name": "Transducers.Exercises.idempotent_relation_iff_of_finite",
+     "state": "proved"
+    }
+   ],
+   "not_formalised": true,
+   "number": "D.3.4",
+   "page": "188"
+  },
   "exer:identity-function-replacement": {
-   "anchor": "exercise.424",
+   "anchor": "exercise.425",
    "kind": "exercise",
    "label": "exer:identity-function-replacement",
    "lean": [
@@ -4226,7 +4453,7 @@
    "theorems_md_status": ""
   },
   "exer:if-then-else": {
-   "anchor": "exercise.422",
+   "anchor": "exercise.423",
    "kind": "exercise",
    "label": "exer:if-then-else",
    "lean": [
@@ -4337,6 +4564,15 @@
    "number": "A.1.1",
    "page": "13"
   },
+  "exer:linear-time-data-structure-for-rational-relation": {
+   "anchor": "exercise.628",
+   "kind": "exercise",
+   "label": "exer:linear-time-data-structure-for-rational-relation",
+   "lean": [],
+   "not_formalised": true,
+   "number": "D.3.8",
+   "page": "189"
+  },
   "exer:mealy-as-restricted-mso-relabelling": {
    "anchor": "exercise.339",
    "kind": "exercise",
@@ -4413,8 +4649,46 @@
    "number": "B.4.3",
    "page": "74"
   },
+  "exer:monoid-vs-deterministic-automaton": {
+   "anchor": "exercise.621",
+   "kind": "exercise",
+   "label": "exer:monoid-vs-deterministic-automaton",
+   "lean": [
+    {
+     "decl_line": 127,
+     "end": 143,
+     "file": "RequestProject/Exercises/EvalMonoid.lean",
+     "line": 118,
+     "name": "Transducers.Exercises.monoid_vs_deterministic_automaton",
+     "primary": true,
+     "state": "proved"
+    }
+   ],
+   "not_formalised": true,
+   "number": "D.3.1",
+   "page": "187"
+  },
+  "exer:monoid-vs-deterministic-automaton-strengthened": {
+   "anchor": "exercise.622",
+   "kind": "exercise",
+   "label": "exer:monoid-vs-deterministic-automaton-strengthened",
+   "lean": [
+    {
+     "decl_line": 228,
+     "end": 275,
+     "file": "RequestProject/Exercises/EvalMonoid.lean",
+     "line": 217,
+     "name": "Transducers.Exercises.monoid_vs_deterministic_automaton_strengthened",
+     "primary": true,
+     "state": "proved"
+    }
+   ],
+   "not_formalised": true,
+   "number": "D.3.2",
+   "page": "187"
+  },
   "exer:natural-identity": {
-   "anchor": "exercise.427",
+   "anchor": "exercise.428",
    "kind": "exercise",
    "label": "exer:natural-identity",
    "lean": [
@@ -4434,7 +4708,7 @@
    "theorems_md_status": ""
   },
   "exer:natural-list-function": {
-   "anchor": "exercise.429",
+   "anchor": "exercise.430",
    "kind": "exercise",
    "label": "exer:natural-list-function",
    "lean": [
@@ -4454,7 +4728,7 @@
    "theorems_md_status": ""
   },
   "exer:natural-transformations-from-A": {
-   "anchor": "exercise.430",
+   "anchor": "exercise.431",
    "kind": "exercise",
    "label": "exer:natural-transformations-from-A",
    "lean": [
@@ -4481,7 +4755,7 @@
    "page": "149"
   },
   "exer:natural-transformations-from-regular-terms": {
-   "anchor": "exercise.431",
+   "anchor": "exercise.432",
    "kind": "exercise",
    "label": "exer:natural-transformations-from-regular-terms",
    "lean": [
@@ -4501,7 +4775,7 @@
    "theorems_md_status": ""
   },
   "exer:natural-transformations-list-free": {
-   "anchor": "exercise.432",
+   "anchor": "exercise.433",
    "kind": "exercise",
    "label": "exer:natural-transformations-list-free",
    "lean": [
@@ -4547,6 +4821,15 @@
    "number": "B.2.9",
    "page": "50",
    "theorems_md_status": "`Exercises/NoReverseReversible.lean`"
+  },
+  "exer:no-stack-discipline": {
+   "anchor": "exercise.598",
+   "kind": "exercise",
+   "label": "exer:no-stack-discipline",
+   "lean": [],
+   "not_formalised": true,
+   "number": "D.2.1",
+   "page": "173"
   },
   "exer:non-minimal-automaton": {
    "anchor": "exercise.233",
@@ -4640,6 +4923,25 @@
    "number": "B.1.2",
    "page": "37"
   },
+  "exer:non-weak-simon-tree-not-aperiodic": {
+   "anchor": "exercise.627",
+   "kind": "exercise",
+   "label": "exer:non-weak-simon-tree-not-aperiodic",
+   "lean": [
+    {
+     "decl_line": 178,
+     "end": 185,
+     "file": "RequestProject/Exercises/EvalNonWeakTop.lean",
+     "line": 168,
+     "name": "Transducers.Exercises.non_weak_simon_tree_not_aperiodic",
+     "primary": true,
+     "state": "proved"
+    }
+   ],
+   "not_formalised": true,
+   "number": "D.3.7",
+   "page": "189"
+  },
   "exer:not-semiring-continuous": {
    "anchor": "exercise.261",
    "kind": "exercise",
@@ -4706,7 +5008,7 @@
    "page": "14"
   },
   "exer:polyregular-marked-squaring-compression": {
-   "anchor": "exercise.450",
+   "anchor": "exercise.451",
    "kind": "exercise",
    "label": "exer:polyregular-marked-squaring-compression",
    "lean": [
@@ -4725,7 +5027,7 @@
    "page": "155"
   },
   "exer:polyregular-unmarked-squaring": {
-   "anchor": "exercise.452",
+   "anchor": "exercise.453",
    "kind": "exercise",
    "label": "exer:polyregular-unmarked-squaring",
    "lean": [
@@ -5069,7 +5371,7 @@
    "page": "4"
   },
   "exer:reverse-from-split": {
-   "anchor": "exercise.632",
+   "anchor": "exercise.665",
    "kind": "exercise",
    "label": "exer:reverse-from-split",
    "lean": [
@@ -5108,8 +5410,8 @@
     }
    ],
    "not_formalised": true,
-   "number": "D.3.1",
-   "page": "189",
+   "number": "D.4.1",
+   "page": "206",
    "theorems_md_status": ""
   },
   "exer:simple-decomposition-example": {
@@ -5151,7 +5453,7 @@
    "page": "27"
   },
   "exer:so-logic": {
-   "anchor": "exercise.384",
+   "anchor": "exercise.385",
    "kind": "exercise",
    "label": "exer:so-logic",
    "lean": [
@@ -5167,7 +5469,7 @@
    ],
    "not_formalised": true,
    "number": "C.4.3",
-   "page": "132"
+   "page": "133"
   },
   "exer:some-ideals": {
    "anchor": "exercise.160",
@@ -5197,7 +5499,7 @@
    "page": "50"
   },
   "exer:split-triple": {
-   "anchor": "exercise.633",
+   "anchor": "exercise.666",
    "kind": "exercise",
    "label": "exer:split-triple",
    "lean": [
@@ -5212,8 +5514,8 @@
     }
    ],
    "not_formalised": true,
-   "number": "D.3.2",
-   "page": "189",
+   "number": "D.4.2",
+   "page": "206",
    "theorems_md_status": "`Exercises/SplitTriple.lean`"
   },
   "exer:squaring-continuous": {
@@ -5411,8 +5713,43 @@
    "number": "C.1.1",
    "page": "85"
   },
+  "exer:weak-simon-tree-aperiodic": {
+   "anchor": "exercise.626",
+   "kind": "exercise",
+   "label": "exer:weak-simon-tree-aperiodic",
+   "lean": [
+    {
+     "decl_line": 179,
+     "end": 187,
+     "file": "RequestProject/Exercises/EvalWeakTop.lean",
+     "line": 173,
+     "name": "Transducers.Exercises.weak_simon_tree_aperiodic",
+     "primary": true,
+     "state": "proved"
+    },
+    {
+     "decl_line": 32,
+     "end": 37,
+     "file": "RequestProject/Exercises/EvalWeakEnc.lean",
+     "line": 28,
+     "name": "Transducers.FactTree.IsWeakSimon",
+     "state": "proved"
+    },
+    {
+     "decl_line": 153,
+     "end": 171,
+     "file": "RequestProject/Exercises/EvalWeakTop.lean",
+     "line": 149,
+     "name": "Transducers.Exercises.weak_simon_tree_aperiodicBimachine",
+     "state": "proved"
+    }
+   ],
+   "not_formalised": true,
+   "number": "D.3.6",
+   "page": "188"
+  },
   "exer:windows-of-size-two": {
-   "anchor": "exercise.426",
+   "anchor": "exercise.427",
    "kind": "exercise",
    "label": "exer:windows-of-size-two",
    "lean": [
@@ -5533,7 +5870,7 @@
    "page": "91"
   },
   "lem:children-of-configuration-in-pebble-run": {
-   "anchor": "lemma.593",
+   "anchor": "lemma.594",
    "kind": "lemma",
    "label": "lem:children-of-configuration-in-pebble-run",
    "lean": [
@@ -5675,16 +6012,8 @@
    "page": "25",
    "theorems_md_status": "proved"
   },
-  "lem:disjunction-tuple-enumerator": {
-   "anchor": "lemma.645",
-   "kind": "lemma",
-   "label": "lem:disjunction-tuple-enumerator",
-   "lean": [],
-   "number": "D.4.8",
-   "page": "194"
-  },
   "lem:distributivity-is-regular-under-string-representation": {
-   "anchor": "lemma.399",
+   "anchor": "lemma.400",
    "kind": "lemma",
    "label": "lem:distributivity-is-regular-under-string-representation",
    "lean": [
@@ -5701,16 +6030,6 @@
    "number": "C.5.5",
    "page": "137",
    "theorems_md_status": "proved (`CombAtomDistr.lean`), the worked example of the induction basis of Theorem `thm:regular-terms`; the parsing is done by the bracket counter of `CombDepth.lean` rather than by the automaton of the unlabelled claim that follows it in the book"
-  },
-  "lem:domination": {
-   "anchor": "lemma.646",
-   "kind": "lemma",
-   "label": "lem:domination",
-   "lean": [],
-   "not_formalised": true,
-   "not_formalised_because": "Section D.4, the same",
-   "number": "D.4.9",
-   "page": "194"
   },
   "lem:eliminate-epsilon-transitions": {
    "anchor": "lemma.134",
@@ -5739,8 +6058,132 @@
    "page": "42",
    "theorems_md_status": "proved (`EpsElim.lean`, using the regularity of the outputs on a fixed input, `OutLang.lean`)"
   },
+  "lem:evaluation-mso-successor-in-constant-time": {
+   "anchor": "lemma.616",
+   "kind": "lemma",
+   "label": "lem:evaluation-mso-successor-in-constant-time",
+   "lean": [],
+   "not_formalised": true,
+   "not_formalised_because": "a running-time statement of Section *Evaluation*, for the same reason",
+   "number": "D.3.11",
+   "page": "184",
+   "theorems_md_status": "running-time statements of Section *Evaluation*; the project has no model of running time and the author has not yet decided how they should be stated (the exer"
+  },
+  "lem:factorisation-forest-evaluation": {
+   "anchor": "lemma.606",
+   "kind": "lemma",
+   "label": "lem:factorisation-forest-evaluation",
+   "lean": [
+    {
+     "decl_line": 319,
+     "end": 326,
+     "file": "RequestProject/PartD/SimonEval.lean",
+     "line": 312,
+     "name": "Transducers.factorisation_forest_evaluation",
+     "primary": true,
+     "state": "proved"
+    }
+   ],
+   "number": "D.3.4",
+   "page": "177",
+   "theorems_md_status": "proved (`SimonEval.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`). The book's statement is about running time, which the project does not model; what is proved is the content of its argument: the value of the homomorphism on any factor of the underlying string is a product of at most `2·height + 1` labels of nodes of the tree"
+  },
+  "lem:factorisation-forest-group": {
+   "anchor": "lemma.612",
+   "kind": "lemma",
+   "label": "lem:factorisation-forest-group",
+   "lean": [
+    {
+     "decl_line": 152,
+     "end": 166,
+     "file": "RequestProject/PartD/FactForest.lean",
+     "line": 147,
+     "name": "Transducers.factorisation_forest_group",
+     "primary": true,
+     "state": "proved"
+    }
+   ],
+   "number": "D.3.9",
+   "page": "181",
+   "theorems_md_status": "proved (`SimonGroup.lean`, by the book's induction on `σ(w)`, with the bound three times the order of the group; axioms: `propext`, `Classical.choice`, `Quot.sound`)"
+  },
+  "lem:factorisation-forest-rational": {
+   "anchor": "lemma.614",
+   "kind": "lemma",
+   "label": "lem:factorisation-forest-rational",
+   "lean": [
+    {
+     "decl_line": 318,
+     "end": 340,
+     "file": "RequestProject/PartD/SimonRat.lean",
+     "line": 308,
+     "name": "Transducers.factorisation_forest_rational",
+     "primary": true,
+     "state": "proved"
+    },
+    {
+     "decl_line": 49,
+     "end": 49,
+     "file": "RequestProject/Acceptance/Basic.lean",
+     "from": "THEOREMS.md",
+     "line": 48,
+     "name": "Transducers.FactTree.enc",
+     "state": "proved"
+    },
+    {
+     "decl_line": 43,
+     "end": 50,
+     "file": "RequestProject/PartD/SimonRat.lean",
+     "from": "THEOREMS.md",
+     "line": 41,
+     "name": "Transducers.TreeSym",
+     "state": "proved"
+    }
+   ],
+   "number": "D.3.10",
+   "page": "183",
+   "theorems_md_status": "proved (`SimonRat.lean`, by the book's second argument: the encodings of Simon trees of height `≤ k` form a regular language, so the inverse of the projection is a rational relation, total by `thm:factorisation-forest`, and Lemma `lem:uniformisation` extracts a rational function; axioms: `propext`, `Classical.choice`, `Quot.sound`). A rational function is string-to-string in this project, so the book's polynomial type `facttype{h,k}` is replaced by the bracket encoding of trees over the alphabet `A + {open, close}`; the alphabet `A` is finite"
+  },
+  "lem:factorisation-forest-shrinking-letter": {
+   "anchor": "lemma.610",
+   "kind": "lemma",
+   "label": "lem:factorisation-forest-shrinking-letter",
+   "lean": [
+    {
+     "decl_line": 123,
+     "end": 145,
+     "file": "RequestProject/PartD/FactForest.lean",
+     "line": 116,
+     "name": "Transducers.factorisation_forest_shrinking_letter",
+     "primary": true,
+     "state": "proved"
+    }
+   ],
+   "number": "D.3.7",
+   "page": "180",
+   "theorems_md_status": "proved (`SimonFF.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`). Stated, as it is used in the book, as the induction step: the theorem holds for the semigroup and the letter values, given that it holds for every smaller semigroup and for fewer letter values; the semigroups are finite subsets of a finite monoid closed under multiplication"
+  },
+  "lem:factorisation-forest-single-letter": {
+   "anchor": "lemma.609",
+   "kind": "lemma",
+   "label": "lem:factorisation-forest-single-letter",
+   "lean": [
+    {
+     "decl_line": 106,
+     "end": 114,
+     "file": "RequestProject/PartD/FactForest.lean",
+     "line": 102,
+     "name": "Transducers.factorisation_forest_single_letter",
+     "primary": true,
+     "state": "proved"
+    }
+   ],
+   "number": "D.3.6",
+   "page": "179",
+   "theorems_md_status": "proved (`SimonFF.lean`, with the bound `2p` for `s^p` idempotent; axioms: `propext`, `Classical.choice`, `Quot.sound`)"
+  },
   "lem:fewer-atomic": {
-   "anchor": "lemma.608",
+   "anchor": "lemma.641",
    "kind": "lemma",
    "label": "lem:fewer-atomic",
    "lean": [
@@ -5762,12 +6205,12 @@
      "state": "proved"
     }
    ],
-   "number": "D.3.5",
-   "page": "178",
+   "number": "D.4.5",
+   "page": "195",
    "theorems_md_status": "proved (`HOFewerAux.lean` and `HOFewer.lean`)"
   },
   "lem:fo-non-elementary-order": {
-   "anchor": "claim.383",
+   "anchor": "claim.384",
    "kind": "claim",
    "label": "lem:fo-non-elementary-order",
    "lean": [
@@ -5789,12 +6232,12 @@
      "state": "proved"
     }
    ],
-   "number": "C.4.17",
+   "number": "C.4.18",
    "page": "132",
    "theorems_md_status": "`Exercises/FONonElemClaim.lean`"
   },
   "lem:for-closed-under-composition": {
-   "anchor": "lemma.535",
+   "anchor": "lemma.536",
    "kind": "lemma",
    "label": "lem:for-closed-under-composition",
    "lean": [
@@ -5821,7 +6264,7 @@
    "theorems_md_status": "proved (`ForCompTop.lean`)"
   },
   "lem:fundamental-lemma": {
-   "anchor": "lemma.612",
+   "anchor": "lemma.645",
    "kind": "lemma",
    "label": "lem:fundamental-lemma",
    "lean": [
@@ -5843,12 +6286,12 @@
      "state": "proved"
     }
    ],
-   "number": "D.3.7",
-   "page": "180",
+   "number": "D.4.7",
+   "page": "197",
    "theorems_md_status": "proved (`HORel.lean`, `HOFund.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`). The subset of functions the lemma asserts one can identify is `Transducers.Rel`, Definition `def:good-function`"
   },
   "lem:good-functions-are-polyregular-at-arrow-free-types": {
-   "anchor": "lemma.616",
+   "anchor": "lemma.649",
    "kind": "lemma",
    "label": "lem:good-functions-are-polyregular-at-arrow-free-types",
    "lean": [
@@ -5862,12 +6305,12 @@
      "state": "proved"
     }
    ],
-   "number": "D.3.9",
-   "page": "182",
+   "number": "D.4.9",
+   "page": "199",
    "theorems_md_status": "proved (`HOPoly.lean`, `HORel.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`)"
   },
   "lem:k-types-fo-equivalence": {
-   "anchor": "lemma.372",
+   "anchor": "lemma.373",
    "kind": "lemma",
    "label": "lem:k-types-fo-equivalence",
    "lean": [
@@ -5881,12 +6324,12 @@
      "state": "proved"
     }
    ],
-   "number": "C.4.13",
+   "number": "C.4.14",
    "page": "128",
    "theorems_md_status": "**proved** (`MSO.lean`, from `FOComp.lean` and `FOHintikka.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`)"
   },
   "lem:k-types-properties": {
-   "anchor": "lemma.374",
+   "anchor": "lemma.375",
    "kind": "lemma",
    "label": "lem:k-types-properties",
    "lean": [
@@ -5908,12 +6351,12 @@
      "state": "proved"
     }
    ],
-   "number": "C.4.15",
+   "number": "C.4.16",
    "page": "129",
    "theorems_md_status": "proved (`KTypes.lean`)"
   },
   "lem:logic-precomputation": {
-   "anchor": "lemma.357",
+   "anchor": "lemma.358",
    "kind": "lemma",
    "label": "lem:logic-precomputation",
    "lean": [
@@ -5935,12 +6378,12 @@
      "state": "proved"
     }
    ],
-   "number": "C.4.10",
+   "number": "C.4.11",
    "page": "124",
    "theorems_md_status": "**proved** (`MSO.lean`, from `MSOPrecomp.lean`, `MarkStr.lean`, `MarkBimach.lean`, `MarkDelay.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`)"
   },
   "lem:logic-reduction-to-type-n": {
-   "anchor": "lemma.356",
+   "anchor": "lemma.357",
    "kind": "lemma",
    "label": "lem:logic-reduction-to-type-n",
    "lean": [
@@ -5954,7 +6397,7 @@
      "state": "proved"
     }
    ],
-   "number": "C.4.9",
+   "number": "C.4.10",
    "page": "124",
    "theorems_md_status": "proved (`MSONorm.lean`), as the normalisation of the type τ inside the proof of Theorem `thm:logic-regular-functions`"
   },
@@ -6075,7 +6518,7 @@
    "theorems_md_status": "**proved** (axioms: `propext`, `Classical.choice`, `Quot.sound`). Stated as in the book, over the alphabet `Transducers.SnakeLetter Q B` of snake letters (`SnakeAlph.lean`), whose regular language of snake graphs is `SnakeAlphLoc.lean`, `SnakeAlphChar.lean`, `SnakeAlphLocLang.lean`, `SnakeAlphCyc.lean` and whose output is computed by the walking transducer of `SnakeAlphRun.lean`; the general form `boundedWidth_isRegular`, for the width-`k` output function `TwoWay.widthOut` of a two-way transducer, is proved in `SnakeReg.lean`, on top of `SnakeBase.lean`, `SnakeWalk.lean`, `SnakeRec.lean`, `SnakeLoop.lean` and the checking automaton of `SnakeStage1.lean`/`SnakeChk*.lean`. Both forms are proved for every `k : ℕ` rather than only for `k ∈ {1, …, \\"
   },
   "lem:prenex-normal-form": {
-   "anchor": "lemma.534",
+   "anchor": "lemma.535",
    "kind": "lemma",
    "label": "lem:prenex-normal-form",
    "lean": [
@@ -6117,16 +6560,8 @@
    "page": "161",
    "theorems_md_status": "proved (`ForPrenexTop.lean`)"
   },
-  "lem:quantifier-free-tuple-enumerator-is-for-definable": {
-   "anchor": "lemma.644",
-   "kind": "lemma",
-   "label": "lem:quantifier-free-tuple-enumerator-is-for-definable",
-   "lean": [],
-   "number": "D.4.7",
-   "page": "194"
-  },
   "lem:reachability-pebble-automaton": {
-   "anchor": "lemma.589",
+   "anchor": "lemma.590",
    "kind": "lemma",
    "label": "lem:reachability-pebble-automaton",
    "lean": [
@@ -6233,8 +6668,35 @@
    "page": "23",
    "theorems_md_status": "proved"
   },
+  "lem:semigroup-is-group": {
+   "anchor": "lemma.611",
+   "kind": "lemma",
+   "label": "lem:semigroup-is-group",
+   "lean": [
+    {
+     "decl_line": 96,
+     "end": 121,
+     "file": "RequestProject/PartD/MonoidAut.lean",
+     "line": 91,
+     "name": "Transducers.semigroup_is_group",
+     "primary": true,
+     "state": "proved"
+    },
+    {
+     "decl_line": 127,
+     "end": 138,
+     "file": "RequestProject/PartD/MonoidAut.lean",
+     "line": 123,
+     "name": "Transducers.semigroup_is_group_false_without_nonempty",
+     "state": "proved"
+    }
+   ],
+   "number": "D.3.8",
+   "page": "180",
+   "theorems_md_status": "proved (`MonoidAut.lean`; `#print axioms` reports no axioms at all, for both declarations). Corrected: the semigroup must be **nonempty** -- the empty semigroup satisfies the hypothesis vacuously and is not a group, which is the second declaration; finiteness is not needed"
+  },
   "lem:terms-define-append-hash": {
-   "anchor": "lemma.405",
+   "anchor": "lemma.406",
    "kind": "lemma",
    "label": "lem:terms-define-append-hash",
    "lean": [
@@ -6261,7 +6723,7 @@
    "theorems_md_status": "**proved** (`CombStrFam.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`)"
   },
   "lem:terms-define-flip-flop": {
-   "anchor": "lemma.408",
+   "anchor": "lemma.409",
    "kind": "lemma",
    "label": "lem:terms-define-flip-flop",
    "lean": [
@@ -6280,7 +6742,7 @@
    "theorems_md_status": "**proved** (`CombMealyFF.lean`, by running the machine with the group prefix product of the two-element flip-flop monoid embedded into a group; axioms: `propext`, `Classical.choice`, `Quot.sound`)"
   },
   "lem:terms-define-map-reverse-duplicate": {
-   "anchor": "lemma.407",
+   "anchor": "lemma.408",
    "kind": "lemma",
    "label": "lem:terms-define-map-reverse-duplicate",
    "lean": [
@@ -6307,7 +6769,7 @@
    "theorems_md_status": "**proved** (`CombMapRev.lean`, both through the term `Transducers.tfun_mapLift` for the map lifting of a term-definable function; axioms: `propext`, `Classical.choice`, `Quot.sound`)"
   },
   "lem:terms-define-reversible": {
-   "anchor": "lemma.413",
+   "anchor": "lemma.414",
    "kind": "lemma",
    "label": "lem:terms-define-reversible",
    "lean": [
@@ -6326,7 +6788,7 @@
    "theorems_md_status": "**proved** (`CombMealyRev.lean`, by the group prefix product of the state permutations; the group is `Equiv.Perm (Option A) × Equiv.Perm Q` rather than the book's cyclic group on the input alphabet, see *Divergences from the book*; axioms: `propext`, `Classical.choice`, `Quot.sound`)"
   },
   "lem:terms-define-string-homomorphisms": {
-   "anchor": "lemma.401",
+   "anchor": "lemma.402",
    "kind": "lemma",
    "label": "lem:terms-define-string-homomorphisms",
    "lean": [
@@ -6353,7 +6815,7 @@
    "theorems_md_status": "**proved** (`CombFinite.lean`: the map of a function with a finite domain, followed by concatenation; axioms: `propext`, `Classical.choice`, `Quot.sound`)"
   },
   "lem:terms-define-string-representation": {
-   "anchor": "lemma.414",
+   "anchor": "lemma.415",
    "kind": "lemma",
    "label": "lem:terms-define-string-representation",
    "lean": [
@@ -6372,7 +6834,7 @@
    "theorems_md_status": "**proved** (`CombRepr.lean`, by induction on the type: for every type `A` the representation `A → Sym*` and a one-sided inverse `Sym* → A` are both definable by regular terms; axioms: `propext`, `Classical.choice`, `Quot.sound`)"
   },
   "lem:tiling": {
-   "anchor": "lemma.628",
+   "anchor": "lemma.661",
    "kind": "lemma",
    "label": "lem:tiling",
    "lean": [
@@ -6386,12 +6848,12 @@
      "state": "proved"
     }
    ],
-   "number": "D.3.15",
-   "page": "188",
+   "number": "D.4.15",
+   "page": "205",
    "theorems_md_status": "proved (`Tiling.lean`, `TilingCells.lean`, `TilingSRS.lean`, `TilingRows.lean`, `TilingGrid.lean`, `TilingSound.lean`, `TilingComplete.lean`, `TilingPrimrec.lean`, `TilingUndec.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`). The reduction is from the acceptance problem for the tape machines of `RequestProject/PCP/`, undecidable by `Acceptance.tm_acceptance_not_computablyDecidable`; the book reduces from halting on the empty input"
   },
   "lem:tiling-checker": {
-   "anchor": "lemma.629",
+   "anchor": "lemma.662",
    "kind": "lemma",
    "label": "lem:tiling-checker",
    "lean": [
@@ -6413,19 +6875,9 @@
      "state": "proved"
     }
    ],
-   "number": "D.3.16",
-   "page": "188",
+   "number": "D.4.16",
+   "page": "205",
    "theorems_md_status": "proved (`Tiling.lean`, `HOTiling.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`). The instance is assumed well formed, its corner tiles and the tiles of its local constraint being tiles of the instance -- a condition that is automatic in the book, where `s, t ∈ T` and `C ⊆ T⁴`, and has to be stated here because the tiles are presented as the natural numbers `0, …, maxTile`"
-  },
-  "lem:tuples-listed-by-for": {
-   "anchor": "lemma.640",
-   "kind": "lemma",
-   "label": "lem:tuples-listed-by-for",
-   "lean": [],
-   "not_formalised": true,
-   "not_formalised_because": "in Section D.4, which the author says is inconsistent at this stage and is not to be formalised until it settles",
-   "number": "D.4.3",
-   "page": "193"
   },
   "lem:uniformisation": {
    "anchor": "lemma.137",
@@ -6453,14 +6905,6 @@
    "number": "B.2.5",
    "page": "43",
    "theorems_md_status": "proved (`Uniform.lean`, from the ε-free normal form of Lemma `lem:eliminate-epsilon-transitions` and the unambiguisation of `Unambig.lean`)"
-  },
-  "lema:tuples-listed-by-for-quantifier-free": {
-   "anchor": "lemma.641",
-   "kind": "lemma",
-   "label": "lema:tuples-listed-by-for-quantifier-free",
-   "lean": [],
-   "number": "D.4.4",
-   "page": "193"
   },
   "thm:2dfa-decomposition-into-primes": {
    "anchor": "theorem.281",
@@ -6941,8 +7385,38 @@
    "page": "58",
    "theorems_md_status": "proved (`WeightedDec.lean`, from the effective Schützenberger bound `Transducers.effectiveWeightedBound` of `WeightedBound.lean` and the computable evaluation `Transducers.EffectiveWeightedEvalEq` of `WCodePrimrec.lean`)"
   },
+  "thm:evaluation-polyregular": {
+   "anchor": "theorem.600",
+   "kind": "theorem",
+   "label": "thm:evaluation-polyregular",
+   "lean": [],
+   "not_formalised": true,
+   "not_formalised_because": "a running-time statement of Section *Evaluation*",
+   "number": "D.3.1",
+   "page": "175",
+   "theorems_md_status": "running-time statements of Section *Evaluation*; the project has no model of running time and the author has not yet decided how they should be stated (the exer"
+  },
+  "thm:factorisation-forest": {
+   "anchor": "theorem.608",
+   "kind": "theorem",
+   "label": "thm:factorisation-forest",
+   "lean": [
+    {
+     "decl_line": 79,
+     "end": 91,
+     "file": "RequestProject/PartD/FactForest.lean",
+     "line": 75,
+     "name": "Transducers.factorisation_forest",
+     "primary": true,
+     "state": "proved"
+    }
+   ],
+   "number": "D.3.5",
+   "page": "179",
+   "theorems_md_status": "proved (`SimonBound.lean`, `SimonFF.lean`, `SimonGroup.lean`, `SimonInduction.lean`, by the book's induction on the size of the semigroup and the number of letter values; axioms: `propext`, `Classical.choice`, `Quot.sound`)"
+  },
   "thm:fo-rational-functions": {
-   "anchor": "theorem.379",
+   "anchor": "theorem.380",
    "kind": "theorem",
    "label": "thm:fo-rational-functions",
    "lean": [
@@ -6956,12 +7430,12 @@
      "state": "proved"
     }
    ],
-   "number": "C.4.16",
+   "number": "C.4.17",
    "page": "130",
    "theorems_md_status": "**proved** (`MSO.lean`, from `FORelabBimach.lean` for `first-order relabelling ⊆ aperiodic bimachine` and `FOBimachRelab.lean` for the converse, on top of `FORev.lean` and `FOPos.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`)"
   },
   "thm:for-transducers-are-polyregular": {
-   "anchor": "theorem.489",
+   "anchor": "theorem.490",
    "kind": "theorem",
    "label": "thm:for-transducers-are-polyregular",
    "lean": [
@@ -6980,7 +7454,7 @@
    "theorems_md_status": "proved (`ForPolyreg.lean` and `PolyFor.lean`)"
   },
   "thm:higher-order-terms": {
-   "anchor": "theorem.611",
+   "anchor": "theorem.644",
    "kind": "theorem",
    "label": "thm:higher-order-terms",
    "lean": [
@@ -6994,8 +7468,8 @@
      "state": "proved"
     }
    ],
-   "number": "D.3.6",
-   "page": "179",
+   "number": "D.4.6",
+   "page": "196",
    "theorems_md_status": "proved (`HOEasy.lean` for the easy direction; `HOPoly.lean`, `HORel.lean`, `HOFund.lean` and `HOFewer.lean` for the converse)"
   },
   "thm:krohn-rhodes": {
@@ -7018,7 +7492,7 @@
    "theorems_md_status": "proved"
   },
   "thm:logic-aperiodic": {
-   "anchor": "theorem.368",
+   "anchor": "theorem.369",
    "kind": "theorem",
    "label": "thm:logic-aperiodic",
    "lean": [
@@ -7032,7 +7506,7 @@
      "state": "proved"
     }
    ],
-   "number": "C.4.11",
+   "number": "C.4.12",
    "page": "126",
    "theorems_md_status": "**proved** (`MSO.lean`, from `FOTypeDFA.lean` and `FOMealy.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`)"
   },
@@ -7064,7 +7538,7 @@
    "theorems_md_status": "**proved** (`MSO.lean`, from `MSORatRelab.lean`, `MarkStr.lean`, `MarkLogic.lean`, `MarkBimach.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`)"
   },
   "thm:logic-regular-functions": {
-   "anchor": "theorem.355",
+   "anchor": "theorem.356",
    "kind": "theorem",
    "label": "thm:logic-regular-functions",
    "lean": [
@@ -7086,7 +7560,7 @@
      "state": "proved"
     }
    ],
-   "number": "C.4.8",
+   "number": "C.4.9",
    "page": "123",
    "theorems_md_status": "both implications are **proved** (`MSO.lean`, from `MSOReg.lean`, `MSOWalkData.lean`, `WalkAut.lean`, `MSOWalkForms.lean`, `MSONorm.lean`, `SortedEnum.lean` for `mso ⊆ regular`; `TwoWayMSO.lean`, `RunProbe.lean`, `RunMark.lean`, `RunElts.lean`, `MarkLogic2.lean` for `regular ⊆ mso`), and since Theorem `thm:2dfa-decomposition-into-primes` is now proved the statement depends only on `propext`, `Classical.choice`, `Quot.sound` — see *The proof of Theorem `thm:logic-regular-functions`* below"
   },
@@ -7144,6 +7618,25 @@
    "page": "62",
    "theorems_md_status": "proved (`MealyChar.lean`)"
   },
+  "thm:monoids-equal-automata": {
+   "anchor": "theorem.602",
+   "kind": "theorem",
+   "label": "thm:monoids-equal-automata",
+   "lean": [
+    {
+     "decl_line": 55,
+     "end": 87,
+     "file": "RequestProject/PartD/MonoidAut.lean",
+     "line": 51,
+     "name": "Transducers.regular_iff_recognised_by_monoid",
+     "primary": true,
+     "state": "proved"
+    }
+   ],
+   "number": "D.3.2",
+   "page": "175",
+   "theorems_md_status": "proved (`MonoidAut.lean`, by the two constructions of the book: the automaton on the monoid, and the monoid of state transformations taken in the opposite monoid; axioms: `propext`, `Classical.choice`, `Quot.sound`)"
+  },
   "thm:mso-logic-languages": {
    "anchor": "theorem.326",
    "kind": "theorem",
@@ -7188,7 +7681,7 @@
    "theorems_md_status": "**proved** (`MSO.lean`, from `MSOSyntax.lean`, `RegAut.lean`, `MSOAnnot.lean`, `MSOBuchi.lean`)"
   },
   "thm:pebble-are-continuous": {
-   "anchor": "theorem.587",
+   "anchor": "theorem.588",
    "kind": "theorem",
    "label": "thm:pebble-are-continuous",
    "lean": [
@@ -7215,7 +7708,7 @@
    "theorems_md_status": "proved (`PebbleReg.lean`, on top of `PebbleAut.lean`, `PebbleProd.lean`, `PebbleSub.lean`, `PebbleAnn.lean`, `PebbleBisim.lean`, `PebbleOne.lean`, `PebbleLev1.lean`)"
   },
   "thm:pebble-are-for": {
-   "anchor": "theorem.592",
+   "anchor": "theorem.593",
    "kind": "theorem",
    "label": "thm:pebble-are-for",
    "lean": [
@@ -7234,7 +7727,7 @@
    "theorems_md_status": "proved (`PebbleForTop.lean` for `for ⊆ pebble`, `PebblePoly.lean` for `pebble ⊆ polyregular`, then `thm:for-transducers-are-polyregular`)"
   },
   "thm:polyregular-functions-are-continuous": {
-   "anchor": "theorem.445",
+   "anchor": "theorem.446",
    "kind": "theorem",
    "label": "thm:polyregular-functions-are-continuous",
    "lean": [
@@ -7253,7 +7746,7 @@
    "theorems_md_status": "proved (continuity of marked squaring, `MarkedSquare.lean`)"
   },
   "thm:polyregular-terms": {
-   "anchor": "theorem.602",
+   "anchor": "theorem.635",
    "kind": "theorem",
    "label": "thm:polyregular-terms",
    "lean": [
@@ -7284,8 +7777,8 @@
      "state": "proved"
     }
    ],
-   "number": "D.3.2",
-   "page": "175",
+   "number": "D.4.2",
+   "page": "192",
    "theorems_md_status": "proved (`PolyTermEasy.lean` and `PolyTermComplete.lean`)"
   },
   "thm:rational-is-mealy-characterisation": {
@@ -7327,7 +7820,7 @@
    "theorems_md_status": "proved (`PrimeRat.lean` and `BimachPrime.lean`, from Theorem `thm:bimachines` and the Krohn–Rhodes Theorem)"
   },
   "thm:rational-terms": {
-   "anchor": "theorem.418",
+   "anchor": "theorem.419",
    "kind": "theorem",
    "label": "thm:rational-terms",
    "lean": [
@@ -7397,7 +7890,7 @@
    "theorems_md_status": "proved (continuity by induction on the decomposition into primes, `ContAux.lean`)"
   },
   "thm:regular-terms": {
-   "anchor": "theorem.398",
+   "anchor": "theorem.399",
    "kind": "theorem",
    "label": "thm:regular-terms",
    "lean": [
@@ -7521,7 +8014,7 @@
    "theorems_md_status": "proved (`SubseqDef.lean`, `SubseqAlpha.lean`, `SubseqState.lean`, `SubseqBound.lean`, `SubseqChar.lean`)"
   },
   "thm:undecidability-higher-order": {
-   "anchor": "theorem.627",
+   "anchor": "theorem.660",
    "kind": "theorem",
    "label": "thm:undecidability-higher-order",
    "lean": [
@@ -7535,8 +8028,8 @@
      "state": "proved"
     }
    ],
-   "number": "D.3.14",
-   "page": "187",
+   "number": "D.4.14",
+   "page": "204",
    "theorems_md_status": "proved (`TilingUndec.lean`; axioms: `propext`, `Classical.choice`, `Quot.sound`). The decision problem is stated on the data `I` from which the two terms are built, not on codes of terms: for an instance `I` of the tiling problem the two terms are `Transducers.HOTile.checkTerm I` and `Transducers.HOTile.falseTerm I.maxTile`, and no algorithm decides, reading `I`, whether they have the same semantics. The terms of Definition `def:higher-order-terms` are intrinsically typed here, so the project has no encoding of them as data; a decision procedure reading codes of the two terms would give one reading `I` under any encoding for which `I ↦ (code, code)` is computable"
   },
   "thm:undecidable-equivalence-rational-relations": {

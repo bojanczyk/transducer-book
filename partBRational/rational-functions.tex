@@ -69,11 +69,13 @@ We now show that bimachines compute exactly the rational functions. Along the wa
     \begin{align*}
     (p,q) \xrightarrow{ a / w} (p',q'),
     \end{align*}
+\issue{Math: the suffix transition is reversed in the next display. It must be $q\xleftarrow{a}q^{\prime}$ (equivalently $q^{\prime}\xrightarrow{a}q$): reading the current letter extends the shorter suffix to the longer one.}% book review
     where $a$ is an input letter,  $w$ is the output string produced by the pair $(p,q)$ and the following are transitions of the prefix and suffix automata:
     \begin{align*}
       \myunderbrace{p \xrightarrow a p'}{in prefix automaton} \qquad \qquad
       \myunderbrace{q' \xleftarrow a q}{in suffix automaton}.
     \end{align*}
+\issue{Language: for $(p,q)$ and $(p^{\prime},q^{\prime})$ should say for $(p,q)$ rather than $(p^{\prime},q^{\prime})$; the transition emits only the former output.}% book review
     Since we have used the output string for $(p,q)$ and $(p',q')$, the resulting automaton outputs for each input  letter the output  of the bimachine that corresponds to the gap on the left of the letter. This accounts for all gaps except the last one, which is where we use the extra state $\dashv$, for which we have transitions 
     \begin{align*}
     (p,q) \xrightarrow {\varepsilon/ w} \dashv,
@@ -144,6 +146,7 @@ We now show that bimachines compute exactly the rational functions. Along the wa
         \end{enumerate}
         In the above, the chosen output in item 3 is unique for the automaton, which means that once the source and target states and the input letter have been fixed, it is impossible to have two different outputs.
         \end{itemize}
+\issue{Math: for a general relation, the selected output is one of the original outputs, rather than the same unique output. State explicitly that the uniformisation remains total.}% book review
     Let us now argue that this new automaton is unambiguous. The first component of the state $P \ni p$, which is the subset $P$, is chosen deterministically from right-to-left. Therefore, all runs of the new automaton will agree on this component. Once the first component has been fixed, the second component is deterministic from left-to-right, and therefore all runs will also agree on this component. Finally, the output string is determined uniquely by the states and the input letter. It is also not hard to see that if the original automaton had an accepting run (which is guaranteed by the totality assumption), then the new automaton also has an accepting run, and that the output string is the same.
 \end{proof}
 
@@ -214,10 +217,12 @@ Consider a rational function $f : A^* \to B^*$. This function is computed by a M
 Represent the following functions as rational functions, and as bimachines: (a) if the input length is even, output it, otherwise output the empty string; (b) swap the first and last letters; (c) identity before last $\#$, after that every letter replaced by $\#$.
 }
 {
+\issue{Boundary case: the bimachine must output $\varepsilon$ at the last gap, where the suffix has no first letter, even when the input length is even.}% book review
     (a) As a rational function, we use two copies of the automaton which tracks the parity of the number of input letters that have been read so far. In the first copy, every transition copies its input letter to the output, and the accepting states are those with even parity; in the second copy, every transition has empty output, and the accepting states are those with odd parity. Putting the two copies side by side gives an unambiguous automaton, since the parity of the input length decides which copy is used. As a bimachine, we use the parity automaton for both the prefix and the suffix automata, except that the suffix automaton also stores the first letter of the suffix. The parity of the input length is the sum of the two parities, and hence it is known in every gap. The output in a gap is the first letter of the suffix if the total parity is even, and the empty string otherwise.
 
     (b) As a rational function, this was already done in \cref{sec:rational-relations}, using a union of six automata. That union is unambiguous, since the six cases are determined by the input string.  (That solution was for a binary alphabet, but a similar construction works in general.) As a bimachine, we use a prefix automaton which stores the first letter of the prefix, and a suffix automaton which stores the first and the last letter of the suffix, as well as the length of the suffix up to the threshold two. The output in a gap is defined by the following cases: the empty string, if the suffix is empty; the last letter of the suffix, if the prefix is empty; the first letter of the prefix, if the suffix has exactly one letter; and the first letter of the suffix in the remaining cases. The three letters that are used here are, respectively, the last letter of the input string, its first letter, and the letter in the position that follows the gap.
 
+\issue{Math: the transducer which guesses the last $\#$ has no accepting run on a word without $\#$. Add a disjoint branch that checks for no separator and outputs only $\#$, as required by the stated convention.}% book review
     (c) We use the convention that if the input string has no $\#$, then all of its letters are replaced by $\#$; the other convention, in which the input string is returned unchanged, is handled in the same way. For an unambiguous automaton, the automaton guesses which $\#$ is the last one: up to and including this letter, the input is copied to the output; after it, the automaton outputs $\#$ for every input letter, and rejects if it sees another $\#$. This automaton is unambiguous, since the guess is verified. The bimachine is even simpler, and it does not need the prefix automaton at all. The observation is that a position is copied to the output if and only if the suffix which begins in this position contains a $\#$. Therefore, it is enough that the suffix automaton stores the first letter of the suffix, together with the information about whether the suffix contains $\#$. The output in a gap is: the empty string, if the suffix is empty; the first letter of the suffix, if the suffix contains $\#$; and $\#$ otherwise.
 }
 
@@ -230,6 +235,7 @@ is defined and nonzero.
 \begin{align*}
     \sup_\rho \frac{\text{length of output of $\rho$}}{\text{length of input of $\rho$}},
 \end{align*}
+\issue{Language: qual $\to$ equal above; better ration $\to$ better ratio; Repeating for every a cycle achieves $\to$ Repeating a cycle that achieves.}% book review
 where $\rho$ ranges over runs that are cycles (same source and target state) with nonempty input. We first observe that the supremum is reached: indeed if we take any cycle which contains nested cycles, then removing the nested cycles can only improve the ratio, unless the nested cycles had better ration. Therefore, nested cycles cannot contribute to the supremum, and thus there are finitely many candidates for the cycle in the supremum, which means that the supremum is actually a maximum. Repeating for every a cycle achieves the maximum gives a lower bound on the limit in the statement of the exercise. This ratio is also an upper bound, since it can be approximated arbitrarily closely by cycles that appear in long runs. (A more formal analysis of the upper bound would look at strongly connected components of states in the automaton).
 }
 
@@ -257,6 +263,7 @@ Prove that the following functions are not rational, over an alphabet with at le
 \exer{\label{exer:decide-unambiguous} Show that one can decide unambiguity for a given \nfa that recognises a language (not a function or relation).
 }
 {
+\issue{Math: ordinary $\varepsilon$-elimination need not preserve run multiplicities, so it cannot be used to decide ambiguity without justification. Also account for two distinct accepting runs on $\varepsilon$ (e.g. two initial-final states).}% book review
     We can assume that the automaton has no transitions with empty input, since these can be eliminated in the usual way. Under this assumption, the automaton is ambiguous if and only if some input string admits two accepting runs which use different transitions in some position. This is tested by a product construction. Consider the automaton whose states are triples
     \begin{align*}
     (\text{state}, \text{state}, \text{a bit}),
@@ -308,6 +315,7 @@ the composition $f \cdot g$ is rational.}{
 }
 \exer{\label{exer:no-reverse-reversible} Show that in the list of atomic functions from \cref{thm:rational-primes}, the reversal of a reversible Mealy machine is not needed.
 }{
+\issue{Language/terminology: run normal $\to$ run a normal; remove get get. Here reversal of a machine means its right-to-left variant, not reversing its output string.}% book review
     Suppose that we want to implement a right-to-left  reversible Mealy machine with states $Q$. We first run normal left-to-right reversible Mealy machine to label each position  with the state transformation of the prefix leading up to that position.  Then we run a right-to-left flip-flop machine to label each position with the state transformation of the entire input string. Then, using cancellation in the group of state permutations, we get get for each position the state transformation of the suffix after that position. Using the state transformation on the suffixes, we can recover the output of the Mealy machine that we wanted to implement.
 }
 
@@ -327,6 +335,7 @@ i.e.~functions that factor through the ideal must stay in the ideal.
 Show that the following are ideals: 
     \begin{itemize}
         \item functions with range of size at most $k$ for $k \in \set{1,2,3,\ldots}$;
+\issue{Precision: specify distinct outputs on inputs of length at most $n$. Counting outputs for inputs of exactly length $n$ would make the following $k=0$ assertion false: the unary identity has one output per length but infinite range.}% book review
         \item functions where the number of outputs is  $\Oo(n^k)$, where $n$ is the input length and $k \in \set{0,1,2,\ldots}$ is some fixed constant.
     \end{itemize}
 }{  Observe that the ideal in the second item for $k=0$ describes the class of rational functions with finitely many outputs.
@@ -334,6 +343,7 @@ Show that the following are ideals:
 Pre-composing or post-composing with rational functions (or any functions) cannot increase the size of the range, and therefore the first item describes an ideal.  For the second item, we use a similar argument, but for precomposition we observe that the output size of a rational function is at most linear in the input length, and therefore pre-composing with a rational function cannot increase the degree of the polynomial.}
 
 
+\issue{Math: exclude or include the empty ideal explicitly. The empty set satisfies the preceding ideal equation, but is absent from this classification (it is included later in Exercise~\ref{exer:all-ideals}).}% book review
 \exer{\label{exer:finite-range-ideals} Consider an ideal where all functions have finite range. Show that the ideal is equal to one of the ideals from the first item in \cref{exer:some-ideals}, or to the ideal $\Oo(n^0)$ from the second item. }{
     Suppose that the ideal contains a rational function $f$ with distinct outputs
     \begin{align*}
@@ -345,6 +355,7 @@ Pre-composing or post-composing with rational functions (or any functions) canno
 }
 
 
+\issue{Consistency: the preceding exercises measure outputs by input-length bound, while this exercise measures the range by output length. For rational functions these growth rates agree up to linear rescaling, using a rational choice of preimages. State this connection before switching definitions.}% book review
 \exer{\label{exer:full-ideal} Show that an ideal contains all rational functions if and only if it contains some function whose range is a regular language with super-polynomial growth. (The growth rate of a language is a function that maps an input length $n$ to the number of strings in the language that have length at most $n$.) }{
     By  the analysis from \cref{exer:polynomial-image-growth-decidable},  a regular language has super-polynomial growth if and only if an automaton recognising it contains a pattern of the form 
 \[
@@ -400,6 +411,7 @@ Finally, it remains to show that  if an ideal contains the function $f_k$, then 
 {Let us begin by clarifying an edge case in the statement. When $k=0$, then the ideal ``range has size at most $k$'' is the empty ideal (since functions have at least one output), and the ideal ``range has growth rate $\Oo(n^k)$'' is the ideal of functions with finitely many outputs.  Indeed, by \cref{exer:finite-range-ideals}, all ideals with functions of finite range are either of the form ``range of size at most $k$'' or ``range has growth rate $\Oo(n^0)$''. By \cref{exer:full-ideal}, all ideals that contain a function with super-polynomial growth are equal to the ideal of all rational functions. Finally, consider an ideal in which every function has a range of polynomial growth, and which contains at least one function with an infinite range. If there is a largest $k$ such that some function in the ideal has range of growth $\Omega(n^k)$, then by \cref{exer:polynomial-ideals} the ideal is exactly the ideal of functions with growth $\Oo(n^k)$. Otherwise the ideal contains, for every $k$, some function of growth $\Omega(n^k)$, and hence, again by \cref{exer:polynomial-ideals}, it is the union of the ideals $\Oo(n^k)$ over all $k$, i.e.~the ideal of functions whose range has polynomial growth. 
 }
 
+\issue{Language/math: the generated ideal is the least ideal containing the function, not the last ideal.}% book review
 \exer{\label{exer:decide-same-ideal} Show that it is decidable if two rational functions generate the same ideal (the ideal generated by a function is the last ideal that contains it). }{
     By \cref{exer:all-ideals}, the ideal generated by a function is determined by its range: if the range is finite, then the ideal is ``range of size at most $k$'' where $k$ is the size of the range; and otherwise the ideal is determined by the growth rate of the range. (The growth rate alone is not enough, since all functions with a finite range have the same growth rate.) The size of the range, and its growth rate, can both be computed by looking for the patterns from the previous exercises in the automaton for the range of the function.
 }
@@ -426,10 +438,12 @@ Encode a configuration of a Turing machine as a string which contains the conten
 
 The set in the exercise is finite if and only if $f^n = f^{n+k}$ for some $n$ and some $k \geq 1$, i.e.~if and only if there is a bound $n$ such that the behaviour of the machine on \emph{every} configuration becomes periodic after at most $n$ steps. For a machine which stays in its halting configuration once it has halted, and which never visits the same configuration twice before halting, this says that every configuration halts after at most $n$ steps.
 
+\issue{Proof gap: simulating $M(x)$ from a designated initial configuration does not control arbitrary configurations. Such configurations can contain unrelated simulation states/tapes, even if $M(x)$ halts. A construction enforcing a uniform bound from every configuration is still required.}% book review
 It remains to reduce the halting problem to this property. Given a machine $M$ and an input string $x$, consider the machine which, on a tape of length $m$, simulates $M$ on the input $x$, and which halts as soon as the simulation would need more than $m$ tape cells. We can assume that $M$ never repeats a configuration, by adding a step counter to the tape; in particular, if $M$ does not halt on $x$, then its space grows without bound. If $M$ halts on $x$, then every configuration halts within a number of steps that does not depend on $m$, and the set of iterates is finite. If $M$ does not halt on $x$, then the number of steps before the simulation runs out of space grows with $m$, and hence there is no such bound.
 }
 
 
+\issue{Language: reults $\to$ results in the footnote.}% book review
 \exer{\label{exer:rational-compression} Define a \emph{grammar compression} for a string to be a context-free grammar that generates the string and nothing else. We say that a string-to-string function is \emph{compatible with compression} if for every input string with a grammar compression of size $n$, there is a compression of the output string that has size polynomial in $n$\footnote{One could consider a stronger version, where the compressed output can be computed in polynomial time. Our positive reults will ensure the stronger version, and our negative results will exclude the weaker version.} Show that rational functions are compatible with compression. }{ 
 This follows from a stronger result: for a context-free language $L \subseteq A^*$ and a rational relation $R \subseteq A^* \times B^*$, the image
 \begin{align*}

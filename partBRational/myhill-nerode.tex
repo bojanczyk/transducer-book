@@ -53,6 +53,7 @@ Using the above theorem, we show that the Mealy machines, seen as a subset of th
         \begin{align*}
         |\text{output string of $\rho$}| = |\text{input string of $\rho$}| + \tau(q).
         \end{align*}
+\issue{Math: uniqueness requires every state to be reachable. Move the later productivity/trimness assumption before this assertion.}% book review
         The typing, if it exists, is clearly unique.
         \begin{claim}\label{claim:typing-length-preserving}
             The function $f$ is length-preserving if and only if the typing exists, and all accepting states are mapped to zero. 
@@ -78,6 +79,7 @@ Using the above theorem, we show that the Mealy machines, seen as a subset of th
     \begin{proof}
         In this proof, it will be convenient to use possibly negative strings, which can be seen as living in the free group. Formally speaking, the free group over generators $B$, which is denoted by $B^{(*)}$, consists of strings over the alphabet \begin{align*}\setbuild{ b, b^{-1}}{$b \in B$}\end{align*} which are reduced, i.e.~they do not contain two consecutive letters that cancel each other out. The multiplication operation in the free group is defined by concatenation followed by reduction. The free group will also be used later in this chapter, in the proof of Theorem~\ref{thm:subsequential-functions}.
 
+\issue{Definition: restrict the state annotation $x$ to purely positive or purely negative reduced strings here. Signed length alone admits infinitely many mixed-sign reduced words, so the state set as written need not be finite.}% book review
         Consider a rational function $f$ that is length preserving and computed by some \nfa with output. By Claim~\ref{claim:typing-length-preserving}, there must be some typing $\tau : Q \to \Int$ which maps all accepting states to zero. Define a new \nfa with output as follows. The  states are pairs $(q, x)$ where $x$ belongs to the free group $B^{(*)}$ and has length $\tau(q)$. This allows for negative lengths, since we assume that the inverse letters have length -1.  The transitions of the automaton are defined by  
         \begin{align}\label{eq:new-transitions-length-preserving}
          \myunderbrace{(q,x) \xrightarrow { w / v} (p,y)}{is a transition in the \\ new automaton} \quad \text{if and only if} \quad         \myunderbrace{q \xrightarrow { w / x^{-1} v y} p}{is a transition in the \\ original automaton}.
@@ -182,6 +184,7 @@ Because of the difficulty highlighted in the above example, we need a variant of
 \end{definition}
 In the decomposition from the above definition, the string $v$ will necessarily be the longest common prefix of $w_1$ and $w_2$, as explained in the following picture:
 \mypic{26}
+\issue{Math: bounded variation is not uniform continuity for this left-distance metric. The metric is discrete with minimum positive distance $1$, so every function is uniformly continuous by taking $\delta<1$. Bounded variation instead requires bounded sets of input distances to have bounded output distances.}% book review
 The characterisation of subsequential functions will say that they are exactly the functions which are: (a) continuous; and (b) have a property called bounded variation, which is defined in terms of the left distance. The continuity condition is the same as in Definition~\ref{def:continuity}, except that we use inverse images for partial functions in the natural way. The bounded variation property is actually the same as uniform continuity with respect to the left distance, but we prefer to avoid the word continuity to avoid a name clash with condition (a).
 
 
@@ -254,6 +257,7 @@ The above is undefined if either of the two concatenated strings on the right-ha
     \begin{align*}
     |f(wv)| \mod K+1
     \end{align*}
+\issue{Math: use modulus $2K+1$ in the preceding display, not $K+1$. Differences in $[-K,K]$ are not determined modulo $K+1$ (e.g. $-1$ and $K$).}% book review
     for all $v$ of length at most $k$. This gives us the relative alignment
     of the outputs. Indeed, if $v_1$ and $v_2$ have length at most $k$ then the difference 
     \begin{align*}
@@ -313,6 +317,7 @@ and whose domain is prefix closed. Consider the function
 
 
 
+\issue{Proof gap: Claim~\ref{claim:eliminating-negative-letters} is stated for sequential functions, but the constructed group-valued function has the initial factor $\alpha(\varepsilon)$ and is subsequential. Extend the claim to a fixed initial output, or explain how the initial factor is incorporated.}% book review
 \paragraph*{Putting everything together.} We now put the above ingredients together to obtain the desired conclusion that $f$ is subsequential. Thanks to Claim~\ref{claim:offsets-are-regular} and~\eqref{eq:non-branching-part-deltas}, we know that there is a subsequential function with outputs in the free group that computes the non-branching part $\alpha(w)$. Thanks to Claim~\ref{claim:eliminating-negative-letters}, we can improve this function so that it does not use negative letters at all, i.e.~the function $\alpha(w)$ itself is subsequential. Thanks to Claim~\ref{claim:computing-branching-part}, there is a finite automaton whose state can be used to indicate the value of the branching part. By taking the product of this automaton with the subsequential function for $\alpha(w)$, we can get a subsequential transducer for $f$, thanks to the equality~\eqref{eq:f-from-alpha-beta}.
 \end{proof}
 
@@ -331,6 +336,7 @@ w_1 \sim w_2 \quad \eqdef \quad  \sup_{w \in A^*} \distance{f(w w_1)}{f(w w_2)} 
 \end{align*}
 \end{theorem}
 \begin{proof}
+\issue{Math: for partial functions the displayed relation need not even be transitive if the supremum ignores undefined outputs. An everywhere-undefined suffix is then related to every suffix. The partial version requires an additional domain-compatibility condition.}% book review
     Since we have chosen to define rational functions as total functions, we assume that the function $f$ is total. Nevertheless, the same proof would work for partial rational functions, since all  the work related to undefined outputs is already done in the characterisation of subsequential functions.
 
 
@@ -361,6 +367,7 @@ where $q_i$ is the equivalence class of the suffix $a_{i+1} \cdots a_n$. This fu
     \sup_{w} \distance{g(ww_1)}{g(ww_2)} < \infty,
     \end{align*}
     where $w$ ranges over strings that make both outputs defined.
+\issue{Math: if $v_1\not\sim v_2$, the common prefix $w=\varepsilon$ may still make both outputs defined. Only nonempty common prefixes force matching suffix classes. Separate this one bounded exception before claiming vacuity.}% book review
     Let $v_1$ and $v_2$ be the strings obtained from $w_1$ and $w_2$ by erasing the annotation with states $Q$. If $w_1$ and $w_2$ are inconsistent, or if they are consistent but the strings $v_1$ and $v_2$ are not equivalent under $\sim$, then the inequality above holds vacuously, since no string $w$ can be found which makes both outputs defined. Otherwise, by definition of the function $g$, the supremum above is the same as 
     \begin{align*}
     \sup_{v \in A^*} \distance{f(vv_1)}{f(vv_2)},
@@ -383,6 +390,7 @@ We can easily choose the string $w$ so that the reversals differ in one of the f
 % exercises about rational functions
 \exerciseheader
 
+\issue{Boundary case: require at least two alphabet letters. On a unary alphabet duplication is the rational homomorphism $a\mapsto aa$, and the asserted pairwise nonequivalence is false.}% book review
 \exer{\label{exer:duplication-not-rational} Show that string duplication is not rational.}{
     Similarly to string reversal, the relation $\sim$ from Theorem~\ref{thm:machine-independent-rational-functions} has infinite index for the duplication function; in fact all strings are pairwise non-equivalent.
 }
@@ -468,5 +476,6 @@ It remains to explain why four states cannot be improved. Since the output is on
 
     In the first transducer, the output is produced at the end. There are two states that track the parity of the number of letters read so far, plus a final state, which is entered by two transitions with empty input, one from each parity state, producing the corresponding output letter. In the second transducer, the output is produced at the beginning. From the initial state there are two transitions with empty input, which guess the parity of the input string and produce the corresponding output letter, and which lead to two states that check whether the guess was correct. Both transducers have three states, and both are unambiguous, since in both of them the accepting run is determined by the parity of the input string. They are not isomorphic, since in the first one the transitions with empty input enter the same state, and in the second one they leave the same state.
 
+\issue{Proof gap: the claimed lower bound needs the omitted two-state case analysis. Different output letters do not imply that runs cannot share transitions: they may share transitions with empty output.}% book review
     Three states are necessary. The input string $a^0$ needs an accepting run which uses transitions with empty input only, and which produces the letter for even parity; this run cannot use a cycle, since a cycle with empty input would give infinitely many accepting runs. On the other hand, the input string $a^1$ needs an accepting run which produces the letter for odd parity, and hence it cannot use any of the transitions in the run for $a^0$. A short case analysis on the two remaining states, which have to track the parity, shows that these two runs cannot be accommodated.
 }

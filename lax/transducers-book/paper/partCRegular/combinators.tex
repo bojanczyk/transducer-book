@@ -91,7 +91,7 @@ As we mentioned earlier in this section, when defining type-to-type functions, w
 \begin{myexample}[Split]\label{ex:split}
     For types $A$ and $B$, the split function 
     \begin{align*}
-    (A + B)^* \xrightarrow{\splitterm} A^* \times (B \times A^*)^*
+    (A + B)^* \xrightarrow{\blockterm} A^* \times (B \times A^*)^*
     \end{align*}
     splits the input list according to appearances of elements from $B$, as illustrated in the following example where elements of $A$ are letters and elements of $B$ are red digits:
     \begin{align*}
@@ -127,7 +127,7 @@ Apart from the above two examples, all other atomic functions are standard built
         \item[List deconstructor]  $A^* \xrightarrow {\unconsterm} \onetype + A \times A^*$.
         \item[Reverse]  $A^* \xrightarrow{\reverseterm} A^*$.
         \item[Concatenation] $A^{**} \xrightarrow{\concatterm} A^*$.
-        \item[Split] $(A+B)^* \xrightarrow{\splitterm} A^* \times (B \times A^*)^*$.
+        \item[Split] $(A+B)^* \xrightarrow{\blockterm} A^* \times (B \times A^*)^*$.
         \item[Group prefix multiplication] $G^* \xrightarrow{\prefterm} G^*$.
     \end{description}
     
@@ -279,7 +279,7 @@ By combining the above two claims, we see that if $A$ and $B$ are finite types, 
     \begin{align*}
     f \times g = ((\fstterm;f),(\sndterm;g)).
     \end{align*}
-    Finally, we define the inverse of $\splitterm$, which is a form of concatenation that was discussed earlier in Example~\ref{ex:split}. This inverse is the composition of 
+    Finally, we define the inverse of $\blockterm$, which is a form of concatenation that was discussed earlier in Example~\ref{ex:split}. This inverse is the composition of 
     \begin{align*}
     A^* \times (B \times A^*)^* \xrightarrow{\leftterm \times (\rightterm \times \leftterm^*)^*} (A+B)^* \times ((A+B)^* \times (A+B)^*)^*
     \end{align*}
@@ -295,9 +295,9 @@ By combining the above two claims, we see that if $A$ and $B$ are finite types, 
     \end{align*}
     The term for map reverse is the following composition:
     \begin{align*}
-    (A + \onetype)^* \xrightarrow{\splitterm} A^* \times (\onetype \times A^*)^* \xrightarrow{(\reverseterm \times (\idterm \times \reverseterm)^*)} A^* \times (\onetype \times A^*)^*,
+    (A + \onetype)^* \xrightarrow{\blockterm} A^* \times (\onetype \times A^*)^* \xrightarrow{(\reverseterm \times (\idterm \times \reverseterm)^*)} A^* \times (\onetype \times A^*)^*,
     \end{align*}
-    followed by the inverse of $\splitterm$. In the presence of these helper functions, map duplicate is defined in the same way as map reverse, except that we use $(\idterm,\idterm);\binconcterm$ instead of string reversal.
+    followed by the inverse of $\blockterm$. In the presence of these helper functions, map duplicate is defined in the same way as map reverse, except that we use $(\idterm,\idterm);\binconcterm$ instead of string reversal.
 \end{proof}
 
 \begin{lemma}\label{lem:terms-define-flip-flop}
@@ -317,7 +317,7 @@ By combining the above two claims, we see that if $A$ and $B$ are finite types, 
         A^* \xrightarrow h (A+Q)^*
         \end{align*}
         in which the identity letters are left unchanged, and each  reset letter $a$ is replaced by the two-letter string $aq$ where $q$  is the state  after reading $a$.  
-        \item In the second step, we apply $\splitterm$ to  the output of the first step in order to split along the states, thus yielding an element of
+        \item In the second step, we apply $\blockterm$ to  the output of the first step in order to split along the states, thus yielding an element of
         \begin{align*}
          (w_0, [(q_1,w_1),\ldots,(q_n,w_n)]) \in  A^* \times (Q \times A^*)^*.
         \end{align*}

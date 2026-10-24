@@ -4,7 +4,7 @@ weight = 172
 source = "partDPolyregular/higher-order.tex"
 +++
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-% context stamp 47b9c2c7
+% context stamp f3066681
 % Generated chapter wrapper; source body remains untouched.
 \setcounter{mypart}{4}
 \setcounter{section}{2}
@@ -18,7 +18,7 @@ source = "partDPolyregular/higher-order.tex"
 <div class="exercises">
 <div class="exercise" id="exercise-1">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-% context stamp 47b9c2c7
+% context stamp f3066681
 \setcounter{mypart}{4}\setcounter{section}{3}\setcounter{theorem}{16}\setcounter{exercise}{0}
 \begin{exercise}
 \label{exer:reverse-from-split}Show that $\reverseterm$ can be implemented by a polyregular term that does not use it.
@@ -28,7 +28,7 @@ source = "partDPolyregular/higher-order.tex"
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-% context stamp 47b9c2c7
+% context stamp f3066681
 \setcounter{mypart}{4}\setcounter{section}{3}\setcounter{theorem}{16}
 \noindent\textbf{Solution.}\quad We first implement a version of the head function, which returns the singleton list containing the first element of a list if it is non-empty, and the empty list otherwise.
 \begin{align*}
@@ -66,7 +66,7 @@ A^*
 </div>
 <div class="exercise" id="exercise-2">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-% context stamp 47b9c2c7
+% context stamp f3066681
 \setcounter{mypart}{4}\setcounter{section}{3}\setcounter{theorem}{16}\setcounter{exercise}{1}
 \begin{exercise}
 \label{exer:split-triple}
@@ -81,7 +81,7 @@ A^* & \to (A^* \times A \times A^*)^*\\
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-% context stamp 47b9c2c7
+% context stamp f3066681
 \setcounter{mypart}{4}\setcounter{section}{3}\setcounter{theorem}{16}
 \noindent\textbf{Solution.}\quad %     A type $\onetype + A$ can be seen as a variant of the Maybe monad, where we have a possibly undefined value of type $A$. Another way to implement this construction is by using $A^*$, with the empty list representing the undefined value, a list of length one representing a defined value, and lists of greater length never used. This representation is implemented by the function 
 % \begin{align*}
@@ -125,7 +125,7 @@ A^*
 </div>
 <div class="exercise" id="exercise-3">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-% context stamp 47b9c2c7
+% context stamp f3066681
 \setcounter{mypart}{4}\setcounter{section}{3}\setcounter{theorem}{16}\setcounter{exercise}{2}
 \begin{exercise}
 \label{exer:block-from-split}Show that $\blockterm$ can be implemented by a polyregular term that does not use it (or reverse).
@@ -135,7 +135,7 @@ A^*
 <summary>Show solution</summary>
 <div class="solution-body">
 {{< latex preamble="book" align="justify" last-line-penalty="1000000" color-map="transducer-book-color-map" >}}
-% context stamp 47b9c2c7
+% context stamp f3066681
 \setcounter{mypart}{4}\setcounter{section}{3}\setcounter{theorem}{16}
 \noindent\textbf{Solution.}\quad Since pairing is available, we can separately define the two components of the output of $\blockterm$. The first component is a list of type $A^*$ which contains the prefix up to (but not including) the first $B$, and the second component is a list of type $(B \times A^*)^*$ that describes the blocks which begin with occurrences of $B$. 
 \begin{enumerate}

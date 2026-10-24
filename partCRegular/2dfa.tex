@@ -75,6 +75,7 @@ This section shows that two-way transducers are continuous, i.e.~inverse images 
     
     We will show that the reachable part of the configuration graph can be computed by a rational function. In order to do this, we need to represent it as a string over a finite alphabet. The idea is to slice the graph into smaller graphs, one for each input letter, as in the following picture:
     \mypic{32}
+\issue{Definition: explain how halting transitions and their output labels are encoded. The stated bipartite-edge alphabet only permits moves to the neighbouring column, whereas a halting transition has no such target.}% book review
     Formally speaking, the alphabet for the string representation, call it $C$, consists of bipartite  graphs, where the vertices are two copies of $Q$, edges are directed and labelled with output strings, each vertex has at most one outgoing edge, and this edge must go to the other copy of $Q$. This alphabet is finite, since we use only labels of edges that arise from transitions of the transducer. There is an edge case for the empty input string, in which the configuration graph looks like this: 
     \mypic{33}
     Therefore, the alphabet $C$ contains a special letter for this configuration graph. 
@@ -89,6 +90,7 @@ This section shows that two-way transducers are continuous, i.e.~inverse images 
         \end{align}
         is a regular language. To see this, we need to check that the letters are consistent with the transition function of the two-way transducer (which is a simple local consistency check) and that all arrows are reachable. For the latter property, about reachability of arrows, it is easier to consider the complement (since regular languages are closed under complementation). The complement can be checked by guessing a subset of arrows that is disconnected from the others. 
 
+\issue{Proof gap: regularity of the set of valid output graphs alone does not relate a guessed graph to the particular input. Check the zipped input/graph encoding, including transition compatibility with the actual input letters.}% book review
         Once we know that the language~\eqref{eq:configuration-graphs-form-a-regular-language} is regular, the lemma follows. The function in the lemma is computed by an \nfa with output, which nondeterministically guesses the output, and then checks if it is correct using the language~\eqref{eq:configuration-graphs-form-a-regular-language}. There is a unique correct guess, and hence the function is rational.
     \end{proof}
 
@@ -150,6 +152,7 @@ We now prove that two-way transducers are closed under composition. This is a no
 \text{(Flip-flop Mealy)} \cdot \twodftmath 
 & \subseteq \twodftmath.
 \end{align*}
+\issue{Boundary case: the flip-flop retracing subroutine must stop at the left boundary when there is no earlier resetting letter, and use the initial state.}% book review
 For the reversible Mealy machines, we can simply use the product construction, since the Mealy machine is deterministic in both directions. It remains to deal with the case of flip-flops. For flip-flops, we adapt the product construction as follows. If the two-way transducer wants to move right, the pair of states can be easily updated. If it wants to move to the left, there are two cases: (i) the letter to the left of the head does not change the state of the Mealy machine; or (ii) the letter to the left of the head resets the state of the Mealy machine to some fixed state. In case (i), there is no problem. Finally, in case (ii), we can execute a subroutine which keeps on moving to the left until it reaches another resetting letter, stores the corresponding state, and then returns to the right to the original resetting letter.
     \end{proof}
 
@@ -182,6 +185,7 @@ For the reversible Mealy machines, we can simply use the product construction, s
 
 
 
+\issue{Terminology: these are prime regular functions, not ``prime rational functions''; map reverse and map duplicate are generally not rational.}% book review
 Later in this chapter we will show the converse inclusion, which is that two-way transducers can be decomposed into the prime rational functions (map reverse, map duplicate, and rational functions).
 
 \subsection{Decidability of equivalence}
@@ -233,6 +237,7 @@ A consequence of the closure under composition for two-way transducers was that 
         Before dealing with the remaining two items in the lemma, about concatenation and conditionals, we introduce an auxiliary construction.
     
         \begin{claim}\label{claim:conditional}
+\issue{Math: the two cases for $f_1+f_2$ overlap on $\varepsilon$, where $f_1(\varepsilon)$ and $f_2(\varepsilon)$ can differ. Use explicit summand tags, or treat empty inputs separately; otherwise the function is not well-defined or compatible with composition as claimed.}% book review
             Consider two regular functions 
             \begin{align*}
             f_1 : A_1^* \to B_1^* \quad f_2 : A_2^* \to B_2^*
@@ -268,6 +273,7 @@ A consequence of the closure under composition for two-way transducers was that 
         \item all edges in the graph are on a single directed path;
         \item edges can only go between adjacent columns.
     \end{itemize}
+\issue{Proof gap: ordinary transitions can emit strings, but snake edges emit at most one letter, and halting output has no adjacent-column edge. Explain the normalisation/encoding, including output on the empty input.}% book review
  Similarly to configuration graphs in the proof of Theorem~\ref{thm:continuity-2dfas}, snake graphs can be represented as strings over a finite alphabet $C$, once the set of states is fixed.     Define the \emph{output} of a snake graph to be the concatenation of the labels on the edges. Using the output of snake graphs, every two-way transducer $f$ can be decomposed into two stages, as in the following diagram:  \[
     \begin{tikzcd}[column sep=3cm]
     A^* \ar[r,"\text{compute snake graph}"] &
@@ -291,6 +297,7 @@ The maximal width of a snake graph is $|Q|$, and hence the following lemma will 
     \end{align*}
 \end{lemma}
 \begin{proof}
+\issue{Proof gap: supply the induction basis $k=1$ (a monotone path, whose output is obtained by a rational function, with reversal if necessary). The later smaller-width argument does not apply to width-one progress parts.}% book review
 We begin by proving the induction step for a special case of a snake, in which the source and target are in the same column, as in the following picture:
     \mypic{42}
     A snake with this property is called a \emph{looping snake}. 
@@ -300,6 +307,7 @@ We begin by proving the induction step for a special case of a snake, in which t
     In order to reach this furthest column for the first time, the snake cannot use its full width, since it needs to return. Therefore, if we partition the snake into two parts: before and after the first visit to the furthest column, then both parts have smaller width than the original snake. This partition can be computed by a rational function, the outputs for the parts can be computed by induction assumption, and the results can be combined using the concatenation construction in Lemma~\ref{lem:regular-closure-properties}. This completes the proof of the induction step in the case of a looping snake. 
     
 
+\issue{Clarification: reflecting the columns preserves the output. Reversing the directed path would reverse the output. State that only the geometric left/right directions of arrows change.}% book review
     \paragraph*{General case.} Having dealt with the special case of  looping snakes, we now deal with the general case.   We can assume without loss of generality that the source column is before the target column. Indeed, using a regular language we can check if the source column is after the target column, and if it is, then we can reverse the snake, which does not change the output. (Formally speaking, when reversing a snake, we need to change the direction of the arrows in the letters that represent the snake.) Also, we need to use here the cases construction from Lemma~\ref{lem:regular-closure-properties} to check if the snake needs to be reversed.
     
     From now on, we assume that the source column is before the target column. This means that the snake generally progresses in the left-to-right direction, but it might make loops along the way. 
@@ -341,16 +349,19 @@ We begin by proving the induction step for a special case of a snake, in which t
 }{
 One inclusion is immediate, since rational functions are regular. For the other one, consider a two-way transducer, and recall from \cref{lem:compute-configuration-graph} that the function which maps an input string to the string representation of its reachable configuration graph is rational. In that representation, each input position carries one slice of the graph, and the slice determines the output strings of the transitions that are performed while the head is in that position; there are boundedly many of them, since the reachable configuration graph is a path that crosses each position at most once per state.
 
+\issue{Terminology: this is a string homomorphism, not a letter-to-letter homomorphism: one slice can contribute several output letters.}% book review
 Therefore, we can post-compose the rational function above with the letter-to-letter homomorphism which maps a slice to the concatenation of the output strings of its edges. This is again a rational function, and it produces the same letters as the two-way transducer, but ordered by input position rather than by the order in which the transducer produces them. Since the output alphabet has one letter, the two orders give the same string.
 } 
 
 \exer{\label{exer:2dfa-boolean} Consider  languages (not functions) recognised by two-way deterministic automata. Show that this class is closed under Boolean combinations: union, intersection and complement. Furthermore, all constructions are polynomial in the automaton size.
 }{
+\issue{Math: returning to the beginning must stop at the leftmost gap, before falling off. Under Definition~\ref{def:two-way-transducer}, falling off leaves no outgoing edge and cannot begin the second simulation.}% book review
 As discussed in this book, a two-way automaton must eventually output ``yes'' or ``no''. This makes complementation trivial: just swap the outputs, without changing the number of states. For intersection: first run the first automaton, and if it outputs ``yes'', then return the head to the beginning of the input and run the second automaton, returning its output; otherwise output ``no''. Returning to the beginning of the input costs one extra state, which walks left until it falls off the input, and hence the number of states is the sum of the two, plus a constant. For union, the construction is the same, except that the second automaton is run when the first one outputs ``no''. (Alternatively, union is obtained from intersection and complementation, again without leaving the polynomial regime.)
 }
 
 \exer{\label{exer:2dfa-complexity} Consider  languages (not functions) recognised by two-way deterministic automata. Show that the shortest accepted string might be exponential in the automaton size.
 }{
+\issue{Math: $\varepsilon$ is accepted by every divisibility test, so it is the shortest accepted word. Even after excluding it, the product of the first $n$ primes is subexponential in their sum; this construction does not prove an exponential lower bound in the state count.}% book review
 In \cref{exer:2dfa-boolean}, we showed that intersection can be achieved with a number of states that is the sum of the two automata. Therefore, one can write a deterministic two-way automaton which checks if the input length is divisible by each of the prime numbers $p_1,\ldots,p_n$, so that the number of states is proportional to the sum of the prime numbers. Checking divisibility by $p_i$ needs $p_i$ states in a single left-to-right pass. The shortest accepted string has length
 \begin{align*}
 p_1 \cdots p_n,
@@ -365,6 +376,7 @@ We use the representation  of the configuration graph from the proof of \cref{th
 The transducer terminates on an input string if and only if the graph of that string admits a path from the initial configuration to the halting vertex. This is a regular property of the (string representation of the) graph: a nondeterministic automaton reads the columns from left to right, and guesses the path through them, remembering only the states in which the path crosses the current position, and whether the halting vertex has already been reached. Since rational functions are continuous, the inverse image of this regular language is a regular language of input strings.
 }
 
+\issue{Language: a language is not ``polynomial''. Ask for a deterministic two-way automaton with polynomially many states.}% book review
 \exer{\label{exer:2dfa-loop-elimination-sipser} Improve the solution to the previous exercise, so that the regular language is polynomial, in terms of a deterministic two-way automaton that recognises it. (Hint: use a depth-first search on the run graph, but with a special trick.)
 }  {
 Without loss of generality we assume that the transducer halts in a fixed configuration, where the head is at the left end of the input string and the state is a fixed final state.
@@ -385,6 +397,7 @@ is defined, nonzero, and a rational number.
 \exer{\label{exer:2nft} One can imagine two nondeterministic variants of a two-way transducer, in which more than one output string can be generated: 
 \begin{enumerate}
     \item for a given configuration, there are several possible transitions, and the transition is chosen nondeterministically; or
+\issue{Language: ``auxilliary'' $\to$ ``auxiliary'' (also in the reference notes).}% book review
     \item the input string from $A^*$ is nondeterministically labelled by some auxilliary alphabet $C$, giving a new input string in $(A \times C)^*$, and then a deterministic two-way transducer is applied to this new input string.
 \end{enumerate}
 Show that these models are incomparable in expressive power.
@@ -398,14 +411,17 @@ Let us now show that the second model is not contained in the first one. The fea
 \end{align*}
 where the input alphabet is $\set{a}$  and the output alphabet is $\set{a,b}$. In other words, given an input $a^n$, the transducer guesses some string in $v \in \set{a,b}^n$ and writes it twice. This can be easily achieved by the second model.
 
+\issue{Math: a transition can emit several letters and skip the exact halfway output length. First normalise outputs to single letters, or include the bounded pending output and phase in the configuration used for cut-and-paste.}% book review
 To see why it cannot be computed by the first model, consider a transducer of the first kind, and an input string $a^n$ where $n$ is large enough that $2^n$ is bigger than the number of configurations, which is the number of states times $n+1$. For each $v \in \set{a,b}^n$ there is an accepting run which outputs $vv$; consider the configuration in which this run has produced exactly the first half of its output, i.e.~exactly $n$ output letters. There are $2^n$ strings $v$ and only linearly many configurations, and therefore two different strings $v_1 \neq v_2$ give the same configuration $c$. But then we can cut and paste: follow the run for $v_1$ up to $c$, and then continue with the second half of the run for $v_2$. This is again an accepting run, and its output is $v_1 v_2$, which does not belong to the relation.
 }
 
 
 
 \exer{\label{exer:2nft-uniformise} 
+\issue{Language: ``a binary relations'' $\to$ ``a binary relation''; remove ``if'' after ``In particular,''.}% book review
 Consider the two models from the previous exercise. Show that both can be uniformised by deterministic two-way transducers: i.e.~if a binary relations is recognised by one of the two nondeterministic models and it is total (each input has at least one output), then it contains a function recognised by a deterministic two-way transducer. In particular, if  a relation that is computed by one of the two models, and it is a function, then it is computed by a deterministic two-way transducer.
 }{
+\issue{Proof gap: arbitrary nondeterministic accepting runs can repeat configurations and have unbounded-width slicings. First choose a simple accepting path by deleting loops; bounded-width slices then suffice for uniformisation.}% book review
 We begin with the first model. As in the proof of \cref{thm:continuity-2dfas}, a run of the transducer on an input string is presented by slicing its configuration graph, i.e.~by a string over the alphabet $C$ in which each input position carries the part of the run that crosses it. The pairs
 \begin{align*}
 (\text{input string},\ \text{slicing of an accepting run on it})

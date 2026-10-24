@@ -3,6 +3,7 @@
 
 In this section, we prove that one can decide if two rational functions are equivalent.
 We describe the connections of rational relations (including their functional fragment) with another automaton model, called weighted automata. They could have an arbitrary semiring for outputs, but decidability of equivalence was shown when the semiring is a field. Using this connection, 
+\issue{Language: insert a full stop after decidable before This connection.}% book review
  and a certain decidability result for weighted automata, we will show that equivalence of rational functions is decidable This  connection will also be used in the future, to decide equivalence for a more powerful transducer model, namely the regular functions. 
 
 \subsection{Weighted automata} We begin by defining weighted automata. For the equivalence algorithm, we will be mainly interested in weighted automata that have outputs in a field, but for other results, we will use the more general variant with outputs in an arbitrary semiring. Intuitively speaking, a semiring is like a field, except that we do not require any kind of inverses (both additive and multiplicative), and multiplication can be non-commutative. Here is the formal definition.
@@ -82,6 +83,7 @@ Just as regular languages arise as a special case of weighted automata in the Bo
     \begin{align*}
     w \in A^* \quad \mapsto \quad \setbuild{ v \in B^*}{$wRv$}
     \end{align*}
+\issue{Math: a rational-relation automaton may have infinitely many accepting runs on one input, violating the weighted-automaton definition. First eliminate input-$\varepsilon$ cycles using Lemma~\ref{lem:eliminate-epsilon-transitions}, with regular-language weights; singleton weights alone do not suffice.}% book review
     is computed by a weighted automaton with outputs in the semiring of regular languages. This is not hard to see. To go from a rational relation to a weighted automaton, we simply use outputs on transitions that are singleton regular languages. In the opposite direction, a transition 
     \begin{align*}
       p \xrightarrow {a / L} q
@@ -92,6 +94,7 @@ Just as regular languages arise as a special case of weighted automata in the Bo
 
 \begin{myexample}[Weighted automata over $\Nat$] \label{ex:weighted-automata-nat}
     Let us give some examples of weighted automata over the semiring of natural numbers. Consider first the following automaton, which has a one-letter input alphabet:
+\issue{Figure typo: ``finite weight should be ``final weight.}% book review
     \mypic{21}
     This weighted automaton 
     has exactly one run of weight 1 for each input word, and therefore it computes the constant function $w \mapsto 1$. If we want to compute the length of the input string, then we can use the following weighted automaton, which has one run of weight 1 for each input position:
@@ -109,6 +112,7 @@ Finally, consider the following weighted automaton with input alphabet $\set{0,1
 \subsection{Decidable equivalence}
 \label{sec:decidable-equivalence-rational-functions}
 
+\issue{Language: orginal $\to$ original and not see easy $\to$ not so easy in the footnote.}% book review
 In this section, we leverage the connection with weighted automata to decide equivalence of rational functions. To do this, we will use decidability of equivalence for weighted automata over the  field of rationals\footnote{Sch\"utzenberger's orginal paper describes minimisation, see~\cite[Section B]{Schutzenberger1961OnTheDefinition}. From minimisation one can deduce an algorithm for zeroness, and from that an algorithm for equivalence. All of that, however, is not see easy to identify in the original paper.}.
 \begin{theorem}[Sch\"utzenberger]\label{thm:equivalence-weighted-automata}
     Given two weighted automata over the field of rationals, it is decidable whether they compute the same function.    
@@ -154,15 +158,18 @@ The above result is well-known, but in the interest of completeness, we give a p
 
         By Lemmas~\ref{lem:eliminate-epsilon-transitions} and~\ref{lem:uniformisation}, we assume that the automaton for the rational function $f$ is: (a) unambiguous; and (b) for every nonempty input string, each transition used in the unique accepting run consumes exactly one input letter. Condition (a) will be useful to ensure that there is no double counting, and condition (b) will be used to align the runs of the two automata in the product construction.
 
+\issue{Math: arbitrary $\varepsilon$-runs of $h$ can be split between adjacent blocks in several ways, causing double counting. Use a unique alignment: assign $\varepsilon$-steps before the next consumed letter, and leave the final $\varepsilon$-tail to the last transition; an empty block uses the identity.}% book review
         The weighted automaton for the composition is now constructed as follows.  
         The states of the new weighted automaton for the composition are pairs (state of $f$, state of $h$), plus two extra states $\vdash$ and  $\dashv$. The initial states are $\vdash$ and every pair $(p,q)$ that  is initial on both coordinates, in the corresponding automata. The state $\dashv$ is the unique final state. Transitions between states that are pairs are of the form
         \begin{align*}
         (p,q) \xrightarrow {a/s} (p',q')
         \end{align*}
+\issue{Math: use a transition of $f$ from $p$ to $p^{\prime}$ with input $a$, not from $p$ to $q$. The current wording neither checks the input letter nor uses the target $p^{\prime}$.}% book review
         where $a$ is an input letter and $s \in \semiring$ is the sum of weights of runs in the weighted automaton $h$ that have the following properties: the source state is $q$, the target state is $q'$, and the input string is equal to the output string of some transition in $f$ that goes from state $p$ to $q$. To reach the unique final state from pair states, we have transitions of the form
         \begin{align*}
         (p,q) \xrightarrow {\varepsilon, s} \ \dashv,
         \end{align*}
+\issue{Math: allow this final transition only when $p$ is final in the transducer for $f$; otherwise nonaccepting runs of $f$ contribute.}% book review
         where $s$ is the sum of weights for runs in the weighted automaton that have the following property: the source state is $q$, the target state is final, and the input string is empty. Finally, we need a transition that takes care of the empty input string, which is of the form
         \begin{align*}
         \vdash\  \xrightarrow {\varepsilon, s}\  \dashv,
@@ -172,6 +179,7 @@ The above result is well-known, but in the interest of completeness, we give a p
 \end{proof}
 
 
+\issue{Consistency: the next theorem quantifies over all semirings, whereas this paragraph describes only the field of rationals. The converse proof uses the semiring of regular languages; it does not establish the rationals-only assertion.}% book review
 In the proof above, we established that if a function is rational, then weighted automata are closed under pre-composition with it. This can be seen as a variant of continuity, except that instead of regular languages  (i.e.~weighted automata over the Boolean semiring), we are using weighted automata over the field of rationals. As it turns out, this variant of continuity is exactly the same as rationality.
 \begin{theorem}\label{thm:characterisation-rational-functions-weighted-automata}
     A string-to-string function $f : A^* \to B^*$ is rational if and only if weighted automata over all (not necessarily commutative) semirings are closed under pre-composition with $f$.
@@ -197,6 +205,7 @@ and weighted automata can be subtracted from each other. It remains to show deci
 \begin{theorem}[Sch\"utzenberger]\label{thm:zeroness-weighted-automata}
     The zeroness problem is decidable for weighted automata over the field of rationals\footnote{The proof works for any computable field, where field elements can be represented in a finite way and field operations can be computed.}.
 \end{theorem}
+\issue{Math: first remove states not occurring in accepting runs. Finite accepting-run multiplicity does not ensure finitely many internal runs between arbitrary states (an unreachable $\varepsilon$-cycle is a counterexample), so the matrix coefficients otherwise need not be defined.}% book review
 \begin{proof} Assume that $Q$ is the set of states in the weighted automaton, and $A$ is the input alphabet. We begin by recasting the semantics of the weighted automaton in terms of vectors in $\field^Q$ and linear maps that act on them.  Define the \emph{initial vector}
     \begin{align*}
     q_0 \in \field^Q
