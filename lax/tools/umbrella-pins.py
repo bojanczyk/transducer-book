@@ -23,7 +23,7 @@ autoImplicit = false
 [[require]]
 name = "mathlib"
 git = "https://github.com/leanprover-community/mathlib4"
-rev = "c5ea00351c28e24afc9f0f84379aa41082b1188f"
+rev = "db584cd6d46c92f209a44c0f1c829460d327499d"
 """
 def req(name, rev, sub):
     return f'\n[[require]]\nname = "{name}"\ngit = "https://github.com/bojanczyk/transducer-book"\nrev = "{rev}"\nsubDir = "lax/{sub}"\n'

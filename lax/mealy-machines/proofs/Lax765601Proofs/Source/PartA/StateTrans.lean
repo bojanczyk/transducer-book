@@ -581,7 +581,7 @@ lemma nonBijSet_deltaFree_ssubset {A Q : Type} [DecidableEq A] (δ : Q → A →
   · intro y hy
     simp only [nonBijSet, Set.mem_setOf_eq, deltaFree] at hy ⊢
     by_cases h : y = a
-    · exact absurd (by simpa [h] using Function.bijective_id) hy
+    · exact absurd (by simpa [h, Function.id_def] using Function.bijective_id) hy
     · simpa [h] using hy
   · intro hsub
     have h1 : a ∈ nonBijSet (deltaFree δ a) := hsub ha

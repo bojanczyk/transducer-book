@@ -351,9 +351,7 @@ lemma computes_rfind {n : ℕ} {f : List.Vector ℕ (n + 1) → ℕ} {bF : ℕ} 
     have hall : ∀ k, f (k ::ᵥ vargs n s) ≠ 0 := by
       intro k hk0
       refine hnd ?_
-      show (Nat.rfind fun k => Part.some (decide (f (k ::ᵥ vargs n s) = 0))).Dom
-      rw [Nat.rfind_dom]
-      exact ⟨k, by simp [hk0], fun {_} _ => trivial⟩
+      exact Nat.rfind_dom.mpr ⟨k, by simp [hk0], fun {_} _ => trivial⟩
     refine not_halts_pseq_right hrPre (not_halts_pseq_left ?_)
     refine not_halts_loopDec
       (I := fun t => t (W + n + 1) = 1 ∧ (∀ i, i < W → t i = 0) ∧
@@ -388,6 +386,7 @@ theorem exists_prog_primrec {n : ℕ} {f : List.Vector ℕ n → ℕ} (hf : Nat.
     obtain ⟨b, P, hP⟩ := computes_comp hF hG
     refine ⟨b, P, hP.congr fun v => ?_⟩
     simp
+    exact Part.bind_some _ _
   | @prec n f g hf hg ihf ihg =>
     obtain ⟨bF, F, hF⟩ := ihf
     obtain ⟨bG, G, hG⟩ := ihg

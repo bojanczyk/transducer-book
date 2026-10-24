@@ -3,16 +3,195 @@
 Opened 2026-09-07. One row per submission; the *next leaf* column is what the
 next session or subagent picks up. Keep this file short and current.
 
-| id | folder | concepts | proofs | state (2026-09-07, 23:00) | next leaf |
+| id | folder | concepts | proofs | state (2026-09-14; all eight resubmitted at v4.33.0) | next leaf |
 |---|---|---|---|---|---|
-| lax-251941 | `pcp-undecidability` | 9 | 6, all discharged | **draft on the archive with content** (9680c6e), replay green | none |
-| lax-765601 | `mealy-machines` | 22 | 13, all discharged | **draft on the archive with content** (cf8ade7), replay green | none |
-| lax-132576 | `rational-functions` | 42 | 29, all discharged; Source = 63 modules | **draft on the archive with content** (972ebef), replay green | none |
-| lax-916827 | `regular-functions` | 29 | 23, all discharged; Source = 136 modules; replay green (9m36s) | committed; content resubmit running | after the record moves: repin S4/S5/S6 (concepts) and S4/S5 (proofs) to it, submit S4/S5/S6 |
-| lax-314295 | `mso-transductions` | 26 | 22, all discharged; Source = 44 modules; replay green | **draft on the archive with content** (8b8f8c6) | none (S6 and S7 pin it) |
-| lax-709149 | `regular-combinators` | 4 | 1, discharged; Source = 15 modules; replay green | **draft on the archive with content** (86f2df5) | none (S7 pins it) |
-| lax-194892 | `polyregular-functions` | 21 | 15, all discharged; Source = 72 modules | **draft on the archive with content** (4bdfaae; the first submission hit the replay time cap, the identical retry passed) | none (S7 pins it) |
-| lax-157538 | `transducers-book` | none (umbrella) | none | **draft on the archive** (7a3dd76): paper 179 pages, 210 marks resolved, pins all seven records; `backend=bibtex` (the archive's sandboxed `biber` cannot exec) and tikz externalization off around `tikzcd` (made the reflow's lualatex pass succeed) in the umbrella's `macros.sty`. Remaining warning: `paper · web-oracle`, the reflow stream diverges from the PDF text at similarity 0.9800 (< 0.98), first at the preface's "This book" read as "is book" — not the Th ligature (disabling ligatures under lualatex changed nothing, reverted) | registration bottom-up (Jan); the web-oracle warning needs laxreflow's own transcript (archive maintainers) |
+| lax-251941 | `pcp-undecidability` | 9 | 6, all discharged | **draft on the archive at v4.33.0** (6980467) | none |
+| lax-765601 | `mealy-machines` | 22 | 13, all discharged | **draft on the archive at v4.33.0** (6980467) | none |
+| lax-132576 | `rational-functions` | 42 | 29, all discharged; Source = 63 modules | **draft on the archive at v4.33.0** (0257c90) | none |
+| lax-916827 | `regular-functions` | 29 | 23, all discharged; Source = 136 modules; replay green (9m36s) | **draft on the archive at v4.33.0** (2649bf2) | none |
+| lax-314295 | `mso-transductions` | 26 | 22, all discharged; Source = 44 modules; replay green | **draft on the archive at v4.33.0** (baffefb) | none (S6 and S7 pin it) |
+| lax-709149 | `regular-combinators` | 4 | 1, discharged; Source = 15 modules; replay green | **draft on the archive at v4.33.0** (baffefb) | none (S7 pins it) |
+| lax-194892 | `polyregular-functions` | 21 | 15, all discharged; Source = 72 modules | **draft on the archive at v4.33.0** (e563124) | none (S7 pins it) |
+| lax-157538 | `transducers-book` | none (umbrella) | none | **draft on the archive at v4.33.0** (ab3f15c): paper 179 pages, 210 marks resolved, pins all seven records; `backend=bibtex` (the archive's sandboxed `biber` cannot exec) and tikz externalization off around `tikzcd` (made the reflow's lualatex pass succeed) in the umbrella's `macros.sty`. The v4.30 `paper · web-oracle` warning (reflow similarity 0.9800) did not recur at this submission | registration bottom-up (Jan) |
+
+## v4.33.0 port (2026-09-14)
+
+The epoch moved to v4.33.0 (mathlib `db584cd6`) on 2026-09-13 and v4.30.0
+closed. The eight submissions are drafts, so the port is in place: same ids,
+same issues, same package names; every pin moved (manifest `leanVersion`
+and `mathlibVersion`, both `lean-toolchain` files, both lakefiles' mathlib
+`rev`, `tools/umbrella-pins.py`), the Lean fixed in the proof packages, no
+statement changed, one concept file touched (S5's `Sym8`, below). Prepared without submit
+rights: resubmission is bottom-up with a repin at every step
+(`tools/repin.py`, then `tools/umbrella-pins.py` for the umbrella), as in
+"Cross-submission requires" of CLAUDE.md. Local loop: `lax doctor --env
+v4.33.0` once, then `python3 tools/local-overrides.py` and a direct `lake
+build` per package (concepts, then proofs).
+
+Drift classes met (Lean 4.33 / mathlib db584cd6): (i) tactic targets are
+checked for type-correctness at `implicit` transparency, so `simp`/`rw` bail
+on a term applying a `→.` (PFun) or passing an anonymous constructor at a
+`def`-wrapped type — term-level `.mp`/`.mpr`, explicit lemma arguments, or an
+ascription; (ii) a module-name component in Windows' reserved set (`Aux`,
+`Con`, `Nul`, …) is a hard error, no option disables it; (iii) `simp` no
+longer bridges `id` and `fun x => x` without `Function.id_def`.
+
+- S0 (`pcp-undecidability`, replay not run locally): `Source/Sim/Compile.lean:303`
+  `simp only [Part.bind_eq_bind, Part.mem_bind_iff] at hz; obtain …` →
+  `obtain ⟨w, hw, hzf⟩ := Part.mem_bind_iff.mp hz`; `:387` the goal-side
+  twin → `refine Part.mem_bind_iff.mpr ⟨vargs k u3, ?_, hz⟩`;
+  `Source/Sim/Rfind.lean:354` `show …; rw [Nat.rfind_dom]; exact` → `exact
+  Nat.rfind_dom.mpr ⟨…⟩` (the `rw` pattern no longer matches the goal's
+  `ℕ → Part Bool` lambda against `ℕ →. Bool`); `:389` `exact Part.bind_some
+  _ _` after a `simp` that no longer closes `Part.some x >>= ↑f = Part.some
+  (f x)`. The `Sym` alias and the `PCPRed` stub compile as they are.
+- S1 (`mealy-machines`): `Source/Common/Aux.lean` renamed
+  `Source/Common/Auxiliary.lean` (drift ii; importers `Lax765601Proofs.lean:3`,
+  `Source/PartA/Statements.lean:14`; `ported.txt` still lists the source
+  module `Common/Aux`, and `port.py` derives the ported name from it, so a
+  future `--dep Lax765601Proofs` would emit the old import — a rename map
+  in `port.py` is owed if Part A is ever re-ported);
+  `Source/PartA/StateTrans.lean:584` `simpa [h, Function.id_def]`;
+  `Source/PartA/Statements.lean:406,416-417` `derivMealy_trans` /
+  `Function.iterate_succ_apply'` given their arguments with the
+  `(⟨deriv f u, u, rfl⟩ : Derivs f)` ascription (drift i: `Derivs f` is a
+  `def`), `:414` `show deriv f u = _` before the `simp`.
+- S2 (`rational-functions`, 9 files, 13 sites; concepts untouched; none of
+  the v4.30 workarounds became unnecessary — the `list_take'`/`list_drop'`
+  renames, `decode_rat`, the `PairWeighted` binders and the six `CodeRat`
+  `erw` sites all still needed): new drift classes (iv) `simpa … using h`
+  is stricter than `exact` — a bridge term that is defeq but not
+  syntactically equal (`(toSrc M).init` vs `M.init`) now fails "after
+  simplification", split into `simp only […]` + `exact h`; (v) `convert h
+  using 1` on `Language.IsRegular` leaves an unsolved `Iff`, `exact h`
+  works; (vi) an `instance` with an explicit argument instance synthesis can
+  never supply is a hard error; (vii) `simp only []` no longer makes
+  progress. Sites: `Results.lean:352,371,543` (iv);
+  `Source/PartB/SeqChar.lean:305,310`, `SubseqState.lean:42,48` (v);
+  `SubseqAlpha.lean:35` `simpa using h` → `simp only [List.append_nil];
+  exact h`; `WeightedNF.lean:862` `instance instFiniteUseful (h :
+  M.init.Finite)` → `lemma` (vi; both call sites already pass `h`);
+  `HomComplement.lean:272` `simp only [] at ht` → `simp only [aut, delta,
+  Set.mem_union] at ht` (vii); `LenDec.lean:257` `simpa [memB_iff, codeAut]`;
+  `WCodeEnum.lean:136,141` `simpa [wtr]`; `CodeRat.lean:251-260,374-377`
+  `List.length_map` instantiated by hand as `have`s over the `def`-wrapped
+  `InA c`/`OutA c` (drift i), `:286` `(by simpa using h2)` → `h2`, `:340`
+  `simp only [Subtype.coe_eta]` → `rfl`.
+- S3 (`regular-functions`, 23 files; concepts untouched; every v4.30
+  workaround still needed): new drift classes (viii) `Set` is
+  `Set.ofPred`-based and `Language` a `def` over it, so a set-builder at a
+  `Language` position is type-incorrect at `implicit` transparency —
+  `rw`/`kabstract` refuse the target, `simp only [if_pos h]` does not fire,
+  `convert h using 1` on two `IsRegular`s leaves an `Iff` and the following
+  `ext` fails; fixes: the term itself / `.mpr`, `isRegular_of_eq h (fun u =>
+  ?_)` for `convert … using 1; ext u`, `set L : Language α := …` *before*
+  the `rw`, `rw [show <def application> = _ from if_pos h]` (chain
+  `if_neg`s with `.trans`) for an `ite` body at `Language`; (ix) `deriving
+  Fintype` on an enum (all constructors nullary) is a hard error at this
+  mathlib pin (its `mkFintypeEnum` emits a `rw` that is type-incorrect at
+  `implicit` transparency; reproduced against bare mathlib) — `deriving
+  DecidableEq` kept, `instance : Fintype T := derive_fintype% _` (the
+  proxy-type path) added; (x) `Relation.TransGen.mono` is relation-valued
+  (`TransGen.mono h _ _ hR`); (xi) `List.Pairwise.forall` takes
+  `[Std.Symm R]`, not `Symmetric R`; (xii) an `X = X` that `simp` leaves is
+  two `Classical.propDecidable` arguments inside `decide` (`<;> rfl`), and
+  "has type X but is expected X" with identical printing is two matcher
+  auxiliaries (restate the local `have` through the named `def`). Sites:
+  (viii) `Source/PartC/RegAut.lean:49-57,75-81`, `ContAux.lean:21,61,
+  133-138,247-249`, `TwoDFA.lean:557`, `MSOAnnot.lean:109`,
+  `SnakeChkWin.lean:110-127`, `Results.lean:241`; (ix) `SumShape.lean:70-75`
+  (`Shp`), `SumReg.lean:74-78` (`PreSt`), `RegClosure.lean:100-104` (`Cm`),
+  `TwoWayErase.lean:128-132` (`EMode`), `TwoWayPrecomp.lean:497-501`
+  (`PMode`); (iv) `simpa` given the `def`s it used to unfold —
+  `TwoWay.Computes` at `TwoWayHom.lean:76`, `TwoWayComp.lean:929`,
+  `TwoWayPrecomp.lean:277`, `RegCodeSan.lean:198,205`; `ValidFrom` at
+  `ConfGraphAnnot.lean:107,110`; `excC` at `SnakePieceIdent.lean:600,631`,
+  `SnakeChkSlot.lean:156,165`; `encR` at `SumPrime.lean:275`; `appAut` at
+  `TwoWayHom.lean:297`; `bstep` at `ContAux.lean:165`; `Nat.add_assoc` at
+  `SnakeWinRun.lean:510,539`; `SumShape.lean:406-410` (xii, `decL`),
+  `RegPair.lean:406-408` (`simp only … at h; exact h`),
+  `TwoWayCont.lean:227` (xii, `<;> rfl`); (x) `SnakeAlphCyc.lean:158,269,
+  295`; (xi) `SSTBasic.lean:62-64`.
+- S4 (`mso-transductions`, 9 files; concepts untouched; the `export`
+  aliases, the ~110 explicit dot-notation sites and the v4.30 drift fixes
+  all still needed): `Source/PartC/FlatIndex.lean:11` `Common.Aux` →
+  `Common.Auxiliary` (ii); (i) at `def`-wrapped component types
+  (`(trans R).E`, `(trans A₀).P`, `(toI T).Elt`, `(toSrcRel R).Idx`) —
+  `ITrans.lean:255,256` `rw [ordRel_toI]; exact` → `exact (ordRel_toI …).2 …`,
+  `FORelabTrans.lean:142-144,154-155,166-168` `ordRel_inr_iff` applied
+  term-level (the fully-applied `rw [ordRel_inl_iff …]` twins still
+  rewrite: giving a lemma its arguments is the cheapest fix),
+  `FOTransDup.lean:475-511` `rw [selected_iff] at h` → `replace h :=
+  (selected_iff w c p).1 h`, `:535,544,548` `refine <lemma>.2 ?_`,
+  `MSONorm.lean:169,172` the `simpa` side goal passed as `h1`, `:199-200`
+  `subst this; rfl`, `Results.lean:227-228` `simp only [sat_toSrc]; exact h`;
+  (iv) `WalkAut.lean:627-629` `rw [List.append_nil] at h; exact h`,
+  `FOTransRev.lean:271,276` and `ITransBuild.lean:156-157` constructor
+  injectivity as `congrArg Prod.snd (Sum.inl.inj h)` (new sub-case of (i):
+  `Prod.mk.injEq`/`Sum.inl.injEq` do not fire when a component sits at a
+  `def` for `Unit`/`Bool`; `simp [Prod.ext_iff]` inside a goal, the
+  residue `() = PUnit.unit` closes by `exact fun _ => rfl`, not
+  `Subsingleton.elim`), `ITransBuild.lean:187` `Function.id_def` (iii).
+- S5 (`regular-combinators`; every v4.30 workaround still needed). **The
+  one concept-file change of the port** (discussed with Jan 2026-09-14: no
+  concept dialect is enforced yet, and the declared content is unchanged):
+  `concepts/Lax709149/Types.lean:48` `Sym8` (eight nullary constructors)
+  `deriving DecidableEq, Fintype` fails (ix); proposed `deriving
+  DecidableEq` + `instance : Fintype Sym8 := derive_fintype% _` with
+  `import Mathlib.Data.Fintype.Sum` added (the proxy type is an eightfold
+  sum) — what is declared is unchanged. Proofs: (ix) twelve enums —
+  `Source/PartC/CombTypes.lean:95-100` (`Sym8`), `CombAtomCons.lean:29-43,
+  296-302` (`ConsMode`, `Cons2Mode`, `UnconsMode`), `CombAtomConcat.lean:
+  28-34,73-79` (`ConcatMode`, `DropMode`), `CombAtomProj.lean:43-49`
+  (`PMode`), `CombMark.lean:153-158` (`ListMarkMode`), `CombAtomSplit.lean:
+  31-37` (`SplitPhase`), `CombAtomPref.lean:103-109` (`PrefPhase`),
+  `CombAtomDistr.lean:24-30,48-54` (`MMode`, `QMode`); (i) `rw` refuses to
+  unify a pattern variable at `List X.Elt` with a local at `(Ty.list
+  X).Elt` — `CombInj.lean:130`, `CombAtomConcat.lean:253`,
+  `CombAtomCons.lean:279` lemmas given their arguments;
+  `CombAtomSplit.lean:373-384`, `CombAtomReverse.lean:92-102`,
+  `CombCombinators.lean:223-233`, `CombAtomPref.lean:302-311` the original
+  tactic block moved into `have key : ∀ m : List _.Elt, …` and `exact key
+  l` (one edit instead of one failing rewrite per build round);
+  `Bridge.lean:163,265` `List.map_map (l := l)`; (i) `Sum.elim` at a
+  `def`-wrapped scrutinee no longer iota-reduces under `simp` —
+  `CombAtomCons.lean:277,281,393` `rfl` appended, `:412-413,431-432` a
+  `show` exposing `A.repr a` so `hcw` fires (the "unused simp argument"
+  hint is the tell).
+- S6 (`polyregular-functions`, 12 files, all `Source/PartD/`; concepts
+  untouched; every v4.30 workaround still needed): (ix) `PolyStep.lean:19,
+  60-63` (`Reg`); (v) `MarkedSquare.lean:129-130`, `PebbleReg.lean:28-29`
+  `isRegular_of_eq`; (viii) `CGAtom.lean:293-296`, `CGSem.lean:514-516,531`
+  `rw [edgeL]; split` → `by_cases` + `rw [show edgeL … = _ from if_pos h]`;
+  (iv) `PebbleReg.lean:33,40` `exact` (membership defeq through the
+  set-builder), `PebbleSquareRun.lean:544` `simp only [encStack,
+  List.length_nil]; omega`; new class (xiii): `simp only [ForTest.Holds]`
+  unfolds an `ite` condition but leaves its `Classical.propDecidable`
+  instance keyed to the folded `Holds`, so a later `if_pos`/`if_neg`/
+  `if_congr` synthesizes a different instance and fails — keep `Holds`
+  folded in the `simp only` and give the condition proof its folded type in
+  a `have` (`ForNest.lean:234,238,305,309`, `ForMerge.lean:132-139,169-177`,
+  `ForAtom.lean:70-96`, `ForPrenex.lean:661-663`, `ForPrenexTop.lean:153`);
+  (xiv) `decide_eq_decide` no longer fires as a `simp only` rewrite at one
+  site, `PebbleSquareDef.lean:285-286` `refine decide_eq_decide.mpr ?_`
+  (`:212` still works — position-dependent).
+- S7 (`transducers-book`): pins only; both root modules build (`3 jobs`);
+  the paper is untouched (no TeX on the porting machine, the archive
+  compiles it). `tools/umbrella-pins.py` carries the new mathlib rev and
+  regenerates the requires from the records once the seven parts are
+  resubmitted.
+
+State after the port (2026-09-14): every package of the eight submissions
+builds at v4.33.0 through the local loop. `lax build --replay` (the archive's
+own checks, kernel replay included) is green on `mealy-machines` (1m41s: 22
+concepts · 13 proofs, the pre-existing `unused-lemma` warnings only) and on
+`pcp-undecidability` (22m16s, of which the kernel replay 21m51s on a 4-CPU
+machine — the archive caps the replay at 20 minutes, so S0's first v4.33.0
+submission may need the identical `--force` retry Part D needed at v4.30;
+9 concepts · 6 proofs, 77 pre-existing warnings); the other six cannot pass
+resolution until their dependencies are resubmitted (their requires still
+name v4.30.0 records). Nothing is submitted — the archive records are still the
+v4.30.0 drafts of the table above until the bottom-up resubmission.
 
 ## Source edits (against the epoch mathlib)
 

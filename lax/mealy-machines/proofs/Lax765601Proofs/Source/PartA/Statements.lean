@@ -11,7 +11,7 @@ Krohn-Rhodes Theorem `thm:krohn-rhodes`, is proved in
 "aperiodic ⇒ composition of flip-flops" of Theorem `thm:aperiodic-mealy`, is proved in
 `RequestProject/PartA/StateTransAperiodic.lean`. -/
 import Lax765601Proofs.Source.PartA.MealyBasic
-import Lax765601Proofs.Source.Common.Aux
+import Lax765601Proofs.Source.Common.Auxiliary
 import Lax765601Proofs.Source.PartA.PrimeClosure
 import Lax765601Proofs.Source.PartA.MapLift
 import Lax765601Proofs.Source.PartA.StateTrans
@@ -403,7 +403,7 @@ derivative. -/
 lemma derivMealy_trans_deriv {A B : Type} [Inhabited B] (f : List A → List B) (u z : List A) :
     (derivMealy f).trans z ⟨deriv f u, u, rfl⟩ = ⟨deriv f (u ++ z), u ++ z, rfl⟩ := by
   apply Subtype.ext
-  rw [derivMealy_trans]
+  rw [derivMealy_trans f z (⟨deriv f u, u, rfl⟩ : Derivs f)]
   exact (deriv_append f u z).symm
 
 /-- Iterating the state transformation of the minimal machine. -/
@@ -411,9 +411,10 @@ lemma derivMealy_trans_iterate {A B : Type} [Inhabited B] (f : List A → List B
     (n : ℕ) :
     ((derivMealy f).trans z)^[n] ⟨deriv f u, u, rfl⟩ = ⟨deriv f (u ++ npow z n), _, rfl⟩ := by
   induction n with
-  | zero => apply Subtype.ext; simp
+  | zero => apply Subtype.ext; show deriv f u = _; simp
   | succ n ih =>
-      rw [Function.iterate_succ_apply', ih, derivMealy_trans_deriv]
+      rw [Function.iterate_succ_apply' ((derivMealy f).trans z) n
+        (⟨deriv f u, u, rfl⟩ : Derivs f), ih, derivMealy_trans_deriv]
       apply Subtype.ext
       rw [npow_succ', ← List.append_assoc]
 
